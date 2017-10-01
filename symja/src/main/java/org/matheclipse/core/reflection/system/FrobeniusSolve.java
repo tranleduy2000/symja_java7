@@ -17,7 +17,7 @@ import org.matheclipse.core.interfaces.ISymbol;
  * <pre>
  * FrobeniusSolve(listOfIntegers, nonNegativeInteger)
  * </pre>
- * 
+ * <p>
  * <blockquote>
  * <p>
  * get a list of solutions for the Frobenius equation given by the <code>listOfIntegers</code> and the
@@ -25,7 +25,7 @@ import org.matheclipse.core.interfaces.ISymbol;
  * </p>
  * </blockquote>
  * <h3>Examples</h3>
- * 
+ * <p>
  * <pre>
  * &gt;&gt; FrobeniusSolve({2, 3, 4}, 29)
  * {{0,3,5},{0,7,2},{1,1,6},{1,5,3},{1,9,0},{2,3,4},{2,7,1},{3,1,5},{3,5,2},{4,3,3},{
@@ -35,59 +35,65 @@ import org.matheclipse.core.interfaces.ISymbol;
  */
 public class FrobeniusSolve extends AbstractEvaluator {
 
-	public FrobeniusSolve() {
-		// default ctor
-	}
+    public FrobeniusSolve() {
+        // default ctor
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public IExpr evaluate(final IAST ast, EvalEngine engine) {
-		Validate.checkRange(ast, 3, 4);
-		if (ast.arg1().isList()) {
-			IAST list = ast.getAST(1);
-			try {
-				IInteger[][] equations = new IInteger[1][list.size()];
-				// format looks like: { { 12, 16, 20, 27, 123 } };
-				for (int i = 1; i < list.size(); i++) {
-					equations[0][i - 1] = (IInteger) list.get(i);
-				}
-				equations[0][list.size() - 1] = (IInteger) ast.arg2();
-				int numberOfSolutions = -1; // all solutions
-				if (ast.size() == 4) {
-					numberOfSolutions = ((ISignedNumber) ast.arg3()).toInt();
-				}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public IExpr evaluate(final IAST ast, EvalEngine engine) {
+        Validate.checkRange(ast, 3, 4);
+        if (ast.arg1().isList()) {
+            IAST list = ast.getAST(1);
+            try {
+                IInteger[][] equations = new IInteger[1][list.size()];
+                // format looks like: { { 12, 16, 20, 27, 123 } };
+                for (int i = 1; i < list.size(); i++) {
+                    equations[0][i - 1] = (IInteger) list.get(i);
+                }
+                equations[0][list.size() - 1] = (IInteger) ast.arg2();
+                int numberOfSolutions = -1; // all solutions
+                if (ast.size() == 4) {
+                    numberOfSolutions = ((ISignedNumber) ast.arg3()).toInt();
+                }
 
-				FrobeniusSolver solver = new FrobeniusSolver(equations);
-				IInteger[] solution;
+                FrobeniusSolver solver = new FrobeniusSolver(equations);
+                IInteger[] solution;
 
-				IAST result = F.List();
-				if (numberOfSolutions < 0) {
-					while ((solution = solver.take()) != null) {
-						result.append(Lists.asList(solution));
-					}
-				} else {
-					while ((solution = solver.take()) != null) {
-						if (--numberOfSolutions < 0) {
-							break;
-						}
-						result.append(Lists.asList(solution));
-					}
-				}
+                IAST result = F.List();
+                if (numberOfSolutions < 0) {
+                    while ((solution = solver.take()) != null) {
+                        //noinspection ConfusingArgumentToVarargsMethod
+                        result.append(Lists.asList(solution));
+                    }
+                } else {
+                    while ((solution = solver.take()) != null) {
+                        if (--numberOfSolutions < 0) {
+                            break;
+                        }
+                        //noinspection ConfusingArgumentToVarargsMethod
+                        result.append(Lists.asList(solution));
+                    }
+                }
 
-				return result;
-			} catch (RuntimeException e) {
-				if (Config.SHOW_STACKTRACE) {
-					e.printStackTrace();
-				}
-			}
-		}
-		return null;
-	}
+                return result;
+            } catch (RuntimeException e) {
+                if (Config.SHOW_STACKTRACE) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return null;
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public void setUp(final ISymbol newSymbol) {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setUp(final ISymbol newSymbol) {
 
-	}
+    }
 
 }

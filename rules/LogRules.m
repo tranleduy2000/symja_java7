@@ -1,0 +1,31 @@
+{ 
+ Log(1)=0, 
+ Log(E)=1, 
+ Log(E^(x_RealNumberQ)):=x, 
+ Log(E^(I))=I, 
+ Log(E^(-I))=(-I),
+ Log(0.0)=Indeterminate,
+ Log(0)=(-Infinity),
+ Log(I)=(Pi*I)/2, 
+ Log(-I)=(-Pi*I)/2, 
+ Log(GoldenRatio)=ArcCsch(2),
+ Log(1/2*(1+Sqrt(5)))=ArcCsch(2), 
+ Log(Infinity)=Infinity,
+ Log(-Infinity)=Infinity,
+ Log(I*Infinity)=Infinity,
+ Log(-I*Infinity)=Infinity,
+ Log(ComplexInfinity)=Infinity,
+ 
+ Log(a_,b_):=Log(b)*Log(a)^(-1),
+ Log(a_,E):=Log(a)^(-1),
+ Log(a_,E^m_IntegerQ):=m*Log(a)^(-1),
+ Log(a_,0):=(-Infinity)*Log(a)^(-1), 
+ Log(a_,1)=0, 
+ Log(a_,-1):=I*Pi*Log(a)^(-1),
+ Log(E,z_):=Log(z),
+ Log(0,z_)=0,
+ Log(1,z_)=ComplexInfinity,
+ Log(-1,z_):=(-I/Pi)*Log(z),
+ Log(a_,1)=Indeterminate
+ 
+}

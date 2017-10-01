@@ -31,7 +31,7 @@ public abstract class Operation {
 	 * is the same operation with this operation).
 	 * @param op the operation to be checked
 	 * @return true when <tt>op</tt> is a taboo
-	 * @see TabooSearch
+
 	 */
 	public abstract boolean isTaboo(Operation op);
 
