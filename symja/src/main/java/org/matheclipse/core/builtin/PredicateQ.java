@@ -142,7 +142,7 @@ public class PredicateQ {
 		 * Determine the depth of the given expression <code>expr</code> which should be
 		 * a full array of (possibly nested) lists. Return <code>-1</code> if the
 		 * expression isn't a full array.
-		 * 
+		 *
 		 * @param expr
 		 * @param depth
 		 *            start depth of the full array
@@ -228,7 +228,7 @@ public class PredicateQ {
 
 	/**
 	 * Predicate function
-	 * 
+	 *
 	 * Returns <code>True</code> if the first argument is an integer;
 	 * <code>False</code> otherwise
 	 */
@@ -253,7 +253,7 @@ public class PredicateQ {
 	/**
 	 * Returns <code>True</code>, if the given expression is a string which only
 	 * contains digits.
-	 * 
+	 *
 	 */
 	private static class DigitQ extends AbstractCorePredicateEvaluator implements Predicate<IExpr> {
 
@@ -290,7 +290,7 @@ public class PredicateQ {
 
 	/**
 	 * Predicate function
-	 * 
+	 *
 	 * Returns <code>True</code> if the 1st argument is an even integer number;
 	 * <code>False</code> otherwise
 	 */
@@ -343,7 +343,7 @@ public class PredicateQ {
 		 * argument in <code>orderless2</code> equals an argument in
 		 * <code>orderless1</code>. I.e. <code>orderless1</code> doesn't contain every
 		 * argument of <code>orderless2</code>.
-		 * 
+		 *
 		 * @param orderless1
 		 * @param orderless2
 		 * @return <code>false</code> if <code>orderless1.size()</code> is greater or
@@ -406,7 +406,7 @@ public class PredicateQ {
 
 	/**
 	 * Predicate function
-	 * 
+	 *
 	 * Returns <code>True</code> if the first argument is an integer;
 	 * <code>False</code> otherwise
 	 */
@@ -430,7 +430,7 @@ public class PredicateQ {
 
 	/**
 	 * Predicate function
-	 * 
+	 *
 	 * Returns <code>True</code> if the 1st argument is a list expression;
 	 * <code>False</code> otherwise
 	 */
@@ -449,7 +449,7 @@ public class PredicateQ {
 
 	/**
 	 * Match an expression against a given pattern.
-	 * 
+	 *
 	 */
 	private static class MatchQ extends AbstractCoreFunctionEvaluator {
 
@@ -477,7 +477,7 @@ public class PredicateQ {
 
 	/**
 	 * Predicate function
-	 * 
+	 *
 	 * Returns <code>True</code> if the 1st argument is a matrix; <code>False</code>
 	 * otherwise
 	 */
@@ -545,7 +545,7 @@ public class PredicateQ {
 
 	/**
 	 * Predicate function
-	 * 
+	 *
 	 * Returns <code>True</code> if the 1st argument is a <code>Missing()</code>
 	 * expression; <code>False</code> otherwise
 	 */
@@ -564,7 +564,7 @@ public class PredicateQ {
 
 	/**
 	 * Predicate function
-	 * 
+	 *
 	 * Returns <code>True</code> if the 1st argument is a list expression;
 	 * <code>False</code> otherwise
 	 */
@@ -583,7 +583,7 @@ public class PredicateQ {
 
 	/**
 	 * Returns <code>True</code>, if the given expression is an number object
-	 * 
+	 *
 	 */
 	private static class NumberQ extends AbstractCoreFunctionEvaluator {
 		/**
@@ -605,8 +605,21 @@ public class PredicateQ {
 		@Override
 		public IExpr evaluate(final IAST ast, EvalEngine engine) {
 			if (ast.isAST1()) {
-				IExpr arg1 = engine.evaluate(ast.arg1());
-				return F.bool(arg1.isRealNumber());
+				IExpr arg1 = ast.arg1();
+				if (arg1.isNumber()) {
+					return F.bool(arg1.isRealNumber());
+				}
+				IExpr temp = engine.evaluate(arg1);
+				if (temp.isSignedNumber()) {
+					return F.True;
+				}
+				if (temp.isNumericFunction()) {
+					temp = engine.evalN(arg1);
+					if (temp.isSignedNumber()) {
+						return F.True;
+					}
+				}
+				return F.False;
 			}
 			Validate.checkSize(ast, 2);
 			return F.NIL;
@@ -652,7 +665,7 @@ public class PredicateQ {
 	/**
 	 * Returns <code>True</code>, if the given expression is a numeric function or
 	 * value.
-	 * 
+	 *
 	 */
 	private static class NumericQ extends AbstractCoreFunctionEvaluator implements Predicate<IExpr> {
 
@@ -688,7 +701,7 @@ public class PredicateQ {
 
 	/**
 	 * Predicate function
-	 * 
+	 *
 	 * Returns <code>True</code> if the 1st argument is an odd integer number;
 	 * <code>False</code> otherwise
 	 */
@@ -716,7 +729,7 @@ public class PredicateQ {
 
 	/**
 	 * Predicate function
-	 * 
+	 *
 	 * Returns <code>True</code> if the 1st argument is <code>0</code>;
 	 * <code>False</code> otherwise
 	 */
@@ -742,7 +755,7 @@ public class PredicateQ {
 	 * Test if a number is prime. See:
 	 * <a href="http://en.wikipedia.org/wiki/Prime_number">Wikipedia:Prime
 	 * number</a>
-	 * 
+	 *
 	 * @see org.matheclipse.core.reflection.system.NextPrime
 	 */
 	private static class PrimeQ extends AbstractCorePredicateEvaluator implements Predicate<IInteger> {
@@ -837,7 +850,7 @@ public class PredicateQ {
 	/**
 	 * Returns <code>True</code>, if the given expression is a string which has the
 	 * correct syntax
-	 * 
+	 *
 	 */
 	private static class SyntaxQ extends AbstractCorePredicateEvaluator {
 
@@ -900,7 +913,7 @@ public class PredicateQ {
 
 	/**
 	 * Returns <code>True</code>, if the given expression is bound to a value.
-	 * 
+	 *
 	 */
 	private static class ValueQ extends AbstractCoreFunctionEvaluator implements Predicate<IExpr> {
 

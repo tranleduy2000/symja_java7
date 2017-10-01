@@ -27,6 +27,7 @@ import static org.matheclipse.core.expression.F.IInit;
 import static org.matheclipse.core.expression.F.ISet;
 import static org.matheclipse.core.expression.F.ISetDelayed;
 import static org.matheclipse.core.expression.F.If;
+import static org.matheclipse.core.expression.F.Indeterminate;
 import static org.matheclipse.core.expression.F.List;
 import static org.matheclipse.core.expression.F.Negate;
 import static org.matheclipse.core.expression.F.Noo;
@@ -54,66 +55,66 @@ public interface ArcTanRules {
      * <li>index 0 - number of equal rules in <code>RULES</code></li>
      * </ul>
      */
-    final public static int[] SIZES = {18, 0};
+    final public static int[] SIZES = { 18, 0 };
 
     final public static IAST RULES = List(
             IInit(ArcTan, SIZES),
             // ArcTan(0)=0
             ISet(ArcTan(C0),
                     C0),
-            // ArcTan(0,0)=0
-            ISet(ArcTan(C0, C0),
-                    C0),
+            // ArcTan(0,0)=Indeterminate
+            ISet(ArcTan(C0,C0),
+                    Indeterminate),
             // ArcTan(2-Sqrt(3))=Pi/12
-            ISet(ArcTan(Plus(C2, Negate(CSqrt3))),
-                    Times(QQ(1L, 12L), Pi)),
+            ISet(ArcTan(Plus(C2,Negate(CSqrt3))),
+                    Times(QQ(1L,12L),Pi)),
             // ArcTan(-1+Sqrt(2))=Pi/8
-            ISet(ArcTan(Plus(CN1, CSqrt2)),
-                    Times(QQ(1L, 8L), Pi)),
+            ISet(ArcTan(Plus(CN1,CSqrt2)),
+                    Times(QQ(1L,8L),Pi)),
             // ArcTan(1/Sqrt(3))=Pi/6
             ISet(ArcTan(C1DSqrt3),
-                    Times(QQ(1L, 6L), Pi)),
+                    Times(QQ(1L,6L),Pi)),
             // ArcTan(Sqrt(5-2*Sqrt(5)))=Pi/5
-            ISet(ArcTan(Sqrt(Plus(C5, Times(CN2, CSqrt5)))),
-                    Times(QQ(1L, 5L), Pi)),
+            ISet(ArcTan(Sqrt(Plus(C5,Times(CN2,CSqrt5)))),
+                    Times(QQ(1L,5L),Pi)),
             // ArcTan(1)=Pi/4
             ISet(ArcTan(C1),
-                    Times(C1D4, Pi)),
+                    Times(C1D4,Pi)),
             // ArcTan(1,1)=Pi/4
-            ISet(ArcTan(C1, C1),
-                    Times(C1D4, Pi)),
+            ISet(ArcTan(C1,C1),
+                    Times(C1D4,Pi)),
             // ArcTan(-1,-1)=-3/4*Pi
-            ISet(ArcTan(CN1, CN1),
-                    Times(QQ(-3L, 4L), Pi)),
+            ISet(ArcTan(CN1,CN1),
+                    Times(QQ(-3L,4L),Pi)),
             // ArcTan(Sqrt(3))=Pi/3
             ISet(ArcTan(CSqrt3),
-                    Times(C1D3, Pi)),
+                    Times(C1D3,Pi)),
             // ArcTan(1+Sqrt(2))=3/8*Pi
-            ISet(ArcTan(Plus(C1, CSqrt2)),
-                    Times(QQ(3L, 8L), Pi)),
+            ISet(ArcTan(Plus(C1,CSqrt2)),
+                    Times(QQ(3L,8L),Pi)),
             // ArcTan(2+Sqrt(3))=5/12*Pi
-            ISet(ArcTan(Plus(C2, CSqrt3)),
-                    Times(QQ(5L, 12L), Pi)),
+            ISet(ArcTan(Plus(C2,CSqrt3)),
+                    Times(QQ(5L,12L),Pi)),
             // ArcTan(I)=I*Infinity
             ISet(ArcTan(CI),
                     DirectedInfinity(CI)),
             // ArcTan(Infinity,y_)=0
-            ISet(ArcTan(oo, y_),
+            ISet(ArcTan(oo,y_),
                     C0),
             // ArcTan(Infinity)=Pi/2
             ISet(ArcTan(oo),
-                    Times(C1D2, Pi)),
+                    Times(C1D2,Pi)),
             // ArcTan(-Infinity)=(-1)*1/2*Pi
             ISet(ArcTan(Noo),
-                    Times(CN1D2, Pi)),
+                    Times(CN1D2,Pi)),
             // ArcTan(I*Infinity)=Pi/2
             ISet(ArcTan(DirectedInfinity(CI)),
-                    Times(C1D2, Pi)),
+                    Times(C1D2,Pi)),
             // ArcTan(-I*Infinity)=(-1)*1/2*Pi
             ISet(ArcTan(DirectedInfinity(CNI)),
-                    Times(CN1D2, Pi)),
-            // ArcTan(x_?RealNumberQ,y_?RealNumberQ):=If(x==0,If(y==0,0,If(y>0,Pi/2,(-1)*1/2*Pi)),If(x>0,ArcTan(y/x),If(y>=0,ArcTan(y/x)+Pi,-Pi+ArcTan(y/x))))
-            ISetDelayed(ArcTan(PatternTest(x_, RealNumberQ), PatternTest(y_, RealNumberQ)),
-                    If(Equal(x, C0), If(Equal(y, C0), C0, If(Greater(y, C0), Times(C1D2, Pi), Times(CN1, C1D2, Pi))), If(Greater(x, C0), ArcTan(Times(Power(x, -1), y)), If(GreaterEqual(y, C0), Plus(ArcTan(Times(Power(x, -1), y)), Pi), Plus(Negate(Pi), ArcTan(Times(Power(x, -1), y)))))))
+                    Times(CN1D2,Pi)),
+            // ArcTan(x_?RealNumberQ,y_?RealNumberQ):=If(x==0,If(y==0,Indeterminate,If(y>0,Pi/2,(-1)*1/2*Pi)),If(x>0,ArcTan(y/x),If(y>=0,ArcTan(y/x)+Pi,-Pi+ArcTan(y/x))))
+            ISetDelayed(ArcTan(PatternTest(x_,RealNumberQ),PatternTest(y_,RealNumberQ)),
+                    If(Equal(x,C0),If(Equal(y,C0),Indeterminate,If(Greater(y,C0),Times(C1D2,Pi),Times(CN1,C1D2,Pi))),If(Greater(x,C0),ArcTan(Times(Power(x,-1),y)),If(GreaterEqual(y,C0),Plus(ArcTan(Times(Power(x,-1),y)),Pi),Plus(Negate(Pi),ArcTan(Times(Power(x,-1),y)))))))
     );
 }
