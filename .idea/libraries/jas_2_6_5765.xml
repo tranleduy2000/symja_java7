@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="jas-2.6.5765">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/app/libs/jas-2.6.5765.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

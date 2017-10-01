@@ -1,0 +1,1115 @@
+ECLIPSE ANDROID PROJECT IMPORT SUMMARY
+======================================
+
+Ignored Files:
+--------------
+The following files were *not* copied into the new Gradle project; you
+should evaluate whether these are still needed in your project and if
+so manually move them:
+
+* .gitignore
+* AndroidManifest.xml
+* build.properties
+* build.xml
+* doc\
+* doc\classhierarchy.md
+* doc\combinatorial.md
+* doc\comparison.md
+* doc\comparisons-and-boolean-logic.md
+* doc\control-statements.md
+* doc\expression-types.md
+* doc\functions-and-patterns.md
+* doc\functions\
+* doc\functions\Abort.md
+* doc\functions\Abs.md
+* doc\functions\AbsArg.md
+* doc\functions\AddTo.md
+* doc\functions\All.md
+* doc\functions\AllTrue.md
+* doc\functions\Alternatives.md
+* doc\functions\And.md
+* doc\functions\AngleVector.md
+* doc\functions\AntihermitianMatrixQ.md
+* doc\functions\AntisymmetricMatrixQ.md
+* doc\functions\AnyTrue.md
+* doc\functions\Apart.md
+* doc\functions\Append.md
+* doc\functions\AppendTo.md
+* doc\functions\Apply.md
+* doc\functions\ArcCos.md
+* doc\functions\ArcCosh.md
+* doc\functions\ArcCot.md
+* doc\functions\ArcCoth.md
+* doc\functions\ArcCsc.md
+* doc\functions\ArcCsch.md
+* doc\functions\ArcSec.md
+* doc\functions\ArcSech.md
+* doc\functions\ArcSin.md
+* doc\functions\ArcSinh.md
+* doc\functions\ArcTan.md
+* doc\functions\ArcTanh.md
+* doc\functions\Arg.md
+* doc\functions\Array.md
+* doc\functions\ArrayDepth.md
+* doc\functions\ArrayQ.md
+* doc\functions\AtomQ.md
+* doc\functions\Attributes.md
+* doc\functions\BellB.md
+* doc\functions\BernoulliB.md
+* doc\functions\Binomial.md
+* doc\functions\BitLength.md
+* doc\functions\Block.md
+* doc\functions\Boole.md
+* doc\functions\BooleanMinimize.md
+* doc\functions\BooleanQ.md
+* doc\functions\Booleans.md
+* doc\functions\BrayCurtisDistance.md
+* doc\functions\Break.md
+* doc\functions\CanberraDistance.md
+* doc\functions\Cancel.md
+* doc\functions\CarmichaelLambda.md
+* doc\functions\CartesianProduct.md
+* doc\functions\Cases.md
+* doc\functions\Catalan.md
+* doc\functions\CatalanNumber.md
+* doc\functions\Catenate.md
+* doc\functions\Ceiling.md
+* doc\functions\CentralMoment.md
+* doc\functions\CharacteristicPolynomial.md
+* doc\functions\ChebyshevT.md
+* doc\functions\ChebyshevU.md
+* doc\functions\ChessboardDistance.md
+* doc\functions\ChineseRemainder.md
+* doc\functions\CholeskyDecomposition.md
+* doc\functions\Chop.md
+* doc\functions\Clear.md
+* doc\functions\ClearAll.md
+* doc\functions\ClearAttributes.md
+* doc\functions\Coefficient.md
+* doc\functions\CoefficientList.md
+* doc\functions\Collect.md
+* doc\functions\Complement.md
+* doc\functions\Complex.md
+* doc\functions\ComplexExpand.md
+* doc\functions\ComplexInfinity.md
+* doc\functions\Complexes.md
+* doc\functions\ComposeList.md
+* doc\functions\CompoundExpression.md
+* doc\functions\Condition.md
+* doc\functions\Conjugate.md
+* doc\functions\ConjugateTranspose.md
+* doc\functions\Constant.md
+* doc\functions\ConstantArray.md
+* doc\functions\Continue.md
+* doc\functions\ContinuedFraction.md
+* doc\functions\CoprimeQ.md
+* doc\functions\Correlation.md
+* doc\functions\Cos.md
+* doc\functions\Cosh.md
+* doc\functions\CosineDistance.md
+* doc\functions\Cot.md
+* doc\functions\Coth.md
+* doc\functions\Count.md
+* doc\functions\Covariance.md
+* doc\functions\Cross.md
+* doc\functions\Csc.md
+* doc\functions\Csch.md
+* doc\functions\CubeRoot.md
+* doc\functions\Curl.md
+* doc\functions\D.md
+* doc\functions\DSolve.md
+* doc\functions\Decrement.md
+* doc\functions\Defer.md
+* doc\functions\Definition.md
+* doc\functions\Degree.md
+* doc\functions\DeleteCases.md
+* doc\functions\DeleteDuplicates.md
+* doc\functions\Denominator.md
+* doc\functions\Depth.md
+* doc\functions\Derivative.md
+* doc\functions\DesignMatrix.md
+* doc\functions\Det.md
+* doc\functions\DiagonalMatrix.md
+* doc\functions\DiceDissimilarity.md
+* doc\functions\Diff.md
+* doc\functions\DigitQ.md
+* doc\functions\Dimensions.md
+* doc\functions\DiracDelta.md
+* doc\functions\DirectedInfinity.md
+* doc\functions\DiscreteDelta.md
+* doc\functions\Discriminant.md
+* doc\functions\Distribute.md
+* doc\functions\Divergence.md
+* doc\functions\Divide.md
+* doc\functions\DivideBy.md
+* doc\functions\Divisible.md
+* doc\functions\DivisorSigma.md
+* doc\functions\Divisors.md
+* doc\functions\Do.md
+* doc\functions\Dot.md
+* doc\functions\Drop.md
+* doc\functions\E.md
+* doc\functions\Eigenvalues.md
+* doc\functions\Eigenvectors.md
+* doc\functions\ElementData.md
+* doc\functions\Eliminate.md
+* doc\functions\Equal.md
+* doc\functions\Equivalent.md
+* doc\functions\Erf.md
+* doc\functions\Erfc.md
+* doc\functions\EuclideanDistance.md
+* doc\functions\EulerE.md
+* doc\functions\EulerPhi.md
+* doc\functions\EvalF.md
+* doc\functions\EvenQ.md
+* doc\functions\ExactNumberQ.md
+* doc\functions\Except.md
+* doc\functions\Exp.md
+* doc\functions\Expand.md
+* doc\functions\ExpandAll.md
+* doc\functions\Exponent.md
+* doc\functions\ExtendedGCD.md
+* doc\functions\Extract.md
+* doc\functions\Factor.md
+* doc\functions\FactorInteger.md
+* doc\functions\FactorSquareFree.md
+* doc\functions\FactorSquareFreeList.md
+* doc\functions\FactorTerms.md
+* doc\functions\Factorial.md
+* doc\functions\Factorial2.md
+* doc\functions\False.md
+* doc\functions\Fibonacci.md
+* doc\functions\FindInstance.md
+* doc\functions\FindRoot.md
+* doc\functions\First.md
+* doc\functions\Fit.md
+* doc\functions\FixedPoint.md
+* doc\functions\FixedPointList.md
+* doc\functions\Flat.md
+* doc\functions\Flatten.md
+* doc\functions\Floor.md
+* doc\functions\For.md
+* doc\functions\FractionalPart.md
+* doc\functions\FreeQ.md
+* doc\functions\FrobeniusSolve.md
+* doc\functions\FromContinuedFraction.md
+* doc\functions\FromPolarCoordinates.md
+* doc\functions\FullForm.md
+* doc\functions\GCD.md
+* doc\functions\Gamma.md
+* doc\functions\Glaisher.md
+* doc\functions\GoldenRatio.md
+* doc\functions\Greater.md
+* doc\functions\GreaterEqual.md
+* doc\functions\GroebnerBasis.md
+* doc\functions\HarmonicNumber.md
+* doc\functions\Haversine.md
+* doc\functions\Head.md
+* doc\functions\HermiteH.md
+* doc\functions\HermitianMatrixQ.md
+* doc\functions\HilbertMatrix.md
+* doc\functions\Hold.md
+* doc\functions\HoldAll.md
+* doc\functions\HoldFirst.md
+* doc\functions\HoldForm.md
+* doc\functions\HoldRest.md
+* doc\functions\HornerForm.md
+* doc\functions\I.md
+* doc\functions\IdentityMatrix.md
+* doc\functions\If.md
+* doc\functions\Im.md
+* doc\functions\Implies.md
+* doc\functions\Increment.md
+* doc\functions\Indeterminate.md
+* doc\functions\InexactNumberQ.md
+* doc\functions\Infinity.md
+* doc\functions\Inner.md
+* doc\functions\Int.md
+* doc\functions\Integer.md
+* doc\functions\IntegerExponent.md
+* doc\functions\IntegerLength.md
+* doc\functions\IntegerPart.md
+* doc\functions\IntegerPartitions.md
+* doc\functions\IntegerQ.md
+* doc\functions\Integers.md
+* doc\functions\Integrate.md
+* doc\functions\InterpolatingPolynomial.md
+* doc\functions\Intersection.md
+* doc\functions\Inverse.md
+* doc\functions\InverseErf.md
+* doc\functions\InverseErfc.md
+* doc\functions\InverseFunction.md
+* doc\functions\InverseHaversine.md
+* doc\functions\InverseLaplaceTransform.md
+* doc\functions\JaccardDissimilarity.md
+* doc\functions\JacobiMatrix.md
+* doc\functions\JacobiSymbol.md
+* doc\functions\JavaForm.md
+* doc\functions\Join.md
+* doc\functions\Khinchin.md
+* doc\functions\Kurtosis.md
+* doc\functions\LCM.md
+* doc\functions\LUDecomposition.md
+* doc\functions\LaguerreL.md
+* doc\functions\LaplaceTransform.md
+* doc\functions\Last.md
+* doc\functions\LegendreP.md
+* doc\functions\Length.md
+* doc\functions\Less.md
+* doc\functions\LessEqual.md
+* doc\functions\LetterQ.md
+* doc\functions\Level.md
+* doc\functions\LevelQ.md
+* doc\functions\Limit.md
+* doc\functions\LinearProgramming.md
+* doc\functions\LinearSolve.md
+* doc\functions\List.md
+* doc\functions\ListQ.md
+* doc\functions\Listable.md
+* doc\functions\Ln.md
+* doc\functions\Log.md
+* doc\functions\Log10.md
+* doc\functions\Log2.md
+* doc\functions\LogisticSigmoid.md
+* doc\functions\MachineNumberQ.md
+* doc\functions\ManhattanDistance.md
+* doc\functions\Map.md
+* doc\functions\MapThread.md
+* doc\functions\MatchQ.md
+* doc\functions\MatchingDissimilarity.md
+* doc\functions\MathMLForm.md
+* doc\functions\MatrixMinimalPolynomial.md
+* doc\functions\MatrixPower.md
+* doc\functions\MatrixQ.md
+* doc\functions\MatrixRank.md
+* doc\functions\Max.md
+* doc\functions\Mean.md
+* doc\functions\Median.md
+* doc\functions\MemberQ.md
+* doc\functions\MersennePrimeExponent.md
+* doc\functions\MersennePrimeExponentQ.md
+* doc\functions\Min.md
+* doc\functions\Minus.md
+* doc\functions\Mod.md
+* doc\functions\Module.md
+* doc\functions\MoebiusMu.md
+* doc\functions\MonomialList.md
+* doc\functions\Most.md
+* doc\functions\Multinomial.md
+* doc\functions\N.md
+* doc\functions\NHoldAll.md
+* doc\functions\NHoldFirst.md
+* doc\functions\NHoldRest.md
+* doc\functions\NIntegrate.md
+* doc\functions\NMaximize.md
+* doc\functions\NMinimize.md
+* doc\functions\NRoots.md
+* doc\functions\Negative.md
+* doc\functions\Nest.md
+* doc\functions\NestList.md
+* doc\functions\NestWhile.md
+* doc\functions\NextPrime.md
+* doc\functions\NonNegative.md
+* doc\functions\NonPositive.md
+* doc\functions\None.md
+* doc\functions\NoneTrue.md
+* doc\functions\Norm.md
+* doc\functions\Normalize.md
+* doc\functions\Not.md
+* doc\functions\Null.md
+* doc\functions\NullSpace.md
+* doc\functions\NumberQ.md
+* doc\functions\Numerator.md
+* doc\functions\OddQ.md
+* doc\functions\OneIdentity.md
+* doc\functions\Operate.md
+* doc\functions\Optional.md
+* doc\functions\Or.md
+* doc\functions\Order.md
+* doc\functions\OrderedQ.md
+* doc\functions\Orderless.md
+* doc\functions\Outer.md
+* doc\functions\PadLeft.md
+* doc\functions\PadRight.md
+* doc\functions\Part.md
+* doc\functions\Partition.md
+* doc\functions\PartitionsP.md
+* doc\functions\PartitionsQ.md
+* doc\functions\PatternTest.md
+* doc\functions\PerfectNumber.md
+* doc\functions\PerfectNumberQ.md
+* doc\functions\Permutations.md
+* doc\functions\Pi.md
+* doc\functions\Piecewise.md
+* doc\functions\Plus.md
+* doc\functions\Pochhammer.md
+* doc\functions\PolynomialExtendedGCD.md
+* doc\functions\PolynomialGCD.md
+* doc\functions\PolynomialLCM.md
+* doc\functions\PolynomialQ.md
+* doc\functions\PolynomialQuotient.md
+* doc\functions\PolynomialQuotientRemainder.md
+* doc\functions\PolynomialRemainder.md
+* doc\functions\Position.md
+* doc\functions\Positive.md
+* doc\functions\Power.md
+* doc\functions\PowerExpand.md
+* doc\functions\PowerMod.md
+* doc\functions\PreDecrement.md
+* doc\functions\PreIncrement.md
+* doc\functions\Prepend.md
+* doc\functions\PrependTo.md
+* doc\functions\Prime.md
+* doc\functions\PrimeOmega.md
+* doc\functions\PrimePi.md
+* doc\functions\PrimePowerQ.md
+* doc\functions\PrimeQ.md
+* doc\functions\PrimitiveRootList.md
+* doc\functions\Product.md
+* doc\functions\ProductLog.md
+* doc\functions\PseudoInverse.md
+* doc\functions\QRDecomposition.md
+* doc\functions\Quotient.md
+* doc\functions\RandomChoice.md
+* doc\functions\RandomInteger.md
+* doc\functions\RandomReal.md
+* doc\functions\Range.md
+* doc\functions\Rational.md
+* doc\functions\Rationalize.md
+* doc\functions\Re.md
+* doc\functions\Real.md
+* doc\functions\RealNumberQ.md
+* doc\functions\Reals.md
+* doc\functions\Reap.md
+* doc\functions\Refine.md
+* doc\functions\ReplaceAll.md
+* doc\functions\ReplacePart.md
+* doc\functions\Rest.md
+* doc\functions\Resultant.md
+* doc\functions\Return.md
+* doc\functions\Reverse.md
+* doc\functions\Riffle.md
+* doc\functions\RogersTanimotoDissimilarity.md
+* doc\functions\Roots.md
+* doc\functions\RotateLeft.md
+* doc\functions\RotateRight.md
+* doc\functions\Round.md
+* doc\functions\RowReduce.md
+* doc\functions\Rule.md
+* doc\functions\RuleDelayed.md
+* doc\functions\RussellRaoDissimilarity.md
+* doc\functions\SameQ.md
+* doc\functions\SatisfiableQ.md
+* doc\functions\Scan.md
+* doc\functions\Sec.md
+* doc\functions\Sech.md
+* doc\functions\Select.md
+* doc\functions\Set.md
+* doc\functions\SetAttributes.md
+* doc\functions\SetDelayed.md
+* doc\functions\Sign.md
+* doc\functions\Simplify.md
+* doc\functions\Sin.md
+* doc\functions\Sinc.md
+* doc\functions\SingularValueDecomposition.md
+* doc\functions\Sinh.md
+* doc\functions\Skewness.md
+* doc\functions\Slot.md
+* doc\functions\SlotSequence.md
+* doc\functions\SokalSneathDissimilarity.md
+* doc\functions\Solve.md
+* doc\functions\Sort.md
+* doc\functions\Sow.md
+* doc\functions\Span.md
+* doc\functions\Split.md
+* doc\functions\SplitBy.md
+* doc\functions\Sqrt.md
+* doc\functions\SquareFreeQ.md
+* doc\functions\SquaredEuclideanDistance.md
+* doc\functions\StandardDeviation.md
+* doc\functions\StirlingS1.md
+* doc\functions\StirlingS2.md
+* doc\functions\StruveH.md
+* doc\functions\StruveL.md
+* doc\functions\Subfactorial.md
+* doc\functions\Subsets.md
+* doc\functions\Subtract.md
+* doc\functions\SubtractFrom.md
+* doc\functions\Sum.md
+* doc\functions\Switch.md
+* doc\functions\Symbol.md
+* doc\functions\SymbolName.md
+* doc\functions\SymbolQ.md
+* doc\functions\SymmetricMatrixQ.md
+* doc\functions\Table.md
+* doc\functions\Take.md
+* doc\functions\Tan.md
+* doc\functions\Tanh.md
+* doc\functions\TautologyQ.md
+* doc\functions\TeXForm.md
+* doc\functions\Thread.md
+* doc\functions\Through.md
+* doc\functions\Times.md
+* doc\functions\TimesBy.md
+* doc\functions\ToPolarCoordinates.md
+* doc\functions\Together.md
+* doc\functions\Total.md
+* doc\functions\Tr.md
+* doc\functions\Trace.md
+* doc\functions\Transpose.md
+* doc\functions\TrigExpand.md
+* doc\functions\TrigReduce.md
+* doc\functions\TrigToExp.md
+* doc\functions\True.md
+* doc\functions\TrueQ.md
+* doc\functions\Tuples.md
+* doc\functions\Unequal.md
+* doc\functions\Union.md
+* doc\functions\UnitStep.md
+* doc\functions\UnitVector.md
+* doc\functions\UnsameQ.md
+* doc\functions\ValueQ.md
+* doc\functions\VandermondeMatrix.md
+* doc\functions\Variables.md
+* doc\functions\Variance.md
+* doc\functions\VectorAngle.md
+* doc\functions\VectorQ.md
+* doc\functions\Which.md
+* doc\functions\While.md
+* doc\functions\With.md
+* doc\functions\Xor.md
+* doc\functions\YuleDissimilarity.md
+* doc\functions\Zeta.md
+* doc\index.md
+* doc\linear-algebra.md
+* doc\lists.md
+* doc\logic.md
+* doc\number-theoretic-functions.md
+* doc\patterns-and-rules.md
+* doc\scoping.md
+* doc\strings.md
+* doc\symbols-and-assignments.md
+* doc\the-structure-of-things.md
+* lib\
+* lib\guava-20.0.jar
+* lib\junit-4.6.jar
+* lib\log4j-over-slf4j-1.7.2.jar
+* lint.xml
+* matheclipse-core\
+* matheclipse-core\.gitignore
+* matheclipse-core\.project
+* matheclipse-core\LICENSE.txt
+* matheclipse-core\pom.xml
+* matheclipse-packages\
+* matheclipse-packages\Polynomials.mep
+* pom.xml
+* proguard.map
+* rules\
+* rules\AbsRules.m
+* rules\ArcCosRules.m
+* rules\ArcCoshRules.m
+* rules\ArcCotRules.m
+* rules\ArcCothRules.m
+* rules\ArcCscRules.m
+* rules\ArcCschRules.m
+* rules\ArcSecRules.m
+* rules\ArcSechRules.m
+* rules\ArcSinRules.m
+* rules\ArcSinhRules.m
+* rules\ArcTanRules.m
+* rules\ArcTanhRules.m
+* rules\ConjugateRules.m
+* rules\CosRules.m
+* rules\CoshRules.m
+* rules\CotRules.m
+* rules\CothRules.m
+* rules\CscRules.m
+* rules\CschRules.m
+* rules\DRules.m
+* rules\DerivativeRules.m
+* rules\InverseLaplaceTransformRules.m
+* rules\LaplaceTransformRules.m
+* rules\LegendrePRules.m
+* rules\LimitRules.m
+* rules\LogRules.m
+* rules\PolyGammaRules.m
+* rules\PolyLogRules.m
+* rules\PowerRules.m
+* rules\ProductLogRules.m
+* rules\ProductRules.m
+* rules\SecRules.m
+* rules\SechRules.m
+* rules\SinRules.m
+* rules\SincRules.m
+* rules\SinhRules.m
+* rules\StieltjesGammaRules.m
+* rules\StruveHRules.m
+* rules\StruveLRules.m
+* rules\SumRules.m
+* rules\TanRules.m
+* rules\TanhRules.m
+* rules\readme.md
+* toolslib\
+* toolslib\proguard.jar
+
+Replaced Jars with Dependencies:
+--------------------------------
+The importer recognized the following .jar files as third party
+libraries and replaced them with Gradle dependencies instead. This has
+the advantage that more explicit version information is known, and the
+libraries can be updated automatically. However, it is possible that
+the .jar file in your project was of an older version than the
+dependency we picked, which could render the project not compileable.
+You can disable the jar replacement in the import wizard and try again:
+
+guava-20.0.jar => com.google.guava:guava:20.0
+
+Potentially Missing Dependency:
+-------------------------------
+When we replaced the following .jar files with a Gradle dependency, we
+inferred the dependency version number from the filename. This
+specific version may not actually be available from the repository.
+If you get a build error stating that the dependency is missing, edit
+the version number to for example "+" to pick up the latest version
+instead. (This may require you to update your code if the library APIs
+have changed.)
+
+guava-20.0.jar => version 20.0 in com.google.guava:guava:20.0
+
+Moved Files:
+------------
+Android Gradle projects use a different directory structure than ADT
+Eclipse projects. Here's how the projects were restructured:
+
+* lib\apfloat-1.8.3.jar => app\lib\apfloat-1.8.3.jar
+* lib\commons-csv-1.4.jar => app\lib\commons-csv-1.4.jar
+* lib\hipparchus-core-1.1.jar => app\lib\hipparchus-core-1.1.jar
+* lib\hipparchus-fft-1.1.jar => app\lib\hipparchus-fft-1.1.jar
+* lib\hipparchus-fitting-1.1.jar => app\lib\hipparchus-fitting-1.1.jar
+* lib\hipparchus-ode-1.1.jar => app\lib\hipparchus-ode-1.1.jar
+* lib\hipparchus-optim-1.1.jar => app\lib\hipparchus-optim-1.1.jar
+* lib\hipparchus-stat-1.1.jar => app\lib\hipparchus-stat-1.1.jar
+* lib\jas-2.6.5765.jar => app\lib\jas-2.6.5765.jar
+* lib\jsr305.jar => app\lib\jsr305.jar
+* lib\Lab4Math-2.0.5.jar => app\lib\Lab4Math-2.0.5.jar
+* lib\log4j-1.2.17.jar => app\lib\log4j-1.2.17.jar
+* lib\txtmark-0.13.jar => app\lib\txtmark-0.13.jar
+* matheclipse-core\src\main\java\ => app\src\main\java\
+* matheclipse-core\src\main\java\META-INF\apache20-license.txt => app\src\main\resources\META-INF\apache20-license.txt
+* matheclipse-core\src\main\java\META-INF\MANIFEST.MF => app\src\main\resources\META-INF\MANIFEST.MF
+* matheclipse-core\src\main\java\META-INF\matheclipse-license.txt => app\src\main\resources\META-INF\matheclipse-license.txt
+* matheclipse-core\src\main\java\META-INF\services\javax.script.ScriptEngineFactory => app\src\main\resources\META-INF\services\javax.script.ScriptEngineFactory
+* matheclipse-core\src\main\java\org\matheclipse\combinatoric\package.html => app\src\main\resources\org\matheclipse\combinatoric\package.html
+* matheclipse-core\src\main\java\org\matheclipse\core\basic\package.html => app\src\main\resources\org\matheclipse\core\basic\package.html
+* matheclipse-core\src\main\java\org\matheclipse\core\boole\package.html => app\src\main\resources\org\matheclipse\core\boole\package.html
+* matheclipse-core\src\main\java\org\matheclipse\core\builtin\function\package.html => app\src\main\resources\org\matheclipse\core\builtin\function\package.html
+* matheclipse-core\src\main\java\org\matheclipse\core\convert\package.html => app\src\main\resources\org\matheclipse\core\convert\package.html
+* matheclipse-core\src\main\java\org\matheclipse\core\eval\exception\package.html => app\src\main\resources\org\matheclipse\core\eval\exception\package.html
+* matheclipse-core\src\main\java\org\matheclipse\core\eval\interfaces\package.html => app\src\main\resources\org\matheclipse\core\eval\interfaces\package.html
+* matheclipse-core\src\main\java\org\matheclipse\core\eval\package.html => app\src\main\resources\org\matheclipse\core\eval\package.html
+* matheclipse-core\src\main\java\org\matheclipse\core\eval\util\package.html => app\src\main\resources\org\matheclipse\core\eval\util\package.html
+* matheclipse-core\src\main\java\org\matheclipse\core\expression\package.html => app\src\main\resources\org\matheclipse\core\expression\package.html
+* matheclipse-core\src\main\java\org\matheclipse\core\form\mathml\package.html => app\src\main\resources\org\matheclipse\core\form\mathml\package.html
+* matheclipse-core\src\main\java\org\matheclipse\core\form\mathml\reflection\package.html => app\src\main\resources\org\matheclipse\core\form\mathml\reflection\package.html
+* matheclipse-core\src\main\java\org\matheclipse\core\form\output\package.html => app\src\main\resources\org\matheclipse\core\form\output\package.html
+* matheclipse-core\src\main\java\org\matheclipse\core\form\tex\package.html => app\src\main\resources\org\matheclipse\core\form\tex\package.html
+* matheclipse-core\src\main\java\org\matheclipse\core\form\tex\reflection\package.html => app\src\main\resources\org\matheclipse\core\form\tex\reflection\package.html
+* matheclipse-core\src\main\java\org\matheclipse\core\generic\package.html => app\src\main\resources\org\matheclipse\core\generic\package.html
+* matheclipse-core\src\main\java\org\matheclipse\core\integrate\rubi45\package.html => app\src\main\resources\org\matheclipse\core\integrate\rubi45\package.html
+* matheclipse-core\src\main\java\org\matheclipse\core\integrate\rubi45\readme.md => app\src\main\resources\org\matheclipse\core\integrate\rubi45\readme.md
+* matheclipse-core\src\main\java\org\matheclipse\core\interfaces\package.html => app\src\main\resources\org\matheclipse\core\interfaces\package.html
+* matheclipse-core\src\main\java\org\matheclipse\core\parser\package.html => app\src\main\resources\org\matheclipse\core\parser\package.html
+* matheclipse-core\src\main\java\org\matheclipse\core\patternmatching\package.html => app\src\main\resources\org\matheclipse\core\patternmatching\package.html
+* matheclipse-core\src\main\java\org\matheclipse\core\polynomials\package.html => app\src\main\resources\org\matheclipse\core\polynomials\package.html
+* matheclipse-core\src\main\java\org\matheclipse\core\reflection\system\package.html => app\src\main\resources\org\matheclipse\core\reflection\system\package.html
+* matheclipse-core\src\main\java\org\matheclipse\core\reflection\system\rules\package.html => app\src\main\resources\org\matheclipse\core\reflection\system\rules\package.html
+* matheclipse-core\src\main\java\org\matheclipse\core\reflection\system\rules\readme.md => app\src\main\resources\org\matheclipse\core\reflection\system\rules\readme.md
+* matheclipse-core\src\main\java\org\matheclipse\core\visit\package.html => app\src\main\resources\org\matheclipse\core\visit\package.html
+* matheclipse-core\src\main\java\org\matheclipse\parser\client\ast\package.html => app\src\main\resources\org\matheclipse\parser\client\ast\package.html
+* matheclipse-core\src\main\java\org\matheclipse\parser\client\eval\package.html => app\src\main\resources\org\matheclipse\parser\client\eval\package.html
+* matheclipse-core\src\main\java\org\matheclipse\parser\client\math\package.html => app\src\main\resources\org\matheclipse\parser\client\math\package.html
+* matheclipse-core\src\main\java\org\matheclipse\parser\client\operator\package.html => app\src\main\resources\org\matheclipse\parser\client\operator\package.html
+* matheclipse-core\src\main\java\org\matheclipse\parser\client\package.html => app\src\main\resources\org\matheclipse\parser\client\package.html
+* matheclipse-core\src\main\resources\ => app\src\main\java\
+* matheclipse-core\src\main\resources\Abort.md => app\src\main\resources\Abort.md
+* matheclipse-core\src\main\resources\Abs.md => app\src\main\resources\Abs.md
+* matheclipse-core\src\main\resources\AbsArg.md => app\src\main\resources\AbsArg.md
+* matheclipse-core\src\main\resources\AddTo.md => app\src\main\resources\AddTo.md
+* matheclipse-core\src\main\resources\All.md => app\src\main\resources\All.md
+* matheclipse-core\src\main\resources\AllTrue.md => app\src\main\resources\AllTrue.md
+* matheclipse-core\src\main\resources\Alternatives.md => app\src\main\resources\Alternatives.md
+* matheclipse-core\src\main\resources\And.md => app\src\main\resources\And.md
+* matheclipse-core\src\main\resources\AngleVector.md => app\src\main\resources\AngleVector.md
+* matheclipse-core\src\main\resources\AntihermitianMatrixQ.md => app\src\main\resources\AntihermitianMatrixQ.md
+* matheclipse-core\src\main\resources\AntisymmetricMatrixQ.md => app\src\main\resources\AntisymmetricMatrixQ.md
+* matheclipse-core\src\main\resources\AnyTrue.md => app\src\main\resources\AnyTrue.md
+* matheclipse-core\src\main\resources\Apart.md => app\src\main\resources\Apart.md
+* matheclipse-core\src\main\resources\Append.md => app\src\main\resources\Append.md
+* matheclipse-core\src\main\resources\AppendTo.md => app\src\main\resources\AppendTo.md
+* matheclipse-core\src\main\resources\Apply.md => app\src\main\resources\Apply.md
+* matheclipse-core\src\main\resources\ArcCos.md => app\src\main\resources\ArcCos.md
+* matheclipse-core\src\main\resources\ArcCosh.md => app\src\main\resources\ArcCosh.md
+* matheclipse-core\src\main\resources\ArcCot.md => app\src\main\resources\ArcCot.md
+* matheclipse-core\src\main\resources\ArcCoth.md => app\src\main\resources\ArcCoth.md
+* matheclipse-core\src\main\resources\ArcCsc.md => app\src\main\resources\ArcCsc.md
+* matheclipse-core\src\main\resources\ArcCsch.md => app\src\main\resources\ArcCsch.md
+* matheclipse-core\src\main\resources\ArcSec.md => app\src\main\resources\ArcSec.md
+* matheclipse-core\src\main\resources\ArcSech.md => app\src\main\resources\ArcSech.md
+* matheclipse-core\src\main\resources\ArcSin.md => app\src\main\resources\ArcSin.md
+* matheclipse-core\src\main\resources\ArcSinh.md => app\src\main\resources\ArcSinh.md
+* matheclipse-core\src\main\resources\ArcTan.md => app\src\main\resources\ArcTan.md
+* matheclipse-core\src\main\resources\ArcTanh.md => app\src\main\resources\ArcTanh.md
+* matheclipse-core\src\main\resources\Arg.md => app\src\main\resources\Arg.md
+* matheclipse-core\src\main\resources\Array.md => app\src\main\resources\Array.md
+* matheclipse-core\src\main\resources\ArrayDepth.md => app\src\main\resources\ArrayDepth.md
+* matheclipse-core\src\main\resources\ArrayQ.md => app\src\main\resources\ArrayQ.md
+* matheclipse-core\src\main\resources\AtomQ.md => app\src\main\resources\AtomQ.md
+* matheclipse-core\src\main\resources\Attributes.md => app\src\main\resources\Attributes.md
+* matheclipse-core\src\main\resources\BellB.md => app\src\main\resources\BellB.md
+* matheclipse-core\src\main\resources\BernoulliB.md => app\src\main\resources\BernoulliB.md
+* matheclipse-core\src\main\resources\Binomial.md => app\src\main\resources\Binomial.md
+* matheclipse-core\src\main\resources\BitLength.md => app\src\main\resources\BitLength.md
+* matheclipse-core\src\main\resources\Block.md => app\src\main\resources\Block.md
+* matheclipse-core\src\main\resources\Boole.md => app\src\main\resources\Boole.md
+* matheclipse-core\src\main\resources\BooleanMinimize.md => app\src\main\resources\BooleanMinimize.md
+* matheclipse-core\src\main\resources\BooleanQ.md => app\src\main\resources\BooleanQ.md
+* matheclipse-core\src\main\resources\Booleans.md => app\src\main\resources\Booleans.md
+* matheclipse-core\src\main\resources\BrayCurtisDistance.md => app\src\main\resources\BrayCurtisDistance.md
+* matheclipse-core\src\main\resources\Break.md => app\src\main\resources\Break.md
+* matheclipse-core\src\main\resources\CanberraDistance.md => app\src\main\resources\CanberraDistance.md
+* matheclipse-core\src\main\resources\Cancel.md => app\src\main\resources\Cancel.md
+* matheclipse-core\src\main\resources\CarmichaelLambda.md => app\src\main\resources\CarmichaelLambda.md
+* matheclipse-core\src\main\resources\CartesianProduct.md => app\src\main\resources\CartesianProduct.md
+* matheclipse-core\src\main\resources\Cases.md => app\src\main\resources\Cases.md
+* matheclipse-core\src\main\resources\Catalan.md => app\src\main\resources\Catalan.md
+* matheclipse-core\src\main\resources\CatalanNumber.md => app\src\main\resources\CatalanNumber.md
+* matheclipse-core\src\main\resources\Catenate.md => app\src\main\resources\Catenate.md
+* matheclipse-core\src\main\resources\Ceiling.md => app\src\main\resources\Ceiling.md
+* matheclipse-core\src\main\resources\CentralMoment.md => app\src\main\resources\CentralMoment.md
+* matheclipse-core\src\main\resources\CharacteristicPolynomial.md => app\src\main\resources\CharacteristicPolynomial.md
+* matheclipse-core\src\main\resources\ChebyshevT.md => app\src\main\resources\ChebyshevT.md
+* matheclipse-core\src\main\resources\ChebyshevU.md => app\src\main\resources\ChebyshevU.md
+* matheclipse-core\src\main\resources\ChessboardDistance.md => app\src\main\resources\ChessboardDistance.md
+* matheclipse-core\src\main\resources\ChineseRemainder.md => app\src\main\resources\ChineseRemainder.md
+* matheclipse-core\src\main\resources\CholeskyDecomposition.md => app\src\main\resources\CholeskyDecomposition.md
+* matheclipse-core\src\main\resources\Chop.md => app\src\main\resources\Chop.md
+* matheclipse-core\src\main\resources\Clear.md => app\src\main\resources\Clear.md
+* matheclipse-core\src\main\resources\ClearAll.md => app\src\main\resources\ClearAll.md
+* matheclipse-core\src\main\resources\ClearAttributes.md => app\src\main\resources\ClearAttributes.md
+* matheclipse-core\src\main\resources\Coefficient.md => app\src\main\resources\Coefficient.md
+* matheclipse-core\src\main\resources\CoefficientList.md => app\src\main\resources\CoefficientList.md
+* matheclipse-core\src\main\resources\Collect.md => app\src\main\resources\Collect.md
+* matheclipse-core\src\main\resources\Complement.md => app\src\main\resources\Complement.md
+* matheclipse-core\src\main\resources\Complex.md => app\src\main\resources\Complex.md
+* matheclipse-core\src\main\resources\Complexes.md => app\src\main\resources\Complexes.md
+* matheclipse-core\src\main\resources\ComplexExpand.md => app\src\main\resources\ComplexExpand.md
+* matheclipse-core\src\main\resources\ComplexInfinity.md => app\src\main\resources\ComplexInfinity.md
+* matheclipse-core\src\main\resources\ComposeList.md => app\src\main\resources\ComposeList.md
+* matheclipse-core\src\main\resources\CompoundExpression.md => app\src\main\resources\CompoundExpression.md
+* matheclipse-core\src\main\resources\Condition.md => app\src\main\resources\Condition.md
+* matheclipse-core\src\main\resources\Conjugate.md => app\src\main\resources\Conjugate.md
+* matheclipse-core\src\main\resources\ConjugateTranspose.md => app\src\main\resources\ConjugateTranspose.md
+* matheclipse-core\src\main\resources\Constant.md => app\src\main\resources\Constant.md
+* matheclipse-core\src\main\resources\ConstantArray.md => app\src\main\resources\ConstantArray.md
+* matheclipse-core\src\main\resources\Continue.md => app\src\main\resources\Continue.md
+* matheclipse-core\src\main\resources\ContinuedFraction.md => app\src\main\resources\ContinuedFraction.md
+* matheclipse-core\src\main\resources\CoprimeQ.md => app\src\main\resources\CoprimeQ.md
+* matheclipse-core\src\main\resources\Correlation.md => app\src\main\resources\Correlation.md
+* matheclipse-core\src\main\resources\Cos.md => app\src\main\resources\Cos.md
+* matheclipse-core\src\main\resources\Cosh.md => app\src\main\resources\Cosh.md
+* matheclipse-core\src\main\resources\CosineDistance.md => app\src\main\resources\CosineDistance.md
+* matheclipse-core\src\main\resources\Cot.md => app\src\main\resources\Cot.md
+* matheclipse-core\src\main\resources\Coth.md => app\src\main\resources\Coth.md
+* matheclipse-core\src\main\resources\Count.md => app\src\main\resources\Count.md
+* matheclipse-core\src\main\resources\Covariance.md => app\src\main\resources\Covariance.md
+* matheclipse-core\src\main\resources\Cross.md => app\src\main\resources\Cross.md
+* matheclipse-core\src\main\resources\Csc.md => app\src\main\resources\Csc.md
+* matheclipse-core\src\main\resources\Csch.md => app\src\main\resources\Csch.md
+* matheclipse-core\src\main\resources\CubeRoot.md => app\src\main\resources\CubeRoot.md
+* matheclipse-core\src\main\resources\Curl.md => app\src\main\resources\Curl.md
+* matheclipse-core\src\main\resources\D.md => app\src\main\resources\D.md
+* matheclipse-core\src\main\resources\Decrement.md => app\src\main\resources\Decrement.md
+* matheclipse-core\src\main\resources\Defer.md => app\src\main\resources\Defer.md
+* matheclipse-core\src\main\resources\Definition.md => app\src\main\resources\Definition.md
+* matheclipse-core\src\main\resources\Degree.md => app\src\main\resources\Degree.md
+* matheclipse-core\src\main\resources\DeleteCases.md => app\src\main\resources\DeleteCases.md
+* matheclipse-core\src\main\resources\DeleteDuplicates.md => app\src\main\resources\DeleteDuplicates.md
+* matheclipse-core\src\main\resources\Denominator.md => app\src\main\resources\Denominator.md
+* matheclipse-core\src\main\resources\Depth.md => app\src\main\resources\Depth.md
+* matheclipse-core\src\main\resources\Derivative.md => app\src\main\resources\Derivative.md
+* matheclipse-core\src\main\resources\DesignMatrix.md => app\src\main\resources\DesignMatrix.md
+* matheclipse-core\src\main\resources\Det.md => app\src\main\resources\Det.md
+* matheclipse-core\src\main\resources\DiagonalMatrix.md => app\src\main\resources\DiagonalMatrix.md
+* matheclipse-core\src\main\resources\DiceDissimilarity.md => app\src\main\resources\DiceDissimilarity.md
+* matheclipse-core\src\main\resources\Diff.md => app\src\main\resources\Diff.md
+* matheclipse-core\src\main\resources\DigitQ.md => app\src\main\resources\DigitQ.md
+* matheclipse-core\src\main\resources\Dimensions.md => app\src\main\resources\Dimensions.md
+* matheclipse-core\src\main\resources\DiracDelta.md => app\src\main\resources\DiracDelta.md
+* matheclipse-core\src\main\resources\DirectedInfinity.md => app\src\main\resources\DirectedInfinity.md
+* matheclipse-core\src\main\resources\DiscreteDelta.md => app\src\main\resources\DiscreteDelta.md
+* matheclipse-core\src\main\resources\Discriminant.md => app\src\main\resources\Discriminant.md
+* matheclipse-core\src\main\resources\Distribute.md => app\src\main\resources\Distribute.md
+* matheclipse-core\src\main\resources\Divergence.md => app\src\main\resources\Divergence.md
+* matheclipse-core\src\main\resources\Divide.md => app\src\main\resources\Divide.md
+* matheclipse-core\src\main\resources\DivideBy.md => app\src\main\resources\DivideBy.md
+* matheclipse-core\src\main\resources\Divisible.md => app\src\main\resources\Divisible.md
+* matheclipse-core\src\main\resources\Divisors.md => app\src\main\resources\Divisors.md
+* matheclipse-core\src\main\resources\DivisorSigma.md => app\src\main\resources\DivisorSigma.md
+* matheclipse-core\src\main\resources\Do.md => app\src\main\resources\Do.md
+* matheclipse-core\src\main\resources\Dot.md => app\src\main\resources\Dot.md
+* matheclipse-core\src\main\resources\Drop.md => app\src\main\resources\Drop.md
+* matheclipse-core\src\main\resources\DSolve.md => app\src\main\resources\DSolve.md
+* matheclipse-core\src\main\resources\E.md => app\src\main\resources\E.md
+* matheclipse-core\src\main\resources\Eigenvalues.md => app\src\main\resources\Eigenvalues.md
+* matheclipse-core\src\main\resources\Eigenvectors.md => app\src\main\resources\Eigenvectors.md
+* matheclipse-core\src\main\resources\ElementData.md => app\src\main\resources\ElementData.md
+* matheclipse-core\src\main\resources\Eliminate.md => app\src\main\resources\Eliminate.md
+* matheclipse-core\src\main\resources\Equal.md => app\src\main\resources\Equal.md
+* matheclipse-core\src\main\resources\Equivalent.md => app\src\main\resources\Equivalent.md
+* matheclipse-core\src\main\resources\Erf.md => app\src\main\resources\Erf.md
+* matheclipse-core\src\main\resources\Erfc.md => app\src\main\resources\Erfc.md
+* matheclipse-core\src\main\resources\EuclideanDistance.md => app\src\main\resources\EuclideanDistance.md
+* matheclipse-core\src\main\resources\EulerE.md => app\src\main\resources\EulerE.md
+* matheclipse-core\src\main\resources\EulerPhi.md => app\src\main\resources\EulerPhi.md
+* matheclipse-core\src\main\resources\EvalF.md => app\src\main\resources\EvalF.md
+* matheclipse-core\src\main\resources\EvenQ.md => app\src\main\resources\EvenQ.md
+* matheclipse-core\src\main\resources\ExactNumberQ.md => app\src\main\resources\ExactNumberQ.md
+* matheclipse-core\src\main\resources\Except.md => app\src\main\resources\Except.md
+* matheclipse-core\src\main\resources\Exp.md => app\src\main\resources\Exp.md
+* matheclipse-core\src\main\resources\Expand.md => app\src\main\resources\Expand.md
+* matheclipse-core\src\main\resources\ExpandAll.md => app\src\main\resources\ExpandAll.md
+* matheclipse-core\src\main\resources\Exponent.md => app\src\main\resources\Exponent.md
+* matheclipse-core\src\main\resources\ExtendedGCD.md => app\src\main\resources\ExtendedGCD.md
+* matheclipse-core\src\main\resources\Extract.md => app\src\main\resources\Extract.md
+* matheclipse-core\src\main\resources\Factor.md => app\src\main\resources\Factor.md
+* matheclipse-core\src\main\resources\Factorial.md => app\src\main\resources\Factorial.md
+* matheclipse-core\src\main\resources\Factorial2.md => app\src\main\resources\Factorial2.md
+* matheclipse-core\src\main\resources\FactorInteger.md => app\src\main\resources\FactorInteger.md
+* matheclipse-core\src\main\resources\FactorSquareFree.md => app\src\main\resources\FactorSquareFree.md
+* matheclipse-core\src\main\resources\FactorSquareFreeList.md => app\src\main\resources\FactorSquareFreeList.md
+* matheclipse-core\src\main\resources\FactorTerms.md => app\src\main\resources\FactorTerms.md
+* matheclipse-core\src\main\resources\False.md => app\src\main\resources\False.md
+* matheclipse-core\src\main\resources\Fibonacci.md => app\src\main\resources\Fibonacci.md
+* matheclipse-core\src\main\resources\FindInstance.md => app\src\main\resources\FindInstance.md
+* matheclipse-core\src\main\resources\FindRoot.md => app\src\main\resources\FindRoot.md
+* matheclipse-core\src\main\resources\First.md => app\src\main\resources\First.md
+* matheclipse-core\src\main\resources\Fit.md => app\src\main\resources\Fit.md
+* matheclipse-core\src\main\resources\FixedPoint.md => app\src\main\resources\FixedPoint.md
+* matheclipse-core\src\main\resources\FixedPointList.md => app\src\main\resources\FixedPointList.md
+* matheclipse-core\src\main\resources\Flat.md => app\src\main\resources\Flat.md
+* matheclipse-core\src\main\resources\Flatten.md => app\src\main\resources\Flatten.md
+* matheclipse-core\src\main\resources\Floor.md => app\src\main\resources\Floor.md
+* matheclipse-core\src\main\resources\For.md => app\src\main\resources\For.md
+* matheclipse-core\src\main\resources\FractionalPart.md => app\src\main\resources\FractionalPart.md
+* matheclipse-core\src\main\resources\FreeQ.md => app\src\main\resources\FreeQ.md
+* matheclipse-core\src\main\resources\FrobeniusSolve.md => app\src\main\resources\FrobeniusSolve.md
+* matheclipse-core\src\main\resources\FromContinuedFraction.md => app\src\main\resources\FromContinuedFraction.md
+* matheclipse-core\src\main\resources\FromPolarCoordinates.md => app\src\main\resources\FromPolarCoordinates.md
+* matheclipse-core\src\main\resources\FullForm.md => app\src\main\resources\FullForm.md
+* matheclipse-core\src\main\resources\Gamma.md => app\src\main\resources\Gamma.md
+* matheclipse-core\src\main\resources\GCD.md => app\src\main\resources\GCD.md
+* matheclipse-core\src\main\resources\Glaisher.md => app\src\main\resources\Glaisher.md
+* matheclipse-core\src\main\resources\GoldenRatio.md => app\src\main\resources\GoldenRatio.md
+* matheclipse-core\src\main\resources\Greater.md => app\src\main\resources\Greater.md
+* matheclipse-core\src\main\resources\GreaterEqual.md => app\src\main\resources\GreaterEqual.md
+* matheclipse-core\src\main\resources\GroebnerBasis.md => app\src\main\resources\GroebnerBasis.md
+* matheclipse-core\src\main\resources\HarmonicNumber.md => app\src\main\resources\HarmonicNumber.md
+* matheclipse-core\src\main\resources\Haversine.md => app\src\main\resources\Haversine.md
+* matheclipse-core\src\main\resources\Head.md => app\src\main\resources\Head.md
+* matheclipse-core\src\main\resources\HermiteH.md => app\src\main\resources\HermiteH.md
+* matheclipse-core\src\main\resources\HermitianMatrixQ.md => app\src\main\resources\HermitianMatrixQ.md
+* matheclipse-core\src\main\resources\HilbertMatrix.md => app\src\main\resources\HilbertMatrix.md
+* matheclipse-core\src\main\resources\Hold.md => app\src\main\resources\Hold.md
+* matheclipse-core\src\main\resources\HoldAll.md => app\src\main\resources\HoldAll.md
+* matheclipse-core\src\main\resources\HoldFirst.md => app\src\main\resources\HoldFirst.md
+* matheclipse-core\src\main\resources\HoldForm.md => app\src\main\resources\HoldForm.md
+* matheclipse-core\src\main\resources\HoldRest.md => app\src\main\resources\HoldRest.md
+* matheclipse-core\src\main\resources\HornerForm.md => app\src\main\resources\HornerForm.md
+* matheclipse-core\src\main\resources\I.md => app\src\main\resources\I.md
+* matheclipse-core\src\main\resources\IdentityMatrix.md => app\src\main\resources\IdentityMatrix.md
+* matheclipse-core\src\main\resources\If.md => app\src\main\resources\If.md
+* matheclipse-core\src\main\resources\Im.md => app\src\main\resources\Im.md
+* matheclipse-core\src\main\resources\Implies.md => app\src\main\resources\Implies.md
+* matheclipse-core\src\main\resources\Increment.md => app\src\main\resources\Increment.md
+* matheclipse-core\src\main\resources\Indeterminate.md => app\src\main\resources\Indeterminate.md
+* matheclipse-core\src\main\resources\InexactNumberQ.md => app\src\main\resources\InexactNumberQ.md
+* matheclipse-core\src\main\resources\Infinity.md => app\src\main\resources\Infinity.md
+* matheclipse-core\src\main\resources\Inner.md => app\src\main\resources\Inner.md
+* matheclipse-core\src\main\resources\Int.md => app\src\main\resources\Int.md
+* matheclipse-core\src\main\resources\Integer.md => app\src\main\resources\Integer.md
+* matheclipse-core\src\main\resources\IntegerExponent.md => app\src\main\resources\IntegerExponent.md
+* matheclipse-core\src\main\resources\IntegerLength.md => app\src\main\resources\IntegerLength.md
+* matheclipse-core\src\main\resources\IntegerPart.md => app\src\main\resources\IntegerPart.md
+* matheclipse-core\src\main\resources\IntegerPartitions.md => app\src\main\resources\IntegerPartitions.md
+* matheclipse-core\src\main\resources\IntegerQ.md => app\src\main\resources\IntegerQ.md
+* matheclipse-core\src\main\resources\Integers.md => app\src\main\resources\Integers.md
+* matheclipse-core\src\main\resources\Integrate.md => app\src\main\resources\Integrate.md
+* matheclipse-core\src\main\resources\InterpolatingPolynomial.md => app\src\main\resources\InterpolatingPolynomial.md
+* matheclipse-core\src\main\resources\Intersection.md => app\src\main\resources\Intersection.md
+* matheclipse-core\src\main\resources\Inverse.md => app\src\main\resources\Inverse.md
+* matheclipse-core\src\main\resources\InverseErf.md => app\src\main\resources\InverseErf.md
+* matheclipse-core\src\main\resources\InverseErfc.md => app\src\main\resources\InverseErfc.md
+* matheclipse-core\src\main\resources\InverseFunction.md => app\src\main\resources\InverseFunction.md
+* matheclipse-core\src\main\resources\InverseHaversine.md => app\src\main\resources\InverseHaversine.md
+* matheclipse-core\src\main\resources\InverseLaplaceTransform.md => app\src\main\resources\InverseLaplaceTransform.md
+* matheclipse-core\src\main\resources\JaccardDissimilarity.md => app\src\main\resources\JaccardDissimilarity.md
+* matheclipse-core\src\main\resources\JacobiMatrix.md => app\src\main\resources\JacobiMatrix.md
+* matheclipse-core\src\main\resources\JacobiSymbol.md => app\src\main\resources\JacobiSymbol.md
+* matheclipse-core\src\main\resources\JavaForm.md => app\src\main\resources\JavaForm.md
+* matheclipse-core\src\main\resources\Join.md => app\src\main\resources\Join.md
+* matheclipse-core\src\main\resources\Khinchin.md => app\src\main\resources\Khinchin.md
+* matheclipse-core\src\main\resources\Kurtosis.md => app\src\main\resources\Kurtosis.md
+* matheclipse-core\src\main\resources\LaguerreL.md => app\src\main\resources\LaguerreL.md
+* matheclipse-core\src\main\resources\LaplaceTransform.md => app\src\main\resources\LaplaceTransform.md
+* matheclipse-core\src\main\resources\Last.md => app\src\main\resources\Last.md
+* matheclipse-core\src\main\resources\LCM.md => app\src\main\resources\LCM.md
+* matheclipse-core\src\main\resources\LegendreP.md => app\src\main\resources\LegendreP.md
+* matheclipse-core\src\main\resources\Length.md => app\src\main\resources\Length.md
+* matheclipse-core\src\main\resources\Less.md => app\src\main\resources\Less.md
+* matheclipse-core\src\main\resources\LessEqual.md => app\src\main\resources\LessEqual.md
+* matheclipse-core\src\main\resources\LetterQ.md => app\src\main\resources\LetterQ.md
+* matheclipse-core\src\main\resources\Level.md => app\src\main\resources\Level.md
+* matheclipse-core\src\main\resources\LevelQ.md => app\src\main\resources\LevelQ.md
+* matheclipse-core\src\main\resources\Limit.md => app\src\main\resources\Limit.md
+* matheclipse-core\src\main\resources\LinearProgramming.md => app\src\main\resources\LinearProgramming.md
+* matheclipse-core\src\main\resources\LinearSolve.md => app\src\main\resources\LinearSolve.md
+* matheclipse-core\src\main\resources\List.md => app\src\main\resources\List.md
+* matheclipse-core\src\main\resources\Listable.md => app\src\main\resources\Listable.md
+* matheclipse-core\src\main\resources\ListQ.md => app\src\main\resources\ListQ.md
+* matheclipse-core\src\main\resources\Ln.md => app\src\main\resources\Ln.md
+* matheclipse-core\src\main\resources\Log.md => app\src\main\resources\Log.md
+* matheclipse-core\src\main\resources\Log10.md => app\src\main\resources\Log10.md
+* matheclipse-core\src\main\resources\Log2.md => app\src\main\resources\Log2.md
+* matheclipse-core\src\main\resources\LogisticSigmoid.md => app\src\main\resources\LogisticSigmoid.md
+* matheclipse-core\src\main\resources\LUDecomposition.md => app\src\main\resources\LUDecomposition.md
+* matheclipse-core\src\main\resources\MachineNumberQ.md => app\src\main\resources\MachineNumberQ.md
+* matheclipse-core\src\main\resources\ManhattanDistance.md => app\src\main\resources\ManhattanDistance.md
+* matheclipse-core\src\main\resources\Map.md => app\src\main\resources\Map.md
+* matheclipse-core\src\main\resources\MapThread.md => app\src\main\resources\MapThread.md
+* matheclipse-core\src\main\resources\MatchingDissimilarity.md => app\src\main\resources\MatchingDissimilarity.md
+* matheclipse-core\src\main\resources\MatchQ.md => app\src\main\resources\MatchQ.md
+* matheclipse-core\src\main\resources\MathMLForm.md => app\src\main\resources\MathMLForm.md
+* matheclipse-core\src\main\resources\MatrixMinimalPolynomial.md => app\src\main\resources\MatrixMinimalPolynomial.md
+* matheclipse-core\src\main\resources\MatrixPower.md => app\src\main\resources\MatrixPower.md
+* matheclipse-core\src\main\resources\MatrixQ.md => app\src\main\resources\MatrixQ.md
+* matheclipse-core\src\main\resources\MatrixRank.md => app\src\main\resources\MatrixRank.md
+* matheclipse-core\src\main\resources\Max.md => app\src\main\resources\Max.md
+* matheclipse-core\src\main\resources\Mean.md => app\src\main\resources\Mean.md
+* matheclipse-core\src\main\resources\Median.md => app\src\main\resources\Median.md
+* matheclipse-core\src\main\resources\MemberQ.md => app\src\main\resources\MemberQ.md
+* matheclipse-core\src\main\resources\MersennePrimeExponent.md => app\src\main\resources\MersennePrimeExponent.md
+* matheclipse-core\src\main\resources\MersennePrimeExponentQ.md => app\src\main\resources\MersennePrimeExponentQ.md
+* matheclipse-core\src\main\resources\Min.md => app\src\main\resources\Min.md
+* matheclipse-core\src\main\resources\Minus.md => app\src\main\resources\Minus.md
+* matheclipse-core\src\main\resources\Mod.md => app\src\main\resources\Mod.md
+* matheclipse-core\src\main\resources\Module.md => app\src\main\resources\Module.md
+* matheclipse-core\src\main\resources\MoebiusMu.md => app\src\main\resources\MoebiusMu.md
+* matheclipse-core\src\main\resources\MonomialList.md => app\src\main\resources\MonomialList.md
+* matheclipse-core\src\main\resources\Most.md => app\src\main\resources\Most.md
+* matheclipse-core\src\main\resources\Multinomial.md => app\src\main\resources\Multinomial.md
+* matheclipse-core\src\main\resources\N.md => app\src\main\resources\N.md
+* matheclipse-core\src\main\resources\Negative.md => app\src\main\resources\Negative.md
+* matheclipse-core\src\main\resources\Nest.md => app\src\main\resources\Nest.md
+* matheclipse-core\src\main\resources\NestList.md => app\src\main\resources\NestList.md
+* matheclipse-core\src\main\resources\NestWhile.md => app\src\main\resources\NestWhile.md
+* matheclipse-core\src\main\resources\NextPrime.md => app\src\main\resources\NextPrime.md
+* matheclipse-core\src\main\resources\NHoldAll.md => app\src\main\resources\NHoldAll.md
+* matheclipse-core\src\main\resources\NHoldFirst.md => app\src\main\resources\NHoldFirst.md
+* matheclipse-core\src\main\resources\NHoldRest.md => app\src\main\resources\NHoldRest.md
+* matheclipse-core\src\main\resources\NIntegrate.md => app\src\main\resources\NIntegrate.md
+* matheclipse-core\src\main\resources\NMaximize.md => app\src\main\resources\NMaximize.md
+* matheclipse-core\src\main\resources\NMinimize.md => app\src\main\resources\NMinimize.md
+* matheclipse-core\src\main\resources\None.md => app\src\main\resources\None.md
+* matheclipse-core\src\main\resources\NoneTrue.md => app\src\main\resources\NoneTrue.md
+* matheclipse-core\src\main\resources\NonNegative.md => app\src\main\resources\NonNegative.md
+* matheclipse-core\src\main\resources\NonPositive.md => app\src\main\resources\NonPositive.md
+* matheclipse-core\src\main\resources\Norm.md => app\src\main\resources\Norm.md
+* matheclipse-core\src\main\resources\Normalize.md => app\src\main\resources\Normalize.md
+* matheclipse-core\src\main\resources\Not.md => app\src\main\resources\Not.md
+* matheclipse-core\src\main\resources\NRoots.md => app\src\main\resources\NRoots.md
+* matheclipse-core\src\main\resources\Null.md => app\src\main\resources\Null.md
+* matheclipse-core\src\main\resources\NullSpace.md => app\src\main\resources\NullSpace.md
+* matheclipse-core\src\main\resources\NumberQ.md => app\src\main\resources\NumberQ.md
+* matheclipse-core\src\main\resources\Numerator.md => app\src\main\resources\Numerator.md
+* matheclipse-core\src\main\resources\OddQ.md => app\src\main\resources\OddQ.md
+* matheclipse-core\src\main\resources\OneIdentity.md => app\src\main\resources\OneIdentity.md
+* matheclipse-core\src\main\resources\Operate.md => app\src\main\resources\Operate.md
+* matheclipse-core\src\main\resources\Optional.md => app\src\main\resources\Optional.md
+* matheclipse-core\src\main\resources\Or.md => app\src\main\resources\Or.md
+* matheclipse-core\src\main\resources\Order.md => app\src\main\resources\Order.md
+* matheclipse-core\src\main\resources\OrderedQ.md => app\src\main\resources\OrderedQ.md
+* matheclipse-core\src\main\resources\Orderless.md => app\src\main\resources\Orderless.md
+* matheclipse-core\src\main\resources\Outer.md => app\src\main\resources\Outer.md
+* matheclipse-core\src\main\resources\PadLeft.md => app\src\main\resources\PadLeft.md
+* matheclipse-core\src\main\resources\PadRight.md => app\src\main\resources\PadRight.md
+* matheclipse-core\src\main\resources\Part.md => app\src\main\resources\Part.md
+* matheclipse-core\src\main\resources\Partition.md => app\src\main\resources\Partition.md
+* matheclipse-core\src\main\resources\PartitionsP.md => app\src\main\resources\PartitionsP.md
+* matheclipse-core\src\main\resources\PartitionsQ.md => app\src\main\resources\PartitionsQ.md
+* matheclipse-core\src\main\resources\PatternTest.md => app\src\main\resources\PatternTest.md
+* matheclipse-core\src\main\resources\PerfectNumber.md => app\src\main\resources\PerfectNumber.md
+* matheclipse-core\src\main\resources\PerfectNumberQ.md => app\src\main\resources\PerfectNumberQ.md
+* matheclipse-core\src\main\resources\Permutations.md => app\src\main\resources\Permutations.md
+* matheclipse-core\src\main\resources\Pi.md => app\src\main\resources\Pi.md
+* matheclipse-core\src\main\resources\Piecewise.md => app\src\main\resources\Piecewise.md
+* matheclipse-core\src\main\resources\Plus.md => app\src\main\resources\Plus.md
+* matheclipse-core\src\main\resources\Pochhammer.md => app\src\main\resources\Pochhammer.md
+* matheclipse-core\src\main\resources\PolynomialExtendedGCD.md => app\src\main\resources\PolynomialExtendedGCD.md
+* matheclipse-core\src\main\resources\PolynomialGCD.md => app\src\main\resources\PolynomialGCD.md
+* matheclipse-core\src\main\resources\PolynomialLCM.md => app\src\main\resources\PolynomialLCM.md
+* matheclipse-core\src\main\resources\PolynomialQ.md => app\src\main\resources\PolynomialQ.md
+* matheclipse-core\src\main\resources\PolynomialQuotient.md => app\src\main\resources\PolynomialQuotient.md
+* matheclipse-core\src\main\resources\PolynomialQuotientRemainder.md => app\src\main\resources\PolynomialQuotientRemainder.md
+* matheclipse-core\src\main\resources\PolynomialRemainder.md => app\src\main\resources\PolynomialRemainder.md
+* matheclipse-core\src\main\resources\Position.md => app\src\main\resources\Position.md
+* matheclipse-core\src\main\resources\Positive.md => app\src\main\resources\Positive.md
+* matheclipse-core\src\main\resources\Power.md => app\src\main\resources\Power.md
+* matheclipse-core\src\main\resources\PowerExpand.md => app\src\main\resources\PowerExpand.md
+* matheclipse-core\src\main\resources\PowerMod.md => app\src\main\resources\PowerMod.md
+* matheclipse-core\src\main\resources\PreDecrement.md => app\src\main\resources\PreDecrement.md
+* matheclipse-core\src\main\resources\PreIncrement.md => app\src\main\resources\PreIncrement.md
+* matheclipse-core\src\main\resources\Prepend.md => app\src\main\resources\Prepend.md
+* matheclipse-core\src\main\resources\PrependTo.md => app\src\main\resources\PrependTo.md
+* matheclipse-core\src\main\resources\Prime.md => app\src\main\resources\Prime.md
+* matheclipse-core\src\main\resources\PrimeOmega.md => app\src\main\resources\PrimeOmega.md
+* matheclipse-core\src\main\resources\PrimePi.md => app\src\main\resources\PrimePi.md
+* matheclipse-core\src\main\resources\PrimePowerQ.md => app\src\main\resources\PrimePowerQ.md
+* matheclipse-core\src\main\resources\PrimeQ.md => app\src\main\resources\PrimeQ.md
+* matheclipse-core\src\main\resources\PrimitiveRootList.md => app\src\main\resources\PrimitiveRootList.md
+* matheclipse-core\src\main\resources\Product.md => app\src\main\resources\Product.md
+* matheclipse-core\src\main\resources\ProductLog.md => app\src\main\resources\ProductLog.md
+* matheclipse-core\src\main\resources\PseudoInverse.md => app\src\main\resources\PseudoInverse.md
+* matheclipse-core\src\main\resources\QRDecomposition.md => app\src\main\resources\QRDecomposition.md
+* matheclipse-core\src\main\resources\Quotient.md => app\src\main\resources\Quotient.md
+* matheclipse-core\src\main\resources\RandomChoice.md => app\src\main\resources\RandomChoice.md
+* matheclipse-core\src\main\resources\RandomInteger.md => app\src\main\resources\RandomInteger.md
+* matheclipse-core\src\main\resources\RandomReal.md => app\src\main\resources\RandomReal.md
+* matheclipse-core\src\main\resources\Range.md => app\src\main\resources\Range.md
+* matheclipse-core\src\main\resources\Rational.md => app\src\main\resources\Rational.md
+* matheclipse-core\src\main\resources\Rationalize.md => app\src\main\resources\Rationalize.md
+* matheclipse-core\src\main\resources\Re.md => app\src\main\resources\Re.md
+* matheclipse-core\src\main\resources\Real.md => app\src\main\resources\Real.md
+* matheclipse-core\src\main\resources\RealNumberQ.md => app\src\main\resources\RealNumberQ.md
+* matheclipse-core\src\main\resources\Reals.md => app\src\main\resources\Reals.md
+* matheclipse-core\src\main\resources\Reap.md => app\src\main\resources\Reap.md
+* matheclipse-core\src\main\resources\Refine.md => app\src\main\resources\Refine.md
+* matheclipse-core\src\main\resources\ReplaceAll.md => app\src\main\resources\ReplaceAll.md
+* matheclipse-core\src\main\resources\ReplacePart.md => app\src\main\resources\ReplacePart.md
+* matheclipse-core\src\main\resources\Rest.md => app\src\main\resources\Rest.md
+* matheclipse-core\src\main\resources\Resultant.md => app\src\main\resources\Resultant.md
+* matheclipse-core\src\main\resources\Return.md => app\src\main\resources\Return.md
+* matheclipse-core\src\main\resources\Reverse.md => app\src\main\resources\Reverse.md
+* matheclipse-core\src\main\resources\Riffle.md => app\src\main\resources\Riffle.md
+* matheclipse-core\src\main\resources\RogersTanimotoDissimilarity.md => app\src\main\resources\RogersTanimotoDissimilarity.md
+* matheclipse-core\src\main\resources\Roots.md => app\src\main\resources\Roots.md
+* matheclipse-core\src\main\resources\RotateLeft.md => app\src\main\resources\RotateLeft.md
+* matheclipse-core\src\main\resources\RotateRight.md => app\src\main\resources\RotateRight.md
+* matheclipse-core\src\main\resources\Round.md => app\src\main\resources\Round.md
+* matheclipse-core\src\main\resources\RowReduce.md => app\src\main\resources\RowReduce.md
+* matheclipse-core\src\main\resources\Rule.md => app\src\main\resources\Rule.md
+* matheclipse-core\src\main\resources\RuleDelayed.md => app\src\main\resources\RuleDelayed.md
+* matheclipse-core\src\main\resources\RussellRaoDissimilarity.md => app\src\main\resources\RussellRaoDissimilarity.md
+* matheclipse-core\src\main\resources\SameQ.md => app\src\main\resources\SameQ.md
+* matheclipse-core\src\main\resources\SatisfiableQ.md => app\src\main\resources\SatisfiableQ.md
+* matheclipse-core\src\main\resources\Scan.md => app\src\main\resources\Scan.md
+* matheclipse-core\src\main\resources\Sec.md => app\src\main\resources\Sec.md
+* matheclipse-core\src\main\resources\Sech.md => app\src\main\resources\Sech.md
+* matheclipse-core\src\main\resources\Select.md => app\src\main\resources\Select.md
+* matheclipse-core\src\main\resources\Set.md => app\src\main\resources\Set.md
+* matheclipse-core\src\main\resources\SetAttributes.md => app\src\main\resources\SetAttributes.md
+* matheclipse-core\src\main\resources\SetDelayed.md => app\src\main\resources\SetDelayed.md
+* matheclipse-core\src\main\resources\Sign.md => app\src\main\resources\Sign.md
+* matheclipse-core\src\main\resources\Simplify.md => app\src\main\resources\Simplify.md
+* matheclipse-core\src\main\resources\Sin.md => app\src\main\resources\Sin.md
+* matheclipse-core\src\main\resources\Sinc.md => app\src\main\resources\Sinc.md
+* matheclipse-core\src\main\resources\SingularValueDecomposition.md => app\src\main\resources\SingularValueDecomposition.md
+* matheclipse-core\src\main\resources\Sinh.md => app\src\main\resources\Sinh.md
+* matheclipse-core\src\main\resources\Skewness.md => app\src\main\resources\Skewness.md
+* matheclipse-core\src\main\resources\Slot.md => app\src\main\resources\Slot.md
+* matheclipse-core\src\main\resources\SlotSequence.md => app\src\main\resources\SlotSequence.md
+* matheclipse-core\src\main\resources\SokalSneathDissimilarity.md => app\src\main\resources\SokalSneathDissimilarity.md
+* matheclipse-core\src\main\resources\Solve.md => app\src\main\resources\Solve.md
+* matheclipse-core\src\main\resources\Sort.md => app\src\main\resources\Sort.md
+* matheclipse-core\src\main\resources\Sow.md => app\src\main\resources\Sow.md
+* matheclipse-core\src\main\resources\Span.md => app\src\main\resources\Span.md
+* matheclipse-core\src\main\resources\Split.md => app\src\main\resources\Split.md
+* matheclipse-core\src\main\resources\SplitBy.md => app\src\main\resources\SplitBy.md
+* matheclipse-core\src\main\resources\Sqrt.md => app\src\main\resources\Sqrt.md
+* matheclipse-core\src\main\resources\SquaredEuclideanDistance.md => app\src\main\resources\SquaredEuclideanDistance.md
+* matheclipse-core\src\main\resources\SquareFreeQ.md => app\src\main\resources\SquareFreeQ.md
+* matheclipse-core\src\main\resources\StandardDeviation.md => app\src\main\resources\StandardDeviation.md
+* matheclipse-core\src\main\resources\StirlingS1.md => app\src\main\resources\StirlingS1.md
+* matheclipse-core\src\main\resources\StirlingS2.md => app\src\main\resources\StirlingS2.md
+* matheclipse-core\src\main\resources\StruveH.md => app\src\main\resources\StruveH.md
+* matheclipse-core\src\main\resources\StruveL.md => app\src\main\resources\StruveL.md
+* matheclipse-core\src\main\resources\Subfactorial.md => app\src\main\resources\Subfactorial.md
+* matheclipse-core\src\main\resources\Subsets.md => app\src\main\resources\Subsets.md
+* matheclipse-core\src\main\resources\Subtract.md => app\src\main\resources\Subtract.md
+* matheclipse-core\src\main\resources\SubtractFrom.md => app\src\main\resources\SubtractFrom.md
+* matheclipse-core\src\main\resources\Sum.md => app\src\main\resources\Sum.md
+* matheclipse-core\src\main\resources\Switch.md => app\src\main\resources\Switch.md
+* matheclipse-core\src\main\resources\Symbol.md => app\src\main\resources\Symbol.md
+* matheclipse-core\src\main\resources\SymbolName.md => app\src\main\resources\SymbolName.md
+* matheclipse-core\src\main\resources\SymbolQ.md => app\src\main\resources\SymbolQ.md
+* matheclipse-core\src\main\resources\SymmetricMatrixQ.md => app\src\main\resources\SymmetricMatrixQ.md
+* matheclipse-core\src\main\resources\Table.md => app\src\main\resources\Table.md
+* matheclipse-core\src\main\resources\Take.md => app\src\main\resources\Take.md
+* matheclipse-core\src\main\resources\Tan.md => app\src\main\resources\Tan.md
+* matheclipse-core\src\main\resources\Tanh.md => app\src\main\resources\Tanh.md
+* matheclipse-core\src\main\resources\TautologyQ.md => app\src\main\resources\TautologyQ.md
+* matheclipse-core\src\main\resources\TeXForm.md => app\src\main\resources\TeXForm.md
+* matheclipse-core\src\main\resources\Thread.md => app\src\main\resources\Thread.md
+* matheclipse-core\src\main\resources\Through.md => app\src\main\resources\Through.md
+* matheclipse-core\src\main\resources\Times.md => app\src\main\resources\Times.md
+* matheclipse-core\src\main\resources\TimesBy.md => app\src\main\resources\TimesBy.md
+* matheclipse-core\src\main\resources\Together.md => app\src\main\resources\Together.md
+* matheclipse-core\src\main\resources\ToPolarCoordinates.md => app\src\main\resources\ToPolarCoordinates.md
+* matheclipse-core\src\main\resources\Total.md => app\src\main\resources\Total.md
+* matheclipse-core\src\main\resources\Tr.md => app\src\main\resources\Tr.md
+* matheclipse-core\src\main\resources\Trace.md => app\src\main\resources\Trace.md
+* matheclipse-core\src\main\resources\Transpose.md => app\src\main\resources\Transpose.md
+* matheclipse-core\src\main\resources\TrigExpand.md => app\src\main\resources\TrigExpand.md
+* matheclipse-core\src\main\resources\TrigReduce.md => app\src\main\resources\TrigReduce.md
+* matheclipse-core\src\main\resources\TrigToExp.md => app\src\main\resources\TrigToExp.md
+* matheclipse-core\src\main\resources\True.md => app\src\main\resources\True.md
+* matheclipse-core\src\main\resources\TrueQ.md => app\src\main\resources\TrueQ.md
+* matheclipse-core\src\main\resources\Tuples.md => app\src\main\resources\Tuples.md
+* matheclipse-core\src\main\resources\Unequal.md => app\src\main\resources\Unequal.md
+* matheclipse-core\src\main\resources\Union.md => app\src\main\resources\Union.md
+* matheclipse-core\src\main\resources\UnitStep.md => app\src\main\resources\UnitStep.md
+* matheclipse-core\src\main\resources\UnitVector.md => app\src\main\resources\UnitVector.md
+* matheclipse-core\src\main\resources\UnsameQ.md => app\src\main\resources\UnsameQ.md
+* matheclipse-core\src\main\resources\ValueQ.md => app\src\main\resources\ValueQ.md
+* matheclipse-core\src\main\resources\VandermondeMatrix.md => app\src\main\resources\VandermondeMatrix.md
+* matheclipse-core\src\main\resources\Variables.md => app\src\main\resources\Variables.md
+* matheclipse-core\src\main\resources\Variance.md => app\src\main\resources\Variance.md
+* matheclipse-core\src\main\resources\VectorAngle.md => app\src\main\resources\VectorAngle.md
+* matheclipse-core\src\main\resources\VectorQ.md => app\src\main\resources\VectorQ.md
+* matheclipse-core\src\main\resources\Which.md => app\src\main\resources\Which.md
+* matheclipse-core\src\main\resources\While.md => app\src\main\resources\While.md
+* matheclipse-core\src\main\resources\With.md => app\src\main\resources\With.md
+* matheclipse-core\src\main\resources\Xor.md => app\src\main\resources\Xor.md
+* matheclipse-core\src\main\resources\YuleDissimilarity.md => app\src\main\resources\YuleDissimilarity.md
+* matheclipse-core\src\main\resources\Zeta.md => app\src\main\resources\Zeta.md
+* matheclipse-core\src\test\java\ => app\src\main\java\
+* matheclipse-core\src\test\java\org\matheclipse\parser\test\eval\package.html => app\src\main\resources\org\matheclipse\parser\test\eval\package.html
+* matheclipse-core\src\test\java\org\matheclipse\parser\test\package.html => app\src\main\resources\org\matheclipse\parser\test\package.html
+* matheclipse-core\src\test\resources\ => app\src\main\java\
+* matheclipse-core\src\test\resources\VectorAnalysis.m => app\src\main\resources\VectorAnalysis.m
+* tools\src\main\java\ => app\src\main\java\
+* tools\src\main\java\org\matheclipse\core\preprocessor\element.csv => app\src\main\resources\org\matheclipse\core\preprocessor\element.csv
+
+Next Steps:
+-----------
+You can now build the project. The Gradle project needs network
+connectivity to download dependencies.
+
+Bugs:
+-----
+If for some reason your project does not build, and you determine that
+it is due to a bug or limitation of the Eclipse to Gradle importer,
+please file a bug at http://b.android.com with category
+Component-Tools.
+
+(This import summary is for your information only, and can be deleted
+after import once you are satisfied with the results.)
