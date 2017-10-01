@@ -38,6 +38,11 @@ public class NDSolve extends AbstractFunctionEvaluator {
 		}
 
 		@Override
+		public void init(double t0, double[] y0, double finalTime) {
+
+		}
+
+		@Override
 		public int getDimension() {
 			return fDimension;
 		}

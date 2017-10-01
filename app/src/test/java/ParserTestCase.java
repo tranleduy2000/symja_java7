@@ -1,5 +1,3 @@
-package org.matheclipse.parser.test;
-
 import junit.framework.TestCase;
 
 import java.util.List;

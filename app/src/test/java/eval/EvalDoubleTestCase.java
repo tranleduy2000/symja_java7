@@ -1,4 +1,4 @@
-package org.matheclipse.parser.test.eval;
+package eval;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;

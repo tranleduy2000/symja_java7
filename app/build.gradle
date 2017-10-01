@@ -25,8 +25,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
@@ -48,4 +48,11 @@ dependencies {
     compile 'com.android.support:appcompat-v7:26.+'
 
     compile project(':hipparchus')
+    retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:+'
+}
+
+retrolambda {
+    javaVersion JavaVersion.VERSION_1_7
+    defaultMethods true
+    incremental true
 }
