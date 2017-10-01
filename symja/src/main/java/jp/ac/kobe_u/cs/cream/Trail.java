@@ -8,8 +8,7 @@ import java.util.Stack;
 
 /**
  * Trail class implements trail stacks.
- * 
- * @see DefaultSolver
+ *
  * @since 1.0
  * @version 1.4
  * @author Naoyuki Tamura (tamura@kobe-u.ac.jp)
