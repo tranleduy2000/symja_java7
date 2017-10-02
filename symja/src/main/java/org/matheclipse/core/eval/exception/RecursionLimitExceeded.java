@@ -1,6 +1,6 @@
 package org.matheclipse.core.eval.exception;
 
-import org.matheclipse.core.builtin.StringFunctions;
+import org.matheclipse.core.builtin.stringfunction.StringFunctions;
 import org.matheclipse.core.interfaces.IExpr;
 import org.matheclipse.parser.client.math.MathException;
 

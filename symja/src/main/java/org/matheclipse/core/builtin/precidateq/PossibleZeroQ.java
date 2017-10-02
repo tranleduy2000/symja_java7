@@ -1,9 +1,12 @@
 package org.matheclipse.core.builtin.precidateq;
 
+import org.matheclipse.core.eval.EvalEngine;
 import org.matheclipse.core.eval.interfaces.AbstractCorePredicateEvaluator;
 import org.matheclipse.core.expression.F;
 import org.matheclipse.core.interfaces.IExpr;
 import org.matheclipse.core.interfaces.ISymbol;
+
+import static org.matheclipse.core.builtin.precidateq.PredicateQ.possibleZeroQ;
 
 /**
  * Predicate function

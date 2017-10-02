@@ -1,7 +1,5 @@
 package org.matheclipse.core.reflection.system;
 
-import java.util.function.Function;
-
 import org.matheclipse.core.eval.EvalEngine;
 import org.matheclipse.core.eval.exception.Validate;
 import org.matheclipse.core.eval.interfaces.AbstractEvaluator;
@@ -15,6 +13,7 @@ import org.matheclipse.core.interfaces.IExpr;
 import org.matheclipse.core.interfaces.INumber;
 import org.matheclipse.core.interfaces.ISignedNumber;
 import org.matheclipse.core.interfaces.ISymbol;
+import org.matheclipse.core.reflection.system.function.SignTimesFunction;
 
 /**
  * <pre>
@@ -39,19 +38,7 @@ public class Sign extends AbstractEvaluator {
 	public Sign() {
 	}
 
-	private static final class SignTimesFunction implements Function<IExpr, IExpr> {
-		@Override
-		public IExpr apply(IExpr expr) {
-			if (expr.isNumber()) {
-				return numberSign((INumber) expr);
-			}
-			IExpr temp = F.eval(F.Sign(expr));
-			if (!temp.topHead().equals(F.Sign)) {
-				return temp;
-			}
-			return F.NIL;
-		}
-	}
+
 
 	/**
 	 * Gets the sign value of a number. See <a href="http://en.wikipedia.org/wiki/Sign_function">Wikipedia - Sign

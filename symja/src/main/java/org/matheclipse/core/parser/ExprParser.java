@@ -23,7 +23,7 @@ import org.apfloat.Apfloat;
 import org.apfloat.ApfloatMath;
 import org.apfloat.Apint;
 import org.matheclipse.core.basic.Config;
-import org.matheclipse.core.builtin.Arithmetic;
+import org.matheclipse.core.builtin.arithmetic.Arithmetic;
 import org.matheclipse.core.builtin.function.Blank;
 import org.matheclipse.core.builtin.function.Pattern;
 import org.matheclipse.core.convert.AST2Expr;

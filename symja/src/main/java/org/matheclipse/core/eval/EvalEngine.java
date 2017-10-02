@@ -16,7 +16,7 @@ import java.util.function.Predicate;
 import javax.annotation.Nonnull;
 
 import org.matheclipse.core.basic.Config;
-import org.matheclipse.core.builtin.Arithmetic;
+import org.matheclipse.core.builtin.arithmetic.Arithmetic;
 import org.matheclipse.core.eval.exception.IterationLimitExceeded;
 import org.matheclipse.core.eval.exception.RecursionLimitExceeded;
 import org.matheclipse.core.eval.interfaces.ICoreFunctionEvaluator;

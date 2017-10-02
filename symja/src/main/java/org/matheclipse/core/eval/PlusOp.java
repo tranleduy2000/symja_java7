@@ -3,7 +3,7 @@ package org.matheclipse.core.eval;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.matheclipse.core.builtin.Arithmetic;
+import org.matheclipse.core.builtin.arithmetic.Arithmetic;
 import org.matheclipse.core.expression.F;
 import org.matheclipse.core.interfaces.IAST;
 import org.matheclipse.core.interfaces.IExpr;

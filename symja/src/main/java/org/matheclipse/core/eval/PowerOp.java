@@ -1,6 +1,6 @@
 package org.matheclipse.core.eval;
 
-import org.matheclipse.core.builtin.Arithmetic;
+import org.matheclipse.core.builtin.arithmetic.Arithmetic;
 import org.matheclipse.core.expression.F;
 import org.matheclipse.core.interfaces.IExpr;
 

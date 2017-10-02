@@ -8,6 +8,8 @@ import org.matheclipse.core.interfaces.IExpr;
 import org.matheclipse.core.interfaces.IStringX;
 import org.matheclipse.core.interfaces.ISymbol;
 
+import java.util.function.Predicate;
+
 /**
  * Returns <code>True</code>, if the given expression is a string which only
  * contains upper case characters

@@ -1,11 +1,14 @@
 package org.matheclipse.core.builtin.precidateq;
 
 
+import org.matheclipse.core.eval.EvalEngine;
 import org.matheclipse.core.eval.exception.Validate;
 import org.matheclipse.core.eval.interfaces.AbstractCoreFunctionEvaluator;
 import org.matheclipse.core.expression.F;
 import org.matheclipse.core.interfaces.IAST;
 import org.matheclipse.core.interfaces.IExpr;
+
+import java.util.function.Predicate;
 
 public class SymbolQ extends AbstractCoreFunctionEvaluator implements Predicate<IExpr> {
     /**

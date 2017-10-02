@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Comparator;
 import java.util.function.BiPredicate;
 
+import org.matheclipse.core.generic.precidates.Predicates;
 import org.matheclipse.core.interfaces.IExpr;
 
 public class Comparators {

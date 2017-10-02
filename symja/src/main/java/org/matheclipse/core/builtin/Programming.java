@@ -1493,7 +1493,6 @@ public final class Programming {
 	 * @param expr
 	 * @param element
 	 * @param partPosition
-	 * @param pos
 	 * @param result
 	 *            will be cloned if an assignment occurs and returned by this method
 	 * @param position

@@ -368,7 +368,6 @@ public class SpecialFunctions {
 	/**
 	 * Returns the inverse erf.
 	 * 
-	 * @see org.matheclipse.core.reflection.system.Erf
 	 */
 	private final static class InverseErf extends AbstractTrigArg1 implements INumeric {
 
@@ -424,7 +423,6 @@ public class SpecialFunctions {
 	/**
 	 * Returns the inverse erf.
 	 * 
-	 * @see org.matheclipse.core.reflection.system.Erf
 	 */
 	private final static class InverseErfc extends AbstractTrigArg1 implements INumeric {
 

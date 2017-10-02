@@ -41,7 +41,7 @@ import static org.matheclipse.core.integrate.rubi45.UtilityFunctionCtors.Simp;
 import static org.matheclipse.core.integrate.rubi45.UtilityFunctionCtors.SumQ;
 import static org.matheclipse.core.integrate.rubi45.UtilityFunctionCtors.ZeroQ;
 
-import org.matheclipse.core.builtin.Arithmetic;
+import org.matheclipse.core.builtin.arithmetic.Arithmetic;
 import org.matheclipse.core.expression.F;
 import org.matheclipse.core.expression.Pattern;
 import org.matheclipse.core.interfaces.IAST;
