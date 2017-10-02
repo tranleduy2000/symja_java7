@@ -1,7 +1,7 @@
 package system;
 
 import org.matheclipse.core.basic.Config;
-import org.matheclipse.core.builtin.Algebra;
+import org.matheclipse.core.builtin.algebra.Algebra;
 import org.matheclipse.core.eval.EvalEngine;
 import org.matheclipse.core.eval.TimeConstrainedEvaluator;
 import org.matheclipse.core.form.output.OutputFormFactory;

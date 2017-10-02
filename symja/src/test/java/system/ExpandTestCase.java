@@ -14,7 +14,7 @@ import static org.matheclipse.core.expression.F.a;
 import static org.matheclipse.core.expression.F.x;
 import static org.matheclipse.core.expression.F.y;
 
-import org.matheclipse.core.builtin.Algebra;
+import org.matheclipse.core.builtin.algebra.Algebra;
 import org.matheclipse.core.eval.EvalEngine;
 import org.matheclipse.core.expression.F;
 import org.matheclipse.core.interfaces.IAST;

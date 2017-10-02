@@ -6,7 +6,7 @@ import java.text.NumberFormat;
 import org.apfloat.Apcomplex;
 import org.apfloat.Apfloat;
 import org.matheclipse.core.basic.Config;
-import org.matheclipse.core.builtin.Algebra;
+import org.matheclipse.core.builtin.algebra.Algebra;
 import org.matheclipse.core.convert.AST2Expr;
 import org.matheclipse.core.expression.ASTRealMatrix;
 import org.matheclipse.core.expression.ASTRealVector;

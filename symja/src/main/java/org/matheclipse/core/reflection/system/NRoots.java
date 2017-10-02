@@ -6,7 +6,7 @@ import static org.matheclipse.core.expression.F.evalExpandAll;
 import org.hipparchus.analysis.solvers.LaguerreSolver;
 import org.hipparchus.complex.Complex;
 import org.matheclipse.core.basic.Config;
-import org.matheclipse.core.builtin.Algebra;
+import org.matheclipse.core.builtin.algebra.Algebra;
 import org.matheclipse.core.convert.Expr2Object;
 import org.matheclipse.core.convert.Object2Expr;
 import org.matheclipse.core.convert.VariablesSet;

@@ -10,9 +10,9 @@ import java.util.function.Predicate;
 
 import org.hipparchus.linear.FieldMatrix;
 import org.matheclipse.core.basic.Config;
-import org.matheclipse.core.builtin.Algebra;
+import org.matheclipse.core.builtin.algebra.Algebra;
 import org.matheclipse.core.builtin.LinearAlgebra;
-import org.matheclipse.core.builtin.PredicateQ;
+import org.matheclipse.core.builtin.precidateq.PredicateQ;
 import org.matheclipse.core.convert.Convert;
 import org.matheclipse.core.eval.EvalAttributes;
 import org.matheclipse.core.eval.EvalEngine;
@@ -21,7 +21,7 @@ import org.matheclipse.core.eval.exception.Validate;
 import org.matheclipse.core.eval.exception.WrongArgumentType;
 import org.matheclipse.core.eval.interfaces.AbstractFunctionEvaluator;
 import org.matheclipse.core.expression.F;
-import org.matheclipse.core.generic.Predicates;
+import org.matheclipse.core.generic.precidates.Predicates;
 import org.matheclipse.core.interfaces.IAST;
 import org.matheclipse.core.interfaces.IExpr;
 import org.matheclipse.core.interfaces.IInteger;
@@ -547,32 +547,7 @@ public class Solve extends AbstractFunctionEvaluator {
 
 	}
 
-	/**
-	 * Check an expression, if it's an allowed object.
-	 *
-	 */
-	protected static final class IsWrongSolveExpression implements Predicate<IExpr> {
-		IExpr wrongExpr;
 
-		public IsWrongSolveExpression() {
-			wrongExpr = null;
-		}
-
-		public IExpr getWrongExpr() {
-			return wrongExpr;
-		}
-
-		@Override
-		public boolean test(IExpr input) {
-			if (input.isDirectedInfinity() || input.isIndeterminate()) {
-				// input is representing a DirectedInfinity() or Indeterminate
-				// object
-				wrongExpr = input;
-				return true;
-			}
-			return false;
-		}
-	}
 
 	@SuppressWarnings("serial")
 	protected static class NoSolution extends Exception {

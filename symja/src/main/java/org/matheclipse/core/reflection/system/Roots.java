@@ -12,7 +12,7 @@ import org.hipparchus.linear.Array2DRowRealMatrix;
 import org.hipparchus.linear.EigenDecomposition;
 import org.hipparchus.linear.RealMatrix;
 import org.matheclipse.core.basic.Config;
-import org.matheclipse.core.builtin.Algebra;
+import org.matheclipse.core.builtin.algebra.Algebra;
 import org.matheclipse.core.convert.JASConvert;
 import org.matheclipse.core.convert.VariablesSet;
 import org.matheclipse.core.eval.EvalEngine;

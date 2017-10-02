@@ -21,7 +21,7 @@ import java.util.Set;
 import java.util.function.Predicate;
 
 import org.matheclipse.core.basic.Config;
-import org.matheclipse.core.builtin.Algebra;
+import org.matheclipse.core.builtin.algebra.Algebra;
 import org.matheclipse.core.eval.EvalEngine;
 import org.matheclipse.core.eval.exception.AbortException;
 import org.matheclipse.core.eval.exception.RecursionLimitExceeded;
@@ -29,7 +29,7 @@ import org.matheclipse.core.eval.interfaces.AbstractFunctionEvaluator;
 import org.matheclipse.core.expression.Context;
 import org.matheclipse.core.expression.F;
 import org.matheclipse.core.expression.Symbol;
-import org.matheclipse.core.generic.Predicates;
+import org.matheclipse.core.generic.precidates.Predicates;
 import org.matheclipse.core.integrate.rubi45.UtilityFunctionCtors;
 import org.matheclipse.core.interfaces.IAST;
 import org.matheclipse.core.interfaces.IExpr;

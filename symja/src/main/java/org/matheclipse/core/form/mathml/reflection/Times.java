@@ -1,6 +1,6 @@
 package org.matheclipse.core.form.mathml.reflection;
 
-import org.matheclipse.core.builtin.Algebra;
+import org.matheclipse.core.builtin.algebra.Algebra;
 import org.matheclipse.core.form.mathml.MMLOperator;
 import org.matheclipse.core.interfaces.IAST;
 import org.matheclipse.core.interfaces.IExpr;

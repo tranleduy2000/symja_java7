@@ -215,7 +215,7 @@ public class Lists {
 	 * @return a {@link org.matheclipse.core.interfaces.IAST} of
 	 *         {@link org.matheclipse.core.interfaces.IExpr} objects.
 	 */
-	public static IAST asList(Object... p_objects) {
+	public static IAST asList(Object[] p_objects) {
 		IAST ast = F.ast(F.List);
 		if (p_objects != null) {
 			for (int i = 0, t = p_objects.length; i < t; i++) {

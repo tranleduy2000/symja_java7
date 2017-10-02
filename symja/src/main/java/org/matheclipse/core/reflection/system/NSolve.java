@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 
-import org.matheclipse.core.builtin.Algebra;
-import org.matheclipse.core.builtin.PredicateQ;
+import org.matheclipse.core.builtin.algebra.Algebra;
+import org.matheclipse.core.builtin.precidateq.PredicateQ;
 import org.matheclipse.core.eval.EvalEngine;
 import org.matheclipse.core.eval.exception.Validate;
 import org.matheclipse.core.eval.interfaces.AbstractFunctionEvaluator;
 import org.matheclipse.core.expression.F;
-import org.matheclipse.core.generic.Predicates;
+import org.matheclipse.core.generic.precidates.Predicates;
 import org.matheclipse.core.interfaces.IAST;
 import org.matheclipse.core.interfaces.IExpr;
 import org.matheclipse.core.interfaces.ISymbol;

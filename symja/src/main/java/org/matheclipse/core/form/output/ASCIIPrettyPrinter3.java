@@ -2,7 +2,7 @@ package org.matheclipse.core.form.output;
 
 import java.io.PrintStream;
 
-import org.matheclipse.core.builtin.Algebra;
+import org.matheclipse.core.builtin.algebra.Algebra;
 import org.matheclipse.core.expression.F;
 import org.matheclipse.core.interfaces.IAST;
 import org.matheclipse.core.interfaces.IExpr;

@@ -65,7 +65,6 @@ public class FrobeniusSolve extends AbstractEvaluator {
                 IAST result = F.List();
                 if (numberOfSolutions < 0) {
                     while ((solution = solver.take()) != null) {
-                        //noinspection ConfusingArgumentToVarargsMethod
                         result.append(Lists.asList(solution));
                     }
                 } else {
@@ -73,7 +72,6 @@ public class FrobeniusSolve extends AbstractEvaluator {
                         if (--numberOfSolutions < 0) {
                             break;
                         }
-                        //noinspection ConfusingArgumentToVarargsMethod
                         result.append(Lists.asList(solution));
                     }
                 }
