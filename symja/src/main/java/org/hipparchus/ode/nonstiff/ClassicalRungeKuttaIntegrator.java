@@ -24,7 +24,7 @@ import org.hipparchus.ode.ODEStateAndDerivative;
  * This class implements the classical fourth order Runge-Kutta
  * integrator for Ordinary Differential Equations (it is the most
  * often used Runge-Kutta method).
- *
+ * <p>
  * <p>This method is an explicit Runge-Kutta method, its Butcher-array
  * is the following one :
  * <pre>
@@ -46,42 +46,52 @@ import org.hipparchus.ode.ODEStateAndDerivative;
 
 public class ClassicalRungeKuttaIntegrator extends RungeKuttaIntegrator {
 
-    /** Simple constructor.
+    /**
+     * Simple constructor.
      * Build a fourth-order Runge-Kutta integrator with the given
      * step.
+     *
      * @param step integration step
      */
     public ClassicalRungeKuttaIntegrator(final double step) {
         super("classical Runge-Kutta", step);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double[] getC() {
-        return new double[] {
-            1.0 / 2.0, 1.0 / 2.0, 1.0
+        return new double[]{
+                1.0 / 2.0, 1.0 / 2.0, 1.0
         };
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double[][] getA() {
-        return new double[][] {
-            { 1.0 / 2.0 },
-            { 0.0, 1.0 / 2.0 },
-            { 0.0, 0.0, 1.0 }
+        return new double[][]{
+                {1.0 / 2.0},
+                {0.0, 1.0 / 2.0},
+                {0.0, 0.0, 1.0}
         };
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double[] getB() {
-        return new double[] {
-            1.0 / 6.0, 1.0 / 3.0, 1.0 / 3.0, 1.0 / 6.0
+        return new double[]{
+                1.0 / 6.0, 1.0 / 3.0, 1.0 / 3.0, 1.0 / 6.0
         };
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected ClassicalRungeKuttaStateInterpolator
     createInterpolator(final boolean forward, double[][] yDotK,
@@ -89,9 +99,9 @@ public class ClassicalRungeKuttaIntegrator extends RungeKuttaIntegrator {
                        final ODEStateAndDerivative globalCurrentState,
                        final EquationsMapper mapper) {
         return new ClassicalRungeKuttaStateInterpolator(forward, yDotK,
-                                                       globalPreviousState, globalCurrentState,
-                                                       globalPreviousState, globalCurrentState,
-                                                       mapper);
+                globalPreviousState, globalCurrentState,
+                globalPreviousState, globalCurrentState,
+                mapper);
     }
 
 }

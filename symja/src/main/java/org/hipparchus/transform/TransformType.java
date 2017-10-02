@@ -18,12 +18,15 @@ package org.hipparchus.transform;
 
 /**
  * This enumeration defines the type of transform which is to be computed.
- *
  */
 public enum TransformType {
-    /** The type to be specified for forward transforms. */
+    /**
+     * The type to be specified for forward transforms.
+     */
     FORWARD,
 
-    /** The type to be specified for inverse transforms. */
+    /**
+     * The type to be specified for inverse transforms.
+     */
     INVERSE;
 }

@@ -5,10 +5,10 @@
 package edu.jas.root;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.arith.BigDecimal;
 import edu.jas.arith.BigInteger;
@@ -24,6 +24,7 @@ import edu.jas.structure.UnaryFunctor;
 
 /**
  * Real roots abstract class.
+ *
  * @param <C> coefficient type.
  * @author Heinz Kredel
  */
@@ -38,6 +39,7 @@ public abstract class RealRootsAbstract<C extends RingElem<C> & Rational> implem
 
     /**
      * Real root bound. With f(M) * f(-M) != 0.
+     *
      * @param f univariate polynomial.
      * @return M such that -M &lt; root(f) &lt; M.
      */
@@ -95,8 +97,9 @@ public abstract class RealRootsAbstract<C extends RingElem<C> & Rational> implem
 
     /**
      * Magnitude bound.
+     *
      * @param iv interval.
-     * @param f univariate polynomial.
+     * @param f  univariate polynomial.
      * @return B such that |f(c)| &lt; B for c in iv.
      */
     @SuppressWarnings("cast")
@@ -124,7 +127,7 @@ public abstract class RealRootsAbstract<C extends RingElem<C> & Rational> implem
         }
         //System.out.println("M = " + M);
         RingFactory<C> cfac = f.ring.coFac;
-        C B = PolyUtil.<C> evaluateMain(cfac, fa, M);
+        C B = PolyUtil.<C>evaluateMain(cfac, fa, M);
         // works also without this case, only for optimization 
         // to use rational number interval end points
         // can fail if real root is in interval [r,r+1] 
@@ -141,8 +144,9 @@ public abstract class RealRootsAbstract<C extends RingElem<C> & Rational> implem
 
     /**
      * Bi-section point.
+     *
      * @param iv interval with f(left) * f(right) != 0.
-     * @param f univariate polynomial, non-zero.
+     * @param f  univariate polynomial, non-zero.
      * @return a point c in the interval iv such that f(c) != 0.
      */
     public C bisectionPoint(Interval<C> iv, GenPolynomial<C> f) {
@@ -156,7 +160,7 @@ public abstract class RealRootsAbstract<C extends RingElem<C> & Rational> implem
         if (f.isZERO() || f.isConstant()) {
             return c;
         }
-        C m = PolyUtil.<C> evaluateMain(cfac, f, c);
+        C m = PolyUtil.<C>evaluateMain(cfac, f, c);
         while (m.isZERO()) {
             C d = iv.left.sum(c);
             d = d.divide(two);
@@ -168,7 +172,7 @@ public abstract class RealRootsAbstract<C extends RingElem<C> & Rational> implem
                 }
             }
             c = d;
-            m = PolyUtil.<C> evaluateMain(cfac, f, c);
+            m = PolyUtil.<C>evaluateMain(cfac, f, c);
             //System.out.println("c = " + c);
         }
         //System.out.println("c = " + c);
@@ -178,6 +182,7 @@ public abstract class RealRootsAbstract<C extends RingElem<C> & Rational> implem
 
     /**
      * Isolating intervals for the real roots.
+     *
      * @param f univariate polynomial.
      * @return a list of isolating intervalls for the real roots of f.
      */
@@ -186,7 +191,8 @@ public abstract class RealRootsAbstract<C extends RingElem<C> & Rational> implem
 
     /**
      * Isolating intervals for the real roots.
-     * @param f univariate polynomial.
+     *
+     * @param f   univariate polynomial.
      * @param eps requested intervals length.
      * @return a list of isolating intervals v such that |v| &lt; eps.
      */
@@ -197,7 +203,8 @@ public abstract class RealRootsAbstract<C extends RingElem<C> & Rational> implem
 
     /**
      * Isolating intervals for the real roots.
-     * @param f univariate polynomial.
+     *
+     * @param f   univariate polynomial.
      * @param eps requested intervals length.
      * @return a list of isolating intervals v such that |v| &lt; eps.
      */
@@ -209,8 +216,9 @@ public abstract class RealRootsAbstract<C extends RingElem<C> & Rational> implem
 
     /**
      * Sign changes on interval bounds.
+     *
      * @param iv root isolating interval with f(left) * f(right) != 0.
-     * @param f univariate polynomial.
+     * @param f  univariate polynomial.
      * @return true if f(left) * f(right) &lt; 0, else false
      */
     public boolean signChange(Interval<C> iv, GenPolynomial<C> f) {
@@ -218,16 +226,17 @@ public abstract class RealRootsAbstract<C extends RingElem<C> & Rational> implem
             return false;
         }
         RingFactory<C> cfac = f.ring.coFac;
-        C l = PolyUtil.<C> evaluateMain(cfac, f, iv.left);
-        C r = PolyUtil.<C> evaluateMain(cfac, f, iv.right);
+        C l = PolyUtil.<C>evaluateMain(cfac, f, iv.left);
+        C r = PolyUtil.<C>evaluateMain(cfac, f, iv.right);
         return l.signum() * r.signum() < 0;
     }
 
 
     /**
      * Number of real roots in interval.
+     *
      * @param iv interval with f(left) * f(right) != 0.
-     * @param f univariate polynomial.
+     * @param f  univariate polynomial.
      * @return number of real roots of f in I.
      */
     public abstract long realRootCount(Interval<C> iv, GenPolynomial<C> f);
@@ -235,8 +244,9 @@ public abstract class RealRootsAbstract<C extends RingElem<C> & Rational> implem
 
     /**
      * Half interval.
+     *
      * @param iv root isolating interval with f(left) * f(right) &lt; 0.
-     * @param f univariate polynomial, non-zero.
+     * @param f  univariate polynomial, non-zero.
      * @return a new interval v such that |v| &lt; |iv|/2.
      */
     public Interval<C> halfInterval(Interval<C> iv, GenPolynomial<C> f) {
@@ -252,8 +262,9 @@ public abstract class RealRootsAbstract<C extends RingElem<C> & Rational> implem
 
     /**
      * Refine interval.
-     * @param iv root isolating interval with f(left) * f(right) &lt; 0.
-     * @param f univariate polynomial, non-zero.
+     *
+     * @param iv  root isolating interval with f(left) * f(right) &lt; 0.
+     * @param f   univariate polynomial, non-zero.
      * @param eps requested interval length.
      * @return a new interval v such that |v| &lt; eps.
      */
@@ -272,7 +283,7 @@ public abstract class RealRootsAbstract<C extends RingElem<C> & Rational> implem
             c = c.divide(two);
             //System.out.println("c = " + c);
             //c = RootUtil.<C>bisectionPoint(v,f);
-            if (PolyUtil.<C> evaluateMain(cfac, f, c).isZERO()) {
+            if (PolyUtil.<C>evaluateMain(cfac, f, c).isZERO()) {
                 v = new Interval<C>(c, c);
                 break;
             }
@@ -289,8 +300,9 @@ public abstract class RealRootsAbstract<C extends RingElem<C> & Rational> implem
 
     /**
      * Refine intervals.
-     * @param V list of isolating intervals with f(left) * f(right) &lt; 0.
-     * @param f univariate polynomial, non-zero.
+     *
+     * @param V   list of isolating intervals with f(left) * f(right) &lt; 0.
+     * @param f   univariate polynomial, non-zero.
      * @param eps requested intervals length.
      * @return a list of new intervals v such that |v| &lt; eps.
      */
@@ -309,9 +321,10 @@ public abstract class RealRootsAbstract<C extends RingElem<C> & Rational> implem
 
     /**
      * Invariant interval for algebraic number sign.
+     *
      * @param iv root isolating interval for f, with f(left) * f(right) &lt; 0.
-     * @param f univariate polynomial, non-zero.
-     * @param g univariate polynomial, gcd(f,g) == 1.
+     * @param f  univariate polynomial, non-zero.
+     * @param g  univariate polynomial, gcd(f,g) == 1.
      * @return v with v a new interval contained in iv such that g(v) != 0.
      */
     public abstract Interval<C> invariantSignInterval(Interval<C> iv, GenPolynomial<C> f, GenPolynomial<C> g);
@@ -319,10 +332,11 @@ public abstract class RealRootsAbstract<C extends RingElem<C> & Rational> implem
 
     /**
      * Real algebraic number sign.
+     *
      * @param iv root isolating interval for f, with f(left) * f(right) &lt; 0,
-     *            with iv such that g(iv) != 0.
-     * @param f univariate polynomial, non-zero.
-     * @param g univariate polynomial, gcd(f,g) == 1.
+     *           with iv such that g(iv) != 0.
+     * @param f  univariate polynomial, non-zero.
+     * @param g  univariate polynomial, gcd(f,g) == 1.
      * @return sign(g(iv)) .
      */
     public int realIntervalSign(Interval<C> iv, GenPolynomial<C> f, GenPolynomial<C> g) {
@@ -338,7 +352,7 @@ public abstract class RealRootsAbstract<C extends RingElem<C> & Rational> implem
         RingFactory<C> cfac = f.ring.coFac;
         C c = iv.left.sum(iv.right);
         c = c.divide(cfac.fromInteger(2));
-        C ev = PolyUtil.<C> evaluateMain(cfac, g, c);
+        C ev = PolyUtil.<C>evaluateMain(cfac, g, c);
         //System.out.println("ev = " + ev);
         return ev.signum();
     }
@@ -346,11 +360,12 @@ public abstract class RealRootsAbstract<C extends RingElem<C> & Rational> implem
 
     /**
      * Real algebraic number sign.
+     *
      * @param iv root isolating interval for f, with f(left) * f(right) &lt; 0.
-     * @param f univariate polynomial, non-zero.
-     * @param g univariate polynomial, gcd(f,g) == 1.
+     * @param f  univariate polynomial, non-zero.
+     * @param g  univariate polynomial, gcd(f,g) == 1.
      * @return sign(g(v)), with v a new interval contained in iv such that g(v)
-     *         != 0.
+     * != 0.
      */
     public int realSign(Interval<C> iv, GenPolynomial<C> f, GenPolynomial<C> g) {
         if (g == null || g.isZERO()) {
@@ -369,15 +384,16 @@ public abstract class RealRootsAbstract<C extends RingElem<C> & Rational> implem
 
     /**
      * Invariant interval for algebraic number magnitude.
-     * @param iv root isolating interval for f, with f(left) * f(right) &lt; 0.
-     * @param f univariate polynomial, non-zero.
-     * @param g univariate polynomial, gcd(f,g) == 1.
+     *
+     * @param iv  root isolating interval for f, with f(left) * f(right) &lt; 0.
+     * @param f   univariate polynomial, non-zero.
+     * @param g   univariate polynomial, gcd(f,g) == 1.
      * @param eps length limit for interval length.
      * @return v with v a new interval contained in iv such that |g(a) - g(b)|
-     *         &lt; eps for a, b in v in iv.
+     * &lt; eps for a, b in v in iv.
      */
     public Interval<C> invariantMagnitudeInterval(Interval<C> iv, GenPolynomial<C> f, GenPolynomial<C> g,
-                    BigRational eps) {
+                                                  BigRational eps) {
         Interval<C> v = iv;
         if (g == null || g.isZERO()) {
             return v;
@@ -388,7 +404,7 @@ public abstract class RealRootsAbstract<C extends RingElem<C> & Rational> implem
         if (f == null || f.isZERO() || f.isConstant()) { // ?
             return v;
         }
-        GenPolynomial<C> gp = PolyUtil.<C> baseDeriviative(g);
+        GenPolynomial<C> gp = PolyUtil.<C>baseDeriviative(g);
         //System.out.println("g  = " + g);
         //System.out.println("gp = " + gp);
         C B = magnitudeBound(iv, gp);
@@ -414,10 +430,11 @@ public abstract class RealRootsAbstract<C extends RingElem<C> & Rational> implem
 
     /**
      * Real algebraic number magnitude.
+     *
      * @param iv root isolating interval for f, with f(left) * f(right) &lt; 0,
-     *            with iv such that |g(a) - g(b)| &lt; eps for a, b in iv.
-     * @param f univariate polynomial, non-zero.
-     * @param g univariate polynomial, gcd(f,g) == 1.
+     *           with iv such that |g(a) - g(b)| &lt; eps for a, b in iv.
+     * @param f  univariate polynomial, non-zero.
+     * @param g  univariate polynomial, gcd(f,g) == 1.
      * @return g(iv) .
      */
     public C realIntervalMagnitude(Interval<C> iv, GenPolynomial<C> f, GenPolynomial<C> g) {
@@ -431,8 +448,8 @@ public abstract class RealRootsAbstract<C extends RingElem<C> & Rational> implem
         //    C ev = PolyUtil.<C> evaluateMain(cfac, g, c);
         //    return ev;
         //}
-        C evl = PolyUtil.<C> evaluateMain(cfac, g, iv.left);
-        C evr = PolyUtil.<C> evaluateMain(cfac, g, iv.right);
+        C evl = PolyUtil.<C>evaluateMain(cfac, g, iv.left);
+        C evr = PolyUtil.<C>evaluateMain(cfac, g, iv.right);
         C ev = evl;
         if (evl.compareTo(evr) <= 0) {
             ev = evr;
@@ -444,9 +461,10 @@ public abstract class RealRootsAbstract<C extends RingElem<C> & Rational> implem
 
     /**
      * Real algebraic number magnitude.
-     * @param iv root isolating interval for f, with f(left) * f(right) &lt; 0.
-     * @param f univariate polynomial, non-zero.
-     * @param g univariate polynomial, gcd(f,g) == 1.
+     *
+     * @param iv  root isolating interval for f, with f(left) * f(right) &lt; 0.
+     * @param f   univariate polynomial, non-zero.
+     * @param g   univariate polynomial, gcd(f,g) == 1.
      * @param eps length limit for interval length.
      * @return g(iv) .
      */
@@ -461,14 +479,15 @@ public abstract class RealRootsAbstract<C extends RingElem<C> & Rational> implem
 
     /**
      * Approximate real root.
-     * @param iv real root isolating interval with f(left) * f(right) &lt; 0.
-     * @param f univariate polynomial, non-zero.
+     *
+     * @param iv  real root isolating interval with f(left) * f(right) &lt; 0.
+     * @param f   univariate polynomial, non-zero.
      * @param eps requested interval length.
      * @return a decimal approximation d such that |d-v| &lt; eps, for f(v) = 0,
-     *         v real.
+     * v real.
      */
     public BigDecimal approximateRoot(Interval<C> iv, GenPolynomial<C> f, BigRational eps)
-                    throws NoConvergenceException {
+            throws NoConvergenceException {
         if (iv == null) {
             throw new IllegalArgumentException("null interval not allowed");
         }
@@ -491,20 +510,20 @@ public abstract class RealRootsAbstract<C extends RingElem<C> & Rational> implem
         BigDecimal dc = BigDecimal.ONE;
         // polynomials with decimal coefficients
         GenPolynomialRing<BigDecimal> dfac = new GenPolynomialRing<BigDecimal>(dc, f.ring);
-        GenPolynomial<BigDecimal> df = PolyUtil.<C> decimalFromRational(dfac, f);
-        GenPolynomial<C> fp = PolyUtil.<C> baseDeriviative(f);
-        GenPolynomial<BigDecimal> dfp = PolyUtil.<C> decimalFromRational(dfac, fp);
+        GenPolynomial<BigDecimal> df = PolyUtil.<C>decimalFromRational(dfac, f);
+        GenPolynomial<C> fp = PolyUtil.<C>baseDeriviative(f);
+        GenPolynomial<BigDecimal> dfp = PolyUtil.<C>decimalFromRational(dfac, fp);
 
         // Newton Raphson iteration: x_{n+1} = x_n - f(x_n)/f'(x_n)
         int i = 0;
         final int MITER = 50;
         int dir = 0;
         while (i++ < MITER) {
-            BigDecimal fx = PolyUtil.<BigDecimal> evaluateMain(dc, df, d); // f(d)
+            BigDecimal fx = PolyUtil.<BigDecimal>evaluateMain(dc, df, d); // f(d)
             if (fx.isZERO()) {
                 return d;
             }
-            BigDecimal fpx = PolyUtil.<BigDecimal> evaluateMain(dc, dfp, d); // f'(d)
+            BigDecimal fpx = PolyUtil.<BigDecimal>evaluateMain(dc, dfp, d); // f'(d)
             if (fpx.isZERO()) {
                 throw new NoConvergenceException("zero deriviative should not happen");
             }
@@ -550,10 +569,11 @@ public abstract class RealRootsAbstract<C extends RingElem<C> & Rational> implem
 
     /**
      * Approximate real roots.
-     * @param f univariate polynomial, non-zero.
+     *
+     * @param f   univariate polynomial, non-zero.
      * @param eps requested interval length.
      * @return a list of decimal approximations d such that |d-v| &lt; eps for
-     *         all real v with f(v) = 0.
+     * all real v with f(v) = 0.
      */
     public List<BigDecimal> approximateRoots(GenPolynomial<C> f, BigRational eps) {
         List<Interval<C>> iv = realRoots(f);
@@ -580,11 +600,12 @@ public abstract class RealRootsAbstract<C extends RingElem<C> & Rational> implem
 
     /**
      * Test if x is an approximate real root.
-     * @param x approximate real root.
-     * @param f univariate polynomial, non-zero.
+     *
+     * @param x   approximate real root.
+     * @param f   univariate polynomial, non-zero.
      * @param eps requested interval length.
      * @return true if x is a decimal approximation of a real v with f(v) = 0
-     *         with |d-v| &lt; eps, else false.
+     * with |d-v| &lt; eps, else false.
      */
     public boolean isApproximateRoot(BigDecimal x, GenPolynomial<C> f, C eps) {
         if (x == null) {
@@ -598,9 +619,9 @@ public abstract class RealRootsAbstract<C extends RingElem<C> & Rational> implem
         BigDecimal dc = BigDecimal.ONE;
         // polynomials with decimal coefficients
         GenPolynomialRing<BigDecimal> dfac = new GenPolynomialRing<BigDecimal>(dc, f.ring);
-        GenPolynomial<BigDecimal> df = PolyUtil.<C> decimalFromRational(dfac, f);
-        GenPolynomial<C> fp = PolyUtil.<C> baseDeriviative(f);
-        GenPolynomial<BigDecimal> dfp = PolyUtil.<C> decimalFromRational(dfac, fp);
+        GenPolynomial<BigDecimal> df = PolyUtil.<C>decimalFromRational(dfac, f);
+        GenPolynomial<C> fp = PolyUtil.<C>baseDeriviative(f);
+        GenPolynomial<BigDecimal> dfp = PolyUtil.<C>decimalFromRational(dfac, fp);
         //
         return isApproximateRoot(x, df, dfp, e);
     }
@@ -608,15 +629,16 @@ public abstract class RealRootsAbstract<C extends RingElem<C> & Rational> implem
 
     /**
      * Test if x is an approximate real root.
-     * @param x approximate real root.
-     * @param f univariate polynomial, non-zero.
-     * @param fp univariate polynomial, non-zero, deriviative of f.
+     *
+     * @param x   approximate real root.
+     * @param f   univariate polynomial, non-zero.
+     * @param fp  univariate polynomial, non-zero, deriviative of f.
      * @param eps requested interval length.
      * @return true if x is a decimal approximation of a real v with f(v) = 0
-     *         with |d-v| &lt; eps, else false.
+     * with |d-v| &lt; eps, else false.
      */
     public boolean isApproximateRoot(BigDecimal x, GenPolynomial<BigDecimal> f, GenPolynomial<BigDecimal> fp,
-                    BigDecimal eps) {
+                                     BigDecimal eps) {
         if (x == null) {
             throw new IllegalArgumentException("null root not allowed");
         }
@@ -625,13 +647,13 @@ public abstract class RealRootsAbstract<C extends RingElem<C> & Rational> implem
         }
         BigDecimal dc = BigDecimal.ONE; // only for clarity
         // f(x)
-        BigDecimal fx = PolyUtil.<BigDecimal> evaluateMain(dc, f, x);
+        BigDecimal fx = PolyUtil.<BigDecimal>evaluateMain(dc, f, x);
         //System.out.println("fx    = " + fx);
         if (fx.isZERO()) {
             return true;
         }
         // f'(x)
-        BigDecimal fpx = PolyUtil.<BigDecimal> evaluateMain(dc, fp, x); // f'(d)
+        BigDecimal fpx = PolyUtil.<BigDecimal>evaluateMain(dc, fp, x); // f'(d)
         //System.out.println("fpx   = " + fpx);
         if (fpx.isZERO()) {
             return false;
@@ -651,11 +673,12 @@ public abstract class RealRootsAbstract<C extends RingElem<C> & Rational> implem
 
     /**
      * Test if each x in R is an approximate real root.
-     * @param R ist of approximate real roots.
-     * @param f univariate polynomial, non-zero.
+     *
+     * @param R   ist of approximate real roots.
+     * @param f   univariate polynomial, non-zero.
      * @param eps requested interval length.
      * @return true if each x in R is a decimal approximation of a real v with
-     *         f(v) = 0 with |d-v| &lt; eps, else false.
+     * f(v) = 0 with |d-v| &lt; eps, else false.
      */
     public boolean isApproximateRoot(List<BigDecimal> R, GenPolynomial<C> f, BigRational eps) {
         if (R == null) {
@@ -669,9 +692,9 @@ public abstract class RealRootsAbstract<C extends RingElem<C> & Rational> implem
         BigDecimal dc = BigDecimal.ONE;
         // polynomials with decimal coefficients
         GenPolynomialRing<BigDecimal> dfac = new GenPolynomialRing<BigDecimal>(dc, f.ring);
-        GenPolynomial<BigDecimal> df = PolyUtil.<C> decimalFromRational(dfac, f);
-        GenPolynomial<C> fp = PolyUtil.<C> baseDeriviative(f);
-        GenPolynomial<BigDecimal> dfp = PolyUtil.<C> decimalFromRational(dfac, fp);
+        GenPolynomial<BigDecimal> df = PolyUtil.<C>decimalFromRational(dfac, f);
+        GenPolynomial<C> fp = PolyUtil.<C>baseDeriviative(f);
+        GenPolynomial<BigDecimal> dfp = PolyUtil.<C>decimalFromRational(dfac, fp);
         for (BigDecimal x : R) {
             if (!isApproximateRoot(x, df, dfp, e)) {
                 return false;

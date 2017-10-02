@@ -5,10 +5,10 @@
 package edu.jas.ps;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.poly.ExpVector;
 import edu.jas.structure.RingElem;
@@ -18,12 +18,13 @@ import edu.jas.structure.RingElem;
  * Standard Base sequential algorithm. Implements Standard bases and GB test.
  * <b>Note: </b> Currently the term order is fixed to the order defined by the
  * iterator over exponent vectors <code>ExpVectorIterator</code>.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
 
 public class StandardBaseSeq<C extends RingElem<C>>
-/*todo: extends StandardBaseAbstract<C>*/{
+/*todo: extends StandardBaseAbstract<C>*/ {
 
 
     private static final Logger logger = Logger.getLogger(StandardBaseSeq.class);
@@ -49,6 +50,7 @@ public class StandardBaseSeq<C extends RingElem<C>>
 
     /**
      * Constructor.
+     *
      * @param red Reduction engine
      */
     public StandardBaseSeq(ReductionSeq<C> red) {
@@ -58,6 +60,7 @@ public class StandardBaseSeq<C extends RingElem<C>>
 
     /**
      * Normalize power series list.
+     *
      * @param A list of power series.
      * @return list of power series with zeros removed and ones/units reduced.
      */
@@ -87,6 +90,7 @@ public class StandardBaseSeq<C extends RingElem<C>>
 
     /**
      * Standard base test.
+     *
      * @param F power series list.
      * @return true, if F is a Standard base, else false.
      */
@@ -97,8 +101,9 @@ public class StandardBaseSeq<C extends RingElem<C>>
 
     /**
      * Standard base test.
+     *
      * @param modv module variable number.
-     * @param F power series list.
+     * @param F    power series list.
      * @return true, if F is a Standard base, else false.
      */
     public boolean isSTD(int modv, List<MultiVarPowerSeries<C>> F) {
@@ -134,6 +139,7 @@ public class StandardBaseSeq<C extends RingElem<C>>
 
     /**
      * Standard base using pairlist class.
+     *
      * @param F power series list.
      * @return STD(F) a Standard base of F.
      */
@@ -144,13 +150,14 @@ public class StandardBaseSeq<C extends RingElem<C>>
 
     /**
      * Standard base using pairlist class.
+     *
      * @param modv module variable number.
-     * @param F power series list.
+     * @param F    power series list.
      * @return STD(F) a Standard base of F.
      */
     public List<MultiVarPowerSeries<C>> STD(int modv, List<MultiVarPowerSeries<C>> F) {
         List<MultiVarPowerSeries<C>> G = normalizeZerosOnes(F);
-        G = PSUtil.<C> monic(G);
+        G = PSUtil.<C>monic(G);
         if (G.size() <= 1) {
             return G;
         }
@@ -258,6 +265,7 @@ public class StandardBaseSeq<C extends RingElem<C>>
 
     /**
      * Minimal ordered Standard basis.
+     *
      * @param Gp a Standard base.
      * @return a minimal Standard base of Gp, not auto reduced.
      */

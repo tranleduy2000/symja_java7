@@ -30,7 +30,7 @@ import org.hipparchus.util.FastMath;
 /**
  * This abstract class holds the common part of all adaptive
  * stepsize integrators for Ordinary Differential Equations.
- *
+ * <p>
  * <p>These algorithms perform integration with stepsize control, which
  * means the user does not specify the integration step but rather a
  * tolerance on error. The error threshold is computed as
@@ -49,55 +49,71 @@ import org.hipparchus.util.FastMath;
  * <em>only</em> the {@link org.hipparchus.ode.ExpandableODE#getPrimary() primary part}
  * of the state vector is used for stepsize control, not the complete state vector.
  * </p>
- *
+ * <p>
  * <p>If the estimated error for ym+1 is such that
  * <pre>
  * sqrt((sum (errEst_i / threshold_i)^2 ) / n) < 1
  * </pre>
- *
+ * <p>
  * (where n is the main set dimension) then the step is accepted,
  * otherwise the step is rejected and a new attempt is made with a new
  * stepsize.</p>
- *
- *
  */
 
 public abstract class AdaptiveStepsizeIntegrator
-    extends AbstractIntegrator {
+        extends AbstractIntegrator {
 
-    /** Allowed absolute scalar error. */
+    /**
+     * Allowed absolute scalar error.
+     */
     protected double scalAbsoluteTolerance;
 
-    /** Allowed relative scalar error. */
+    /**
+     * Allowed relative scalar error.
+     */
     protected double scalRelativeTolerance;
 
-    /** Allowed absolute vectorial error. */
+    /**
+     * Allowed absolute vectorial error.
+     */
     protected double[] vecAbsoluteTolerance;
 
-    /** Allowed relative vectorial error. */
+    /**
+     * Allowed relative vectorial error.
+     */
     protected double[] vecRelativeTolerance;
 
-    /** Main set dimension. */
+    /**
+     * Main set dimension.
+     */
     protected int mainSetDimension;
 
-    /** User supplied initial step. */
+    /**
+     * User supplied initial step.
+     */
     private double initialStep;
 
-    /** Minimal step. */
+    /**
+     * Minimal step.
+     */
     private double minStep;
 
-    /** Maximal step. */
+    /**
+     * Maximal step.
+     */
     private double maxStep;
 
-    /** Build an integrator with the given stepsize bounds.
+    /**
+     * Build an integrator with the given stepsize bounds.
      * The default step handler does nothing.
-     * @param name name of the method
-     * @param minStep minimal step (sign is irrelevant, regardless of
-     * integration direction, forward or backward), the last step can
-     * be smaller than this
-     * @param maxStep maximal step (sign is irrelevant, regardless of
-     * integration direction, forward or backward), the last step can
-     * be smaller than this
+     *
+     * @param name                  name of the method
+     * @param minStep               minimal step (sign is irrelevant, regardless of
+     *                              integration direction, forward or backward), the last step can
+     *                              be smaller than this
+     * @param maxStep               maximal step (sign is irrelevant, regardless of
+     *                              integration direction, forward or backward), the last step can
+     *                              be smaller than this
      * @param scalAbsoluteTolerance allowed absolute error
      * @param scalRelativeTolerance allowed relative error
      */
@@ -112,15 +128,17 @@ public abstract class AdaptiveStepsizeIntegrator
 
     }
 
-    /** Build an integrator with the given stepsize bounds.
+    /**
+     * Build an integrator with the given stepsize bounds.
      * The default step handler does nothing.
-     * @param name name of the method
-     * @param minStep minimal step (sign is irrelevant, regardless of
-     * integration direction, forward or backward), the last step can
-     * be smaller than this
-     * @param maxStep maximal step (sign is irrelevant, regardless of
-     * integration direction, forward or backward), the last step can
-     * be smaller than this
+     *
+     * @param name                 name of the method
+     * @param minStep              minimal step (sign is irrelevant, regardless of
+     *                             integration direction, forward or backward), the last step can
+     *                             be smaller than this
+     * @param maxStep              maximal step (sign is irrelevant, regardless of
+     *                             integration direction, forward or backward), the last step can
+     *                             be smaller than this
      * @param vecAbsoluteTolerance allowed absolute error
      * @param vecRelativeTolerance allowed relative error
      */
@@ -135,17 +153,19 @@ public abstract class AdaptiveStepsizeIntegrator
 
     }
 
-    /** Set the adaptive step size control parameters.
+    /**
+     * Set the adaptive step size control parameters.
      * <p>
      * A side effect of this method is to also reset the initial
      * step so it will be automatically computed by the integrator
      * if {@link #setInitialStepSize(double) setInitialStepSize}
      * is not called by the user.
      * </p>
-     * @param minimalStep minimal step (must be positive even for backward
-     * integration), the last step can be smaller than this
-     * @param maximalStep maximal step (must be positive even for backward
-     * integration)
+     *
+     * @param minimalStep       minimal step (must be positive even for backward
+     *                          integration), the last step can be smaller than this
+     * @param maximalStep       maximal step (must be positive even for backward
+     *                          integration)
      * @param absoluteTolerance allowed absolute error
      * @param relativeTolerance allowed relative error
      */
@@ -153,28 +173,30 @@ public abstract class AdaptiveStepsizeIntegrator
                                    final double absoluteTolerance,
                                    final double relativeTolerance) {
 
-        minStep     = FastMath.abs(minimalStep);
-        maxStep     = FastMath.abs(maximalStep);
+        minStep = FastMath.abs(minimalStep);
+        maxStep = FastMath.abs(maximalStep);
         initialStep = -1;
 
         scalAbsoluteTolerance = absoluteTolerance;
         scalRelativeTolerance = relativeTolerance;
-        vecAbsoluteTolerance  = null;
-        vecRelativeTolerance  = null;
+        vecAbsoluteTolerance = null;
+        vecRelativeTolerance = null;
 
     }
 
-    /** Set the adaptive step size control parameters.
+    /**
+     * Set the adaptive step size control parameters.
      * <p>
      * A side effect of this method is to also reset the initial
      * step so it will be automatically computed by the integrator
      * if {@link #setInitialStepSize(double) setInitialStepSize}
      * is not called by the user.
      * </p>
-     * @param minimalStep minimal step (must be positive even for backward
-     * integration), the last step can be smaller than this
-     * @param maximalStep maximal step (must be positive even for backward
-     * integration)
+     *
+     * @param minimalStep       minimal step (must be positive even for backward
+     *                          integration), the last step can be smaller than this
+     * @param maximalStep       maximal step (must be positive even for backward
+     *                          integration)
      * @param absoluteTolerance allowed absolute error
      * @param relativeTolerance allowed relative error
      */
@@ -182,27 +204,29 @@ public abstract class AdaptiveStepsizeIntegrator
                                    final double[] absoluteTolerance,
                                    final double[] relativeTolerance) {
 
-        minStep     = FastMath.abs(minimalStep);
-        maxStep     = FastMath.abs(maximalStep);
+        minStep = FastMath.abs(minimalStep);
+        maxStep = FastMath.abs(maximalStep);
         initialStep = -1;
 
         scalAbsoluteTolerance = 0;
         scalRelativeTolerance = 0;
-        vecAbsoluteTolerance  = absoluteTolerance.clone();
-        vecRelativeTolerance  = relativeTolerance.clone();
+        vecAbsoluteTolerance = absoluteTolerance.clone();
+        vecRelativeTolerance = relativeTolerance.clone();
 
     }
 
-    /** Set the initial step size.
+    /**
+     * Set the initial step size.
      * <p>This method allows the user to specify an initial positive
      * step size instead of letting the integrator guess it by
      * itself. If this method is not called before integration is
      * started, the initial step size will be estimated by the
      * integrator.</p>
+     *
      * @param initialStepSize initial step size to use (must be positive even
-     * for backward integration ; providing a negative value or a value
-     * outside of the min/max step interval will lead the integrator to
-     * ignore the value and compute the initial step size by itself)
+     *                        for backward integration ; providing a negative value or a value
+     *                        outside of the min/max step interval will lead the integrator to
+     *                        ignore the value and compute the initial step size by itself)
      */
     public void setInitialStepSize(final double initialStepSize) {
         if ((initialStepSize < minStep) || (initialStepSize > maxStep)) {
@@ -212,10 +236,12 @@ public abstract class AdaptiveStepsizeIntegrator
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void sanityChecks(final ODEState initialState, final double t)
-                    throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
 
         super.sanityChecks(initialState, t);
 
@@ -223,30 +249,32 @@ public abstract class AdaptiveStepsizeIntegrator
 
         if ((vecAbsoluteTolerance != null) && (vecAbsoluteTolerance.length != mainSetDimension)) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.DIMENSIONS_MISMATCH,
-                                                   mainSetDimension, vecAbsoluteTolerance.length);
+                    mainSetDimension, vecAbsoluteTolerance.length);
         }
 
         if ((vecRelativeTolerance != null) && (vecRelativeTolerance.length != mainSetDimension)) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.DIMENSIONS_MISMATCH,
-                                                   mainSetDimension, vecRelativeTolerance.length);
+                    mainSetDimension, vecRelativeTolerance.length);
         }
 
     }
 
-    /** Initialize the integration step.
+    /**
+     * Initialize the integration step.
+     *
      * @param forward forward integration indicator
-     * @param order order of the method
-     * @param scale scaling vector for the state vector (can be shorter than state vector)
-     * @param state0 state at integration start time
-     * @param mapper mapper for all the equations
+     * @param order   order of the method
+     * @param scale   scaling vector for the state vector (can be shorter than state vector)
+     * @param state0  state at integration start time
+     * @param mapper  mapper for all the equations
      * @return first integration step
-     * @exception MathIllegalStateException if the number of functions evaluations is exceeded
-     * @exception MathIllegalArgumentException if arrays dimensions do not match equations settings
+     * @throws MathIllegalStateException    if the number of functions evaluations is exceeded
+     * @throws MathIllegalArgumentException if arrays dimensions do not match equations settings
      */
     public double initializeStep(final boolean forward, final int order, final double[] scale,
                                  final ODEStateAndDerivative state0,
                                  final EquationsMapper mapper)
-        throws MathIllegalArgumentException, MathIllegalStateException {
+            throws MathIllegalArgumentException, MathIllegalStateException {
 
         if (initialStep > 0) {
             // use the user provided value
@@ -255,20 +283,20 @@ public abstract class AdaptiveStepsizeIntegrator
 
         // very rough first guess : h = 0.01 * ||y/scale|| / ||y'/scale||
         // this guess will be used to perform an Euler step
-        final double[] y0    = state0.getCompleteState();
+        final double[] y0 = state0.getCompleteState();
         final double[] yDot0 = state0.getCompleteDerivative();
         double yOnScale2 = 0;
         double yDotOnScale2 = 0;
         for (int j = 0; j < scale.length; ++j) {
-            final double ratio    = y0[j] / scale[j];
-            yOnScale2            += ratio * ratio;
+            final double ratio = y0[j] / scale[j];
+            yOnScale2 += ratio * ratio;
             final double ratioDot = yDot0[j] / scale[j];
-            yDotOnScale2         += ratioDot * ratioDot;
+            yDotOnScale2 += ratioDot * ratioDot;
         }
 
         double h = ((yOnScale2 < 1.0e-10) || (yDotOnScale2 < 1.0e-10)) ?
-                   1.0e-6 : (0.01 * FastMath.sqrt(yOnScale2 / yDotOnScale2));
-        if (! forward) {
+                1.0e-6 : (0.01 * FastMath.sqrt(yOnScale2 / yDotOnScale2));
+        if (!forward) {
             h = -h;
         }
 
@@ -291,8 +319,8 @@ public abstract class AdaptiveStepsizeIntegrator
         // h^order * max (||y'/tol||, ||y''/tol||) = 0.01
         final double maxInv2 = FastMath.max(FastMath.sqrt(yDotOnScale2), yDDotOnScale);
         final double h1 = (maxInv2 < 1.0e-15) ?
-                           FastMath.max(1.0e-6, 0.001 * FastMath.abs(h)) :
-                           FastMath.pow(0.01 / maxInv2, 1.0 / order);
+                FastMath.max(1.0e-6, 0.001 * FastMath.abs(h)) :
+                FastMath.pow(0.01 / maxInv2, 1.0 / order);
         h = FastMath.min(100.0 * FastMath.abs(h), h1);
         h = FastMath.max(h, 1.0e-12 * FastMath.abs(state0.getTime()));  // avoids cancellation when computing t1 - t0
         if (h < getMinStep()) {
@@ -301,7 +329,7 @@ public abstract class AdaptiveStepsizeIntegrator
         if (h > getMaxStep()) {
             h = getMaxStep();
         }
-        if (! forward) {
+        if (!forward) {
             h = -h;
         }
 
@@ -309,17 +337,19 @@ public abstract class AdaptiveStepsizeIntegrator
 
     }
 
-    /** Filter the integration step.
-     * @param h signed step
-     * @param forward forward integration indicator
+    /**
+     * Filter the integration step.
+     *
+     * @param h           signed step
+     * @param forward     forward integration indicator
      * @param acceptSmall if true, steps smaller than the minimal value
-     * are silently increased up to this value, if false such small
-     * steps generate an exception
+     *                    are silently increased up to this value, if false such small
+     *                    steps generate an exception
      * @return a bounded integration step (h if no bound is reach, or a bounded value)
-     * @exception MathIllegalArgumentException if the step is too small and acceptSmall is false
+     * @throws MathIllegalArgumentException if the step is too small and acceptSmall is false
      */
     protected double filterStep(final double h, final boolean forward, final boolean acceptSmall)
-                    throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
 
         double filteredH = h;
         if (FastMath.abs(h) < minStep) {
@@ -327,7 +357,7 @@ public abstract class AdaptiveStepsizeIntegrator
                 filteredH = forward ? minStep : -minStep;
             } else {
                 throw new MathIllegalArgumentException(LocalizedODEFormats.MINIMAL_STEPSIZE_REACHED_DURING_INTEGRATION,
-                                                       FastMath.abs(h), minStep, true);
+                        FastMath.abs(h), minStep, true);
             }
         }
 
@@ -341,20 +371,26 @@ public abstract class AdaptiveStepsizeIntegrator
 
     }
 
-    /** Reset internal state to dummy values. */
+    /**
+     * Reset internal state to dummy values.
+     */
     protected void resetInternalState() {
         setStepStart(null);
         setStepSize(FastMath.sqrt(minStep * maxStep));
     }
 
-    /** Get the minimal step.
+    /**
+     * Get the minimal step.
+     *
      * @return minimal step
      */
     public double getMinStep() {
         return minStep;
     }
 
-    /** Get the maximal step.
+    /**
+     * Get the maximal step.
+     *
      * @return maximal step
      */
     public double getMaxStep() {

@@ -7,13 +7,14 @@ package edu.jas.application;
 
 import java.io.Serializable;
 
-import edu.jas.structure.GcdRingElem;
 import edu.jas.poly.AlgebraicNumber;
 import edu.jas.poly.AlgebraicNumberRing;
+import edu.jas.structure.GcdRingElem;
 
 
 /**
  * Container for primitive elements.
+ *
  * @author Heinz Kredel
  */
 public class PrimitiveElement<C extends GcdRingElem<C>> implements Serializable {
@@ -59,9 +60,10 @@ public class PrimitiveElement<C extends GcdRingElem<C>> implements Serializable 
 
     /**
      * Constructor.
+     *
      * @param pe the primitive element
-     * @param A the first element.
-     * @param B the second element.
+     * @param A  the first element.
+     * @param B  the second element.
      */
     protected PrimitiveElement(AlgebraicNumberRing<C> pe, AlgebraicNumber<C> A, AlgebraicNumber<C> B) {
         this(pe, A, B, null, null);
@@ -70,12 +72,13 @@ public class PrimitiveElement<C extends GcdRingElem<C>> implements Serializable 
 
     /**
      * Constructor.
+     *
      * @param pe the primitive element
-     * @param A the first element.
-     * @param B the second element.
+     * @param A  the first element.
+     * @param B  the second element.
      */
     protected PrimitiveElement(AlgebraicNumberRing<C> pe, AlgebraicNumber<C> A, AlgebraicNumber<C> B,
-                               AlgebraicNumberRing<C> ar, AlgebraicNumberRing<C> br ) {
+                               AlgebraicNumberRing<C> ar, AlgebraicNumberRing<C> br) {
         primitiveElem = pe;
         this.A = A;
         this.B = B;
@@ -86,6 +89,7 @@ public class PrimitiveElement<C extends GcdRingElem<C>> implements Serializable 
 
     /**
      * String representation of the primitive element.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -106,6 +110,7 @@ public class PrimitiveElement<C extends GcdRingElem<C>> implements Serializable 
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this Element.
      * @see edu.jas.structure.Element#toScript()
      */

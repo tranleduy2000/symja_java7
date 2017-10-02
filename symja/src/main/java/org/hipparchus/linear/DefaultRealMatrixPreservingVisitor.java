@@ -23,20 +23,26 @@ package org.hipparchus.linear;
  * This class is a convenience to create custom visitors without defining all
  * methods. This class provides default implementations that do nothing.
  * </p>
- *
  */
 public class DefaultRealMatrixPreservingVisitor implements RealMatrixPreservingVisitor {
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void start(int rows, int columns,
                       int startRow, int endRow, int startColumn, int endColumn) {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void visit(int row, int column, double value) {}
+    public void visit(int row, int column, double value) {
+    }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double end() {
         return 0;

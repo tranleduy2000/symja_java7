@@ -7,6 +7,7 @@ package edu.jas.kern;
 
 /**
  * PreemptStatus, defines global status for preemtive interruption handling.
+ *
  * @author Heinz Kredel
  */
 
@@ -28,6 +29,7 @@ public class PreemptStatus {
 
     /**
      * isAllowed.
+     *
      * @return true, preemtive interruption is allowed, else false.
      */
     public static boolean isAllowed() {

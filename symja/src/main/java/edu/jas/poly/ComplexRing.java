@@ -5,13 +5,13 @@
 package edu.jas.poly;
 
 
+import org.apache.log4j.Logger;
+
 import java.io.Reader;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.kern.StringUtil;
 import edu.jas.structure.RingElem;
@@ -21,6 +21,7 @@ import edu.jas.structure.RingFactory;
 /**
  * Generic Complex ring factory implementing the RingFactory interface. Objects
  * of this class are immutable.
+ *
  * @param <C> base type.
  * @author Heinz Kredel
  */
@@ -42,6 +43,7 @@ public class ComplexRing<C extends RingElem<C>> implements RingFactory<Complex<C
 
     /**
      * The constructor creates a ComplexRing object.
+     *
      * @param ring factory for Complex real and imaginary parts.
      */
     public ComplexRing(RingFactory<C> ring) {
@@ -51,6 +53,7 @@ public class ComplexRing<C extends RingElem<C>> implements RingFactory<Complex<C
 
     /**
      * Get a list of the generating elements.
+     *
      * @return list of generators for the algebraic structure.
      * @see edu.jas.structure.ElemFactory#generators()
      */
@@ -68,11 +71,12 @@ public class ComplexRing<C extends RingElem<C>> implements RingFactory<Complex<C
 
     /**
      * Corresponding algebraic number ring.
+     *
      * @return algebraic number ring. not jet possible.
      */
     public AlgebraicNumberRing<C> algebraicRing() {
         GenPolynomialRing<C> pfac = new GenPolynomialRing<C>(ring, 1, new TermOrder(TermOrder.INVLEX),
-                        new String[] { "I" });
+                new String[]{"I"});
         GenPolynomial<C> I = pfac.univariate(0, 2L).sum(pfac.getONE());
         AlgebraicNumberRing<C> afac = new AlgebraicNumberRing<C>(I, ring.isField()); // must indicate field
         return afac;
@@ -81,6 +85,7 @@ public class ComplexRing<C extends RingElem<C>> implements RingFactory<Complex<C
 
     /**
      * Is this structure finite or infinite.
+     *
      * @return true if this structure is finite, else false.
      * @see edu.jas.structure.ElemFactory#isFinite()
      */
@@ -91,6 +96,7 @@ public class ComplexRing<C extends RingElem<C>> implements RingFactory<Complex<C
 
     /**
      * Copy Complex element c.
+     *
      * @param c Complex&lt;C&gt;.
      * @return a copy of c.
      */
@@ -101,6 +107,7 @@ public class ComplexRing<C extends RingElem<C>> implements RingFactory<Complex<C
 
     /**
      * Get the zero element.
+     *
      * @return 0 as Complex&lt;C&gt;.
      */
     public Complex<C> getZERO() {
@@ -110,6 +117,7 @@ public class ComplexRing<C extends RingElem<C>> implements RingFactory<Complex<C
 
     /**
      * Get the one element.
+     *
      * @return 1 as Complex&lt;C&gt;.
      */
     public Complex<C> getONE() {
@@ -119,6 +127,7 @@ public class ComplexRing<C extends RingElem<C>> implements RingFactory<Complex<C
 
     /**
      * Get the i element.
+     *
      * @return i as Complex&lt;C&gt;.
      */
     public Complex<C> getIMAG() {
@@ -128,6 +137,7 @@ public class ComplexRing<C extends RingElem<C>> implements RingFactory<Complex<C
 
     /**
      * Query if this ring is commutative.
+     *
      * @return true.
      */
     public boolean isCommutative() {
@@ -137,6 +147,7 @@ public class ComplexRing<C extends RingElem<C>> implements RingFactory<Complex<C
 
     /**
      * Query if this ring is associative.
+     *
      * @return true.
      */
     public boolean isAssociative() {
@@ -146,6 +157,7 @@ public class ComplexRing<C extends RingElem<C>> implements RingFactory<Complex<C
 
     /**
      * Query if this ring is a field.
+     *
      * @return true.
      */
     public boolean isField() {
@@ -155,6 +167,7 @@ public class ComplexRing<C extends RingElem<C>> implements RingFactory<Complex<C
 
     /**
      * Characteristic of this ring.
+     *
      * @return characteristic of this ring.
      */
     public java.math.BigInteger characteristic() {
@@ -164,6 +177,7 @@ public class ComplexRing<C extends RingElem<C>> implements RingFactory<Complex<C
 
     /**
      * Get a Complex element from a BigInteger.
+     *
      * @param a BigInteger.
      * @return a Complex&lt;C&gt;.
      */
@@ -174,6 +188,7 @@ public class ComplexRing<C extends RingElem<C>> implements RingFactory<Complex<C
 
     /**
      * Get a Complex element from a long.
+     *
      * @param a long.
      * @return a Complex&lt;C&gt;.
      */
@@ -202,6 +217,7 @@ public class ComplexRing<C extends RingElem<C>> implements RingFactory<Complex<C
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this Element.
      * @see edu.jas.structure.Element#toScript()
      */
@@ -223,6 +239,7 @@ public class ComplexRing<C extends RingElem<C>> implements RingFactory<Complex<C
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -244,6 +261,7 @@ public class ComplexRing<C extends RingElem<C>> implements RingFactory<Complex<C
 
     /**
      * Hash code for this ComplexRing&lt;C&gt;.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -256,6 +274,7 @@ public class ComplexRing<C extends RingElem<C>> implements RingFactory<Complex<C
      * Complex number random. Random base numbers A and B are generated using
      * random(n). Then R is the complex number with real part A and imaginary
      * part B.
+     *
      * @param n such that 0 &le; A, B &le; (2<sup>n</sup>-1).
      * @return R.
      */
@@ -271,7 +290,8 @@ public class ComplexRing<C extends RingElem<C>> implements RingFactory<Complex<C
      * Complex number random. Random base numbers A and B are generated using
      * random(n). Then R is the complex number with real part A and imaginary
      * part B.
-     * @param n such that 0 &le; A, B &le; (2<sup>n</sup>-1).
+     *
+     * @param n   such that 0 &le; A, B &le; (2<sup>n</sup>-1).
      * @param rnd is a source for random bits.
      * @return R.
      */
@@ -284,6 +304,7 @@ public class ComplexRing<C extends RingElem<C>> implements RingFactory<Complex<C
 
     /**
      * Parse complex number from string.
+     *
      * @param s String.
      * @return Complex<C> from s.
      */
@@ -294,6 +315,7 @@ public class ComplexRing<C extends RingElem<C>> implements RingFactory<Complex<C
 
     /**
      * Parse complex number from Reader.
+     *
      * @param r Reader.
      * @return next Complex<C> from r.
      */

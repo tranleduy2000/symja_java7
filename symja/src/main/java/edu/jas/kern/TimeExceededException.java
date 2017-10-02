@@ -8,6 +8,7 @@ package edu.jas.kern;
 /**
  * Time exceeded exception class. Runtime Exception to be thrown when the
  * run-time has exceeded a certain limit.
+ *
  * @author Heinz Kredel
  */
 

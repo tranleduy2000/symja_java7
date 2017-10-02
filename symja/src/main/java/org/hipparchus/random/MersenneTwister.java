@@ -16,9 +16,9 @@
  */
 package org.hipparchus.random;
 
-import java.io.Serializable;
-
 import org.hipparchus.util.FastMath;
+
+import java.io.Serializable;
 
 
 /**
@@ -50,21 +50,21 @@ import org.hipparchus.util.FastMath;
  * <p>
  * <table border="0" width="80%" cellpadding="10" align="center" bgcolor="#E0E0E0">
  * <tr><td>Copyright (C) 1997 - 2002, Makoto Matsumoto and Takuji Nishimura,
- *     All rights reserved.</td></tr>
+ * All rights reserved.</td></tr>
  * <tr><td>Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
  * <ol>
- *   <li>Redistributions of source code must retain the above copyright
- *       notice, this list of conditions and the following disclaimer.</li>
- *   <li>Redistributions in binary form must reproduce the above copyright
- *       notice, this list of conditions and the following disclaimer in the
- *       documentation and/or other materials provided with the distribution.</li>
- *   <li>The names of its contributors may not be used to endorse or promote
- *       products derived from this software without specific prior written
- *       permission.</li>
+ * <li>Redistributions of source code must retain the above copyright
+ * notice, this list of conditions and the following disclaimer.</li>
+ * <li>Redistributions in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in the
+ * documentation and/or other materials provided with the distribution.</li>
+ * <li>The names of its contributors may not be used to endorse or promote
+ * products derived from this software without specific prior written
+ * permission.</li>
  * </ol></td></tr>
- *
+ * <p>
  * <tr><td><strong>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
  * CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
  * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -82,23 +82,35 @@ import org.hipparchus.util.FastMath;
  */
 public class MersenneTwister extends IntRandomGenerator implements Serializable {
 
-    /** Serializable version identifier. */
+    /**
+     * Serializable version identifier.
+     */
     private static final long serialVersionUID = 20160529L;
 
-    /** Size of the bytes pool. */
-    private static final int   N     = 624;
+    /**
+     * Size of the bytes pool.
+     */
+    private static final int N = 624;
 
-    /** Period second parameter. */
-    private static final int   M     = 397;
+    /**
+     * Period second parameter.
+     */
+    private static final int M = 397;
 
-    /** X * MATRIX_A for X = {0, 1}. */
-    private static final int[] MAG01 = { 0x0, 0x9908b0df };
+    /**
+     * X * MATRIX_A for X = {0, 1}.
+     */
+    private static final int[] MAG01 = {0x0, 0x9908b0df};
 
-    /** Bytes pool. */
+    /**
+     * Bytes pool.
+     */
     private int[] mt;
 
-    /** Current index in the bytes pool. */
-    private int   mti;
+    /**
+     * Current index in the bytes pool.
+     */
+    private int mti;
 
     /**
      * Creates a new random number generator.
@@ -113,6 +125,7 @@ public class MersenneTwister extends IntRandomGenerator implements Serializable 
 
     /**
      * Creates a new random number generator using a single int seed.
+     *
      * @param seed the initial seed (32 bits integer)
      */
     public MersenneTwister(int seed) {
@@ -122,8 +135,9 @@ public class MersenneTwister extends IntRandomGenerator implements Serializable 
 
     /**
      * Creates a new random number generator using an int array seed.
+     *
      * @param seed the initial seed (32 bits integers array), if null
-     * the seed of the generator will be related to the current time
+     *             the seed of the generator will be related to the current time
      */
     public MersenneTwister(int[] seed) {
         mt = new int[N];
@@ -132,6 +146,7 @@ public class MersenneTwister extends IntRandomGenerator implements Serializable 
 
     /**
      * Creates a new random number generator using a single long seed.
+     *
      * @param seed the initial seed (64 bits integer)
      */
     public MersenneTwister(long seed) {
@@ -153,12 +168,12 @@ public class MersenneTwister extends IntRandomGenerator implements Serializable 
         long longMT = seed & 0xffffffffL;
         // NB: unlike original C code, we are working with java longs,
         // the cast below makes masking unnecessary
-        mt[0]= (int) longMT;
+        mt[0] = (int) longMT;
         for (mti = 1; mti < N; ++mti) {
             // See Knuth TAOCP Vol2. 3rd Ed. P.106 for multiplier.
             // initializer from the 2002-01-09 C version by Makoto Matsumoto
             longMT = (1812433253l * (longMT ^ (longMT >> 30)) + mti) & 0xffffffffL;
-            mt[mti]= (int) longMT;
+            mt[mti] = (int) longMT;
         }
 
         clearCache(); // Clear normal deviate cache
@@ -171,8 +186,8 @@ public class MersenneTwister extends IntRandomGenerator implements Serializable 
      * generator built with the same seed.
      *
      * @param seed the initial seed (32 bits integers array), if null
-     * the seed of the generator will be the current system time plus the
-     * system identity hash code of this instance
+     *             the seed of the generator will be the current system time plus the
+     *             system identity hash code of this instance
      */
     @Override
     public void setSeed(int[] seed) {
@@ -187,11 +202,12 @@ public class MersenneTwister extends IntRandomGenerator implements Serializable 
         int j = 0;
 
         for (int k = FastMath.max(N, seed.length); k != 0; k--) {
-            long l0 = (mt[i] & 0x7fffffffl)   | ((mt[i]   < 0) ? 0x80000000l : 0x0l);
-            long l1 = (mt[i-1] & 0x7fffffffl) | ((mt[i-1] < 0) ? 0x80000000l : 0x0l);
-            long l  = (l0 ^ ((l1 ^ (l1 >> 30)) * 1664525l)) + seed[j] + j; // non linear
-            mt[i]   = (int) (l & 0xffffffffl);
-            i++; j++;
+            long l0 = (mt[i] & 0x7fffffffl) | ((mt[i] < 0) ? 0x80000000l : 0x0l);
+            long l1 = (mt[i - 1] & 0x7fffffffl) | ((mt[i - 1] < 0) ? 0x80000000l : 0x0l);
+            long l = (l0 ^ ((l1 ^ (l1 >> 30)) * 1664525l)) + seed[j] + j; // non linear
+            mt[i] = (int) (l & 0xffffffffl);
+            i++;
+            j++;
             if (i >= N) {
                 mt[0] = mt[N - 1];
                 i = 1;
@@ -202,10 +218,10 @@ public class MersenneTwister extends IntRandomGenerator implements Serializable 
         }
 
         for (int k = N - 1; k != 0; k--) {
-            long l0 = (mt[i] & 0x7fffffffl)   | ((mt[i]   < 0) ? 0x80000000l : 0x0l);
-            long l1 = (mt[i-1] & 0x7fffffffl) | ((mt[i-1] < 0) ? 0x80000000l : 0x0l);
-            long l  = (l0 ^ ((l1 ^ (l1 >> 30)) * 1566083941l)) - i; // non linear
-            mt[i]   = (int) (l & 0xffffffffL);
+            long l0 = (mt[i] & 0x7fffffffl) | ((mt[i] < 0) ? 0x80000000l : 0x0l);
+            long l1 = (mt[i - 1] & 0x7fffffffl) | ((mt[i - 1] < 0) ? 0x80000000l : 0x0l);
+            long l = (l0 ^ ((l1 ^ (l1 >> 30)) * 1566083941l)) - i; // non linear
+            mt[i] = (int) (l & 0xffffffffL);
             i++;
             if (i >= N) {
                 mt[0] = mt[N - 1];
@@ -218,7 +234,9 @@ public class MersenneTwister extends IntRandomGenerator implements Serializable 
         clearCache(); // Clear normal deviate cache
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int nextInt() {
 
@@ -247,10 +265,10 @@ public class MersenneTwister extends IntRandomGenerator implements Serializable 
         y = mt[mti++];
 
         // tempering
-        y ^=  y >>> 11;
-        y ^= (y <<   7) & 0x9d2c5680;
-        y ^= (y <<  15) & 0xefc60000;
-        y ^=  y >>> 18;
+        y ^= y >>> 11;
+        y ^= (y << 7) & 0x9d2c5680;
+        y ^= (y << 15) & 0xefc60000;
+        y ^= y >>> 18;
 
         return y;
     }

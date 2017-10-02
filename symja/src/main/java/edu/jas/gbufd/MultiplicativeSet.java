@@ -5,11 +5,11 @@
 package edu.jas.gbufd;
 
 
+import org.apache.log4j.Logger;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.poly.GenPolynomial;
 import edu.jas.poly.GenPolynomialRing;
@@ -18,6 +18,7 @@ import edu.jas.structure.GcdRingElem;
 
 /**
  * Multiplicative set of polynomials. a, b in M implies a*b in M, 1 in M.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
@@ -44,6 +45,7 @@ public class MultiplicativeSet<C extends GcdRingElem<C>> implements Serializable
 
     /**
      * MultiplicativeSet constructor. Constructs an empty multiplicative set.
+     *
      * @param ring polynomial ring factory for coefficients.
      */
     public MultiplicativeSet(GenPolynomialRing<C> ring) {
@@ -56,8 +58,9 @@ public class MultiplicativeSet<C extends GcdRingElem<C>> implements Serializable
 
     /**
      * MultiplicativeSet constructor.
+     *
      * @param ring polynomial ring factory for coefficients.
-     * @param ms a list of non-zero polynomials.
+     * @param ms   a list of non-zero polynomials.
      */
     protected MultiplicativeSet(GenPolynomialRing<C> ring, List<GenPolynomial<C>> ms) {
         if (ms == null || ring == null) {
@@ -70,6 +73,7 @@ public class MultiplicativeSet<C extends GcdRingElem<C>> implements Serializable
 
     /**
      * toString.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -80,6 +84,7 @@ public class MultiplicativeSet<C extends GcdRingElem<C>> implements Serializable
 
     /**
      * Equals.
+     *
      * @param ob an Object.
      * @return true if this is equal to o, else false.
      */
@@ -104,6 +109,7 @@ public class MultiplicativeSet<C extends GcdRingElem<C>> implements Serializable
 
     /**
      * Hash code for this condition.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -118,6 +124,7 @@ public class MultiplicativeSet<C extends GcdRingElem<C>> implements Serializable
 
     /**
      * Is set.
+     *
      * @return true if this is the empty set, else false.
      */
     public boolean isEmpty() {
@@ -127,6 +134,7 @@ public class MultiplicativeSet<C extends GcdRingElem<C>> implements Serializable
 
     /**
      * Test if a polynomial is contained in this multiplicative set.
+     *
      * @param c polynomial searched in mset.
      * @return true, if c = prod_{m in mset} m, else false
      */
@@ -168,6 +176,7 @@ public class MultiplicativeSet<C extends GcdRingElem<C>> implements Serializable
 
     /**
      * Test if a list of polynomials is contained in multiplicative set.
+     *
      * @param L list of polynomials to be searched in mset.
      * @return true, if all c in L are in mset, else false
      */
@@ -186,9 +195,10 @@ public class MultiplicativeSet<C extends GcdRingElem<C>> implements Serializable
 
     /**
      * Add polynomial to mset.
+     *
      * @param cc polynomial to be added to mset.
      * @return new multiplicative set. <b>Note:</b> must be overridden in
-     *         sub-classes.
+     * sub-classes.
      */
     public MultiplicativeSet<C> add(GenPolynomial<C> cc) {
         if (cc == null || cc.isZERO() || cc.isConstant()) {
@@ -224,9 +234,10 @@ public class MultiplicativeSet<C extends GcdRingElem<C>> implements Serializable
 
     /**
      * Replace polynomial list of mset.
+     *
      * @param L polynomial list to replace mset.
      * @return new multiplicative set. <b>Note:</b> must be overridden in
-     *         sub-classes.
+     * sub-classes.
      */
     public MultiplicativeSet<C> replace(List<GenPolynomial<C>> L) {
         MultiplicativeSet<C> ms = new MultiplicativeSet<C>(ring);
@@ -242,6 +253,7 @@ public class MultiplicativeSet<C extends GcdRingElem<C>> implements Serializable
 
     /**
      * Remove factors by mset factors division.
+     *
      * @param cc polynomial to be removed factors from mset.
      * @return quotient polynomial.
      */
@@ -277,6 +289,7 @@ public class MultiplicativeSet<C extends GcdRingElem<C>> implements Serializable
 
     /**
      * Remove factors by mset factors division.
+     *
      * @param L list of polynomial to be removed factors from mset.
      * @return quotient polynomial list.
      */

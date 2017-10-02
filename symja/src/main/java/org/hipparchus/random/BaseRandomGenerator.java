@@ -26,27 +26,35 @@ import org.hipparchus.util.FastMath;
  */
 abstract class BaseRandomGenerator implements RandomGenerator {
 
-    /** Next gaussian. */
+    /**
+     * Next gaussian.
+     */
     private double nextGaussian = Double.NaN;
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setSeed(int seed) {
-        setSeed(new int[] { seed });
+        setSeed(new int[]{seed});
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setSeed(long seed) {
-        setSeed(new int[] { (int) (seed >>> 32), (int) (seed & 0xffffffffL) });
+        setSeed(new int[]{(int) (seed >>> 32), (int) (seed & 0xffffffffL)});
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int nextInt(int n) throws IllegalArgumentException {
         if (n <= 0) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.NUMBER_TOO_SMALL_BOUND_EXCLUDED,
-                                                   n, 0);
+                    n, 0);
         }
 
         if ((n & -n) == n) {
@@ -61,24 +69,28 @@ abstract class BaseRandomGenerator implements RandomGenerator {
         return val;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public long nextLong(long n) {
         if (n <= 0) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.NUMBER_TOO_SMALL_BOUND_EXCLUDED,
-                                                   n, 0);
+                    n, 0);
         }
 
         long bits;
         long val;
         do {
             bits = nextLong() >>> 1;
-            val  = bits % n;
+            val = bits % n;
         } while (bits - val + (n - 1) < 0);
         return val;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double nextGaussian() {
 
@@ -88,8 +100,8 @@ abstract class BaseRandomGenerator implements RandomGenerator {
             final double x = nextDouble();
             final double y = nextDouble();
             final double alpha = 2 * FastMath.PI * x;
-            final double r      = FastMath.sqrt(-2 * FastMath.log(y));
-            random       = r * FastMath.cos(alpha);
+            final double r = FastMath.sqrt(-2 * FastMath.log(y));
+            random = r * FastMath.cos(alpha);
             nextGaussian = r * FastMath.sin(alpha);
         } else {
             // use the second element of the pair already generated
@@ -109,7 +121,9 @@ abstract class BaseRandomGenerator implements RandomGenerator {
         nextGaussian = Double.NaN;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return getClass().getName();

@@ -27,21 +27,29 @@ import org.hipparchus.util.Precision;
  * implementations.
  */
 public abstract class AbstractStorelessUnivariateStatistic
-    implements StorelessUnivariateStatistic {
+        implements StorelessUnivariateStatistic {
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public abstract StorelessUnivariateStatistic copy();
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public abstract void clear();
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public abstract double getResult();
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public abstract void increment(final double d);
 
@@ -56,7 +64,7 @@ public abstract class AbstractStorelessUnivariateStatistic
      */
     @Override
     public boolean equals(Object object) {
-        if (object == this ) {
+        if (object == this) {
             return true;
         }
         if (object == null || object.getClass() != this.getClass()) {
@@ -64,7 +72,7 @@ public abstract class AbstractStorelessUnivariateStatistic
         }
         StorelessUnivariateStatistic other = (StorelessUnivariateStatistic) object;
         return Precision.equalsIncludingNaN(other.getResult(), getResult()) &&
-               Precision.equalsIncludingNaN(other.getN(),      getN());
+                Precision.equalsIncludingNaN(other.getN(), getN());
     }
 
     /**
@@ -80,8 +88,8 @@ public abstract class AbstractStorelessUnivariateStatistic
     @Override
     public String toString() {
         return String.format("%s: result=%f, N=%d",
-                             getClass().getSimpleName(),
-                             getResult(),
-                             getN());
+                getClass().getSimpleName(),
+                getResult(),
+                getN());
     }
 }

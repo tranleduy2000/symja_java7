@@ -14,6 +14,7 @@ import edu.jas.structure.RingElem;
 /**
  * Algebraic number class. Based on GenPolynomial with RingElem interface.
  * Objects of this class are immutable.
+ *
  * @author Heinz Kredel
  */
 
@@ -42,6 +43,7 @@ public class AlgebraicNumber<C extends RingElem<C>> implements GcdRingElem<Algeb
     /**
      * The constructor creates a AlgebraicNumber object from AlgebraicNumberRing
      * modul and a GenPolynomial value.
+     *
      * @param r ring AlgebraicNumberRing<C>.
      * @param a value GenPolynomial<C>.
      */
@@ -60,6 +62,7 @@ public class AlgebraicNumber<C extends RingElem<C>> implements GcdRingElem<Algeb
     /**
      * The constructor creates a AlgebraicNumber object from a GenPolynomial
      * object module.
+     *
      * @param r ring AlgebraicNumberRing<C>.
      */
     public AlgebraicNumber(AlgebraicNumberRing<C> r) {
@@ -69,6 +72,7 @@ public class AlgebraicNumber<C extends RingElem<C>> implements GcdRingElem<Algeb
 
     /**
      * Get the value part.
+     *
      * @return val.
      */
     public GenPolynomial<C> getVal() {
@@ -78,6 +82,7 @@ public class AlgebraicNumber<C extends RingElem<C>> implements GcdRingElem<Algeb
 
     /**
      * Get the corresponding element factory.
+     *
      * @return factory for this Element.
      * @see edu.jas.structure.Element#factory()
      */
@@ -88,6 +93,7 @@ public class AlgebraicNumber<C extends RingElem<C>> implements GcdRingElem<Algeb
 
     /**
      * Copy this.
+     *
      * @see edu.jas.structure.Element#copy()
      */
     @Override
@@ -98,6 +104,7 @@ public class AlgebraicNumber<C extends RingElem<C>> implements GcdRingElem<Algeb
 
     /**
      * Is AlgebraicNumber zero.
+     *
      * @return If this is 0 then true is returned, else false.
      * @see edu.jas.structure.RingElem#isZERO()
      */
@@ -108,6 +115,7 @@ public class AlgebraicNumber<C extends RingElem<C>> implements GcdRingElem<Algeb
 
     /**
      * Is AlgebraicNumber one.
+     *
      * @return If this is 1 then true is returned, else false.
      * @see edu.jas.structure.RingElem#isONE()
      */
@@ -118,6 +126,7 @@ public class AlgebraicNumber<C extends RingElem<C>> implements GcdRingElem<Algeb
 
     /**
      * Is AlgebraicNumber unit.
+     *
      * @return If this is a unit then true is returned, else false.
      * @see edu.jas.structure.RingElem#isUnit()
      */
@@ -149,11 +158,12 @@ public class AlgebraicNumber<C extends RingElem<C>> implements GcdRingElem<Algeb
 
     /**
      * Is AlgebraicNumber a root of unity.
+     *
      * @return true if |this**i| == 1, for some 0 &lt; i &le; deg(modul), else false.
      */
     public boolean isRootOfUnity() {
         long d = ring.modul.degree();
-        AlgebraicNumber<C> t = ring.getONE(); 
+        AlgebraicNumber<C> t = ring.getONE();
         for (long i = 1; i <= d; i++) {
             t = t.multiply(this);
             if (t.abs().isONE()) {
@@ -167,6 +177,7 @@ public class AlgebraicNumber<C extends RingElem<C>> implements GcdRingElem<Algeb
 
     /**
      * Get the String representation as RingElem.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -180,6 +191,7 @@ public class AlgebraicNumber<C extends RingElem<C>> implements GcdRingElem<Algeb
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this Element.
      * @see edu.jas.structure.Element#toScript()
      */
@@ -192,6 +204,7 @@ public class AlgebraicNumber<C extends RingElem<C>> implements GcdRingElem<Algeb
 
     /**
      * Get a scripting compatible string representation of the factory.
+     *
      * @return script compatible representation for this ElemFactory.
      * @see edu.jas.structure.Element#toScriptFactory()
      */
@@ -204,6 +217,7 @@ public class AlgebraicNumber<C extends RingElem<C>> implements GcdRingElem<Algeb
 
     /**
      * AlgebraicNumber comparison.
+     *
      * @param b AlgebraicNumber.
      * @return sign(this-b).
      */
@@ -222,6 +236,7 @@ public class AlgebraicNumber<C extends RingElem<C>> implements GcdRingElem<Algeb
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -243,6 +258,7 @@ public class AlgebraicNumber<C extends RingElem<C>> implements GcdRingElem<Algeb
 
     /**
      * Hash code for this AlgebraicNumber.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -253,6 +269,7 @@ public class AlgebraicNumber<C extends RingElem<C>> implements GcdRingElem<Algeb
 
     /**
      * AlgebraicNumber absolute value.
+     *
      * @return the absolute value of this.
      * @see edu.jas.structure.RingElem#abs()
      */
@@ -263,6 +280,7 @@ public class AlgebraicNumber<C extends RingElem<C>> implements GcdRingElem<Algeb
 
     /**
      * AlgebraicNumber summation.
+     *
      * @param S AlgebraicNumber.
      * @return this+S.
      */
@@ -273,6 +291,7 @@ public class AlgebraicNumber<C extends RingElem<C>> implements GcdRingElem<Algeb
 
     /**
      * AlgebraicNumber summation.
+     *
      * @param c coefficient.
      * @return this+c.
      */
@@ -283,6 +302,7 @@ public class AlgebraicNumber<C extends RingElem<C>> implements GcdRingElem<Algeb
 
     /**
      * AlgebraicNumber summation.
+     *
      * @param c polynomial.
      * @return this+c.
      */
@@ -293,6 +313,7 @@ public class AlgebraicNumber<C extends RingElem<C>> implements GcdRingElem<Algeb
 
     /**
      * AlgebraicNumber negate.
+     *
      * @return -this.
      * @see edu.jas.structure.RingElem#negate()
      */
@@ -303,8 +324,9 @@ public class AlgebraicNumber<C extends RingElem<C>> implements GcdRingElem<Algeb
 
     /**
      * AlgebraicNumber signum.
-     * @see edu.jas.structure.RingElem#signum()
+     *
      * @return signum(this).
+     * @see edu.jas.structure.RingElem#signum()
      */
     public int signum() {
         return val.signum();
@@ -313,6 +335,7 @@ public class AlgebraicNumber<C extends RingElem<C>> implements GcdRingElem<Algeb
 
     /**
      * AlgebraicNumber subtraction.
+     *
      * @param S AlgebraicNumber.
      * @return this-S.
      */
@@ -323,6 +346,7 @@ public class AlgebraicNumber<C extends RingElem<C>> implements GcdRingElem<Algeb
 
     /**
      * AlgebraicNumber division.
+     *
      * @param S AlgebraicNumber.
      * @return this/S.
      */
@@ -333,9 +357,10 @@ public class AlgebraicNumber<C extends RingElem<C>> implements GcdRingElem<Algeb
 
     /**
      * AlgebraicNumber inverse.
-     * @see edu.jas.structure.RingElem#inverse()
-     * @throws NotInvertibleException if the element is not invertible.
+     *
      * @return S with S = 1/this if defined.
+     * @throws NotInvertibleException if the element is not invertible.
+     * @see edu.jas.structure.RingElem#inverse()
      */
     public AlgebraicNumber<C> inverse() {
         try {
@@ -345,13 +370,14 @@ public class AlgebraicNumber<C extends RingElem<C>> implements GcdRingElem<Algeb
             throw e;
         } catch (NotInvertibleException e) {
             throw new AlgebraicNotInvertibleException(e + ", val = " + val + ", modul = " + ring.modul
-                            + ", gcd = " + val.gcd(ring.modul), e);
+                    + ", gcd = " + val.gcd(ring.modul), e);
         }
     }
 
 
     /**
      * AlgebraicNumber remainder.
+     *
      * @param S AlgebraicNumber.
      * @return this - (this/S)*S.
      */
@@ -372,16 +398,18 @@ public class AlgebraicNumber<C extends RingElem<C>> implements GcdRingElem<Algeb
 
     /**
      * Quotient and remainder by division of this by S.
+     *
      * @param S a AlgebraicNumber
      * @return [this/S, this - (this/S)*S].
      */
     public AlgebraicNumber<C>[] quotientRemainder(AlgebraicNumber<C> S) {
-        return new AlgebraicNumber[] { divide(S), remainder(S) };
+        return new AlgebraicNumber[]{divide(S), remainder(S)};
     }
 
 
     /**
      * AlgebraicNumber multiplication.
+     *
      * @param S AlgebraicNumber.
      * @return this*S.
      */
@@ -393,6 +421,7 @@ public class AlgebraicNumber<C extends RingElem<C>> implements GcdRingElem<Algeb
 
     /**
      * AlgebraicNumber multiplication.
+     *
      * @param c coefficient.
      * @return this*c.
      */
@@ -404,6 +433,7 @@ public class AlgebraicNumber<C extends RingElem<C>> implements GcdRingElem<Algeb
 
     /**
      * AlgebraicNumber multiplication.
+     *
      * @param c polynomial.
      * @return this*c.
      */
@@ -415,6 +445,7 @@ public class AlgebraicNumber<C extends RingElem<C>> implements GcdRingElem<Algeb
 
     /**
      * AlgebraicNumber monic.
+     *
      * @return this with monic value part.
      */
     public AlgebraicNumber<C> monic() {
@@ -424,8 +455,9 @@ public class AlgebraicNumber<C extends RingElem<C>> implements GcdRingElem<Algeb
 
     /**
      * AlgebraicNumber greatest common divisor.
+     *
      * @param S AlgebraicNumber.
-     * @return gcd(this,S).
+     * @return gcd(this, S).
      */
     public AlgebraicNumber<C> gcd(AlgebraicNumber<C> S) {
         if (S.isZERO()) {
@@ -443,6 +475,7 @@ public class AlgebraicNumber<C extends RingElem<C>> implements GcdRingElem<Algeb
 
     /**
      * AlgebraicNumber extended greatest common divisor.
+     *
      * @param S AlgebraicNumber.
      * @return [ gcd(this,S), a, b ] with a*this + b*S = gcd(this,S).
      */

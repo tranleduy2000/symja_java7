@@ -33,29 +33,35 @@ import org.hipparchus.util.MathUtils;
  * @see <a href="http://mathworld.wolfram.com/WeibullDistribution.html">Weibull distribution (MathWorld)</a>
  */
 public class WeibullDistribution extends AbstractRealDistribution {
-    /** Serializable version identifier. */
+    /**
+     * Serializable version identifier.
+     */
     private static final long serialVersionUID = 20160320L;
-    /** The shape parameter. */
+    /**
+     * The shape parameter.
+     */
     private final double shape;
-    /** The scale parameter. */
+    /**
+     * The scale parameter.
+     */
     private final double scale;
 
     /**
      * Create a Weibull distribution with the given shape and scale.
      *
      * @param alpha Shape parameter.
-     * @param beta Scale parameter.
+     * @param beta  Scale parameter.
      * @throws MathIllegalArgumentException if {@code alpha <= 0} or {@code beta <= 0}.
      */
     public WeibullDistribution(double alpha, double beta)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         if (alpha <= 0) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.SHAPE,
-                                                   alpha);
+                    alpha);
         }
         if (beta <= 0) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.SCALE,
-                                                   beta);
+                    beta);
         }
         scale = beta;
         shape = alpha;
@@ -79,7 +85,9 @@ public class WeibullDistribution extends AbstractRealDistribution {
         return scale;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double density(double x) {
         if (x < 0) {
@@ -99,7 +107,9 @@ public class WeibullDistribution extends AbstractRealDistribution {
         return (shape / scale) * xscalepow * FastMath.exp(-xscalepowshape);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double logDensity(double x) {
         if (x < 0) {
@@ -119,7 +129,9 @@ public class WeibullDistribution extends AbstractRealDistribution {
         return FastMath.log(shape / scale) + logxscalepow - xscalepowshape;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double cumulativeProbability(double x) {
         double ret;
@@ -133,7 +145,7 @@ public class WeibullDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * Returns {@code 0} when {@code p == 0} and
      * {@code Double.POSITIVE_INFINITY} when {@code p == 1}.
      */
@@ -144,7 +156,7 @@ public class WeibullDistribution extends AbstractRealDistribution {
         double ret;
         if (p == 0) {
             ret = 0.0;
-        } else  if (p == 1) {
+        } else if (p == 1) {
             ret = Double.POSITIVE_INFINITY;
         } else {
             ret = scale * FastMath.pow(-FastMath.log1p(-p), 1.0 / shape);
@@ -154,7 +166,7 @@ public class WeibullDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The mean is {@code scale * Gamma(1 + (1 / shape))}, where {@code Gamma()}
      * is the Gamma-function.
      */
@@ -168,7 +180,7 @@ public class WeibullDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The variance is {@code scale^2 * Gamma(1 + (2 / shape)) - mean^2}
      * where {@code Gamma()} is the Gamma-function.
      */
@@ -179,12 +191,12 @@ public class WeibullDistribution extends AbstractRealDistribution {
         final double mn = getNumericalMean();
 
         return (sc * sc) * FastMath.exp(Gamma.logGamma(1 + (2 / sh))) -
-               (mn * mn);
+                (mn * mn);
     }
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The lower bound of the support is always 0 no matter the parameters.
      *
      * @return lower bound of the support (always 0)
@@ -196,7 +208,7 @@ public class WeibullDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The upper bound of the support is always positive infinity
      * no matter the parameters.
      *
@@ -210,7 +222,7 @@ public class WeibullDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The support of this distribution is connected.
      *
      * @return {@code true}

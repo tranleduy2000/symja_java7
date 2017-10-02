@@ -5,11 +5,9 @@
 package edu.jas.gb;
 
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ListIterator;
-
 import org.apache.log4j.Logger;
+
+import java.util.List;
 
 import edu.jas.poly.GenPolynomial;
 import edu.jas.poly.GenPolynomialRing;
@@ -19,6 +17,7 @@ import edu.jas.structure.RingElem;
 /**
  * D-Groebner Base sequential algorithm. Implements D-Groebner bases and GB
  * test. <b>Note:</b> Minimal reduced GBs are not unique. see BWK, section 10.1.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
@@ -48,6 +47,7 @@ public class DGroebnerBaseSeq<C extends RingElem<C>> extends GroebnerBaseAbstrac
 
     /**
      * Constructor.
+     *
      * @param dred D-Reduction engine
      */
     public DGroebnerBaseSeq(DReduction<C> dred) {
@@ -59,8 +59,9 @@ public class DGroebnerBaseSeq<C extends RingElem<C>> extends GroebnerBaseAbstrac
 
     /**
      * D-Groebner base test.
+     *
      * @param modv module variable number.
-     * @param F polynomial list.
+     * @param F    polynomial list.
      * @return true, if F is a D-Groebner base, else false.
      */
     @Override
@@ -102,13 +103,14 @@ public class DGroebnerBaseSeq<C extends RingElem<C>> extends GroebnerBaseAbstrac
 
     /**
      * D-Groebner base using pairlist class.
+     *
      * @param modv module variable number.
-     * @param F polynomial list.
+     * @param F    polynomial list.
      * @return GB(F) a D-Groebner base of F.
      */
     public List<GenPolynomial<C>> GB(int modv, List<GenPolynomial<C>> F) {
         List<GenPolynomial<C>> G = normalizeZerosOnes(F);
-        if ( G.size() <= 1 ) {
+        if (G.size() <= 1) {
             return G;
         }
         GenPolynomialRing<C> ring = G.get(0).ring;

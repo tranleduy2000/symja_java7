@@ -14,6 +14,7 @@ import edu.jas.structure.RingElem;
 
 /**
  * WordPair list management interface.
+ *
  * @author Heinz Kredel
  */
 
@@ -22,6 +23,7 @@ public interface WordPairList<C extends RingElem<C>> {
 
     /**
      * Create a new WordPairList.
+     *
      * @param r word polynomial ring.
      */
     public WordPairList<C> create(GenWordPolynomialRing<C> r);
@@ -36,6 +38,7 @@ public interface WordPairList<C extends RingElem<C>> {
 
     /**
      * Put one Word Polynomial to the pairlist and reduction matrix.
+     *
      * @param p word polynomial.
      * @return the index of the added word polynomial.
      */
@@ -44,6 +47,7 @@ public interface WordPairList<C extends RingElem<C>> {
 
     /**
      * Put all word polynomials in F to the pairlist and reduction matrix.
+     *
      * @param F word polynomial list.
      * @return the index of the last added word polynomial.
      */
@@ -52,6 +56,7 @@ public interface WordPairList<C extends RingElem<C>> {
 
     /**
      * Put to ONE-Polynomial to the pairlist.
+     *
      * @return the index of the last polynomial.
      */
     public int putOne();
@@ -60,6 +65,7 @@ public interface WordPairList<C extends RingElem<C>> {
     /**
      * Remove the next required pair from the pairlist and reduction matrix.
      * Appy the criterions 3 and 4 to see if the S-polynomial is required.
+     *
      * @return the next pair if one exists, otherwise null.
      */
     public WordPair<C> removeNext();
@@ -67,6 +73,7 @@ public interface WordPairList<C extends RingElem<C>> {
 
     /**
      * Test if there is possibly a pair in the list.
+     *
      * @return true if a next pair could exist, otherwise false.
      */
     public boolean hasNext();
@@ -74,6 +81,7 @@ public interface WordPairList<C extends RingElem<C>> {
 
     /**
      * Get the list of word polynomials.
+     *
      * @return the word polynomial list.
      */
     public List<GenWordPolynomial<C>> getList();
@@ -81,6 +89,7 @@ public interface WordPairList<C extends RingElem<C>> {
 
     /**
      * Get the number of polynomials put to the pairlist.
+     *
      * @return the number of calls to put.
      */
     public int putCount();
@@ -88,6 +97,7 @@ public interface WordPairList<C extends RingElem<C>> {
 
     /**
      * Get the number of required pairs removed from the pairlist.
+     *
      * @return the number of non null pairs delivered.
      */
     public int remCount();

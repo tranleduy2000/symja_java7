@@ -5,9 +5,9 @@
 package edu.jas.gb;
 
 
-import java.util.List;
-
 import org.apache.log4j.Logger;
+
+import java.util.List;
 
 import edu.jas.poly.GenWordPolynomial;
 import edu.jas.poly.GenWordPolynomialRing;
@@ -18,6 +18,7 @@ import edu.jas.structure.RingElem;
 /**
  * Non-commutative word Groebner Base sequential algorithm. Implements Groebner
  * bases and GB test.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
@@ -41,6 +42,7 @@ public class WordGroebnerBaseSeq<C extends RingElem<C>> extends WordGroebnerBase
 
     /**
      * Constructor.
+     *
      * @param red Reduction engine
      */
     public WordGroebnerBaseSeq(WordReduction<C> red) {
@@ -50,8 +52,9 @@ public class WordGroebnerBaseSeq<C extends RingElem<C>> extends WordGroebnerBase
 
     /**
      * Constructor.
+     *
      * @param red Reduction engine
-     * @param pl pair selection strategy
+     * @param pl  pair selection strategy
      */
     public WordGroebnerBaseSeq(WordReduction<C> red, WordPairList<C> pl) {
         super(red, pl);
@@ -60,13 +63,14 @@ public class WordGroebnerBaseSeq<C extends RingElem<C>> extends WordGroebnerBase
 
     /**
      * Word Groebner base using word pairlist class.
+     *
      * @param F word polynomial list.
      * @return GB(F) a finite non-commutative Groebner base of F, if it exists.
      */
     @Override
     public List<GenWordPolynomial<C>> GB(List<GenWordPolynomial<C>> F) {
         List<GenWordPolynomial<C>> G = normalizeZerosOnes(F);
-        G = PolyUtil.<C> wordMonic(G);
+        G = PolyUtil.<C>wordMonic(G);
         if (G.size() <= 1) {
             return G;
         }
@@ -127,7 +131,7 @@ public class WordGroebnerBaseSeq<C extends RingElem<C>> extends WordGroebnerBase
                 }
                 if (!t) {
                     logger.info("criterion3(" + pair.i + "," + pair.j + ") wrong: " + s.leadingWord()
-                                    + " --> " + H.leadingWord());
+                            + " --> " + H.leadingWord());
                 }
 
                 H = H.monic();

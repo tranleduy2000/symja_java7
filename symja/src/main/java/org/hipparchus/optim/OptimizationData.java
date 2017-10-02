@@ -22,6 +22,6 @@ package org.hipparchus.optim;
  * by the optimizers, and those will need to check the actual type of the
  * arguments and perform the appropriate cast in order to access the data
  * they need.
- *
  */
-public interface OptimizationData {}
+public interface OptimizationData {
+}

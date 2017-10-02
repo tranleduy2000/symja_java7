@@ -16,9 +16,6 @@
  */
 package org.hipparchus.stat.descriptive;
 
-import java.io.Serializable;
-import java.util.Arrays;
-
 import org.hipparchus.exception.LocalizedCoreFormats;
 import org.hipparchus.exception.MathIllegalArgumentException;
 import org.hipparchus.linear.RealMatrix;
@@ -34,6 +31,9 @@ import org.hipparchus.stat.descriptive.vector.VectorialStorelessStatistic;
 import org.hipparchus.util.FastMath;
 import org.hipparchus.util.MathArrays;
 import org.hipparchus.util.MathUtils;
+
+import java.io.Serializable;
+import java.util.Arrays;
 
 /**
  * Computes summary statistics for a stream of n-tuples added using the
@@ -54,32 +54,54 @@ import org.hipparchus.util.MathUtils;
  * Note: This class is not thread-safe.
  */
 public class MultivariateSummaryStatistics
-    implements StatisticalMultivariateSummary, Serializable {
+        implements StatisticalMultivariateSummary, Serializable {
 
-    /** Serialization UID */
+    /**
+     * Serialization UID
+     */
     private static final long serialVersionUID = 20160424L;
 
-    /** Dimension of the data. */
+    /**
+     * Dimension of the data.
+     */
     private final int k;
 
-    /** Sum statistic implementation */
+    /**
+     * Sum statistic implementation
+     */
     private final StorelessMultivariateStatistic sumImpl;
-    /** Sum of squares statistic implementation */
+    /**
+     * Sum of squares statistic implementation
+     */
     private final StorelessMultivariateStatistic sumSqImpl;
-    /** Minimum statistic implementation */
+    /**
+     * Minimum statistic implementation
+     */
     private final StorelessMultivariateStatistic minImpl;
-    /** Maximum statistic implementation */
+    /**
+     * Maximum statistic implementation
+     */
     private final StorelessMultivariateStatistic maxImpl;
-    /** Sum of log statistic implementation */
+    /**
+     * Sum of log statistic implementation
+     */
     private final StorelessMultivariateStatistic sumLogImpl;
-    /** Geometric mean statistic implementation */
+    /**
+     * Geometric mean statistic implementation
+     */
     private final StorelessMultivariateStatistic geoMeanImpl;
-    /** Mean statistic implementation */
+    /**
+     * Mean statistic implementation
+     */
     private final StorelessMultivariateStatistic meanImpl;
-    /** Covariance statistic implementation */
+    /**
+     * Covariance statistic implementation
+     */
     private final VectorialCovariance covarianceImpl;
 
-    /** Count of values that have been added */
+    /**
+     * Count of values that have been added
+     */
     private long n = 0;
 
     /**
@@ -101,20 +123,20 @@ public class MultivariateSummaryStatistics
      * <p>
      * The returned instance is <b>not</b> thread-safe.
      *
-     * @param dimension dimension of the data
+     * @param dimension                dimension of the data
      * @param covarianceBiasCorrection if true, the returned instance will compute
-     * the unbiased sample covariance, otherwise the population covariance
+     *                                 the unbiased sample covariance, otherwise the population covariance
      */
     public MultivariateSummaryStatistics(int dimension, boolean covarianceBiasCorrection) {
         this.k = dimension;
 
-        sumImpl     = new VectorialStorelessStatistic(k, new Sum());
-        sumSqImpl   = new VectorialStorelessStatistic(k, new SumOfSquares());
-        minImpl     = new VectorialStorelessStatistic(k, new Min());
-        maxImpl     = new VectorialStorelessStatistic(k, new Max());
-        sumLogImpl  = new VectorialStorelessStatistic(k, new SumOfLogs());
+        sumImpl = new VectorialStorelessStatistic(k, new Sum());
+        sumSqImpl = new VectorialStorelessStatistic(k, new SumOfSquares());
+        minImpl = new VectorialStorelessStatistic(k, new Min());
+        maxImpl = new VectorialStorelessStatistic(k, new Max());
+        sumLogImpl = new VectorialStorelessStatistic(k, new SumOfLogs());
         geoMeanImpl = new VectorialStorelessStatistic(k, new GeometricMean());
-        meanImpl    = new VectorialStorelessStatistic(k, new Mean());
+        meanImpl = new VectorialStorelessStatistic(k, new Mean());
 
         covarianceImpl = new VectorialCovariance(k, covarianceBiasCorrection);
     }
@@ -122,9 +144,9 @@ public class MultivariateSummaryStatistics
     /**
      * Add an n-tuple to the data
      *
-     * @param value  the n-tuple to add
+     * @param value the n-tuple to add
      * @throws MathIllegalArgumentException if the array is null or the length
-     * of the array does not match the one used at construction
+     *                                      of the array does not match the one used at construction
      */
     public void addValue(double[] value) throws MathIllegalArgumentException {
         MathUtils.checkNotNull(value, LocalizedCoreFormats.INPUT_ARRAY);
@@ -155,61 +177,81 @@ public class MultivariateSummaryStatistics
         covarianceImpl.clear();
     }
 
-    /** {@inheritDoc} **/
+    /**
+     * {@inheritDoc}
+     **/
     @Override
     public int getDimension() {
         return k;
     }
 
-    /** {@inheritDoc} **/
+    /**
+     * {@inheritDoc}
+     **/
     @Override
     public long getN() {
         return n;
     }
 
-    /** {@inheritDoc} **/
+    /**
+     * {@inheritDoc}
+     **/
     @Override
     public double[] getSum() {
         return sumImpl.getResult();
     }
 
-    /** {@inheritDoc} **/
+    /**
+     * {@inheritDoc}
+     **/
     @Override
     public double[] getSumSq() {
         return sumSqImpl.getResult();
     }
 
-    /** {@inheritDoc} **/
+    /**
+     * {@inheritDoc}
+     **/
     @Override
     public double[] getSumLog() {
         return sumLogImpl.getResult();
     }
 
-    /** {@inheritDoc} **/
+    /**
+     * {@inheritDoc}
+     **/
     @Override
     public double[] getMean() {
         return meanImpl.getResult();
     }
 
-    /** {@inheritDoc} **/
+    /**
+     * {@inheritDoc}
+     **/
     @Override
     public RealMatrix getCovariance() {
         return covarianceImpl.getResult();
     }
 
-    /** {@inheritDoc} **/
+    /**
+     * {@inheritDoc}
+     **/
     @Override
     public double[] getMax() {
         return maxImpl.getResult();
     }
 
-    /** {@inheritDoc} **/
+    /**
+     * {@inheritDoc}
+     **/
     @Override
     public double[] getMin() {
         return minImpl.getResult();
     }
 
-    /** {@inheritDoc} **/
+    /**
+     * {@inheritDoc}
+     **/
     @Override
     public double[] getGeometricMean() {
         return geoMeanImpl.getResult();
@@ -242,6 +284,7 @@ public class MultivariateSummaryStatistics
      * Generates a text report displaying
      * summary statistics from values that
      * have been added.
+     *
      * @return String with line feeds displaying statistics
      */
     @Override
@@ -264,11 +307,12 @@ public class MultivariateSummaryStatistics
 
     /**
      * Append a text representation of an array to a buffer.
-     * @param buffer buffer to fill
-     * @param data data array
-     * @param prefix text prefix
+     *
+     * @param buffer    buffer to fill
+     * @param data      data array
+     * @param prefix    text prefix
      * @param separator elements separator
-     * @param suffix text suffix
+     * @param suffix    text suffix
      */
     private void append(StringBuilder buffer, double[] data,
                         String prefix, String separator, String suffix) {
@@ -285,27 +329,28 @@ public class MultivariateSummaryStatistics
     /**
      * Returns true iff <code>object</code> is a <code>MultivariateSummaryStatistics</code>
      * instance and all statistics have the same values as this.
+     *
      * @param object the object to test equality against.
      * @return true if object equals this
      */
     @Override
     public boolean equals(Object object) {
-        if (object == this ) {
+        if (object == this) {
             return true;
         }
         if (object instanceof MultivariateSummaryStatistics == false) {
             return false;
         }
         MultivariateSummaryStatistics other = (MultivariateSummaryStatistics) object;
-        return other.getN() == getN()                                                      &&
-               MathArrays.equalsIncludingNaN(other.getGeometricMean(), getGeometricMean()) &&
-               MathArrays.equalsIncludingNaN(other.getMax(),           getMax())           &&
-               MathArrays.equalsIncludingNaN(other.getMean(),          getMean())          &&
-               MathArrays.equalsIncludingNaN(other.getMin(),           getMin())           &&
-               MathArrays.equalsIncludingNaN(other.getSum(),           getSum())           &&
-               MathArrays.equalsIncludingNaN(other.getSumSq(),         getSumSq())         &&
-               MathArrays.equalsIncludingNaN(other.getSumLog(),        getSumLog())        &&
-               other.getCovariance().equals(getCovariance());
+        return other.getN() == getN() &&
+                MathArrays.equalsIncludingNaN(other.getGeometricMean(), getGeometricMean()) &&
+                MathArrays.equalsIncludingNaN(other.getMax(), getMax()) &&
+                MathArrays.equalsIncludingNaN(other.getMean(), getMean()) &&
+                MathArrays.equalsIncludingNaN(other.getMin(), getMin()) &&
+                MathArrays.equalsIncludingNaN(other.getSum(), getSum()) &&
+                MathArrays.equalsIncludingNaN(other.getSumSq(), getSumSq()) &&
+                MathArrays.equalsIncludingNaN(other.getSumLog(), getSumLog()) &&
+                other.getCovariance().equals(getCovariance());
     }
 
     /**

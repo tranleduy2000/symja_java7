@@ -30,15 +30,25 @@ import org.hipparchus.util.MathUtils;
  * @see <a href="http://mathworld.wolfram.com/NormalDistribution.html">Normal distribution (MathWorld)</a>
  */
 public class NormalDistribution extends AbstractRealDistribution {
-    /** Serializable version identifier. */
+    /**
+     * Serializable version identifier.
+     */
     private static final long serialVersionUID = 20160320L;
-    /** &radic;(2) */
+    /**
+     * &radic;(2)
+     */
     private static final double SQRT2 = FastMath.sqrt(2.0);
-    /** Mean of this distribution. */
+    /**
+     * Mean of this distribution.
+     */
     private final double mean;
-    /** Standard deviation of this distribution. */
+    /**
+     * Standard deviation of this distribution.
+     */
     private final double standardDeviation;
-    /** The value of {@code log(sd) + 0.5*log(2*pi)} stored for faster computation. */
+    /**
+     * The value of {@code log(sd) + 0.5*log(2*pi)} stored for faster computation.
+     */
     private final double logStandardDeviationPlusHalfLog2Pi;
 
     /**
@@ -53,11 +63,11 @@ public class NormalDistribution extends AbstractRealDistribution {
      * Create a normal distribution using the given mean, standard deviation.
      *
      * @param mean Mean for this distribution.
-     * @param sd Standard deviation for this distribution.
+     * @param sd   Standard deviation for this distribution.
      * @throws MathIllegalArgumentException if {@code sd <= 0}.
      */
     public NormalDistribution(double mean, double sd)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         if (sd <= 0) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.STANDARD_DEVIATION, sd);
         }
@@ -86,13 +96,17 @@ public class NormalDistribution extends AbstractRealDistribution {
         return standardDeviation;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double density(double x) {
         return FastMath.exp(logDensity(x));
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double logDensity(double x) {
         final double x0 = x - mean;
@@ -102,13 +116,13 @@ public class NormalDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * If {@code x} is more than 40 standard deviations from the mean, 0 or 1
      * is returned, as in these cases the actual value is within
      * {@code Double.MIN_VALUE} of 0 or 1.
      */
     @Override
-    public double cumulativeProbability(double x)  {
+    public double cumulativeProbability(double x) {
         final double dev = x - mean;
         if (FastMath.abs(dev) > 40 * standardDeviation) {
             return dev < 0 ? 0.0d : 1.0d;
@@ -116,21 +130,25 @@ public class NormalDistribution extends AbstractRealDistribution {
         return 0.5 * Erf.erfc(-dev / (standardDeviation * SQRT2));
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double inverseCumulativeProbability(final double p) throws MathIllegalArgumentException {
         MathUtils.checkRangeInclusive(p, 0, 1);
         return mean + standardDeviation * SQRT2 * Erf.erfInv(2 * p - 1);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double probability(double x0,
                               double x1)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         if (x0 > x1) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.LOWER_ENDPOINT_ABOVE_UPPER_ENDPOINT,
-                                                x0, x1, true);
+                    x0, x1, true);
         }
         final double denom = standardDeviation * SQRT2;
         final double v0 = (x0 - mean) / denom;
@@ -140,7 +158,7 @@ public class NormalDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * For mean parameter {@code mu}, the mean is {@code mu}.
      */
     @Override
@@ -150,7 +168,7 @@ public class NormalDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * For standard deviation parameter {@code s}, the variance is {@code s^2}.
      */
     @Override
@@ -161,7 +179,7 @@ public class NormalDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The lower bound of the support is always negative infinity
      * no matter the parameters.
      *
@@ -175,7 +193,7 @@ public class NormalDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The upper bound of the support is always positive infinity
      * no matter the parameters.
      *
@@ -189,7 +207,7 @@ public class NormalDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The support of this distribution is connected.
      *
      * @return {@code true}

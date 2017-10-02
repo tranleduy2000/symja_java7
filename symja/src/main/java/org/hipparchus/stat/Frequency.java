@@ -16,6 +16,9 @@
  */
 package org.hipparchus.stat;
 
+import org.hipparchus.exception.NullArgumentException;
+import org.hipparchus.util.MathUtils;
+
 import java.io.Serializable;
 import java.text.NumberFormat;
 import java.util.Collection;
@@ -28,24 +31,25 @@ import java.util.Objects;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
-import org.hipparchus.exception.NullArgumentException;
-import org.hipparchus.util.MathUtils;
-
 /**
  * Maintains a frequency distribution of Comparable values.
  * <p>
  * The values are ordered using the default (natural order), unless a
  * {@code Comparator} is supplied in the constructor.
  *
- * @see LongFrequency
  * @param <T> the element type
+ * @see LongFrequency
  */
 public class Frequency<T extends Comparable<T>> implements Serializable {
 
-    /** Serializable version identifier */
+    /**
+     * Serializable version identifier
+     */
     private static final long serialVersionUID = 20160322L;
 
-    /** underlying collection */
+    /**
+     * underlying collection
+     */
     private final NavigableMap<T, Long> freqTable;
 
     /**
@@ -76,7 +80,7 @@ public class Frequency<T extends Comparable<T>> implements Serializable {
     /**
      * Increments the frequency count for v.
      *
-     * @param v the value to add.
+     * @param v         the value to add.
      * @param increment the amount by which the value should be incremented
      */
     public void incrementValue(T v, long increment) {
@@ -84,7 +88,9 @@ public class Frequency<T extends Comparable<T>> implements Serializable {
         freqTable.put(v, Long.valueOf(count.longValue() + increment));
     }
 
-    /** Clears the frequency table */
+    /**
+     * Clears the frequency table
+     */
     public void clear() {
         freqTable.clear();
     }
@@ -119,9 +125,9 @@ public class Frequency<T extends Comparable<T>> implements Serializable {
      */
     public long getSumFreq() {
         return freqTable.values()
-                        .stream()
-                        .mapToLong(Long::longValue)
-                        .sum();
+                .stream()
+                .mapToLong(Long::longValue)
+                .sum();
     }
 
     /**
@@ -141,7 +147,7 @@ public class Frequency<T extends Comparable<T>> implements Serializable {
      * @return the number of unique values that have been added to the frequency table.
      * @see #valuesIterator()
      */
-    public int getUniqueCount(){
+    public int getUniqueCount() {
         return freqTable.keySet().size();
     }
 
@@ -186,9 +192,9 @@ public class Frequency<T extends Comparable<T>> implements Serializable {
         }
 
         return headMap.values()
-                      .stream()
-                      .mapToLong(Long::longValue)
-                      .sum();
+                .stream()
+                .mapToLong(Long::longValue)
+                .sum();
     }
 
     //----------------------------------------------------------------------------------------------
@@ -219,16 +225,16 @@ public class Frequency<T extends Comparable<T>> implements Serializable {
         // Get the max count first
         final long mostPopular =
                 freqTable.values()
-                         .stream()
-                         .mapToLong(Long::longValue)
-                         .max()
-                         .orElse(0L);
+                        .stream()
+                        .mapToLong(Long::longValue)
+                        .max()
+                        .orElse(0L);
 
         return freqTable.entrySet()
-                        .stream()
-                        .filter(entry -> entry.getValue() == mostPopular)
-                        .map(entry -> entry.getKey())
-                        .collect(Collectors.toList());
+                .stream()
+                .filter(entry -> entry.getValue() == mostPopular)
+                .map(entry -> entry.getKey())
+                .collect(Collectors.toList());
     }
 
     //----------------------------------------------------------------------------------------------
@@ -260,7 +266,7 @@ public class Frequency<T extends Comparable<T>> implements Serializable {
      * @throws NullArgumentException if the collection is null
      */
     public void merge(final Collection<? extends Frequency<? extends T>> others)
-        throws NullArgumentException {
+            throws NullArgumentException {
         MathUtils.checkNotNull(others);
 
         for (final Frequency<? extends T> freq : others) {
@@ -295,17 +301,21 @@ public class Frequency<T extends Comparable<T>> implements Serializable {
         return outBuffer.toString();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result +
-                 ((freqTable == null) ? 0 : freqTable.hashCode());
+                ((freqTable == null) ? 0 : freqTable.hashCode());
         return result;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

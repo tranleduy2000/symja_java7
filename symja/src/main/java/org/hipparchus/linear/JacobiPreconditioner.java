@@ -28,16 +28,18 @@ import org.hipparchus.util.MathArrays;
  */
 public class JacobiPreconditioner implements RealLinearOperator {
 
-    /** The diagonal coefficients of the preconditioner. */
+    /**
+     * The diagonal coefficients of the preconditioner.
+     */
     private final ArrayRealVector diag;
 
     /**
      * Creates a new instance of this class.
      *
      * @param diag the diagonal coefficients of the linear operator to be
-     * preconditioned
+     *             preconditioned
      * @param deep {@code true} if a deep copy of the above array should be
-     * performed
+     *             performed
      */
     public JacobiPreconditioner(final double[] diag, final boolean deep) {
         this.diag = new ArrayRealVector(diag, deep);
@@ -57,11 +59,11 @@ public class JacobiPreconditioner implements RealLinearOperator {
      * @throws MathIllegalArgumentException if {@code a} is not square
      */
     public static JacobiPreconditioner create(final RealLinearOperator a)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         final int n = a.getColumnDimension();
         if (a.getRowDimension() != n) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.NON_SQUARE_OPERATOR,
-                                                   a.getRowDimension(), n);
+                    a.getRowDimension(), n);
         }
         final double[] diag = new double[n];
         if (a instanceof AbstractRealMatrix) {
@@ -80,25 +82,31 @@ public class JacobiPreconditioner implements RealLinearOperator {
         return new JacobiPreconditioner(diag, false);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getColumnDimension() {
         return diag.getDimension();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getRowDimension() {
         return diag.getDimension();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RealVector operate(final RealVector x) {
         // Dimension check is carried out by ebeDivide
         return new ArrayRealVector(MathArrays.ebeDivide(x.toArray(),
-                                                        diag.toArray()),
-                                   false);
+                diag.toArray()),
+                false);
     }
 
     /**
@@ -115,8 +123,8 @@ public class JacobiPreconditioner implements RealLinearOperator {
             @Override
             public RealVector operate(final RealVector x) {
                 return new ArrayRealVector(MathArrays.ebeDivide(x.toArray(),
-                                                                sqrtDiag.toArray()),
-                                           false);
+                        sqrtDiag.toArray()),
+                        false);
             }
 
             /** {@inheritDoc} */

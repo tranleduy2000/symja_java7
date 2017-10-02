@@ -5,15 +5,16 @@
 package edu.jas.util;
 
 
-import java.util.concurrent.Semaphore;
-
 import org.apache.log4j.Logger;
+
+import java.util.concurrent.Semaphore;
 
 
 //import edu.unima.ky.parallel.Semaphore;
 
 /**
  * Terminating helper class. Like a barrier, but with coming and going.
+ *
  * @author Heinz Kredel
  */
 
@@ -24,19 +25,14 @@ public class Terminator {
 
 
     private final int workers;
-
-
-    private int idler;
-
-
     private final Semaphore fin;
-
-
+    private int idler;
     private /*volatile*/ boolean done;
 
 
     /**
      * Terminator.
+     *
      * @param workers number of expected threads.
      */
     public Terminator(int workers) {
@@ -74,12 +70,13 @@ public class Terminator {
     /**
      * initIdle.
      * No check for release().
+     *
      * @param i number of idle threads.
      */
     public synchronized void initIdle(int i) {
         idler += i;
         logger.info("initIdle, idler = " + idler);
-        if ( idler > workers ) {
+        if (idler > workers) {
             if (done) {
                 idler = workers;
             } else {
@@ -92,6 +89,7 @@ public class Terminator {
     /**
      * beIdle.
      * Checks for release().
+     *
      * @param i number of idle threads.
      */
     public synchronized void beIdle(int i) {
@@ -122,7 +120,7 @@ public class Terminator {
     public synchronized void notIdle() {
         idler--;
         logger.info("notIdle, idler = " + idler);
-        if ( idler < 0 ) {
+        if (idler < 0) {
             throw new RuntimeException("idler < 0");
         }
     }
@@ -130,6 +128,7 @@ public class Terminator {
 
     /**
      * getJobs.
+     *
      * @return number of possible jobs.
      */
     public synchronized int getJobs() {
@@ -139,6 +138,7 @@ public class Terminator {
 
     /**
      * hasJobs.
+     *
      * @return true, if there are possibly jobs, else false.
      */
     public synchronized boolean hasJobs() {
@@ -151,9 +151,9 @@ public class Terminator {
      */
     public synchronized void release() {
         logger.info("release = " + this);
-        if ( idler >= workers ) {
+        if (idler >= workers) {
             done = true;
-            fin.release(); 
+            fin.release();
         }
         //logger.info("release, idler = " + idler);
     }
@@ -164,7 +164,7 @@ public class Terminator {
      */
     public void waitDone() {
         try {
-            fin.acquire(); 
+            fin.acquire();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }

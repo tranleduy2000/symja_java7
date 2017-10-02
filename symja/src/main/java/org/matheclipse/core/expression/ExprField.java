@@ -5,31 +5,35 @@ import org.matheclipse.core.interfaces.IExpr;
 
 /**
  * Class for representing a field of <code>ExprFieldElement</code>.
- * 
+ *
  * @see ExprFieldElement
  */
 public class ExprField implements Field<IExpr> {
-	public final static ExprField CONST = new ExprField();
+    public final static ExprField CONST = new ExprField();
 
-	// public final static IExpr ONE = F.C1;
-	// public final static IExpr ZERO  =F.C0;
+    // public final static IExpr ONE = F.C1;
+    // public final static IExpr ZERO  =F.C0;
 
-	@Override
-	public IExpr getOne() {
-		return F.C1;
-	}
+    @Override
+    public IExpr getOne() {
+        return F.C1;
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public IExpr getZero() {
-		return F.C0;
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public IExpr getZero() {
+        return F.C0;
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public Class<? extends IExpr> getRuntimeClass() {
-		return IExpr.class;
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Class<? extends IExpr> getRuntimeClass() {
+        return IExpr.class;
+    }
 
 //	/**
 //	 * Returns a FieldVector if possible.

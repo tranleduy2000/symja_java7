@@ -5,6 +5,8 @@
 package edu.jas.util;
 
 
+import org.apache.log4j.Logger;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -13,40 +15,25 @@ import java.util.Map.Entry;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import org.apache.log4j.Logger;
-
 
 /**
  * Server for the distributed version of a list.
  * TODO: redistribute list for late coming clients, removal
- *       of elements.
+ * of elements.
+ *
  * @author Heinz Kredel
  */
 
 public class DistHashTableServer<K> extends Thread {
 
 
-    private static final Logger logger = Logger.getLogger(DistHashTableServer.class);
-
-
     public final static int DEFAULT_PORT = 9009; //ChannelFactory.DEFAULT_PORT + 99;
-
-
+    private static final Logger logger = Logger.getLogger(DistHashTableServer.class);
     protected final ChannelFactory cf;
-
-
-    protected List<DHTBroadcaster<K>> servers;
-
-
-    private boolean goon = true;
-
-
-    private Thread mythread = null;
-
-
     protected final SortedMap<K, DHTTransport> theList;
-
-
+    protected List<DHTBroadcaster<K>> servers;
+    private boolean goon = true;
+    private Thread mythread = null;
     private long etime;
 
 
@@ -69,6 +56,7 @@ public class DistHashTableServer<K> extends Thread {
 
     /**
      * DistHashTableServer.
+     *
      * @param port to run server on.
      */
     public DistHashTableServer(int port) {
@@ -78,6 +66,7 @@ public class DistHashTableServer<K> extends Thread {
 
     /**
      * DistHashTableServer.
+     *
      * @param cf ChannelFactory to use.
      */
     public DistHashTableServer(ChannelFactory cf) {
@@ -235,8 +224,8 @@ public class DistHashTableServer<K> extends Thread {
         long decr = DHTTransport.drtime - drtime;
         long drest = (encr * dec) / (enc + 1);
         logger.info("DHT time: encode = " + enc + ", decode = " + dec + ", enc raw = " + encr
-                        + ", dec raw wait = " + decr + ", dec raw est = " + drest + ", sum est = "
-                        + (enc + dec + encr + drest)); // +decr not meaningful
+                + ", dec raw wait = " + decr + ", dec raw est = " + drest + ", sum est = "
+                + (enc + dec + encr + drest)); // +decr not meaningful
         if (mythread == null) {
             return;
         }
@@ -271,6 +260,7 @@ public class DistHashTableServer<K> extends Thread {
 
     /**
      * toString.
+     *
      * @return a string representation of this.
      */
     @Override
@@ -304,7 +294,8 @@ class DHTBroadcaster<K> extends Thread /*implements Runnable*/ {
 
     /**
      * DHTBroadcaster.
-     * @param s SocketChannel to use.
+     *
+     * @param s  SocketChannel to use.
      * @param bc list of broadcasters.
      * @param le DHTCounter.
      * @param sm SortedMap with key value pairs.
@@ -326,6 +317,7 @@ class DHTBroadcaster<K> extends Thread /*implements Runnable*/ {
 
     /**
      * sendChannel.
+     *
      * @param tc DHTTransport.
      * @throws IOException
      */
@@ -338,9 +330,10 @@ class DHTBroadcaster<K> extends Thread /*implements Runnable*/ {
 
     /**
      * broadcast.
+     *
      * @param o DHTTransport element to broadcast.
      */
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings({"unchecked", "cast"})
     public void broadcast(DHTTransport o) {
         if (logger.isDebugEnabled()) {
             logger.debug("broadcast = " + o);
@@ -473,6 +466,7 @@ class DHTBroadcaster<K> extends Thread /*implements Runnable*/ {
 
     /**
      * toString.
+     *
      * @return a string representation of this.
      */
     @Override

@@ -16,14 +16,6 @@
  */
 package org.hipparchus.random;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.hipparchus.distribution.EnumeratedDistribution;
 import org.hipparchus.distribution.IntegerDistribution;
 import org.hipparchus.distribution.RealDistribution;
@@ -48,13 +40,23 @@ import org.hipparchus.util.Pair;
 import org.hipparchus.util.Precision;
 import org.hipparchus.util.ResizableDoubleArray;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * A class for generating random data.
  */
 public class RandomDataGenerator extends ForwardingRandomGenerator
-    implements RandomGenerator, Serializable {
+        implements RandomGenerator, Serializable {
 
-    /** Serializable version identifier. */
+    /**
+     * Serializable version identifier.
+     */
     private static final long serialVersionUID = 20160529L;
 
     /**
@@ -62,56 +64,32 @@ public class RandomDataGenerator extends ForwardingRandomGenerator
      * Table containing the constants
      * q_i = sum_{j=1}^i (ln 2)^j/j! = ln 2 + (ln 2)^2/2 + ... + (ln 2)^i/i!
      * until the largest representable fraction below 1 is exceeded.
-     *
+     * <p>
      * Note that
      * 1 = 2 - 1 = exp(ln 2) - 1 = sum_{n=1}^infty (ln 2)^n / n!
      * thus q_i -> 1 as i -> +inf,
      * so the higher i, the closer to one we get (the series is not alternating).
-     *
+     * <p>
      * By trying, n = 16 in Java is enough to reach 1.0.
      */
     private static final double[] EXPONENTIAL_SA_QI;
 
-    /** Map of <classname, switch constant> for continuous distributions */
+    /**
+     * Map of <classname, switch constant> for continuous distributions
+     */
     private static final Map<Class<? extends RealDistribution>, RealDistributionSampler> CONTINUOUS_SAMPLERS = new HashMap<>();
-    /** Map of <classname, switch constant> for discrete distributions */
+    /**
+     * Map of <classname, switch constant> for discrete distributions
+     */
     private static final Map<Class<? extends IntegerDistribution>, IntegerDistributionSampler> DISCRETE_SAMPLERS = new HashMap<>();
-
     /**
-     * Interface for samplers of continuous distributions.
+     * The default sampler for continuous distributions using the inversion technique.
      */
-    @FunctionalInterface
-    private interface RealDistributionSampler {
-        /**
-         * Return the next sample following the given distribution.
-         *
-         * @param generator the random data generator to use
-         * @param distribution the distribution to use
-         * @return the next sample
-         */
-        double nextSample(RandomDataGenerator generator, RealDistribution distribution);
-    }
-
-    /**
-     * Interface for samplers of discrete distributions.
-     */
-    @FunctionalInterface
-    private interface IntegerDistributionSampler {
-        /**
-         * Return the next sample following the given distribution.
-         *
-         * @param generator the random data generator to use
-         * @param distribution the distribution to use
-         * @return the next sample
-         */
-        int nextSample(RandomDataGenerator generator, IntegerDistribution distribution);
-    }
-
-    /** The default sampler for continuous distributions using the inversion technique. */
     private static final RealDistributionSampler DEFAULT_REAL_SAMPLER =
             (generator, dist) -> dist.inverseCumulativeProbability(generator.nextDouble());
-
-    /** The default sampler for discrete distributions using the inversion technique. */
+    /**
+     * The default sampler for discrete distributions using the inversion technique.
+     */
     private static final IntegerDistributionSampler DEFAULT_INTEGER_SAMPLER =
             (generator, dist) -> dist.inverseCumulativeProbability(generator.nextDouble());
 
@@ -146,37 +124,37 @@ public class RandomDataGenerator extends ForwardingRandomGenerator
         // Continuous samplers
 
         CONTINUOUS_SAMPLERS.put(BetaDistribution.class,
-                                (generator, dist) -> {
-                                    BetaDistribution beta = (BetaDistribution) dist;
-                                    return generator.nextBeta(beta.getAlpha(), beta.getBeta());
-                                });
+                (generator, dist) -> {
+                    BetaDistribution beta = (BetaDistribution) dist;
+                    return generator.nextBeta(beta.getAlpha(), beta.getBeta());
+                });
 
         CONTINUOUS_SAMPLERS.put(ExponentialDistribution.class,
-                                (generator, dist) -> generator.nextExponential(dist.getNumericalMean()));
+                (generator, dist) -> generator.nextExponential(dist.getNumericalMean()));
 
         CONTINUOUS_SAMPLERS.put(GammaDistribution.class,
-                                (generator, dist) -> {
-                                    GammaDistribution gamma = (GammaDistribution) dist;
-                                    return generator.nextGamma(gamma.getShape(), gamma.getScale());
-                                });
+                (generator, dist) -> {
+                    GammaDistribution gamma = (GammaDistribution) dist;
+                    return generator.nextGamma(gamma.getShape(), gamma.getScale());
+                });
 
         CONTINUOUS_SAMPLERS.put(NormalDistribution.class,
-                                (generator, dist) -> {
-                                    NormalDistribution normal = (NormalDistribution) dist;
-                                    return generator.nextNormal(normal.getMean(),
-                                                                normal.getStandardDeviation());
-                                });
+                (generator, dist) -> {
+                    NormalDistribution normal = (NormalDistribution) dist;
+                    return generator.nextNormal(normal.getMean(),
+                            normal.getStandardDeviation());
+                });
 
         CONTINUOUS_SAMPLERS.put(LogNormalDistribution.class,
-                                (generator, dist) -> {
-                                    LogNormalDistribution logNormal = (LogNormalDistribution) dist;
-                                    return generator.nextLogNormal(logNormal.getShape(),
-                                                                   logNormal.getScale());
-                                });
+                (generator, dist) -> {
+                    LogNormalDistribution logNormal = (LogNormalDistribution) dist;
+                    return generator.nextLogNormal(logNormal.getShape(),
+                            logNormal.getScale());
+                });
 
         CONTINUOUS_SAMPLERS.put(UniformRealDistribution.class,
-                                (generator, dist) -> generator.nextUniform(dist.getSupportLowerBound(),
-                                                                           dist.getSupportUpperBound()));
+                (generator, dist) -> generator.nextUniform(dist.getSupportLowerBound(),
+                        dist.getSupportUpperBound()));
 
         CONTINUOUS_SAMPLERS.put(EnumeratedRealDistribution.class,
                 (generator, dist) -> {
@@ -190,32 +168,35 @@ public class RandomDataGenerator extends ForwardingRandomGenerator
         // Discrete samplers
 
         DISCRETE_SAMPLERS.put(PoissonDistribution.class,
-                              (generator, dist) -> generator.nextPoisson(dist.getNumericalMean()));
+                (generator, dist) -> generator.nextPoisson(dist.getNumericalMean()));
 
         DISCRETE_SAMPLERS.put(UniformIntegerDistribution.class,
-                              (generator, dist) -> generator.nextInt(dist.getSupportLowerBound(),
-                                                                     dist.getSupportUpperBound()));
+                (generator, dist) -> generator.nextInt(dist.getSupportLowerBound(),
+                        dist.getSupportUpperBound()));
         DISCRETE_SAMPLERS.put(ZipfDistribution.class,
-                              (generator, dist) -> {
-                                  ZipfDistribution zipfDist = (ZipfDistribution) dist;
-                                  return generator.nextZipf(zipfDist.getNumberOfElements(),
-                                                                 zipfDist.getExponent());
-                              });
+                (generator, dist) -> {
+                    ZipfDistribution zipfDist = (ZipfDistribution) dist;
+                    return generator.nextZipf(zipfDist.getNumberOfElements(),
+                            zipfDist.getExponent());
+                });
 
         DISCRETE_SAMPLERS.put(EnumeratedIntegerDistribution.class,
-                                (generator, dist) -> {
-                                    final EnumeratedIntegerDistribution edist =
-                                            (EnumeratedIntegerDistribution) dist;
-                                    EnumeratedDistributionSampler<Integer> sampler =
-                                            generator.new EnumeratedDistributionSampler<Integer>(edist.getPmf());
-                                    return sampler.sample();
-                                });
+                (generator, dist) -> {
+                    final EnumeratedIntegerDistribution edist =
+                            (EnumeratedIntegerDistribution) dist;
+                    EnumeratedDistributionSampler<Integer> sampler =
+                            generator.new EnumeratedDistributionSampler<Integer>(edist.getPmf());
+                    return sampler.sample();
+                });
     }
 
-    /** Source of random data */
+    /**
+     * Source of random data
+     */
     private final RandomGenerator randomGenerator;
-
-    /** The sampler to be used for the nextZipF method */
+    /**
+     * The sampler to be used for the nextZipF method
+     */
     private transient ZipfRejectionInversionSampler zipfSampler;
 
     /**
@@ -258,7 +239,9 @@ public class RandomDataGenerator extends ForwardingRandomGenerator
         return new RandomDataGenerator(randomGenerator);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected RandomGenerator delegate() {
         return randomGenerator;
@@ -269,7 +252,7 @@ public class RandomDataGenerator extends ForwardingRandomGenerator
      * shape and scale parameters.
      *
      * @param alpha First shape parameter (must be positive).
-     * @param beta Second shape parameter (must be positive).
+     * @param beta  Second shape parameter (must be positive).
      * @return beta-distributed random deviate
      */
     public double nextBeta(double alpha, double beta) {
@@ -399,13 +382,13 @@ public class RandomDataGenerator extends ForwardingRandomGenerator
     /**
      * Returns the next normally-distributed pseudo-random deviate.
      *
-     * @param mean mean of the normal distribution
+     * @param mean              mean of the normal distribution
      * @param standardDeviation standard deviation of the normal distribution
      * @return a random value, normally distributed with the given mean and standard deviation
      */
     public double nextNormal(double mean, double standardDeviation) {
         if (standardDeviation <= 0) {
-            throw new MathIllegalArgumentException (LocalizedCoreFormats.NUMBER_TOO_SMALL, standardDeviation, 0);
+            throw new MathIllegalArgumentException(LocalizedCoreFormats.NUMBER_TOO_SMALL, standardDeviation, 0);
         }
         return standardDeviation * nextGaussian() + mean;
     }
@@ -419,7 +402,7 @@ public class RandomDataGenerator extends ForwardingRandomGenerator
      */
     public double nextLogNormal(double shape, double scale) {
         if (shape <= 0) {
-            throw new MathIllegalArgumentException (LocalizedCoreFormats.NUMBER_TOO_SMALL, shape, 0);
+            throw new MathIllegalArgumentException(LocalizedCoreFormats.NUMBER_TOO_SMALL, shape, 0);
         }
         return FastMath.exp(scale + shape * nextGaussian());
     }
@@ -475,7 +458,7 @@ public class RandomDataGenerator extends ForwardingRandomGenerator
             double t = 0;
             double qr = 0;
             double qa = 0;
-            for (;;) {
+            for (; ; ) {
                 final double u = randomGenerator.nextDouble();
                 if (u <= p1) {
                     final double n = randomGenerator.nextGaussian();
@@ -535,7 +518,6 @@ public class RandomDataGenerator extends ForwardingRandomGenerator
      *
      * @param dist the distribution to sample from
      * @param size the number of values to return
-     *
      * @return an array of {@code size} values following the given distribution
      */
     public double[] nextDeviates(RealDistribution dist, int size) {
@@ -564,7 +546,6 @@ public class RandomDataGenerator extends ForwardingRandomGenerator
      *
      * @param dist the distribution to sample from
      * @param size the number of values to return
-     *
      * @return an array of {@code size }values following the given distribution
      */
     public int[] nextDeviates(IntegerDistribution dist, int size) {
@@ -580,6 +561,7 @@ public class RandomDataGenerator extends ForwardingRandomGenerator
 
     /**
      * Returns a sampler for the given continuous distribution.
+     *
      * @param dist the distribution
      * @return a sampler for the distribution
      */
@@ -593,6 +575,7 @@ public class RandomDataGenerator extends ForwardingRandomGenerator
 
     /**
      * Returns a sampler for the given discrete distribution.
+     *
      * @param dist the distribution
      * @return a sampler for the distribution
      */
@@ -615,7 +598,7 @@ public class RandomDataGenerator extends ForwardingRandomGenerator
     public int nextInt(int lower, int upper) {
         if (lower >= upper) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.LOWER_BOUND_NOT_BELOW_UPPER_BOUND,
-                                                   lower, upper);
+                    lower, upper);
         }
         final int max = (upper - lower) + 1;
         if (max <= 0) {
@@ -625,7 +608,7 @@ public class RandomDataGenerator extends ForwardingRandomGenerator
             while (true) {
                 final int r = nextInt();
                 if (r >= lower &&
-                    r <= upper) {
+                        r <= upper) {
                     return r;
                 }
             }
@@ -646,7 +629,7 @@ public class RandomDataGenerator extends ForwardingRandomGenerator
     public long nextLong(final long lower, final long upper) throws MathIllegalArgumentException {
         if (lower >= upper) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.LOWER_BOUND_NOT_BELOW_UPPER_BOUND,
-                                                   lower, upper);
+                    lower, upper);
         }
         final long max = (upper - lower) + 1;
         if (max <= 0) {
@@ -658,7 +641,7 @@ public class RandomDataGenerator extends ForwardingRandomGenerator
                     return r;
                 }
             }
-        } else if (max < Integer.MAX_VALUE){
+        } else if (max < Integer.MAX_VALUE) {
             // we can shift the range and generate directly a positive int
             return lower + randomGenerator.nextInt((int) max);
         } else {
@@ -669,6 +652,7 @@ public class RandomDataGenerator extends ForwardingRandomGenerator
 
     /**
      * Returns a double value uniformly distributed over [lower, upper]
+     *
      * @param lower lower bound
      * @param upper upper bound
      * @return uniform deviate
@@ -692,7 +676,7 @@ public class RandomDataGenerator extends ForwardingRandomGenerator
      * Returns an integer value following a Zipf distribution with the given parameter.
      *
      * @param numberOfElements number of elements of the distribution
-     * @param exponent exponent of the distribution
+     * @param exponent         exponent of the distribution
      * @return random Zipf value
      */
     public int nextZipf(int numberOfElements, double exponent) {
@@ -759,10 +743,9 @@ public class RandomDataGenerator extends ForwardingRandomGenerator
      * <p>
      * Generated arrays represent permutations of {@code n} taken {@code k} at a
      * time.</p>
-     * This method calls {@link MathArrays#shuffle(int[],RandomGenerator)
+     * This method calls {@link MathArrays#shuffle(int[], RandomGenerator)
      * MathArrays.shuffle} in order to create a random shuffle of the set
      * of natural numbers {@code { 0, 1, ..., n - 1 }}.
-     *
      *
      * @param n the domain of the permutation
      * @param k the size of the permutation
@@ -772,14 +755,14 @@ public class RandomDataGenerator extends ForwardingRandomGenerator
      * @throws MathIllegalArgumentException if {@code k <= 0}.
      */
     public int[] nextPermutation(int n, int k)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         if (k > n) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.PERMUTATION_EXCEEDS_N,
-                                                   k, n, true);
+                    k, n, true);
         }
         if (k <= 0) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.PERMUTATION_SIZE,
-                                                   k);
+                    k);
         }
 
         final int[] index = MathArrays.natural(n);
@@ -799,7 +782,7 @@ public class RandomDataGenerator extends ForwardingRandomGenerator
      * <a href="http://rkb.home.cern.ch/rkb/AN16pp/node250.html#SECTION0002500000000000000000">
      * Simple Random Sample</a> of size {@code k} from the elements of
      * {@code c}.</p>
-     * <p>This method calls {@link #nextPermutation(int,int) nextPermutation(c.size(), k)}
+     * <p>This method calls {@link #nextPermutation(int, int) nextPermutation(c.size(), k)}
      * in order to sample the collection.
      * </p>
      *
@@ -814,7 +797,7 @@ public class RandomDataGenerator extends ForwardingRandomGenerator
         int len = c.size();
         if (k > len) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.SAMPLE_SIZE_EXCEEDS_COLLECTION_SIZE,
-                                                   k, len, true);
+                    k, len, true);
         }
         if (k <= 0) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.NUMBER_OF_SAMPLES, k);
@@ -850,7 +833,7 @@ public class RandomDataGenerator extends ForwardingRandomGenerator
         int len = a.length;
         if (k > len) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.SAMPLE_SIZE_EXCEEDS_COLLECTION_SIZE,
-                                                   k, len, true);
+                    k, len, true);
         }
         if (k <= 0) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.NUMBER_OF_SAMPLES, k);
@@ -875,7 +858,7 @@ public class RandomDataGenerator extends ForwardingRandomGenerator
      * At least one weight must be positive.
      *
      * @param sampleSize size of sample to generate
-     * @param weights probability sampling weights
+     * @param weights    probability sampling weights
      * @return an array of integers between 0 and weights.length - 1
      * @throws MathIllegalArgumentException if weights contains negative, NaN or infinite values or only 0s or sampleSize is less than 0
      */
@@ -905,8 +888,38 @@ public class RandomDataGenerator extends ForwardingRandomGenerator
     }
 
     /**
+     * Interface for samplers of continuous distributions.
+     */
+    @FunctionalInterface
+    private interface RealDistributionSampler {
+        /**
+         * Return the next sample following the given distribution.
+         *
+         * @param generator    the random data generator to use
+         * @param distribution the distribution to use
+         * @return the next sample
+         */
+        double nextSample(RandomDataGenerator generator, RealDistribution distribution);
+    }
+
+    /**
+     * Interface for samplers of discrete distributions.
+     */
+    @FunctionalInterface
+    private interface IntegerDistributionSampler {
+        /**
+         * Return the next sample following the given distribution.
+         *
+         * @param generator    the random data generator to use
+         * @param distribution the distribution to use
+         * @return the next sample
+         */
+        int nextSample(RandomDataGenerator generator, IntegerDistribution distribution);
+    }
+
+    /**
      * Utility class implementing Cheng's algorithms for beta distribution sampling.
-     *
+     * <p>
      * <blockquote>
      * <pre>
      * R. C. H. Cheng,
@@ -922,8 +935,8 @@ public class RandomDataGenerator extends ForwardingRandomGenerator
          * with given alpha and beta parameters.
          *
          * @param generator the random generator to use
-         * @param alpha the alpha parameter
-         * @param beta the beta parameter
+         * @param alpha     the alpha parameter
+         * @param beta      the beta parameter
          * @return the next sample
          */
         public static double sample(RandomGenerator generator,
@@ -945,9 +958,9 @@ public class RandomDataGenerator extends ForwardingRandomGenerator
          * when both &alpha; and &beta; are greater than 1.
          *
          * @param generator the random generator to use
-         * @param a0 distribution first shape parameter (&alpha;)
-         * @param a min(&alpha;, &beta;) where &alpha;, &beta; are the two distribution shape parameters
-         * @param b max(&alpha;, &beta;) where &alpha;, &beta; are the two distribution shape parameters
+         * @param a0        distribution first shape parameter (&alpha;)
+         * @param a         min(&alpha;, &beta;) where &alpha;, &beta; are the two distribution shape parameters
+         * @param b         max(&alpha;, &beta;) where &alpha;, &beta; are the two distribution shape parameters
          * @return sampled value
          */
         private static double algorithmBB(final RandomGenerator generator,
@@ -988,9 +1001,9 @@ public class RandomDataGenerator extends ForwardingRandomGenerator
          * when at least one of &alpha; and &beta; is smaller than 1.
          *
          * @param generator the random generator to use
-         * @param a0 distribution first shape parameter (&alpha;)
-         * @param a max(&alpha;, &beta;) where &alpha;, &beta; are the two distribution shape parameters
-         * @param b min(&alpha;, &beta;) where &alpha;, &beta; are the two distribution shape parameters
+         * @param a0        distribution first shape parameter (&alpha;)
+         * @param a         max(&alpha;, &beta;) where &alpha;, &beta; are the two distribution shape parameters
+         * @param b         min(&alpha;, &beta;) where &alpha;, &beta; are the two distribution shape parameters
          * @return sampled value
          */
         private static double algorithmBC(final RandomGenerator generator,
@@ -1004,7 +1017,7 @@ public class RandomDataGenerator extends ForwardingRandomGenerator
             final double k2 = 0.25 + (0.5 + 0.25 / delta) * b;
 
             double w;
-            for (;;) {
+            for (; ; ) {
                 final double u1 = generator.nextDouble();
                 final double u2 = generator.nextDouble();
                 final double y = u1 * u2;
@@ -1058,24 +1071,35 @@ public class RandomDataGenerator extends ForwardingRandomGenerator
      * in the range [1, numberOfElements]. This is different to the original method
      * where v is defined to be positive and numbers are taken from [0, i_max].
      * This explains why the implementation looks slightly different.
-     *
      */
     static final class ZipfRejectionInversionSampler {
 
-        /** Exponent parameter of the distribution. */
+        /**
+         * Exponent parameter of the distribution.
+         */
         private final double exponent;
-        /** Number of elements. */
+        /**
+         * Number of elements.
+         */
         private final int numberOfElements;
-        /** Constant equal to {@code hIntegral(1.5) - 1}. */
+        /**
+         * Constant equal to {@code hIntegral(1.5) - 1}.
+         */
         private final double hIntegralX1;
-        /** Constant equal to {@code hIntegral(numberOfElements + 0.5)}. */
+        /**
+         * Constant equal to {@code hIntegral(numberOfElements + 0.5)}.
+         */
         private final double hIntegralNumberOfElements;
-        /** Constant equal to {@code 2 - hIntegralInverse(hIntegral(2.5) - h(2)}. */
+        /**
+         * Constant equal to {@code 2 - hIntegralInverse(hIntegral(2.5) - h(2)}.
+         */
         private final double s;
 
-        /** Simple constructor.
+        /**
+         * Simple constructor.
+         *
          * @param numberOfElements number of elements
-         * @param exponent exponent parameter of the distribution
+         * @param exponent         exponent parameter of the distribution
          */
         ZipfRejectionInversionSampler(final int numberOfElements, final double exponent) {
             this.exponent = exponent;
@@ -1085,26 +1109,59 @@ public class RandomDataGenerator extends ForwardingRandomGenerator
             this.s = 2d - hIntegralInverse(hIntegral(2.5) - h(2));
         }
 
-        /** Generate one integral number in the range [1, numberOfElements].
+        /**
+         * Helper function that calculates {@code log(1+x)/x}.
+         * <p>
+         * A Taylor series expansion is used, if x is close to 0.
+         *
+         * @param x a value larger than or equal to -1
+         * @return {@code log(1+x)/x}
+         */
+        static double helper1(final double x) {
+            if (FastMath.abs(x) > 1e-8) {
+                return FastMath.log1p(x) / x;
+            } else {
+                return 1. - x * ((1. / 2.) - x * ((1. / 3.) - x * (1. / 4.)));
+            }
+        }
+
+        /**
+         * Helper function to calculate {@code (exp(x)-1)/x}.
+         * <p>
+         * A Taylor series expansion is used, if x is close to 0.
+         *
+         * @param x free parameter
+         * @return {@code (exp(x)-1)/x} if x is non-zero, or 1 if x=0
+         */
+        static double helper2(final double x) {
+            if (FastMath.abs(x) > 1e-8) {
+                return FastMath.expm1(x) / x;
+            } else {
+                return 1. + x * (1. / 2.) * (1. + x * (1. / 3.) * (1. + x * (1. / 4.)));
+            }
+        }
+
+        /**
+         * Generate one integral number in the range [1, numberOfElements].
+         *
          * @param random random generator to use
          * @return generated integral number in the range [1, numberOfElements]
          */
         int sample(final RandomGenerator random) {
-            while(true) {
+            while (true) {
 
                 final double u = hIntegralNumberOfElements + random.nextDouble() * (hIntegralX1 - hIntegralNumberOfElements);
                 // u is uniformly distributed in (hIntegralX1, hIntegralNumberOfElements]
 
                 double x = hIntegralInverse(u);
 
-                int k = (int)(x + 0.5);
+                int k = (int) (x + 0.5);
 
                 // Limit k to the range [1, numberOfElements]
                 // (k could be outside due to numerical inaccuracies)
                 if (k < 1) {
                     k = 1;
-                }
-                else if (k > numberOfElements) {
+                } else if (k > numberOfElements) {
                     k = numberOfElements;
                 }
 
@@ -1172,7 +1229,7 @@ public class RandomDataGenerator extends ForwardingRandomGenerator
          */
         private double hIntegral(final double x) {
             final double logX = FastMath.log(x);
-            return helper2((1d-exponent)*logX)*logX;
+            return helper2((1d - exponent) * logX) * logX;
         }
 
         /**
@@ -1192,13 +1249,13 @@ public class RandomDataGenerator extends ForwardingRandomGenerator
          * @return y for which {@code H(y) = x}
          */
         private double hIntegralInverse(final double x) {
-            double t = x*(1d-exponent);
+            double t = x * (1d - exponent);
             if (t < -1d) {
                 // Limit value to the range [-1, +inf).
                 // t could be smaller than -1 in some rare cases due to numerical errors.
                 t = -1;
             }
-            return FastMath.exp(helper1(t)*x);
+            return FastMath.exp(helper1(t) * x);
         }
 
         /**
@@ -1214,40 +1271,6 @@ public class RandomDataGenerator extends ForwardingRandomGenerator
         public int getNumberOfElements() {
             return numberOfElements;
         }
-
-        /**
-         * Helper function that calculates {@code log(1+x)/x}.
-         * <p>
-         * A Taylor series expansion is used, if x is close to 0.
-         *
-         * @param x a value larger than or equal to -1
-         * @return {@code log(1+x)/x}
-         */
-        static double helper1(final double x) {
-            if (FastMath.abs(x)>1e-8) {
-                return FastMath.log1p(x)/x;
-            }
-            else {
-                return 1.-x*((1./2.)-x*((1./3.)-x*(1./4.)));
-            }
-        }
-
-        /**
-         * Helper function to calculate {@code (exp(x)-1)/x}.
-         * <p>
-         * A Taylor series expansion is used, if x is close to 0.
-         *
-         * @param x free parameter
-         * @return {@code (exp(x)-1)/x} if x is non-zero, or 1 if x=0
-         */
-        static double helper2(final double x) {
-            if (FastMath.abs(x)>1e-8) {
-                return FastMath.expm1(x)/x;
-            }
-            else {
-                return 1.+x*(1./2.)*(1.+x*(1./3.)*(1.+x*(1./4.)));
-            }
-        }
     }
 
     /**
@@ -1256,10 +1279,15 @@ public class RandomDataGenerator extends ForwardingRandomGenerator
      * @param <T> type of sample space objects
      */
     private final class EnumeratedDistributionSampler<T> {
-        /** Probabilities */
+        /**
+         * Probabilities
+         */
         private final double[] weights;
-        /** Values */
+        /**
+         * Values
+         */
         private final List<T> values;
+
         /**
          * Create an EnumeratedDistributionSampler from the provided pmf.
          *
@@ -1274,6 +1302,7 @@ public class RandomDataGenerator extends ForwardingRandomGenerator
                 values.add(pmf.get(i).getFirst());
             }
         }
+
         /**
          * @return a random value from the distribution
          */

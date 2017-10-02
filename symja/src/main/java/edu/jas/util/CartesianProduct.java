@@ -5,8 +5,6 @@
 package edu.jas.util;
 
 
-
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -15,6 +13,7 @@ import java.util.NoSuchElementException;
 
 /**
  * Cartesian product with iterator.
+ *
  * @author Heinz Kredel
  */
 public class CartesianProduct<E> implements Iterable<List<E>> {
@@ -28,6 +27,7 @@ public class CartesianProduct<E> implements Iterable<List<E>> {
 
     /**
      * CartesianProduct constructor.
+     *
      * @param comps components of the Cartesian product.
      */
     public CartesianProduct(List<Iterable<E>> comps) {
@@ -46,18 +46,9 @@ public class CartesianProduct<E> implements Iterable<List<E>> {
     //         this( listToIterable(comps)  );
     //     }
 
-
-    /**
-     * Get an iterator over subsets.
-     * @return an iterator.
-     */
-    public Iterator<List<E>> iterator() {
-        return new CartesianProductIterator<E>(comps);
-    }
-
-
     /**
      * Transform list to iterables.
+     *
      * @param comp components of the Cartesian product.
      * @return iterables taken from lists.
      */
@@ -69,12 +60,22 @@ public class CartesianProduct<E> implements Iterable<List<E>> {
         return iter;
     }
 
+    /**
+     * Get an iterator over subsets.
+     *
+     * @return an iterator.
+     */
+    public Iterator<List<E>> iterator() {
+        return new CartesianProductIterator<E>(comps);
+    }
+
 
 }
 
 
 /**
  * Cartesian product iterator.
+ *
  * @author Heinz Kredel
  */
 class CartesianProductIterator<E> implements Iterator<List<E>> {
@@ -97,6 +98,7 @@ class CartesianProductIterator<E> implements Iterator<List<E>> {
 
     /**
      * CartesianProduct iterator constructor.
+     *
      * @param comps components of the Cartesian product.
      */
     public CartesianProductIterator(List<Iterable<E>> comps) {
@@ -123,6 +125,7 @@ class CartesianProductIterator<E> implements Iterator<List<E>> {
 
     /**
      * Test for availability of a next tuple.
+     *
      * @return true if the iteration has more tuples, else false.
      */
     public synchronized boolean hasNext() {
@@ -132,6 +135,7 @@ class CartesianProductIterator<E> implements Iterator<List<E>> {
 
     /**
      * Get next tuple.
+     *
      * @return next tuple.
      */
     public synchronized List<E> next() {

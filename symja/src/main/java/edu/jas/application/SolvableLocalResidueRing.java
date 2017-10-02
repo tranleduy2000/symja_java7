@@ -5,12 +5,12 @@
 package edu.jas.application;
 
 
+import org.apache.log4j.Logger;
+
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.gb.SolvableGroebnerBaseAbstract;
 import edu.jas.gbufd.SGBFactory;
@@ -30,11 +30,12 @@ import edu.jas.structure.RingFactory;
  * SolvableLocalResidue ring factory for SolvableLocalResidue based on
  * GenSolvablePolynomial with GcdRingElem interface. Objects of this class are
  * immutable. It represents the "classical quotient ring modulo an ideal".
+ *
  * @author Heinz Kredel
  */
 public class SolvableLocalResidueRing<C extends GcdRingElem<C>> implements
-                RingFactory<SolvableLocalResidue<C>>,
-                QuotPairFactory<GenPolynomial<C>, SolvableLocalResidue<C>> {
+        RingFactory<SolvableLocalResidue<C>>,
+        QuotPairFactory<GenPolynomial<C>, SolvableLocalResidue<C>> {
 
 
     // Can not extend SolvableLocalRing or SolvableQuotientRing 
@@ -80,6 +81,7 @@ public class SolvableLocalResidueRing<C extends GcdRingElem<C>> implements
     /**
      * The constructor creates a SolvableLocalResidueRing object from a
      * SolvableIdeal.
+     *
      * @param i ideal in solvable polynomial ring.
      */
     public SolvableLocalResidueRing(SolvableIdeal<C> i) {
@@ -134,6 +136,7 @@ public class SolvableLocalResidueRing<C extends GcdRingElem<C>> implements
 
     /**
      * Is this structure finite or infinite.
+     *
      * @return true if this structure is finite, else false.
      */
     public boolean isFinite() {
@@ -143,6 +146,7 @@ public class SolvableLocalResidueRing<C extends GcdRingElem<C>> implements
 
     /**
      * Copy SolvableLocalResidue element c.
+     *
      * @param c
      * @return a copy of c.
      */
@@ -153,6 +157,7 @@ public class SolvableLocalResidueRing<C extends GcdRingElem<C>> implements
 
     /**
      * Get the zero element.
+     *
      * @return 0 as SolvableLocalResidue.
      */
     public SolvableLocalResidue<C> getZERO() {
@@ -162,6 +167,7 @@ public class SolvableLocalResidueRing<C extends GcdRingElem<C>> implements
 
     /**
      * Get the one element.
+     *
      * @return 1 as SolvableLocalResidue.
      */
     public SolvableLocalResidue<C> getONE() {
@@ -171,10 +177,11 @@ public class SolvableLocalResidueRing<C extends GcdRingElem<C>> implements
 
     /**
      * Get a list of the generating elements.
+     *
      * @return list of generators for the algebraic structure.
      */
     public List<SolvableLocalResidue<C>> generators() {
-        List<GenSolvablePolynomial<C>> pgens = PolynomialList.<C> castToSolvableList(ring.generators());
+        List<GenSolvablePolynomial<C>> pgens = PolynomialList.<C>castToSolvableList(ring.generators());
         List<SolvableLocalResidue<C>> gens = new ArrayList<SolvableLocalResidue<C>>(pgens.size() * 2 - 1);
         GenSolvablePolynomial<C> one = ring.getONE();
         for (GenSolvablePolynomial<C> p : pgens) {
@@ -193,6 +200,7 @@ public class SolvableLocalResidueRing<C extends GcdRingElem<C>> implements
 
     /**
      * Query if this ring is commutative.
+     *
      * @return true if this ring is commutative, else false.
      */
     public boolean isCommutative() {
@@ -202,6 +210,7 @@ public class SolvableLocalResidueRing<C extends GcdRingElem<C>> implements
 
     /**
      * Query if this ring is associative.
+     *
      * @return true if this ring is associative, else false.
      */
     @SuppressWarnings("unused")
@@ -219,7 +228,7 @@ public class SolvableLocalResidueRing<C extends GcdRingElem<C>> implements
                 for (int k = j + 1; k < ngen; k++) {
                     Xk = gens.get(k);
                     if (Xi.num.degree() == 0 && Xj.num.degree() == 0 && Xk.num.degree() == 0 &&
-                        Xi.den.degree() == 0 && Xj.den.degree() == 0 && Xk.den.degree() == 0) {
+                            Xi.den.degree() == 0 && Xj.den.degree() == 0 && Xk.den.degree() == 0) {
                         //System.out.println("lr degree == 0");
                         continue; // skip all base elements
                     }
@@ -232,15 +241,15 @@ public class SolvableLocalResidueRing<C extends GcdRingElem<C>> implements
                     }
                     if (p.num.equals(q.num) && p.den.equals(q.den)) { // short cut
                         continue;
-                    // } else {
-                    //     int s = p.num.length() + q.num.length() + p.den.length() + q.den.length();
-                    //     if (s > 5) {
-                    //         System.out.println("lr assoc: p = " + p.toScript());
-                    //         System.out.println("lr assoc: q = " + q.toScript());
-                    //         System.out.println("lr assoc: Xk = " + Xk.toScript() + ", Xj = " + Xj.toScript() + ", Xi = " + Xi.toScript());
-                    //         System.out.println("lr size = " + s);
-                    //      continue;
-                    //     }
+                        // } else {
+                        //     int s = p.num.length() + q.num.length() + p.den.length() + q.den.length();
+                        //     if (s > 5) {
+                        //         System.out.println("lr assoc: p = " + p.toScript());
+                        //         System.out.println("lr assoc: q = " + q.toScript());
+                        //         System.out.println("lr assoc: Xk = " + Xk.toScript() + ", Xj = " + Xj.toScript() + ", Xi = " + Xi.toScript());
+                        //         System.out.println("lr size = " + s);
+                        //      continue;
+                        //     }
                     }
                     if (!p.equals(q)) {
                         if (true || debug) {
@@ -262,6 +271,7 @@ public class SolvableLocalResidueRing<C extends GcdRingElem<C>> implements
 
     /**
      * Query if this ring is a field.
+     *
      * @return true.
      */
     public boolean isField() {
@@ -278,6 +288,7 @@ public class SolvableLocalResidueRing<C extends GcdRingElem<C>> implements
 
     /**
      * Characteristic of this ring.
+     *
      * @return characteristic of this ring.
      */
     public java.math.BigInteger characteristic() {
@@ -287,6 +298,7 @@ public class SolvableLocalResidueRing<C extends GcdRingElem<C>> implements
 
     /**
      * Get a SolvableLocalResidue element from a BigInteger value.
+     *
      * @param a BigInteger.
      * @return a SolvableLocalResidue.
      */
@@ -297,6 +309,7 @@ public class SolvableLocalResidueRing<C extends GcdRingElem<C>> implements
 
     /**
      * Get a SolvableLocalResidue element from a long value.
+     *
      * @param a long.
      * @return a SolvableLocalResidue.
      */
@@ -316,6 +329,7 @@ public class SolvableLocalResidueRing<C extends GcdRingElem<C>> implements
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this ElemFactory.
      */
     @Override
@@ -359,6 +373,7 @@ public class SolvableLocalResidueRing<C extends GcdRingElem<C>> implements
 
     /**
      * SolvableLocalResidue random.
+     *
      * @param n such that 0 &le; v &le; (2<sup>n</sup>-1).
      * @return a random quotient element.
      */
@@ -376,6 +391,7 @@ public class SolvableLocalResidueRing<C extends GcdRingElem<C>> implements
 
     /**
      * Generate a random quotient.
+     *
      * @param k bitsize of random coefficients.
      * @param l number of terms.
      * @param d maximal degree in each variable.
@@ -396,7 +412,8 @@ public class SolvableLocalResidueRing<C extends GcdRingElem<C>> implements
 
     /**
      * SolvableLocalResidue random.
-     * @param n such that 0 &le; v &le; (2<sup>n</sup>-1).
+     *
+     * @param n   such that 0 &le; v &le; (2<sup>n</sup>-1).
      * @param rnd is a source for random bits.
      * @return a random quotient element.
      */
@@ -416,6 +433,7 @@ public class SolvableLocalResidueRing<C extends GcdRingElem<C>> implements
      * Parse SolvableLocalResidue from String. Syntax:
      * "{ polynomial | polynomial }" or "{ polynomial }" or
      * " polynomial | polynomial " or " polynomial "
+     *
      * @param s String.
      * @return SolvableLocalResidue from s.
      */
@@ -443,6 +461,7 @@ public class SolvableLocalResidueRing<C extends GcdRingElem<C>> implements
 
     /**
      * Parse SolvableLocalResidue from Reader.
+     *
      * @param r Reader.
      * @return next SolvableLocalResidue from r.
      */

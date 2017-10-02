@@ -5,10 +5,10 @@
 package edu.jas.vector;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.kern.PrettyPrint;
 import edu.jas.structure.AlgebraElem;
@@ -18,6 +18,7 @@ import edu.jas.structure.RingElem;
 /**
  * GenMatrix implements a generic matrix algebra over RingElem entries. Matrix
  * has n columns and m rows over C.
+ *
  * @author Heinz Kredel
  */
 
@@ -38,6 +39,7 @@ public class GenMatrix<C extends RingElem<C>> implements AlgebraElem<GenMatrix<C
 
     /**
      * Constructor for zero GenMatrix.
+     *
      * @param r matrix ring
      */
     public GenMatrix(GenMatrixRing<C> r) {
@@ -47,6 +49,7 @@ public class GenMatrix<C extends RingElem<C>> implements AlgebraElem<GenMatrix<C
 
     /**
      * Constructor for GenMatrix.
+     *
      * @param r matrix ring
      * @param m matrix
      */
@@ -63,6 +66,7 @@ public class GenMatrix<C extends RingElem<C>> implements AlgebraElem<GenMatrix<C
 
     /**
      * Constructor for GenMatrix.
+     *
      * @param r matrix ring
      * @param m matrix
      */
@@ -78,9 +82,10 @@ public class GenMatrix<C extends RingElem<C>> implements AlgebraElem<GenMatrix<C
 
     /**
      * Get element at row i, column j.
+     *
      * @param i row index.
      * @param j column index.
-     * @return this(i,j).
+     * @return this(i, j).
      */
     public C get(int i, int j) {
         return matrix.get(i).get(j);
@@ -89,8 +94,9 @@ public class GenMatrix<C extends RingElem<C>> implements AlgebraElem<GenMatrix<C
 
     /**
      * Set element at row i, column j. Mutates this matrix.
-     * @param i row index.
-     * @param j column index.
+     *
+     * @param i  row index.
+     * @param j  column index.
      * @param el element to set.
      */
     public void setMutate(int i, int j, C el) {
@@ -102,8 +108,9 @@ public class GenMatrix<C extends RingElem<C>> implements AlgebraElem<GenMatrix<C
 
     /**
      * Set element at row i, column j.
-     * @param i row index.
-     * @param j column index.
+     *
+     * @param i  row index.
+     * @param j  column index.
      * @param el element to set.
      * @return new matrix m, with m(i,j) == el.
      */
@@ -116,6 +123,7 @@ public class GenMatrix<C extends RingElem<C>> implements AlgebraElem<GenMatrix<C
 
     /**
      * Get the String representation as RingElem.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -152,6 +160,7 @@ public class GenMatrix<C extends RingElem<C>> implements AlgebraElem<GenMatrix<C
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this Element.
      * @see edu.jas.structure.Element#toScript()
      */
@@ -186,6 +195,7 @@ public class GenMatrix<C extends RingElem<C>> implements AlgebraElem<GenMatrix<C
 
     /**
      * Get a scripting compatible string representation of the factory.
+     *
      * @return script compatible representation for this ElemFactory.
      * @see edu.jas.structure.Element#toScriptFactory()
      */
@@ -198,6 +208,7 @@ public class GenMatrix<C extends RingElem<C>> implements AlgebraElem<GenMatrix<C
 
     /**
      * Get the corresponding element factory.
+     *
      * @return factory for this Element.
      * @see edu.jas.structure.Element#factory()
      */
@@ -208,6 +219,7 @@ public class GenMatrix<C extends RingElem<C>> implements AlgebraElem<GenMatrix<C
 
     /**
      * clone method.
+     *
      * @see java.lang.Object#clone()
      */
     @Override
@@ -241,6 +253,7 @@ public class GenMatrix<C extends RingElem<C>> implements AlgebraElem<GenMatrix<C
 
     /**
      * Test if this is one.
+     *
      * @return true if this is 1, else false.
      */
     public boolean isONE() {
@@ -265,6 +278,7 @@ public class GenMatrix<C extends RingElem<C>> implements AlgebraElem<GenMatrix<C
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -286,6 +300,7 @@ public class GenMatrix<C extends RingElem<C>> implements AlgebraElem<GenMatrix<C
 
     /**
      * Hash code for this GenMatrix.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -302,6 +317,7 @@ public class GenMatrix<C extends RingElem<C>> implements AlgebraElem<GenMatrix<C
 
     /**
      * compareTo, lexicogaphical comparison.
+     *
      * @param b other
      * @return 1 if (this &lt; b), 0 if (this == b) or -1 if (this &gt; b).
      */
@@ -330,6 +346,7 @@ public class GenMatrix<C extends RingElem<C>> implements AlgebraElem<GenMatrix<C
      * Test if this is a unit. I.e. there exists x with this.multiply(x).isONE()
      * == true. Tests if all diagonal elements are units and all other elements
      * are zero.
+     *
      * @return true if this is a unit, else false.
      */
     public boolean isUnit() {
@@ -356,6 +373,7 @@ public class GenMatrix<C extends RingElem<C>> implements AlgebraElem<GenMatrix<C
 
     /**
      * sign of matrix.
+     *
      * @return 1 if (this &lt; 0), 0 if (this == 0) or -1 if (this &gt; 0).
      */
     public int signum() {
@@ -365,6 +383,7 @@ public class GenMatrix<C extends RingElem<C>> implements AlgebraElem<GenMatrix<C
 
     /**
      * Sum of matrices.
+     *
      * @return this+b
      */
     public GenMatrix<C> sum(GenMatrix<C> b) {
@@ -387,6 +406,7 @@ public class GenMatrix<C extends RingElem<C>> implements AlgebraElem<GenMatrix<C
 
     /**
      * Difference of matrices.
+     *
      * @return this-b
      */
     public GenMatrix<C> subtract(GenMatrix<C> b) {
@@ -409,6 +429,7 @@ public class GenMatrix<C extends RingElem<C>> implements AlgebraElem<GenMatrix<C
 
     /**
      * Negative of this matrix.
+     *
      * @return -this
      */
     public GenMatrix<C> negate() {
@@ -428,6 +449,7 @@ public class GenMatrix<C extends RingElem<C>> implements AlgebraElem<GenMatrix<C
 
     /**
      * Absolute value of this matrix.
+     *
      * @return abs(this)
      */
     public GenMatrix<C> abs() {
@@ -440,6 +462,7 @@ public class GenMatrix<C extends RingElem<C>> implements AlgebraElem<GenMatrix<C
 
     /**
      * Product of this matrix with scalar.
+     *
      * @return this*s
      */
     public GenMatrix<C> scalarMultiply(C s) {
@@ -459,6 +482,7 @@ public class GenMatrix<C extends RingElem<C>> implements AlgebraElem<GenMatrix<C
 
     /**
      * Left product of this matrix with scalar.
+     *
      * @return s*this
      */
     public GenMatrix<C> leftScalarMultiply(C s) {
@@ -478,6 +502,7 @@ public class GenMatrix<C extends RingElem<C>> implements AlgebraElem<GenMatrix<C
 
     /**
      * Linear compination of this matrix with scalar multiple of other matrix.
+     *
      * @return this*s+b*t
      */
     public GenMatrix<C> linearCombination(C s, GenMatrix<C> b, C t) {
@@ -502,6 +527,7 @@ public class GenMatrix<C extends RingElem<C>> implements AlgebraElem<GenMatrix<C
 
     /**
      * Linear combination of this matrix with scalar multiple of other matrix.
+     *
      * @return this+b*t
      */
     public GenMatrix<C> linearCombination(GenMatrix<C> b, C t) {
@@ -526,6 +552,7 @@ public class GenMatrix<C extends RingElem<C>> implements AlgebraElem<GenMatrix<C
     /**
      * Left linear combination of this matrix with scalar multiple of other
      * matrix.
+     *
      * @return this+t*b
      */
     public GenMatrix<C> linearCombination(C t, GenMatrix<C> b) {
@@ -550,6 +577,7 @@ public class GenMatrix<C extends RingElem<C>> implements AlgebraElem<GenMatrix<C
     /**
      * left linear compination of this matrix with scalar multiple of other
      * matrix.
+     *
      * @return s*this+t*b
      */
     public GenMatrix<C> leftLinearCombination(C s, C t, GenMatrix<C> b) {
@@ -574,6 +602,7 @@ public class GenMatrix<C extends RingElem<C>> implements AlgebraElem<GenMatrix<C
 
     /**
      * Transposed matrix.
+     *
      * @return transpose(this)
      */
     public GenMatrix<C> transpose(GenMatrixRing<C> tr) {
@@ -595,6 +624,7 @@ public class GenMatrix<C extends RingElem<C>> implements AlgebraElem<GenMatrix<C
 
     /**
      * Multiply this with S.
+     *
      * @param S
      * @return this * S.
      */
@@ -640,6 +670,7 @@ public class GenMatrix<C extends RingElem<C>> implements AlgebraElem<GenMatrix<C
 
     /**
      * Multiply this with S. Simple unblocked algorithm.
+     *
      * @param S
      * @return this * S.
      */
@@ -668,6 +699,7 @@ public class GenMatrix<C extends RingElem<C>> implements AlgebraElem<GenMatrix<C
 
     /**
      * Divide this by S.
+     *
      * @param S
      * @return this / S.
      */
@@ -678,6 +710,7 @@ public class GenMatrix<C extends RingElem<C>> implements AlgebraElem<GenMatrix<C
 
     /**
      * Remainder after division of this by S.
+     *
      * @param S
      * @return this - (this / S) * S.
      */
@@ -688,6 +721,7 @@ public class GenMatrix<C extends RingElem<C>> implements AlgebraElem<GenMatrix<C
 
     /**
      * Quotient and remainder by division of this by S.
+     *
      * @param S a GenMatrix
      * @return [this/S, this - (this/S)*S].
      */
@@ -698,6 +732,7 @@ public class GenMatrix<C extends RingElem<C>> implements AlgebraElem<GenMatrix<C
 
     /**
      * Inverse of this.
+     *
      * @return x with this * x = 1, if it exists.
      */
     public GenMatrix<C> inverse() {
@@ -707,8 +742,9 @@ public class GenMatrix<C extends RingElem<C>> implements AlgebraElem<GenMatrix<C
 
     /**
      * Greatest common divisor.
+     *
      * @param b other element.
-     * @return gcd(this,b).
+     * @return gcd(this, b).
      */
     public GenMatrix<C> gcd(GenMatrix<C> b) {
         throw new UnsupportedOperationException("gcd not implemented");
@@ -717,6 +753,7 @@ public class GenMatrix<C extends RingElem<C>> implements AlgebraElem<GenMatrix<C
 
     /**
      * Extended greatest common divisor.
+     *
      * @param b other element.
      * @return [ gcd(this,b), c1, c2 ] with c1*this + c2*b = gcd(this,b).
      */

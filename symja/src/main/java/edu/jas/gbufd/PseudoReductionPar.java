@@ -5,16 +5,16 @@
 package edu.jas.gbufd;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-
 import edu.jas.gb.ReductionAbstract;
-import edu.jas.poly.PolyUtil;
 import edu.jas.poly.ExpVector;
 import edu.jas.poly.GenPolynomial;
+import edu.jas.poly.PolyUtil;
 import edu.jas.structure.RingElem;
 
 
@@ -22,12 +22,13 @@ import edu.jas.structure.RingElem;
  * Polynomial pseudo reduction sequential use algorithm. Coefficients of
  * polynomials must not be from a field, i.e. the fraction free reduction is
  * implemented. Implements normalform.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
 
 public class PseudoReductionPar<C extends RingElem<C>> extends ReductionAbstract<C> implements
-                PseudoReduction<C> {
+        PseudoReduction<C> {
 
 
     private static final Logger logger = Logger.getLogger(PseudoReductionPar.class);
@@ -45,6 +46,7 @@ public class PseudoReductionPar<C extends RingElem<C>> extends ReductionAbstract
 
     /**
      * Normalform.
+     *
      * @param Ap polynomial.
      * @param Pp polynomial list.
      * @return nf(Ap) with respect to Pp.
@@ -125,10 +127,11 @@ public class PseudoReductionPar<C extends RingElem<C>> extends ReductionAbstract
 
     /**
      * Normalform.
+     *
      * @param Pp polynomial list.
      * @param Ap polynomial.
-     * @return ( nf(Ap), mf ) with respect to Pp and mf as multiplication factor
-     *         for Ap.
+     * @return (nf(Ap), mf ) with respect to Pp and mf as multiplication factor
+     * for Ap.
      */
     @SuppressWarnings("unchecked")
     public PseudoReductionEntry<C> normalformFactor(List<GenPolynomial<C>> Pp, GenPolynomial<C> Ap) {
@@ -217,20 +220,22 @@ public class PseudoReductionPar<C extends RingElem<C>> extends ReductionAbstract
      * are exact. Compute first the multiplication factor <code>m</code> with
      * <code>normalform(Pp,Ap,m)</code>, then call this method with
      * <code>normalform(row,Pp,m*Ap)</code>.
+     *
      * @param row recording matrix, is modified.
-     * @param Pp a polynomial list for reduction.
-     * @param Ap a polynomial.
-     * @return nf(Pp,Ap), the normal form of Ap wrt. Pp.
+     * @param Pp  a polynomial list for reduction.
+     * @param Ap  a polynomial.
+     * @return nf(Pp, Ap), the normal form of Ap wrt. Pp.
      */
     @SuppressWarnings("unchecked")
     public GenPolynomial<C> normalform(List<GenPolynomial<C>> row, List<GenPolynomial<C>> Pp,
-                    GenPolynomial<C> Ap) {
+                                       GenPolynomial<C> Ap) {
         throw new RuntimeException("normalform with recording not implemented");
     }
 
 
     /**
      * Normalform recursive.
+     *
      * @param Ap recursive polynomial.
      * @param Pp recursive polynomial list.
      * @return nf(Ap) with respect to Pp.
@@ -296,12 +301,12 @@ public class PseudoReductionPar<C extends RingElem<C>> extends ReductionAbstract
                 }
                 GenPolynomial<C> c = P[i].leadingBaseCoefficient();
                 //if (a.remainder(c).isZERO()) { //c.isUnit() ) {
-                if (PolyUtil.<C> baseSparsePseudoRemainder(a,c).isZERO()) { 
+                if (PolyUtil.<C>baseSparsePseudoRemainder(a, c).isZERO()) {
                     if (debug) {
                         logger.info("red c = " + c);
                     }
                     //a = a.divide(c);
-                    GenPolynomial<C> b = PolyUtil.<C> basePseudoDivide(a,c);
+                    GenPolynomial<C> b = PolyUtil.<C>basePseudoDivide(a, c);
                     GenPolynomial<GenPolynomial<C>> Sp = S.subtractMultiple(b, f, P[i]);
                     if (e.equals(Sp.leadingExpVector())) { // TODO: avoid
                         //throw new RuntimeException("degree not descending");
@@ -310,7 +315,7 @@ public class PseudoReductionPar<C extends RingElem<C>> extends ReductionAbstract
                         //S = S.multiply(c);
                         Sp = S.scaleSubtractMultiple(c, a, f, P[i]);
                     }
-                    S = Sp; 
+                    S = Sp;
                 } else {
                     R = R.multiply(c);
                     //S = S.multiply(c);

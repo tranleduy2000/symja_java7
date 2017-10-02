@@ -17,6 +17,7 @@ import edu.jas.structure.GcdRingElem;
 
 /**
  * RealAlgebraicNumber root tuple.
+ *
  * @param <C> coefficient type.
  * @author Heinz Kredel
  */
@@ -31,6 +32,7 @@ public class RealRootTuple<C extends GcdRingElem<C> & Rational> implements Seria
 
     /**
      * Constructor.
+     *
      * @param t list of roots.
      */
     public RealRootTuple(List<RealAlgebraicNumber<C>> t) {
@@ -43,6 +45,7 @@ public class RealRootTuple<C extends GcdRingElem<C> & Rational> implements Seria
 
     /**
      * String representation of tuple.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -53,6 +56,7 @@ public class RealRootTuple<C extends GcdRingElem<C> & Rational> implements Seria
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this Rectangle.
      */
     public String toScript() {
@@ -73,6 +77,7 @@ public class RealRootTuple<C extends GcdRingElem<C> & Rational> implements Seria
 
     /**
      * Contains a point.
+     *
      * @param c real root tuple representing a point.
      * @return true if c is contained in this root tuple, else false.
      */
@@ -83,6 +88,7 @@ public class RealRootTuple<C extends GcdRingElem<C> & Rational> implements Seria
 
     /**
      * Contains a point.
+     *
      * @param c list of real algebraic numbers representing a point.
      * @return true if c is contained in this root tuple, else false.
      */
@@ -101,6 +107,7 @@ public class RealRootTuple<C extends GcdRingElem<C> & Rational> implements Seria
 
     /**
      * Random point of real root tuple.
+     *
      * @return a random point contained in this real root tuple.
      */
     public List<C> randomPoint() {
@@ -115,6 +122,7 @@ public class RealRootTuple<C extends GcdRingElem<C> & Rational> implements Seria
 
     /**
      * Refine root isolating intervals.
+     *
      * @param eps desired interval length.
      */
     public void refineRoot(BigRational eps) {
@@ -127,6 +135,7 @@ public class RealRootTuple<C extends GcdRingElem<C> & Rational> implements Seria
 
     /**
      * Copy this.
+     *
      * @return a copy of this.
      */
     public RealRootTuple<C> copy() {
@@ -136,6 +145,7 @@ public class RealRootTuple<C extends GcdRingElem<C> & Rational> implements Seria
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -155,6 +165,7 @@ public class RealRootTuple<C extends GcdRingElem<C> & Rational> implements Seria
 
     /**
      * Hash code for this Rectangle.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -165,6 +176,7 @@ public class RealRootTuple<C extends GcdRingElem<C> & Rational> implements Seria
 
     /**
      * Rational approximation of each coordinate.
+     *
      * @return list of coordinate points.
      */
     public List<BigRational> getRational() {
@@ -179,6 +191,7 @@ public class RealRootTuple<C extends GcdRingElem<C> & Rational> implements Seria
 
     /**
      * Decimal approximation of each coordinate.
+     *
      * @return list of coordinate points.
      */
     public List<BigDecimal> decimalMagnitude() {
@@ -193,6 +206,7 @@ public class RealRootTuple<C extends GcdRingElem<C> & Rational> implements Seria
 
     /**
      * Rational Length.
+     *
      * @return max |v_i|;
      */
     public BigRational rationalLength() {
@@ -210,6 +224,7 @@ public class RealRootTuple<C extends GcdRingElem<C> & Rational> implements Seria
 
     /**
      * Signum.
+     *
      * @return ?;
      */
     public int signum() {

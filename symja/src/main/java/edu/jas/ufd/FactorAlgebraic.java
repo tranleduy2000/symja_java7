@@ -5,17 +5,15 @@
 package edu.jas.ufd;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.poly.AlgebraicNumber;
 import edu.jas.poly.AlgebraicNumberRing;
 import edu.jas.poly.GenPolynomial;
 import edu.jas.poly.GenPolynomialRing;
-import edu.jas.poly.PolyUtil;
-import edu.jas.poly.TermOrder;
 import edu.jas.structure.GcdRingElem;
 
 
@@ -23,8 +21,9 @@ import edu.jas.structure.GcdRingElem;
  * Algebraic number coefficients factorization algorithms. This class implements
  * factorization methods for polynomials over algebraic numbers over rational
  * numbers or over (prime) modular integers.
- * @author Heinz Kredel
+ *
  * @param <C> coefficient type
+ * @author Heinz Kredel
  */
 
 public class FactorAlgebraic<C extends GcdRingElem<C>> extends FactorAbsolute<AlgebraicNumber<C>> {
@@ -52,16 +51,18 @@ public class FactorAlgebraic<C extends GcdRingElem<C>> extends FactorAbsolute<Al
 
     /**
      * Constructor.
+     *
      * @param fac algebraic number factory.
      */
     public FactorAlgebraic(AlgebraicNumberRing<C> fac) {
-        this(fac, FactorFactory.<C> getImplementation(fac.ring.coFac) );
+        this(fac, FactorFactory.<C>getImplementation(fac.ring.coFac));
     }
 
 
     /**
      * Constructor.
-     * @param fac algebraic number factory.
+     *
+     * @param fac         algebraic number factory.
      * @param factorCoeff factorization engine for polynomials over base coefficients.
      */
     public FactorAlgebraic(AlgebraicNumberRing<C> fac, FactorAbstract<C> factorCoeff) {
@@ -72,8 +73,9 @@ public class FactorAlgebraic<C extends GcdRingElem<C>> extends FactorAbsolute<Al
 
     /**
      * GenPolynomial base factorization of a squarefree polynomial.
+     *
      * @param P squarefree GenPolynomial&lt;AlgebraicNumber&lt;C&gt;&gt;.
-     * @return [p_1,...,p_k] with P = prod_{i=1, ..., k} p_i.
+     * @return [p_1, ..., p_k] with P = prod_{i=1, ..., k} p_i.
      */
     @Override
     public List<GenPolynomial<AlgebraicNumber<C>>> baseFactorsSquarefree(GenPolynomial<AlgebraicNumber<C>> P) {
@@ -100,17 +102,17 @@ public class FactorAlgebraic<C extends GcdRingElem<C>> extends FactorAbsolute<Al
         }
         //System.out.println("\nP = " + P);
         if (debug) {
-           Squarefree<AlgebraicNumber<C>> sqengine = SquarefreeFactory.<AlgebraicNumber<C>> getImplementation(afac);
-           if ( !sqengine.isSquarefree(P) ) {
-               throw new RuntimeException("P not squarefree: " + sqengine.squarefreeFactors(P));
-           }
-           GenPolynomial<C> modu = afac.modul;
-           if ( !factorCoeff.isIrreducible(modu) ) {
-               throw new RuntimeException("modul not irreducible: " + factorCoeff.factors(modu));
-           }
-           System.out.println("P squarefree and modul irreducible");
-           //GreatestCommonDivisor<AlgebraicNumber<C>> aengine //= GCDFactory.<AlgebraicNumber<C>> getProxy(afac);
-           //  = new GreatestCommonDivisorSimple<AlgebraicNumber<C>>( /*cfac.coFac*/ );
+            Squarefree<AlgebraicNumber<C>> sqengine = SquarefreeFactory.<AlgebraicNumber<C>>getImplementation(afac);
+            if (!sqengine.isSquarefree(P)) {
+                throw new RuntimeException("P not squarefree: " + sqengine.squarefreeFactors(P));
+            }
+            GenPolynomial<C> modu = afac.modul;
+            if (!factorCoeff.isIrreducible(modu)) {
+                throw new RuntimeException("modul not irreducible: " + factorCoeff.factors(modu));
+            }
+            System.out.println("P squarefree and modul irreducible");
+            //GreatestCommonDivisor<AlgebraicNumber<C>> aengine //= GCDFactory.<AlgebraicNumber<C>> getProxy(afac);
+            //  = new GreatestCommonDivisorSimple<AlgebraicNumber<C>>( /*cfac.coFac*/ );
         }
 
         // search squarefree norm
@@ -121,7 +123,7 @@ public class FactorAlgebraic<C extends GcdRingElem<C>> extends FactorAbsolute<Al
         //int[] klist = new int[]{ 0, 1, 2, 3, -1, -2, -3 , 5, -5, 7, -7, 101, -101, 1001, -1001 };
         //int[] klist = new int[]{ 0, 1, 2, 3, -1, -2, -3 , 5, -5, 7, -7, 23, -23, 167, -167 };
         //int[] klist = new int[] { 0, -1, -2, 1, 2, -3, 3 };
-        int[] klist = new int[] { 0, -1, -2, 1, 2 };
+        int[] klist = new int[]{0, -1, -2, 1, 2};
         int ki = 0;
         while (!sqf) {
             // k = 0,1,2,-1,-2
@@ -132,7 +134,7 @@ public class FactorAlgebraic<C extends GcdRingElem<C>> extends FactorAbsolute<Al
             ki++;
             // compute norm with x -> ( y - k x )
             ks = k;
-            res = PolyUfdUtil.<C> norm(P, ks);
+            res = PolyUfdUtil.<C>norm(P, ks);
             //System.out.println("res = " + res);
             if (res.isZERO() || res.isConstant()) {
                 continue;
@@ -170,7 +172,7 @@ public class FactorAlgebraic<C extends GcdRingElem<C>> extends FactorAbsolute<Al
         GenPolynomial<AlgebraicNumber<C>> Ni;
         for (GenPolynomial<C> nfi : nfacs) {
             //System.out.println("nfi = " + nfi);
-            Ni = PolyUfdUtil.<C> substituteConvertToAlgebraicCoefficients(pfac, nfi, ks);
+            Ni = PolyUfdUtil.<C>substituteConvertToAlgebraicCoefficients(pfac, nfi, ks);
             if (logger.isInfoEnabled()) {
                 logger.info("Ni = " + Ni);
                 //System.out.println("Pp = " + Pp);

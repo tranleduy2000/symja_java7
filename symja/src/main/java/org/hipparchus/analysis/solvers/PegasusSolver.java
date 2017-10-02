@@ -21,7 +21,7 @@ package org.hipparchus.analysis.solvers;
  * Implements the <em>Pegasus</em> method for root-finding (approximating
  * a zero of a univariate real function). It is a modified
  * {@link RegulaFalsiSolver <em>Regula Falsi</em>} method.
- *
+ * <p>
  * <p>Like the <em>Regula Falsi</em> method, convergence is guaranteed by
  * maintaining a bracketed solution. The <em>Pegasus</em> method however,
  * should converge much faster than the original <em>Regula Falsi</em>
@@ -31,19 +31,20 @@ package org.hipparchus.analysis.solvers;
  * the <em>Pegasus</em> method should converge faster than the
  * {@link IllinoisSolver <em>Illinois</em>} method, another <em>Regula
  * Falsi</em>-based method.</p>
- *
+ * <p>
  * <p>The <em>Pegasus</em> method assumes that the function is continuous,
  * but not necessarily smooth.</p>
- *
+ * <p>
  * <p>Implementation based on the following article: M. Dowell and P. Jarratt,
  * <em>The "Pegasus" method for computing the root of an equation</em>,
  * BIT Numerical Mathematics, volume 12, number 4, pages 503-508, Springer,
  * 1972.</p>
- *
  */
 public class PegasusSolver extends BaseSecantSolver {
 
-    /** Construct a solver with default accuracy (1e-6). */
+    /**
+     * Construct a solver with default accuracy (1e-6).
+     */
     public PegasusSolver() {
         super(DEFAULT_ABSOLUTE_ACCURACY, Method.PEGASUS);
     }
@@ -71,8 +72,8 @@ public class PegasusSolver extends BaseSecantSolver {
     /**
      * Construct a solver.
      *
-     * @param relativeAccuracy Relative accuracy.
-     * @param absoluteAccuracy Absolute accuracy.
+     * @param relativeAccuracy      Relative accuracy.
+     * @param absoluteAccuracy      Absolute accuracy.
      * @param functionValueAccuracy Maximum function value error.
      */
     public PegasusSolver(final double relativeAccuracy,

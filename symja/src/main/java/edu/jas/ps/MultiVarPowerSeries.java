@@ -35,6 +35,7 @@ import edu.jas.util.MapEntry;
  * <code>gcd()</code>. <b>Note: </b> Currently the term order is fixed to the
  * order defined by the iterator over exponent vectors in class
  * <code>ExpVectorIterator</code>.
+ *
  * @param <C> ring element type
  * @author Heinz Kredel
  */
@@ -52,7 +53,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
      * Data structure / generating function for coeffcients. Cannot be final
      * because of fixPoint, must be accessible in factory.
      */
-    /*package*/MultiVarCoefficients<C> lazyCoeffs;
+    /*package*/ MultiVarCoefficients<C> lazyCoeffs;
 
 
     /**
@@ -84,6 +85,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * Package constructor. Use in fixPoint only, must be accessible in factory.
+     *
      * @param ring power series ring.
      */
     /*package*/ MultiVarPowerSeries(MultiVarPowerSeriesRing<C> ring) {
@@ -95,7 +97,8 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * Constructor.
-     * @param ring power series ring.
+     *
+     * @param ring       power series ring.
      * @param lazyCoeffs generating function for coefficients.
      */
     public MultiVarPowerSeries(MultiVarPowerSeriesRing<C> ring, MultiVarCoefficients<C> lazyCoeffs) {
@@ -105,15 +108,16 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * Constructor.
-     * @param ring power series ring.
+     *
+     * @param ring       power series ring.
      * @param lazyCoeffs generating function for coefficients.
-     * @param trunc truncate parameter for this power series.
+     * @param trunc      truncate parameter for this power series.
      */
     public MultiVarPowerSeries(MultiVarPowerSeriesRing<C> ring, MultiVarCoefficients<C> lazyCoeffs,
-                    int trunc) {
+                               int trunc) {
         if (lazyCoeffs == null || ring == null) {
             throw new IllegalArgumentException(
-                            "null not allowed: ring = " + ring + ", lazyCoeffs = " + lazyCoeffs);
+                    "null not allowed: ring = " + ring + ", lazyCoeffs = " + lazyCoeffs);
         }
         this.ring = ring;
         this.lazyCoeffs = lazyCoeffs;
@@ -123,6 +127,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * Get the corresponding element factory.
+     *
      * @return factory for this Element.
      * @see edu.jas.structure.Element#factory()
      */
@@ -133,6 +138,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * Clone this power series.
+     *
      * @see java.lang.Object#clone()
      */
     @Override
@@ -143,6 +149,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * String representation of power series.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -153,6 +160,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * To String with given truncate.
+     *
      * @param trunc truncate parameter for this power series.
      * @return string representation of this to given truncate.
      */
@@ -199,7 +207,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
             sb.append("0");
         }
         sb.append(" + BigO( (" + ring.varsToString() + ")^" + (trunc + 1) + "(" + (ring.truncate + 1)
-                        + ") )");
+                + ") )");
         //sb.append("...");
         //System.out.println("cache2 = " + s.lazyCoeffs.coeffCache);
         return sb.toString();
@@ -208,6 +216,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this Element.
      * @see edu.jas.structure.Element#toScript()
      */
@@ -262,6 +271,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * Get a scripting compatible string representation of the factory.
+     *
      * @return script compatible representation for this ElemFactory.
      * @see edu.jas.structure.Element#toScriptFactory()
      */
@@ -274,6 +284,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * Get coefficient.
+     *
      * @param index number of requested coefficient.
      * @return coefficient at index.
      */
@@ -287,6 +298,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * Homogeneous part.
+     *
      * @param tdeg requested degree.
      * @return polynomial part of given degree.
      */
@@ -297,8 +309,9 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * Get a GenPolynomial&lt;C&gt; from this.
+     *
      * @return a GenPolynomial&lt;C&gt; from this up to truncate homogeneous
-     *         parts.
+     * parts.
      */
     public GenPolynomial<C> asPolynomial() {
         GenPolynomial<C> p = homogeneousPart(0L);
@@ -311,6 +324,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * Leading base coefficient.
+     *
      * @return first coefficient.
      */
     public C leadingCoefficient() {
@@ -320,6 +334,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * Reductum.
+     *
      * @param r variable for taking the reductum.
      * @return this - leading monomial in the direction of r.
      */
@@ -341,6 +356,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * Prepend a new leading coefficient.
+     *
      * @param r variable for the direction.
      * @param h new coefficient.
      * @return new power series.
@@ -369,6 +385,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * Shift coefficients.
+     *
      * @param k shift index.
      * @param r variable for the direction.
      * @return new power series with coefficient(i) = old.coefficient(i-k).
@@ -396,6 +413,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * Reductum.
+     *
      * @return this - leading monomial.
      */
     public MultiVarPowerSeries<C> reductum() {
@@ -431,6 +449,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * Shift coefficients. Multiply by exponent vector.
+     *
      * @param k shift ExpVector.
      * @return new power series with coefficient(i) = old.coefficient(i-k).
      */
@@ -459,6 +478,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * Multiply by exponent vector and coefficient.
+     *
      * @param k shift ExpVector.
      * @param c coefficient multiplier.
      * @return new power series with coefficient(i) = old.coefficient(i-k)*c.
@@ -503,6 +523,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * Sum monomial.
+     *
      * @param m ExpVector , coeffcient pair
      * @return this + ONE.multiply(m.coefficient,m.exponent).
      */
@@ -516,6 +537,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * Sum exponent vector and coefficient.
+     *
      * @param k ExpVector.
      * @param c coefficient.
      * @return this + ONE.multiply(c,k).
@@ -556,6 +578,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * Subtract exponent vector and coefficient.
+     *
      * @param k ExpVector.
      * @param c coefficient.
      * @return this - ONE.multiply(c,k).
@@ -594,6 +617,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * Sum exponent vector and coefficient.
+     *
      * @param mvc cached coefficients.
      * @return this + mvc.
      */
@@ -631,19 +655,20 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
         //System.out.println("cc = " + cc);
 
         return new MultiVarPowerSeries<C>(ring,
-                        new MultiVarCoefficients<C>(mc.pfac, new HashMap<Long, GenPolynomial<C>>(cc), z, hc) {
+                new MultiVarCoefficients<C>(mc.pfac, new HashMap<Long, GenPolynomial<C>>(cc), z, hc) {
 
 
-                            @Override
-                            public C generate(ExpVector i) {
-                                return coefficient(i);
-                            }
-                        });
+                    @Override
+                    public C generate(ExpVector i) {
+                        return coefficient(i);
+                    }
+                });
     }
 
 
     /**
      * Select coefficients.
+     *
      * @param sel selector functor.
      * @return new power series with selected coefficients.
      */
@@ -666,6 +691,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
     /**
      * Shift select coefficients. Not selected coefficients are removed from the
      * result series.
+     *
      * @param sel selector functor.
      * @return new power series with shifted selected coefficients.
      */
@@ -707,6 +733,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * Map a unary function to this power series.
+     *
      * @param f evaluation functor.
      * @return new power series with coefficients f(this(i)).
      */
@@ -724,12 +751,13 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * Map a binary function to this and another power series.
-     * @param f evaluation functor with coefficients f(this(i),other(i)).
+     *
+     * @param f  evaluation functor with coefficients f(this(i),other(i)).
      * @param ps other power series.
      * @return new power series.
      */
     public MultiVarPowerSeries<C> zip(final BinaryFunctor<? super C, ? super C, C> f,
-                    final MultiVarPowerSeries<C> ps) {
+                                      final MultiVarPowerSeries<C> ps) {
         int m = Math.min(ring.truncate, Math.max(truncate, ps.truncate()));
 
         return new MultiVarPowerSeries<C>(ring, new MultiVarCoefficients<C>(ring) {
@@ -745,6 +773,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * Sum of two power series, using zip().
+     *
      * @param ps other power series.
      * @return this + ps.
      */
@@ -762,6 +791,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * Subtraction of two power series, using zip().
+     *
      * @param ps other power series.
      * @return this - ps.
      */
@@ -779,6 +809,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * Multiply by coefficient.
+     *
      * @param a coefficient.
      * @return this * a.
      */
@@ -802,6 +833,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * Monic.
+     *
      * @return 1/orderCoeff() * this.
      */
     public MultiVarPowerSeries<C> monic() {
@@ -830,6 +862,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * Negate.
+     *
      * @return - this.
      */
     public MultiVarPowerSeries<C> negate() {
@@ -846,6 +879,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * Absolute value.
+     *
      * @return abs(this).
      */
     public MultiVarPowerSeries<C> abs() {
@@ -858,6 +892,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * Evaluate at given point.
+     *
      * @return ps(a).
      */
     public C evaluate(List<C> a) {
@@ -876,6 +911,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * Order.
+     *
      * @return index of first non zero coefficient.
      */
     public int order() {
@@ -912,6 +948,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * Order ExpVector.
+     *
      * @return ExpVector of first non zero coefficient.
      */
     public ExpVector orderExpVector() {
@@ -923,6 +960,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * Order monomial.
+     *
      * @return first map entry or null.
      */
     public Map.Entry<ExpVector, C> orderMonomial() {
@@ -938,6 +976,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * Truncate.
+     *
      * @return truncate index of power series.
      */
     public int truncate() {
@@ -947,6 +986,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * Set truncate.
+     *
      * @param t new truncate index.
      * @return old truncate index of power series.
      */
@@ -968,6 +1008,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * Ecart.
+     *
      * @return ecart.
      */
     public long ecart() {
@@ -989,6 +1030,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * Signum.
+     *
      * @return sign of first non zero coefficient.
      */
     public int signum() {
@@ -1002,6 +1044,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * Compare to. <b>Note: </b> compare only up to max(truncates).
+     *
      * @return sign of first non zero coefficient of this-ps.
      */
     @Override
@@ -1036,6 +1079,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * Is power series zero. <b>Note: </b> compare only up to truncate.
+     *
      * @return If this is 0 then true is returned, else false.
      * @see edu.jas.structure.RingElem#isZERO()
      */
@@ -1046,6 +1090,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * Is power series one. <b>Note: </b> compare only up to truncate.
+     *
      * @return If this is 1 then true is returned, else false.
      * @see edu.jas.structure.RingElem#isONE()
      */
@@ -1061,6 +1106,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
     /**
      * Comparison with any other object. <b>Note: </b> compare only up to
      * truncate.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -1079,6 +1125,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * Hash code for this polynomial. <b>Note: </b> only up to truncate.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -1101,6 +1148,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * Is unit.
+     *
      * @return true, if this power series is invertible, else false.
      */
     public boolean isUnit() {
@@ -1110,6 +1158,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * Sum a another power series.
+     *
      * @param ps other power series.
      * @return this + ps.
      */
@@ -1140,6 +1189,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * Subtract a another power series.
+     *
      * @param ps other power series.
      * @return this - ps.
      */
@@ -1170,6 +1220,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * Multiply by another power series.
+     *
      * @param ps other power series.
      * @return this * ps.
      */
@@ -1204,6 +1255,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * Inverse power series.
+     *
      * @return ps with this * ps = 1.
      */
     public MultiVarPowerSeries<C> inverse() {
@@ -1239,6 +1291,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * Divide by another power series.
+     *
      * @param ps nonzero power series with invertible coefficient.
      * @return this / ps.
      */
@@ -1255,7 +1308,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
         ExpVector en = ps.orderExpVector();
         if (!ps.coefficient(en).isUnit()) {
             throw new ArithmeticException("division by non unit coefficient " + ps.coefficient(ps.evorder)
-                            + ", evorder = " + ps.evorder);
+                    + ", evorder = " + ps.evorder);
         }
         // now m >= n
         MultiVarPowerSeries<C> st, sps, q, sq;
@@ -1277,6 +1330,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * Power series remainder.
+     *
      * @param ps nonzero power series with invertible leading coefficient.
      * @return remainder with this = quotient * ps + remainder.
      */
@@ -1292,16 +1346,18 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * Quotient and remainder by division of this by S.
+     *
      * @param S a MultiVarPowerSeries
      * @return [this/S, this - (this/S)*S].
      */
     public MultiVarPowerSeries<C>[] quotientRemainder(MultiVarPowerSeries<C> S) {
-        return new MultiVarPowerSeries[] { divide(S), remainder(S) };
+        return new MultiVarPowerSeries[]{divide(S), remainder(S)};
     }
 
 
     /**
      * Differentiate with respect to variable r.
+     *
      * @param r variable for the direction.
      * @return differentiate(this).
      */
@@ -1326,6 +1382,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * Integrate with respect to variable r and with given constant.
+     *
      * @param c integration constant.
      * @param r variable for the direction.
      * @return integrate(this).
@@ -1358,8 +1415,9 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * Power series greatest common divisor.
+     *
      * @param ps power series.
-     * @return gcd(this,ps).
+     * @return gcd(this, ps).
      */
     public MultiVarPowerSeries<C> gcd(MultiVarPowerSeries<C> ps) {
         if (ps.isZERO()) {
@@ -1377,6 +1435,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
     /**
      * Power series extended greatest common divisor. <b>Note:</b> not
      * implemented.
+     *
      * @param S power series.
      * @return [ gcd(this,S), a, b ] with a*this + b*S = gcd(this,S).
      */

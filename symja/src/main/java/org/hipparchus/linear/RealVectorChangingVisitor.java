@@ -20,7 +20,6 @@ package org.hipparchus.linear;
  * This interface defines a visitor for the entries of a vector. Visitors
  * implementing this interface may alter the entries of the vector being
  * visited.
- *
  */
 public interface RealVectorChangingVisitor {
     /**
@@ -28,8 +27,8 @@ public interface RealVectorChangingVisitor {
      * of the vector is visited.
      *
      * @param dimension the size of the vector
-     * @param start the index of the first entry to be visited
-     * @param end the index of the last entry to be visited (inclusive)
+     * @param start     the index of the first entry to be visited
+     * @param end       the index of the last entry to be visited (inclusive)
      */
     void start(int dimension, int start, int end);
 

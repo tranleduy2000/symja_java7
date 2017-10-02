@@ -5,6 +5,8 @@
 package edu.jas.gb;
 
 
+import org.apache.log4j.Logger;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -12,8 +14,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.concurrent.Semaphore;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.poly.ExpVector;
 import edu.jas.poly.GenPolynomial;
@@ -32,6 +32,7 @@ import edu.jas.util.ThreadPool;
  * reduction. Makes some effort to produce the same sequence of critical pairs
  * as in the sequential version. However already reduced pairs are not rereduced
  * if new polynomials appear.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  * @deprecated no direct alternative, use GroebnerBaseDistributedEC
@@ -40,33 +41,23 @@ import edu.jas.util.ThreadPool;
 public class GroebnerBaseSeqPairDistributed<C extends RingElem<C>> extends GroebnerBaseAbstract<C> {
 
 
-    private static final Logger logger = Logger.getLogger(GroebnerBaseSeqPairDistributed.class);
-
-
-    /**
-     * Number of threads to use.
-     */
-    protected final int threads;
-
-
     /**
      * Default number of threads.
      */
     protected static final int DEFAULT_THREADS = 2;
-
-
-    /**
-     * Pool of threads to use.
-     */
-    protected transient final ThreadPool pool;
-
-
     /**
      * Default server port.
      */
     protected static final int DEFAULT_PORT = 4711;
-
-
+    private static final Logger logger = Logger.getLogger(GroebnerBaseSeqPairDistributed.class);
+    /**
+     * Number of threads to use.
+     */
+    protected final int threads;
+    /**
+     * Pool of threads to use.
+     */
+    protected transient final ThreadPool pool;
     /**
      * Server port to use.
      */
@@ -83,6 +74,7 @@ public class GroebnerBaseSeqPairDistributed<C extends RingElem<C>> extends Groeb
 
     /**
      * Constructor.
+     *
      * @param threads number of threads to use.
      */
     public GroebnerBaseSeqPairDistributed(int threads) {
@@ -92,8 +84,9 @@ public class GroebnerBaseSeqPairDistributed<C extends RingElem<C>> extends Groeb
 
     /**
      * Constructor.
+     *
      * @param threads number of threads to use.
-     * @param red parallelism aware reduction engine
+     * @param red     parallelism aware reduction engine
      */
     public GroebnerBaseSeqPairDistributed(int threads, Reduction<C> red) {
         this(threads, new ThreadPool(threads), DEFAULT_PORT, red);
@@ -102,9 +95,10 @@ public class GroebnerBaseSeqPairDistributed<C extends RingElem<C>> extends Groeb
 
     /**
      * Constructor.
+     *
      * @param threads number of threads to use.
-     * @param port server port to use.
-     * @param red parallelism aware reduction engine
+     * @param port    server port to use.
+     * @param red     parallelism aware reduction engine
      */
     public GroebnerBaseSeqPairDistributed(int threads, int port, Reduction<C> red) {
         this(threads, new ThreadPool(threads), port, red);
@@ -113,8 +107,9 @@ public class GroebnerBaseSeqPairDistributed<C extends RingElem<C>> extends Groeb
 
     /**
      * Constructor.
+     *
      * @param threads number of threads to use.
-     * @param port server port to use.
+     * @param port    server port to use.
      */
     public GroebnerBaseSeqPairDistributed(int threads, int port) {
         this(threads, new ThreadPool(threads), port);
@@ -123,9 +118,10 @@ public class GroebnerBaseSeqPairDistributed<C extends RingElem<C>> extends Groeb
 
     /**
      * Constructor.
+     *
      * @param threads number of threads to use.
-     * @param pool ThreadPool to use.
-     * @param port server port to use.
+     * @param pool    ThreadPool to use.
+     * @param port    server port to use.
      */
     public GroebnerBaseSeqPairDistributed(int threads, ThreadPool pool, int port) {
         this(threads, pool, port, new ReductionPar<C>());
@@ -134,10 +130,11 @@ public class GroebnerBaseSeqPairDistributed<C extends RingElem<C>> extends Groeb
 
     /**
      * Constructor.
+     *
      * @param threads number of threads to use.
-     * @param pool ThreadPool to use.
-     * @param port server port to use.
-     * @param red parallelism aware reduction engine
+     * @param pool    ThreadPool to use.
+     * @param port    server port to use.
+     * @param red     parallelism aware reduction engine
      */
     public GroebnerBaseSeqPairDistributed(int threads, ThreadPool pool, int port, Reduction<C> red) {
         super(red);
@@ -167,8 +164,9 @@ public class GroebnerBaseSeqPairDistributed<C extends RingElem<C>> extends Groeb
 
     /**
      * Distributed Groebner base. Slaves maintain pairlist.
+     *
      * @param modv number of module variables.
-     * @param F polynomial list.
+     * @param F    polynomial list.
      * @return GB(F) a Groebner base of F or null, if a IOException occurs.
      */
     public List<GenPolynomial<C>> GB(int modv, List<GenPolynomial<C>> F) {
@@ -224,7 +222,7 @@ public class GroebnerBaseSeqPairDistributed<C extends RingElem<C>> extends Groeb
         //while ( dls.size() < threads ) { sleep(); }
 
         DistHashTable<Integer, GenPolynomial<C>> theList = new DistHashTable<Integer, GenPolynomial<C>>(
-                        "localhost", DL_PORT);
+                "localhost", DL_PORT);
         theList.init();
         List<GenPolynomial<C>> al = pairlist.getList();
         for (int i = 0; i < al.size(); i++) {
@@ -278,6 +276,7 @@ public class GroebnerBaseSeqPairDistributed<C extends RingElem<C>> extends Groeb
 
     /**
      * GB distributed client.
+     *
      * @param host the server runns on.
      * @throws IOException
      */
@@ -289,7 +288,7 @@ public class GroebnerBaseSeqPairDistributed<C extends RingElem<C>> extends Groeb
 
         final int DL_PORT = port + 100;
         DistHashTable<Integer, GenPolynomial<C>> theList = new DistHashTable<Integer, GenPolynomial<C>>(host,
-                        DL_PORT);
+                DL_PORT);
         theList.init();
 
         ReducerClientSeqPair<C> R = new ReducerClientSeqPair<C>(pairChannel, theList);
@@ -304,6 +303,7 @@ public class GroebnerBaseSeqPairDistributed<C extends RingElem<C>> extends Groeb
 
     /**
      * Minimal ordered groebner basis.
+     *
      * @param Fp a Groebner base.
      * @return a reduced Groebner base of Fp.
      */
@@ -389,33 +389,26 @@ public class GroebnerBaseSeqPairDistributed<C extends RingElem<C>> extends Groeb
 
 /**
  * Distributed server reducing worker threads.
+ *
  * @param <C> coefficient type
  */
 
 class ReducerServerSeqPair<C extends RingElem<C>> implements Runnable {
 
 
+    private static final Logger logger = Logger.getLogger(ReducerServerSeqPair.class);
     private final Terminator pool;
-
-
     private final ChannelFactory cf;
-
-
-    private SocketChannel pairChannel;
-
-
     private final DistHashTable<Integer, GenPolynomial<C>> theList;
 
 
     //private List<GenPolynomial<C>> G;
     private final CriticalPairList<C> pairlist;
-
-
-    private static final Logger logger = Logger.getLogger(ReducerServerSeqPair.class);
+    private SocketChannel pairChannel;
 
 
     ReducerServerSeqPair(Terminator fin, ChannelFactory cf, DistHashTable<Integer, GenPolynomial<C>> dl,
-                    CriticalPairList<C> L) {
+                         CriticalPairList<C> L) {
         pool = fin;
         this.cf = cf;
         theList = dl;
@@ -675,6 +668,7 @@ class GBSPTransportMessPoly<C extends RingElem<C>> extends GBSPTransportMess {
 
     /**
      * GBSPTransportMessPoly.
+     *
      * @param p polynomial to transfered.
      */
     public GBSPTransportMessPoly(GenPolynomial<C> p) {
@@ -704,6 +698,7 @@ class GBSPTransportMessPair<C extends RingElem<C>> extends GBSPTransportMess {
 
     /**
      * GBSPTransportMessPair.
+     *
      * @param p pair for transfer.
      */
     public GBSPTransportMessPair(CriticalPair<C> p) {
@@ -736,6 +731,7 @@ class GBSPTransportMessPairIndex extends GBSPTransportMess {
 
     /**
      * GBSPTransportMessPairIndex.
+     *
      * @param p pair for transport.
      */
     public GBSPTransportMessPairIndex(CriticalPair p) {
@@ -749,6 +745,7 @@ class GBSPTransportMessPairIndex extends GBSPTransportMess {
 
     /**
      * GBSPTransportMessPairIndex.
+     *
      * @param i first index.
      * @param j second index.
      */
@@ -760,6 +757,7 @@ class GBSPTransportMessPairIndex extends GBSPTransportMess {
 
     /**
      * GBSPTransportMessPairIndex.
+     *
      * @param i first index.
      * @param j second index.
      */
@@ -786,16 +784,10 @@ class GBSPTransportMessPairIndex extends GBSPTransportMess {
 class ReducerClientSeqPair<C extends RingElem<C>> implements Runnable {
 
 
-    private final SocketChannel pairChannel;
-
-
-    private final DistHashTable<Integer, GenPolynomial<C>> theList;
-
-
-    private final ReductionPar<C> red;
-
-
     private static final Logger logger = Logger.getLogger(ReducerClientSeqPair.class);
+    private final SocketChannel pairChannel;
+    private final DistHashTable<Integer, GenPolynomial<C>> theList;
+    private final ReductionPar<C> red;
 
 
     ReducerClientSeqPair(SocketChannel pc, DistHashTable<Integer, GenPolynomial<C>> dl) {
@@ -949,19 +941,13 @@ class ReducerClientSeqPair<C extends RingElem<C>> implements Runnable {
 class MiReducerServerSeqPair<C extends RingElem<C>> implements Runnable {
 
 
+    private static final Logger logger = Logger.getLogger(MiReducerServerSeqPair.class);
     private final List<GenPolynomial<C>> G;
-
-
-    private GenPolynomial<C> H;
-
-
     private final Semaphore done = new Semaphore(0);
 
 
     private final Reduction<C> red;
-
-
-    private static final Logger logger = Logger.getLogger(MiReducerServerSeqPair.class);
+    private GenPolynomial<C> H;
 
 
     MiReducerServerSeqPair(List<GenPolynomial<C>> G, GenPolynomial<C> p) {
@@ -973,6 +959,7 @@ class MiReducerServerSeqPair<C extends RingElem<C>> implements Runnable {
 
     /**
      * getNF. Blocks until the normal form is computed.
+     *
      * @return the computed normal form.
      */
     public GenPolynomial<C> getNF() {
@@ -1005,19 +992,13 @@ class MiReducerServerSeqPair<C extends RingElem<C>> implements Runnable {
 class MiReducerClientSeqPair<C extends RingElem<C>> implements Runnable {
 
 
+    private static final Logger logger = Logger.getLogger(MiReducerClientSeqPair.class);
     private final List<GenPolynomial<C>> G;
-
-
-    private GenPolynomial<C> H;
-
-
     private final Reduction<C> red;
 
 
     private final Semaphore done = new Semaphore(0);
-
-
-    private static final Logger logger = Logger.getLogger(MiReducerClientSeqPair.class);
+    private GenPolynomial<C> H;
 
 
     MiReducerClientSeqPair(List<GenPolynomial<C>> G, GenPolynomial<C> p) {
@@ -1029,6 +1010,7 @@ class MiReducerClientSeqPair<C extends RingElem<C>> implements Runnable {
 
     /**
      * getNF. Blocks until the normal form is computed.
+     *
      * @return the computed normal form.
      */
     public GenPolynomial<C> getNF() {

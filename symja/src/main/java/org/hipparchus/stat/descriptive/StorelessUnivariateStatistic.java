@@ -16,12 +16,12 @@
  */
 package org.hipparchus.stat.descriptive;
 
-import java.util.function.DoubleConsumer;
-
 import org.hipparchus.exception.LocalizedCoreFormats;
 import org.hipparchus.exception.MathIllegalArgumentException;
 import org.hipparchus.util.MathArrays;
 import org.hipparchus.util.MathUtils;
+
+import java.util.function.DoubleConsumer;
 
 /**
  * Extends the definition of {@link UnivariateStatistic} with
@@ -37,7 +37,7 @@ import org.hipparchus.util.MathUtils;
  * state of the respective statistic.
  */
 public interface StorelessUnivariateStatistic
-    extends UnivariateStatistic, DoubleConsumer {
+        extends UnivariateStatistic, DoubleConsumer {
 
     /**
      * {@inheritDoc}
@@ -52,7 +52,7 @@ public interface StorelessUnivariateStatistic
      * accurate implementation that works directly with the input array.
      *
      * @param values the input array
-     * @param begin the index of the first element to include
+     * @param begin  the index of the first element to include
      * @param length the number of elements to include
      * @return the value of the statistic applied to the included array entries
      * @throws MathIllegalArgumentException if the array is null or the indices are not valid
@@ -60,7 +60,7 @@ public interface StorelessUnivariateStatistic
      */
     @Override
     default double evaluate(final double[] values, final int begin, final int length)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
 
         if (MathArrays.verifyValues(values, begin, length)) {
             StorelessUnivariateStatistic stat = copy();
@@ -73,11 +73,14 @@ public interface StorelessUnivariateStatistic
 
     /**
      * Updates the internal state of the statistic to reflect the addition of the new value.
-     * @param d  the new value.
+     *
+     * @param d the new value.
      */
     void increment(double d);
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     default void accept(double value) {
         increment(value);
@@ -91,7 +94,7 @@ public interface StorelessUnivariateStatistic
      * The default implementation delegates to
      * <code>incrementAll(double[], int, int)</code> in the natural way.
      *
-     * @param values  array holding the new values to add
+     * @param values array holding the new values to add
      * @throws MathIllegalArgumentException if the array is null
      */
     default void incrementAll(double[] values) throws MathIllegalArgumentException {
@@ -109,13 +112,13 @@ public interface StorelessUnivariateStatistic
      * The default implementation just calls {@link #increment} in a loop over
      * the specified portion of the input array.
      *
-     * @param values  array holding the new values to add
+     * @param values array holding the new values to add
      * @param start  the array index of the first value to add
-     * @param length  the number of elements to add
+     * @param length the number of elements to add
      * @throws MathIllegalArgumentException if the array is null or the index
      */
     default void incrementAll(double[] values, int start, int length)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
 
         if (MathArrays.verifyValues(values, start, length)) {
             int k = start + length;
@@ -128,6 +131,7 @@ public interface StorelessUnivariateStatistic
 
     /**
      * Returns the current value of the Statistic.
+     *
      * @return value of the statistic, <code>Double.NaN</code> if it
      * has been cleared or just instantiated.
      */
@@ -135,6 +139,7 @@ public interface StorelessUnivariateStatistic
 
     /**
      * Returns the number of values that have been added.
+     *
      * @return the number of values.
      */
     long getN();

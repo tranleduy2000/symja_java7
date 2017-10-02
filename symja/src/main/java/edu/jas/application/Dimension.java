@@ -12,6 +12,7 @@ import java.util.Set;
 
 /**
  * Container for dimension parameters.
+ *
  * @author Heinz Kredel
  */
 public class Dimension implements Serializable {
@@ -43,6 +44,7 @@ public class Dimension implements Serializable {
 
     /**
      * Constructor.
+     *
      * @param d ideal dimension.
      * @param S indices of a maximal independent set (of variables)
      * @param M set of indices of all maximal independent sets (of variables)
@@ -52,12 +54,13 @@ public class Dimension implements Serializable {
         this.d = d;
         this.S = S;
         this.M = M;
-        this.v = Arrays.copyOf(v,v.length); // > Java-5
+        this.v = Arrays.copyOf(v, v.length); // > Java-5
     }
 
 
     /**
      * String representation of the ideal.
+     *
      * @see java.lang.Object#toString()
      */
     @Override

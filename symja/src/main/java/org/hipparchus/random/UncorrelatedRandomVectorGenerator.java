@@ -17,10 +17,10 @@
 
 package org.hipparchus.random;
 
-import java.util.Arrays;
-
 import org.hipparchus.exception.LocalizedCoreFormats;
 import org.hipparchus.exception.MathIllegalArgumentException;
+
+import java.util.Arrays;
 
 /**
  * A {@link RandomVectorGenerator} that generates vectors with uncorrelated components.
@@ -29,15 +29,21 @@ import org.hipparchus.exception.MathIllegalArgumentException;
  * with parameters supplied in the constructor.
  */
 public class UncorrelatedRandomVectorGenerator
-    implements RandomVectorGenerator {
+        implements RandomVectorGenerator {
 
-    /** Underlying scalar generator. */
+    /**
+     * Underlying scalar generator.
+     */
     private final NormalizedRandomGenerator generator;
 
-    /** Mean vector. */
+    /**
+     * Mean vector.
+     */
     private final double[] mean;
 
-    /** Standard deviation vector. */
+    /**
+     * Standard deviation vector.
+     */
     private final double[] standardDeviation;
 
     /**
@@ -46,15 +52,15 @@ public class UncorrelatedRandomVectorGenerator
      * Build an uncorrelated random vector generator from its mean and standard deviation vectors.
      * </p>
      *
-     * @param mean expected mean values for each component
+     * @param mean              expected mean values for each component
      * @param standardDeviation standard deviation for each component
-     * @param generator underlying generator for uncorrelated normalized components
+     * @param generator         underlying generator for uncorrelated normalized components
      */
     public UncorrelatedRandomVectorGenerator(double[] mean, double[] standardDeviation,
                                              NormalizedRandomGenerator generator) {
         if (mean.length != standardDeviation.length) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.DIMENSIONS_MISMATCH, mean.length,
-                                                   standardDeviation.length);
+                    standardDeviation.length);
         }
         this.mean = mean.clone();
         this.standardDeviation = standardDeviation.clone();

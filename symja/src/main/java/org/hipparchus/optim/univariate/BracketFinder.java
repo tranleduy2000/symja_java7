@@ -27,10 +27,11 @@ import org.hipparchus.util.Incrementor;
  * Provide an interval that brackets a local optimum of a function.
  * This code is based on a Python implementation (from <em>SciPy</em>,
  * module {@code optimize.py} v0.5).
- *
  */
 public class BracketFinder {
-    /** Tolerance to avoid division by zero. */
+    /**
+     * Tolerance to avoid division by zero.
+     */
     private static final double EPS_MIN = 1e-21;
     /**
      * Golden section.
@@ -75,7 +76,7 @@ public class BracketFinder {
 
     /**
      * Constructor with default values {@code 100, 500} (see the
-     * {@link #BracketFinder(double,int) other constructor}).
+     * {@link #BracketFinder(double, int) other constructor}).
      */
     public BracketFinder() {
         this(100, 500);
@@ -84,19 +85,19 @@ public class BracketFinder {
     /**
      * Create a bracketing interval finder.
      *
-     * @param growLimit Expanding factor.
+     * @param growLimit      Expanding factor.
      * @param maxEvaluations Maximum number of evaluations allowed for finding
-     * a bracketing interval.
+     *                       a bracketing interval.
      */
     public BracketFinder(double growLimit,
                          int maxEvaluations) {
         if (growLimit <= 0) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.NUMBER_TOO_SMALL_BOUND_EXCLUDED,
-                                                   growLimit, 0);
+                    growLimit, 0);
         }
         if (maxEvaluations <= 0) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.NUMBER_TOO_SMALL_BOUND_EXCLUDED,
-                                                   maxEvaluations, 0);
+                    maxEvaluations, 0);
         }
 
         this.growLimit = growLimit;
@@ -108,10 +109,10 @@ public class BracketFinder {
      *
      * @param func Function whose optimum should be bracketed.
      * @param goal {@link GoalType Goal type}.
-     * @param xA Initial point.
-     * @param xB Initial point.
+     * @param xA   Initial point.
+     * @param xB   Initial point.
      * @throws org.hipparchus.exception.MathIllegalStateException if the maximum number of evaluations
-     * is exceeded.
+     *                                                            is exceeded.
      */
     public void search(UnivariateFunction func,
                        GoalType goal,
@@ -123,8 +124,8 @@ public class BracketFinder {
         double fA = eval.value(xA);
         double fB = eval.value(xB);
         if (isMinim ?
-            fA < fB :
-            fA > fB) {
+                fA < fB :
+                fA > fB) {
 
             double tmp = xA;
             xA = xB;
@@ -152,16 +153,16 @@ public class BracketFinder {
             if ((w - xC) * (xB - w) > 0) {
                 fW = eval.value(w);
                 if (isMinim ?
-                    fW < fC :
-                    fW > fC) {
+                        fW < fC :
+                        fW > fC) {
                     xA = xB;
                     xB = w;
                     fA = fB;
                     fB = fW;
                     break;
                 } else if (isMinim ?
-                           fW > fB :
-                           fW < fB) {
+                        fW > fB :
+                        fW < fB) {
                     xC = w;
                     fC = fW;
                     break;
@@ -174,13 +175,13 @@ public class BracketFinder {
             } else if ((w - wLim) * (xC - w) > 0) {
                 fW = eval.value(w);
                 if (isMinim ?
-                    fW < fC :
-                    fW > fC) {
+                        fW < fC :
+                        fW > fC) {
                     xB = xC;
                     xC = w;
                     w = xC + GOLD * (xC - xB);
                     fB = fC;
-                    fC =fW;
+                    fC = fW;
                     fW = eval.value(w);
                 }
             } else {
@@ -238,6 +239,7 @@ public class BracketFinder {
 
     /**
      * Get function value at {@link #getLo()}.
+     *
      * @return function value at {@link #getLo()}
      */
     public double getFLo() {
@@ -254,6 +256,7 @@ public class BracketFinder {
 
     /**
      * Get function value at {@link #getHi()}.
+     *
      * @return function value at {@link #getHi()}
      */
     public double getFHi() {
@@ -270,6 +273,7 @@ public class BracketFinder {
 
     /**
      * Get function value at {@link #getMid()}.
+     *
      * @return function value at {@link #getMid()}
      */
     public double getFMid() {
@@ -280,9 +284,13 @@ public class BracketFinder {
      * Utility for incrementing a counter at each function evaluation.
      */
     private class FunctionEvaluator {
-        /** Function. */
+        /**
+         * Function.
+         */
         private final UnivariateFunction func;
-        /** Counter. */
+        /**
+         * Counter.
+         */
         private final Incrementor inc;
 
         /**
@@ -298,7 +306,7 @@ public class BracketFinder {
          * @param x Argument.
          * @return {@code f(x)}
          * @throws org.hipparchus.exception.MathIllegalStateException if the maximal number of evaluations is
-         * exceeded.
+         *                                                            exceeded.
          */
         double value(double x) {
             inc.increment();

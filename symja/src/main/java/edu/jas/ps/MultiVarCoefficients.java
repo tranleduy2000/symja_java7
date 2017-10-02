@@ -19,6 +19,7 @@ import edu.jas.structure.RingElem;
 /**
  * Abstract class for generating functions for coefficients of multivariate
  * power series. This class handles the caching itself.
+ *
  * @param <C> ring element type
  * @author Heinz Kredel
  */
@@ -54,6 +55,7 @@ public abstract class MultiVarCoefficients<C extends RingElem<C>> implements Ser
 
     /**
      * Public constructor.
+     *
      * @param pf multivariate power series ring factory.
      */
     public MultiVarCoefficients(MultiVarPowerSeriesRing<C> pf) {
@@ -73,6 +75,7 @@ public abstract class MultiVarCoefficients<C extends RingElem<C>> implements Ser
 
     /**
      * Public constructor.
+     *
      * @param pf polynomial ring factory.
      */
     public MultiVarCoefficients(GenPolynomialRing<C> pf) {
@@ -82,7 +85,8 @@ public abstract class MultiVarCoefficients<C extends RingElem<C>> implements Ser
 
     /**
      * Public with pre-filled coefficient cache.
-     * @param pf polynomial ring factory.
+     *
+     * @param pf    polynomial ring factory.
      * @param cache pre-filled coefficient cache.
      */
     public MultiVarCoefficients(GenPolynomialRing<C> pf, HashMap<Long, GenPolynomial<C>> cache) {
@@ -92,12 +96,13 @@ public abstract class MultiVarCoefficients<C extends RingElem<C>> implements Ser
 
     /**
      * Public constructor with pre-filled caches.
-     * @param pf polynomial ring factory.
+     *
+     * @param pf    polynomial ring factory.
      * @param cache pre-filled coefficient cache.
      * @param zeros pre-filled zero coefficient cache.
      */
     public MultiVarCoefficients(GenPolynomialRing<C> pf, HashMap<Long, GenPolynomial<C>> cache,
-            HashSet<ExpVector> zeros) {
+                                HashSet<ExpVector> zeros) {
         this(pf, cache, zeros, new BitSet());
     }
 
@@ -114,9 +119,10 @@ public abstract class MultiVarCoefficients<C extends RingElem<C>> implements Ser
 
     /**
      * Public constructor with pre-filled caches.
-     * @param pf polynomial ring factory.
+     *
+     * @param pf    polynomial ring factory.
      * @param cache pre-filled coefficient cache.
-     * @param hc pre-filled homogeneous check bit-set.
+     * @param hc    pre-filled homogeneous check bit-set.
      */
     public MultiVarCoefficients(GenPolynomialRing<C> pf, HashMap<Long, GenPolynomial<C>> cache, BitSet hc) {
         this(pf, cache, new HashSet<ExpVector>(), hc);
@@ -125,13 +131,14 @@ public abstract class MultiVarCoefficients<C extends RingElem<C>> implements Ser
 
     /**
      * Public constructor with pre-filled caches.
-     * @param pf polynomial ring factory.
+     *
+     * @param pf    polynomial ring factory.
      * @param cache pre-filled coefficient cache.
      * @param zeros pre-filled zero coefficient cache.
-     * @param hc pre-filled homogeneous check bit-set.
+     * @param hc    pre-filled homogeneous check bit-set.
      */
     public MultiVarCoefficients(GenPolynomialRing<C> pf, HashMap<Long, GenPolynomial<C>> cache,
-            HashSet<ExpVector> zeros, BitSet hc) {
+                                HashSet<ExpVector> zeros, BitSet hc) {
         pfac = pf;
         coeffCache = cache;
         zeroCache = zeros;
@@ -141,6 +148,7 @@ public abstract class MultiVarCoefficients<C extends RingElem<C>> implements Ser
 
     /**
      * Get cached coefficient or generate coefficient.
+     *
      * @param index of requested coefficient.
      * @return coefficient at index.
      */
@@ -179,6 +187,7 @@ public abstract class MultiVarCoefficients<C extends RingElem<C>> implements Ser
 
     /**
      * Homogeneous part.
+     *
      * @param tdeg requested degree.
      * @return polynomial part of given degree.
      */
@@ -190,7 +199,7 @@ public abstract class MultiVarCoefficients<C extends RingElem<C>> implements Ser
         if (p == null) {
             p = pfac.getZERO().copy();
             coeffCache.put(tdeg, p);
-        } 
+        }
         // trust contents?
         if (homCheck.get((int) tdeg)) {
             return p;
@@ -199,7 +208,7 @@ public abstract class MultiVarCoefficients<C extends RingElem<C>> implements Ser
         ExpVectorIterable eiter = new ExpVectorIterable(pfac.nvar, tdeg);
         for (ExpVector e : eiter) {
             if (zeroCache.contains(e)) {
-                if ( !zeroCache.remove(e) ) { // clean-up unused
+                if (!zeroCache.remove(e)) { // clean-up unused
                     System.out.println("not removed e = " + e); // cannot happen
                 }
                 continue;
@@ -221,6 +230,7 @@ public abstract class MultiVarCoefficients<C extends RingElem<C>> implements Ser
 
     /**
      * Generate coefficient.
+     *
      * @param index of requested coefficient.
      * @return coefficient at index.
      */

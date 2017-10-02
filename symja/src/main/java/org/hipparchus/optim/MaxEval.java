@@ -21,10 +21,11 @@ import org.hipparchus.exception.MathIllegalArgumentException;
 
 /**
  * Maximum number of evaluations of the function to be optimized.
- *
  */
 public class MaxEval implements OptimizationData {
-    /** Allowed number of evalutations. */
+    /**
+     * Allowed number of evalutations.
+     */
     private final int maxEval;
 
     /**
@@ -34,19 +35,10 @@ public class MaxEval implements OptimizationData {
     public MaxEval(int max) {
         if (max <= 0) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.NUMBER_TOO_SMALL_BOUND_EXCLUDED,
-                                                   max, 0);
+                    max, 0);
         }
 
         maxEval = max;
-    }
-
-    /**
-     * Gets the maximum number of evaluations.
-     *
-     * @return the allowed number of evaluations.
-     */
-    public int getMaxEval() {
-        return maxEval;
     }
 
     /**
@@ -58,5 +50,14 @@ public class MaxEval implements OptimizationData {
      */
     public static MaxEval unlimited() {
         return new MaxEval(Integer.MAX_VALUE);
+    }
+
+    /**
+     * Gets the maximum number of evaluations.
+     *
+     * @return the allowed number of evaluations.
+     */
+    public int getMaxEval() {
+        return maxEval;
     }
 }

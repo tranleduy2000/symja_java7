@@ -24,13 +24,13 @@ import org.hipparchus.exception.MathIllegalStateException;
 /**
  * Interface for (univariate real) rootfinding algorithms.
  * Implementations will search for only one zero in the given interval.
- *
+ * <p>
  * This class is not intended for use outside of the Hipparchus
  * library, regular user should rely on more specific interfaces like
  * {@link UnivariateSolver}, {@link PolynomialSolver} or {@link
  * UnivariateDifferentiableSolver}.
- * @param <FUNC> Type of function to solve.
  *
+ * @param <FUNC> Type of function to solve.
  * @see UnivariateSolver
  * @see PolynomialSolver
  * @see UnivariateDifferentiableSolver
@@ -93,17 +93,16 @@ public interface BaseUnivariateSolver<FUNC extends UnivariateFunction> {
      * where one of the endpoints is itself a root.
      *
      * @param maxEval Maximum number of evaluations.
-     * @param f Function to solve.
-     * @param min Lower bound for the interval.
-     * @param max Upper bound for the interval.
+     * @param f       Function to solve.
+     * @param min     Lower bound for the interval.
+     * @param max     Upper bound for the interval.
      * @return a value where the function is zero.
-     * @throws MathIllegalArgumentException
-     * if the arguments do not satisfy the requirements specified by the solver.
-     * @throws MathIllegalStateException if
-     * the allowed number of evaluations is exceeded.
+     * @throws MathIllegalArgumentException if the arguments do not satisfy the requirements specified by the solver.
+     * @throws MathIllegalStateException    if
+     *                                      the allowed number of evaluations is exceeded.
      */
     double solve(int maxEval, FUNC f, double min, double max)
-        throws MathIllegalArgumentException, MathIllegalStateException;
+            throws MathIllegalArgumentException, MathIllegalStateException;
 
     /**
      * Solve for a zero in the given interval, start at {@code startValue}.
@@ -111,31 +110,29 @@ public interface BaseUnivariateSolver<FUNC extends UnivariateFunction> {
      * Solvers that do require bracketing should be able to handle the case
      * where one of the endpoints is itself a root.
      *
-     * @param maxEval Maximum number of evaluations.
-     * @param f Function to solve.
-     * @param min Lower bound for the interval.
-     * @param max Upper bound for the interval.
+     * @param maxEval    Maximum number of evaluations.
+     * @param f          Function to solve.
+     * @param min        Lower bound for the interval.
+     * @param max        Upper bound for the interval.
      * @param startValue Start value to use.
      * @return a value where the function is zero.
-     * @throws MathIllegalArgumentException
-     * if the arguments do not satisfy the requirements specified by the solver.
-     * @throws MathIllegalStateException if
-     * the allowed number of evaluations is exceeded.
+     * @throws MathIllegalArgumentException if the arguments do not satisfy the requirements specified by the solver.
+     * @throws MathIllegalStateException    if
+     *                                      the allowed number of evaluations is exceeded.
      */
     double solve(int maxEval, FUNC f, double min, double max, double startValue)
-        throws MathIllegalArgumentException, MathIllegalStateException;
+            throws MathIllegalArgumentException, MathIllegalStateException;
 
     /**
      * Solve for a zero in the vicinity of {@code startValue}.
      *
-     * @param f Function to solve.
+     * @param f          Function to solve.
      * @param startValue Start value to use.
+     * @param maxEval    Maximum number of evaluations.
      * @return a value where the function is zero.
-     * @param maxEval Maximum number of evaluations.
-     * @throws org.hipparchus.exception.MathIllegalArgumentException
-     * if the arguments do not satisfy the requirements specified by the solver.
-     * @throws org.hipparchus.exception.MathIllegalStateException if
-     * the allowed number of evaluations is exceeded.
+     * @throws org.hipparchus.exception.MathIllegalArgumentException if the arguments do not satisfy the requirements specified by the solver.
+     * @throws org.hipparchus.exception.MathIllegalStateException    if
+     *                                                               the allowed number of evaluations is exceeded.
      */
     double solve(int maxEval, FUNC f, double startValue);
 }

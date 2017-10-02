@@ -23,16 +23,18 @@ import org.hipparchus.util.FastMath;
 
 /**
  * Natural logarithm function.
- *
  */
 public class Log implements UnivariateDifferentiableFunction {
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double value(double x) {
         return FastMath.log(x);
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     @Override
     public DerivativeStructure value(final DerivativeStructure t) {

@@ -6,13 +6,13 @@
 package edu.jas.ufd;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.gb.GroebnerBaseAbstract;
 import edu.jas.gb.GroebnerBaseSeq;
@@ -33,11 +33,12 @@ import edu.jas.structure.RingFactory;
 /**
  * Squarefree decomposition for algebraic extensions of infinite coefficient
  * fields of characteristic p &gt; 0.
+ *
  * @author Heinz Kredel
  */
 
 public class SquarefreeInfiniteAlgebraicFieldCharP<C extends GcdRingElem<C>> extends
-                SquarefreeFieldCharP<AlgebraicNumber<C>> {
+        SquarefreeFieldCharP<AlgebraicNumber<C>> {
 
 
     private static final Logger logger = Logger.getLogger(SquarefreeInfiniteAlgebraicFieldCharP.class);
@@ -66,7 +67,7 @@ public class SquarefreeInfiniteAlgebraicFieldCharP<C extends GcdRingElem<C>> ext
         GenPolynomialRing<C> rfac = afac.ring;
         //System.out.println("rfac = " + rfac);
         //System.out.println("rfac = " + rfac.coFac);
-        aengine = SquarefreeFactory.<C> getImplementation(rfac);
+        aengine = SquarefreeFactory.<C>getImplementation(rfac);
         //System.out.println("aengine = " + aengine);
     }
 
@@ -75,9 +76,10 @@ public class SquarefreeInfiniteAlgebraicFieldCharP<C extends GcdRingElem<C>> ext
 
     /**
      * Squarefree factors of a AlgebraicNumber.
+     *
      * @param P AlgebraicNumber.
      * @return [p_1 -&gt; e_1,...,p_k - &gt; e_k] with P = prod_{i=1, ..., k}
-     *         p_i**e_k.
+     * p_i**e_k.
      */
     @Override
     public SortedMap<AlgebraicNumber<C>, Long> squarefreeFactors(AlgebraicNumber<C> P) {
@@ -114,9 +116,10 @@ public class SquarefreeInfiniteAlgebraicFieldCharP<C extends GcdRingElem<C>> ext
 
     /**
      * Characteristics root of a AlgebraicNumber.
+     *
      * @param P AlgebraicNumber.
      * @return [p -&gt; k] if exists k with e=charactristic(P)*k and P = p**e,
-     *         else null.
+     * else null.
      */
     @SuppressWarnings("cast")
     public SortedMap<AlgebraicNumber<C>, Long> rootCharacteristic(AlgebraicNumber<C> P) {
@@ -142,7 +145,7 @@ public class SquarefreeInfiniteAlgebraicFieldCharP<C extends GcdRingElem<C>> ext
         String[] vn = GenPolynomialRing.newVars("c", d);
         GenPolynomialRing<AlgebraicNumber<C>> pfac = new GenPolynomialRing<AlgebraicNumber<C>>(afac, d, vn);
         List<GenPolynomial<AlgebraicNumber<C>>> uv = (List<GenPolynomial<AlgebraicNumber<C>>>) pfac
-                        .univariateList();
+                .univariateList();
         GenPolynomial<AlgebraicNumber<C>> cp = pfac.getZERO();
         GenPolynomialRing<C> apfac = afac.ring;
         long i = 0;
@@ -152,7 +155,7 @@ public class SquarefreeInfiniteAlgebraicFieldCharP<C extends GcdRingElem<C>> ext
             cp = cp.sum(pb);
         }
         GenPolynomial<AlgebraicNumber<C>> cpp = Power
-                        .<GenPolynomial<AlgebraicNumber<C>>> positivePower(cp, c);
+                .<GenPolynomial<AlgebraicNumber<C>>>positivePower(cp, c);
         if (logger.isInfoEnabled()) {
             logger.info("cp   = " + cp);
             logger.info("cp^p = " + cpp);
@@ -177,7 +180,7 @@ public class SquarefreeInfiniteAlgebraicFieldCharP<C extends GcdRingElem<C>> ext
                     //System.out.println("pc = " + pc + " : " + cc.toScriptFactory());
                     if (cc instanceof AlgebraicNumber && pc instanceof AlgebraicNumber) {
                         throw new UnsupportedOperationException(
-                                        "case multiple algebraic extensions not implemented");
+                                "case multiple algebraic extensions not implemented");
                     } else if (cc instanceof Quotient && pc instanceof Quotient) {
                         Quotient<C> ccp = (Quotient<C>) (Object) cc;
                         Quotient<C> pcp = (Quotient<C>) (Object) pc;
@@ -262,7 +265,7 @@ public class SquarefreeInfiniteAlgebraicFieldCharP<C extends GcdRingElem<C>> ext
                         long ll = me.getValue(); //br.get(bc);
                         if (ll % c.longValue() == 0L) {
                             long fl = ll / c.longValue();
-                            cc = cc.multiply( bc.power(fl) ); //  Power.<C> positivePower(bc, fl));
+                            cc = cc.multiply(bc.power(fl)); //  Power.<C> positivePower(bc, fl));
                         } else { // fail ?
                             cc = cc.multiply(bc);
                         }
@@ -286,6 +289,7 @@ public class SquarefreeInfiniteAlgebraicFieldCharP<C extends GcdRingElem<C>> ext
 
     /**
      * GenPolynomial char-th root main variable.
+     *
      * @param P univariate GenPolynomial with AlgebraicNumber coefficients.
      * @return char-th_rootOf(P), or null, if P is no char-th root.
      */
@@ -297,20 +301,20 @@ public class SquarefreeInfiniteAlgebraicFieldCharP<C extends GcdRingElem<C>> ext
         if (pfac.nvar > 1) {
             // go to recursion
             GenPolynomialRing<GenPolynomial<AlgebraicNumber<C>>> rfac = pfac.recursive(1);
-            GenPolynomial<GenPolynomial<AlgebraicNumber<C>>> Pr = PolyUtil.<AlgebraicNumber<C>> recursive(
-                            rfac, P);
+            GenPolynomial<GenPolynomial<AlgebraicNumber<C>>> Pr = PolyUtil.<AlgebraicNumber<C>>recursive(
+                    rfac, P);
             GenPolynomial<GenPolynomial<AlgebraicNumber<C>>> Prc = recursiveUnivariateRootCharacteristic(Pr);
             if (Prc == null) {
                 return null;
             }
-            GenPolynomial<AlgebraicNumber<C>> D = PolyUtil.<AlgebraicNumber<C>> distribute(pfac, Prc);
+            GenPolynomial<AlgebraicNumber<C>> D = PolyUtil.<AlgebraicNumber<C>>distribute(pfac, Prc);
             return D;
         }
         RingFactory<AlgebraicNumber<C>> rf = pfac.coFac;
         if (rf.characteristic().signum() != 1) {
             // basePthRoot not possible
             throw new IllegalArgumentException(P.getClass().getName() + " only for ModInteger polynomials "
-                            + rf);
+                    + rf);
         }
         long mp = rf.characteristic().longValue();
         GenPolynomial<AlgebraicNumber<C>> d = pfac.getZERO().copy();
@@ -347,6 +351,7 @@ public class SquarefreeInfiniteAlgebraicFieldCharP<C extends GcdRingElem<C>> ext
 
     /**
      * GenPolynomial char-th root univariate polynomial.
+     *
      * @param P GenPolynomial.
      * @return char-th_rootOf(P).
      */
@@ -408,12 +413,13 @@ public class SquarefreeInfiniteAlgebraicFieldCharP<C extends GcdRingElem<C>> ext
     /**
      * GenPolynomial char-th root univariate polynomial with polynomial
      * coefficients.
+     *
      * @param P recursive univariate GenPolynomial.
      * @return char-th_rootOf(P), or null if P is no char-th root.
      */
     @Override
     public GenPolynomial<GenPolynomial<AlgebraicNumber<C>>> recursiveUnivariateRootCharacteristic(
-                    GenPolynomial<GenPolynomial<AlgebraicNumber<C>>> P) {
+            GenPolynomial<GenPolynomial<AlgebraicNumber<C>>> P) {
         if (P == null || P.isZERO()) {
             return P;
         }
@@ -421,7 +427,7 @@ public class SquarefreeInfiniteAlgebraicFieldCharP<C extends GcdRingElem<C>> ext
         if (pfac.nvar > 1) {
             // basePthRoot not possible by return type
             throw new IllegalArgumentException(P.getClass().getName()
-                            + " only for univariate recursive polynomials");
+                    + " only for univariate recursive polynomials");
         }
         RingFactory<GenPolynomial<AlgebraicNumber<C>>> rf = pfac.coFac;
         if (rf.characteristic().signum() != 1) {

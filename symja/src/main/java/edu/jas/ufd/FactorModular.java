@@ -5,6 +5,8 @@
 package edu.jas.ufd;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -12,8 +14,6 @@ import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.arith.BigInteger;
 import edu.jas.arith.ModLongRing;
@@ -30,6 +30,7 @@ import edu.jas.structure.RingFactory;
 /**
  * Modular coefficients factorization algorithms. This class implements
  * factorization methods for polynomials over (prime) modular integers.
+ *
  * @author Heinz Kredel
  */
 
@@ -45,7 +46,7 @@ public class FactorModular<MOD extends GcdRingElem<MOD> & Modular> extends Facto
     /**
      * No argument constructor, do not use.
      */
-    @SuppressWarnings({ "cast", "unused" })
+    @SuppressWarnings({"cast", "unused"})
     private FactorModular() {
         this((RingFactory<MOD>) (Object) new ModLongRing(13, true)); // hack, 13 unimportant
     }
@@ -53,6 +54,7 @@ public class FactorModular<MOD extends GcdRingElem<MOD> & Modular> extends Facto
 
     /**
      * Constructor.
+     *
      * @param cfac coefficient ring factory.
      */
     public FactorModular(RingFactory<MOD> cfac) {
@@ -62,9 +64,10 @@ public class FactorModular<MOD extends GcdRingElem<MOD> & Modular> extends Facto
 
     /**
      * GenPolynomial base distinct degree factorization.
+     *
      * @param P squarefree and monic GenPolynomial.
      * @return [e_1 -&gt; p_1, ..., e_k -&gt; p_k] with P = prod_{i=1,...,k} p_i
-     *         and p_i has only irreducible factors of degree e_i.
+     * and p_i has only irreducible factors of degree e_i.
      */
     public SortedMap<Long, GenPolynomial<MOD>> baseDistinctDegreeFactors(GenPolynomial<MOD> P) {
         if (P == null) {
@@ -108,9 +111,10 @@ public class FactorModular<MOD extends GcdRingElem<MOD> & Modular> extends Facto
 
     /**
      * GenPolynomial base equal degree factorization.
-     * @param P squarefree and monic GenPolynomial.
+     *
+     * @param P   squarefree and monic GenPolynomial.
      * @param deg such that P has only irreducible factors of degree deg.
-     * @return [p_1,...,p_k] with P = prod_{i=1,...,r} p_i.
+     * @return [p_1, ..., p_k] with P = prod_{i=1,...,r} p_i.
      */
     public List<GenPolynomial<MOD>> baseEqualDegreeFactors(GenPolynomial<MOD> P, long deg) {
         if (P == null) {
@@ -182,8 +186,9 @@ public class FactorModular<MOD extends GcdRingElem<MOD> & Modular> extends Facto
 
     /**
      * GenPolynomial base factorization of a squarefree polynomial.
+     *
      * @param P squarefree and monic! GenPolynomial.
-     * @return [p_1,...,p_k] with P = prod_{i=1,...,r} p_i.
+     * @return [p_1, ..., p_k] with P = prod_{i=1,...,r} p_i.
      */
     @Override
     public List<GenPolynomial<MOD>> baseFactorsSquarefree(GenPolynomial<MOD> P) {
@@ -221,7 +226,7 @@ public class FactorModular<MOD extends GcdRingElem<MOD> & Modular> extends Facto
             factors.addAll(efacs);
         }
         //System.out.println("factors  = " + factors);
-        factors = PolyUtil.<MOD> monic(factors);
+        factors = PolyUtil.<MOD>monic(factors);
         SortedSet<GenPolynomial<MOD>> ss = new TreeSet<GenPolynomial<MOD>>(factors);
         //System.out.println("sorted   = " + ss);
         factors.clear();

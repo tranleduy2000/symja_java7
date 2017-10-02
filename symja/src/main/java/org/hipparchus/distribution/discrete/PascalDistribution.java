@@ -55,17 +55,27 @@ import org.hipparchus.util.MathUtils;
  * Negative binomial distribution (MathWorld)</a>
  */
 public class PascalDistribution extends AbstractIntegerDistribution {
-    /** Serializable version identifier. */
+    /**
+     * Serializable version identifier.
+     */
     private static final long serialVersionUID = 20160320L;
-    /** The number of successes. */
+    /**
+     * The number of successes.
+     */
     private final int numberOfSuccesses;
-    /** The probability of success. */
+    /**
+     * The probability of success.
+     */
     private final double probabilityOfSuccess;
-    /** The value of {@code log(p)}, where {@code p} is the probability of success,
-     * stored for faster computation. */
+    /**
+     * The value of {@code log(p)}, where {@code p} is the probability of success,
+     * stored for faster computation.
+     */
     private final double logProbabilityOfSuccess;
-    /** The value of {@code log(1-p)}, where {@code p} is the probability of success,
-     * stored for faster computation. */
+    /**
+     * The value of {@code log(1-p)}, where {@code p} is the probability of success,
+     * stored for faster computation.
+     */
     private final double log1mProbabilityOfSuccess;
 
     /**
@@ -76,13 +86,13 @@ public class PascalDistribution extends AbstractIntegerDistribution {
      * @param p Probability of success.
      * @throws MathIllegalArgumentException if the number of successes is not positive
      * @throws MathIllegalArgumentException if the probability of success is not in the
-     * range {@code [0, 1]}.
+     *                                      range {@code [0, 1]}.
      */
     public PascalDistribution(int r, double p)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         if (r <= 0) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.NUMBER_OF_SUCCESSES,
-                                                   r);
+                    r);
         }
 
         MathUtils.checkRangeInclusive(p, 0, 1);
@@ -111,7 +121,9 @@ public class PascalDistribution extends AbstractIntegerDistribution {
         return probabilityOfSuccess;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double probability(int x) {
         double ret;
@@ -119,14 +131,16 @@ public class PascalDistribution extends AbstractIntegerDistribution {
             ret = 0.0;
         } else {
             ret = CombinatoricsUtils.binomialCoefficientDouble(x +
-                  numberOfSuccesses - 1, numberOfSuccesses - 1) *
-                  FastMath.pow(probabilityOfSuccess, numberOfSuccesses) *
-                  FastMath.pow(1.0 - probabilityOfSuccess, x);
+                    numberOfSuccesses - 1, numberOfSuccesses - 1) *
+                    FastMath.pow(probabilityOfSuccess, numberOfSuccesses) *
+                    FastMath.pow(1.0 - probabilityOfSuccess, x);
         }
         return ret;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double logProbability(int x) {
         double ret;
@@ -134,14 +148,16 @@ public class PascalDistribution extends AbstractIntegerDistribution {
             ret = Double.NEGATIVE_INFINITY;
         } else {
             ret = CombinatoricsUtils.binomialCoefficientLog(x +
-                  numberOfSuccesses - 1, numberOfSuccesses - 1) +
-                  logProbabilityOfSuccess * numberOfSuccesses +
-                  log1mProbabilityOfSuccess * x;
+                    numberOfSuccesses - 1, numberOfSuccesses - 1) +
+                    logProbabilityOfSuccess * numberOfSuccesses +
+                    log1mProbabilityOfSuccess * x;
         }
         return ret;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double cumulativeProbability(int x) {
         double ret;
@@ -156,7 +172,7 @@ public class PascalDistribution extends AbstractIntegerDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * For number of successes {@code r} and probability of success {@code p},
      * the mean is {@code r * (1 - p) / p}.
      */
@@ -169,7 +185,7 @@ public class PascalDistribution extends AbstractIntegerDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * For number of successes {@code r} and probability of success {@code p},
      * the variance is {@code r * (1 - p) / p^2}.
      */
@@ -182,7 +198,7 @@ public class PascalDistribution extends AbstractIntegerDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The lower bound of the support is always 0 no matter the parameters.
      *
      * @return lower bound of the support (always 0)
@@ -194,7 +210,7 @@ public class PascalDistribution extends AbstractIntegerDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The upper bound of the support is always positive infinity no matter the
      * parameters. Positive infinity is symbolized by {@code Integer.MAX_VALUE}.
      *
@@ -208,7 +224,7 @@ public class PascalDistribution extends AbstractIntegerDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The support of this distribution is connected.
      *
      * @return {@code true}

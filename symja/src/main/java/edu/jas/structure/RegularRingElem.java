@@ -8,6 +8,7 @@ package edu.jas.structure;
 /**
  * Regular ring element interface. Defines idempotent operations and idempotent
  * tests.
+ *
  * @param <C> regular ring element type
  * @author Heinz Kredel
  */
@@ -25,22 +26,25 @@ public interface RegularRingElem<C extends RegularRingElem<C>> extends GcdRingEl
 
     /**
      * Is regular ring element full.
+     *
      * @return If every component is non zero, then true is returned, else
-     *         false.
+     * false.
      */
     public boolean isFull();
 
 
     /**
      * Is idempotent.
+     *
      * @return If this is a idempotent element then true is returned, else
-     *         false.
+     * false.
      */
     public boolean isIdempotent();
 
 
     /**
      * Idempotent.
+     *
      * @return S with this*S = this.
      */
     public C idempotent();
@@ -48,6 +52,7 @@ public interface RegularRingElem<C extends RegularRingElem<C>> extends GcdRingEl
 
     /**
      * Regular ring element idempotent complement.
+     *
      * @return 1-this.idempotent().
      */
     public C idemComplement();
@@ -55,6 +60,7 @@ public interface RegularRingElem<C extends RegularRingElem<C>> extends GcdRingEl
 
     /**
      * Regular ring element idempotent and.
+     *
      * @param S Product.
      * @return this.idempotent() and S.idempotent().
      */
@@ -63,6 +69,7 @@ public interface RegularRingElem<C extends RegularRingElem<C>> extends GcdRingEl
 
     /**
      * Regular ring element idempotent or.
+     *
      * @param S Product.
      * @return this.idempotent() or S.idempotent().
      */
@@ -71,6 +78,7 @@ public interface RegularRingElem<C extends RegularRingElem<C>> extends GcdRingEl
 
     /**
      * Regular ring element fill with idempotent.
+     *
      * @param S Product.
      * @return fill this with S.idempotent().
      */
@@ -79,6 +87,7 @@ public interface RegularRingElem<C extends RegularRingElem<C>> extends GcdRingEl
 
     /**
      * Regular ring element fill with one.
+     *
      * @return fill this with one.
      */
     public C fillOne();

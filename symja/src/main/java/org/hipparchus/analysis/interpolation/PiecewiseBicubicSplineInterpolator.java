@@ -23,19 +23,18 @@ import org.hipparchus.util.MathArrays;
 
 /**
  * Generates a piecewise-bicubic interpolating function.
- *
  */
 public class PiecewiseBicubicSplineInterpolator
-    implements BivariateGridInterpolator {
+        implements BivariateGridInterpolator {
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public PiecewiseBicubicSplineInterpolatingFunction interpolate( final double[] xval,
-                                                                    final double[] yval,
-                                                                    final double[][] fval)
-        throws MathIllegalArgumentException, NullArgumentException {
+    public PiecewiseBicubicSplineInterpolatingFunction interpolate(final double[] xval,
+                                                                   final double[] yval,
+                                                                   final double[][] fval)
+            throws MathIllegalArgumentException, NullArgumentException {
         if (xval == null || yval == null || fval == null || fval[0] == null) {
             throw new NullArgumentException();
         }

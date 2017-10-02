@@ -5,20 +5,20 @@
 package edu.jas.poly;
 
 
+import org.apache.log4j.BasicConfigurator;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.log4j.BasicConfigurator;
 
 import edu.jas.arith.BigInteger;
 import edu.jas.arith.BigRational;
 import edu.jas.arith.ModInteger;
 import edu.jas.arith.ModIntegerRing;
-import edu.jas.kern.Scripting;
 
 
 /**
  * Examples for polynomials usage.
+ *
  * @author Heinz Kredel
  */
 
@@ -57,7 +57,7 @@ public class Examples {
         BigInteger z = new BigInteger();
 
         TermOrder to = new TermOrder();
-        String[] vars = new String[] { "x1", "x2", "x3" };
+        String[] vars = new String[]{"x1", "x2", "x3"};
         GenPolynomialRing<BigInteger> ring;
         ring = new GenPolynomialRing<BigInteger>(z, 3, to, vars);
         System.out.println("ring = " + ring);
@@ -232,7 +232,7 @@ public class Examples {
         GenPolynomialRing<BigInteger> fac;
         fac = new GenPolynomialRing<BigInteger>(cfac, 3, to);
         System.out.println("fac = " + fac);
-        fac.setVars(new String[] { "z", "y", "x" });
+        fac.setVars(new String[]{"z", "y", "x"});
         System.out.println("fac = " + fac);
 
         GenPolynomial<BigInteger> x = fac.univariate(0);
@@ -286,7 +286,7 @@ public class Examples {
         GenPolynomialRing<BigRational> fac;
         fac = new GenPolynomialRing<BigRational>(cfac, 3, to);
         System.out.println("fac = " + fac);
-        fac.setVars(new String[] { "z", "y", "x" });
+        fac.setVars(new String[]{"z", "y", "x"});
         System.out.println("fac = " + fac);
 
         long mi = 1L;
@@ -335,13 +335,13 @@ public class Examples {
 
     /**
      * example8. Chebyshev polynomials
-     * 
+     * <p>
      * T(0) = 1 T(1) = x T(n) = 2x * T(n-1) - T(n-2)
      */
     public static void example8() {
         int m = 10;
         BigInteger fac = new BigInteger();
-        String[] var = new String[] { "x" };
+        String[] var = new String[]{"x"};
 
         GenPolynomialRing<BigInteger> ring = new GenPolynomialRing<BigInteger>(fac, 1, var);
 
@@ -370,7 +370,7 @@ public class Examples {
 
     /**
      * example9. Legendre polynomials
-     * 
+     * <p>
      * P(0) = 1 P(1) = x P(n) = 1/n [ (2n-1) * x * P(n-1) - (n-1) * P(n-2) ]
      */
     // P(n+1) = 1/(n+1) [ (2n+1) * x * P(n) - n * P(n-1) ]
@@ -378,7 +378,7 @@ public class Examples {
         int n = 10;
 
         BigRational fac = new BigRational();
-        String[] var = new String[] { "x" };
+        String[] var = new String[]{"x"};
 
         GenPolynomialRing<BigRational> ring = new GenPolynomialRing<BigRational>(fac, 1, var);
 
@@ -412,7 +412,7 @@ public class Examples {
 
     /**
      * example10. Hermite polynomials
-     * 
+     * <p>
      * H(0) = 1 H(1) = 2 x H(n) = 2 * x * H(n-1) - 2 * (n-1) * H(n-2)
      */
     // H(n+1) = 2 * x * H(n) - 2 * n * H(n-1)
@@ -420,7 +420,7 @@ public class Examples {
         int n = 100;
 
         BigInteger fac = new BigInteger();
-        String[] var = new String[] { "x" };
+        String[] var = new String[]{"x"};
 
         GenPolynomialRing<BigInteger> ring = new GenPolynomialRing<BigInteger>(fac, 1, var);
 
@@ -451,7 +451,6 @@ public class Examples {
 
     /**
      * example11. degree matrix;
-     * 
      */
     @SuppressWarnings("cast")
     public static void example11() {
@@ -463,7 +462,7 @@ public class Examples {
         GenPolynomial<BigRational> p = ring.random(5, 3, 6, 0.5f);
         System.out.println("p = " + p + "\n");
 
-        List<GenPolynomial<BigInteger>> dem = TermOrderOptimization.<BigRational> degreeMatrix(p);
+        List<GenPolynomial<BigInteger>> dem = TermOrderOptimization.<BigRational>degreeMatrix(p);
 
         System.out.println("dem = " + dem + "\n");
 
@@ -474,7 +473,7 @@ public class Examples {
         }
         System.out.println("polys = " + polys + "\n");
 
-        dem = TermOrderOptimization.<BigRational> degreeMatrix(polys);
+        dem = TermOrderOptimization.<BigRational>degreeMatrix(polys);
         System.out.println("dem = " + dem + "\n");
 
         List<Integer> perm;
@@ -482,19 +481,19 @@ public class Examples {
         System.out.println("perm = " + perm + "\n");
 
         List<GenPolynomial<BigInteger>> pdem;
-        pdem = TermOrderOptimization.<GenPolynomial<BigInteger>> listPermutation(perm, dem);
+        pdem = TermOrderOptimization.<GenPolynomial<BigInteger>>listPermutation(perm, dem);
         System.out.println("pdem = " + pdem + "\n");
 
         GenPolynomialRing<BigRational> pring;
-        pring = TermOrderOptimization.<BigRational> permutation(perm, ring);
+        pring = TermOrderOptimization.<BigRational>permutation(perm, ring);
         System.out.println("ring  = " + ring);
         System.out.println("pring = " + pring + "\n");
 
         List<GenPolynomial<BigRational>> ppolys;
-        ppolys = TermOrderOptimization.<BigRational> permutation(perm, pring, polys);
+        ppolys = TermOrderOptimization.<BigRational>permutation(perm, pring, polys);
         System.out.println("ppolys = " + ppolys + "\n");
 
-        dem = TermOrderOptimization.<BigRational> degreeMatrix(ppolys);
+        dem = TermOrderOptimization.<BigRational>degreeMatrix(ppolys);
         //System.out.println("pdem = " + dem + "\n");
 
         perm = TermOrderOptimization.optimalPermutation(dem);
@@ -508,7 +507,7 @@ public class Examples {
         }
 
         OptimizedPolynomialList<BigRational> op;
-        op = TermOrderOptimization.<BigRational> optimizeTermOrder(ring, polys);
+        op = TermOrderOptimization.<BigRational>optimizeTermOrder(ring, polys);
         System.out.println("op:\n" + op);
         if (!op.equals(new PolynomialList<BigRational>(pring, ppolys))) {
             System.out.println("error = " + "\n" + op);
@@ -556,12 +555,12 @@ public class Examples {
         System.out.println("\n\n example 13");
         TermOrder to = new TermOrder(TermOrder.INVLEX);
         BigRational cfraction = new BigRational(1);
-        String[] vars = new String[] { "x" };
+        String[] vars = new String[]{"x"};
 
         //Scripting.setPrecision(5);
 
-        GenPolynomialRing<BigRational> pfac 
-            = new GenPolynomialRing<BigRational>(cfraction, 1, to, vars);
+        GenPolynomialRing<BigRational> pfac
+                = new GenPolynomialRing<BigRational>(cfraction, 1, to, vars);
         GenPolynomial<BigRational> FF0 = pfac.parse("19(6)/10");
         System.out.println("FF0 = " + FF0);
         FF0 = pfac.parse("19(6)1/10");

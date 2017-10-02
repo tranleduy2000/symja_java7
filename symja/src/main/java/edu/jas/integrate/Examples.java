@@ -18,7 +18,7 @@ import edu.jas.ufd.QuotientRing;
 
 /**
  * Examples related to elementary integration.
- * 
+ *
  * @author Axel Kramer
  * @author Heinz Kredel
  */
@@ -28,7 +28,7 @@ public class Examples {
 
     /**
      * Main program.
-     * 
+     *
      * @param args
      */
     public static void main(String[] args) {
@@ -44,7 +44,7 @@ public class Examples {
     public static void example1() {
 
         BigRational br = new BigRational(0);
-        String[] vars = new String[] { "x" };
+        String[] vars = new String[]{"x"};
         GenPolynomialRing<BigRational> fac;
         fac = new GenPolynomialRing<BigRational>(br, vars.length, new TermOrder(TermOrder.INVLEX), vars);
 
@@ -103,7 +103,7 @@ public class Examples {
     public static void example2() {
 
         BigRational br = new BigRational(0);
-        String[] vars = new String[] { "x" };
+        String[] vars = new String[]{"x"};
         GenPolynomialRing<BigRational> fac;
         fac = new GenPolynomialRing<BigRational>(br, vars.length, new TermOrder(TermOrder.INVLEX), vars);
 
@@ -185,7 +185,7 @@ public class Examples {
     public static void example3() {
 
         BigRational br = new BigRational(0);
-        String[] vars = new String[] { "x" };
+        String[] vars = new String[]{"x"};
         GenPolynomialRing<BigRational> fac;
         fac = new GenPolynomialRing<BigRational>(br, vars.length, new TermOrder(TermOrder.INVLEX), vars);
 

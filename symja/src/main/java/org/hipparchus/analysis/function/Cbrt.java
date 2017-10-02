@@ -23,16 +23,18 @@ import org.hipparchus.util.FastMath;
 
 /**
  * Cube root function.
- *
  */
 public class Cbrt implements UnivariateDifferentiableFunction {
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double value(double x) {
         return FastMath.cbrt(x);
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     @Override
     public DerivativeStructure value(final DerivativeStructure t) {

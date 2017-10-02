@@ -18,7 +18,8 @@ package org.hipparchus.exception;
 
 import java.util.Locale;
 
-/** This interface specified methods implemented by localized exception classes.
+/**
+ * This interface specified methods implemented by localized exception classes.
  * <p>
  * This interface has been copied from the interface with the same name
  * from Orekit.
@@ -26,18 +27,24 @@ import java.util.Locale;
  */
 public interface LocalizedException {
 
-    /** Gets the message in a specified locale.
+    /**
+     * Gets the message in a specified locale.
+     *
      * @param locale Locale in which the message should be translated
      * @return localized message
      */
     String getMessage(final Locale locale);
 
-    /** Get the localizable specifier of the error message.
+    /**
+     * Get the localizable specifier of the error message.
+     *
      * @return localizable specifier of the error message
      */
     Localizable getSpecifier();
 
-    /** Get the variable parts of the error message.
+    /**
+     * Get the variable parts of the error message.
+     *
      * @return a copy of the variable parts of the error message
      */
     Object[] getParts();

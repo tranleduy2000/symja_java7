@@ -4,6 +4,8 @@ import org.matheclipse.core.expression.F;
 import org.matheclipse.core.interfaces.IExpr;
 import org.matheclipse.core.interfaces.INumber;
 
+import java.util.function.Function;
+
 import static org.matheclipse.core.reflection.system.Sign.numberSign;
 
 public final class SignTimesFunction implements Function<IExpr, IExpr> {

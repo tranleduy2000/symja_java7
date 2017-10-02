@@ -5,31 +5,31 @@
 package edu.jas.application;
 
 
-import java.io.Serializable;
-
 import org.apache.log4j.Logger;
+
+import java.io.Serializable;
 
 import edu.jas.arith.BigInteger;
 import edu.jas.arith.BigRational;
 import edu.jas.gb.GBOptimized;
 import edu.jas.gb.GBProxy;
 import edu.jas.gb.GroebnerBaseAbstract;
-import edu.jas.gb.GroebnerBaseParallel;
-import edu.jas.gb.GroebnerBaseSeqIter;
+import edu.jas.gb.GroebnerBaseArriSigSeqIter;
 import edu.jas.gb.GroebnerBaseF5zSigSeqIter;
 import edu.jas.gb.GroebnerBaseGGVSigSeqIter;
-import edu.jas.gb.GroebnerBaseArriSigSeqIter;
 import edu.jas.gb.GroebnerBaseParIter;
+import edu.jas.gb.GroebnerBaseParallel;
+import edu.jas.gb.GroebnerBaseSeqIter;
 import edu.jas.gb.OrderedMinPairlist;
 import edu.jas.gb.OrderedPairlist;
 import edu.jas.gb.OrderedSyzPairlist;
 import edu.jas.gb.PairList;
 import edu.jas.gbufd.GBFactory;
 import edu.jas.gbufd.GroebnerBaseFGLM;
-import edu.jas.gbufd.GroebnerBaseWalk;
 import edu.jas.gbufd.GroebnerBasePseudoParallel;
 import edu.jas.gbufd.GroebnerBaseQuotient;
 import edu.jas.gbufd.GroebnerBaseRational;
+import edu.jas.gbufd.GroebnerBaseWalk;
 import edu.jas.kern.ComputerThreads;
 import edu.jas.poly.GenPolynomial;
 import edu.jas.poly.GenPolynomialRing;
@@ -41,68 +41,68 @@ import edu.jas.ufd.QuotientRing;
 
 /**
  * Builder for commutative Gr&ouml;bner bases algorithm implementations.
+ *
  * @author Heinz Kredel
  * @usage To create objects that implement the <code>GroebnerBase</code>
- *        interface one can use the <code>GBFactory</code> or this
- *        <code>GBAlgorithmBuilder</code>. This class will select and compose an
- *        appropriate implementation based on the types of polynomial
- *        coefficients C and the desired properties. To build an implementation
- *        start with the static method <code>polynomialRing()</code> to define
- *        the polynomial ring. Then continue to construct the algorithm with the
- *        methods
- *        <ul>
- *        <li><code>optimize()</code> or <code>optimize(boolean)</code> for term
- *        order (variable order) optimization (true for return of permuted
- *        polynomials),</li>
- *        <li><code>normalPairlist()</code> (default),
- *        <code>syzygyPairlist()</code> or <code>simplePairlist()</code> for
- *        pair-list selection strategies,</li>
- *        <li><code>fractionFree()</code> for clearing denominators and
- *        computing with pseudo reduction,</li>
- *        <li><code>graded()</code> for using the FGLM algorithm to first
- *        compute a Gr&ouml;bner base with respect to a graded term order and
- *        then constructing a Gr&ouml;bner base wrt. a lexicographical term
- *        order,</li>
- *        <li><code>walk()</code> for using the Gr&ouml;bner walk algorithm to first
- *        compute a Gr&ouml;bner base with respect to a graded term order and
- *        then constructing a Gr&ouml;bner base wrt. a lexicographical term
- *        order,</li>
- *        <li><code>iterated()</code> for using the iterative GB algorithm to 
- *        compute a Gr&ouml;bner base adding one polynomial after another,</li>
- *        <li><code>F5()</code>, <code>GGV()</code> and <code>Arri()</code> for using 
- *        the respective iterative signature based GB algorithm (over field coefficients) to 
- *        compute a Gr&ouml;bner base adding one polynomial after another,</li>
- *        <li><code>parallel()</code> additionaly compute a Gr&ouml;bner base
- *        over a field or integral domain in parallel,</li>
- *        <li><code>euclideanDomain()</code> for computing a e-Gr&ouml;bner
- *        base,</li>
- *        <li><code>domainAlgorithm(Algo)</code> for computing a d- or
- *        e-Gr&ouml;bner base,</li>
- *        </ul>
- *        Finally call the method <code>build()</code> to obtain an
- *        implementaton of class <code>GroebnerBaseAbstract</code>. For example
- * 
- *        <pre>
- * 
+ * interface one can use the <code>GBFactory</code> or this
+ * <code>GBAlgorithmBuilder</code>. This class will select and compose an
+ * appropriate implementation based on the types of polynomial
+ * coefficients C and the desired properties. To build an implementation
+ * start with the static method <code>polynomialRing()</code> to define
+ * the polynomial ring. Then continue to construct the algorithm with the
+ * methods
+ * <ul>
+ * <li><code>optimize()</code> or <code>optimize(boolean)</code> for term
+ * order (variable order) optimization (true for return of permuted
+ * polynomials),</li>
+ * <li><code>normalPairlist()</code> (default),
+ * <code>syzygyPairlist()</code> or <code>simplePairlist()</code> for
+ * pair-list selection strategies,</li>
+ * <li><code>fractionFree()</code> for clearing denominators and
+ * computing with pseudo reduction,</li>
+ * <li><code>graded()</code> for using the FGLM algorithm to first
+ * compute a Gr&ouml;bner base with respect to a graded term order and
+ * then constructing a Gr&ouml;bner base wrt. a lexicographical term
+ * order,</li>
+ * <li><code>walk()</code> for using the Gr&ouml;bner walk algorithm to first
+ * compute a Gr&ouml;bner base with respect to a graded term order and
+ * then constructing a Gr&ouml;bner base wrt. a lexicographical term
+ * order,</li>
+ * <li><code>iterated()</code> for using the iterative GB algorithm to
+ * compute a Gr&ouml;bner base adding one polynomial after another,</li>
+ * <li><code>F5()</code>, <code>GGV()</code> and <code>Arri()</code> for using
+ * the respective iterative signature based GB algorithm (over field coefficients) to
+ * compute a Gr&ouml;bner base adding one polynomial after another,</li>
+ * <li><code>parallel()</code> additionaly compute a Gr&ouml;bner base
+ * over a field or integral domain in parallel,</li>
+ * <li><code>euclideanDomain()</code> for computing a e-Gr&ouml;bner
+ * base,</li>
+ * <li><code>domainAlgorithm(Algo)</code> for computing a d- or
+ * e-Gr&ouml;bner base,</li>
+ * </ul>
+ * Finally call the method <code>build()</code> to obtain an
+ * implementaton of class <code>GroebnerBaseAbstract</code>. For example
+ * <p>
+ * <pre>
+ *
  * GenPolynomialRing&lt;C&gt; pf = new GenPolynomialRing&lt;C&gt;(cofac, vars);
  * GroebnerBaseAbstract&lt;C&gt; engine;
  * engine = GBAlgorithmBuilder.&lt;C&gt; polynomialRing(pf).fractionFree().parallel().optimize().build();
  * c = engine.GB(A);
  * </pre>
- * 
- *        For example, if the coefficient type is BigRational, the usage looks
- *        like
- * 
- *        <pre>
- * 
+ * <p>
+ * For example, if the coefficient type is BigRational, the usage looks
+ * like
+ * <p>
+ * <pre>
+ *
  * GenPolynomialRing&lt;BigRational&gt; pf = new GenPolynomialRing&lt;BigRational&gt;(cofac, vars);
  * GroebnerBaseAbstract&lt;BigRational&gt; engine;
  * engine = GBAlgorithmBuilder.&lt;BigRational&gt; polynomialRing(pf).fractionFree().parallel().optimize().build();
  * c = engine.GB(A);
  * </pre>
- * 
- *        <b>Note:</b> Not all combinations are meanigful
- * 
+ * <p>
+ * <b>Note:</b> Not all combinations are meanigful
  * @see edu.jas.gb.GroebnerBase
  * @see edu.jas.gbufd.GBFactory
  */
@@ -111,24 +111,18 @@ public class GBAlgorithmBuilder<C extends GcdRingElem<C>> implements Serializabl
 
 
     private static final Logger logger = Logger.getLogger(GBAlgorithmBuilder.class);
-
-
-    /**
-     * The current GB algorithm implementation.
-     */
-    private GroebnerBaseAbstract<C> algo;
-
-
     /**
      * The current polynomial ring.
      */
     public final GenPolynomialRing<C> ring;
-
-
     /**
      * Requested pairlist strategy.
      */
     public final PairList<C> strategy;
+    /**
+     * The current GB algorithm implementation.
+     */
+    private GroebnerBaseAbstract<C> algo;
 
 
     /**
@@ -141,6 +135,7 @@ public class GBAlgorithmBuilder<C extends GcdRingElem<C>> implements Serializabl
 
     /**
      * Constructor.
+     *
      * @param ring the polynomial ring.
      */
     public GBAlgorithmBuilder(GenPolynomialRing<C> ring) {
@@ -150,6 +145,7 @@ public class GBAlgorithmBuilder<C extends GcdRingElem<C>> implements Serializabl
 
     /**
      * Constructor.
+     *
      * @param ring the polynomial ring.
      * @param algo already determined algorithm.
      */
@@ -160,8 +156,9 @@ public class GBAlgorithmBuilder<C extends GcdRingElem<C>> implements Serializabl
 
     /**
      * Constructor.
-     * @param ring the polynomial ring.
-     * @param algo already determined algorithm.
+     *
+     * @param ring     the polynomial ring.
+     * @param algo     already determined algorithm.
      * @param strategy pairlist strategy.
      */
     public GBAlgorithmBuilder(GenPolynomialRing<C> ring, GroebnerBaseAbstract<C> algo, PairList<C> strategy) {
@@ -173,32 +170,16 @@ public class GBAlgorithmBuilder<C extends GcdRingElem<C>> implements Serializabl
             strategy = new OrderedPairlist<C>();
         } else {
             if (algo == null) { // or overwrite?
-                algo = GBFactory.<C> getImplementation(ring.coFac, strategy);
+                algo = GBFactory.<C>getImplementation(ring.coFac, strategy);
             }
         }
         this.algo = algo; // null accepted
         this.strategy = strategy;
     }
 
-
-    /**
-     * Build the GB algorithm implementaton.
-     * @return GB algorithm implementaton as GroebnerBaseAbstract object.
-     */
-    public GroebnerBaseAbstract<C> build() {
-        if (algo == null) {
-            if (strategy == null) { // should not happen
-                algo = GBFactory.<C> getImplementation(ring.coFac);
-            } else {
-                algo = GBFactory.<C> getImplementation(ring.coFac, strategy);
-            }
-        }
-        return algo;
-    }
-
-
     /**
      * Define polynomial ring.
+     *
      * @param fac the commutative polynomial ring.
      * @return GBAlgorithmBuilder object.
      */
@@ -206,10 +187,26 @@ public class GBAlgorithmBuilder<C extends GcdRingElem<C>> implements Serializabl
         return new GBAlgorithmBuilder<C>(fac);
     }
 
+    /**
+     * Build the GB algorithm implementaton.
+     *
+     * @return GB algorithm implementaton as GroebnerBaseAbstract object.
+     */
+    public GroebnerBaseAbstract<C> build() {
+        if (algo == null) {
+            if (strategy == null) { // should not happen
+                algo = GBFactory.<C>getImplementation(ring.coFac);
+            } else {
+                algo = GBFactory.<C>getImplementation(ring.coFac, strategy);
+            }
+        }
+        return algo;
+    }
 
     /**
      * Select syzygy critical pair-list strategy. Gebauer and M&ouml;ller
      * algorithm.
+     *
      * @return GBAlgorithmBuilder object.
      */
     public GBAlgorithmBuilder<C> syzygyPairlist() {
@@ -220,6 +217,7 @@ public class GBAlgorithmBuilder<C extends GcdRingElem<C>> implements Serializabl
     /**
      * Select normal critical pair-list strategy. Buchberger, Winkler and Kredel
      * algorithm.
+     *
      * @return GBAlgorithmBuilder object.
      */
     public GBAlgorithmBuilder<C> normalPairlist() {
@@ -229,6 +227,7 @@ public class GBAlgorithmBuilder<C extends GcdRingElem<C>> implements Serializabl
 
     /**
      * Select simple critical pair-list strategy. Original Buchberger algorithm.
+     *
      * @return GBAlgorithmBuilder object.
      */
     public GBAlgorithmBuilder<C> simplePairlist() {
@@ -239,6 +238,7 @@ public class GBAlgorithmBuilder<C extends GcdRingElem<C>> implements Serializabl
     /**
      * Request term order optimization. Call optimize(true) for return of
      * permuted polynomials.
+     *
      * @return GBAlgorithmBuilder object.
      */
     public GBAlgorithmBuilder<C> optimize() {
@@ -248,13 +248,14 @@ public class GBAlgorithmBuilder<C extends GcdRingElem<C>> implements Serializabl
 
     /**
      * Request term order optimization.
+     *
      * @param rP true for return of permuted polynomials, false for inverse
-     *            permuted polynomials and new GB computation.
+     *           permuted polynomials and new GB computation.
      * @return GBAlgorithmBuilder object.
      */
     public GBAlgorithmBuilder<C> optimize(boolean rP) {
         if (algo == null) {
-            algo = GBFactory.<C> getImplementation(ring.coFac, strategy);
+            algo = GBFactory.<C>getImplementation(ring.coFac, strategy);
         }
         GroebnerBaseAbstract<C> bb = new GBOptimized<C>(algo, rP);
         return new GBAlgorithmBuilder<C>(ring, bb, strategy);
@@ -264,6 +265,7 @@ public class GBAlgorithmBuilder<C extends GcdRingElem<C>> implements Serializabl
     /**
      * Request fraction free algorithm. For BigRational and Quotient
      * coefficients denominators are cleared and pseudo reduction is used.
+     *
      * @return GBAlgorithmBuilder object.
      */
     @SuppressWarnings({"cast", "unchecked"})
@@ -281,8 +283,8 @@ public class GBAlgorithmBuilder<C extends GcdRingElem<C>> implements Serializabl
         if (((Object) ring.coFac) instanceof QuotientRing) {
             QuotientRing<C> cf = (QuotientRing<C>) (Object) ring.coFac;
             PairList<Quotient<C>> sty = (PairList) strategy;
-            GroebnerBaseAbstract<Quotient<C>> bb = GBFactory.<C> getImplementation(cf, GBFactory.Algo.ffgb,
-                            sty);
+            GroebnerBaseAbstract<Quotient<C>> bb = GBFactory.<C>getImplementation(cf, GBFactory.Algo.ffgb,
+                    sty);
             GroebnerBaseAbstract<C> cbb = (GroebnerBaseAbstract<C>) (GroebnerBaseAbstract) bb;
             return new GBAlgorithmBuilder<C>(ring, cbb, strategy);
         }
@@ -293,6 +295,7 @@ public class GBAlgorithmBuilder<C extends GcdRingElem<C>> implements Serializabl
 
     /**
      * Request e-GB algorithm.
+     *
      * @return GBAlgorithmBuilder object.
      */
     public GBAlgorithmBuilder<C> euclideanDomain() {
@@ -302,6 +305,7 @@ public class GBAlgorithmBuilder<C extends GcdRingElem<C>> implements Serializabl
 
     /**
      * Request d-, e- or i-GB algorithm.
+     *
      * @param a algorithm from GBFactory.Algo.
      * @return GBAlgorithmBuilder object.
      */
@@ -318,7 +322,7 @@ public class GBAlgorithmBuilder<C extends GcdRingElem<C>> implements Serializabl
         }
         if (((Object) ring.coFac) instanceof GenPolynomial) {
             GenPolynomialRing<C> cf = (GenPolynomialRing) (Object) ring.coFac;
-            GroebnerBaseAbstract<GenPolynomial<C>> bb = GBFactory.<C> getImplementation(cf, a);
+            GroebnerBaseAbstract<GenPolynomial<C>> bb = GBFactory.<C>getImplementation(cf, a);
             GroebnerBaseAbstract<C> cbb = (GroebnerBaseAbstract<C>) (GroebnerBaseAbstract) bb;
             return new GBAlgorithmBuilder<C>(ring, cbb);
         }
@@ -330,6 +334,7 @@ public class GBAlgorithmBuilder<C extends GcdRingElem<C>> implements Serializabl
     /**
      * Request parallel algorithm. Additionaly run a parallel algorithm via
      * GBProxy.
+     *
      * @return GBAlgorithmBuilder object.
      */
     @SuppressWarnings("unchecked")
@@ -341,6 +346,7 @@ public class GBAlgorithmBuilder<C extends GcdRingElem<C>> implements Serializabl
     /**
      * Request parallel algorithm. Additionaly run a parallel algorithm via
      * GBProxy.
+     *
      * @param threads number of threads requested.
      * @return GBAlgorithmBuilder object.
      */
@@ -351,7 +357,7 @@ public class GBAlgorithmBuilder<C extends GcdRingElem<C>> implements Serializabl
             return this;
         }
         if (algo == null) {
-            algo = GBFactory.<C> getImplementation(ring.coFac, strategy);
+            algo = GBFactory.<C>getImplementation(ring.coFac, strategy);
         }
         if (algo instanceof GroebnerBaseSeqIter) { // iterative requested
             GroebnerBaseAbstract<C> bb;
@@ -409,6 +415,7 @@ public class GBAlgorithmBuilder<C extends GcdRingElem<C>> implements Serializabl
 
     /**
      * Request FGLM algorithm.
+     *
      * @return GBAlgorithmBuilder object.
      */
     @SuppressWarnings("unchecked")
@@ -429,6 +436,7 @@ public class GBAlgorithmBuilder<C extends GcdRingElem<C>> implements Serializabl
 
     /**
      * Request Groebner walk algorithm.
+     *
      * @return GBAlgorithmBuilder object.
      */
     @SuppressWarnings("unchecked")
@@ -449,13 +457,14 @@ public class GBAlgorithmBuilder<C extends GcdRingElem<C>> implements Serializabl
 
     /**
      * Request iterated GB algorithm.
+     *
      * @return GBAlgorithmBuilder object.
      */
     @SuppressWarnings("unchecked")
     public GBAlgorithmBuilder<C> iterated() {
         if (ring.coFac.isField()) {
             GroebnerBaseAbstract<C> bb;
-            bb = new GroebnerBaseSeqIter<C>(strategy); 
+            bb = new GroebnerBaseSeqIter<C>(strategy);
             // if (algo instanceof GBProxy) ... assemble parallel todo
             if (algo != null) {
                 logger.warn("algo " + algo + " ignored for " + bb);
@@ -469,13 +478,14 @@ public class GBAlgorithmBuilder<C extends GcdRingElem<C>> implements Serializabl
 
     /**
      * Request iterated F5 signature based GB algorithm.
+     *
      * @return GBAlgorithmBuilder object.
      */
     @SuppressWarnings("unchecked")
     public GBAlgorithmBuilder<C> F5() {
         if (ring.coFac.isField()) {
             GroebnerBaseAbstract<C> bb;
-            bb = new GroebnerBaseF5zSigSeqIter<C>(); 
+            bb = new GroebnerBaseF5zSigSeqIter<C>();
             // if (algo instanceof GBProxy) ... assemble parallel todo
             if (algo != null) {
                 logger.warn("algo " + algo + " ignored for " + bb);
@@ -492,13 +502,14 @@ public class GBAlgorithmBuilder<C extends GcdRingElem<C>> implements Serializabl
 
     /**
      * Request iterated GGV signature based GB algorithm.
+     *
      * @return GBAlgorithmBuilder object.
      */
     @SuppressWarnings("unchecked")
     public GBAlgorithmBuilder<C> GGV() {
         if (ring.coFac.isField()) {
             GroebnerBaseAbstract<C> bb;
-            bb = new GroebnerBaseGGVSigSeqIter<C>(); 
+            bb = new GroebnerBaseGGVSigSeqIter<C>();
             // if (algo instanceof GBProxy) ... assemble parallel todo
             if (algo != null) {
                 logger.warn("algo " + algo + " ignored for " + bb);
@@ -515,13 +526,14 @@ public class GBAlgorithmBuilder<C extends GcdRingElem<C>> implements Serializabl
 
     /**
      * Request iterated Arri signature based GB algorithm.
+     *
      * @return GBAlgorithmBuilder object.
      */
     @SuppressWarnings("unchecked")
     public GBAlgorithmBuilder<C> Arri() {
         if (ring.coFac.isField()) {
             GroebnerBaseAbstract<C> bb;
-            bb = new GroebnerBaseArriSigSeqIter<C>(); 
+            bb = new GroebnerBaseArriSigSeqIter<C>();
             // if (algo instanceof GBProxy) ... assemble parallel todo
             if (algo != null) {
                 logger.warn("algo " + algo + " ignored for " + bb);
@@ -538,6 +550,7 @@ public class GBAlgorithmBuilder<C extends GcdRingElem<C>> implements Serializabl
 
     /**
      * String representation of the GB algorithm implementation.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -558,6 +571,7 @@ public class GBAlgorithmBuilder<C extends GcdRingElem<C>> implements Serializabl
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this Element.
      * @see edu.jas.structure.Element#toScript()
      */

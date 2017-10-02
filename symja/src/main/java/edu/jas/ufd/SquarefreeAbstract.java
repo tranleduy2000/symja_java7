@@ -15,12 +15,12 @@ import edu.jas.poly.GenPolynomial;
 import edu.jas.poly.GenPolynomialRing;
 import edu.jas.poly.PolyUtil;
 import edu.jas.structure.GcdRingElem;
-import edu.jas.structure.Power;
 import edu.jas.structure.RingFactory;
 
 
 /**
  * Abstract squarefree decomposition class.
+ *
  * @author Heinz Kredel
  */
 
@@ -43,6 +43,7 @@ public abstract class SquarefreeAbstract<C extends GcdRingElem<C>> implements Sq
 
     /**
      * GenPolynomial polynomial greatest squarefree divisor.
+     *
      * @param P GenPolynomial.
      * @return squarefree(pp(P)).
      */
@@ -51,34 +52,38 @@ public abstract class SquarefreeAbstract<C extends GcdRingElem<C>> implements Sq
 
     /**
      * GenPolynomial polynomial squarefree factorization.
+     *
      * @param A GenPolynomial.
      * @return [p_1 -&gt; e_1, ..., p_k -&gt; e_k] with P = prod_{i=1,...,k}
-     *         p_i^{e_i} and p_i squarefree.
+     * p_i^{e_i} and p_i squarefree.
      */
     public abstract SortedMap<GenPolynomial<C>, Long> baseSquarefreeFactors(GenPolynomial<C> A);
 
 
     /**
      * GenPolynomial recursive polynomial greatest squarefree divisor.
+     *
      * @param P recursive univariate GenPolynomial.
      * @return squarefree(pp(P)).
      */
     public abstract GenPolynomial<GenPolynomial<C>> recursiveUnivariateSquarefreePart(
-                    GenPolynomial<GenPolynomial<C>> P);
+            GenPolynomial<GenPolynomial<C>> P);
 
 
     /**
      * GenPolynomial recursive univariate polynomial squarefree factorization.
+     *
      * @param P recursive univariate GenPolynomial.
      * @return [p_1 -&gt; e_1, ..., p_k -&gt; e_k] with P = prod_{i=1,...,k}
-     *         p_i^{e_i} and p_i squarefree.
+     * p_i^{e_i} and p_i squarefree.
      */
     public abstract SortedMap<GenPolynomial<GenPolynomial<C>>, Long> recursiveUnivariateSquarefreeFactors(
-                    GenPolynomial<GenPolynomial<C>> P);
+            GenPolynomial<GenPolynomial<C>> P);
 
 
     /**
      * GenPolynomial greatest squarefree divisor.
+     *
      * @param P GenPolynomial.
      * @return squarefree(P) a primitive respectively monic polynomial.
      */
@@ -87,6 +92,7 @@ public abstract class SquarefreeAbstract<C extends GcdRingElem<C>> implements Sq
 
     /**
      * GenPolynomial test if is squarefree.
+     *
      * @param P GenPolynomial.
      * @return true if P is squarefree, else false.
      */
@@ -100,9 +106,9 @@ public abstract class SquarefreeAbstract<C extends GcdRingElem<C>> implements Sq
         }
         boolean f = Ps.equals(S);
         //if (!f) {
-            //System.out.println("\nisSquarefree: " + f);
-            //System.out.println("S  = " + S);
-            //System.out.println("P  = " + P);
+        //System.out.println("\nisSquarefree: " + f);
+        //System.out.println("S  = " + S);
+        //System.out.println("P  = " + P);
         //}
         return f;
     }
@@ -110,6 +116,7 @@ public abstract class SquarefreeAbstract<C extends GcdRingElem<C>> implements Sq
 
     /**
      * GenPolynomial list test if squarefree.
+     *
      * @param L list of GenPolynomial.
      * @return true if each P in L is squarefree, else false.
      */
@@ -128,6 +135,7 @@ public abstract class SquarefreeAbstract<C extends GcdRingElem<C>> implements Sq
 
     /**
      * Recursive GenPolynomial test if is squarefree.
+     *
      * @param P recursive univariate GenPolynomial.
      * @return true if P is squarefree, else false.
      */
@@ -145,19 +153,21 @@ public abstract class SquarefreeAbstract<C extends GcdRingElem<C>> implements Sq
 
     /**
      * GenPolynomial squarefree factorization.
+     *
      * @param P GenPolynomial.
      * @return [p_1 -&gt; e_1, ..., p_k -&gt; e_k] with P = prod_{i=1,...,k}
-     *         p_i^{e_i} and p_i squarefree.
+     * p_i^{e_i} and p_i squarefree.
      */
     public abstract SortedMap<GenPolynomial<C>, Long> squarefreeFactors(GenPolynomial<C> P);
 
 
     /**
      * GenPolynomial squarefree and co-prime list.
+     *
      * @param A list of GenPolynomials.
      * @return B with gcd(b,c) = 1 for all b != c in B and for all non-constant
-     *         a in A there exists b in B with b|a and each b in B is
-     *         squarefree. B does not contain zero or constant polynomials.
+     * a in A there exists b in B with b|a and each b in B is
+     * squarefree. B does not contain zero or constant polynomials.
      */
     public List<GenPolynomial<C>> coPrimeSquarefree(List<GenPolynomial<C>> A) {
         if (A == null || A.isEmpty()) {
@@ -175,11 +185,12 @@ public abstract class SquarefreeAbstract<C extends GcdRingElem<C>> implements Sq
 
     /**
      * GenPolynomial squarefree and co-prime list.
+     *
      * @param a polynomial.
      * @param P squarefree co-prime list of GenPolynomials.
      * @return B with gcd(b,c) = 1 for all b != c in B and for non-constant a
-     *         there exists b in P with b|a. B does not contain zero or constant
-     *         polynomials.
+     * there exists b in P with b|a. B does not contain zero or constant
+     * polynomials.
      */
     public List<GenPolynomial<C>> coPrimeSquarefree(GenPolynomial<C> a, List<GenPolynomial<C>> P) {
         if (a == null || a.isZERO() || a.isConstant()) {
@@ -196,9 +207,10 @@ public abstract class SquarefreeAbstract<C extends GcdRingElem<C>> implements Sq
 
     /**
      * Test if list of GenPolynomials is squarefree and co-prime.
+     *
      * @param B list of GenPolynomials.
      * @return true, if for all b != c in B gcd(b,c) = 1 and each b in B is
-     *         squarefree, else false.
+     * squarefree, else false.
      */
     public boolean isCoPrimeSquarefree(List<GenPolynomial<C>> B) {
         if (B == null || B.isEmpty()) {
@@ -214,6 +226,7 @@ public abstract class SquarefreeAbstract<C extends GcdRingElem<C>> implements Sq
     /**
      * Normalize factorization. p'_i &gt; 0 for i &gt; 1 and p'_1 != 1 if k &gt;
      * 1.
+     *
      * @param F = [p_1-&gt;e_1;, ..., p_k-&gt;e_k].
      * @return F' = [p'_1-&gt;e_1, ..., p'_k-&gt;e_k].
      */
@@ -250,6 +263,7 @@ public abstract class SquarefreeAbstract<C extends GcdRingElem<C>> implements Sq
 
     /**
      * GenPolynomial is (squarefree) factorization.
+     *
      * @param P GenPolynomial.
      * @param F = [p_1,...,p_k].
      * @return true if P = prod_{i=1,...,r} p_i, else false.
@@ -275,6 +289,7 @@ public abstract class SquarefreeAbstract<C extends GcdRingElem<C>> implements Sq
 
     /**
      * Count number of factors in a (squarefree) factorization.
+     *
      * @param F = [p_1 -&gt; e_1, ..., p_k -&gt; e_k].
      * @return sum_{i=1,...,k} e_i.
      */
@@ -292,6 +307,7 @@ public abstract class SquarefreeAbstract<C extends GcdRingElem<C>> implements Sq
 
     /**
      * GenPolynomial is (squarefree) factorization.
+     *
      * @param P GenPolynomial.
      * @param F = [p_1 -&gt; e_1, ..., p_k -&gt; e_k].
      * @return true if P = prod_{i=1,...,k} p_i**e_i, else false.
@@ -335,12 +351,13 @@ public abstract class SquarefreeAbstract<C extends GcdRingElem<C>> implements Sq
 
     /**
      * GenPolynomial is (squarefree) factorization.
+     *
      * @param P GenPolynomial.
      * @param F = [p_1 -&gt; e_1, ..., p_k -&gt; e_k].
      * @return true if P = prod_{i=1,...,k} p_i**e_i, else false.
      */
     public boolean isRecursiveFactorization(GenPolynomial<GenPolynomial<C>> P,
-                    SortedMap<GenPolynomial<GenPolynomial<C>>, Long> F) {
+                                            SortedMap<GenPolynomial<GenPolynomial<C>>, Long> F) {
         if (P == null || F == null) {
             throw new IllegalArgumentException("P and F may not be null");
         }
@@ -362,9 +379,9 @@ public abstract class SquarefreeAbstract<C extends GcdRingElem<C>> implements Sq
             GenPolynomialRing<C> cf = (GenPolynomialRing<C>) P.ring.coFac;
             GreatestCommonDivisorAbstract<C> engine = GCDFactory.getProxy(cf.coFac);
             GenPolynomial<GenPolynomial<C>> Pp = engine.recursivePrimitivePart(P);
-            Pp = PolyUtil.<C> monic(Pp);
+            Pp = PolyUtil.<C>monic(Pp);
             GenPolynomial<GenPolynomial<C>> tp = engine.recursivePrimitivePart(t);
-            tp = PolyUtil.<C> monic(tp);
+            tp = PolyUtil.<C>monic(tp);
             f = Pp.equals(tp) || Pp.equals(tp.negate());
             if (f) {
                 return f;
@@ -385,6 +402,7 @@ public abstract class SquarefreeAbstract<C extends GcdRingElem<C>> implements Sq
 
     /**
      * GenPolynomial recursive polynomial greatest squarefree divisor.
+     *
      * @param P recursive GenPolynomial.
      * @return squarefree(pp(P)).
      */
@@ -400,22 +418,23 @@ public abstract class SquarefreeAbstract<C extends GcdRingElem<C>> implements Sq
         RingFactory<GenPolynomial<C>> rrfac = rfac.coFac;
         GenPolynomialRing<C> cfac = (GenPolynomialRing<C>) rrfac;
         GenPolynomialRing<C> dfac = cfac.extend(rfac.nvar);
-        GenPolynomial<C> Pd = PolyUtil.<C> distribute(dfac, P);
+        GenPolynomial<C> Pd = PolyUtil.<C>distribute(dfac, P);
         GenPolynomial<C> Dd = squarefreePart(Pd);
         // convert to recursive
-        GenPolynomial<GenPolynomial<C>> C = PolyUtil.<C> recursive(rfac, Dd);
+        GenPolynomial<GenPolynomial<C>> C = PolyUtil.<C>recursive(rfac, Dd);
         return C;
     }
 
 
     /**
      * GenPolynomial recursive polynomial squarefree factorization.
+     *
      * @param P recursive GenPolynomial.
      * @return [p_1 -&gt; e_1, ..., p_k -&gt; e_k] with P = prod_{i=1,...,k}
-     *         p_i^{e_i} and p_i squarefree.
+     * p_i^{e_i} and p_i squarefree.
      */
     public SortedMap<GenPolynomial<GenPolynomial<C>>, Long> recursiveSquarefreeFactors(
-                    GenPolynomial<GenPolynomial<C>> P) {
+            GenPolynomial<GenPolynomial<C>> P) {
         SortedMap<GenPolynomial<GenPolynomial<C>>, Long> factors;
         factors = new TreeMap<GenPolynomial<GenPolynomial<C>>, Long>();
         if (P == null || P.isZERO()) {
@@ -429,13 +448,13 @@ public abstract class SquarefreeAbstract<C extends GcdRingElem<C>> implements Sq
         RingFactory<GenPolynomial<C>> rrfac = rfac.coFac;
         GenPolynomialRing<C> cfac = (GenPolynomialRing<C>) rrfac;
         GenPolynomialRing<C> dfac = cfac.extend(rfac.nvar);
-        GenPolynomial<C> Pd = PolyUtil.<C> distribute(dfac, P);
+        GenPolynomial<C> Pd = PolyUtil.<C>distribute(dfac, P);
         SortedMap<GenPolynomial<C>, Long> dfacs = squarefreeFactors(Pd);
         // convert to recursive
         for (Map.Entry<GenPolynomial<C>, Long> Dm : dfacs.entrySet()) {
             GenPolynomial<C> Dd = Dm.getKey();
             Long e = Dm.getValue();
-            GenPolynomial<GenPolynomial<C>> C = PolyUtil.<C> recursive(rfac, Dd);
+            GenPolynomial<GenPolynomial<C>> C = PolyUtil.<C>recursive(rfac, Dd);
             factors.put(C, e);
         }
         return factors;
@@ -444,14 +463,15 @@ public abstract class SquarefreeAbstract<C extends GcdRingElem<C>> implements Sq
 
     /**
      * Univariate GenPolynomial partial fraction decomposition.
+     *
      * @param A univariate GenPolynomial.
      * @param D sorted map [d_1 -&gt; e_1, ..., d_k -&gt; e_k] with d_i
-     *            squarefree.
+     *          squarefree.
      * @return [ [Ai0, Ai1,..., Aie_i], i=0,...,k ] with A/prod(D) = A0 + sum(
-     *         sum ( Aij/di^j ) ) with deg(Aij) < deg(di).
+     * sum ( Aij/di^j ) ) with deg(Aij) < deg(di).
      */
     public List<List<GenPolynomial<C>>> basePartialFraction(GenPolynomial<C> A,
-                    SortedMap<GenPolynomial<C>, Long> D) {
+                                                            SortedMap<GenPolynomial<C>, Long> D) {
         if (D == null || A == null) {
             throw new IllegalArgumentException("null A or D not allowed");
         }
@@ -506,14 +526,15 @@ public abstract class SquarefreeAbstract<C extends GcdRingElem<C>> implements Sq
 
     /**
      * Test for Univariate GenPolynomial partial fraction decomposition.
+     *
      * @param A univariate GenPolynomial.
      * @param D sorted map [d_1 -&gt; e_1, ..., d_k -&gt; e_k] with d_i
-     *            squarefree.
+     *          squarefree.
      * @param F a list of lists [ [Ai0, Ai1,..., Aie_i], i=0,...,k ]
      * @return true, if A/prod(D) = A0 + sum( sum ( Aij/di^j ) ), else false.
      */
     public boolean isBasePartialFraction(GenPolynomial<C> A, SortedMap<GenPolynomial<C>, Long> D,
-                    List<List<GenPolynomial<C>>> F) {
+                                         List<List<GenPolynomial<C>>> F) {
         if (D == null || A == null || F == null) {
             throw new IllegalArgumentException("null A, D or F not allowed");
         }
@@ -590,6 +611,7 @@ public abstract class SquarefreeAbstract<C extends GcdRingElem<C>> implements Sq
 
     /**
      * Coefficients greatest squarefree divisor.
+     *
      * @param P coefficient.
      * @return squarefree part of P.
      */
@@ -615,9 +637,10 @@ public abstract class SquarefreeAbstract<C extends GcdRingElem<C>> implements Sq
 
     /**
      * Coefficients squarefree factorization.
+     *
      * @param P coefficient.
      * @return [p_1 -&gt; e_1, ..., p_k -&gt; e_k] with P = prod_{i=1,...,k}
-     *         p_i^{e_i} and p_i squarefree.
+     * p_i^{e_i} and p_i squarefree.
      */
     public abstract SortedMap<C, Long> squarefreeFactors(C P);
     /* not possible:

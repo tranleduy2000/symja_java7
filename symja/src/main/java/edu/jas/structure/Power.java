@@ -5,13 +5,14 @@
 package edu.jas.structure;
 
 
-import java.util.List;
-
 import org.apache.log4j.Logger;
+
+import java.util.List;
 
 
 /**
  * Power class to compute powers of RingElem.
+ *
  * @author Heinz Kredel
  */
 public class Power<C extends RingElem<C>> {
@@ -36,6 +37,7 @@ public class Power<C extends RingElem<C>> {
 
     /**
      * The constructor creates a Power object.
+     *
      * @param fac ring factory
      */
     public Power(RingFactory<C> fac) {
@@ -45,6 +47,7 @@ public class Power<C extends RingElem<C>> {
 
     /**
      * power of a to the n-th, n positive.
+     *
      * @param a element.
      * @param n integer exponent > 0.
      * @return a^n.
@@ -74,6 +77,7 @@ public class Power<C extends RingElem<C>> {
 
     /**
      * power of a to the n-th, n positive.
+     *
      * @param a element.
      * @param n java.math.BigInteger exponent > 0.
      * @return a^n.
@@ -110,6 +114,7 @@ public class Power<C extends RingElem<C>> {
 
     /**
      * power of a to the n-th, n positive, modulo m.
+     *
      * @param a element.
      * @param n integer exponent > 0.
      * @param m modulus.
@@ -141,8 +146,9 @@ public class Power<C extends RingElem<C>> {
 
     /**
      * power of a to the n-th.
-     * @param a element.
-     * @param n integer exponent.
+     *
+     * @param a   element.
+     * @param n   integer exponent.
      * @param fac ring factory.
      * @return a^n, with 0^0 = 0 and a^{-n} = {1/a}^n.
      */
@@ -152,14 +158,15 @@ public class Power<C extends RingElem<C>> {
             return a;
         }
         //return a;
-        return (C) Power.<MonoidElem> power((MonoidFactory) fac, a, n);
+        return (C) Power.<MonoidElem>power((MonoidFactory) fac, a, n);
     }
 
 
     /**
      * power of a to the n-th.
-     * @param a element.
-     * @param n integer exponent.
+     *
+     * @param a   element.
+     * @param n   integer exponent.
      * @param fac monoid factory.
      * @return a^n, with a^{-n} = {1/a}^n.
      */
@@ -201,9 +208,10 @@ public class Power<C extends RingElem<C>> {
 
     /**
      * power of a to the n-th modulo m.
-     * @param a element.
-     * @param n integer exponent.
-     * @param m modulus.
+     *
+     * @param a   element.
+     * @param n   integer exponent.
+     * @param m   modulus.
      * @param fac monoid factory.
      * @return a^n mod m, with a^{-n} = {1/a}^n.
      */
@@ -245,9 +253,10 @@ public class Power<C extends RingElem<C>> {
 
     /**
      * power of a to the n-th modulo m.
-     * @param a element.
-     * @param n integer exponent.
-     * @param m modulus.
+     *
+     * @param a   element.
+     * @param n   integer exponent.
+     * @param m   modulus.
      * @param fac monoid factory.
      * @return a^n mod m, with a^{-n} = {1/a}^n.
      */
@@ -290,20 +299,9 @@ public class Power<C extends RingElem<C>> {
         return p;
     }
 
-
     /**
      * power of a to the n-th.
-     * @param a element.
-     * @param n integer exponent.
-     * @return a^n, with 0^0 = 0.
-     */
-    public C power(C a, long n) {
-        return power(fac, a, n);
-    }
-
-
-    /**
-     * power of a to the n-th.
+     *
      * @param a long.
      * @param n integer exponent.
      * @return a^n, with a^0 = 1.
@@ -336,33 +334,9 @@ public class Power<C extends RingElem<C>> {
         return p;
     }
 
-
-    /**
-     * power of a to the n-th mod m.
-     * @param a element.
-     * @param n integer exponent.
-     * @param m modulus.
-     * @return a^n mod m, with 0^0 = 0.
-     */
-    public C modPower(C a, long n, C m) {
-        return modPower(fac, a, n, m);
-    }
-
-
-    /**
-     * power of a to the n-th mod m.
-     * @param a element.
-     * @param n integer exponent.
-     * @param m modulus.
-     * @return a^n mod m, with 0^0 = 0.
-     */
-    public C modPower(C a, java.math.BigInteger n, C m) {
-        return modPower(fac, a, n, m);
-    }
-
-
     /**
      * Logarithm.
+     *
      * @param p logarithm base.
      * @param a element.
      * @return k &ge; 1 minimal with p^k &ge; b.
@@ -380,23 +354,23 @@ public class Power<C extends RingElem<C>> {
         return k;
     }
 
-
     /**
      * Multiply elements in list.
-     * @param A list of elements (a_0,...,a_k).
+     *
+     * @param A   list of elements (a_0,...,a_k).
      * @param fac ring factory.
-     * @return prod(i=0,...k) a_i.
+     * @return prod(i=0, ...k) a_i.
      */
     public static <C extends RingElem<C>> C multiply(RingFactory<C> fac, List<C> A) {
         return multiply((MonoidFactory<C>) fac, A);
     }
 
-
     /**
      * Multiply elements in list.
-     * @param A list of elements (a_0,...,a_k).
+     *
+     * @param A   list of elements (a_0,...,a_k).
      * @param fac monoid factory.
-     * @return prod(i=0,...k) a_i.
+     * @return prod(i=0, ...k) a_i.
      */
     public static <C extends MonoidElem<C>> C multiply(MonoidFactory<C> fac, List<C> A) {
         if (fac == null) {
@@ -412,23 +386,23 @@ public class Power<C extends RingElem<C>> {
         return res;
     }
 
-
     /**
      * Sum elements in list.
-     * @param A list of elements (a_0,...,a_k).
+     *
+     * @param A   list of elements (a_0,...,a_k).
      * @param fac ring factory.
-     * @return sum(i=0,...k) a_i.
+     * @return sum(i=0, ...k) a_i.
      */
     public static <C extends RingElem<C>> C sum(RingFactory<C> fac, List<C> A) {
         return sum((AbelianGroupFactory<C>) fac, A);
     }
 
-
     /**
      * Sum elements in list.
-     * @param A list of elements (a_0,...,a_k).
+     *
+     * @param A   list of elements (a_0,...,a_k).
      * @param fac monoid factory.
-     * @return sum(i=0,...k) a_i.
+     * @return sum(i=0, ...k) a_i.
      */
     public static <C extends AbelianGroupElem<C>> C sum(AbelianGroupFactory<C> fac, List<C> A) {
         if (fac == null) {
@@ -442,6 +416,41 @@ public class Power<C extends RingElem<C>> {
             res = res.sum(a);
         }
         return res;
+    }
+
+    /**
+     * power of a to the n-th.
+     *
+     * @param a element.
+     * @param n integer exponent.
+     * @return a^n, with 0^0 = 0.
+     */
+    public C power(C a, long n) {
+        return power(fac, a, n);
+    }
+
+    /**
+     * power of a to the n-th mod m.
+     *
+     * @param a element.
+     * @param n integer exponent.
+     * @param m modulus.
+     * @return a^n mod m, with 0^0 = 0.
+     */
+    public C modPower(C a, long n, C m) {
+        return modPower(fac, a, n, m);
+    }
+
+    /**
+     * power of a to the n-th mod m.
+     *
+     * @param a element.
+     * @param n integer exponent.
+     * @param m modulus.
+     * @return a^n mod m, with 0^0 = 0.
+     */
+    public C modPower(C a, java.math.BigInteger n, C m) {
+        return modPower(fac, a, n, m);
     }
 
 }

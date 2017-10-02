@@ -13,6 +13,7 @@ import edu.jas.structure.RingElem;
 
 /**
  * Adapter for functions capable for Taylor series expansion.
+ *
  * @param <C> ring element type
  * @author Heinz Kredel
  */
@@ -22,6 +23,7 @@ public abstract class TaylorFunctionAdapter<C extends RingElem<C>> implements Ta
 
     /**
      * Get the factorial coefficient.
+     *
      * @return factorial coefficient.
      */
     public long getFacul() {
@@ -31,6 +33,7 @@ public abstract class TaylorFunctionAdapter<C extends RingElem<C>> implements Ta
 
     /**
      * Test if this is zero.
+     *
      * @return true if this is 0, else false.
      */
     public boolean isZERO() {
@@ -38,9 +41,9 @@ public abstract class TaylorFunctionAdapter<C extends RingElem<C>> implements Ta
     }
 
 
-
     /**
      * Deriviative.
+     *
      * @return deriviative of this.
      */
     public TaylorFunction<C> deriviative() {
@@ -50,6 +53,7 @@ public abstract class TaylorFunctionAdapter<C extends RingElem<C>> implements Ta
 
     /**
      * Multi-partial deriviative.
+     *
      * @param i exponent vector.
      * @return partial deriviative of this with respect to all variables.
      */
@@ -60,6 +64,7 @@ public abstract class TaylorFunctionAdapter<C extends RingElem<C>> implements Ta
 
     /**
      * Evaluate.
+     *
      * @param a element.
      * @return this(a).
      */
@@ -70,6 +75,7 @@ public abstract class TaylorFunctionAdapter<C extends RingElem<C>> implements Ta
 
     /**
      * Evaluate at a tuple of elements.
+     *
      * @param a tuple of elements.
      * @return this(a).
      */

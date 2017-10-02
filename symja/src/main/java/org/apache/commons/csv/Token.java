@@ -25,33 +25,21 @@ import static org.apache.commons.csv.Token.Type.INVALID;
  */
 final class Token {
 
-    /** length of the initial token (content-)buffer */
+    /**
+     * length of the initial token (content-)buffer
+     */
     private static final int INITIAL_TOKEN_LENGTH = 50;
-
-    enum Type {
-        /** Token has no valid content, i.e. is in its initialized state. */
-        INVALID,
-
-        /** Token with content, at beginning or in the middle of a line. */
-        TOKEN,
-
-        /** Token (which can have content) when the end of file is reached. */
-        EOF,
-
-        /** Token with content when the end of a line is reached. */
-        EORECORD,
-
-        /** Token is a comment line. */
-        COMMENT
-    }
-
-    /** Token type */
-    Type type = INVALID;
-
-    /** The content buffer. */
+    /**
+     * The content buffer.
+     */
     final StringBuilder content = new StringBuilder(INITIAL_TOKEN_LENGTH);
-
-    /** Token ready flag: indicates a valid token with content (ready for the parser). */
+    /**
+     * Token type
+     */
+    Type type = INVALID;
+    /**
+     * Token ready flag: indicates a valid token with content (ready for the parser).
+     */
     boolean isReady;
 
     void reset() {
@@ -68,5 +56,32 @@ final class Token {
     @Override
     public String toString() {
         return type.name() + " [" + content.toString() + "]";
+    }
+
+    enum Type {
+        /**
+         * Token has no valid content, i.e. is in its initialized state.
+         */
+        INVALID,
+
+        /**
+         * Token with content, at beginning or in the middle of a line.
+         */
+        TOKEN,
+
+        /**
+         * Token (which can have content) when the end of file is reached.
+         */
+        EOF,
+
+        /**
+         * Token with content when the end of a line is reached.
+         */
+        EORECORD,
+
+        /**
+         * Token is a comment line.
+         */
+        COMMENT
     }
 }

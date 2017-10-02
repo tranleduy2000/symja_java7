@@ -15,6 +15,7 @@ import edu.jas.structure.NotInvertibleException;
 
 /**
  * Word implements strings of letters for polynomials.
+ *
  * @author Heinz Kredel
  */
 
@@ -41,6 +42,7 @@ public final class Word implements MonoidElem<Word> {
 
     /**
      * Constructor for Word.
+     *
      * @param m factory for words.
      */
     public Word(WordFactory m) {
@@ -50,6 +52,7 @@ public final class Word implements MonoidElem<Word> {
 
     /**
      * Constructor for Word.
+     *
      * @param m factory for words.
      * @param s String
      */
@@ -60,8 +63,9 @@ public final class Word implements MonoidElem<Word> {
 
     /**
      * Constructor for Word.
-     * @param m factory for words.
-     * @param s String
+     *
+     * @param m         factory for words.
+     * @param s         String
      * @param translate indicator if s needs translation
      */
     public Word(WordFactory m, String s, boolean translate) {
@@ -88,6 +92,7 @@ public final class Word implements MonoidElem<Word> {
 
     /**
      * Get the corresponding element factory.
+     *
      * @return factory for this Element.
      * @see edu.jas.structure.Element#factory()
      */
@@ -98,6 +103,7 @@ public final class Word implements MonoidElem<Word> {
 
     /**
      * Copy this.
+     *
      * @return copy of this.
      */
     @Override
@@ -108,6 +114,7 @@ public final class Word implements MonoidElem<Word> {
 
     /**
      * Get the word String.
+     *
      * @return val.
      */
     /*package*/String getVal() {
@@ -117,6 +124,7 @@ public final class Word implements MonoidElem<Word> {
 
     /**
      * Get the letter at position i.
+     *
      * @param i position.
      * @return val[i].
      */
@@ -127,6 +135,7 @@ public final class Word implements MonoidElem<Word> {
 
     /**
      * Get the length of this word.
+     *
      * @return val.length.
      */
     public int length() {
@@ -136,6 +145,7 @@ public final class Word implements MonoidElem<Word> {
 
     /**
      * Get the string representation.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -166,6 +176,7 @@ public final class Word implements MonoidElem<Word> {
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this Element.
      * @see edu.jas.structure.Element#toScript()
      */
@@ -197,6 +208,7 @@ public final class Word implements MonoidElem<Word> {
 
     /**
      * Get a scripting compatible string representation of the factory.
+     *
      * @return script compatible representation for this ElemFactory.
      * @see edu.jas.structure.Element#toScriptFactory()
      */
@@ -209,6 +221,7 @@ public final class Word implements MonoidElem<Word> {
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -226,6 +239,7 @@ public final class Word implements MonoidElem<Word> {
 
     /**
      * hashCode.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -239,6 +253,7 @@ public final class Word implements MonoidElem<Word> {
 
     /**
      * Is Word one.
+     *
      * @return If this is the empty word then true is returned, else false.
      */
     public boolean isONE() {
@@ -248,6 +263,7 @@ public final class Word implements MonoidElem<Word> {
 
     /**
      * Is Word unit.
+     *
      * @return If this is a unit then true is returned, else false.
      */
     public boolean isUnit() {
@@ -257,6 +273,7 @@ public final class Word implements MonoidElem<Word> {
 
     /**
      * Word multiplication.
+     *
      * @param V other word.
      * @return this * V.
      */
@@ -267,6 +284,7 @@ public final class Word implements MonoidElem<Word> {
 
     /**
      * Word divide.
+     *
      * @param V other word.
      * @return this / V.
      */
@@ -277,15 +295,16 @@ public final class Word implements MonoidElem<Word> {
 
     /**
      * Word divide left.
+     *
      * @param V other word.
      * @return this / V = left, with left * V = this.
      */
     public Word divideLeft(Word V) {
-        Word[] ret = divideWord(V,false);
+        Word[] ret = divideWord(V, false);
         // TODO: fail if both non zero?
         if (!ret[1].isONE()) {
             throw new IllegalArgumentException("not simple left dividable: left = " + ret[0] + ", right = "
-                            + ret[1] + ", use divideWord");
+                    + ret[1] + ", use divideWord");
         }
         return ret[0];
     }
@@ -293,15 +312,16 @@ public final class Word implements MonoidElem<Word> {
 
     /**
      * Word divide right.
+     *
      * @param V other word.
      * @return this / V = right, with V * right = this.
      */
     public Word divideRight(Word V) {
-        Word[] ret = divideWord(V,true);
+        Word[] ret = divideWord(V, true);
         // TODO: fail if both non zero?
         if (!ret[0].isONE()) {
             throw new IllegalArgumentException("not simple right dividable: left = " + ret[0] + ", right = "
-                            + ret[1] + ", use divideWord");
+                    + ret[1] + ", use divideWord");
         }
         return ret[1];
     }
@@ -309,18 +329,20 @@ public final class Word implements MonoidElem<Word> {
 
     /**
      * Word divide with prefix and suffix.
+     *
      * @param V other word.
-     * @return [left,right] with left * V * right = this.
+     * @return [left, right] with left * V * right = this.
      */
     public Word[] divideWord(Word V) {
-        return divideWord(V,true); 
+        return divideWord(V, true);
     }
 
     /**
      * Word divide with prefix and suffix.
-     * @param V other word.
+     *
+     * @param V     other word.
      * @param first is true for first index, false for last index.
-     * @return [left,right] with left * V * right = this.
+     * @return [left, right] with left * V * right = this.
      */
     public Word[] divideWord(Word V, boolean first) {
         int i;
@@ -344,6 +366,7 @@ public final class Word implements MonoidElem<Word> {
 
     /**
      * Word remainder.
+     *
      * @param V other word.
      * @return this (this/V). <b>Note:</b> not useful.
      */
@@ -358,16 +381,18 @@ public final class Word implements MonoidElem<Word> {
 
     /**
      * Quotient and remainder by division of this by S.
+     *
      * @param S a Word
      * @return [this/S, this - (this/S)*S]. <b>Note:</b> not useful.
      */
     public Word[] quotientRemainder(Word S) {
-        return new Word[] { divide(S), remainder(S) };
+        return new Word[]{divide(S), remainder(S)};
     }
 
 
     /**
      * Word inverse.
+     *
      * @return 1 / this.
      */
     public Word inverse() {
@@ -380,6 +405,7 @@ public final class Word implements MonoidElem<Word> {
 
     /**
      * Word signum.
+     *
      * @return 0 if this is one, 1 if it is non empty.
      */
     public int signum() {
@@ -394,6 +420,7 @@ public final class Word implements MonoidElem<Word> {
 
     /**
      * Word degree.
+     *
      * @return total degree of all letters.
      */
     public long degree() {
@@ -403,6 +430,7 @@ public final class Word implements MonoidElem<Word> {
 
     /**
      * Word dependency on letters.
+     *
      * @return sorted map of letters and the number of its occurences.
      */
     public SortedMap<String, Integer> dependencyOnVariables() {
@@ -422,6 +450,7 @@ public final class Word implements MonoidElem<Word> {
 
     /**
      * Word leading exponent vector.
+     *
      * @return an ExpVector for the first power of a letter.
      */
     public ExpVector leadingExpVector() {
@@ -439,16 +468,17 @@ public final class Word implements MonoidElem<Word> {
             }
         }
         int k = mono.length();
-        if (n == 0L){ // == isONE()
+        if (n == 0L) { // == isONE()
             return ExpVector.create(k);
         }
         int j = k - mono.indexOf(letter) - 1;
-        return ExpVector.create(k,j,n);
+        return ExpVector.create(k, j, n);
     }
 
 
     /**
      * Word without leading exponent vector.
+     *
      * @return an Word without the first power of a letter.
      */
     public Word reductum() {
@@ -476,6 +506,7 @@ public final class Word implements MonoidElem<Word> {
 
     /**
      * Word multiple test.
+     *
      * @param V other word.
      * @return true if this is a multiple of V, else false.
      */
@@ -486,6 +517,7 @@ public final class Word implements MonoidElem<Word> {
 
     /**
      * Word divides test.
+     *
      * @param V other word.
      * @return true if this divides V, else false.
      */
@@ -496,12 +528,13 @@ public final class Word implements MonoidElem<Word> {
 
     /**
      * Word compareTo. Uses
-     * 
+     * <p>
      * <pre>
      * String.compareTo
      * </pre>
-     * 
+     * <p>
      * .
+     *
      * @param V other word.
      * @return 0 if U == V, -1 if U &lt; V, 1 if U &gt; V.
      */
@@ -513,6 +546,7 @@ public final class Word implements MonoidElem<Word> {
 
     /**
      * Word graded comparison. Compares first be degree, then lexicographical.
+     *
      * @param V other word.
      * @return 0 if U == V, -1 if U &lt; V, 1 if U &gt; V.
      */
@@ -531,6 +565,7 @@ public final class Word implements MonoidElem<Word> {
     /**
      * Word graded comparison. Compares first be degree, then inverse
      * lexicographical.
+     *
      * @param V other word.
      * @return 0 if U == V, -1 if U &lt; V, 1 if U &gt; V.
      */
@@ -548,8 +583,9 @@ public final class Word implements MonoidElem<Word> {
 
     /**
      * Is word overlap.
+     *
      * @param ol = [l1,r1,l2,r2] an Overlap container of four words
-     * @param V word
+     * @param V  word
      * @return true if l1 * this * r1 = l2 * V * r2, else false.
      */
     public boolean isOverlap(Overlap ol, Word V) {
@@ -559,9 +595,10 @@ public final class Word implements MonoidElem<Word> {
 
     /**
      * Word overlap list.
+     *
      * @param V other word.
      * @return list of overlaps [l1,r1,l2,r2] with l1 * this * r1 = l2 * V * r2.
-     *         If no such overlaps exist the empty overlap list is returned.
+     * If no such overlaps exist the empty overlap list is returned.
      */
     public OverlapList overlap(Word V) {
         OverlapList ret = new OverlapList();
@@ -647,9 +684,10 @@ public final class Word implements MonoidElem<Word> {
 
     /**
      * Word pseudo least common multiple.
+     *
      * @param V other word.
      * @return w = l1*this*r1, with l1*this*r1 == l2*V*r2, if l1, r1, l2, r2
-     *         exist, else null is returned.
+     * exist, else null is returned.
      */
     public Word lcm(Word V) {
         OverlapList oll = overlap(V);

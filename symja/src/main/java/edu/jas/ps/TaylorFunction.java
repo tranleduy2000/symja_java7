@@ -13,6 +13,7 @@ import edu.jas.structure.RingElem;
 
 /**
  * Interface for functions capable for Taylor series expansion.
+ *
  * @param <C> ring element type
  * @author Heinz Kredel
  */
@@ -22,6 +23,7 @@ public interface TaylorFunction<C extends RingElem<C>> {
 
     /**
      * Get the factorial coefficient.
+     *
      * @return factorial coefficient.
      */
     public long getFacul();
@@ -29,6 +31,7 @@ public interface TaylorFunction<C extends RingElem<C>> {
 
     /**
      * Test if this is zero.
+     *
      * @return true if this is 0, else false.
      */
     public boolean isZERO();
@@ -36,6 +39,7 @@ public interface TaylorFunction<C extends RingElem<C>> {
 
     /**
      * Deriviative.
+     *
      * @return deriviative of this.
      */
     public TaylorFunction<C> deriviative();
@@ -43,6 +47,7 @@ public interface TaylorFunction<C extends RingElem<C>> {
 
     /**
      * Multi-partial deriviative.
+     *
      * @param i exponent vector.
      * @return partial deriviative of this with respect to all variables.
      */
@@ -51,6 +56,7 @@ public interface TaylorFunction<C extends RingElem<C>> {
 
     /**
      * Evaluate.
+     *
      * @param a element.
      * @return this(a).
      */
@@ -59,6 +65,7 @@ public interface TaylorFunction<C extends RingElem<C>> {
 
     /**
      * Evaluate at a tuple of elements.
+     *
      * @param a tuple of elements.
      * @return this(a).
      */

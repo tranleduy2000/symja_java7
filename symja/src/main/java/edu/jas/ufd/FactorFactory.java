@@ -25,31 +25,31 @@ import edu.jas.structure.RingFactory;
 /**
  * Factorization algorithms factory. Select appropriate factorization engine
  * based on the coefficient types.
+ *
  * @author Heinz Kredel
  * @usage To create objects that implement the <code>Factorization</code>
- *        interface use the <code>FactorFactory</code>. It will select an
- *        appropriate implementation based on the types of polynomial
- *        coefficients C. To obtain an implementation use
- *        <code>getImplementation()</code>, it returns an object of a class
- *        which extends the <code>FactorAbstract</code> class which implements
- *        the <code>Factorization</code> interface.
- * 
- *        <pre>
+ * interface use the <code>FactorFactory</code>. It will select an
+ * appropriate implementation based on the types of polynomial
+ * coefficients C. To obtain an implementation use
+ * <code>getImplementation()</code>, it returns an object of a class
+ * which extends the <code>FactorAbstract</code> class which implements
+ * the <code>Factorization</code> interface.
+ * <p>
+ * <pre>
  *        Factorization&lt;CT&gt; engine;
  *        engine = FactorFactory.&lt;CT&gt; getImplementation(cofac);
  *        c = engine.factors(a);
  *        </pre>
- * 
- *        For example, if the coefficient type is BigInteger, the usage looks
- *        like
- * 
- *        <pre>
+ * <p>
+ * For example, if the coefficient type is BigInteger, the usage looks
+ * like
+ * <p>
+ * <pre>
  *        BigInteger cofac = new BigInteger();
  *        Factorization&lt;BigInteger&gt; engine;
  *        engine = FactorFactory.getImplementation(cofac);
  *        Sm = engine.factors(poly);
  *        </pre>
- * 
  * @see edu.jas.ufd.Factorization#factors(edu.jas.poly.GenPolynomial P)
  */
 
@@ -69,6 +69,7 @@ public class FactorFactory {
     /**
      * Determine suitable implementation of factorization algorithm, case
      * ModInteger.
+     *
      * @param fac ModIntegerRing.
      * @return factorization algorithm implementation.
      */
@@ -80,6 +81,7 @@ public class FactorFactory {
     /**
      * Determine suitable implementation of factorization algorithm, case
      * ModInteger.
+     *
      * @param fac ModIntegerRing.
      * @return factorization algorithm implementation.
      */
@@ -91,6 +93,7 @@ public class FactorFactory {
     /**
      * Determine suitable implementation of factorization algorithm, case
      * BigInteger.
+     *
      * @param fac BigInteger.
      * @return factorization algorithm implementation.
      */
@@ -105,6 +108,7 @@ public class FactorFactory {
     /**
      * Determine suitable implementation of factorization algorithms, case
      * BigRational.
+     *
      * @param fac BigRational.
      * @return factorization algorithm implementation.
      */
@@ -119,12 +123,13 @@ public class FactorFactory {
     /**
      * Determine suitable implementation of factorization algorithms, case
      * AlgebraicNumber&lt;C&gt;.
+     *
      * @param fac AlgebraicNumberRing&lt;C&gt;.
      * @param <C> coefficient type, e.g. BigRational, ModInteger.
      * @return factorization algorithm implementation.
      */
     public static <C extends GcdRingElem<C>> FactorAbstract<AlgebraicNumber<C>> getImplementation(
-                    AlgebraicNumberRing<C> fac) {
+            AlgebraicNumberRing<C> fac) {
         return new FactorAlgebraic<C>(fac);
     }
 
@@ -132,12 +137,13 @@ public class FactorFactory {
     /**
      * Determine suitable implementation of factorization algorithms, case
      * Complex&lt;C&gt;.
+     *
      * @param fac ComplexRing&lt;C&gt;.
      * @param <C> coefficient type, e.g. BigRational, ModInteger.
      * @return factorization algorithm implementation.
      */
     public static <C extends GcdRingElem<C>> FactorAbstract<Complex<C>> getImplementation(
-                    ComplexRing<C> fac) {
+            ComplexRing<C> fac) {
         return new FactorComplex<C>(fac);
     }
 
@@ -145,12 +151,13 @@ public class FactorFactory {
     /**
      * Determine suitable implementation of factorization algorithms, case
      * Quotient&lt;C&gt;.
+     *
      * @param fac QuotientRing&lt;C&gt;.
      * @param <C> coefficient type, e.g. BigRational, ModInteger.
      * @return factorization algorithm implementation.
      */
     public static <C extends GcdRingElem<C>> FactorAbstract<Quotient<C>> getImplementation(
-                    QuotientRing<C> fac) {
+            QuotientRing<C> fac) {
         return new FactorQuotient<C>(fac);
     }
 
@@ -158,6 +165,7 @@ public class FactorFactory {
     /**
      * Determine suitable implementation of factorization algorithms, case
      * recursive GenPolynomial&lt;C&gt;. Use <code>recursiveFactors()</code>.
+     *
      * @param fac GenPolynomialRing&lt;C&gt;.
      * @param <C> coefficient type, e.g. BigRational, ModInteger.
      * @return factorization algorithm implementation.
@@ -170,11 +178,12 @@ public class FactorFactory {
     /**
      * Determine suitable implementation of factorization algorithms, other
      * cases.
+     *
      * @param <C> coefficient type
      * @param fac RingFactory&lt;C&gt;.
      * @return factorization algorithm implementation.
      */
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings({"unchecked", "cast"})
     public static <C extends GcdRingElem<C>> FactorAbstract<C> getImplementation(RingFactory<C> fac) {
         logger.info("factor factory = " + fac.getClass().getName());
         //System.out.println("fac_o_ufd = " + fac.getClass().getName());
@@ -210,7 +219,7 @@ public class FactorFactory {
             ufd = getImplementation(pfac.coFac);
         } else {
             throw new IllegalArgumentException(
-                            "no factorization implementation for " + fac.getClass().getName());
+                    "no factorization implementation for " + fac.getClass().getName());
         }
         //logger.info("implementation = " + ufd);
         return (FactorAbstract<C>) ufd;

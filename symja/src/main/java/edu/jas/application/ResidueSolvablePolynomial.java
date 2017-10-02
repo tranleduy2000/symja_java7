@@ -5,11 +5,11 @@
 package edu.jas.application;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.poly.ExpVector;
 import edu.jas.poly.GenSolvablePolynomial;
@@ -24,28 +24,26 @@ import edu.jas.structure.GcdRingElem;
  * over solvable residue coefficients. Objects of this class are intended to be
  * immutable. The implementation is based on TreeMap respectively SortedMap from
  * exponents to coefficients by extension of GenPolynomial.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
 
 public class ResidueSolvablePolynomial<C extends GcdRingElem<C>> extends
-                GenSolvablePolynomial<SolvableResidue<C>> {
+        GenSolvablePolynomial<SolvableResidue<C>> {
 
 
+    private static final Logger logger = Logger.getLogger(ResidueSolvablePolynomial.class);
+    private static final boolean debug = logger.isDebugEnabled();
     /**
      * The factory for the recursive solvable polynomial ring. Hides super.ring.
      */
     public final ResidueSolvablePolynomialRing<C> ring;
 
 
-    private static final Logger logger = Logger.getLogger(ResidueSolvablePolynomial.class);
-
-
-    private static final boolean debug = logger.isDebugEnabled();
-
-
     /**
      * Constructor for zero ResidueSolvablePolynomial.
+     *
      * @param r solvable polynomial ring factory.
      */
     public ResidueSolvablePolynomial(ResidueSolvablePolynomialRing<C> r) {
@@ -56,6 +54,7 @@ public class ResidueSolvablePolynomial<C extends GcdRingElem<C>> extends
 
     /**
      * Constructor for ResidueSolvablePolynomial.
+     *
      * @param r solvable polynomial ring factory.
      * @param e exponent.
      */
@@ -67,6 +66,7 @@ public class ResidueSolvablePolynomial<C extends GcdRingElem<C>> extends
 
     /**
      * Constructor for ResidueSolvablePolynomial.
+     *
      * @param r solvable polynomial ring factory.
      * @param c coefficient polynomial.
      * @param e exponent.
@@ -81,6 +81,7 @@ public class ResidueSolvablePolynomial<C extends GcdRingElem<C>> extends
 
     /**
      * Constructor for ResidueSolvablePolynomial.
+     *
      * @param r solvable polynomial ring factory.
      * @param c coefficient polynomial.
      */
@@ -91,22 +92,24 @@ public class ResidueSolvablePolynomial<C extends GcdRingElem<C>> extends
 
     /**
      * Constructor for ResidueSolvablePolynomial.
+     *
      * @param r solvable polynomial ring factory.
      * @param S solvable polynomial.
      */
     public ResidueSolvablePolynomial(ResidueSolvablePolynomialRing<C> r,
-                    GenSolvablePolynomial<SolvableResidue<C>> S) {
+                                     GenSolvablePolynomial<SolvableResidue<C>> S) {
         this(r, S.getMap());
     }
 
 
     /**
      * Constructor for ResidueSolvablePolynomial.
+     *
      * @param r solvable polynomial ring factory.
      * @param v the SortedMap of some other (solvable) polynomial.
      */
     protected ResidueSolvablePolynomial(ResidueSolvablePolynomialRing<C> r,
-                    SortedMap<ExpVector, SolvableResidue<C>> v) {
+                                        SortedMap<ExpVector, SolvableResidue<C>> v) {
         this(r);
         val.putAll(v); // assume no zero coefficients
     }
@@ -114,6 +117,7 @@ public class ResidueSolvablePolynomial<C extends GcdRingElem<C>> extends
 
     /**
      * Get the corresponding element factory.
+     *
      * @return factory for this Element.
      * @see edu.jas.structure.Element#factory()
      */
@@ -125,6 +129,7 @@ public class ResidueSolvablePolynomial<C extends GcdRingElem<C>> extends
 
     /**
      * Clone this ResidueSolvablePolynomial.
+     *
      * @see java.lang.Object#clone()
      */
     @Override
@@ -135,6 +140,7 @@ public class ResidueSolvablePolynomial<C extends GcdRingElem<C>> extends
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -148,6 +154,7 @@ public class ResidueSolvablePolynomial<C extends GcdRingElem<C>> extends
 
     /**
      * ResidueSolvablePolynomial multiplication.
+     *
      * @param Bp ResidueSolvablePolynomial.
      * @return this*Bp, where * denotes solvable multiplication.
      */
@@ -304,12 +311,13 @@ public class ResidueSolvablePolynomial<C extends GcdRingElem<C>> extends
     /**
      * ResidueSolvablePolynomial left and right multiplication. Product with two
      * polynomials.
+     *
      * @param S ResidueSolvablePolynomial.
      * @param T ResidueSolvablePolynomial.
      * @return S*this*T.
      */
     public ResidueSolvablePolynomial<C> multiply(ResidueSolvablePolynomial<C> S,
-                    ResidueSolvablePolynomial<C> T) {
+                                                 ResidueSolvablePolynomial<C> T) {
         if (S.isZERO() || T.isZERO() || this.isZERO()) {
             return ring.getZERO();
         }
@@ -326,6 +334,7 @@ public class ResidueSolvablePolynomial<C extends GcdRingElem<C>> extends
     /**
      * ResidueSolvablePolynomial multiplication. Product with coefficient ring
      * element.
+     *
      * @param b coefficient polynomial.
      * @return this*b, where * is coefficient multiplication.
      */
@@ -343,6 +352,7 @@ public class ResidueSolvablePolynomial<C extends GcdRingElem<C>> extends
     /**
      * ResidueSolvablePolynomial left and right multiplication. Product with
      * coefficient ring element.
+     *
      * @param b coefficient polynomial.
      * @param c coefficient polynomial.
      * @return b*this*c, where * is coefficient multiplication.
@@ -364,6 +374,7 @@ public class ResidueSolvablePolynomial<C extends GcdRingElem<C>> extends
 
     /**
      * ResidueSolvablePolynomial multiplication. Product with exponent vector.
+     *
      * @param e exponent.
      * @return this * x<sup>e</sup>, where * denotes solvable multiplication.
      */
@@ -380,10 +391,11 @@ public class ResidueSolvablePolynomial<C extends GcdRingElem<C>> extends
     /**
      * ResidueSolvablePolynomial left and right multiplication. Product with
      * exponent vector.
+     *
      * @param e exponent.
      * @param f exponent.
      * @return x<sup>e</sup> * this * x<sup>f</sup>, where * denotes solvable
-     *         multiplication.
+     * multiplication.
      */
     @Override
     public ResidueSolvablePolynomial<C> multiply(ExpVector e, ExpVector f) {
@@ -401,6 +413,7 @@ public class ResidueSolvablePolynomial<C extends GcdRingElem<C>> extends
     /**
      * ResidueSolvablePolynomial multiplication. Product with ring element and
      * exponent vector.
+     *
      * @param b coefficient polynomial.
      * @param e exponent.
      * @return this * b x<sup>e</sup>, where * denotes solvable multiplication.
@@ -418,16 +431,17 @@ public class ResidueSolvablePolynomial<C extends GcdRingElem<C>> extends
     /**
      * ResidueSolvablePolynomial left and right multiplication. Product with
      * ring element and exponent vector.
+     *
      * @param b coefficient polynomial.
      * @param e exponent.
      * @param c coefficient polynomial.
      * @param f exponent.
      * @return b x<sup>e</sup> * this * c x<sup>f</sup>, where * denotes
-     *         solvable multiplication.
+     * solvable multiplication.
      */
     @Override
     public ResidueSolvablePolynomial<C> multiply(SolvableResidue<C> b, ExpVector e, SolvableResidue<C> c,
-                    ExpVector f) {
+                                                 ExpVector f) {
         if (b == null || b.isZERO()) {
             return ring.getZERO();
         }
@@ -443,6 +457,7 @@ public class ResidueSolvablePolynomial<C extends GcdRingElem<C>> extends
     /**
      * ResidueSolvablePolynomial multiplication. Left product with ring element
      * and exponent vector.
+     *
      * @param b coefficient polynomial.
      * @param e exponent.
      * @return b x<sup>e</sup> * this, where * denotes solvable multiplication.
@@ -460,6 +475,7 @@ public class ResidueSolvablePolynomial<C extends GcdRingElem<C>> extends
     /**
      * ResidueSolvablePolynomial multiplication. Left product with exponent
      * vector.
+     *
      * @param e exponent.
      * @return x<sup>e</sup> * this, where * denotes solvable multiplication.
      */
@@ -477,6 +493,7 @@ public class ResidueSolvablePolynomial<C extends GcdRingElem<C>> extends
     /**
      * ResidueSolvablePolynomial multiplication. Left product with coefficient
      * ring element.
+     *
      * @param b coefficient polynomial.
      * @return b*this, where * is coefficient multiplication.
      */
@@ -503,6 +520,7 @@ public class ResidueSolvablePolynomial<C extends GcdRingElem<C>> extends
 
     /**
      * ResidueSolvablePolynomial multiplication. Left product with 'monomial'.
+     *
      * @param m 'monomial'.
      * @return m * this, where * denotes solvable multiplication.
      */
@@ -517,6 +535,7 @@ public class ResidueSolvablePolynomial<C extends GcdRingElem<C>> extends
 
     /**
      * ResidueSolvablePolynomial multiplication. Product with 'monomial'.
+     *
      * @param m 'monomial'.
      * @return this * m, where * denotes solvable multiplication.
      */
@@ -531,6 +550,7 @@ public class ResidueSolvablePolynomial<C extends GcdRingElem<C>> extends
 
     /**
      * ResidueSolvablePolynomial multiplication with exponent vector.
+     *
      * @param f exponent vector.
      * @return B*f, where * is commutative multiplication.
      */

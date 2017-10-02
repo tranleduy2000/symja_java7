@@ -6,13 +6,14 @@ package edu.jas.poly;
 
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
  * Container for lists of overlap words.
  * List of Overlaps.
+ *
  * @author Heinz Kredel
  */
 
@@ -39,6 +40,7 @@ public class OverlapList implements Serializable {
 
     /**
      * Get the string representation.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -49,13 +51,14 @@ public class OverlapList implements Serializable {
 
     /**
      * Is word overlap list.
+     *
      * @param u word
      * @param v word
      * @return true if l1 * u * r1 = l2 * v * r2 for all overlaps, else false.
      */
     public boolean isOverlap(Word u, Word v) {
-        for (Overlap ol : ols ) {
-            if ( !ol.isOverlap(u,v) ) {
+        for (Overlap ol : ols) {
+            if (!ol.isOverlap(u, v)) {
                 return false;
             }
         }

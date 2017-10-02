@@ -15,12 +15,11 @@
  * limitations under the License.
  */
 /**
- *
  * <p>
  * This package provides classes to handle sampling steps during
  * Ordinary Differential Equations integration.
  * </p>
- *
+ * <p>
  * <p>
  * In addition to computing the evolution of the state vector at some grid points, all
  * ODE integrators also build up interpolation models of this evolution <em>inside</em> the
@@ -33,7 +32,7 @@
  * time-derivative. A typical use of step handler is to provide some output to monitor
  * the integration process.
  * </p>
- *
+ * <p>
  * <p>
  * In a sense, this is a kind of Inversion Of Control: rather than having the master
  * application driving the slave integrator by providing the target end value for
@@ -41,7 +40,7 @@
  * evolution and calling the slave application callbacks that were registered at
  * configuration time.
  * </p>
- *
+ * <p>
  * <p>
  * Since some integrators may use variable step size, the generic {@link
  * org.hipparchus.ode.sampling.ODEStepHandler ODEStepHandler} interface can be called
@@ -54,7 +53,5 @@
  * {@link org.hipparchus.ode.sampling.StepNormalizer StepNormalizer} instance
  * in order to be registered to the integrator.
  * </p>
- *
- *
  */
 package org.hipparchus.ode.sampling;

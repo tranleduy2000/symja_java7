@@ -5,10 +5,10 @@
 package edu.jas.ufd;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.arith.BigInteger;
 import edu.jas.arith.ModInteger;
@@ -22,12 +22,12 @@ import edu.jas.poly.GenPolynomialRing;
 import edu.jas.poly.Monomial;
 import edu.jas.poly.PolyUtil;
 import edu.jas.structure.GcdRingElem;
-import edu.jas.structure.Power;
 import edu.jas.structure.RingFactory;
 
 
 /**
  * Hensel utilities for ufd.
+ *
  * @author Heinz Kredel
  */
 
@@ -46,19 +46,20 @@ public class HenselUtil {
      * with gcd(A,B) == 1 mod p and S A + T B == 1 mod p. See Algorithm 6.1. in
      * Geddes et.al.. Linear version, as it does not lift S A + T B == 1 mod
      * p^{e+1}.
+     *
      * @param C GenPolynomial
      * @param A GenPolynomial
      * @param B other GenPolynomial
      * @param S GenPolynomial
      * @param T GenPolynomial
      * @param M bound on the coefficients of A1 and B1 as factors of C.
-     * @return [A1,B1,Am,Bm] = lift(C,A,B), with C = A1 * B1 mod p^e, Am = A1
-     *         mod p^e, Bm = B1 mod p^e .
+     * @return [A1, B1, Am, Bm] = lift(C,A,B), with C = A1 * B1 mod p^e, Am = A1
+     * mod p^e, Bm = B1 mod p^e .
      */
     @SuppressWarnings("unchecked")
     public static <MOD extends GcdRingElem<MOD> & Modular> HenselApprox<MOD> liftHensel(
-                    GenPolynomial<BigInteger> C, BigInteger M, GenPolynomial<MOD> A, GenPolynomial<MOD> B,
-                    GenPolynomial<MOD> S, GenPolynomial<MOD> T) throws NoLiftingException {
+            GenPolynomial<BigInteger> C, BigInteger M, GenPolynomial<MOD> A, GenPolynomial<MOD> B,
+            GenPolynomial<MOD> S, GenPolynomial<MOD> T) throws NoLiftingException {
         if (C == null || C.isZERO()) {
             return new HenselApprox<MOD>(C, C, A, B);
         }
@@ -140,7 +141,7 @@ public class HenselUtil {
                 throw e;
             }
             // E mod p
-            Ep = PolyUtil.<MOD> fromIntegerCoefficients(pfac, E);
+            Ep = PolyUtil.<MOD>fromIntegerCoefficients(pfac, E);
             //logger.info("Ep = " + Ep);
 
             // construct approximation mod p
@@ -208,16 +209,17 @@ public class HenselUtil {
      * A.ring.coFac.modul() = B.ring.coFac.modul() and assume C == A*B mod p
      * with gcd(A,B) == 1 mod p. See algorithm 6.1. in Geddes et.al. and
      * algorithms 3.5.{5,6} in Cohen.
+     *
      * @param C GenPolynomial
      * @param A GenPolynomial
      * @param B other GenPolynomial
      * @param M bound on the coefficients of A1 and B1 as factors of C.
-     * @return [A1,B1] = lift(C,A,B), with C = A1 * B1.
+     * @return [A1, B1] = lift(C,A,B), with C = A1 * B1.
      */
     @SuppressWarnings("unchecked")
     public static <MOD extends GcdRingElem<MOD> & Modular> HenselApprox<MOD> liftHensel(
-                    GenPolynomial<BigInteger> C, BigInteger M, GenPolynomial<MOD> A, GenPolynomial<MOD> B)
-                    throws NoLiftingException {
+            GenPolynomial<BigInteger> C, BigInteger M, GenPolynomial<MOD> A, GenPolynomial<MOD> B)
+            throws NoLiftingException {
         if (C == null || C.isZERO()) {
             return new HenselApprox<MOD>(C, C, A, B);
         }
@@ -233,11 +235,11 @@ public class HenselUtil {
             GenPolynomial<MOD>[] gst = A.egcd(B);
             if (!gst[0].isONE()) {
                 throw new NoLiftingException("A and B not coprime, gcd = " + gst[0] + ", A = " + A + ", B = "
-                                + B);
+                        + B);
             }
             GenPolynomial<MOD> s = gst[1];
             GenPolynomial<MOD> t = gst[2];
-            HenselApprox<MOD> ab = HenselUtil.<MOD> liftHensel(C, M, A, B, s, t);
+            HenselApprox<MOD> ab = HenselUtil.<MOD>liftHensel(C, M, A, B, s, t);
             return ab;
         } catch (ArithmeticException e) {
             throw new NoLiftingException("coefficient error " + e);
@@ -251,18 +253,19 @@ public class HenselUtil {
      * with gcd(A,B) == 1 mod p and S A + T B == 1 mod p. See algorithm 6.1. in
      * Geddes et.al. and algorithms 3.5.{5,6} in Cohen. Quadratic version, as it
      * also lifts S A + T B == 1 mod p^{e+1}.
+     *
      * @param C GenPolynomial
      * @param A GenPolynomial
      * @param B other GenPolynomial
      * @param S GenPolynomial
      * @param T GenPolynomial
      * @param M bound on the coefficients of A1 and B1 as factors of C.
-     * @return [A1,B1] = lift(C,A,B), with C = A1 * B1.
+     * @return [A1, B1] = lift(C,A,B), with C = A1 * B1.
      */
     @SuppressWarnings("unchecked")
     public static <MOD extends GcdRingElem<MOD> & Modular> HenselApprox<MOD> liftHenselQuadratic(
-                    GenPolynomial<BigInteger> C, BigInteger M, GenPolynomial<MOD> A, GenPolynomial<MOD> B,
-                    GenPolynomial<MOD> S, GenPolynomial<MOD> T) throws NoLiftingException {
+            GenPolynomial<BigInteger> C, BigInteger M, GenPolynomial<MOD> A, GenPolynomial<MOD> B,
+            GenPolynomial<MOD> S, GenPolynomial<MOD> T) throws NoLiftingException {
         if (C == null || C.isZERO()) {
             return new HenselApprox<MOD>(C, C, A, B);
         }
@@ -339,8 +342,8 @@ public class HenselUtil {
         Si = PolyUtil.integerFromModularCoefficients(fac, S);
         Ti = PolyUtil.integerFromModularCoefficients(fac, T);
 
-        Aq = PolyUtil.<MOD> fromIntegerCoefficients(qfac, Ai);
-        Bq = PolyUtil.<MOD> fromIntegerCoefficients(qfac, Bi);
+        Aq = PolyUtil.<MOD>fromIntegerCoefficients(qfac, Ai);
+        Bq = PolyUtil.<MOD>fromIntegerCoefficients(qfac, Bi);
 
         while (Mq.compareTo(M2) < 0) {
             // compute E=(C-AB)/q over the integers
@@ -351,7 +354,7 @@ public class HenselUtil {
             }
             E = E.divide(Qi);
             // E mod p
-            Ep = PolyUtil.<MOD> fromIntegerCoefficients(qfac, E);
+            Ep = PolyUtil.<MOD>fromIntegerCoefficients(qfac, E);
             //logger.info("Ep = " + Ep + ", qfac = " + qfac);
             //if (Ep.isZERO()) {
             //System.out.println("leaving on zero error");
@@ -393,7 +396,7 @@ public class HenselUtil {
             E = E.subtract(Si.multiply(Ai)).subtract(Ti.multiply(Bi));
             E = E.divide(Qi);
             // E mod q
-            Ep = PolyUtil.<MOD> fromIntegerCoefficients(qfac, E);
+            Ep = PolyUtil.<MOD>fromIntegerCoefficients(qfac, E);
             //logger.info("Ep2 = " + Ep);
 
             // construct approximation mod q
@@ -436,10 +439,10 @@ public class HenselUtil {
 
             qfac = new GenPolynomialRing<MOD>(Q, pfac);
 
-            Aq = PolyUtil.<MOD> fromIntegerCoefficients(qfac, Ai);
-            Bq = PolyUtil.<MOD> fromIntegerCoefficients(qfac, Bi);
-            Sp = PolyUtil.<MOD> fromIntegerCoefficients(qfac, Si);
-            Tp = PolyUtil.<MOD> fromIntegerCoefficients(qfac, Ti);
+            Aq = PolyUtil.<MOD>fromIntegerCoefficients(qfac, Ai);
+            Bq = PolyUtil.<MOD>fromIntegerCoefficients(qfac, Bi);
+            Sp = PolyUtil.<MOD>fromIntegerCoefficients(qfac, Si);
+            Tp = PolyUtil.<MOD>fromIntegerCoefficients(qfac, Ti);
             //if (debug) {
             //    E = Ai.multiply(Si).sum(Bi.multiply(Ti));
             //    Eq = PolyUtil.<MOD> fromIntegerCoefficients(qfac, E);
@@ -477,16 +480,17 @@ public class HenselUtil {
      * A.ring.coFac.modul() = B.ring.coFac.modul() and assume C == A*B mod p
      * with gcd(A,B) == 1 mod p. See algorithm 6.1. in Geddes et.al. and
      * algorithms 3.5.{5,6} in Cohen. Quadratic version.
+     *
      * @param C GenPolynomial
      * @param A GenPolynomial
      * @param B other GenPolynomial
      * @param M bound on the coefficients of A1 and B1 as factors of C.
-     * @return [A1,B1] = lift(C,A,B), with C = A1 * B1.
+     * @return [A1, B1] = lift(C,A,B), with C = A1 * B1.
      */
     @SuppressWarnings("unchecked")
     public static <MOD extends GcdRingElem<MOD> & Modular> HenselApprox<MOD> liftHenselQuadratic(
-                    GenPolynomial<BigInteger> C, BigInteger M, GenPolynomial<MOD> A, GenPolynomial<MOD> B)
-                    throws NoLiftingException {
+            GenPolynomial<BigInteger> C, BigInteger M, GenPolynomial<MOD> A, GenPolynomial<MOD> B)
+            throws NoLiftingException {
         if (C == null || C.isZERO()) {
             return new HenselApprox<MOD>(C, C, A, B);
         }
@@ -502,11 +506,11 @@ public class HenselUtil {
             GenPolynomial<MOD>[] gst = A.egcd(B);
             if (!gst[0].isONE()) {
                 throw new NoLiftingException("A and B not coprime, gcd = " + gst[0] + ", A = " + A + ", B = "
-                                + B);
+                        + B);
             }
             GenPolynomial<MOD> s = gst[1];
             GenPolynomial<MOD> t = gst[2];
-            HenselApprox<MOD> ab = HenselUtil.<MOD> liftHenselQuadratic(C, M, A, B, s, t);
+            HenselApprox<MOD> ab = HenselUtil.<MOD>liftHenselQuadratic(C, M, A, B, s, t);
             return ab;
         } catch (ArithmeticException e) {
             throw new NoLiftingException("coefficient error " + e);
@@ -519,16 +523,17 @@ public class HenselUtil {
      * A.ring.coFac.modul() = B.ring.coFac.modul() and assume C == A*B mod p
      * with gcd(A,B) == 1 mod p. See algorithm 6.1. in Geddes et.al. and
      * algorithms 3.5.{5,6} in Cohen. Quadratic version.
+     *
      * @param C GenPolynomial
      * @param A GenPolynomial
      * @param B other GenPolynomial
      * @param M bound on the coefficients of A1 and B1 as factors of C.
-     * @return [A1,B1] = lift(C,A,B), with C = A1 * B1.
+     * @return [A1, B1] = lift(C,A,B), with C = A1 * B1.
      */
     @SuppressWarnings("unchecked")
     public static <MOD extends GcdRingElem<MOD> & Modular> HenselApprox<MOD> liftHenselQuadraticFac(
-                    GenPolynomial<BigInteger> C, BigInteger M, GenPolynomial<MOD> A, GenPolynomial<MOD> B)
-                    throws NoLiftingException {
+            GenPolynomial<BigInteger> C, BigInteger M, GenPolynomial<MOD> A, GenPolynomial<MOD> B)
+            throws NoLiftingException {
         if (C == null || C.isZERO()) {
             throw new IllegalArgumentException("C must be nonzero");
         }
@@ -544,11 +549,11 @@ public class HenselUtil {
             GenPolynomial<MOD>[] gst = A.egcd(B);
             if (!gst[0].isONE()) {
                 throw new NoLiftingException("A and B not coprime, gcd = " + gst[0] + ", A = " + A + ", B = "
-                                + B);
+                        + B);
             }
             GenPolynomial<MOD> s = gst[1];
             GenPolynomial<MOD> t = gst[2];
-            HenselApprox<MOD> ab = HenselUtil.<MOD> liftHenselQuadraticFac(C, M, A, B, s, t);
+            HenselApprox<MOD> ab = HenselUtil.<MOD>liftHenselQuadraticFac(C, M, A, B, s, t);
             return ab;
         } catch (ArithmeticException e) {
             throw new NoLiftingException("coefficient error " + e);
@@ -562,18 +567,19 @@ public class HenselUtil {
      * with gcd(A,B) == 1 mod p and S A + T B == 1 mod p. See algorithm 6.1. in
      * Geddes et.al. and algorithms 3.5.{5,6} in Cohen. Quadratic version, as it
      * also lifts S A + T B == 1 mod p^{e+1}.
+     *
      * @param C primitive GenPolynomial
      * @param A GenPolynomial
      * @param B other GenPolynomial
      * @param S GenPolynomial
      * @param T GenPolynomial
      * @param M bound on the coefficients of A1 and B1 as factors of C.
-     * @return [A1,B1] = lift(C,A,B), with C = A1 * B1.
+     * @return [A1, B1] = lift(C,A,B), with C = A1 * B1.
      */
     @SuppressWarnings("unchecked")
     public static <MOD extends GcdRingElem<MOD> & Modular> HenselApprox<MOD> liftHenselQuadraticFac(
-                    GenPolynomial<BigInteger> C, BigInteger M, GenPolynomial<MOD> A, GenPolynomial<MOD> B,
-                    GenPolynomial<MOD> S, GenPolynomial<MOD> T) throws NoLiftingException {
+            GenPolynomial<BigInteger> C, BigInteger M, GenPolynomial<MOD> A, GenPolynomial<MOD> B,
+            GenPolynomial<MOD> S, GenPolynomial<MOD> T) throws NoLiftingException {
         //System.out.println("*** version for factorization *** ");
         //GenPolynomial<BigInteger>[] AB = new GenPolynomial[2];
         if (C == null || C.isZERO()) {
@@ -681,15 +687,15 @@ public class HenselUtil {
         Si = PolyUtil.integerFromModularCoefficients(fac, S);
         Ti = PolyUtil.integerFromModularCoefficients(fac, T);
 
-        Aq = PolyUtil.<MOD> fromIntegerCoefficients(qfac, Ai);
-        Bq = PolyUtil.<MOD> fromIntegerCoefficients(qfac, Bi);
+        Aq = PolyUtil.<MOD>fromIntegerCoefficients(qfac, Ai);
+        Bq = PolyUtil.<MOD>fromIntegerCoefficients(qfac, Bi);
 
         // polynomials mod p^e
-        Cm = PolyUtil.<MOD> fromIntegerCoefficients(mfac, C);
-        Am = PolyUtil.<MOD> fromIntegerCoefficients(mfac, Ai);
-        Bm = PolyUtil.<MOD> fromIntegerCoefficients(mfac, Bi);
-        Sm = PolyUtil.<MOD> fromIntegerCoefficients(mfac, Si);
-        Tm = PolyUtil.<MOD> fromIntegerCoefficients(mfac, Ti);
+        Cm = PolyUtil.<MOD>fromIntegerCoefficients(mfac, C);
+        Am = PolyUtil.<MOD>fromIntegerCoefficients(mfac, Ai);
+        Bm = PolyUtil.<MOD>fromIntegerCoefficients(mfac, Bi);
+        Sm = PolyUtil.<MOD>fromIntegerCoefficients(mfac, Si);
+        Tm = PolyUtil.<MOD>fromIntegerCoefficients(mfac, Ti);
         //System.out.println("Cm =  " + Cm);
         //System.out.println("Am =  " + Am);
         //System.out.println("Bm =  " + Bm);
@@ -717,7 +723,7 @@ public class HenselUtil {
             //System.out.println("Ei =  " + Ei);
 
             // Ei mod p
-            Emp = PolyUtil.<MOD> fromIntegerCoefficients(qfac, Ei);
+            Emp = PolyUtil.<MOD>fromIntegerCoefficients(qfac, Ei);
             //            Emp = PolyUtil.<MOD>fromIntegerCoefficients(qfac,
             //               PolyUtil.integerFromModularCoefficients(fac,Em) ); 
             //System.out.println("Emp =  " + Emp);
@@ -742,10 +748,10 @@ public class HenselUtil {
             //System.out.println("B1p =  " + B1p);
 
             // construct q-adic approximation
-            Ema = PolyUtil.<MOD> fromIntegerCoefficients(mfac,
-                            PolyUtil.integerFromModularCoefficients(fac, A1p));
-            Emb = PolyUtil.<MOD> fromIntegerCoefficients(mfac,
-                            PolyUtil.integerFromModularCoefficients(fac, B1p));
+            Ema = PolyUtil.<MOD>fromIntegerCoefficients(mfac,
+                    PolyUtil.integerFromModularCoefficients(fac, A1p));
+            Emb = PolyUtil.<MOD>fromIntegerCoefficients(mfac,
+                    PolyUtil.integerFromModularCoefficients(fac, B1p));
             //System.out.println("Ema =  " + Ema);
             //System.out.println("Emb =  " + Emb);
             Ema1 = Ema.multiply(Qm);
@@ -776,7 +782,7 @@ public class HenselUtil {
             Ei = Ei.divide(Qi);
             //System.out.println("Ei =  " + Ei);
             // Ei mod p
-            Emp = PolyUtil.<MOD> fromIntegerCoefficients(qfac, Ei);
+            Emp = PolyUtil.<MOD>fromIntegerCoefficients(qfac, Ei);
             //Emp = PolyUtil.<MOD>fromIntegerCoefficients(qfac,
             //               PolyUtil.integerFromModularCoefficients(fac,Em) );
             //System.out.println("Emp =  " + Emp);
@@ -793,10 +799,10 @@ public class HenselUtil {
             //System.out.println("B1p =  " + B1p);
 
             // construct p^e-adic approximation
-            Ema = PolyUtil.<MOD> fromIntegerCoefficients(mfac,
-                            PolyUtil.integerFromModularCoefficients(fac, A1p));
-            Emb = PolyUtil.<MOD> fromIntegerCoefficients(mfac,
-                            PolyUtil.integerFromModularCoefficients(fac, B1p));
+            Ema = PolyUtil.<MOD>fromIntegerCoefficients(mfac,
+                    PolyUtil.integerFromModularCoefficients(fac, A1p));
+            Emb = PolyUtil.<MOD>fromIntegerCoefficients(mfac,
+                    PolyUtil.integerFromModularCoefficients(fac, B1p));
             Ema1 = Ema.multiply(Qm);
             Emb1 = Emb.multiply(Qm);
             Ema = Sm.sum(Ema1); // Emb1 and Ema1 are required
@@ -831,19 +837,19 @@ public class HenselUtil {
             mfac = new GenPolynomialRing<MOD>(Qmm, qfac);
             Qm = Qmm.fromInteger(Qi.getVal());
 
-            Cm = PolyUtil.<MOD> fromIntegerCoefficients(mfac, C);
-            Am = PolyUtil.<MOD> fromIntegerCoefficients(mfac, Ai);
-            Bm = PolyUtil.<MOD> fromIntegerCoefficients(mfac, Bi);
-            Sm = PolyUtil.<MOD> fromIntegerCoefficients(mfac, Si);
-            Tm = PolyUtil.<MOD> fromIntegerCoefficients(mfac, Ti);
+            Cm = PolyUtil.<MOD>fromIntegerCoefficients(mfac, C);
+            Am = PolyUtil.<MOD>fromIntegerCoefficients(mfac, Ai);
+            Bm = PolyUtil.<MOD>fromIntegerCoefficients(mfac, Bi);
+            Sm = PolyUtil.<MOD>fromIntegerCoefficients(mfac, Si);
+            Tm = PolyUtil.<MOD>fromIntegerCoefficients(mfac, Ti);
 
             assert (isHenselLift(C, Mi, PP, Ai, Bi));
             Mi = Mi.fromInteger(Qmm.getIntegerModul().getVal());
 
-            Aq = PolyUtil.<MOD> fromIntegerCoefficients(qfac, Ai);
-            Bq = PolyUtil.<MOD> fromIntegerCoefficients(qfac, Bi);
-            Sp = PolyUtil.<MOD> fromIntegerCoefficients(qfac, Si);
-            Tp = PolyUtil.<MOD> fromIntegerCoefficients(qfac, Ti);
+            Aq = PolyUtil.<MOD>fromIntegerCoefficients(qfac, Ai);
+            Bq = PolyUtil.<MOD>fromIntegerCoefficients(qfac, Bi);
+            Sp = PolyUtil.<MOD>fromIntegerCoefficients(qfac, Si);
+            Tp = PolyUtil.<MOD>fromIntegerCoefficients(qfac, Ti);
 
             //System.out.println("Am =  " + Am);
             //System.out.println("Bm =  " + Bm);
@@ -895,6 +901,7 @@ public class HenselUtil {
     /**
      * Modular Hensel lifting test. Let p be a prime number and assume C ==
      * prod_{0,...,n-1} g_i mod p with gcd(g_i,g_j) == 1 mod p for i != j.
+     *
      * @param C GenPolynomial
      * @param G = [g_0,...,g_{n-1}] list of GenPolynomial
      * @param M bound on the coefficients of g_i as factors of C.
@@ -903,7 +910,7 @@ public class HenselUtil {
      */
     public static//<MOD extends GcdRingElem<MOD> & Modular> 
     boolean isHenselLift(GenPolynomial<BigInteger> C, BigInteger M, BigInteger p,
-                    List<GenPolynomial<BigInteger>> G) {
+                         List<GenPolynomial<BigInteger>> G) {
         if (C == null || C.isZERO()) {
             return false;
         }
@@ -916,11 +923,11 @@ public class HenselUtil {
         GenPolynomial<ModInteger> hlp;
         for (GenPolynomial<BigInteger> hl : G) {
             //System.out.println("hl       = " + hl);
-            hlp = PolyUtil.<ModInteger> fromIntegerCoefficients(mfac, hl);
+            hlp = PolyUtil.<ModInteger>fromIntegerCoefficients(mfac, hl);
             //System.out.println("hl mod p = " + hlp);
             cl = cl.multiply(hlp);
         }
-        GenPolynomial<ModInteger> cp = PolyUtil.<ModInteger> fromIntegerCoefficients(mfac, C);
+        GenPolynomial<ModInteger> cp = PolyUtil.<ModInteger>fromIntegerCoefficients(mfac, C);
         if (!cp.equals(cl)) {
             System.out.println("Hensel precondition wrong!");
             if (debug) {
@@ -945,11 +952,11 @@ public class HenselUtil {
         cl = mfac.getONE();
         for (GenPolynomial<BigInteger> hl : G) {
             //System.out.println("hl         = " + hl);
-            hlp = PolyUtil.<ModInteger> fromIntegerCoefficients(mfac, hl);
+            hlp = PolyUtil.<ModInteger>fromIntegerCoefficients(mfac, hl);
             //System.out.println("hl mod p^e = " + hlp);
             cl = cl.multiply(hlp);
         }
-        cp = PolyUtil.<ModInteger> fromIntegerCoefficients(mfac, C);
+        cp = PolyUtil.<ModInteger>fromIntegerCoefficients(mfac, C);
         if (!cp.equals(cl)) {
             System.out.println("Hensel post condition wrong!");
             System.out.println("cl    = " + cl);
@@ -965,6 +972,7 @@ public class HenselUtil {
     /**
      * Modular Hensel lifting test. Let p be a prime number and assume C == A *
      * B mod p with gcd(A,B) == 1 mod p.
+     *
      * @param C GenPolynomial
      * @param A GenPolynomial
      * @param B GenPolynomial
@@ -974,7 +982,7 @@ public class HenselUtil {
      */
     public static//<MOD extends GcdRingElem<MOD> & Modular>
     boolean isHenselLift(GenPolynomial<BigInteger> C, BigInteger M, BigInteger p,
-                    GenPolynomial<BigInteger> A, GenPolynomial<BigInteger> B) {
+                         GenPolynomial<BigInteger> A, GenPolynomial<BigInteger> B) {
         List<GenPolynomial<BigInteger>> G = new ArrayList<GenPolynomial<BigInteger>>(2);
         G.add(A);
         G.add(B);
@@ -985,14 +993,15 @@ public class HenselUtil {
     /**
      * Modular Hensel lifting test. Let p be a prime number and assume C == A *
      * B mod p with gcd(A,B) == 1 mod p.
-     * @param C GenPolynomial
+     *
+     * @param C  GenPolynomial
      * @param Ha Hensel approximation.
-     * @param M bound on the coefficients of A and B as factors of C.
-     * @param p prime number.
+     * @param M  bound on the coefficients of A and B as factors of C.
+     * @param p  prime number.
      * @return true if C = A * B mod p^e, else false.
      */
     public static <MOD extends GcdRingElem<MOD> & Modular> boolean isHenselLift(GenPolynomial<BigInteger> C,
-                    BigInteger M, BigInteger p, HenselApprox<MOD> Ha) {
+                                                                                BigInteger M, BigInteger p, HenselApprox<MOD> Ha) {
         List<GenPolynomial<BigInteger>> G = new ArrayList<GenPolynomial<BigInteger>>(2);
         G.add(Ha.A);
         G.add(Ha.B);
@@ -1003,14 +1012,15 @@ public class HenselUtil {
     /**
      * Constructing and lifting algorithm for extended Euclidean relation. Let p
      * = A.ring.coFac.modul() and assume gcd(A,B) == 1 mod p.
+     *
      * @param A modular GenPolynomial
      * @param B modular GenPolynomial
      * @param k desired approximation exponent p^k.
-     * @return [s,t] with s A + t B = 1 mod p^k.
+     * @return [s, t] with s A + t B = 1 mod p^k.
      */
     @SuppressWarnings("unchecked")
     public static <MOD extends GcdRingElem<MOD> & Modular> GenPolynomial<MOD>[] liftExtendedEuclidean(
-                    GenPolynomial<MOD> A, GenPolynomial<MOD> B, long k) throws NoLiftingException {
+            GenPolynomial<MOD> A, GenPolynomial<MOD> B, long k) throws NoLiftingException {
         if (A == null || A.isZERO() || B == null || B.isZERO()) {
             throw new IllegalArgumentException("A and B must be nonzero, A = " + A + ", B = " + B);
         }
@@ -1024,7 +1034,7 @@ public class HenselUtil {
             gst = A.egcd(B);
             if (!gst[0].isONE()) {
                 throw new NoLiftingException("A and B not coprime, gcd = " + gst[0] + ", A = " + A + ", B = "
-                                + B);
+                        + B);
             }
         } catch (ArithmeticException e) {
             throw new NoLiftingException("coefficient error " + e);
@@ -1061,7 +1071,7 @@ public class HenselUtil {
             }
             e = e.divide(modul);
             // move to Z_p[x] and compute next approximation 
-            GenPolynomial<MOD> c = PolyUtil.<MOD> fromIntegerCoefficients(fac, e);
+            GenPolynomial<MOD> c = PolyUtil.<MOD>fromIntegerCoefficients(fac, e);
             //System.out.println("c = " + c + ": " + c.ring.coFac);
             GenPolynomial<MOD> s = S.multiply(c);
             GenPolynomial<MOD> t = T.multiply(c);
@@ -1096,8 +1106,8 @@ public class HenselUtil {
         }
         //System.out.println("mcfac = " + mcfac);
         mfac = new GenPolynomialRing<MOD>(mcfac, fac);
-        S = PolyUtil.<MOD> fromIntegerCoefficients(mfac, Si);
-        T = PolyUtil.<MOD> fromIntegerCoefficients(mfac, Ti);
+        S = PolyUtil.<MOD>fromIntegerCoefficients(mfac, Si);
+        T = PolyUtil.<MOD>fromIntegerCoefficients(mfac, Ti);
         //System.out.println("S = " + S + ": " + S.ring.coFac);
         //System.out.println("T = " + T + ": " + T.ring.coFac);
         if (debug) {
@@ -1107,7 +1117,7 @@ public class HenselUtil {
             List<GenPolynomial<MOD>> SP = new ArrayList<GenPolynomial<MOD>>();
             SP.add(S);
             SP.add(T);
-            if (!HenselUtil.<MOD> isExtendedEuclideanLift(AP, SP)) {
+            if (!HenselUtil.<MOD>isExtendedEuclideanLift(AP, SP)) {
                 System.out.println("isExtendedEuclideanLift: false");
             }
         }
@@ -1122,13 +1132,14 @@ public class HenselUtil {
     /**
      * Constructing and lifting algorithm for extended Euclidean relation. Let p
      * = A_i.ring.coFac.modul() and assume gcd(A_i,A_j) == 1 mod p, i != j.
+     *
      * @param A list of modular GenPolynomials
      * @param k desired approximation exponent p^k.
-     * @return [s_0,...,s_n-1] with sum_i s_i * B_i = 1 mod p^k, with B_i =
-     *         prod_{i!=j} A_j.
+     * @return [s_0, ..., s_n-1] with sum_i s_i * B_i = 1 mod p^k, with B_i =
+     * prod_{i!=j} A_j.
      */
     public static <MOD extends GcdRingElem<MOD> & Modular> List<GenPolynomial<MOD>> liftExtendedEuclidean(
-                    List<GenPolynomial<MOD>> A, long k) throws NoLiftingException {
+            List<GenPolynomial<MOD>> A, long k) throws NoLiftingException {
         if (A == null || A.size() == 0) {
             throw new IllegalArgumentException("A must be non null and non empty");
         }
@@ -1167,8 +1178,8 @@ public class HenselUtil {
             List<GenPolynomial<MOD>> S = liftDiophant(Q.get(j), A.get(j), B.get(j), k);
             //System.out.println("\nSb = " + S);
             b = S.get(0);
-            GenPolynomial<MOD> bb = PolyUtil.<MOD> fromIntegerCoefficients(fac,
-                            PolyUtil.integerFromModularCoefficients(ifac, b));
+            GenPolynomial<MOD> bb = PolyUtil.<MOD>fromIntegerCoefficients(fac,
+                    PolyUtil.integerFromModularCoefficients(ifac, b));
             B.set(j + 1, bb);
             lift.set(j, S.get(1));
             //System.out.println("B("+(j+1)+") = " + B.get(j+1));
@@ -1191,6 +1202,7 @@ public class HenselUtil {
     /**
      * Modular diophantine equation solution and lifting algorithm. Let p =
      * A_i.ring.coFac.modul() and assume gcd(A,B) == 1 mod p.
+     *
      * @param A modular GenPolynomial, mod p^k
      * @param B modular GenPolynomial, mod p^k
      * @param C modular GenPolynomial, mod p^k
@@ -1198,11 +1210,11 @@ public class HenselUtil {
      * @return [s, t] with s A' + t B' = C mod p^k, with A' = B, B' = A.
      */
     public static <MOD extends GcdRingElem<MOD> & Modular> List<GenPolynomial<MOD>> liftDiophant(
-                    GenPolynomial<MOD> A, GenPolynomial<MOD> B, GenPolynomial<MOD> C, long k)
-                    throws NoLiftingException {
+            GenPolynomial<MOD> A, GenPolynomial<MOD> B, GenPolynomial<MOD> C, long k)
+            throws NoLiftingException {
         if (A == null || A.isZERO() || B == null || B.isZERO()) {
             throw new IllegalArgumentException("A and B must be nonzero, A = " + A + ", B = " + B + ", C = "
-                            + C);
+                    + C);
         }
         List<GenPolynomial<MOD>> sol = new ArrayList<GenPolynomial<MOD>>();
         GenPolynomialRing<MOD> fac = C.ring;
@@ -1226,8 +1238,8 @@ public class HenselUtil {
             int i = 0;
             for (GenPolynomial<MOD> d : S) {
                 //System.out.println("d = " + d);
-                d = PolyUtil.<MOD> fromIntegerCoefficients(fac,
-                                PolyUtil.integerFromModularCoefficients(ifac, d));
+                d = PolyUtil.<MOD>fromIntegerCoefficients(fac,
+                        PolyUtil.integerFromModularCoefficients(ifac, d));
                 d = d.multiply(a);
                 d = sol.get(i).sum(d);
                 //System.out.println("d = " + d);
@@ -1237,9 +1249,9 @@ public class HenselUtil {
         }
         if (debug) {
             //GenPolynomialRing<BigInteger> ifac = new GenPolynomialRing<BigInteger>(new BigInteger(), fac);
-            A = PolyUtil.<MOD> fromIntegerCoefficients(fac, PolyUtil.integerFromModularCoefficients(ifac, A));
-            B = PolyUtil.<MOD> fromIntegerCoefficients(fac, PolyUtil.integerFromModularCoefficients(ifac, B));
-            C = PolyUtil.<MOD> fromIntegerCoefficients(fac, PolyUtil.integerFromModularCoefficients(ifac, C));
+            A = PolyUtil.<MOD>fromIntegerCoefficients(fac, PolyUtil.integerFromModularCoefficients(ifac, A));
+            B = PolyUtil.<MOD>fromIntegerCoefficients(fac, PolyUtil.integerFromModularCoefficients(ifac, B));
+            C = PolyUtil.<MOD>fromIntegerCoefficients(fac, PolyUtil.integerFromModularCoefficients(ifac, C));
             GenPolynomial<MOD> y = B.multiply(sol.get(0)).sum(A.multiply(sol.get(1)));
             if (!y.equals(C)) {
                 System.out.println("A = " + A + ", B = " + B);
@@ -1254,16 +1266,17 @@ public class HenselUtil {
     /**
      * Modular diophantine equation solution and lifting algorithm. Let p =
      * A_i.ring.coFac.modul() and assume gcd(a,b) == 1 mod p, for a, b in A.
+     *
      * @param A list of modular GenPolynomials, mod p^k
      * @param C modular GenPolynomial, mod p^k
      * @param k desired approximation exponent p^k.
-     * @return [s_1,..., s_n] with sum_i s_i A_i' = C mod p^k, with Ai' =
-     *         prod_{j!=i} A_j.
+     * @return [s_1, ..., s_n] with sum_i s_i A_i' = C mod p^k, with Ai' =
+     * prod_{j!=i} A_j.
      */
     public static <MOD extends GcdRingElem<MOD> & Modular> List<GenPolynomial<MOD>> liftDiophant(
-                    List<GenPolynomial<MOD>> A, GenPolynomial<MOD> C, long k) throws NoLiftingException {
+            List<GenPolynomial<MOD>> A, GenPolynomial<MOD> C, long k) throws NoLiftingException {
         if (false && A.size() <= 2) {
-            return HenselUtil.<MOD> liftDiophant(A.get(0), A.get(1), C, k);
+            return HenselUtil.<MOD>liftDiophant(A.get(0), A.get(1), C, k);
         }
         List<GenPolynomial<MOD>> sol = new ArrayList<GenPolynomial<MOD>>();
         GenPolynomialRing<MOD> fac = C.ring;
@@ -1287,8 +1300,8 @@ public class HenselUtil {
             int i = 0;
             for (GenPolynomial<MOD> d : S) {
                 //System.out.println("d = " + d);
-                d = PolyUtil.<MOD> fromIntegerCoefficients(fac,
-                                PolyUtil.integerFromModularCoefficients(ifac, d));
+                d = PolyUtil.<MOD>fromIntegerCoefficients(fac,
+                        PolyUtil.integerFromModularCoefficients(ifac, d));
                 d = d.multiply(a);
                 d = sol.get(i).sum(d);
                 //System.out.println("d = " + d);
@@ -1317,6 +1330,7 @@ public class HenselUtil {
     /**
      * Modular diophantine equation solution and lifting algorithm. Let p =
      * A_i.ring.coFac.modul() and assume gcd(A,B) == 1 mod p.
+     *
      * @param A modular GenPolynomial
      * @param B modular GenPolynomial
      * @param e exponent for x^e
@@ -1324,7 +1338,7 @@ public class HenselUtil {
      * @return [s, t] with s A' + t B' = x^e mod p^k, with A' = B, B' = A.
      */
     public static <MOD extends GcdRingElem<MOD> & Modular> List<GenPolynomial<MOD>> liftDiophant(
-                    GenPolynomial<MOD> A, GenPolynomial<MOD> B, long e, long k) throws NoLiftingException {
+            GenPolynomial<MOD> A, GenPolynomial<MOD> B, long e, long k) throws NoLiftingException {
         if (A == null || A.isZERO() || B == null || B.isZERO()) {
             throw new IllegalArgumentException("A and B must be nonzero, A = " + A + ", B = " + B);
         }
@@ -1345,8 +1359,8 @@ public class HenselUtil {
         }
         fac = s1.ring;
         GenPolynomialRing<BigInteger> ifac = new GenPolynomialRing<BigInteger>(new BigInteger(), fac);
-        A = PolyUtil.<MOD> fromIntegerCoefficients(fac, PolyUtil.integerFromModularCoefficients(ifac, A));
-        B = PolyUtil.<MOD> fromIntegerCoefficients(fac, PolyUtil.integerFromModularCoefficients(ifac, B));
+        A = PolyUtil.<MOD>fromIntegerCoefficients(fac, PolyUtil.integerFromModularCoefficients(ifac, A));
+        B = PolyUtil.<MOD>fromIntegerCoefficients(fac, PolyUtil.integerFromModularCoefficients(ifac, B));
 
         //      this is the wrong sequence:
         //         GenPolynomial<MOD> xe = fac.univariate(0,e);
@@ -1382,16 +1396,17 @@ public class HenselUtil {
     /**
      * Modular diophantine equation solution and lifting algorithm. Let p =
      * A_i.ring.coFac.modul() and assume gcd(a,b) == 1 mod p, for a, b in A.
+     *
      * @param A list of modular GenPolynomials
      * @param e exponent for x^e
      * @param k desired approximation exponent p^k.
-     * @return [s_1,..., s_n] with sum_i s_i A_i' = x^e mod p^k, with Ai' =
-     *         prod_{j!=i} A_j.
+     * @return [s_1, ..., s_n] with sum_i s_i A_i' = x^e mod p^k, with Ai' =
+     * prod_{j!=i} A_j.
      */
     public static <MOD extends GcdRingElem<MOD> & Modular> List<GenPolynomial<MOD>> liftDiophant(
-                    List<GenPolynomial<MOD>> A, long e, long k) throws NoLiftingException {
+            List<GenPolynomial<MOD>> A, long e, long k) throws NoLiftingException {
         if (false && A.size() <= 2) {
-            return HenselUtil.<MOD> liftDiophant(A.get(0), A.get(1), e, k);
+            return HenselUtil.<MOD>liftDiophant(A.get(0), A.get(1), e, k);
         }
         List<GenPolynomial<MOD>> sol = new ArrayList<GenPolynomial<MOD>>();
         GenPolynomialRing<MOD> fac = A.get(0).ring;
@@ -1408,7 +1423,7 @@ public class HenselUtil {
         GenPolynomialRing<BigInteger> ifac = new GenPolynomialRing<BigInteger>(new BigInteger(), fac);
         List<GenPolynomial<MOD>> S = new ArrayList<GenPolynomial<MOD>>(lee.size());
         for (GenPolynomial<MOD> a : lee) {
-            a = PolyUtil.<MOD> fromIntegerCoefficients(fac, PolyUtil.integerFromModularCoefficients(ifac, a));
+            a = PolyUtil.<MOD>fromIntegerCoefficients(fac, PolyUtil.integerFromModularCoefficients(ifac, a));
             S.add(a);
         }
         GenPolynomial<MOD> xe = fac.univariate(0, e);
@@ -1437,25 +1452,26 @@ public class HenselUtil {
 
     /**
      * Modular Diophant relation lifting test.
-     * @param A modular GenPolynomial
-     * @param B modular GenPolynomial
-     * @param C modular GenPolynomial
+     *
+     * @param A  modular GenPolynomial
+     * @param B  modular GenPolynomial
+     * @param C  modular GenPolynomial
      * @param S1 modular GenPolynomial
      * @param S2 modular GenPolynomial
      * @return true if A*S1 + B*S2 = C, else false.
      */
     public static <MOD extends GcdRingElem<MOD> & Modular> boolean isDiophantLift(GenPolynomial<MOD> A,
-                    GenPolynomial<MOD> B, GenPolynomial<MOD> S1, GenPolynomial<MOD> S2, GenPolynomial<MOD> C) {
+                                                                                  GenPolynomial<MOD> B, GenPolynomial<MOD> S1, GenPolynomial<MOD> S2, GenPolynomial<MOD> C) {
         GenPolynomialRing<MOD> fac = C.ring;
         GenPolynomialRing<BigInteger> ifac = new GenPolynomialRing<BigInteger>(new BigInteger(), fac);
-        GenPolynomial<MOD> a = PolyUtil.<MOD> fromIntegerCoefficients(fac,
-                        PolyUtil.integerFromModularCoefficients(ifac, A));
-        GenPolynomial<MOD> b = PolyUtil.<MOD> fromIntegerCoefficients(fac,
-                        PolyUtil.integerFromModularCoefficients(ifac, B));
-        GenPolynomial<MOD> s1 = PolyUtil.<MOD> fromIntegerCoefficients(fac,
-                        PolyUtil.integerFromModularCoefficients(ifac, S1));
-        GenPolynomial<MOD> s2 = PolyUtil.<MOD> fromIntegerCoefficients(fac,
-                        PolyUtil.integerFromModularCoefficients(ifac, S2));
+        GenPolynomial<MOD> a = PolyUtil.<MOD>fromIntegerCoefficients(fac,
+                PolyUtil.integerFromModularCoefficients(ifac, A));
+        GenPolynomial<MOD> b = PolyUtil.<MOD>fromIntegerCoefficients(fac,
+                PolyUtil.integerFromModularCoefficients(ifac, B));
+        GenPolynomial<MOD> s1 = PolyUtil.<MOD>fromIntegerCoefficients(fac,
+                PolyUtil.integerFromModularCoefficients(ifac, S1));
+        GenPolynomial<MOD> s2 = PolyUtil.<MOD>fromIntegerCoefficients(fac,
+                PolyUtil.integerFromModularCoefficients(ifac, S2));
         GenPolynomial<MOD> t = a.multiply(s1).sum(b.multiply(s2));
         if (t.equals(C)) {
             return true;
@@ -1474,13 +1490,14 @@ public class HenselUtil {
 
     /**
      * Modular extended Euclidean relation lifting test.
+     *
      * @param A list of GenPolynomials
      * @param S = [s_0,...,s_{n-1}] list of GenPolynomial
      * @return true if prod_{0,...,n-1} s_i * B_i = 1 mod p^e, with B_i =
-     *         prod_{i!=j} A_j, else false.
+     * prod_{i!=j} A_j, else false.
      */
     public static <MOD extends GcdRingElem<MOD> & Modular> boolean isExtendedEuclideanLift(
-                    List<GenPolynomial<MOD>> A, List<GenPolynomial<MOD>> S) {
+            List<GenPolynomial<MOD>> A, List<GenPolynomial<MOD>> S) {
         GenPolynomialRing<MOD> fac = A.get(0).ring;
         GenPolynomial<MOD> C = fac.getONE();
         return isDiophantLift(A, S, C);
@@ -1489,14 +1506,15 @@ public class HenselUtil {
 
     /**
      * Modular Diophant relation lifting test.
+     *
      * @param A list of GenPolynomials
      * @param S = [s_0,...,s_{n-1}] list of GenPolynomials
      * @param C = GenPolynomial
      * @return true if prod_{0,...,n-1} s_i * B_i = C mod p^k, with B_i =
-     *         prod_{i!=j} A_j, else false.
+     * prod_{i!=j} A_j, else false.
      */
     public static <MOD extends GcdRingElem<MOD> & Modular> boolean isDiophantLift(List<GenPolynomial<MOD>> A,
-                    List<GenPolynomial<MOD>> S, GenPolynomial<MOD> C) {
+                                                                                  List<GenPolynomial<MOD>> S, GenPolynomial<MOD> C) {
         GenPolynomialRing<MOD> fac = A.get(0).ring;
         GenPolynomialRing<BigInteger> ifac = new GenPolynomialRing<BigInteger>(new BigInteger(), fac);
         List<GenPolynomial<MOD>> B = new ArrayList<GenPolynomial<MOD>>(A.size());
@@ -1511,7 +1529,7 @@ public class HenselUtil {
                 j++;
             }
             //System.out.println("b = " + b);
-            b = PolyUtil.<MOD> fromIntegerCoefficients(fac, PolyUtil.integerFromModularCoefficients(ifac, b));
+            b = PolyUtil.<MOD>fromIntegerCoefficients(fac, PolyUtil.integerFromModularCoefficients(ifac, b));
             B.add(b);
             i++;
         }
@@ -1521,7 +1539,7 @@ public class HenselUtil {
         i = 0;
         for (GenPolynomial<MOD> a : B) {
             GenPolynomial<MOD> b = S.get(i++);
-            b = PolyUtil.<MOD> fromIntegerCoefficients(fac, PolyUtil.integerFromModularCoefficients(ifac, b));
+            b = PolyUtil.<MOD>fromIntegerCoefficients(fac, PolyUtil.integerFromModularCoefficients(ifac, b));
             GenPolynomial<MOD> s = a.multiply(b);
             t = t.sum(s);
         }
@@ -1544,15 +1562,16 @@ public class HenselUtil {
      * Modular Hensel lifting algorithm on coefficients. Let p =
      * f_i.ring.coFac.modul() and assume C == prod_{0,...,n-1} f_i mod p with
      * gcd(f_i,f_j) == 1 mod p for i != j
+     *
      * @param C monic integer polynomial
      * @param F = [f_0,...,f_{n-1}] list of monic modular polynomials.
      * @param k approximation exponent.
-     * @return [g_0,...,g_{n-1}] with C = prod_{0,...,n-1} g_i mod p^k.
+     * @return [g_0, ..., g_{n-1}] with C = prod_{0,...,n-1} g_i mod p^k.
      */
     @SuppressWarnings("unchecked")
     public static <MOD extends GcdRingElem<MOD> & Modular> List<GenPolynomial<MOD>> liftHenselMonic(
-                    GenPolynomial<BigInteger> C, List<GenPolynomial<MOD>> F, long k)
-                    throws NoLiftingException {
+            GenPolynomial<BigInteger> C, List<GenPolynomial<MOD>> F, long k)
+            throws NoLiftingException {
         if (C == null || C.isZERO() || F == null || F.size() == 0) {
             throw new IllegalArgumentException("C must be nonzero and F must be nonempty");
         }
@@ -1597,9 +1616,9 @@ public class HenselUtil {
             logger.info("EE lift = " + S);
             // adjust coefficients
             List<GenPolynomial<MOD>> Sx = PolyUtil.fromIntegerCoefficients(pfac,
-                            PolyUtil.integerFromModularCoefficients(ifac, S));
+                    PolyUtil.integerFromModularCoefficients(ifac, S));
             try {
-                boolean il = HenselUtil.<MOD> isExtendedEuclideanLift(F, Sx);
+                boolean il = HenselUtil.<MOD>isExtendedEuclideanLift(F, Sx);
                 //System.out.println("islift = " + il);
             } catch (RuntimeException e) {
                 e.printStackTrace();
@@ -1636,7 +1655,7 @@ public class HenselUtil {
             }
             //System.out.println("e = " + e);
             // move to in Z_p[x]
-            GenPolynomial<MOD> c = PolyUtil.<MOD> fromIntegerCoefficients(mfac, e);
+            GenPolynomial<MOD> c = PolyUtil.<MOD>fromIntegerCoefficients(mfac, e);
             //System.out.println("c = " + c + ": " + c.ring.coFac);
 
             List<GenPolynomial<MOD>> s = new ArrayList<GenPolynomial<MOD>>(S.size());
@@ -1675,7 +1694,7 @@ public class HenselUtil {
         }
         //System.out.println("mcfac = " + mcfac);
         mfac = new GenPolynomialRing<MOD>(mcfac, fac);
-        lift = PolyUtil.<MOD> fromIntegerCoefficients(mfac, Fi);
+        lift = PolyUtil.<MOD>fromIntegerCoefficients(mfac, Fi);
         //System.out.println("lift = " + lift + ": " + lift.get(0).ring.coFac);
         return lift;
     }
@@ -1685,16 +1704,17 @@ public class HenselUtil {
      * Modular Hensel lifting algorithm on coefficients. Let p =
      * f_i.ring.coFac.modul() and assume C == prod_{0,...,n-1} f_i mod p with
      * gcd(f_i,f_j) == 1 mod p for i != j
+     *
      * @param C integer polynomial
      * @param F = [f_0,...,f_{n-1}] list of monic modular polynomials.
      * @param k approximation exponent.
      * @param g leading coefficient.
-     * @return [g_0,...,g_{n-1}] with C = prod_{0,...,n-1} g_i mod p^k.
+     * @return [g_0, ..., g_{n-1}] with C = prod_{0,...,n-1} g_i mod p^k.
      */
     @SuppressWarnings("unchecked")
     public static <MOD extends GcdRingElem<MOD> & Modular> List<GenPolynomial<MOD>> liftHensel(
-                    GenPolynomial<BigInteger> C, List<GenPolynomial<MOD>> F, long k, BigInteger g)
-                    throws NoLiftingException {
+            GenPolynomial<BigInteger> C, List<GenPolynomial<MOD>> F, long k, BigInteger g)
+            throws NoLiftingException {
         if (C == null || C.isZERO() || F == null || F.size() == 0) {
             throw new IllegalArgumentException("C must be nonzero and F must be nonempty");
         }
@@ -1763,9 +1783,9 @@ public class HenselUtil {
             logger.info("EE lift = " + S);
             // adjust coefficients
             List<GenPolynomial<MOD>> Sx = PolyUtil.fromIntegerCoefficients(pfac,
-                            PolyUtil.integerFromModularCoefficients(ifac, S));
+                    PolyUtil.integerFromModularCoefficients(ifac, S));
             try {
-                boolean il = HenselUtil.<MOD> isExtendedEuclideanLift(F, Sx);
+                boolean il = HenselUtil.<MOD>isExtendedEuclideanLift(F, Sx);
                 //System.out.println("islift = " + il);
             } catch (RuntimeException e) {
                 e.printStackTrace();
@@ -1802,7 +1822,7 @@ public class HenselUtil {
             }
             //System.out.println("e = " + e);
             // move to in Z_p[x]
-            GenPolynomial<MOD> c = PolyUtil.<MOD> fromIntegerCoefficients(mfac, e);
+            GenPolynomial<MOD> c = PolyUtil.<MOD>fromIntegerCoefficients(mfac, e);
             //System.out.println("c = " + c + ": " + c.ring.coFac);
 
             List<GenPolynomial<MOD>> s = new ArrayList<GenPolynomial<MOD>>(S.size());
@@ -1862,7 +1882,7 @@ public class HenselUtil {
         }
         //System.out.println("mcfac = " + mcfac);
         mfac = new GenPolynomialRing<MOD>(mcfac, fac);
-        lift = PolyUtil.<MOD> fromIntegerCoefficients(mfac, Fi);
+        lift = PolyUtil.<MOD>fromIntegerCoefficients(mfac, Fi);
         //System.out.println("lift = " + lift + ": " + lift.get(0).ring.coFac);
         return lift;
     }

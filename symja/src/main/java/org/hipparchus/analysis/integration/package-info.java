@@ -15,8 +15,6 @@
  * limitations under the License.
  */
 /**
- *
- *     Numerical integration (quadrature) algorithms for univariate real functions.
- *
+ * Numerical integration (quadrature) algorithms for univariate real functions.
  */
 package org.hipparchus.analysis.integration;

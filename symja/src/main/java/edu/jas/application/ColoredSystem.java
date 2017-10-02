@@ -5,12 +5,12 @@
 package edu.jas.application;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.poly.GenPolynomial;
 import edu.jas.structure.GcdRingElem;
@@ -19,6 +19,7 @@ import edu.jas.structure.GcdRingElem;
 /**
  * Container for a condition, a corresponding colored polynomial list and a
  * Groebner base pair list.
+ *
  * @param <C> coefficient type
  */
 public class ColoredSystem<C extends GcdRingElem<C>> {
@@ -50,8 +51,9 @@ public class ColoredSystem<C extends GcdRingElem<C>> {
 
     /**
      * Constructor for a colored polynomial system.
+     *
      * @param cond a condition.
-     * @param S a list of colored polynomials.
+     * @param S    a list of colored polynomials.
      */
     public ColoredSystem(Condition<C> cond, List<ColorPolynomial<C>> S) {
         this(cond, S, null);
@@ -60,9 +62,10 @@ public class ColoredSystem<C extends GcdRingElem<C>> {
 
     /**
      * Constructor for a colored polynomial system.
+     *
      * @param cond a condition.
-     * @param S a list of colored polynomials.
-     * @param pl a ordered pair list.
+     * @param S    a list of colored polynomials.
+     * @param pl   a ordered pair list.
      */
     public ColoredSystem(Condition<C> cond, List<ColorPolynomial<C>> S, OrderedCPairlist<C> pl) {
         this.condition = cond;
@@ -73,6 +76,7 @@ public class ColoredSystem<C extends GcdRingElem<C>> {
 
     /**
      * Copy this colored polynomial system.
+     *
      * @return a clone of this.
      */
     public ColoredSystem<C> copy() {
@@ -83,6 +87,7 @@ public class ColoredSystem<C extends GcdRingElem<C>> {
     /**
      * Add to list of colored systems. This is added to the list of colored
      * systems, if a system with the same condition is not already contained.
+     *
      * @param L a list of colored systems.
      * @return L.add(this) if this not in L, else L.
      */
@@ -108,6 +113,7 @@ public class ColoredSystem<C extends GcdRingElem<C>> {
 
     /**
      * Get the String representation.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -138,6 +144,7 @@ public class ColoredSystem<C extends GcdRingElem<C>> {
 
     /**
      * Get the Script representation.
+     *
      * @see edu.jas.structure.Element#toScript()
      */
     public String toScript() {
@@ -167,6 +174,7 @@ public class ColoredSystem<C extends GcdRingElem<C>> {
 
     /**
      * Is this colored system equal to other.
+     *
      * @param c other colored system.
      * @return true, if this is equal to other, else false.
      */
@@ -197,6 +205,7 @@ public class ColoredSystem<C extends GcdRingElem<C>> {
 
     /**
      * Hash code for this colored system.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -213,6 +222,7 @@ public class ColoredSystem<C extends GcdRingElem<C>> {
 
     /**
      * Get zero condition.
+     *
      * @return condition.zero.
      */
     public List<GenPolynomial<C>> getConditionZero() {
@@ -222,6 +232,7 @@ public class ColoredSystem<C extends GcdRingElem<C>> {
 
     /**
      * Get non zero condition.
+     *
      * @return condition.nonZero.
      */
     public List<GenPolynomial<C>> getConditionNonZero() {
@@ -231,6 +242,7 @@ public class ColoredSystem<C extends GcdRingElem<C>> {
 
     /**
      * Get list of red coefficients of polynomials.
+     *
      * @return list of all red coefficients of polynomials.
      */
     public List<GenPolynomial<C>> getRedCoefficients() {
@@ -245,6 +257,7 @@ public class ColoredSystem<C extends GcdRingElem<C>> {
 
     /**
      * Get list of green coefficients of polynomials.
+     *
      * @return list of all green coefficients of polynomials.
      */
     public List<GenPolynomial<C>> getGreenCoefficients() {
@@ -259,6 +272,7 @@ public class ColoredSystem<C extends GcdRingElem<C>> {
 
     /**
      * Get list of full polynomials.
+     *
      * @return list of all full polynomials.
      */
     public List<GenPolynomial<GenPolynomial<C>>> getPolynomialList() {
@@ -272,6 +286,7 @@ public class ColoredSystem<C extends GcdRingElem<C>> {
 
     /**
      * Get list of essential polynomials.
+     *
      * @return list of all essential polynomials.
      */
     public List<GenPolynomial<GenPolynomial<C>>> getEssentialPolynomialList() {
@@ -286,6 +301,7 @@ public class ColoredSystem<C extends GcdRingElem<C>> {
     /**
      * Check invariants. Check if all polynomials are determined and if the
      * color of all coefficients is correct with respect to the condition.
+     *
      * @return true, if all invariants are met, else false.
      */
     public boolean checkInvariant() {
@@ -334,6 +350,7 @@ public class ColoredSystem<C extends GcdRingElem<C>> {
 
     /**
      * Is this colored system completely determined.
+     *
      * @return true, if each ColorPolynomial is determined, else false.
      */
     public boolean isDetermined() {
@@ -356,6 +373,7 @@ public class ColoredSystem<C extends GcdRingElem<C>> {
 
     /**
      * Re determine colorings of polynomials.
+     *
      * @return colored system with re determined colored polynomials.
      */
     public ColoredSystem<C> reDetermine() {

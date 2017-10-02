@@ -15,6 +15,7 @@ import edu.jas.structure.RingElem;
 /**
  * Polynomial SigReduction interface. Defines S-Polynomial, normalform with
  * respect to signatures.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
@@ -24,15 +25,17 @@ public interface SigReduction<C extends RingElem<C>> extends Serializable {
 
     /**
      * S-Polynomial.
+     *
      * @param Ap polynomial.
      * @param Bp polynomial.
-     * @return spol(Ap,Bp) the S-polynomial of Ap and Bp.
+     * @return spol(Ap, Bp) the S-polynomial of Ap and Bp.
      */
     public GenPolynomial<C> SPolynomial(SigPoly<C> Ap, SigPoly<C> Bp);
 
 
     /**
      * Is top reducible. Condition is lt(B) | lt(A) for some B in F or G.
+     *
      * @param A polynomial.
      * @param F polynomial list.
      * @param G polynomial list.
@@ -43,6 +46,7 @@ public interface SigReduction<C extends RingElem<C>> extends Serializable {
 
     /**
      * Is in Normalform.
+     *
      * @param A polynomial.
      * @param F polynomial list.
      * @param G polynomial list.
@@ -53,6 +57,7 @@ public interface SigReduction<C extends RingElem<C>> extends Serializable {
 
     /**
      * Normalform.
+     *
      * @param A polynomial.
      * @param F polynomial list.
      * @param G polynomial list.

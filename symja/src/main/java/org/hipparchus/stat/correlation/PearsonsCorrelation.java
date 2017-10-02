@@ -49,10 +49,14 @@ import org.hipparchus.util.MathUtils;
  */
 public class PearsonsCorrelation {
 
-    /** correlation matrix */
+    /**
+     * correlation matrix
+     */
     private final RealMatrix correlationMatrix;
 
-    /** number of observations */
+    /**
+     * number of observations
+     */
     private final int nObs;
 
     /**
@@ -67,14 +71,14 @@ public class PearsonsCorrelation {
     /**
      * Create a PearsonsCorrelation from a rectangular array
      * whose columns represent values of variables to be correlated.
-     *
+     * <p>
      * Throws MathIllegalArgumentException if the input array does not have at least
      * two columns and two rows.  Pairwise correlations are set to NaN if one
      * of the correlates has zero variance.
      *
      * @param data rectangular array with columns representing variables
      * @throws MathIllegalArgumentException if the input data array is not
-     * rectangular with at least two rows and two columns.
+     *                                      rectangular with at least two rows and two columns.
      * @see #correlation(double[], double[])
      */
     public PearsonsCorrelation(double[][] data) {
@@ -84,7 +88,7 @@ public class PearsonsCorrelation {
     /**
      * Create a PearsonsCorrelation from a RealMatrix whose columns
      * represent variables to be correlated.
-     *
+     * <p>
      * Throws MathIllegalArgumentException if the matrix does not have at least
      * two columns and two rows.  Pairwise correlations are set to NaN if one
      * of the correlates has zero variance.
@@ -117,9 +121,9 @@ public class PearsonsCorrelation {
      * Create a PearsonsCorrelation from a covariance matrix. The correlation
      * matrix is computed by scaling the covariance matrix.
      *
-     * @param covarianceMatrix covariance matrix
+     * @param covarianceMatrix     covariance matrix
      * @param numberOfObservations the number of observations in the dataset used to compute
-     * the covariance matrix
+     *                             the covariance matrix
      */
     public PearsonsCorrelation(RealMatrix covarianceMatrix, int numberOfObservations) {
         nObs = numberOfObservations;
@@ -128,7 +132,7 @@ public class PearsonsCorrelation {
 
     /**
      * Returns the correlation matrix.
-     *
+     * <p>
      * <p>This method will return null if the argumentless constructor was used
      * to create this instance, even if {@link #computeCorrelationMatrix(double[][])}
      * has been called before it is activated.</p>
@@ -144,12 +148,12 @@ public class PearsonsCorrelation {
      * in the correlation matrix.<br/>
      * <code>getCorrelationStandardErrors().getEntry(i,j)</code> is the standard
      * error associated with <code>getCorrelationMatrix.getEntry(i,j)</code>
-     *
+     * <p>
      * <p>The formula used to compute the standard error is <br/>
      * <code>SE<sub>r</sub> = ((1 - r<sup>2</sup>) / (n - 2))<sup>1/2</sup></code>
      * where <code>r</code> is the estimated correlation coefficient and
      * <code>n</code> is the number of observations in the source dataset.</p>
-     *
+     * <p>
      * <p>To use this method, one of the constructors that supply an input
      * matrix must have been used to create this instance.</p>
      *
@@ -162,7 +166,7 @@ public class PearsonsCorrelation {
         for (int i = 0; i < nVars; i++) {
             for (int j = 0; j < nVars; j++) {
                 double r = correlationMatrix.getEntry(i, j);
-                out[i][j] = FastMath.sqrt((1 - r * r) /(nObs - 2));
+                out[i][j] = FastMath.sqrt((1 - r * r) / (nObs - 2));
             }
         }
         return new BlockRealMatrix(out);
@@ -171,22 +175,21 @@ public class PearsonsCorrelation {
     /**
      * Returns a matrix of p-values associated with the (two-sided) null
      * hypothesis that the corresponding correlation coefficient is zero.
-     *
+     * <p>
      * <p><code>getCorrelationPValues().getEntry(i,j)</code> is the probability
      * that a random variable distributed as <code>t<sub>n-2</sub></code> takes
      * a value with absolute value greater than or equal to <br>
      * <code>|r|((n - 2) / (1 - r<sup>2</sup>))<sup>1/2</sup></code></p>
-     *
+     * <p>
      * <p>The values in the matrix are sometimes referred to as the
      * <i>significance</i> of the corresponding correlation coefficients.</p>
-     *
+     * <p>
      * <p>To use this method, one of the constructors that supply an input
      * matrix must have been used to create this instance.</p>
      *
      * @return matrix of p-values
-     * @throws org.hipparchus.exception.MathIllegalStateException
-     * if an error occurs estimating probabilities
-     * @throws NullPointerException if this instance was created with no data
+     * @throws org.hipparchus.exception.MathIllegalStateException if an error occurs estimating probabilities
+     * @throws NullPointerException                               if this instance was created with no data
      */
     public RealMatrix getCorrelationPValues() {
         TDistribution tDistribution = new TDistribution(nObs - 2);
@@ -198,7 +201,7 @@ public class PearsonsCorrelation {
                     out[i][j] = 0d;
                 } else {
                     double r = correlationMatrix.getEntry(i, j);
-                    double t = FastMath.abs(r * FastMath.sqrt((nObs - 2)/(1 - r * r)));
+                    double t = FastMath.abs(r * FastMath.sqrt((nObs - 2) / (1 - r * r)));
                     out[i][j] = 2 * tDistribution.cumulativeProbability(-t);
                 }
             }
@@ -210,7 +213,7 @@ public class PearsonsCorrelation {
     /**
      * Computes the correlation matrix for the columns of the
      * input matrix, using {@link #correlation(double[], double[])}.
-     *
+     * <p>
      * Throws MathIllegalArgumentException if the matrix does not have at least
      * two columns and two rows.  Pairwise correlations are set to NaN if one
      * of the correlates has zero variance.
@@ -226,9 +229,9 @@ public class PearsonsCorrelation {
         RealMatrix outMatrix = new BlockRealMatrix(nVars, nVars);
         for (int i = 0; i < nVars; i++) {
             for (int j = 0; j < i; j++) {
-              double corr = correlation(matrix.getColumn(i), matrix.getColumn(j));
-              outMatrix.setEntry(i, j, corr);
-              outMatrix.setEntry(j, i, corr);
+                double corr = correlation(matrix.getColumn(i), matrix.getColumn(j));
+                outMatrix.setEntry(i, j, corr);
+                outMatrix.setEntry(j, i, corr);
             }
             outMatrix.setEntry(i, i, 1d);
         }
@@ -239,7 +242,7 @@ public class PearsonsCorrelation {
      * Computes the correlation matrix for the columns of the
      * input rectangular array.  The columns of the array represent values
      * of variables to be correlated.
-     *
+     * <p>
      * Throws MathIllegalArgumentException if the matrix does not have at least
      * two columns and two rows or if the array is not rectangular. Pairwise
      * correlations are set to NaN if one of the correlates has zero variance.
@@ -250,12 +253,12 @@ public class PearsonsCorrelation {
      * @see #correlation(double[], double[])
      */
     public RealMatrix computeCorrelationMatrix(double[][] data) {
-       return computeCorrelationMatrix(new BlockRealMatrix(data));
+        return computeCorrelationMatrix(new BlockRealMatrix(data));
     }
 
     /**
      * Computes the Pearson's product-moment correlation coefficient between two arrays.
-     *
+     * <p>
      * <p>Throws MathIllegalArgumentException if the arrays do not have the same length
      * or their common length is less than 2.  Returns {@code NaN} if either of the arrays
      * has zero variance (i.e., if one of the arrays does not contain at least two distinct
@@ -271,11 +274,11 @@ public class PearsonsCorrelation {
         MathArrays.checkEqualLength(xArray, yArray);
         if (xArray.length < 2) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.INSUFFICIENT_DIMENSION,
-                                                   xArray.length, 2);
+                    xArray.length, 2);
         }
 
         SimpleRegression regression = new SimpleRegression();
-        for(int i = 0; i < xArray.length; i++) {
+        for (int i = 0; i < xArray.length; i++) {
             regression.addData(xArray[i], yArray[i]);
         }
         return regression.getR();
@@ -283,7 +286,7 @@ public class PearsonsCorrelation {
 
     /**
      * Derives a correlation matrix from a covariance matrix.
-     *
+     * <p>
      * <p>Uses the formula <br/>
      * <code>r(X,Y) = cov(X,Y)/s(X)s(Y)</code> where
      * <code>r(&middot,&middot;)</code> is the correlation coefficient and
@@ -300,7 +303,7 @@ public class PearsonsCorrelation {
             outMatrix.setEntry(i, i, 1d);
             for (int j = 0; j < i; j++) {
                 double entry = covarianceMatrix.getEntry(i, j) /
-                       (sigma * FastMath.sqrt(covarianceMatrix.getEntry(j, j)));
+                        (sigma * FastMath.sqrt(covarianceMatrix.getEntry(j, j)));
                 outMatrix.setEntry(i, j, entry);
                 outMatrix.setEntry(j, i, entry);
             }
@@ -320,7 +323,7 @@ public class PearsonsCorrelation {
         int nCols = matrix.getColumnDimension();
         if (nRows < 2 || nCols < 2) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.INSUFFICIENT_ROWS_AND_COLUMNS,
-                                                   nRows, nCols);
+                    nRows, nCols);
         }
     }
 }

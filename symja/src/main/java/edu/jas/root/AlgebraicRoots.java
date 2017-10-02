@@ -10,14 +10,15 @@ import java.util.List;
 
 import edu.jas.arith.Rational;
 import edu.jas.poly.AlgebraicNumberRing;
-import edu.jas.poly.GenPolynomial;
 import edu.jas.poly.Complex;
+import edu.jas.poly.GenPolynomial;
 import edu.jas.structure.GcdRingElem;
 
 
 /**
  * Container for the real and complex algebraic roots of a univariate
  * polynomial.
+ *
  * @param <C> coefficient type.
  * @author Heinz Kredel
  */
@@ -58,13 +59,14 @@ public class AlgebraicRoots<C extends GcdRingElem<C> & Rational> implements Seri
 
     /**
      * Constructor.
-     * @param p univariate polynomial
+     *
+     * @param p  univariate polynomial
      * @param cp univariate polynomial with compelx coefficients
-     * @param r list of real algebraic roots
-     * @param c list of complex algebraic roots
+     * @param r  list of real algebraic roots
+     * @param c  list of complex algebraic roots
      */
     public AlgebraicRoots(GenPolynomial<C> p, GenPolynomial<Complex<C>> cp, List<RealAlgebraicNumber<C>> r,
-                    List<ComplexAlgebraicNumber<C>> c) {
+                          List<ComplexAlgebraicNumber<C>> c) {
         this.p = p;
         this.cp = cp;
         this.real = r;
@@ -74,6 +76,7 @@ public class AlgebraicRoots<C extends GcdRingElem<C> & Rational> implements Seri
 
     /**
      * String representation of AlgebraicRoots.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -84,6 +87,7 @@ public class AlgebraicRoots<C extends GcdRingElem<C> & Rational> implements Seri
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this roots.
      */
     public String toScript() {
@@ -125,6 +129,7 @@ public class AlgebraicRoots<C extends GcdRingElem<C> & Rational> implements Seri
 
     /**
      * Get a decimal number scripting compatible string representation.
+     *
      * @return decimal number script compatible representation for this roots.
      */
     public String toDecimalScript() {
@@ -166,6 +171,7 @@ public class AlgebraicRoots<C extends GcdRingElem<C> & Rational> implements Seri
 
     /**
      * Copy this.
+     *
      * @return a copy of this.
      */
     public AlgebraicRoots<C> copy() {
@@ -175,6 +181,7 @@ public class AlgebraicRoots<C extends GcdRingElem<C> & Rational> implements Seri
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -196,6 +203,7 @@ public class AlgebraicRoots<C extends GcdRingElem<C> & Rational> implements Seri
 
     /**
      * Hash code for this AlgebraicRoots.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -206,6 +214,7 @@ public class AlgebraicRoots<C extends GcdRingElem<C> & Rational> implements Seri
 
     /**
      * Algebraic number ring.
+     *
      * @return algebraic ring of roots.
      */
     public AlgebraicNumberRing<C> getAlgebraicRing() {

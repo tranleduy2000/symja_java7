@@ -25,13 +25,16 @@ import org.hipparchus.optim.PointValuePair;
 
 /**
  * Base class for a multivariate scalar function optimizer.
- *
  */
 public abstract class MultivariateOptimizer
-    extends BaseMultivariateOptimizer<PointValuePair> {
-    /** Objective function. */
+        extends BaseMultivariateOptimizer<PointValuePair> {
+    /**
+     * Objective function.
+     */
     private MultivariateFunction function;
-    /** Type of optimization. */
+    /**
+     * Type of optimization.
+     */
     private GoalType goal;
 
     /**
@@ -45,19 +48,19 @@ public abstract class MultivariateOptimizer
      * {@inheritDoc}
      *
      * @param optData Optimization data. In addition to those documented in
-     * {@link BaseMultivariateOptimizer#parseOptimizationData(OptimizationData[])
-     * BaseMultivariateOptimizer}, this method will register the following data:
-     * <ul>
-     *  <li>{@link ObjectiveFunction}</li>
-     *  <li>{@link GoalType}</li>
-     * </ul>
+     *                {@link BaseMultivariateOptimizer#parseOptimizationData(OptimizationData[])
+     *                BaseMultivariateOptimizer}, this method will register the following data:
+     *                <ul>
+     *                <li>{@link ObjectiveFunction}</li>
+     *                <li>{@link GoalType}</li>
+     *                </ul>
      * @return {@inheritDoc}
      * @throws MathIllegalStateException if the maximal number of
-     * evaluations is exceeded.
+     *                                   evaluations is exceeded.
      */
     @Override
     public PointValuePair optimize(OptimizationData... optData)
-        throws MathIllegalStateException {
+            throws MathIllegalStateException {
         // Set up base class and perform computation.
         return super.optimize(optData);
     }
@@ -67,11 +70,11 @@ public abstract class MultivariateOptimizer
      * characterize the problem.
      *
      * @param optData Optimization data.
-     * The following data will be looked for:
-     * <ul>
-     *  <li>{@link ObjectiveFunction}</li>
-     *  <li>{@link GoalType}</li>
-     * </ul>
+     *                The following data will be looked for:
+     *                <ul>
+     *                <li>{@link ObjectiveFunction}</li>
+     *                <li>{@link GoalType}</li>
+     *                </ul>
      */
     @Override
     protected void parseOptimizationData(OptimizationData... optData) {
@@ -107,7 +110,7 @@ public abstract class MultivariateOptimizer
      * @param params Point at which the objective function must be evaluated.
      * @return the objective function value at the specified point.
      * @throws MathIllegalStateException if the maximal number of
-     * evaluations is exceeded.
+     *                                   evaluations is exceeded.
      */
     public double computeObjectiveValue(double[] params) {
         super.incrementEvaluationCount();

@@ -5,59 +5,46 @@
 package edu.jas.util;
 
 
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
+
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ArrayList;
-
-import org.apache.log4j.Logger;
-import org.apache.log4j.BasicConfigurator;
 
 
 /**
  * ExecutableServer is used to receive and execute classes.
+ *
  * @author Heinz Kredel
  */
 
 public class ExecutableServer extends Thread {
 
 
-    private static final Logger logger = Logger.getLogger(ExecutableServer.class);
-
-
-    private static final boolean debug = logger.isDebugEnabled();
-
-
-    /**
-     * ChannelFactory to use.
-     */
-    protected final ChannelFactory cf;
-
-
-    /**
-     * List of server threads.
-     */
-    protected List<Executor> servers = null;
-
-
     /**
      * Default port to listen to.
      */
     public static final int DEFAULT_PORT = 7411;
-
-
     /**
      * Constant to signal completion.
      */
     public static final String DONE = "Done";
-
-
     /**
      * Constant to request shutdown.
      */
     public static final String STOP = "Stop";
-
-
+    private static final Logger logger = Logger.getLogger(ExecutableServer.class);
+    private static final boolean debug = logger.isDebugEnabled();
+    /**
+     * ChannelFactory to use.
+     */
+    protected final ChannelFactory cf;
+    /**
+     * List of server threads.
+     */
+    protected List<Executor> servers = null;
     private volatile boolean goon = true;
 
 
@@ -74,6 +61,7 @@ public class ExecutableServer extends Thread {
 
     /**
      * ExecutableServer.
+     *
      * @param port
      */
     public ExecutableServer(int port) {
@@ -83,6 +71,7 @@ public class ExecutableServer extends Thread {
 
     /**
      * ExecutableServer.
+     *
      * @param cf channel factory to reuse.
      */
     public ExecutableServer(ChannelFactory cf) {
@@ -94,6 +83,7 @@ public class ExecutableServer extends Thread {
 
     /**
      * main method to start serving thread.
+     *
      * @param args args[0] is port
      */
     public static void main(String[] args) throws InterruptedException {
@@ -129,7 +119,7 @@ public class ExecutableServer extends Thread {
      * number of servers.
      */
     public int size() {
-        if ( servers == null ) {
+        if (servers == null) {
             return -1;
         }
         return servers.size();
@@ -244,7 +234,7 @@ public class ExecutableServer extends Thread {
  * class for executing incoming objects.
  */
 
-class Executor extends Thread /*implements Runnable*/{
+class Executor extends Thread /*implements Runnable*/ {
 
 
     private static final Logger logger = Logger.getLogger(Executor.class);
@@ -299,7 +289,7 @@ class Executor extends Thread /*implements Runnable*/{
                         }
                         try {
                             re.run();
-                        } catch(Exception e) {
+                        } catch (Exception e) {
                             logger.info("Exception on re.run()" + e);
                             e.printStackTrace();
                         } finally {

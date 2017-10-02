@@ -8,6 +8,7 @@ package edu.jas.util;
 /**
  * StrategyEnumeration. This class names possible / implemented strategies for
  * thread pools.
+ *
  * @author Heinz Kredel
  */
 

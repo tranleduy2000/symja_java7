@@ -5,8 +5,6 @@
 package edu.jas.util;
 
 
-
-
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -14,6 +12,7 @@ import java.util.List;
 
 /**
  * Power set with iterator.
+ *
  * @author Heinz Kredel
  */
 public class PowerSet<E> implements Iterable<List<E>> {
@@ -27,6 +26,7 @@ public class PowerSet<E> implements Iterable<List<E>> {
 
     /**
      * PowerSet constructor.
+     *
      * @param set generating set.
      */
     public PowerSet(List<E> set) {
@@ -36,6 +36,7 @@ public class PowerSet<E> implements Iterable<List<E>> {
 
     /**
      * get an iterator over subsets.
+     *
      * @return an iterator.
      */
     public Iterator<List<E>> iterator() {
@@ -47,6 +48,7 @@ public class PowerSet<E> implements Iterable<List<E>> {
 
 /**
  * Power set iterator.
+ *
  * @author Heinz Kredel
  */
 class PowerSetIterator<E> implements Iterator<List<E>> {
@@ -62,21 +64,15 @@ class PowerSetIterator<E> implements Iterator<List<E>> {
 
 
     final E current;
-
-
+    Mode mode;
     private PowerSetIterator<E> recIter;
 
-
-    enum Mode {
-        copy, extend, first, done
-    };
-
-
-    Mode mode;
+    ;
 
 
     /**
      * PowerSetIterator constructor.
+     *
      * @param set generating set.
      */
     public PowerSetIterator(List<E> set) {
@@ -95,9 +91,9 @@ class PowerSetIterator<E> implements Iterator<List<E>> {
         recIter = new PowerSetIterator<E>(rest);
     }
 
-
     /**
      * Test for availability of a next subset.
+     *
      * @return true if the iteration has more subsets, else false.
      */
     public boolean hasNext() {
@@ -110,9 +106,9 @@ class PowerSetIterator<E> implements Iterator<List<E>> {
         return recIter.hasNext() || mode == Mode.copy;
     }
 
-
     /**
      * Get next subset.
+     *
      * @return next subset.
      */
     public List<E> next() {
@@ -139,12 +135,16 @@ class PowerSetIterator<E> implements Iterator<List<E>> {
         return null;
     }
 
-
     /**
      * Remove the last subset returned from underlying set if allowed.
      */
     public void remove() {
         throw new UnsupportedOperationException("cannnot remove subsets");
+    }
+
+
+    enum Mode {
+        copy, extend, first, done
     }
 
 }

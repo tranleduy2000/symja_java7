@@ -5,11 +5,11 @@
 package edu.jas.poly;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.structure.RingElem;
 
@@ -20,6 +20,7 @@ import edu.jas.structure.RingElem;
  * coefficients. Objects of this class are intended to be immutable. The
  * implementation is based on TreeMap respectively SortedMap from exponents to
  * coefficients by extension of GenPolynomial.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
@@ -27,20 +28,17 @@ import edu.jas.structure.RingElem;
 public class RecSolvablePolynomial<C extends RingElem<C>> extends GenSolvablePolynomial<GenPolynomial<C>> {
 
 
+    private static final Logger logger = Logger.getLogger(RecSolvablePolynomial.class);
+    private static final boolean debug = logger.isDebugEnabled();
     /**
      * The factory for the recursive solvable polynomial ring. Hides super.ring.
      */
     public final RecSolvablePolynomialRing<C> ring;
 
 
-    private static final Logger logger = Logger.getLogger(RecSolvablePolynomial.class);
-
-
-    private static final boolean debug = logger.isDebugEnabled();
-
-
     /**
      * Constructor for zero RecSolvablePolynomial.
+     *
      * @param r solvable polynomial ring factory.
      */
     public RecSolvablePolynomial(RecSolvablePolynomialRing<C> r) {
@@ -51,6 +49,7 @@ public class RecSolvablePolynomial<C extends RingElem<C>> extends GenSolvablePol
 
     /**
      * Constructor for RecSolvablePolynomial.
+     *
      * @param r solvable polynomial ring factory.
      * @param e exponent.
      */
@@ -62,6 +61,7 @@ public class RecSolvablePolynomial<C extends RingElem<C>> extends GenSolvablePol
 
     /**
      * Constructor for RecSolvablePolynomial.
+     *
      * @param r solvable polynomial ring factory.
      * @param c coefficient polynomial.
      * @param e exponent.
@@ -76,6 +76,7 @@ public class RecSolvablePolynomial<C extends RingElem<C>> extends GenSolvablePol
 
     /**
      * Constructor for RecSolvablePolynomial.
+     *
      * @param r solvable polynomial ring factory.
      * @param c coefficient polynomial.
      */
@@ -86,6 +87,7 @@ public class RecSolvablePolynomial<C extends RingElem<C>> extends GenSolvablePol
 
     /**
      * Constructor for RecSolvablePolynomial.
+     *
      * @param r solvable polynomial ring factory.
      * @param S solvable polynomial.
      */
@@ -96,6 +98,7 @@ public class RecSolvablePolynomial<C extends RingElem<C>> extends GenSolvablePol
 
     /**
      * Constructor for RecSolvablePolynomial.
+     *
      * @param r solvable polynomial ring factory.
      * @param v the SortedMap of some other (solvable) polynomial.
      */
@@ -107,6 +110,7 @@ public class RecSolvablePolynomial<C extends RingElem<C>> extends GenSolvablePol
 
     /**
      * Get the corresponding element factory.
+     *
      * @return factory for this Element.
      * @see edu.jas.structure.Element#factory()
      */
@@ -118,6 +122,7 @@ public class RecSolvablePolynomial<C extends RingElem<C>> extends GenSolvablePol
 
     /**
      * Clone this RecSolvablePolynomial.
+     *
      * @see java.lang.Object#clone()
      */
     @Override
@@ -128,6 +133,7 @@ public class RecSolvablePolynomial<C extends RingElem<C>> extends GenSolvablePol
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -142,6 +148,7 @@ public class RecSolvablePolynomial<C extends RingElem<C>> extends GenSolvablePol
 
     /**
      * RecSolvablePolynomial multiplication.
+     *
      * @param Bp RecSolvablePolynomial.
      * @return this*Bp, where * denotes solvable multiplication.
      */
@@ -208,7 +215,7 @@ public class RecSolvablePolynomial<C extends RingElem<C>> extends GenSolvablePol
                         logger.info("unsymmetric coeff, e*b: b = " + b + ", e = " + e);
                     for (Map.Entry<ExpVector, C> z : b.val.entrySet()) {
                         C c = z.getValue();
-                        GenPolynomial<C> cc = b.ring.valueOf(c); 
+                        GenPolynomial<C> cc = b.ring.valueOf(c);
                         ExpVector g = z.getKey();
                         if (debug)
                             logger.info("g = " + g + ", c = " + c);
@@ -246,7 +253,7 @@ public class RecSolvablePolynomial<C extends RingElem<C>> extends GenSolvablePol
                         Cs = new RecSolvablePolynomial<C>(ring, crel.p);
                         // rest of multiplication and update relations
                         if (crel.f != null) { // process remaining right power
-                            GenPolynomial<C> c2 = b.ring.valueOf(crel.f); 
+                            GenPolynomial<C> c2 = b.ring.valueOf(crel.f);
                             C2 = new RecSolvablePolynomial<C>(ring, c2, Z);
                             Cs = Cs.multiply(C2);
                             if (crel.e == null) {
@@ -262,7 +269,7 @@ public class RecSolvablePolynomial<C extends RingElem<C>> extends GenSolvablePol
                             ring.coeffTable.update(e2, g2, Cs);
                         }
                         if (!g1.isZERO()) { // process remaining right part
-                            GenPolynomial<C> c2 = b.ring.valueOf(g1); 
+                            GenPolynomial<C> c2 = b.ring.valueOf(g1);
                             C2 = new RecSolvablePolynomial<C>(ring, c2, Z);
                             Cs = Cs.multiply(C2);
                         }
@@ -328,7 +335,7 @@ public class RecSolvablePolynomial<C extends RingElem<C>> extends GenSolvablePol
                                 logger.info("poly, g  = " + g + ", f  = " + f + ", rel = " + rel);
                             Ds = new RecSolvablePolynomial<C>(ring, rel.p); //ring.copy(rel.p);
                             if (rel.f != null) {
-                                D2 = ring.valueOf(rel.f); 
+                                D2 = ring.valueOf(rel.f);
                                 Ds = Ds.multiply(D2);
                                 if (rel.e == null) {
                                     g4 = g2;
@@ -338,17 +345,17 @@ public class RecSolvablePolynomial<C extends RingElem<C>> extends GenSolvablePol
                                 ring.table.update(g4, f2, Ds);
                             }
                             if (rel.e != null) {
-                                D1 = ring.valueOf(rel.e); 
+                                D1 = ring.valueOf(rel.e);
                                 Ds = D1.multiply(Ds);
                                 ring.table.update(g2, f2, Ds);
                             }
                             if (!f1.isZERO()) {
-                                D2 = ring.valueOf(f1); 
+                                D2 = ring.valueOf(f1);
                                 Ds = Ds.multiply(D2);
                                 //ring.table.update(?,f1,Ds)
                             }
                             if (!g1.isZERO()) {
-                                D1 = ring.valueOf(g1); 
+                                D1 = ring.valueOf(g1);
                                 Ds = D1.multiply(Ds);
                                 //ring.table.update(e1,?,Ds)
                             }
@@ -379,6 +386,7 @@ public class RecSolvablePolynomial<C extends RingElem<C>> extends GenSolvablePol
     /**
      * RecSolvablePolynomial left and right multiplication. Product with two
      * polynomials.
+     *
      * @param S RecSolvablePolynomial.
      * @param T RecSolvablePolynomial.
      * @return S*this*T.
@@ -401,6 +409,7 @@ public class RecSolvablePolynomial<C extends RingElem<C>> extends GenSolvablePol
     /**
      * RecSolvablePolynomial multiplication. Product with coefficient ring
      * element.
+     *
      * @param b coefficient polynomial.
      * @return this*b, where * is coefficient multiplication.
      */
@@ -432,6 +441,7 @@ public class RecSolvablePolynomial<C extends RingElem<C>> extends GenSolvablePol
     /**
      * RecSolvablePolynomial left and right multiplication. Product with
      * coefficient ring element.
+     *
      * @param b coefficient polynomial.
      * @param c coefficient polynomial.
      * @return b*this*c, where * is coefficient multiplication.
@@ -445,8 +455,8 @@ public class RecSolvablePolynomial<C extends RingElem<C>> extends GenSolvablePol
         if (c == null || c.isZERO()) {
             return Cp;
         }
-        RecSolvablePolynomial<C> Cb = ring.valueOf(b); 
-        RecSolvablePolynomial<C> Cc = ring.valueOf(c); 
+        RecSolvablePolynomial<C> Cb = ring.valueOf(b);
+        RecSolvablePolynomial<C> Cc = ring.valueOf(c);
         return Cb.multiply(this).multiply(Cc);
         // wrong:
         // Map<ExpVector, GenPolynomial<C>> Cm = Cp.val; //getMap();
@@ -475,6 +485,7 @@ public class RecSolvablePolynomial<C extends RingElem<C>> extends GenSolvablePol
 
     /**
      * RecSolvablePolynomial multiplication. Product with exponent vector.
+     *
      * @param e exponent.
      * @return this * x<sup>e</sup>, where * denotes solvable multiplication.
      */
@@ -491,10 +502,11 @@ public class RecSolvablePolynomial<C extends RingElem<C>> extends GenSolvablePol
     /**
      * RecSolvablePolynomial left and right multiplication. Product with
      * exponent vector.
+     *
      * @param e exponent.
      * @param f exponent.
      * @return x<sup>e</sup> * this * x<sup>f</sup>, where * denotes solvable
-     *         multiplication.
+     * multiplication.
      */
     @Override
     public RecSolvablePolynomial<C> multiply(ExpVector e, ExpVector f) {
@@ -512,6 +524,7 @@ public class RecSolvablePolynomial<C extends RingElem<C>> extends GenSolvablePol
     /**
      * RecSolvablePolynomial multiplication. Product with ring element and
      * exponent vector.
+     *
      * @param b coefficient polynomial.
      * @param e exponent.
      * @return this * b x<sup>e</sup>, where * denotes solvable multiplication.
@@ -521,7 +534,7 @@ public class RecSolvablePolynomial<C extends RingElem<C>> extends GenSolvablePol
         if (b == null || b.isZERO()) {
             return ring.getZERO();
         }
-        RecSolvablePolynomial<C> Cp = ring.valueOf(b, e); 
+        RecSolvablePolynomial<C> Cp = ring.valueOf(b, e);
         return multiply(Cp);
     }
 
@@ -529,12 +542,13 @@ public class RecSolvablePolynomial<C extends RingElem<C>> extends GenSolvablePol
     /**
      * RecSolvablePolynomial left and right multiplication. Product with ring
      * element and exponent vector.
+     *
      * @param b coefficient polynomial.
      * @param e exponent.
      * @param c coefficient polynomial.
      * @param f exponent.
      * @return b x<sup>e</sup> * this * c x<sup>f</sup>, where * denotes
-     *         solvable multiplication.
+     * solvable multiplication.
      */
     @Override
     public RecSolvablePolynomial<C> multiply(GenPolynomial<C> b, ExpVector e, GenPolynomial<C> c, ExpVector f) {
@@ -544,8 +558,8 @@ public class RecSolvablePolynomial<C extends RingElem<C>> extends GenSolvablePol
         if (c == null || c.isZERO()) {
             return ring.getZERO();
         }
-        RecSolvablePolynomial<C> Cp = ring.valueOf(b, e); 
-        RecSolvablePolynomial<C> Dp = ring.valueOf(c, f); 
+        RecSolvablePolynomial<C> Cp = ring.valueOf(b, e);
+        RecSolvablePolynomial<C> Dp = ring.valueOf(c, f);
         return multiply(Cp, Dp);
     }
 
@@ -553,6 +567,7 @@ public class RecSolvablePolynomial<C extends RingElem<C>> extends GenSolvablePol
     /**
      * RecSolvablePolynomial multiplication. Left product with ring element and
      * exponent vector.
+     *
      * @param b coefficient polynomial.
      * @param e exponent.
      * @return b x<sup>e</sup> * this, where * denotes solvable multiplication.
@@ -562,13 +577,14 @@ public class RecSolvablePolynomial<C extends RingElem<C>> extends GenSolvablePol
         if (b == null || b.isZERO()) {
             return ring.getZERO();
         }
-        RecSolvablePolynomial<C> Cp = ring.valueOf(b, e); 
+        RecSolvablePolynomial<C> Cp = ring.valueOf(b, e);
         return Cp.multiply(this);
     }
 
 
     /**
      * RecSolvablePolynomial multiplication. Left product with exponent vector.
+     *
      * @param e exponent.
      * @return x<sup>e</sup> * this, where * denotes solvable multiplication.
      */
@@ -577,7 +593,7 @@ public class RecSolvablePolynomial<C extends RingElem<C>> extends GenSolvablePol
         if (e == null || e.isZERO()) {
             return this;
         }
-        RecSolvablePolynomial<C> Cp = ring.valueOf(e); 
+        RecSolvablePolynomial<C> Cp = ring.valueOf(e);
         return Cp.multiply(this);
     }
 
@@ -585,6 +601,7 @@ public class RecSolvablePolynomial<C extends RingElem<C>> extends GenSolvablePol
     /**
      * RecSolvablePolynomial multiplication. Left product with coefficient ring
      * element.
+     *
      * @param b coefficient polynomial.
      * @return b*this, where * is coefficient multiplication.
      */
@@ -622,6 +639,7 @@ public class RecSolvablePolynomial<C extends RingElem<C>> extends GenSolvablePol
 
     /**
      * RecSolvablePolynomial multiplication. Left product with 'monomial'.
+     *
      * @param m 'monomial'.
      * @return m * this, where * denotes solvable multiplication.
      */
@@ -636,6 +654,7 @@ public class RecSolvablePolynomial<C extends RingElem<C>> extends GenSolvablePol
 
     /**
      * RecSolvablePolynomial multiplication. Product with 'monomial'.
+     *
      * @param m 'monomial'.
      * @return this * m, where * denotes solvable multiplication.
      */
@@ -651,6 +670,7 @@ public class RecSolvablePolynomial<C extends RingElem<C>> extends GenSolvablePol
     /**
      * RecSolvablePolynomial multiplication. Commutative product with exponent
      * vector.
+     *
      * @param f exponent vector.
      * @return B*f, where * is commutative multiplication.
      */
@@ -677,12 +697,13 @@ public class RecSolvablePolynomial<C extends RingElem<C>> extends GenSolvablePol
 
 
     /**
-     * RecSolvablePolynomial multiplication. Commutative product with 
+     * RecSolvablePolynomial multiplication. Commutative product with
      * coefficient.
+     *
      * @param b coefficient.
      * @return B*b, where * is commutative multiplication with respect to main variables.
      */
-     public RecSolvablePolynomial<C> multiplyRightComm(GenPolynomial<C> b) {
+    public RecSolvablePolynomial<C> multiplyRightComm(GenPolynomial<C> b) {
         RecSolvablePolynomial<C> C = ring.getZERO().copy();
         if (this.isZERO()) {
             return C;
@@ -709,9 +730,10 @@ public class RecSolvablePolynomial<C extends RingElem<C>> extends GenSolvablePol
      * <b>Note:</b> R is represented as a polynomial with left coefficients, the
      * implementation can at the moment not distinguish between left and right
      * coefficients.
+     *
      * @return R = sum( X<sup>i</sup> b<sub>i</sub> ), with this =
-     *         sum(a<sub>i</sub> X<sup>i</sup> ) and eval(sum(X<sup>i</sup>
-     *         b<sub>i</sub>)) == sum(a<sub>i</sub> X<sup>i</sup>)
+     * sum(a<sub>i</sub> X<sup>i</sup> ) and eval(sum(X<sup>i</sup>
+     * b<sub>i</sub>)) == sum(a<sub>i</sub> X<sup>i</sup>)
      */
     @SuppressWarnings("cast")
     @Override
@@ -750,9 +772,10 @@ public class RecSolvablePolynomial<C extends RingElem<C>> extends GenSolvablePol
      * <b>Note:</b> R is represented as a polynomial with left coefficients, the
      * implementation can at the moment not distinguish between left and right
      * coefficients.
+     *
      * @return this as evaluated polynomial R. R = sum( X<sup>i</sup>
-     *         b<sub>i</sub> ), this = sum(a<sub>i</sub> X<sup>i</sup> ) =
-     *         eval(sum(X<sup>i</sup> b<sub>i</sub>))
+     * b<sub>i</sub> ), this = sum(a<sub>i</sub> X<sup>i</sup> ) =
+     * eval(sum(X<sup>i</sup> b<sub>i</sub>))
      */
     @SuppressWarnings("cast")
     @Override
@@ -787,11 +810,12 @@ public class RecSolvablePolynomial<C extends RingElem<C>> extends GenSolvablePol
      * Test RecSolvablePolynomial right coefficients polynomial. <b>Note:</b> R
      * is represented as a polynomial with left coefficients, the implementation
      * can at the moment not distinguish between left and right coefficients.
+     *
      * @param R GenSolvablePolynomial with right coefficients.
      * @return true, if R is polynomial with right coefficients of this. R =
-     *         sum( X<sup>i</sup> b<sub>i</sub> ), with this = sum(a<sub>i</sub>
-     *         X<sup>i</sup> ) and eval(sum(X<sup>i</sup> b<sub>i</sub>)) ==
-     *         sum(a<sub>i</sub> X<sup>i</sup>)
+     * sum( X<sup>i</sup> b<sub>i</sub> ), with this = sum(a<sub>i</sub>
+     * X<sup>i</sup> ) and eval(sum(X<sup>i</sup> b<sub>i</sub>)) ==
+     * sum(a<sub>i</sub> X<sup>i</sup>)
      */
     @SuppressWarnings("cast")
     @Override
@@ -815,8 +839,8 @@ public class RecSolvablePolynomial<C extends RingElem<C>> extends GenSolvablePol
         }
         RecSolvablePolynomial<C> p = (RecSolvablePolynomial<C>) this;
         RecSolvablePolynomial<C> q = (RecSolvablePolynomial<C>) R.evalAsRightRecursivePolynomial();
-        p = (RecSolvablePolynomial<C>) PolyUtil.<C> monic(p);
-        q = (RecSolvablePolynomial<C>) PolyUtil.<C> monic(q);
+        p = (RecSolvablePolynomial<C>) PolyUtil.<C>monic(p);
+        q = (RecSolvablePolynomial<C>) PolyUtil.<C>monic(q);
         return p.equals(q);
     }
 

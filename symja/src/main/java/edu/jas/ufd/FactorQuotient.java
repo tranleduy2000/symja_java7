@@ -5,10 +5,10 @@
 package edu.jas.ufd;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.poly.GenPolynomial;
 import edu.jas.poly.GenPolynomialRing;
@@ -19,6 +19,7 @@ import edu.jas.structure.GcdRingElem;
  * Rational function coefficients factorization algorithms. This class
  * implements factorization methods for polynomials over rational functions,
  * that is, with coefficients from class <code>application.Quotient</code>.
+ *
  * @author Heinz Kredel
  */
 
@@ -47,18 +48,20 @@ public class FactorQuotient<C extends GcdRingElem<C>> extends FactorAbstract<Quo
 
     /**
      * Constructor.
+     *
      * @param fac coefficient quotient ring factory.
      */
     public FactorQuotient(QuotientRing<C> fac) {
-        this(fac, FactorFactory.<C> getImplementation(fac.ring.coFac));
+        this(fac, FactorFactory.<C>getImplementation(fac.ring.coFac));
     }
 
 
     /**
      * Constructor.
-     * @param fac coefficient quotient ring factory.
+     *
+     * @param fac     coefficient quotient ring factory.
      * @param nengine factorization engine for polynomials over base
-     *            coefficients.
+     *                coefficients.
      */
     public FactorQuotient(QuotientRing<C> fac, FactorAbstract<C> nengine) {
         super(fac);
@@ -68,8 +71,9 @@ public class FactorQuotient<C extends GcdRingElem<C>> extends FactorAbstract<Quo
 
     /**
      * GenPolynomial base factorization of a squarefree polynomial.
+     *
      * @param P squarefree GenPolynomial.
-     * @return [p_1,...,p_k] with P = prod_{i=1, ..., k} p_i.
+     * @return [p_1, ..., p_k] with P = prod_{i=1, ..., k} p_i.
      */
     @Override
     public List<GenPolynomial<Quotient<C>>> baseFactorsSquarefree(GenPolynomial<Quotient<C>> P) {
@@ -79,8 +83,9 @@ public class FactorQuotient<C extends GcdRingElem<C>> extends FactorAbstract<Quo
 
     /**
      * GenPolynomial factorization of a squarefree polynomial.
+     *
      * @param P squarefree GenPolynomial.
-     * @return [p_1,...,p_k] with P = prod_{i=1, ..., k} p_i.
+     * @return [p_1, ..., p_k] with P = prod_{i=1, ..., k} p_i.
      */
     @Override
     public List<GenPolynomial<Quotient<C>>> factorsSquarefree(GenPolynomial<Quotient<C>> P) {
@@ -106,7 +111,7 @@ public class FactorQuotient<C extends GcdRingElem<C>> extends FactorAbstract<Quo
         QuotientRing<C> qi = (QuotientRing<C>) pfac.coFac;
         GenPolynomialRing<C> ci = qi.ring;
         GenPolynomialRing<GenPolynomial<C>> ifac = new GenPolynomialRing<GenPolynomial<C>>(ci, pfac);
-        GenPolynomial<GenPolynomial<C>> Pi = PolyUfdUtil.<C> integralFromQuotientCoefficients(ifac, Pr);
+        GenPolynomial<GenPolynomial<C>> Pi = PolyUfdUtil.<C>integralFromQuotientCoefficients(ifac, Pr);
         //System.out.println("Pi = " + Pi);
 
         // factor in C[x_1,...,x_n][y_1,...,y_m]
@@ -118,8 +123,8 @@ public class FactorQuotient<C extends GcdRingElem<C>> extends FactorAbstract<Quo
             factors.add(P);
             return factors;
         }
-        List<GenPolynomial<Quotient<C>>> qfacts = PolyUfdUtil.<C> quotientFromIntegralCoefficients(pfac,
-                        irfacts);
+        List<GenPolynomial<Quotient<C>>> qfacts = PolyUfdUtil.<C>quotientFromIntegralCoefficients(pfac,
+                irfacts);
         //System.out.println("qfacts = " + qfacts);
         //qfacts = PolyUtil.monic(qfacts);
         //System.out.println("qfacts = " + qfacts);

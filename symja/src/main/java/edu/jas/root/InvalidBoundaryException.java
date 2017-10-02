@@ -8,6 +8,7 @@ package edu.jas.root;
 /**
  * Invalid boundary exception class. Exception to be thrown when a valid
  * boundary cannot be constructed.
+ *
  * @author Heinz Kredel
  */
 

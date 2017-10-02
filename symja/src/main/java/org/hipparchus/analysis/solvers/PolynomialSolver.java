@@ -21,7 +21,7 @@ import org.hipparchus.analysis.polynomials.PolynomialFunction;
 /**
  * Interface for (polynomial) root-finding algorithms.
  * Implementations will search for only one zero in the given interval.
- *
  */
 public interface PolynomialSolver
-    extends BaseUnivariateSolver<PolynomialFunction> {}
+        extends BaseUnivariateSolver<PolynomialFunction> {
+}

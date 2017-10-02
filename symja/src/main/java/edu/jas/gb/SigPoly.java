@@ -11,9 +11,10 @@ import edu.jas.structure.RingElem;
 
 /**
  * Container for a polynomial and its signature.
- * @param <C> coefficient type
+ *
+ * @param <C>   coefficient type
  * @param sigma a polynomial signature.
- * @param poly a polynomial.
+ * @param poly  a polynomial.
  */
 public class SigPoly<C extends RingElem<C>> {
 
@@ -26,6 +27,7 @@ public class SigPoly<C extends RingElem<C>> {
 
     /**
      * Constructor.
+     *
      * @param s a polynomial signature.
      * @param p a polynomial.
      */
@@ -53,6 +55,7 @@ public class SigPoly<C extends RingElem<C>> {
 
     /**
      * Get the String representation.
+     *
      * @see java.lang.Object#toString()
      */
     @Override

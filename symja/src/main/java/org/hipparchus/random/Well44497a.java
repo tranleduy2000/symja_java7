@@ -32,22 +32,34 @@ package org.hipparchus.random;
  */
 public class Well44497a extends AbstractWell {
 
-    /** Serializable version identifier. */
+    /**
+     * Serializable version identifier.
+     */
     private static final long serialVersionUID = 20150223L;
 
-    /** Number of bits in the pool. */
+    /**
+     * Number of bits in the pool.
+     */
     private static final int K = 44497;
 
-    /** First parameter of the algorithm. */
+    /**
+     * First parameter of the algorithm.
+     */
     private static final int M1 = 23;
 
-    /** Second parameter of the algorithm. */
+    /**
+     * Second parameter of the algorithm.
+     */
     private static final int M2 = 481;
 
-    /** Third parameter of the algorithm. */
+    /**
+     * Third parameter of the algorithm.
+     */
     private static final int M3 = 229;
 
-    /** The indirection index table. */
+    /**
+     * The indirection index table.
+     */
     private static final IndexTable TABLE = new IndexTable(K, M1, M2, M3);
 
     /**
@@ -61,6 +73,7 @@ public class Well44497a extends AbstractWell {
 
     /**
      * Creates a new random number generator using a single int seed.
+     *
      * @param seed the initial seed (32 bits integer)
      */
     public Well44497a(int seed) {
@@ -69,8 +82,9 @@ public class Well44497a extends AbstractWell {
 
     /**
      * Creates a new random number generator using an int array seed.
+     *
      * @param seed the initial seed (32 bits integers array), if null
-     * the seed of the generator will be related to the current time
+     *             the seed of the generator will be related to the current time
      */
     public Well44497a(int[] seed) {
         super(K, seed);
@@ -78,37 +92,40 @@ public class Well44497a extends AbstractWell {
 
     /**
      * Creates a new random number generator using a single long seed.
+     *
      * @param seed the initial seed (64 bits integer)
      */
     public Well44497a(long seed) {
         super(K, seed);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int nextInt() {
 
         final int indexRm1 = TABLE.getIndexPred(index);
         final int indexRm2 = TABLE.getIndexPred2(index);
 
-        final int v0       = v[index];
-        final int vM1      = v[TABLE.getIndexM1(index)];
-        final int vM2      = v[TABLE.getIndexM2(index)];
-        final int vM3      = v[TABLE.getIndexM3(index)];
+        final int v0 = v[index];
+        final int vM1 = v[TABLE.getIndexM1(index)];
+        final int vM2 = v[TABLE.getIndexM2(index)];
+        final int vM3 = v[TABLE.getIndexM3(index)];
 
         // the values below include the errata of the original article
-        final int z0       = (0xFFFF8000 & v[indexRm1]) ^ (0x00007FFF & v[indexRm2]);
-        final int z1       = (v0 ^ (v0 << 24))  ^ (vM1 ^ (vM1 >>> 30));
-        final int z2       = (vM2 ^ (vM2 << 10)) ^ (vM3 << 26);
-        final int z3       = z1      ^ z2;
-        final int z2Prime  = ((z2 << 9) ^ (z2 >>> 23)) & 0xfbffffff;
+        final int z0 = (0xFFFF8000 & v[indexRm1]) ^ (0x00007FFF & v[indexRm2]);
+        final int z1 = (v0 ^ (v0 << 24)) ^ (vM1 ^ (vM1 >>> 30));
+        final int z2 = (vM2 ^ (vM2 << 10)) ^ (vM3 << 26);
+        final int z3 = z1 ^ z2;
+        final int z2Prime = ((z2 << 9) ^ (z2 >>> 23)) & 0xfbffffff;
         final int z2Second = ((z2 & 0x00020000) != 0) ? (z2Prime ^ 0xb729fcec) : z2Prime;
-        final int z4       = z0 ^ (z1 ^ (z1 >>> 20)) ^ z2Second ^ z3;
+        final int z4 = z0 ^ (z1 ^ (z1 >>> 20)) ^ z2Second ^ z3;
 
-        v[index]     = z3;
-        v[indexRm1]  = z4;
+        v[index] = z3;
+        v[indexRm1] = z4;
         v[indexRm2] &= 0xFFFF8000;
-        index        = indexRm1;
+        index = indexRm1;
 
         return z4;
     }

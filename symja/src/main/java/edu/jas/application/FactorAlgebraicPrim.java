@@ -5,10 +5,10 @@
 package edu.jas.application;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.poly.AlgebraicNumber;
 import edu.jas.poly.AlgebraicNumberRing;
@@ -19,7 +19,6 @@ import edu.jas.poly.TermOrder;
 import edu.jas.structure.GcdRingElem;
 import edu.jas.ufd.FactorAbsolute;
 import edu.jas.ufd.FactorAbstract;
-import edu.jas.ufd.PolyUfdUtil;
 import edu.jas.ufd.Squarefree;
 import edu.jas.ufd.SquarefreeFactory;
 
@@ -29,8 +28,9 @@ import edu.jas.ufd.SquarefreeFactory;
  * implements factorization methods for polynomials over algebraic
  * numbers over rational numbers or over (prime) modular integers. The
  * algorithm uses zero dimensional ideal prime decomposition.
- * @author Heinz Kredel
+ *
  * @param <C> coefficient type
+ * @author Heinz Kredel
  */
 
 public class FactorAlgebraicPrim<C extends GcdRingElem<C>> extends FactorAbsolute<AlgebraicNumber<C>> {
@@ -61,18 +61,20 @@ public class FactorAlgebraicPrim<C extends GcdRingElem<C>> extends FactorAbsolut
 
     /**
      * Constructor.
+     *
      * @param fac algebraic number factory.
      */
     public FactorAlgebraicPrim(AlgebraicNumberRing<C> fac) {
-        this(fac, FactorFactory.<C> getImplementation(fac.ring.coFac));
+        this(fac, FactorFactory.<C>getImplementation(fac.ring.coFac));
     }
 
 
     /**
      * Constructor.
-     * @param fac algebraic number factory.
+     *
+     * @param fac         algebraic number factory.
      * @param factorCoeff factorization engine for polynomials over base
-     *            coefficients.
+     *                    coefficients.
      */
     public FactorAlgebraicPrim(AlgebraicNumberRing<C> fac, FactorAbstract<C> factorCoeff) {
         super(fac);
@@ -82,8 +84,9 @@ public class FactorAlgebraicPrim<C extends GcdRingElem<C>> extends FactorAbsolut
 
     /**
      * GenPolynomial base factorization of a squarefree polynomial.
+     *
      * @param P squarefree GenPolynomial&lt;AlgebraicNumber&lt;C&gt;&gt;.
-     * @return [p_1,...,p_k] with P = prod_{i=1, ..., k} p_i.
+     * @return [p_1, ..., p_k] with P = prod_{i=1, ..., k} p_i.
      */
     @Override
     public List<GenPolynomial<AlgebraicNumber<C>>> baseFactorsSquarefree(GenPolynomial<AlgebraicNumber<C>> P) {
@@ -112,7 +115,7 @@ public class FactorAlgebraicPrim<C extends GcdRingElem<C>> extends FactorAbsolut
         //System.out.println("\nP = " + P);
         if (logger.isDebugEnabled()) {
             Squarefree<AlgebraicNumber<C>> sqengine = SquarefreeFactory
-                            .<AlgebraicNumber<C>> getImplementation(afac);
+                    .<AlgebraicNumber<C>>getImplementation(afac);
             if (!sqengine.isSquarefree(P)) {
                 throw new RuntimeException("P not squarefree: " + sqengine.squarefreeFactors(P));
             }
@@ -135,9 +138,9 @@ public class FactorAlgebraicPrim<C extends GcdRingElem<C>> extends FactorAbsolut
         // transform minimal polynomial to bi-variate polynomial
         GenPolynomial<C> Ad = agen.extend(dfac, 0, 0L);
         // transform to bi-variate polynomial 
-        GenPolynomial<GenPolynomial<C>> Pc = PolyUtil.<C> fromAlgebraicCoefficients(rfac, P); 
+        GenPolynomial<GenPolynomial<C>> Pc = PolyUtil.<C>fromAlgebraicCoefficients(rfac, P);
         //System.out.println("Pc = " + Pc.toScript());
-        GenPolynomial<C> Pd = PolyUtil.<C> distribute(dfac, Pc);
+        GenPolynomial<C> Pd = PolyUtil.<C>distribute(dfac, Pc);
         //System.out.println("Ad = " + Ad.toScript());
         //System.out.println("Pd = " + Pd.toScript());
 
@@ -154,15 +157,15 @@ public class FactorAlgebraicPrim<C extends GcdRingElem<C>> extends FactorAbsolut
         GenPolynomial<AlgebraicNumber<C>> f = pfac.getONE();
         for (IdealWithUniv<C> Iu : Iul) {
             List<GenPolynomial<C>> pl = Iu.ideal.getList();
-            GenPolynomial<C> ag = PolyUtil.<C> selectWithVariable(pl, 1);
-            GenPolynomial<C> pg = PolyUtil.<C> selectWithVariable(pl, 0);
+            GenPolynomial<C> ag = PolyUtil.<C>selectWithVariable(pl, 1);
+            GenPolynomial<C> pg = PolyUtil.<C>selectWithVariable(pl, 0);
             //System.out.println("ag = " + ag.toScript());
             //System.out.println("pg = " + pg.toScript());
             if (ag.equals(Ad)) {
                 //System.out.println("found factor --------------------");
-                GenPolynomial<GenPolynomial<C>> pgr = PolyUtil.<C> recursive(rfac, pg);
-                GenPolynomial<AlgebraicNumber<C>> pga = PolyUtil.<C> convertRecursiveToAlgebraicCoefficients(
-                                pfac, pgr);
+                GenPolynomial<GenPolynomial<C>> pgr = PolyUtil.<C>recursive(rfac, pg);
+                GenPolynomial<AlgebraicNumber<C>> pga = PolyUtil.<C>convertRecursiveToAlgebraicCoefficients(
+                        pfac, pgr);
                 //System.out.println("pga = " + pga.toScript());
                 f = f.multiply(pga);
                 factors.add(pga);

@@ -17,14 +17,14 @@
 
 package org.hipparchus.util;
 
-import java.util.Arrays;
-
 import org.hipparchus.RealFieldElement;
 import org.hipparchus.exception.Localizable;
 import org.hipparchus.exception.LocalizedCoreFormats;
 import org.hipparchus.exception.MathIllegalArgumentException;
 import org.hipparchus.exception.MathRuntimeException;
 import org.hipparchus.exception.NullArgumentException;
+
+import java.util.Arrays;
 
 /**
  * Miscellaneous utility functions.
@@ -34,17 +34,22 @@ import org.hipparchus.exception.NullArgumentException;
  * @see MathArrays
  */
 public final class MathUtils {
-    /** \(2\pi\) */
+    /**
+     * \(2\pi\)
+     */
     public static final double TWO_PI = 2 * FastMath.PI;
 
-    /** \(\pi^2\) */
+    /**
+     * \(\pi^2\)
+     */
     public static final double PI_SQUARED = FastMath.PI * FastMath.PI;
 
 
     /**
      * Class contains only static methods.
      */
-    private MathUtils() {}
+    private MathUtils() {
+    }
 
 
     /**
@@ -83,55 +88,60 @@ public final class MathUtils {
      * Normalize an angle in a 2&pi; wide interval around a center value.
      * <p>This method has three main uses:</p>
      * <ul>
-     *   <li>normalize an angle between 0 and 2&pi;:<br/>
-     *       {@code a = MathUtils.normalizeAngle(a, FastMath.PI);}</li>
-     *   <li>normalize an angle between -&pi; and +&pi;<br/>
-     *       {@code a = MathUtils.normalizeAngle(a, 0.0);}</li>
-     *   <li>compute the angle between two defining angular positions:<br>
-     *       {@code angle = MathUtils.normalizeAngle(end, start) - start;}</li>
+     * <li>normalize an angle between 0 and 2&pi;:<br/>
+     * {@code a = MathUtils.normalizeAngle(a, FastMath.PI);}</li>
+     * <li>normalize an angle between -&pi; and +&pi;<br/>
+     * {@code a = MathUtils.normalizeAngle(a, 0.0);}</li>
+     * <li>compute the angle between two defining angular positions:<br>
+     * {@code angle = MathUtils.normalizeAngle(end, start) - start;}</li>
      * </ul>
      * <p>Note that due to numerical accuracy and since &pi; cannot be represented
      * exactly, the result interval is <em>closed</em>, it cannot be half-closed
      * as would be more satisfactory in a purely mathematical view.</p>
-     * @param a angle to normalize
+     *
+     * @param a      angle to normalize
      * @param center center of the desired 2&pi; interval for the result
      * @return a-2k&pi; with integer k and center-&pi; &lt;= a-2k&pi; &lt;= center+&pi;
      */
-     public static double normalizeAngle(double a, double center) {
-         return a - TWO_PI * FastMath.floor((a + FastMath.PI - center) / TWO_PI);
-     }
+    public static double normalizeAngle(double a, double center) {
+        return a - TWO_PI * FastMath.floor((a + FastMath.PI - center) / TWO_PI);
+    }
 
-     /** Find the maximum of two field elements.
-      * @param <T> the type of the field elements
-      * @param e1 first element
-      * @param e2 second element
-      * @return max(a1, e2)
-      */
-     public static <T extends RealFieldElement<T>> T max(final T e1, final T e2) {
-         return e1.subtract(e2).getReal() >= 0 ? e1 : e2;
-     }
+    /**
+     * Find the maximum of two field elements.
+     *
+     * @param <T> the type of the field elements
+     * @param e1  first element
+     * @param e2  second element
+     * @return max(a1, e2)
+     */
+    public static <T extends RealFieldElement<T>> T max(final T e1, final T e2) {
+        return e1.subtract(e2).getReal() >= 0 ? e1 : e2;
+    }
 
-     /** Find the minimum of two field elements.
-      * @param <T> the type of the field elements
-      * @param e1 first element
-      * @param e2 second element
-      * @return min(a1, e2)
-      */
-     public static <T extends RealFieldElement<T>> T min(final T e1, final T e2) {
-         return e1.subtract(e2).getReal() >= 0 ? e2 : e1;
-     }
+    /**
+     * Find the minimum of two field elements.
+     *
+     * @param <T> the type of the field elements
+     * @param e1  first element
+     * @param e2  second element
+     * @return min(a1, e2)
+     */
+    public static <T extends RealFieldElement<T>> T min(final T e1, final T e2) {
+        return e1.subtract(e2).getReal() >= 0 ? e2 : e1;
+    }
 
     /**
      * <p>Reduce {@code |a - offset|} to the primary interval
      * {@code [0, |period|)}.</p>
-     *
+     * <p>
      * <p>Specifically, the value returned is <br/>
      * {@code a - |period| * floor((a - offset) / |period|) - offset}.</p>
-     *
+     * <p>
      * <p>If any of the parameters are {@code NaN} or infinite, the result is
      * {@code NaN}.</p>
      *
-     * @param a Value to reduce.
+     * @param a      Value to reduce.
      * @param period Period.
      * @param offset Value that will be mapped to {@code 0}.
      * @return the value, within the interval {@code [0 |period|)},
@@ -148,19 +158,19 @@ public final class MathUtils {
      * Returns the first argument with the sign of the second argument.
      *
      * @param magnitude Magnitude of the returned value.
-     * @param sign Sign of the returned value.
+     * @param sign      Sign of the returned value.
      * @return a value with magnitude equal to {@code magnitude} and with the
      * same sign as the {@code sign} argument.
      * @throws MathRuntimeException if {@code magnitude == Byte.MIN_VALUE}
-     * and {@code sign >= 0}.
+     *                              and {@code sign >= 0}.
      */
     public static byte copySign(byte magnitude, byte sign)
-        throws MathRuntimeException {
+            throws MathRuntimeException {
         if ((magnitude >= 0 && sign >= 0) ||
-            (magnitude < 0 && sign < 0)) { // Sign is OK.
+                (magnitude < 0 && sign < 0)) { // Sign is OK.
             return magnitude;
         } else if (sign >= 0 &&
-                   magnitude == Byte.MIN_VALUE) {
+                magnitude == Byte.MIN_VALUE) {
             throw new MathRuntimeException(LocalizedCoreFormats.OVERFLOW);
         } else {
             return (byte) -magnitude; // Flip sign.
@@ -171,19 +181,19 @@ public final class MathUtils {
      * Returns the first argument with the sign of the second argument.
      *
      * @param magnitude Magnitude of the returned value.
-     * @param sign Sign of the returned value.
+     * @param sign      Sign of the returned value.
      * @return a value with magnitude equal to {@code magnitude} and with the
      * same sign as the {@code sign} argument.
      * @throws MathRuntimeException if {@code magnitude == Short.MIN_VALUE}
-     * and {@code sign >= 0}.
+     *                              and {@code sign >= 0}.
      */
     public static short copySign(short magnitude, short sign)
             throws MathRuntimeException {
         if ((magnitude >= 0 && sign >= 0) ||
-            (magnitude < 0 && sign < 0)) { // Sign is OK.
+                (magnitude < 0 && sign < 0)) { // Sign is OK.
             return magnitude;
         } else if (sign >= 0 &&
-                   magnitude == Short.MIN_VALUE) {
+                magnitude == Short.MIN_VALUE) {
             throw new MathRuntimeException(LocalizedCoreFormats.OVERFLOW);
         } else {
             return (short) -magnitude; // Flip sign.
@@ -194,19 +204,19 @@ public final class MathUtils {
      * Returns the first argument with the sign of the second argument.
      *
      * @param magnitude Magnitude of the returned value.
-     * @param sign Sign of the returned value.
+     * @param sign      Sign of the returned value.
      * @return a value with magnitude equal to {@code magnitude} and with the
      * same sign as the {@code sign} argument.
      * @throws MathRuntimeException if {@code magnitude == Integer.MIN_VALUE}
-     * and {@code sign >= 0}.
+     *                              and {@code sign >= 0}.
      */
     public static int copySign(int magnitude, int sign)
             throws MathRuntimeException {
         if ((magnitude >= 0 && sign >= 0) ||
-            (magnitude < 0 && sign < 0)) { // Sign is OK.
+                (magnitude < 0 && sign < 0)) { // Sign is OK.
             return magnitude;
         } else if (sign >= 0 &&
-                   magnitude == Integer.MIN_VALUE) {
+                magnitude == Integer.MIN_VALUE) {
             throw new MathRuntimeException(LocalizedCoreFormats.OVERFLOW);
         } else {
             return -magnitude; // Flip sign.
@@ -217,33 +227,34 @@ public final class MathUtils {
      * Returns the first argument with the sign of the second argument.
      *
      * @param magnitude Magnitude of the returned value.
-     * @param sign Sign of the returned value.
+     * @param sign      Sign of the returned value.
      * @return a value with magnitude equal to {@code magnitude} and with the
      * same sign as the {@code sign} argument.
      * @throws MathRuntimeException if {@code magnitude == Long.MIN_VALUE}
-     * and {@code sign >= 0}.
+     *                              and {@code sign >= 0}.
      */
     public static long copySign(long magnitude, long sign)
-        throws MathRuntimeException {
+            throws MathRuntimeException {
         if ((magnitude >= 0 && sign >= 0) ||
-            (magnitude < 0 && sign < 0)) { // Sign is OK.
+                (magnitude < 0 && sign < 0)) { // Sign is OK.
             return magnitude;
         } else if (sign >= 0 &&
-                   magnitude == Long.MIN_VALUE) {
+                magnitude == Long.MIN_VALUE) {
             throw new MathRuntimeException(LocalizedCoreFormats.OVERFLOW);
         } else {
             return -magnitude; // Flip sign.
         }
     }
+
     /**
      * Check that the argument is a real number.
      *
      * @param x Argument.
      * @throws MathIllegalArgumentException if {@code x} is not a
-     * finite real number.
+     *                                      finite real number.
      */
     public static void checkFinite(final double x)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         if (Double.isInfinite(x) || Double.isNaN(x)) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.NOT_FINITE_NUMBER, x);
         }
@@ -254,10 +265,10 @@ public final class MathUtils {
      *
      * @param val Arguments.
      * @throws MathIllegalArgumentException if any values of the array is not a
-     * finite real number.
+     *                                      finite real number.
      */
     public static void checkFinite(final double[] val)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         for (int i = 0; i < val.length; i++) {
             final double x = val[i];
             if (Double.isInfinite(x) || Double.isNaN(x)) {
@@ -269,15 +280,15 @@ public final class MathUtils {
     /**
      * Checks that an object is not null.
      *
-     * @param o Object to be checked.
+     * @param o       Object to be checked.
      * @param pattern Message pattern.
-     * @param args Arguments to replace the placeholders in {@code pattern}.
+     * @param args    Arguments to replace the placeholders in {@code pattern}.
      * @throws NullArgumentException if {@code o} is {@code null}.
      */
     public static void checkNotNull(Object o,
                                     Localizable pattern,
-                                    Object ... args)
-        throws NullArgumentException {
+                                    Object... args)
+            throws NullArgumentException {
         if (o == null) {
             throw new NullArgumentException(pattern, args);
         }
@@ -290,7 +301,7 @@ public final class MathUtils {
      * @throws NullArgumentException if {@code o} is {@code null}.
      */
     public static void checkNotNull(Object o)
-        throws NullArgumentException {
+            throws NullArgumentException {
         if (o == null) {
             throw new NullArgumentException(LocalizedCoreFormats.NULL_NOT_ALLOWED);
         }
@@ -300,14 +311,14 @@ public final class MathUtils {
      * Checks that the given value is strictly within the range [lo, hi].
      *
      * @param value value to be checked.
-     * @param lo the lower bound (inclusive).
-     * @param hi the upper bound (inclusive).
+     * @param lo    the lower bound (inclusive).
+     * @param hi    the upper bound (inclusive).
      * @throws MathIllegalArgumentException if {@code value} is strictly outside [lo, hi].
      */
     public static void checkRangeInclusive(long value, long lo, long hi) {
         if (value < lo || value > hi) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.OUT_OF_RANGE_SIMPLE,
-                                                   value, lo, hi);
+                    value, lo, hi);
         }
     }
 
@@ -315,28 +326,28 @@ public final class MathUtils {
      * Checks that the given value is strictly within the range [lo, hi].
      *
      * @param value value to be checked.
-     * @param lo the lower bound (inclusive).
-     * @param hi the upper bound (inclusive).
+     * @param lo    the lower bound (inclusive).
+     * @param hi    the upper bound (inclusive).
      * @throws MathIllegalArgumentException if {@code value} is strictly outside [lo, hi].
      */
     public static void checkRangeInclusive(double value, double lo, double hi) {
         if (value < lo || value > hi) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.OUT_OF_RANGE_SIMPLE,
-                                                   value, lo, hi);
+                    value, lo, hi);
         }
     }
 
     /**
      * Checks that the given dimensions match.
      *
-     * @param dimension the first dimension.
+     * @param dimension      the first dimension.
      * @param otherDimension the second dimension.
      * @throws MathIllegalArgumentException if length != otherLength.
      */
     public static void checkDimension(int dimension, int otherDimension) {
         if (dimension != otherDimension) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.DIMENSIONS_MISMATCH,
-                                                   dimension, otherDimension);
+                    dimension, otherDimension);
         }
     }
 

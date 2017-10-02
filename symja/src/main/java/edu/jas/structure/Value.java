@@ -7,6 +7,7 @@ package edu.jas.structure;
 
 /**
  * Value interface. Defines selector for value.
+ *
  * @param C base element type
  * @author Heinz Kredel
  */

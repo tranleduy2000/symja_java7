@@ -35,16 +35,20 @@ import org.hipparchus.exception.MathIllegalStateException;
  * ExpandableODE#addSecondaryEquations(SecondaryODE)}
  * method.
  * </p>
+ *
  * @see ExpandableODE
  */
 public interface SecondaryODE {
 
-    /** Get the dimension of the secondary state parameters.
+    /**
+     * Get the dimension of the secondary state parameters.
+     *
      * @return dimension of the secondary state parameters
      */
     int getDimension();
 
-    /** Initialize equations at the start of an ODE integration.
+    /**
+     * Initialize equations at the start of an ODE integration.
      * <p>
      * This method is called once at the start of the integration. It
      * may be used by the equations to initialize some internal data
@@ -53,25 +57,28 @@ public interface SecondaryODE {
      * <p>
      * The default implementation does nothing.
      * </p>
-     * @param t0 value of the independent <I>time</I> variable at integration start
-     * @param primary0 array containing the value of the primary state vector at integration start
+     *
+     * @param t0         value of the independent <I>time</I> variable at integration start
+     * @param primary0   array containing the value of the primary state vector at integration start
      * @param secondary0 array containing the value of the secondary state vector at integration start
-     * @param finalTime target time for the integration
+     * @param finalTime  target time for the integration
      */
     default void init(double t0, double[] primary0, double[] secondary0, double finalTime) {
         // nothing by default
     }
 
-    /** Compute the derivatives related to the secondary state parameters.
-     * @param t current value of the independent <I>time</I> variable
-     * @param primary array containing the current value of the primary state vector
+    /**
+     * Compute the derivatives related to the secondary state parameters.
+     *
+     * @param t          current value of the independent <I>time</I> variable
+     * @param primary    array containing the current value of the primary state vector
      * @param primaryDot array containing the derivative of the primary state vector
-     * @param secondary array containing the current value of the secondary state vector
+     * @param secondary  array containing the current value of the secondary state vector
      * @return derivative of the secondary state vector
-     * @exception MathIllegalStateException if the number of functions evaluations is exceeded
-     * @exception MathIllegalArgumentException if arrays dimensions do not match equations settings
+     * @throws MathIllegalStateException    if the number of functions evaluations is exceeded
+     * @throws MathIllegalArgumentException if arrays dimensions do not match equations settings
      */
     double[] computeDerivatives(double t, double[] primary, double[] primaryDot, double[] secondary)
-        throws MathIllegalArgumentException, MathIllegalStateException;
+            throws MathIllegalArgumentException, MathIllegalStateException;
 
 }

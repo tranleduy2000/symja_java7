@@ -44,94 +44,123 @@ import java.util.Queue;
  */
 public abstract class AbstractIntegrator implements ODEIntegrator {
 
-    /** Default relative accuracy. */
+    /**
+     * Default relative accuracy.
+     */
     private static final double DEFAULT_RELATIVE_ACCURACY = 0;
 
-    /** Default function value accuracy. */
+    /**
+     * Default function value accuracy.
+     */
     private static final double DEFAULT_FUNCTION_VALUE_ACCURACY = 0;
-
-    /** Step handler. */
-    private Collection<ODEStepHandler> stepHandlers;
-
-    /** Current step start time. */
-    private ODEStateAndDerivative stepStart;
-
-    /** Current stepsize. */
-    private double stepSize;
-
-    /** Indicator for last step. */
-    private boolean isLastStep;
-
-    /** Indicator that a state or derivative reset was triggered by some event. */
-    private boolean resetOccurred;
-
-    /** Events states. */
-    private Collection<EventState> eventsStates;
-
-    /** Initialization indicator of events states. */
-    private boolean statesInitialized;
-
-    /** Name of the method. */
+    /**
+     * Name of the method.
+     */
     private final String name;
-
-    /** Counter for number of evaluations. */
+    /**
+     * Step handler.
+     */
+    private Collection<ODEStepHandler> stepHandlers;
+    /**
+     * Current step start time.
+     */
+    private ODEStateAndDerivative stepStart;
+    /**
+     * Current stepsize.
+     */
+    private double stepSize;
+    /**
+     * Indicator for last step.
+     */
+    private boolean isLastStep;
+    /**
+     * Indicator that a state or derivative reset was triggered by some event.
+     */
+    private boolean resetOccurred;
+    /**
+     * Events states.
+     */
+    private Collection<EventState> eventsStates;
+    /**
+     * Initialization indicator of events states.
+     */
+    private boolean statesInitialized;
+    /**
+     * Counter for number of evaluations.
+     */
     private Incrementor evaluations;
 
-    /** Differential equations to integrate. */
+    /**
+     * Differential equations to integrate.
+     */
     private transient ExpandableODE equations;
 
-    /** Build an instance.
+    /**
+     * Build an instance.
+     *
      * @param name name of the method
      */
     protected AbstractIntegrator(final String name) {
-        this.name         = name;
-        stepHandlers      = new ArrayList<>();
-        stepStart         = null;
-        stepSize          = Double.NaN;
-        eventsStates      = new ArrayList<>();
+        this.name = name;
+        stepHandlers = new ArrayList<>();
+        stepStart = null;
+        stepSize = Double.NaN;
+        eventsStates = new ArrayList<>();
         statesInitialized = false;
-        evaluations       = new Incrementor();
+        evaluations = new Incrementor();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getName() {
         return name;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addStepHandler(final ODEStepHandler handler) {
         stepHandlers.add(handler);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Collection<ODEStepHandler> getStepHandlers() {
         return Collections.unmodifiableCollection(stepHandlers);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void clearStepHandlers() {
         stepHandlers.clear();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addEventHandler(final ODEEventHandler handler,
                                 final double maxCheckInterval,
                                 final double convergence,
                                 final int maxIterationCount) {
         addEventHandler(handler, maxCheckInterval, convergence,
-                        maxIterationCount,
-                        new BracketingNthOrderBrentSolver(DEFAULT_RELATIVE_ACCURACY,
-                                                          convergence,
-                                                          DEFAULT_FUNCTION_VALUE_ACCURACY,
-                                                          5));
+                maxIterationCount,
+                new BracketingNthOrderBrentSolver(DEFAULT_RELATIVE_ACCURACY,
+                        convergence,
+                        DEFAULT_FUNCTION_VALUE_ACCURACY,
+                        5));
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addEventHandler(final ODEEventHandler handler,
                                 final double maxCheckInterval,
@@ -139,10 +168,12 @@ public abstract class AbstractIntegrator implements ODEIntegrator {
                                 final int maxIterationCount,
                                 final BracketedUnivariateSolver<UnivariateFunction> solver) {
         eventsStates.add(new EventState(handler, maxCheckInterval, convergence,
-                                        maxIterationCount, solver));
+                maxIterationCount, solver));
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Collection<ODEEventHandler> getEventHandlers() {
         final List<ODEEventHandler> list = new ArrayList<ODEEventHandler>(eventsStates.size());
@@ -152,38 +183,50 @@ public abstract class AbstractIntegrator implements ODEIntegrator {
         return Collections.unmodifiableCollection(list);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void clearEventHandlers() {
         eventsStates.clear();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Deprecated
     public double getCurrentStepStart() {
         return stepStart.getTime();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getCurrentSignedStepsize() {
         return stepSize;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public void setMaxEvaluations(int maxEvaluations) {
-        evaluations = evaluations.withMaximalCount((maxEvaluations < 0) ? Integer.MAX_VALUE : maxEvaluations);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getMaxEvaluations() {
         return evaluations.getMaximalCount();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setMaxEvaluations(int maxEvaluations) {
+        evaluations = evaluations.withMaximalCount((maxEvaluations < 0) ? Integer.MAX_VALUE : maxEvaluations);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getEvaluations() {
         return evaluations.getCount();
@@ -201,19 +244,19 @@ public abstract class AbstractIntegrator implements ODEIntegrator {
                                                     final ODEState s0, final double t) {
 
         this.equations = eqn;
-        evaluations    = evaluations.withCount(0);
+        evaluations = evaluations.withCount(0);
 
         // initialize ODE
         eqn.init(s0, t);
 
         // set up derivatives of initial state (including primary and secondary components)
-        final double   t0    = s0.getTime();
-        final double[] y0    = s0.getCompleteState();
+        final double t0 = s0.getTime();
+        final double[] y0 = s0.getCompleteState();
         final double[] y0Dot = computeDerivatives(t0, y0);
 
         // built the state
         final ODEStateAndDerivative s0WithDerivatives =
-                        eqn.getMapper().mapStateAndDerivative(t0, y0, y0Dot);
+                eqn.getMapper().mapStateAndDerivative(t0, y0, y0Dot);
 
         // initialize event handlers
         for (final EventState state : eventsStates) {
@@ -231,53 +274,63 @@ public abstract class AbstractIntegrator implements ODEIntegrator {
 
     }
 
-    /** Get the differential equations to integrate.
+    /**
+     * Get the differential equations to integrate.
+     *
      * @return differential equations to integrate
      */
     protected ExpandableODE getEquations() {
         return equations;
     }
 
-    /** Get the evaluations counter.
+    /**
+     * Get the evaluations counter.
+     *
      * @return evaluations counter
      */
     protected Incrementor getEvaluationsCounter() {
         return evaluations;
     }
 
-    /** Compute the derivatives and check the number of evaluations.
+    /**
+     * Compute the derivatives and check the number of evaluations.
+     *
      * @param t current value of the independent <I>time</I> variable
      * @param y array containing the current value of the state vector
      * @return state completed with derivatives
-     * @exception MathIllegalArgumentException if arrays dimensions do not match equations settings
-     * @exception MathIllegalStateException if the number of functions evaluations is exceeded
-     * @exception NullPointerException if the ODE equations have not been set (i.e. if this method
-     * is called outside of a call to {@link #integrate(ExpandableODE, ODEState, double) integrate}
+     * @throws MathIllegalArgumentException if arrays dimensions do not match equations settings
+     * @throws MathIllegalStateException    if the number of functions evaluations is exceeded
+     * @throws NullPointerException         if the ODE equations have not been set (i.e. if this method
+     *                                      is called outside of a call to {@link #integrate(ExpandableODE, ODEState, double) integrate}
      */
     public double[] computeDerivatives(final double t, final double[] y)
-        throws MathIllegalArgumentException, MathIllegalStateException, NullPointerException {
+            throws MathIllegalArgumentException, MathIllegalStateException, NullPointerException {
         evaluations.increment();
         return equations.computeDerivatives(t, y);
     }
 
-    /** Set the stateInitialized flag.
+    /**
+     * Set the stateInitialized flag.
      * <p>This method must be called by integrators with the value
      * {@code false} before they start integration, so a proper lazy
      * initialization is done automatically on the first step.</p>
+     *
      * @param stateInitialized new value for the flag
      */
     protected void setStateInitialized(final boolean stateInitialized) {
         this.statesInitialized = stateInitialized;
     }
 
-    /** Accept a step, triggering events and step handlers.
+    /**
+     * Accept a step, triggering events and step handlers.
+     *
      * @param interpolator step interpolator
-     * @param tEnd final integration time
+     * @param tEnd         final integration time
      * @return state at end of step
-     * @exception MathIllegalStateException if the interpolator throws one because
-     * the number of functions evaluations is exceeded
-     * @exception MathIllegalArgumentException if the location of an event cannot be bracketed
-     * @exception MathIllegalArgumentException if arrays dimensions do not match equations settings
+     * @throws MathIllegalStateException    if the interpolator throws one because
+     *                                      the number of functions evaluations is exceeded
+     * @throws MathIllegalArgumentException if the location of an event cannot be bracketed
+     * @throws MathIllegalArgumentException if arrays dimensions do not match equations settings
      */
     protected ODEStateAndDerivative acceptStep(final AbstractODEStateInterpolator interpolator,
                                                final double tEnd)
@@ -410,67 +463,84 @@ public abstract class AbstractIntegrator implements ODEIntegrator {
 
     }
 
-    /** Check the integration span.
+    /**
+     * Check the integration span.
+     *
      * @param initialState initial state
-     * @param t target time for the integration
-     * @exception MathIllegalArgumentException if integration span is too small
-     * @exception MathIllegalArgumentException if adaptive step size integrators
-     * tolerance arrays dimensions are not compatible with equations settings
+     * @param t            target time for the integration
+     * @throws MathIllegalArgumentException if integration span is too small
+     * @throws MathIllegalArgumentException if adaptive step size integrators
+     *                                      tolerance arrays dimensions are not compatible with equations settings
      */
     protected void sanityChecks(final ODEState initialState, final double t)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
 
         final double threshold = 1000 * FastMath.ulp(FastMath.max(FastMath.abs(initialState.getTime()),
-                                                                  FastMath.abs(t)));
+                FastMath.abs(t)));
         final double dt = FastMath.abs(initialState.getTime() - t);
         if (dt <= threshold) {
             throw new MathIllegalArgumentException(LocalizedODEFormats.TOO_SMALL_INTEGRATION_INTERVAL,
-                                                   dt, threshold, false);
+                    dt, threshold, false);
         }
 
     }
 
-    /** Check if a reset occurred while last step was accepted.
+    /**
+     * Check if a reset occurred while last step was accepted.
+     *
      * @return true if a reset occurred while last step was accepted
      */
     protected boolean resetOccurred() {
         return resetOccurred;
     }
 
-    /** Set the current step size.
+    /**
+     * Get the current step size.
+     *
+     * @return current step size
+     */
+    protected double getStepSize() {
+        return stepSize;
+    }
+
+    /**
+     * Set the current step size.
+     *
      * @param stepSize step size to set
      */
     protected void setStepSize(final double stepSize) {
         this.stepSize = stepSize;
     }
 
-    /** Get the current step size.
-     * @return current step size
+    /**
+     * {@inheritDoc}
      */
-    protected double getStepSize() {
-        return stepSize;
+    @Override
+    public ODEStateAndDerivative getStepStart() {
+        return stepStart;
     }
-    /** Set current step start.
+
+    /**
+     * Set current step start.
+     *
      * @param stepStart step start
      */
     protected void setStepStart(final ODEStateAndDerivative stepStart) {
         this.stepStart = stepStart;
     }
 
-    /**  {@inheritDoc} */
-    @Override
-    public ODEStateAndDerivative getStepStart() {
-        return stepStart;
-    }
-
-    /** Set the last state flag.
+    /**
+     * Set the last state flag.
+     *
      * @param isLastStep if true, this step is the last one
      */
     protected void setIsLastStep(final boolean isLastStep) {
         this.isLastStep = isLastStep;
     }
 
-    /** Check if this step is the last one.
+    /**
+     * Check if this step is the last one.
+     *
      * @return true if this step is the last one
      */
     protected boolean isLastStep() {

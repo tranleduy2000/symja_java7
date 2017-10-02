@@ -22,7 +22,7 @@ import org.hipparchus.ode.ODEStateAndDerivative;
 /**
  * This interface represents a handler that should be called after
  * each successful fixed step.
-
+ * <p>
  * <p>This interface should be implemented by anyone who is interested
  * in getting the solution of an ordinary differential equation at
  * fixed time steps. Objects implementing this interface should be
@@ -36,9 +36,10 @@ import org.hipparchus.ode.ODEStateAndDerivative;
  * @see StepNormalizer
  */
 
-public interface ODEFixedStepHandler  {
+public interface ODEFixedStepHandler {
 
-    /** Initialize step handler at the start of an ODE integration.
+    /**
+     * Initialize step handler at the start of an ODE integration.
      * <p>
      * This method is called once at the start of the integration. It
      * may be used by the step handler to initialize some internal data
@@ -47,8 +48,9 @@ public interface ODEFixedStepHandler  {
      * <p>
      * The default implementation does nothing.
      * </p>
+     *
      * @param initialState initial time, state vector and derivative
-     * @param finalTime target time for the integration
+     * @param finalTime    target time for the integration
      */
     default void init(ODEStateAndDerivative initialState, double finalTime) {
         // nothing by default
@@ -56,7 +58,8 @@ public interface ODEFixedStepHandler  {
 
     /**
      * Handle the last accepted step
-     * @param state current state
+     *
+     * @param state  current state
      * @param isLast true if the step is the last one
      */
     void handleStep(ODEStateAndDerivative state, boolean isLast);

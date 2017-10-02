@@ -15,8 +15,6 @@
  * limitations under the License.
  */
 /**
- *
- *     Univariate real functions interpolation algorithms.
- *
+ * Univariate real functions interpolation algorithms.
  */
 package org.hipparchus.analysis.interpolation;

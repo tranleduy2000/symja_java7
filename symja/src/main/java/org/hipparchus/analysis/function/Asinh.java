@@ -23,16 +23,18 @@ import org.hipparchus.util.FastMath;
 
 /**
  * Hyperbolic arc-sine function.
- *
  */
 public class Asinh implements UnivariateDifferentiableFunction {
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double value(double x) {
         return FastMath.asinh(x);
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     @Override
     public DerivativeStructure value(final DerivativeStructure t) {

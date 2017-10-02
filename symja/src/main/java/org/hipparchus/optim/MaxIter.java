@@ -21,10 +21,11 @@ import org.hipparchus.exception.MathIllegalArgumentException;
 
 /**
  * Maximum number of iterations performed by an (iterative) algorithm.
- *
  */
 public class MaxIter implements OptimizationData {
-    /** Allowed number of evalutations. */
+    /**
+     * Allowed number of evalutations.
+     */
     private final int maxIter;
 
     /**
@@ -34,19 +35,10 @@ public class MaxIter implements OptimizationData {
     public MaxIter(int max) {
         if (max <= 0) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.NUMBER_TOO_SMALL_BOUND_EXCLUDED,
-                                                   max, 0);
+                    max, 0);
         }
 
         maxIter = max;
-    }
-
-    /**
-     * Gets the maximum number of evaluations.
-     *
-     * @return the allowed number of evaluations.
-     */
-    public int getMaxIter() {
-        return maxIter;
     }
 
     /**
@@ -58,5 +50,14 @@ public class MaxIter implements OptimizationData {
      */
     public static MaxIter unlimited() {
         return new MaxIter(Integer.MAX_VALUE);
+    }
+
+    /**
+     * Gets the maximum number of evaluations.
+     *
+     * @return the allowed number of evaluations.
+     */
+    public int getMaxIter() {
+        return maxIter;
     }
 }

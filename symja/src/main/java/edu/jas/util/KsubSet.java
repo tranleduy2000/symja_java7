@@ -13,6 +13,7 @@ import java.util.NoSuchElementException;
 
 /**
  * K-Subset with iterator.
+ *
  * @author Heinz Kredel
  */
 public class KsubSet<E> implements
@@ -31,8 +32,9 @@ public class KsubSet<E> implements
 
     /**
      * KsubSet constructor.
+     *
      * @param set generating set.
-     * @param k size of subsets.
+     * @param k   size of subsets.
      */
     public KsubSet(List<E> set, int k) {
         if (set == null) {
@@ -48,6 +50,7 @@ public class KsubSet<E> implements
 
     /**
      * Get an iterator over subsets.
+     *
      * @return an iterator.
      */
     public Iterator<List<E>> iterator() {
@@ -65,6 +68,7 @@ public class KsubSet<E> implements
 
 /**
  * Power set iterator.
+ *
  * @author Heinz Kredel
  */
 class KsubSetIterator<E> implements Iterator<List<E>> {
@@ -80,21 +84,16 @@ class KsubSetIterator<E> implements Iterator<List<E>> {
 
 
     final List<E> rest;
-
-
-    private E current;
-
-
-    private Iterator<List<E>> recIter;
-
-
     private final Iterator<E> iter;
+    private E current;
+    private Iterator<List<E>> recIter;
 
 
     /**
      * KsubSetIterator constructor.
+     *
      * @param set generating set.
-     * @param k subset size.
+     * @param k   subset size.
      */
     public KsubSetIterator(List<E> set, int k) {
         if (set == null || set.size() == 0) {
@@ -121,6 +120,7 @@ class KsubSetIterator<E> implements Iterator<List<E>> {
 
     /**
      * Test for availability of a next subset.
+     *
      * @return true if the iteration has more subsets, else false.
      */
     public boolean hasNext() {
@@ -130,6 +130,7 @@ class KsubSetIterator<E> implements Iterator<List<E>> {
 
     /**
      * Get next subset.
+     *
      * @return next subset.
      */
     public List<E> next() {
@@ -169,6 +170,7 @@ class KsubSetIterator<E> implements Iterator<List<E>> {
 
 /**
  * One-subset iterator.
+ *
  * @author Heinz Kredel
  */
 class OneSubSetIterator<E> implements Iterator<List<E>> {
@@ -185,6 +187,7 @@ class OneSubSetIterator<E> implements Iterator<List<E>> {
 
     /**
      * OneSubSetIterator constructor.
+     *
      * @param set generating set.
      */
     public OneSubSetIterator(List<E> set) {
@@ -199,6 +202,7 @@ class OneSubSetIterator<E> implements Iterator<List<E>> {
 
     /**
      * Test for availability of a next subset.
+     *
      * @return true if the iteration has more subsets, else false.
      */
     public boolean hasNext() {
@@ -211,6 +215,7 @@ class OneSubSetIterator<E> implements Iterator<List<E>> {
 
     /**
      * Get next subset.
+     *
      * @return next subset.
      */
     public List<E> next() {
@@ -232,6 +237,7 @@ class OneSubSetIterator<E> implements Iterator<List<E>> {
 
 /**
  * Zero-subset iterator.
+ *
  * @author Heinz Kredel
  */
 class ZeroSubSetIterator<E> implements Iterator<List<E>> {
@@ -245,6 +251,7 @@ class ZeroSubSetIterator<E> implements Iterator<List<E>> {
 
     /**
      * ZeroSubSetIterator constructor.
+     *
      * @param set generating set (ignored).
      */
     public ZeroSubSetIterator(List<E> set) {
@@ -257,6 +264,7 @@ class ZeroSubSetIterator<E> implements Iterator<List<E>> {
 
     /**
      * Test for availability of a next subset.
+     *
      * @return true if the iteration has more subsets, else false.
      */
     public boolean hasNext() {
@@ -266,6 +274,7 @@ class ZeroSubSetIterator<E> implements Iterator<List<E>> {
 
     /**
      * Get next subset.
+     *
      * @return next subset.
      */
     public List<E> next() {

@@ -30,34 +30,45 @@ import org.hipparchus.util.Precision;
  * <p>
  * The changes with respect to the original Brent algorithm are:
  * <ul>
- *   <li>the returned value is chosen in the current interval according
- *   to user specified {@link AllowedSolution},</li>
- *   <li>the maximal order for the invert polynomial root search is
- *   user-specified instead of being invert quadratic only</li>
+ * <li>the returned value is chosen in the current interval according
+ * to user specified {@link AllowedSolution},</li>
+ * <li>the maximal order for the invert polynomial root search is
+ * user-specified instead of being invert quadratic only</li>
  * </ul><p>
  * The given interval must bracket the root.</p>
- *
  */
 public class BracketingNthOrderBrentSolver
-    extends AbstractUnivariateSolver
-    implements BracketedUnivariateSolver<UnivariateFunction> {
+        extends AbstractUnivariateSolver
+        implements BracketedUnivariateSolver<UnivariateFunction> {
 
-    /** Default absolute accuracy. */
+    /**
+     * Default absolute accuracy.
+     */
     private static final double DEFAULT_ABSOLUTE_ACCURACY = 1e-6;
 
-    /** Default maximal order. */
+    /**
+     * Default maximal order.
+     */
     private static final int DEFAULT_MAXIMAL_ORDER = 5;
 
-    /** Maximal aging triggering an attempt to balance the bracketing interval. */
+    /**
+     * Maximal aging triggering an attempt to balance the bracketing interval.
+     */
     private static final int MAXIMAL_AGING = 2;
 
-    /** Reduction factor for attempts to balance the bracketing interval. */
+    /**
+     * Reduction factor for attempts to balance the bracketing interval.
+     */
     private static final double REDUCTION_FACTOR = 1.0 / 16.0;
 
-    /** Maximal order. */
+    /**
+     * Maximal order.
+     */
     private final int maximalOrder;
 
-    /** The kinds of solutions that the algorithm may accept. */
+    /**
+     * The kinds of solutions that the algorithm may accept.
+     */
     private AllowedSolution allowed;
 
     /**
@@ -71,16 +82,16 @@ public class BracketingNthOrderBrentSolver
      * Construct a solver.
      *
      * @param absoluteAccuracy Absolute accuracy.
-     * @param maximalOrder maximal order.
-     * @exception MathIllegalArgumentException if maximal order is lower than 2
+     * @param maximalOrder     maximal order.
+     * @throws MathIllegalArgumentException if maximal order is lower than 2
      */
     public BracketingNthOrderBrentSolver(final double absoluteAccuracy,
                                          final int maximalOrder)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         super(absoluteAccuracy);
         if (maximalOrder < 2) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.NUMBER_TOO_SMALL,
-                                                   maximalOrder, 2);
+                    maximalOrder, 2);
         }
         this.maximalOrder = maximalOrder;
         this.allowed = AllowedSolution.ANY_SIDE;
@@ -91,17 +102,17 @@ public class BracketingNthOrderBrentSolver
      *
      * @param relativeAccuracy Relative accuracy.
      * @param absoluteAccuracy Absolute accuracy.
-     * @param maximalOrder maximal order.
-     * @exception MathIllegalArgumentException if maximal order is lower than 2
+     * @param maximalOrder     maximal order.
+     * @throws MathIllegalArgumentException if maximal order is lower than 2
      */
     public BracketingNthOrderBrentSolver(final double relativeAccuracy,
                                          final double absoluteAccuracy,
                                          final int maximalOrder)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         super(relativeAccuracy, absoluteAccuracy);
         if (maximalOrder < 2) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.NUMBER_TOO_SMALL,
-                                                   maximalOrder, 2);
+                    maximalOrder, 2);
         }
         this.maximalOrder = maximalOrder;
         this.allowed = AllowedSolution.ANY_SIDE;
@@ -110,27 +121,29 @@ public class BracketingNthOrderBrentSolver
     /**
      * Construct a solver.
      *
-     * @param relativeAccuracy Relative accuracy.
-     * @param absoluteAccuracy Absolute accuracy.
+     * @param relativeAccuracy      Relative accuracy.
+     * @param absoluteAccuracy      Absolute accuracy.
      * @param functionValueAccuracy Function value accuracy.
-     * @param maximalOrder maximal order.
-     * @exception MathIllegalArgumentException if maximal order is lower than 2
+     * @param maximalOrder          maximal order.
+     * @throws MathIllegalArgumentException if maximal order is lower than 2
      */
     public BracketingNthOrderBrentSolver(final double relativeAccuracy,
                                          final double absoluteAccuracy,
                                          final double functionValueAccuracy,
                                          final int maximalOrder)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         super(relativeAccuracy, absoluteAccuracy, functionValueAccuracy);
         if (maximalOrder < 2) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.NUMBER_TOO_SMALL,
-                                                   maximalOrder, 2);
+                    maximalOrder, 2);
         }
         this.maximalOrder = maximalOrder;
         this.allowed = AllowedSolution.ANY_SIDE;
     }
 
-    /** Get the maximal order.
+    /**
+     * Get the maximal order.
+     *
      * @return maximal order
      */
     public int getMaximalOrder() {
@@ -183,7 +196,7 @@ public class BracketingNthOrderBrentSolver
         if (y[0] * y[1] < 0) {
 
             // reduce interval if it brackets the root
-            nbPoints        = 2;
+            nbPoints = 2;
             signChangeIndex = 1;
 
         } else {
@@ -197,11 +210,11 @@ public class BracketingNthOrderBrentSolver
 
             if (y[1] * y[2] < 0) {
                 // use all computed point as a start sampling array for solving
-                nbPoints        = 3;
+                nbPoints = 3;
                 signChangeIndex = 2;
             } else {
                 throw new MathIllegalArgumentException(LocalizedCoreFormats.NOT_BRACKETING_INTERVAL,
-                                                       x[0], x[2], y[0], y[2]);
+                        x[0], x[2], y[0], y[2]);
             }
 
         }
@@ -210,21 +223,21 @@ public class BracketingNthOrderBrentSolver
         final double[] tmpX = new double[x.length];
 
         // current tightest bracketing of the root
-        double xA    = x[signChangeIndex - 1];
-        double yA    = y[signChangeIndex - 1];
+        double xA = x[signChangeIndex - 1];
+        double yA = y[signChangeIndex - 1];
         double absYA = FastMath.abs(yA);
-        int agingA   = 0;
-        double xB    = x[signChangeIndex];
-        double yB    = y[signChangeIndex];
+        int agingA = 0;
+        double xB = x[signChangeIndex];
+        double yB = y[signChangeIndex];
         double absYB = FastMath.abs(yB);
-        int agingB   = 0;
+        int agingB = 0;
 
         // search loop
         while (true) {
 
             // check convergence of bracketing interval
             final double xTol = getAbsoluteAccuracy() +
-                                getRelativeAccuracy() * FastMath.max(FastMath.abs(xA), FastMath.abs(xB));
+                    getRelativeAccuracy() * FastMath.max(FastMath.abs(xA), FastMath.abs(xB));
             if (xB - xA <= xTol ||
                     FastMath.max(absYA, absYB) < getFunctionValueAccuracy() ||
                     Precision.equals(xA, xB, 1)) {
@@ -253,7 +266,7 @@ public class BracketingNthOrderBrentSolver
             // make a few attempts to guess a root,
             double nextX;
             int start = 0;
-            int end   = nbPoints;
+            int end = nbPoints;
             do {
 
                 // guess a value for current target, using inverse polynomial interpolation
@@ -285,7 +298,7 @@ public class BracketingNthOrderBrentSolver
                 // fall back to bisection
                 nextX = xA + 0.5 * (xB - xA);
                 start = signChangeIndex - 1;
-                end   = signChangeIndex;
+                end = signChangeIndex;
             }
 
             // evaluate the function at the guessed root
@@ -305,7 +318,7 @@ public class BracketingNthOrderBrentSolver
                 System.arraycopy(y, start, y, 0, nbPoints);
                 signChangeIndex -= start;
 
-            } else  if (nbPoints == x.length) {
+            } else if (nbPoints == x.length) {
 
                 // we have to drop one point in order to insert the new one
                 nbPoints--;
@@ -353,18 +366,20 @@ public class BracketingNthOrderBrentSolver
 
     }
 
-    /** Guess an x value by n<sup>th</sup> order inverse polynomial interpolation.
+    /**
+     * Guess an x value by n<sup>th</sup> order inverse polynomial interpolation.
      * <p>
      * The x value is guessed by evaluating polynomial Q(y) at y = targetY, where Q
      * is built such that for all considered points (x<sub>i</sub>, y<sub>i</sub>),
      * Q(y<sub>i</sub>) = x<sub>i</sub>.
      * </p>
+     *
      * @param targetY target value for y
-     * @param x reference points abscissas for interpolation,
-     * note that this array <em>is</em> modified during computation
-     * @param y reference points ordinates for interpolation
-     * @param start start index of the points to consider (inclusive)
-     * @param end end index of the points to consider (exclusive)
+     * @param x       reference points abscissas for interpolation,
+     *                note that this array <em>is</em> modified during computation
+     * @param y       reference points ordinates for interpolation
+     * @param start   start index of the points to consider (inclusive)
+     * @param end     end index of the points to consider (exclusive)
      * @return guessed root (will be a NaN if two points share the same y)
      */
     private double guessX(final double targetY, final double[] x, final double[] y,
@@ -374,7 +389,7 @@ public class BracketingNthOrderBrentSolver
         for (int i = start; i < end - 1; ++i) {
             final int delta = i + 1 - start;
             for (int j = end - 1; j > i; --j) {
-                x[j] = (x[j] - x[j-1]) / (y[j] - y[j - delta]);
+                x[j] = (x[j] - x[j - 1]) / (y[j] - y[j - delta]);
             }
         }
 
@@ -388,33 +403,39 @@ public class BracketingNthOrderBrentSolver
 
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double solve(int maxEval, UnivariateFunction f, double min,
                         double max, AllowedSolution allowedSolution)
-        throws MathIllegalArgumentException, MathIllegalStateException {
+            throws MathIllegalArgumentException, MathIllegalStateException {
         this.allowed = allowedSolution;
         return super.solve(maxEval, f, min, max);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double solve(int maxEval, UnivariateFunction f, double min,
                         double max, double startValue,
                         AllowedSolution allowedSolution)
-        throws MathIllegalArgumentException, MathIllegalStateException {
+            throws MathIllegalArgumentException, MathIllegalStateException {
         this.allowed = allowedSolution;
         return super.solve(maxEval, f, min, max, startValue);
 
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Interval solveInterval(final int maxEval,
-                                final UnivariateFunction f,
-                                final double min,
-                                final double max,
-                                final double startValue)
+                                  final UnivariateFunction f,
+                                  final double min,
+                                  final double max,
+                                  final double startValue)
             throws MathIllegalArgumentException, MathIllegalStateException {
         setup(maxEval, f, min, max, startValue);
         this.allowed = null;

@@ -22,20 +22,20 @@ import org.hipparchus.ode.ODEStateAndDerivative;
 
 /**
  * This class implements a linear interpolator for step.
- *
+ * <p>
  * <p>This interpolator computes dense output inside the last
  * step computed. The interpolation equation is consistent with the
  * integration scheme :
  * <ul>
- *   <li>Using reference point at step start:<br>
- *     y(t<sub>n</sub> + &theta; h) = y (t<sub>n</sub>) + &theta; h y'
- *   </li>
- *   <li>Using reference point at step end:<br>
- *     y(t<sub>n</sub> + &theta; h) = y (t<sub>n</sub> + h) - (1-&theta;) h y'
- *   </li>
+ * <li>Using reference point at step start:<br>
+ * y(t<sub>n</sub> + &theta; h) = y (t<sub>n</sub>) + &theta; h y'
+ * </li>
+ * <li>Using reference point at step end:<br>
+ * y(t<sub>n</sub> + &theta; h) = y (t<sub>n</sub> + h) - (1-&theta;) h y'
+ * </li>
  * </ul>
  * </p>
- *
+ * <p>
  * where &theta; belongs to [0 ; 1] and where y' is the evaluation of
  * the derivatives already computed during the step.</p>
  *
@@ -43,19 +43,23 @@ import org.hipparchus.ode.ODEStateAndDerivative;
  */
 
 class EulerStateInterpolator
-    extends RungeKuttaStateInterpolator {
+        extends RungeKuttaStateInterpolator {
 
-    /** Serializable version identifier. */
+    /**
+     * Serializable version identifier.
+     */
     private static final long serialVersionUID = 20160328L;
 
-    /** Simple constructor.
-     * @param forward integration direction indicator
-     * @param yDotK slopes at the intermediate points
+    /**
+     * Simple constructor.
+     *
+     * @param forward             integration direction indicator
+     * @param yDotK               slopes at the intermediate points
      * @param globalPreviousState start of the global step
-     * @param globalCurrentState end of the global step
-     * @param softPreviousState start of the restricted step
-     * @param softCurrentState end of the restricted step
-     * @param mapper equations mapper for the all equations
+     * @param globalCurrentState  end of the global step
+     * @param softPreviousState   start of the restricted step
+     * @param softCurrentState    end of the restricted step
+     * @param mapper              equations mapper for the all equations
      */
     EulerStateInterpolator(final boolean forward,
                            final double[][] yDotK,
@@ -65,11 +69,13 @@ class EulerStateInterpolator
                            final ODEStateAndDerivative softCurrentState,
                            final EquationsMapper mapper) {
         super(forward, yDotK,
-              globalPreviousState, globalCurrentState, softPreviousState, softCurrentState,
-              mapper);
+                globalPreviousState, globalCurrentState, softPreviousState, softCurrentState,
+                mapper);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected EulerStateInterpolator create(final boolean newForward, final double[][] newYDotK,
                                             final ODEStateAndDerivative newGlobalPreviousState,
@@ -78,12 +84,14 @@ class EulerStateInterpolator
                                             final ODEStateAndDerivative newSoftCurrentState,
                                             final EquationsMapper newMapper) {
         return new EulerStateInterpolator(newForward, newYDotK,
-                                          newGlobalPreviousState, newGlobalCurrentState,
-                                          newSoftPreviousState, newSoftCurrentState,
-                                          newMapper);
+                newGlobalPreviousState, newGlobalCurrentState,
+                newSoftPreviousState, newSoftCurrentState,
+                newMapper);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected ODEStateAndDerivative computeInterpolatedStateAndDerivatives(final EquationsMapper mapper,
                                                                            final double time, final double theta,
@@ -91,10 +99,10 @@ class EulerStateInterpolator
         final double[] interpolatedState;
         final double[] interpolatedDerivatives;
         if (getGlobalPreviousState() != null && theta <= 0.5) {
-            interpolatedState       = previousStateLinearCombination(thetaH);
+            interpolatedState = previousStateLinearCombination(thetaH);
             interpolatedDerivatives = derivativeLinearCombination(1.0);
         } else {
-            interpolatedState       = currentStateLinearCombination(-oneMinusThetaH);
+            interpolatedState = currentStateLinearCombination(-oneMinusThetaH);
             interpolatedDerivatives = derivativeLinearCombination(1.0);
         }
 

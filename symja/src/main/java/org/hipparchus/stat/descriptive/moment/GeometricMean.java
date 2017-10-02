@@ -16,8 +16,6 @@
  */
 package org.hipparchus.stat.descriptive.moment;
 
-import java.io.Serializable;
-
 import org.hipparchus.exception.MathIllegalArgumentException;
 import org.hipparchus.exception.NullArgumentException;
 import org.hipparchus.stat.descriptive.AbstractStorelessUnivariateStatistic;
@@ -25,6 +23,8 @@ import org.hipparchus.stat.descriptive.AggregatableStatistic;
 import org.hipparchus.stat.descriptive.summary.SumOfLogs;
 import org.hipparchus.util.FastMath;
 import org.hipparchus.util.MathUtils;
+
+import java.io.Serializable;
 
 /**
  * Returns the <a href="http://www.xycoon.com/geometric_mean.htm">
@@ -48,12 +48,16 @@ import org.hipparchus.util.MathUtils;
  * <code>clear()</code> method, it must be synchronized externally.
  */
 public class GeometricMean extends AbstractStorelessUnivariateStatistic
-    implements AggregatableStatistic<GeometricMean>, Serializable {
+        implements AggregatableStatistic<GeometricMean>, Serializable {
 
-    /** Serializable version identifier */
+    /**
+     * Serializable version identifier
+     */
     private static final long serialVersionUID = 20150412L;
 
-    /** Wrapped SumOfLogs instance */
+    /**
+     * Wrapped SumOfLogs instance
+     */
     private final SumOfLogs sumOfLogs;
 
     /**
@@ -74,6 +78,7 @@ public class GeometricMean extends AbstractStorelessUnivariateStatistic
 
     /**
      * Create a GeometricMean instance using the given SumOfLogs instance.
+     *
      * @param sumOfLogs sum of logs instance to use for computation.
      */
     public GeometricMean(SumOfLogs sumOfLogs) {
@@ -90,17 +95,21 @@ public class GeometricMean extends AbstractStorelessUnivariateStatistic
      */
     public GeometricMean(GeometricMean original) throws NullArgumentException {
         MathUtils.checkNotNull(original);
-        this.sumOfLogs    = original.sumOfLogs.copy();
+        this.sumOfLogs = original.sumOfLogs.copy();
         this.incSumOfLogs = original.incSumOfLogs;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GeometricMean copy() {
         return new GeometricMean(this);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void increment(final double d) {
         if (incSumOfLogs) {
@@ -108,7 +117,9 @@ public class GeometricMean extends AbstractStorelessUnivariateStatistic
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getResult() {
         if (sumOfLogs.getN() > 0) {
@@ -118,7 +129,9 @@ public class GeometricMean extends AbstractStorelessUnivariateStatistic
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void clear() {
         if (incSumOfLogs) {
@@ -126,7 +139,9 @@ public class GeometricMean extends AbstractStorelessUnivariateStatistic
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void aggregate(GeometricMean other) {
         MathUtils.checkNotNull(other);
@@ -142,20 +157,22 @@ public class GeometricMean extends AbstractStorelessUnivariateStatistic
      * See {@link GeometricMean} for details on the computing algorithm.
      *
      * @param values input array containing the values
-     * @param begin first array element to include
+     * @param begin  first array element to include
      * @param length the number of elements to include
      * @return the geometric mean or Double.NaN if length = 0 or
      * any of the values are &lt;= 0.
      * @throws MathIllegalArgumentException if the input array is null or the array
-     * index parameters are not valid
+     *                                      index parameters are not valid
      */
     @Override
     public double evaluate(final double[] values, final int begin, final int length)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         return FastMath.exp(sumOfLogs.evaluate(values, begin, length) / length);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public long getN() {
         return sumOfLogs.getN();

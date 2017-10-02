@@ -4,6 +4,8 @@ import org.matheclipse.core.expression.F;
 import org.matheclipse.core.interfaces.IExpr;
 import org.matheclipse.core.interfaces.INumber;
 
+import java.util.function.Function;
+
 public final class AbsTimesFunction implements Function<IExpr, IExpr> {
     @Override
     public IExpr apply(IExpr expr) {

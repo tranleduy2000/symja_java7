@@ -6,15 +6,16 @@
 package edu.jas.util;
 
 
-import java.util.LinkedList;
-
 import org.apache.log4j.Logger;
+
+import java.util.LinkedList;
 
 import edu.jas.kern.PreemptingException;
 
 
 /**
  * Thread pool using stack / list workpile.
+ *
  * @author Akitoshi Yoshida
  * @author Heinz Kredel
  */
@@ -26,32 +27,24 @@ public class ThreadPool {
      * Default number of threads to use.
      */
     static final int DEFAULT_SIZE = 3;
-
-
+    private static final Logger logger = Logger.getLogger(ThreadPool.class);
+    private static final boolean debug = logger.isDebugEnabled();
     /**
      * Number of threads to use.
      */
     final int size;
-
-
     /**
      * Array of workers.
      */
     protected PoolThread[] workers;
-
-
     /**
      * Number of idle workers.
      */
     protected int idleworkers = 0;
-
-
     /**
      * Shutdown request.
      */
     protected volatile boolean shutdown = false;
-
-
     /**
      * Work queue / stack.
      */
@@ -59,15 +52,7 @@ public class ThreadPool {
     // List or Collection is not appropriate
     // LIFO strategy for recursion
     protected LinkedList<Runnable> jobstack; // FIFO strategy for GB
-
-
     protected StrategyEnumeration strategy = StrategyEnumeration.LIFO;
-
-
-    private static final Logger logger = Logger.getLogger(ThreadPool.class);
-
-
-    private static final boolean debug = logger.isDebugEnabled();
 
 
     /**
@@ -81,6 +66,7 @@ public class ThreadPool {
 
     /**
      * Constructs a new ThreadPool with size DEFAULT_SIZE.
+     *
      * @param strategy for job processing.
      */
     public ThreadPool(StrategyEnumeration strategy) {
@@ -90,6 +76,7 @@ public class ThreadPool {
 
     /**
      * Constructs a new ThreadPool with strategy StrategyEnumeration.FIFO.
+     *
      * @param size of the pool.
      */
     public ThreadPool(int size) {
@@ -99,8 +86,9 @@ public class ThreadPool {
 
     /**
      * Constructs a new ThreadPool.
+     *
      * @param strategy for job processing.
-     * @param size of the pool.
+     * @param size     of the pool.
      */
     public ThreadPool(StrategyEnumeration strategy, int size) {
         this.size = size;
@@ -134,7 +122,7 @@ public class ThreadPool {
     @Override
     public String toString() {
         return "ThreadPool( size=" + getNumber() + ", idle=" + idleworkers + ", " + getStrategy() + ", jobs="
-                        + jobstack.size() + ")";
+                + jobstack.size() + ")";
     }
 
 
@@ -234,6 +222,7 @@ public class ThreadPool {
 
     /**
      * adds a job to the workpile.
+     *
      * @param job
      */
     public synchronized void addJob(Runnable job) {
@@ -291,6 +280,7 @@ public class ThreadPool {
 
     /**
      * check if there are more than n jobs for processing.
+     *
      * @param n Integer
      * @return true, if there are possibly more than n jobs.
      */
@@ -325,15 +315,9 @@ public class ThreadPool {
 class PoolThread extends Thread {
 
 
-    ThreadPool pool;
-
-
     private static final Logger logger = Logger.getLogger(PoolThread.class);
-
-
     private static final boolean debug = logger.isDebugEnabled();
-
-
+    ThreadPool pool;
     volatile boolean isWorking = false;
 
 

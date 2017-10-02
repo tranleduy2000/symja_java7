@@ -21,17 +21,18 @@ package org.hipparchus.exception;
  * In most cases, this class should not be instantiated directly: it should
  * serve as a base class to create all the exceptions that have the semantics
  * of the standard {@link IllegalArgumentException}.
- *
  */
 public class MathIllegalArgumentException extends MathRuntimeException {
-    /** Serializable version Id. */
+    /**
+     * Serializable version Id.
+     */
     private static final long serialVersionUID = -6024911025449780478L;
 
     /**
      * @param pattern Message pattern explaining the cause of the error.
-     * @param args Arguments.
+     * @param args    Arguments.
      */
-    public MathIllegalArgumentException(Localizable pattern, Object ... args) {
+    public MathIllegalArgumentException(Localizable pattern, Object... args) {
         super(pattern, args);
     }
 

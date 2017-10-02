@@ -5,10 +5,10 @@
 package edu.jas.vector;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.kern.PrettyPrint;
 import edu.jas.structure.ModulElem;
@@ -18,6 +18,7 @@ import edu.jas.structure.RingElem;
 /**
  * GenVector implements generic vectors with RingElem entries. Vectors of n
  * columns over C.
+ *
  * @author Heinz Kredel
  */
 
@@ -56,6 +57,7 @@ public class GenVector<C extends RingElem<C>> implements ModulElem<GenVector<C>,
 
     /**
      * Get the String representation as RingElem.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -82,6 +84,7 @@ public class GenVector<C extends RingElem<C>> implements ModulElem<GenVector<C>,
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this Element.
      * @see edu.jas.structure.Element#toScript()
      */
@@ -106,6 +109,7 @@ public class GenVector<C extends RingElem<C>> implements ModulElem<GenVector<C>,
 
     /**
      * Get a scripting compatible string representation of the factory.
+     *
      * @return script compatible representation for this ElemFactory.
      * @see edu.jas.structure.Element#toScriptFactory()
      */
@@ -118,6 +122,7 @@ public class GenVector<C extends RingElem<C>> implements ModulElem<GenVector<C>,
 
     /**
      * Get the corresponding element factory.
+     *
      * @return factory for this Element.
      * @see edu.jas.structure.Element#factory()
      */
@@ -128,6 +133,7 @@ public class GenVector<C extends RingElem<C>> implements ModulElem<GenVector<C>,
 
     /**
      * clone method.
+     *
      * @see java.lang.Object#clone()
      */
     @Override
@@ -168,6 +174,7 @@ public class GenVector<C extends RingElem<C>> implements ModulElem<GenVector<C>,
 
     /**
      * Hash code for this GenVector.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -178,6 +185,7 @@ public class GenVector<C extends RingElem<C>> implements ModulElem<GenVector<C>,
 
     /**
      * compareTo, lexicographical comparison.
+     *
      * @param b other
      * @return 1 if (this &lt; b), 0 if (this == b) or -1 if (this &gt; b).
      */
@@ -200,6 +208,7 @@ public class GenVector<C extends RingElem<C>> implements ModulElem<GenVector<C>,
 
     /**
      * sign of vector.
+     *
      * @return 1 if (this &lt; 0), 0 if (this == 0) or -1 if (this &gt; 0).
      */
     public int signum() {
@@ -209,6 +218,7 @@ public class GenVector<C extends RingElem<C>> implements ModulElem<GenVector<C>,
 
     /**
      * Sum of vectors.
+     *
      * @param b other vector.
      * @return this+b
      */
@@ -226,6 +236,7 @@ public class GenVector<C extends RingElem<C>> implements ModulElem<GenVector<C>,
 
     /**
      * Difference of vectors.
+     *
      * @param b other vector.
      * @return this-b
      */
@@ -243,6 +254,7 @@ public class GenVector<C extends RingElem<C>> implements ModulElem<GenVector<C>,
 
     /**
      * Negative of this vector.
+     *
      * @return -this
      */
     public GenVector<C> negate() {
@@ -257,6 +269,7 @@ public class GenVector<C extends RingElem<C>> implements ModulElem<GenVector<C>,
 
     /**
      * Absolute value of this vector.
+     *
      * @return abs(this)
      */
     public GenVector<C> abs() {
@@ -269,6 +282,7 @@ public class GenVector<C extends RingElem<C>> implements ModulElem<GenVector<C>,
 
     /**
      * Product of this vector with scalar.
+     *
      * @param s scalar.
      * @return this*s
      */
@@ -284,6 +298,7 @@ public class GenVector<C extends RingElem<C>> implements ModulElem<GenVector<C>,
 
     /**
      * Left product of this vector with scalar.
+     *
      * @param s scalar.
      * @return s*this
      */
@@ -299,6 +314,7 @@ public class GenVector<C extends RingElem<C>> implements ModulElem<GenVector<C>,
 
     /**
      * Linear combination of this vector with scalar multiple of other vector.
+     *
      * @param s scalar.
      * @param b other vector.
      * @param t scalar.
@@ -320,6 +336,7 @@ public class GenVector<C extends RingElem<C>> implements ModulElem<GenVector<C>,
 
     /**
      * Linear combination of this vector with scalar multiple of other vector.
+     *
      * @param b other vector.
      * @param t scalar.
      * @return this+b*t
@@ -340,6 +357,7 @@ public class GenVector<C extends RingElem<C>> implements ModulElem<GenVector<C>,
     /**
      * Left linear combination of this vector with scalar multiple of other
      * vector.
+     *
      * @param b other vector.
      * @param t scalar.
      * @return this+t*b
@@ -360,6 +378,7 @@ public class GenVector<C extends RingElem<C>> implements ModulElem<GenVector<C>,
     /**
      * left linear combination of this vector with scalar multiple of other
      * vector.
+     *
      * @param s scalar.
      * @param b other vector.
      * @param t scalar.
@@ -381,6 +400,7 @@ public class GenVector<C extends RingElem<C>> implements ModulElem<GenVector<C>,
 
     /**
      * scalar / dot product of this vector with other vector.
+     *
      * @param b other vector.
      * @return this . b
      */
@@ -398,6 +418,7 @@ public class GenVector<C extends RingElem<C>> implements ModulElem<GenVector<C>,
 
     /**
      * scalar / dot product of this vector with list of other vectors.
+     *
      * @param B list of vectors.
      * @return this * b
      */
@@ -415,6 +436,7 @@ public class GenVector<C extends RingElem<C>> implements ModulElem<GenVector<C>,
 
     /**
      * right scalar / dot product of this vector with list of other vectors.
+     *
      * @param B list of vectors.
      * @return b * this
      */

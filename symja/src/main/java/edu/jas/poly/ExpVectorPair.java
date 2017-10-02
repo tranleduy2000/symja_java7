@@ -8,9 +8,10 @@ import java.io.Serializable;
 
 
 /**
- * ExpVectorPair 
+ * ExpVectorPair
  * implements pairs of exponent vectors for S-polynomials.
  * Objects of this class are immutable.
+ *
  * @author Heinz Kredel
  */
 
@@ -23,6 +24,7 @@ public class ExpVectorPair implements Serializable {
 
     /**
      * Constructors for ExpVectorPair.
+     *
      * @param e first part.
      * @param f second part.
      */
@@ -37,7 +39,7 @@ public class ExpVectorPair implements Serializable {
      */
     public ExpVector getFirst() {
         return e1;
-    } 
+    }
 
 
     /**
@@ -45,7 +47,7 @@ public class ExpVectorPair implements Serializable {
      */
     public ExpVector getSecond() {
         return e2;
-    } 
+    }
 
 
     /**
@@ -53,14 +55,14 @@ public class ExpVectorPair implements Serializable {
      */
     public long totalDeg() {
         return e1.totalDeg() + e2.totalDeg();
-    } 
+    }
 
 
     /**
      * toString.
      */
     @Override
-     public String toString() {
+    public String toString() {
         StringBuffer s = new StringBuffer("ExpVectorPair[");
         s.append(e1.toString());
         s.append(",");
@@ -72,52 +74,57 @@ public class ExpVectorPair implements Serializable {
 
     /**
      * equals.
+     *
      * @param B other.
      * @return true, if this == b, else false.
      */
     @Override
-     public boolean equals(Object B) { 
-       if ( ! (B instanceof ExpVectorPair) ) return false;
-       return equals( (ExpVectorPair)B );
+    public boolean equals(Object B) {
+        if (!(B instanceof ExpVectorPair)) return false;
+        return equals((ExpVectorPair) B);
     }
 
 
     /**
      * equals.
+     *
      * @param b other.
      * @return true, if this == b, else false.
      */
-    public boolean equals(ExpVectorPair b) { 
-       boolean t = e1.equals( b.getFirst() ); 
-       t = t && e2.equals( b.getSecond() ); 
-       return t;
+    public boolean equals(ExpVectorPair b) {
+        boolean t = e1.equals(b.getFirst());
+        t = t && e2.equals(b.getSecond());
+        return t;
     }
 
 
-    /** hash code.
+    /**
+     * hash code.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {
-       return (e1.hashCode() << 16) + e2.hashCode();
+        return (e1.hashCode() << 16) + e2.hashCode();
     }
 
-        
+
     /**
      * isMultiple.
+     *
      * @param p other.
      * @return true, if this is a multiple of b, else false.
      */
     public boolean isMultiple(ExpVectorPair p) {
-       boolean w =  e1.multipleOf( p.getFirst() );
-       if ( !w ) {
-           return w;
-       }
-       w =  e2.multipleOf( p.getSecond() );
-       if ( !w ) {
-           return w;
-       }
-       return true;
+        boolean w = e1.multipleOf(p.getFirst());
+        if (!w) {
+            return w;
+        }
+        w = e2.multipleOf(p.getSecond());
+        if (!w) {
+            return w;
+        }
+        return true;
     }
 
 }

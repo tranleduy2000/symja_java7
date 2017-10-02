@@ -24,8 +24,8 @@ import org.hipparchus.exception.MathIllegalStateException;
 import org.hipparchus.linear.Array2DRowFieldMatrix;
 import org.hipparchus.ode.nonstiff.AdaptiveStepsizeFieldIntegrator;
 import org.hipparchus.ode.nonstiff.DormandPrince853FieldIntegrator;
-import org.hipparchus.ode.sampling.FieldODEStepHandler;
 import org.hipparchus.ode.sampling.FieldODEStateInterpolator;
+import org.hipparchus.ode.sampling.FieldODEStepHandler;
 import org.hipparchus.util.FastMath;
 import org.hipparchus.util.MathArrays;
 import org.hipparchus.util.MathUtils;
@@ -56,37 +56,48 @@ import org.hipparchus.util.MathUtils;
  * factor is therefore set to a quite low value: 2<sup>1/order</sup>.
  * </p>
  *
+ * @param <T> the type of the field elements
  * @see org.hipparchus.ode.nonstiff.AdamsBashforthFieldIntegrator
  * @see org.hipparchus.ode.nonstiff.AdamsMoultonFieldIntegrator
- * @param <T> the type of the field elements
  */
 public abstract class MultistepFieldIntegrator<T extends RealFieldElement<T>>
-    extends AdaptiveStepsizeFieldIntegrator<T> {
+        extends AdaptiveStepsizeFieldIntegrator<T> {
 
-    /** First scaled derivative (h y'). */
+    /**
+     * Number of steps of the multistep method (excluding the one being computed).
+     */
+    private final int nSteps;
+    /**
+     * First scaled derivative (h y').
+     */
     protected T[] scaled;
-
-    /** Nordsieck matrix of the higher scaled derivatives.
+    /**
+     * Nordsieck matrix of the higher scaled derivatives.
      * <p>(h<sup>2</sup>/2 y'', h<sup>3</sup>/6 y''' ..., h<sup>k</sup>/k! y<sup>(k)</sup>)</p>
      */
     protected Array2DRowFieldMatrix<T> nordsieck;
-
-    /** Starter integrator. */
+    /**
+     * Starter integrator.
+     */
     private FieldODEIntegrator<T> starter;
-
-    /** Number of steps of the multistep method (excluding the one being computed). */
-    private final int nSteps;
-
-    /** Stepsize control exponent. */
+    /**
+     * Stepsize control exponent.
+     */
     private double exp;
 
-    /** Safety factor for stepsize control. */
+    /**
+     * Safety factor for stepsize control.
+     */
     private double safety;
 
-    /** Minimal reduction factor for stepsize control. */
+    /**
+     * Minimal reduction factor for stepsize control.
+     */
     private double minReduction;
 
-    /** Maximal growth factor for stepsize control. */
+    /**
+     * Maximal growth factor for stepsize control.
+     */
     private double maxGrowth;
 
     /**
@@ -97,36 +108,37 @@ public abstract class MultistepFieldIntegrator<T extends RealFieldElement<T>>
      * <p>
      * The default max growth factor is set to a quite low value: 2<sup>1/order</sup>.
      * </p>
-     * @param field field to which the time and state vector elements belong
-     * @param name name of the method
-     * @param nSteps number of steps of the multistep method
-     * (excluding the one being computed)
-     * @param order order of the method
-     * @param minStep minimal step (must be positive even for backward
-     * integration), the last step can be smaller than this
-     * @param maxStep maximal step (must be positive even for backward
-     * integration)
+     *
+     * @param field                 field to which the time and state vector elements belong
+     * @param name                  name of the method
+     * @param nSteps                number of steps of the multistep method
+     *                              (excluding the one being computed)
+     * @param order                 order of the method
+     * @param minStep               minimal step (must be positive even for backward
+     *                              integration), the last step can be smaller than this
+     * @param maxStep               maximal step (must be positive even for backward
+     *                              integration)
      * @param scalAbsoluteTolerance allowed absolute error
      * @param scalRelativeTolerance allowed relative error
-     * @exception MathIllegalArgumentException if number of steps is smaller than 2
+     * @throws MathIllegalArgumentException if number of steps is smaller than 2
      */
     protected MultistepFieldIntegrator(final Field<T> field, final String name,
                                        final int nSteps, final int order,
                                        final double minStep, final double maxStep,
                                        final double scalAbsoluteTolerance,
                                        final double scalRelativeTolerance)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
 
         super(field, name, minStep, maxStep, scalAbsoluteTolerance, scalRelativeTolerance);
 
         if (nSteps < 2) {
             throw new MathIllegalArgumentException(LocalizedODEFormats.INTEGRATION_METHOD_NEEDS_AT_LEAST_TWO_PREVIOUS_POINTS,
-                                                   nSteps, 2, true);
+                    nSteps, 2, true);
         }
 
         starter = new DormandPrince853FieldIntegrator<T>(field, minStep, maxStep,
-                                                         scalAbsoluteTolerance,
-                                                         scalRelativeTolerance);
+                scalAbsoluteTolerance,
+                scalRelativeTolerance);
         this.nSteps = nSteps;
 
         exp = -1.0 / order;
@@ -146,15 +158,16 @@ public abstract class MultistepFieldIntegrator<T extends RealFieldElement<T>>
      * <p>
      * The default max growth factor is set to a quite low value: 2<sup>1/order</sup>.
      * </p>
-     * @param field field to which the time and state vector elements belong
-     * @param name name of the method
-     * @param nSteps number of steps of the multistep method
-     * (excluding the one being computed)
-     * @param order order of the method
-     * @param minStep minimal step (must be positive even for backward
-     * integration), the last step can be smaller than this
-     * @param maxStep maximal step (must be positive even for backward
-     * integration)
+     *
+     * @param field                field to which the time and state vector elements belong
+     * @param name                 name of the method
+     * @param nSteps               number of steps of the multistep method
+     *                             (excluding the one being computed)
+     * @param order                order of the method
+     * @param minStep              minimal step (must be positive even for backward
+     *                             integration), the last step can be smaller than this
+     * @param maxStep              maximal step (must be positive even for backward
+     *                             integration)
      * @param vecAbsoluteTolerance allowed absolute error
      * @param vecRelativeTolerance allowed relative error
      */
@@ -165,8 +178,8 @@ public abstract class MultistepFieldIntegrator<T extends RealFieldElement<T>>
                                        final double[] vecRelativeTolerance) {
         super(field, name, minStep, maxStep, vecAbsoluteTolerance, vecRelativeTolerance);
         starter = new DormandPrince853FieldIntegrator<T>(field, minStep, maxStep,
-                                                         vecAbsoluteTolerance,
-                                                         vecRelativeTolerance);
+                vecAbsoluteTolerance,
+                vecRelativeTolerance);
         this.nSteps = nSteps;
 
         exp = -1.0 / order;
@@ -180,6 +193,7 @@ public abstract class MultistepFieldIntegrator<T extends RealFieldElement<T>>
 
     /**
      * Get the starter integrator.
+     *
      * @return starter integrator
      */
     public FieldODEIntegrator<T> getStarterIntegrator() {
@@ -191,13 +205,15 @@ public abstract class MultistepFieldIntegrator<T extends RealFieldElement<T>>
      * <p>The various step and event handlers for this starter integrator
      * will be managed automatically by the multi-step integrator. Any
      * user configuration for these elements will be cleared before use.</p>
+     *
      * @param starterIntegrator starter integrator
      */
     public void setStarterIntegrator(FieldODEIntegrator<T> starterIntegrator) {
         this.starter = starterIntegrator;
     }
 
-    /** Start the integration.
+    /**
+     * Start the integration.
      * <p>This method computes one step using the underlying starter integrator,
      * and initializes the Nordsieck vector at step start. The starter integrator
      * purpose is only to establish initial conditions, it does not really change
@@ -206,17 +222,18 @@ public abstract class MultistepFieldIntegrator<T extends RealFieldElement<T>>
      * computation right from the beginning. In a sense, the starter integrator
      * can be seen as a dummy one and so it will never trigger any user event nor
      * call any user step handler.</p>
-     * @param equations complete set of differential equations to integrate
+     *
+     * @param equations    complete set of differential equations to integrate
      * @param initialState initial state (time, primary and secondary state vectors)
-     * @param t target time for the integration
-     * (can be set to a value smaller than <code>t0</code> for backward integration)
-     * @exception MathIllegalArgumentException if arrays dimension do not match equations settings
-     * @exception MathIllegalArgumentException if integration step is too small
-     * @exception MathIllegalStateException if the number of functions evaluations is exceeded
-     * @exception MathIllegalArgumentException if the location of an event cannot be bracketed
+     * @param t            target time for the integration
+     *                     (can be set to a value smaller than <code>t0</code> for backward integration)
+     * @throws MathIllegalArgumentException if arrays dimension do not match equations settings
+     * @throws MathIllegalArgumentException if integration step is too small
+     * @throws MathIllegalStateException    if the number of functions evaluations is exceeded
+     * @throws MathIllegalArgumentException if the location of an event cannot be bracketed
      */
     protected void start(final FieldExpandableODE<T> equations, final FieldODEState<T> initialState, final T t)
-        throws MathIllegalArgumentException, MathIllegalStateException {
+            throws MathIllegalArgumentException, MathIllegalStateException {
 
         // make sure NO user events nor user step handlers are triggered,
         // this is the task of the top level integrator, not the task of the starter integrator
@@ -247,10 +264,12 @@ public abstract class MultistepFieldIntegrator<T extends RealFieldElement<T>>
 
     }
 
-    /** Initialize the high order scaled derivatives at step start.
-     * @param h step size to use for scaling
-     * @param t first steps times
-     * @param y first steps states
+    /**
+     * Initialize the high order scaled derivatives at step start.
+     *
+     * @param h    step size to use for scaling
+     * @param t    first steps times
+     * @param y    first steps states
      * @param yDot first steps derivatives
      * @return Nordieck vector at first step (h<sup>2</sup>/2 y''<sub>n</sub>,
      * h<sup>3</sup>/6 y'''<sub>n</sub> ... h<sup>k</sup>/k! y<sup>(k)</sup><sub>n</sub>)
@@ -259,58 +278,74 @@ public abstract class MultistepFieldIntegrator<T extends RealFieldElement<T>>
                                                                                final T[][] y,
                                                                                final T[][] yDot);
 
-    /** Get the minimal reduction factor for stepsize control.
+    /**
+     * Get the minimal reduction factor for stepsize control.
+     *
      * @return minimal reduction factor
      */
     public double getMinReduction() {
         return minReduction;
     }
 
-    /** Set the minimal reduction factor for stepsize control.
+    /**
+     * Set the minimal reduction factor for stepsize control.
+     *
      * @param minReduction minimal reduction factor
      */
     public void setMinReduction(final double minReduction) {
         this.minReduction = minReduction;
     }
 
-    /** Get the maximal growth factor for stepsize control.
+    /**
+     * Get the maximal growth factor for stepsize control.
+     *
      * @return maximal growth factor
      */
     public double getMaxGrowth() {
         return maxGrowth;
     }
 
-    /** Set the maximal growth factor for stepsize control.
+    /**
+     * Set the maximal growth factor for stepsize control.
+     *
      * @param maxGrowth maximal growth factor
      */
     public void setMaxGrowth(final double maxGrowth) {
         this.maxGrowth = maxGrowth;
     }
 
-    /** Get the safety factor for stepsize control.
+    /**
+     * Get the safety factor for stepsize control.
+     *
      * @return safety factor
      */
     public double getSafety() {
-      return safety;
+        return safety;
     }
 
-    /** Set the safety factor for stepsize control.
+    /**
+     * Set the safety factor for stepsize control.
+     *
      * @param safety safety factor
      */
     public void setSafety(final double safety) {
-      this.safety = safety;
+        this.safety = safety;
     }
 
-    /** Get the number of steps of the multistep method (excluding the one being computed).
+    /**
+     * Get the number of steps of the multistep method (excluding the one being computed).
+     *
      * @return number of steps of the multistep method (excluding the one being computed)
      */
     public int getNSteps() {
-      return nSteps;
+        return nSteps;
     }
 
-    /** Rescale the instance.
+    /**
+     * Rescale the instance.
      * <p>Since the scaled and Nordsieck arrays are shared with the caller,
      * this method has the side effect of rescaling this arrays in the caller too.</p>
+     *
      * @param newStepSize new step size to use in the scaled and Nordsieck arrays
      */
     protected void rescale(final T newStepSize) {
@@ -334,65 +369,98 @@ public abstract class MultistepFieldIntegrator<T extends RealFieldElement<T>>
 
     }
 
-    /** Compute step grow/shrink factor according to normalized error.
+    /**
+     * Compute step grow/shrink factor according to normalized error.
+     *
      * @param error normalized error of the current step
      * @return grow/shrink factor for next step
      */
     protected T computeStepGrowShrinkFactor(final T error) {
         return MathUtils.min(error.getField().getZero().add(maxGrowth),
-                             MathUtils.max(error.getField().getZero().add(minReduction),
-                                           error.pow(exp).multiply(safety)));
+                MathUtils.max(error.getField().getZero().add(minReduction),
+                        error.pow(exp).multiply(safety)));
     }
 
-    /** Specialized step handler storing the first step.
+    /**
+     * Marker exception used ONLY to stop the starter integrator after first step.
+     */
+    private static class InitializationCompletedMarkerException
+            extends RuntimeException {
+
+        /**
+         * Serializable version identifier.
+         */
+        private static final long serialVersionUID = -1914085471038046418L;
+
+        /**
+         * Simple constructor.
+         */
+        InitializationCompletedMarkerException() {
+            super((Throwable) null);
+        }
+
+    }
+
+    /**
+     * Specialized step handler storing the first step.
      */
     private class FieldNordsieckInitializer implements FieldODEStepHandler<T> {
 
-        /** Steps counter. */
+        /**
+         * First steps times.
+         */
+        private final T[] t;
+        /**
+         * First steps states.
+         */
+        private final T[][] y;
+        /**
+         * First steps derivatives.
+         */
+        private final T[][] yDot;
+        /**
+         * Steps counter.
+         */
         private int count;
-
-        /** Saved start. */
+        /**
+         * Saved start.
+         */
         private FieldODEStateAndDerivative<T> savedStart;
 
-        /** First steps times. */
-        private final T[] t;
-
-        /** First steps states. */
-        private final T[][] y;
-
-        /** First steps derivatives. */
-        private final T[][] yDot;
-
-        /** Simple constructor.
+        /**
+         * Simple constructor.
+         *
          * @param nbStartPoints number of start points (including the initial point)
          */
         FieldNordsieckInitializer(final int nbStartPoints) {
-            this.count  = 0;
-            this.t      = MathArrays.buildArray(getField(), nbStartPoints);
-            this.y      = MathArrays.buildArray(getField(), nbStartPoints, -1);
-            this.yDot   = MathArrays.buildArray(getField(), nbStartPoints, -1);
+            this.count = 0;
+            this.t = MathArrays.buildArray(getField(), nbStartPoints);
+            this.y = MathArrays.buildArray(getField(), nbStartPoints, -1);
+            this.yDot = MathArrays.buildArray(getField(), nbStartPoints, -1);
         }
 
-        /** {@inheritDoc} */
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void handleStep(FieldODEStateInterpolator<T> interpolator, boolean isLast)
-            throws MathIllegalStateException {
+                throws MathIllegalStateException {
 
 
             if (count == 0) {
                 // first step, we need to store also the point at the beginning of the step
                 final FieldODEStateAndDerivative<T> prev = interpolator.getPreviousState();
-                savedStart  = prev;
-                t[count]    = prev.getTime();
-                y[count]    = prev.getCompleteState();
+                savedStart = prev;
+                t[count] = prev.getTime();
+                y[count] = prev.getCompleteState();
                 yDot[count] = prev.getCompleteDerivative();
             }
 
             // store the point at the end of the step
             ++count;
             final FieldODEStateAndDerivative<T> curr = interpolator.getCurrentState();
-            t[count]    = curr.getTime();
-            y[count]    = curr.getCompleteState();
+            t[count] = curr.getTime();
+            y[count] = curr.getCompleteState();
             yDot[count] = curr.getCompleteDerivative();
 
             if (count == t.length - 1) {
@@ -418,24 +486,12 @@ public abstract class MultistepFieldIntegrator<T extends RealFieldElement<T>>
 
         }
 
-        /** {@inheritDoc} */
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void init(final FieldODEStateAndDerivative<T> initialState, T finalTime) {
             // nothing to do
-        }
-
-    }
-
-    /** Marker exception used ONLY to stop the starter integrator after first step. */
-    private static class InitializationCompletedMarkerException
-        extends RuntimeException {
-
-        /** Serializable version identifier. */
-        private static final long serialVersionUID = -1914085471038046418L;
-
-        /** Simple constructor. */
-        InitializationCompletedMarkerException() {
-            super((Throwable) null);
         }
 
     }

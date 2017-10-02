@@ -5,57 +5,50 @@
 package edu.jas.application;
 
 
+import org.apache.log4j.Logger;
+
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.apache.log4j.Logger;
-
 import edu.jas.kern.StringUtil;
 import edu.jas.poly.GenPolynomial;
 import edu.jas.poly.GenPolynomialRing;
 import edu.jas.structure.GcdRingElem;
+import edu.jas.structure.QuotPairFactory;
 import edu.jas.structure.RingFactory;
 import edu.jas.ufd.GCDFactory;
 import edu.jas.ufd.GreatestCommonDivisor;
-import edu.jas.structure.QuotPairFactory;
 
 
 /**
  * Local ring class based on GenPolynomial with RingElem interface. Objects of
  * this class are effective immutable.
+ *
  * @author Heinz Kredel
  */
-public class LocalRing<C extends GcdRingElem<C>> 
-       implements RingFactory<Local<C>>, QuotPairFactory<GenPolynomial<C>,Local<C>>  {
+public class LocalRing<C extends GcdRingElem<C>>
+        implements RingFactory<Local<C>>, QuotPairFactory<GenPolynomial<C>, Local<C>> {
 
 
     private static final Logger logger = Logger.getLogger(LocalRing.class);
 
 
     //private static final boolean debug = logger.isDebugEnabled();
-
-
+    /**
+     * Polynomial ideal for localization.
+     */
+    public final Ideal<C> ideal;
+    /**
+     * Polynomial ring of the factory.
+     */
+    public final GenPolynomialRing<C> ring;
     /**
      * Greatest common divisor engine for coefficient content and primitive
      * parts.
      */
     protected final GreatestCommonDivisor<C> engine;
-
-
-    /**
-     * Polynomial ideal for localization.
-     */
-    public final Ideal<C> ideal;
-
-
-    /**
-     * Polynomial ring of the factory.
-     */
-    public final GenPolynomialRing<C> ring;
-
-
     /**
      * Indicator if this ring is a field.
      */
@@ -64,6 +57,7 @@ public class LocalRing<C extends GcdRingElem<C>>
 
     /**
      * The constructor creates a LocalRing object from an Ideal.
+     *
      * @param i localization polynomial ideal.
      */
     public LocalRing(Ideal<C> i) {
@@ -83,7 +77,7 @@ public class LocalRing<C extends GcdRingElem<C>>
         }
         ring = ideal.list.ring;
         //engine = GCDFactory.<C>getImplementation( ring.coFac );
-        engine = GCDFactory.<C> getProxy(ring.coFac);
+        engine = GCDFactory.<C>getProxy(ring.coFac);
     }
 
 
@@ -113,6 +107,7 @@ public class LocalRing<C extends GcdRingElem<C>>
 
     /**
      * Is this structure finite or infinite.
+     *
      * @return true if this structure is finite, else false.
      * @see edu.jas.structure.ElemFactory#isFinite()
      */
@@ -123,6 +118,7 @@ public class LocalRing<C extends GcdRingElem<C>>
 
     /**
      * Copy Local element c.
+     *
      * @param c
      * @return a copy of c.
      */
@@ -133,6 +129,7 @@ public class LocalRing<C extends GcdRingElem<C>>
 
     /**
      * Get the zero element.
+     *
      * @return 0 as Local.
      */
     public Local<C> getZERO() {
@@ -142,6 +139,7 @@ public class LocalRing<C extends GcdRingElem<C>>
 
     /**
      * Get the one element.
+     *
      * @return 1 as Local.
      */
     public Local<C> getONE() {
@@ -151,6 +149,7 @@ public class LocalRing<C extends GcdRingElem<C>>
 
     /**
      * Get a list of the generating elements.
+     *
      * @return list of generators for the algebraic structure.
      * @see edu.jas.structure.ElemFactory#generators()
      */
@@ -172,6 +171,7 @@ public class LocalRing<C extends GcdRingElem<C>>
 
     /**
      * Query if this ring is commutative.
+     *
      * @return true if this ring is commutative, else false.
      */
     public boolean isCommutative() {
@@ -181,6 +181,7 @@ public class LocalRing<C extends GcdRingElem<C>>
 
     /**
      * Query if this ring is associative.
+     *
      * @return true if this ring is associative, else false.
      */
     public boolean isAssociative() {
@@ -190,6 +191,7 @@ public class LocalRing<C extends GcdRingElem<C>>
 
     /**
      * Query if this ring is a field.
+     *
      * @return false.
      */
     public boolean isField() {
@@ -206,6 +208,7 @@ public class LocalRing<C extends GcdRingElem<C>>
 
     /**
      * Characteristic of this ring.
+     *
      * @return characteristic of this ring.
      */
     public java.math.BigInteger characteristic() {
@@ -215,6 +218,7 @@ public class LocalRing<C extends GcdRingElem<C>>
 
     /**
      * Get a Local element from a BigInteger value.
+     *
      * @param a BigInteger.
      * @return a Local.
      */
@@ -225,6 +229,7 @@ public class LocalRing<C extends GcdRingElem<C>>
 
     /**
      * Get a Local element from a long value.
+     *
      * @param a long.
      * @return a Local.
      */
@@ -235,6 +240,7 @@ public class LocalRing<C extends GcdRingElem<C>>
 
     /**
      * Get the String representation as RingFactory.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -245,6 +251,7 @@ public class LocalRing<C extends GcdRingElem<C>>
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this ElemFactory.
      * @see edu.jas.structure.ElemFactory#toScript()
      */
@@ -257,6 +264,7 @@ public class LocalRing<C extends GcdRingElem<C>>
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -283,6 +291,7 @@ public class LocalRing<C extends GcdRingElem<C>>
 
     /**
      * Hash code for this local ring.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -295,6 +304,7 @@ public class LocalRing<C extends GcdRingElem<C>>
 
     /**
      * Local random.
+     *
      * @param n such that 0 &le; v &le; (2<sup>n</sup>-1).
      * @return a random residue element.
      */
@@ -312,6 +322,7 @@ public class LocalRing<C extends GcdRingElem<C>>
 
     /**
      * Generate a random residum polynomial.
+     *
      * @param k bitsize of random coefficients.
      * @param l number of terms.
      * @param d maximal degree in each variable.
@@ -332,7 +343,8 @@ public class LocalRing<C extends GcdRingElem<C>>
 
     /**
      * Local random.
-     * @param n such that 0 &le; v &le; (2<sup>n</sup>-1).
+     *
+     * @param n   such that 0 &le; v &le; (2<sup>n</sup>-1).
      * @param rnd is a source for random bits.
      * @return a random residue element.
      */
@@ -350,6 +362,7 @@ public class LocalRing<C extends GcdRingElem<C>>
 
     /**
      * Parse Local from String.
+     *
      * @param s String.
      * @return Local from s.
      */
@@ -377,6 +390,7 @@ public class LocalRing<C extends GcdRingElem<C>>
 
     /**
      * Parse Local from Reader.
+     *
      * @param r Reader.
      * @return next Local from r.
      */

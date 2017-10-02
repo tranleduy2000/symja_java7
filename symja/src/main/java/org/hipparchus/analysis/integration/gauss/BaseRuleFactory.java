@@ -16,13 +16,13 @@
  */
 package org.hipparchus.analysis.integration.gauss;
 
-import java.util.Map;
-import java.util.TreeMap;
-
 import org.hipparchus.exception.LocalizedCoreFormats;
 import org.hipparchus.exception.MathIllegalArgumentException;
 import org.hipparchus.util.MathUtils;
 import org.hipparchus.util.Pair;
+
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Base class for rules that determines the integration nodes and their
@@ -30,104 +30,25 @@ import org.hipparchus.util.Pair;
  * Subclasses must implement the {@link #computeRule(int) computeRule} method.
  *
  * @param <T> Type of the number used to represent the points and weights of
- * the quadrature rules.
- *
+ *            the quadrature rules.
  */
 public abstract class BaseRuleFactory<T extends Number> {
-    /** List of points and weights, indexed by the order of the rule. */
+    /**
+     * List of points and weights, indexed by the order of the rule.
+     */
     private final Map<Integer, Pair<T[], T[]>> pointsAndWeights
-        = new TreeMap<Integer, Pair<T[], T[]>>();
-    /** Cache for double-precision rules. */
+            = new TreeMap<Integer, Pair<T[], T[]>>();
+    /**
+     * Cache for double-precision rules.
+     */
     private final Map<Integer, Pair<double[], double[]>> pointsAndWeightsDouble
-        = new TreeMap<Integer, Pair<double[], double[]>>();
-
-    /**
-     * Gets a copy of the quadrature rule with the given number of integration
-     * points.
-     *
-     * @param numberOfPoints Number of integration points.
-     * @return a copy of the integration rule.
-     * @throws MathIllegalArgumentException if {@code numberOfPoints < 1}.
-     * @throws MathIllegalArgumentException if the elements of the rule pair do not
-     * have the same length.
-     */
-    public Pair<double[], double[]> getRule(int numberOfPoints)
-        throws MathIllegalArgumentException {
-
-        if (numberOfPoints <= 0) {
-            throw new MathIllegalArgumentException(LocalizedCoreFormats.NUMBER_OF_POINTS,
-                                                   numberOfPoints);
-        }
-
-        // Try to obtain the rule from the cache.
-        Pair<double[], double[]> cached = pointsAndWeightsDouble.get(numberOfPoints);
-
-        if (cached == null) {
-            // Rule not computed yet.
-
-            // Compute the rule.
-            final Pair<T[], T[]> rule = getRuleInternal(numberOfPoints);
-            cached = convertToDouble(rule);
-
-            // Cache it.
-            pointsAndWeightsDouble.put(numberOfPoints, cached);
-        }
-
-        // Return a copy.
-        return new Pair<double[], double[]>(cached.getFirst().clone(),
-                                            cached.getSecond().clone());
-    }
-
-    /**
-     * Gets a rule.
-     * Synchronization ensures that rules will be computed and added to the
-     * cache at most once.
-     * The returned rule is a reference into the cache.
-     *
-     * @param numberOfPoints Order of the rule to be retrieved.
-     * @return the points and weights corresponding to the given order.
-     * @throws MathIllegalArgumentException if the elements of the rule pair do not
-     * have the same length.
-     */
-    protected synchronized Pair<T[], T[]> getRuleInternal(int numberOfPoints)
-        throws MathIllegalArgumentException {
-        final Pair<T[], T[]> rule = pointsAndWeights.get(numberOfPoints);
-        if (rule == null) {
-            addRule(computeRule(numberOfPoints));
-            // The rule should be available now.
-            return getRuleInternal(numberOfPoints);
-        }
-        return rule;
-    }
-
-    /**
-     * Stores a rule.
-     *
-     * @param rule Rule to be stored.
-     * @throws MathIllegalArgumentException if the elements of the pair do not
-     * have the same length.
-     */
-    protected void addRule(Pair<T[], T[]> rule) throws MathIllegalArgumentException {
-        MathUtils.checkDimension(rule.getFirst().length, rule.getSecond().length);
-        pointsAndWeights.put(rule.getFirst().length, rule);
-    }
-
-    /**
-     * Computes the rule for the given order.
-     *
-     * @param numberOfPoints Order of the rule to be computed.
-     * @return the computed rule.
-     * @throws MathIllegalArgumentException if the elements of the pair do not
-     * have the same length.
-     */
-    protected abstract Pair<T[], T[]> computeRule(int numberOfPoints)
-        throws MathIllegalArgumentException;
+            = new TreeMap<Integer, Pair<double[], double[]>>();
 
     /**
      * Converts the from the actual {@code Number} type to {@code double}
      *
-     * @param <T> Type of the number used to represent the points and
-     * weights of the quadrature rules.
+     * @param <T>  Type of the number used to represent the points and
+     *             weights of the quadrature rules.
      * @param rule Points and weights.
      * @return points and weights as {@code double}s.
      */
@@ -146,4 +67,86 @@ public abstract class BaseRuleFactory<T extends Number> {
 
         return new Pair<double[], double[]>(pD, wD);
     }
+
+    /**
+     * Gets a copy of the quadrature rule with the given number of integration
+     * points.
+     *
+     * @param numberOfPoints Number of integration points.
+     * @return a copy of the integration rule.
+     * @throws MathIllegalArgumentException if {@code numberOfPoints < 1}.
+     * @throws MathIllegalArgumentException if the elements of the rule pair do not
+     *                                      have the same length.
+     */
+    public Pair<double[], double[]> getRule(int numberOfPoints)
+            throws MathIllegalArgumentException {
+
+        if (numberOfPoints <= 0) {
+            throw new MathIllegalArgumentException(LocalizedCoreFormats.NUMBER_OF_POINTS,
+                    numberOfPoints);
+        }
+
+        // Try to obtain the rule from the cache.
+        Pair<double[], double[]> cached = pointsAndWeightsDouble.get(numberOfPoints);
+
+        if (cached == null) {
+            // Rule not computed yet.
+
+            // Compute the rule.
+            final Pair<T[], T[]> rule = getRuleInternal(numberOfPoints);
+            cached = convertToDouble(rule);
+
+            // Cache it.
+            pointsAndWeightsDouble.put(numberOfPoints, cached);
+        }
+
+        // Return a copy.
+        return new Pair<double[], double[]>(cached.getFirst().clone(),
+                cached.getSecond().clone());
+    }
+
+    /**
+     * Gets a rule.
+     * Synchronization ensures that rules will be computed and added to the
+     * cache at most once.
+     * The returned rule is a reference into the cache.
+     *
+     * @param numberOfPoints Order of the rule to be retrieved.
+     * @return the points and weights corresponding to the given order.
+     * @throws MathIllegalArgumentException if the elements of the rule pair do not
+     *                                      have the same length.
+     */
+    protected synchronized Pair<T[], T[]> getRuleInternal(int numberOfPoints)
+            throws MathIllegalArgumentException {
+        final Pair<T[], T[]> rule = pointsAndWeights.get(numberOfPoints);
+        if (rule == null) {
+            addRule(computeRule(numberOfPoints));
+            // The rule should be available now.
+            return getRuleInternal(numberOfPoints);
+        }
+        return rule;
+    }
+
+    /**
+     * Stores a rule.
+     *
+     * @param rule Rule to be stored.
+     * @throws MathIllegalArgumentException if the elements of the pair do not
+     *                                      have the same length.
+     */
+    protected void addRule(Pair<T[], T[]> rule) throws MathIllegalArgumentException {
+        MathUtils.checkDimension(rule.getFirst().length, rule.getSecond().length);
+        pointsAndWeights.put(rule.getFirst().length, rule);
+    }
+
+    /**
+     * Computes the rule for the given order.
+     *
+     * @param numberOfPoints Order of the rule to be computed.
+     * @return the computed rule.
+     * @throws MathIllegalArgumentException if the elements of the pair do not
+     *                                      have the same length.
+     */
+    protected abstract Pair<T[], T[]> computeRule(int numberOfPoints)
+            throws MathIllegalArgumentException;
 }

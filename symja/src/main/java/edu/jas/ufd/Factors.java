@@ -19,8 +19,9 @@ import edu.jas.structure.GcdRingElem;
 
 /**
  * Container for the factors of absolute factorization.
- * @author Heinz Kredel
+ *
  * @param <C> coefficient type
+ * @author Heinz Kredel
  */
 
 public class Factors<C extends GcdRingElem<C>> implements Comparable<Factors<C>>, Serializable {
@@ -65,6 +66,7 @@ public class Factors<C extends GcdRingElem<C>> implements Comparable<Factors<C>>
 
     /**
      * Constructor.
+     *
      * @param p absolute irreducible GenPolynomial.
      */
     public Factors(GenPolynomial<C> p) {
@@ -74,28 +76,30 @@ public class Factors<C extends GcdRingElem<C>> implements Comparable<Factors<C>>
 
     /**
      * Constructor.
-     * @param p irreducible GenPolynomial over C.
-     * @param af algebraic extension field of C where p has factors from afact.
-     * @param ap GenPolynomial p represented with coefficients from af.
+     *
+     * @param p     irreducible GenPolynomial over C.
+     * @param af    algebraic extension field of C where p has factors from afact.
+     * @param ap    GenPolynomial p represented with coefficients from af.
      * @param afact absolute irreducible factors of p with coefficients from af.
      */
     public Factors(GenPolynomial<C> p, AlgebraicNumberRing<C> af, GenPolynomial<AlgebraicNumber<C>> ap,
-                    List<GenPolynomial<AlgebraicNumber<C>>> afact) {
+                   List<GenPolynomial<AlgebraicNumber<C>>> afact) {
         this(p, af, ap, afact, null);
     }
 
 
     /**
      * Constructor.
-     * @param p irreducible GenPolynomial over C.
-     * @param af algebraic extension field of C where p has factors from afact.
-     * @param ap GenPolynomial p represented with coefficients from af.
-     * @param afact absolute irreducible factors of p with coefficients from af.
+     *
+     * @param p      irreducible GenPolynomial over C.
+     * @param af     algebraic extension field of C where p has factors from afact.
+     * @param ap     GenPolynomial p represented with coefficients from af.
+     * @param afact  absolute irreducible factors of p with coefficients from af.
      * @param arfact further absolute irreducible factors of p with coefficients
-     *            from extensions of af.
+     *               from extensions of af.
      */
     public Factors(GenPolynomial<C> p, AlgebraicNumberRing<C> af, GenPolynomial<AlgebraicNumber<C>> ap,
-                    List<GenPolynomial<AlgebraicNumber<C>>> afact, List<Factors<AlgebraicNumber<C>>> arfact) {
+                   List<GenPolynomial<AlgebraicNumber<C>>> afact, List<Factors<AlgebraicNumber<C>>> arfact) {
         poly = p;
         afac = af;
         apoly = ap;
@@ -106,6 +110,7 @@ public class Factors<C extends GcdRingElem<C>> implements Comparable<Factors<C>>
 
     /**
      * Get the String representation.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -144,6 +149,7 @@ public class Factors<C extends GcdRingElem<C>> implements Comparable<Factors<C>>
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this container.
      * @see edu.jas.structure.ElemFactory#toScript()
      */
@@ -183,6 +189,7 @@ public class Factors<C extends GcdRingElem<C>> implements Comparable<Factors<C>>
 
     /**
      * Length. Number of factors.
+     *
      * @return number of factors.
      */
     public int length() {
@@ -203,6 +210,7 @@ public class Factors<C extends GcdRingElem<C>> implements Comparable<Factors<C>>
 
     /**
      * Hash code for this Factors.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -228,6 +236,7 @@ public class Factors<C extends GcdRingElem<C>> implements Comparable<Factors<C>>
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -246,11 +255,12 @@ public class Factors<C extends GcdRingElem<C>> implements Comparable<Factors<C>>
 
     /**
      * Comparison.
+     *
      * @param facs factors container.
      * @return sign(this.poly-facs.poly) lexicographic &gt;
-     *         sign(afac.modul-facs.afac.modul) lexicographic &gt;
-     *         afactors.compareTo(facs.afactors) lexicographic &gt;
-     *         arfactors[i].compareTo(facs.arfactors[i])
+     * sign(afac.modul-facs.afac.modul) lexicographic &gt;
+     * afactors.compareTo(facs.afactors) lexicographic &gt;
+     * arfactors[i].compareTo(facs.arfactors[i])
      */
     public int compareTo(Factors<C> facs) {
         int s = poly.compareTo(facs.poly);
@@ -312,6 +322,7 @@ public class Factors<C extends GcdRingElem<C>> implements Comparable<Factors<C>>
 
     /**
      * Find largest extension field.
+     *
      * @return largest extension field or null if no extension field
      */
     @SuppressWarnings("unchecked")
@@ -341,6 +352,7 @@ public class Factors<C extends GcdRingElem<C>> implements Comparable<Factors<C>>
 
     /**
      * Get the list of factors at one level.
+     *
      * @return list of algebraic factors
      */
     public List<GenPolynomial<AlgebraicNumber<C>>> getFactors() {
@@ -361,6 +373,7 @@ public class Factors<C extends GcdRingElem<C>> implements Comparable<Factors<C>>
 
     /**
      * Get the factor for polynomial.
+     *
      * @return algebraic factor
      */
     public Factors<AlgebraicNumber<C>> getFactor(GenPolynomial<AlgebraicNumber<C>> p) {

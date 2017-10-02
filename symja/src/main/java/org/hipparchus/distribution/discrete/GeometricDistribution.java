@@ -29,13 +29,21 @@ import org.hipparchus.util.MathUtils;
  */
 public class GeometricDistribution extends AbstractIntegerDistribution {
 
-    /** Serializable version identifier. */
+    /**
+     * Serializable version identifier.
+     */
     private static final long serialVersionUID = 20130507L;
-    /** The probability of success. */
+    /**
+     * The probability of success.
+     */
     private final double probabilityOfSuccess;
-    /** {@code log(p)} where p is the probability of success. */
+    /**
+     * {@code log(p)} where p is the probability of success.
+     */
     private final double logProbabilityOfSuccess;
-    /** {@code log(1 - p)} where p is the probability of success. */
+    /**
+     * {@code log(1 - p)} where p is the probability of success.
+     */
     private final double log1mProbabilityOfSuccess;
 
     /**
@@ -45,7 +53,7 @@ public class GeometricDistribution extends AbstractIntegerDistribution {
      * @throws MathIllegalArgumentException if {@code p <= 0} or {@code p > 1}.
      */
     public GeometricDistribution(double p)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         if (p <= 0 || p > 1) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.OUT_OF_RANGE_LEFT, p, 0, 1);
         }
@@ -64,7 +72,9 @@ public class GeometricDistribution extends AbstractIntegerDistribution {
         return probabilityOfSuccess;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double probability(int x) {
         if (x < 0) {
@@ -74,7 +84,9 @@ public class GeometricDistribution extends AbstractIntegerDistribution {
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double logProbability(int x) {
         if (x < 0) {
@@ -84,7 +96,9 @@ public class GeometricDistribution extends AbstractIntegerDistribution {
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double cumulativeProbability(int x) {
         if (x < 0) {
@@ -96,7 +110,7 @@ public class GeometricDistribution extends AbstractIntegerDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * For probability parameter {@code p}, the mean is {@code (1 - p) / p}.
      */
     @Override
@@ -106,7 +120,7 @@ public class GeometricDistribution extends AbstractIntegerDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * For probability parameter {@code p}, the variance is
      * {@code (1 - p) / (p * p)}.
      */
@@ -117,7 +131,7 @@ public class GeometricDistribution extends AbstractIntegerDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The lower bound of the support is always 0.
      *
      * @return lower bound of the support (always 0)
@@ -129,7 +143,7 @@ public class GeometricDistribution extends AbstractIntegerDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The upper bound of the support is infinite (which we approximate as
      * {@code Integer.MAX_VALUE}).
      *
@@ -142,7 +156,7 @@ public class GeometricDistribution extends AbstractIntegerDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The support of this distribution is connected.
      *
      * @return {@code true}
@@ -165,6 +179,6 @@ public class GeometricDistribution extends AbstractIntegerDistribution {
         if (p == 0) {
             return 0;
         }
-        return Math.max(0, (int) Math.ceil(FastMath.log1p(-p)/log1mProbabilityOfSuccess-1));
+        return Math.max(0, (int) Math.ceil(FastMath.log1p(-p) / log1mProbabilityOfSuccess - 1));
     }
 }

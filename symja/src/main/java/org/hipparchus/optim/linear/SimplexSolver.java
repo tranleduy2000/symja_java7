@@ -16,9 +16,6 @@
  */
 package org.hipparchus.optim.linear;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.hipparchus.exception.MathIllegalStateException;
 import org.hipparchus.optim.LocalizedOptimFormats;
 import org.hipparchus.optim.OptimizationData;
@@ -26,20 +23,23 @@ import org.hipparchus.optim.PointValuePair;
 import org.hipparchus.util.FastMath;
 import org.hipparchus.util.Precision;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Solves a linear problem using the "Two-Phase Simplex" method.
  * <p>
  * The {@link SimplexSolver} supports the following {@link OptimizationData} data provided
  * as arguments to {@link #optimize(OptimizationData...)}:
  * <ul>
- *   <li>objective function: {@link LinearObjectiveFunction} - mandatory</li>
- *   <li>linear constraints {@link LinearConstraintSet} - mandatory</li>
- *   <li>type of optimization: {@link org.hipparchus.optim.nonlinear.scalar.GoalType GoalType}
- *    - optional, default: {@link org.hipparchus.optim.nonlinear.scalar.GoalType#MINIMIZE MINIMIZE}</li>
- *   <li>whether to allow negative values as solution: {@link NonNegativeConstraint} - optional, default: true</li>
- *   <li>pivot selection rule: {@link PivotSelectionRule} - optional, default {@link PivotSelectionRule#DANTZIG}</li>
- *   <li>callback for the best solution: {@link SolutionCallback} - optional</li>
- *   <li>maximum number of iterations: {@link org.hipparchus.optim.MaxIter} - optional, default: {@link Integer#MAX_VALUE}</li>
+ * <li>objective function: {@link LinearObjectiveFunction} - mandatory</li>
+ * <li>linear constraints {@link LinearConstraintSet} - mandatory</li>
+ * <li>type of optimization: {@link org.hipparchus.optim.nonlinear.scalar.GoalType GoalType}
+ * - optional, default: {@link org.hipparchus.optim.nonlinear.scalar.GoalType#MINIMIZE MINIMIZE}</li>
+ * <li>whether to allow negative values as solution: {@link NonNegativeConstraint} - optional, default: true</li>
+ * <li>pivot selection rule: {@link PivotSelectionRule} - optional, default {@link PivotSelectionRule#DANTZIG}</li>
+ * <li>callback for the best solution: {@link SolutionCallback} - optional</li>
+ * <li>maximum number of iterations: {@link org.hipparchus.optim.MaxIter} - optional, default: {@link Integer#MAX_VALUE}</li>
  * </ul>
  * <p>
  * <b>Note:</b> Depending on the problem definition, the default convergence criteria
@@ -49,10 +49,10 @@ import org.hipparchus.util.Precision;
  * <p>
  * Default convergence criteria:
  * <ul>
- *   <li>Algorithm convergence: 1e-6</li>
- *   <li>Floating-point comparisons: 10 ulp</li>
- *   <li>Cut-Off value: 1e-10</li>
-  * </ul>
+ * <li>Algorithm convergence: 1e-6</li>
+ * <li>Floating-point comparisons: 10 ulp</li>
+ * <li>Cut-Off value: 1e-10</li>
+ * </ul>
  * <p>
  * The cut-off value has been introduced to handle the case of very small pivot elements
  * in the Simplex tableau, as these may lead to numerical instabilities and degeneracy.
@@ -60,22 +60,31 @@ import org.hipparchus.util.Precision;
  * and are thus not considered by the pivot selection mechanism. The default value is safe
  * for many problems, but may need to be adjusted in case of very small coefficients
  * used in either the {@link LinearConstraint} or {@link LinearObjectiveFunction}.
- *
  */
 public class SimplexSolver extends LinearOptimizer {
-    /** Default amount of error to accept in floating point comparisons (as ulps). */
+    /**
+     * Default amount of error to accept in floating point comparisons (as ulps).
+     */
     static final int DEFAULT_ULPS = 10;
 
-    /** Default cut-off value. */
+    /**
+     * Default cut-off value.
+     */
     static final double DEFAULT_CUT_OFF = 1e-10;
 
-    /** Default amount of error to accept for algorithm convergence. */
+    /**
+     * Default amount of error to accept for algorithm convergence.
+     */
     private static final double DEFAULT_EPSILON = 1.0e-6;
 
-    /** Amount of error to accept for algorithm convergence. */
+    /**
+     * Amount of error to accept for algorithm convergence.
+     */
     private final double epsilon;
 
-    /** Amount of error to accept in floating point comparisons (as ulps). */
+    /**
+     * Amount of error to accept in floating point comparisons (as ulps).
+     */
     private final int maxUlps;
 
     /**
@@ -84,7 +93,9 @@ public class SimplexSolver extends LinearOptimizer {
      */
     private final double cutOff;
 
-    /** The pivot selection method to use. */
+    /**
+     * The pivot selection method to use.
+     */
     private PivotSelectionRule pivotSelection;
 
     /**
@@ -124,7 +135,7 @@ public class SimplexSolver extends LinearOptimizer {
      *
      * @param epsilon Amount of error to accept for algorithm convergence.
      * @param maxUlps Amount of error to accept in floating point comparisons.
-     * @param cutOff Values smaller than the cutOff are treated as zero.
+     * @param cutOff  Values smaller than the cutOff are treated as zero.
      */
     public SimplexSolver(final double epsilon, final int maxUlps, final double cutOff) {
         this.epsilon = epsilon;
@@ -137,21 +148,20 @@ public class SimplexSolver extends LinearOptimizer {
      * {@inheritDoc}
      *
      * @param optData Optimization data. In addition to those documented in
-     * {@link LinearOptimizer#optimize(OptimizationData...)
-     * LinearOptimizer}, this method will register the following data:
-     * <ul>
-     *  <li>{@link SolutionCallback}</li>
-     *  <li>{@link PivotSelectionRule}</li>
-     * </ul>
-     *
+     *                {@link LinearOptimizer#optimize(OptimizationData...)
+     *                LinearOptimizer}, this method will register the following data:
+     *                <ul>
+     *                <li>{@link SolutionCallback}</li>
+     *                <li>{@link PivotSelectionRule}</li>
+     *                </ul>
      * @return {@inheritDoc}
-     * @throws MathIllegalStateException if the maximal number of iterations is exceeded.
+     * @throws MathIllegalStateException                             if the maximal number of iterations is exceeded.
      * @throws org.hipparchus.exception.MathIllegalArgumentException if the dimension
-     * of the constraints does not match the dimension of the objective function
+     *                                                               of the constraints does not match the dimension of the objective function
      */
     @Override
     public PointValuePair optimize(OptimizationData... optData)
-        throws MathIllegalStateException {
+            throws MathIllegalStateException {
         // Set up base class and perform computation.
         return super.optimize(optData);
     }
@@ -160,13 +170,13 @@ public class SimplexSolver extends LinearOptimizer {
      * {@inheritDoc}
      *
      * @param optData Optimization data.
-     * In addition to those documented in
-     * {@link LinearOptimizer#parseOptimizationData(OptimizationData[])
-     * LinearOptimizer}, this method will register the following data:
-     * <ul>
-     *  <li>{@link SolutionCallback}</li>
-     *  <li>{@link PivotSelectionRule}</li>
-     * </ul>
+     *                In addition to those documented in
+     *                {@link LinearOptimizer#parseOptimizationData(OptimizationData[])
+     *                LinearOptimizer}, this method will register the following data:
+     *                <ul>
+     *                <li>{@link SolutionCallback}</li>
+     *                <li>{@link PivotSelectionRule}</li>
+     *                </ul>
      */
     @Override
     protected void parseOptimizationData(OptimizationData... optData) {
@@ -223,7 +233,7 @@ public class SimplexSolver extends LinearOptimizer {
      * pivot column will return a valid pivot row.
      *
      * @param tableau simplex tableau for the problem
-     * @param col the column to test
+     * @param col     the column to test
      * @return {@code true} if the pivot column is valid, {@code false} otherwise
      */
     private boolean isValidPivotColumn(SimplexTableau tableau, int col) {
@@ -242,7 +252,7 @@ public class SimplexSolver extends LinearOptimizer {
      * Returns the row with the minimum ratio as given by the minimum ratio test (MRT).
      *
      * @param tableau Simplex tableau for the problem.
-     * @param col Column to test the ratio of (see {@link #getPivotColumn(SimplexTableau)}).
+     * @param col     Column to test the ratio of (see {@link #getPivotColumn(SimplexTableau)}).
      * @return the row with the minimum ratio.
      */
     private Integer getPivotRow(SimplexTableau tableau, final int col) {
@@ -316,7 +326,7 @@ public class SimplexSolver extends LinearOptimizer {
      * @throws MathIllegalStateException if the model is found not to have a bounded solution.
      */
     protected void doIteration(final SimplexTableau tableau)
-        throws MathIllegalStateException {
+            throws MathIllegalStateException {
 
         incrementIterationCount();
 
@@ -334,10 +344,10 @@ public class SimplexSolver extends LinearOptimizer {
      *
      * @param tableau Simple tableau for the problem.
      * @throws MathIllegalStateException if the allowed number of iterations has been exhausted,
-     * or if the model is found not to have a bounded solution, or if there is no feasible solution
+     *                                   or if the model is found not to have a bounded solution, or if there is no feasible solution
      */
     protected void solvePhase1(final SimplexTableau tableau)
-        throws MathIllegalStateException {
+            throws MathIllegalStateException {
 
         // make sure we're in Phase 1
         if (tableau.getNumArtificialVariables() == 0) {
@@ -354,10 +364,12 @@ public class SimplexSolver extends LinearOptimizer {
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PointValuePair doOptimize()
-        throws MathIllegalStateException {
+            throws MathIllegalStateException {
 
         // reset the tableau to indicate a non-feasible solution in case
         // we do not pass phase 1 successfully
@@ -366,12 +378,12 @@ public class SimplexSolver extends LinearOptimizer {
         }
 
         final SimplexTableau tableau =
-            new SimplexTableau(getFunction(),
-                               getConstraints(),
-                               getGoalType(),
-                               isRestrictedToNonNegative(),
-                               epsilon,
-                               maxUlps);
+                new SimplexTableau(getFunction(),
+                        getConstraints(),
+                        getGoalType(),
+                        isRestrictedToNonNegative(),
+                        epsilon,
+                        maxUlps);
 
         solvePhase1(tableau);
         tableau.dropPhase1Objective();

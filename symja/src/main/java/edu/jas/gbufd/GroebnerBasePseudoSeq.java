@@ -5,11 +5,11 @@
 package edu.jas.gbufd;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.gb.GroebnerBaseAbstract;
 import edu.jas.gb.OrderedPairlist;
@@ -27,9 +27,9 @@ import edu.jas.ufd.GreatestCommonDivisorAbstract;
  * Groebner Base with pseudo reduction sequential algorithm. Implements
  * coefficient fraction free Groebner bases.
  * Coefficients can for example be integers or (commutative) univariate polynomials.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
- * 
  * @see edu.jas.application.GBAlgorithmBuilder
  * @see edu.jas.gbufd.GBFactory
  */
@@ -64,6 +64,7 @@ public class GroebnerBasePseudoSeq<C extends GcdRingElem<C>> extends GroebnerBas
 
     /**
      * Constructor.
+     *
      * @param rf coefficient ring factory.
      */
     public GroebnerBasePseudoSeq(RingFactory<C> rf) {
@@ -73,6 +74,7 @@ public class GroebnerBasePseudoSeq<C extends GcdRingElem<C>> extends GroebnerBas
 
     /**
      * Constructor.
+     *
      * @param rf coefficient ring factory.
      * @param pl pair selection strategy
      */
@@ -83,24 +85,26 @@ public class GroebnerBasePseudoSeq<C extends GcdRingElem<C>> extends GroebnerBas
 
     /**
      * Constructor.
+     *
      * @param red pseudo reduction engine. <b>Note:</b> red must be an instance
      *            of PseudoReductionSeq.
-     * @param rf coefficient ring factory.
-     * @param pl pair selection strategy
+     * @param rf  coefficient ring factory.
+     * @param pl  pair selection strategy
      */
     public GroebnerBasePseudoSeq(PseudoReduction<C> red, RingFactory<C> rf, PairList<C> pl) {
         super(red, pl);
         this.red = red;
         cofac = rf;
-        engine = GCDFactory.<C> getImplementation(rf);
+        engine = GCDFactory.<C>getImplementation(rf);
         //not used: engine = (GreatestCommonDivisorAbstract<C>)GCDFactory.<C>getProxy( rf );
     }
 
 
     /**
      * Groebner base using pairlist class.
+     *
      * @param modv module variable number.
-     * @param F polynomial list.
+     * @param F    polynomial list.
      * @return GB(F) a Groebner base of F.
      */
     public List<GenPolynomial<C>> GB(int modv, List<GenPolynomial<C>> F) {
@@ -204,6 +208,7 @@ public class GroebnerBasePseudoSeq<C extends GcdRingElem<C>> extends GroebnerBas
 
     /**
      * Minimal ordered Groebner basis.
+     *
      * @param Gp a Groebner base.
      * @return a reduced Groebner base of Gp.
      */

@@ -5,10 +5,10 @@
 package edu.jas.gbufd;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.gb.GroebnerBaseAbstract;
 import edu.jas.gb.PairList;
@@ -26,9 +26,9 @@ import edu.jas.structure.RingFactory;
 /**
  * Groebner Base sequential FGLM algorithm. Implements Groebner base computation
  * via FGLM algorithm.
+ *
  * @param <C> coefficient type
  * @author Jan Suess
- *
  * @see edu.jas.application.GBAlgorithmBuilder
  * @see edu.jas.gbufd.GBFactory
  */
@@ -58,6 +58,7 @@ public class GroebnerBaseFGLM<C extends GcdRingElem<C>> extends GroebnerBaseAbst
 
     /**
      * Constructor.
+     *
      * @param red Reduction engine
      */
     public GroebnerBaseFGLM(Reduction<C> red) {
@@ -68,8 +69,9 @@ public class GroebnerBaseFGLM<C extends GcdRingElem<C>> extends GroebnerBaseAbst
 
     /**
      * Constructor.
+     *
      * @param red Reduction engine
-     * @param pl pair selection strategy
+     * @param pl  pair selection strategy
      */
     public GroebnerBaseFGLM(Reduction<C> red, PairList<C> pl) {
         super(red, pl);
@@ -79,9 +81,10 @@ public class GroebnerBaseFGLM<C extends GcdRingElem<C>> extends GroebnerBaseAbst
 
     /**
      * Constructor.
+     *
      * @param red Reduction engine
-     * @param pl pair selection strategy
-     * @param gb backing GB algorithm.
+     * @param pl  pair selection strategy
+     * @param gb  backing GB algorithm.
      */
     public GroebnerBaseFGLM(Reduction<C> red, PairList<C> pl, GroebnerBaseAbstract<C> gb) {
         super(red, pl);
@@ -91,6 +94,7 @@ public class GroebnerBaseFGLM<C extends GcdRingElem<C>> extends GroebnerBaseAbst
 
     /**
      * Constructor.
+     *
      * @param gb backing GB algorithm.
      */
     public GroebnerBaseFGLM(GroebnerBaseAbstract<C> gb) {
@@ -101,6 +105,7 @@ public class GroebnerBaseFGLM<C extends GcdRingElem<C>> extends GroebnerBaseAbst
 
     /**
      * Get the String representation with GB engine.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -114,8 +119,9 @@ public class GroebnerBaseFGLM<C extends GcdRingElem<C>> extends GroebnerBaseAbst
 
     /**
      * Groebner base using FGLM algorithm.
+     *
      * @param modv module variable number.
-     * @param F polynomial list.
+     * @param F    polynomial list.
      * @return GB(F) a inv lex term order Groebner base of F.
      */
     public List<GenPolynomial<C>> GB(int modv, List<GenPolynomial<C>> F) {
@@ -145,7 +151,7 @@ public class GroebnerBaseFGLM<C extends GcdRingElem<C>> extends GroebnerBaseAbst
         }
         // compute graded term order Groebner base
         if (sgb == null) {
-            sgb = GBFactory.<C> getImplementation(pfac.coFac, strategy);
+            sgb = GBFactory.<C>getImplementation(pfac.coFac, strategy);
         }
         List<GenPolynomial<C>> Gp = sgb.GB(modv, Fp);
         logger.info("graded GB = " + Gp);
@@ -175,6 +181,7 @@ public class GroebnerBaseFGLM<C extends GcdRingElem<C>> extends GroebnerBaseAbst
     /**
      * Algorithm CONVGROEBNER: Converts Groebner bases w.r.t. total degree
      * termorder into Groebner base w.r.t to inverse lexicographical term order
+     *
      * @return Groebner base w.r.t to inverse lexicographical term order
      */
     public List<GenPolynomial<C>> convGroebnerToLex(List<GenPolynomial<C>> groebnerBasis) {
@@ -193,7 +200,7 @@ public class GroebnerBaseFGLM<C extends GcdRingElem<C>> extends GroebnerBaseAbst
         TermOrder invlex = new TermOrder(TermOrder.INVLEX);
         //Polynomial ring of newGB with invlex order
         GenPolynomialRing<C> ufac = new GenPolynomialRing<C>(cfac, numberOfVariables, invlex,
-                        ArrayOfVariables);
+                ArrayOfVariables);
 
         //Local Lists
         List<GenPolynomial<C>> newGB = new ArrayList<GenPolynomial<C>>(); //Instantiate the return list of polynomials
@@ -220,7 +227,7 @@ public class GroebnerBaseFGLM<C extends GcdRingElem<C>> extends GroebnerBaseAbst
             //System.out.println("t = " + t);
             h = red.normalform(groebnerBasis, t);
             //System.out.println("Zwischennormalform h = " + h.toString());
-            hh = PolyUtil.<C> toRecursive(rfac, h);
+            hh = PolyUtil.<C>toRecursive(rfac, h);
             p = hh.sum(q);
             List<GenPolynomial<C>> Cf = new ArrayList<GenPolynomial<C>>(p.getMap().values());
             Cf = red.irreducibleSet(Cf);
@@ -234,10 +241,10 @@ public class GroebnerBaseFGLM<C extends GcdRingElem<C>> extends GroebnerBaseAbst
                 redTerms.add(t); //add current t to list of reduced terms
                 cpfac = addIndeterminate(cpfac);
                 rfac = new GenPolynomialRing<GenPolynomial<C>>(cpfac, ring);
-                hh = PolyUtil.<C> toRecursive(rfac, h);
+                hh = PolyUtil.<C>toRecursive(rfac, h);
                 GenPolynomial<GenPolynomial<C>> Yt = rfac.getZERO().sum(cpfac.univariate(0));
                 GenPolynomial<GenPolynomial<C>> Yth = hh.multiply(Yt);
-                q = PolyUtil.<C> extendCoefficients(rfac, q, 0, 0L);
+                q = PolyUtil.<C>extendCoefficients(rfac, q, 0, 0L);
                 q = Yth.sum(q);
             } else { // z=0 --> one solution
                 GenPolynomial<C> g = ufac.getZERO();
@@ -279,11 +286,12 @@ public class GroebnerBaseFGLM<C extends GcdRingElem<C>> extends GroebnerBaseAbst
     /**
      * Algorithm lMinterm: MINTERM algorithm for inverse lexicographical term
      * order.
+     *
      * @param t Term
      * @param G Groebner basis
      * @return Term that specifies condition (D) or null (Condition (D) in
-     *         "A computational approach to commutative algebra", Becker,
-     *         Weispfenning, Kredel 1993, p. 427)
+     * "A computational approach to commutative algebra", Becker,
+     * Weispfenning, Kredel 1993, p. 427)
      */
     public GenPolynomial<C> lMinterm(List<GenPolynomial<C>> G, GenPolynomial<C> t) {
         //not ok: if ( G == null || G.size() == 0 ) ...
@@ -307,6 +315,7 @@ public class GroebnerBaseFGLM<C extends GcdRingElem<C>> extends GroebnerBaseAbst
 
     /**
      * Compute the residues to given polynomial list.
+     *
      * @return List of reduced terms
      */
     public List<GenPolynomial<C>> redTerms(List<GenPolynomial<C>> groebnerBasis) {
@@ -364,6 +373,7 @@ public class GroebnerBaseFGLM<C extends GcdRingElem<C>> extends GroebnerBaseAbst
      * Internal method to create a polynomial ring in i indeterminates. Create
      * new ring over coefficients of ring with i variables Y1,...,Yi
      * (indeterminate)
+     *
      * @return polynomial ring with variables Y1...Yi and coefficient of ring.
      */
     GenPolynomialRing<C> createRingOfIndeterminates(GenPolynomialRing<C> ring, int i) {
@@ -375,7 +385,7 @@ public class GroebnerBaseFGLM<C extends GcdRingElem<C>> extends GroebnerBaseAbst
         }
         TermOrder invlex = new TermOrder(TermOrder.INVLEX);
         GenPolynomialRing<C> cpfac = new GenPolynomialRing<C>(cfac, indeterminates, invlex,
-                        stringIndeterminates);
+                stringIndeterminates);
         return cpfac;
     }
 
@@ -383,8 +393,9 @@ public class GroebnerBaseFGLM<C extends GcdRingElem<C>> extends GroebnerBaseAbst
     /**
      * Internal method to add new indeterminates. Add another variabe
      * (indeterminate) Y_{i+1} to existing ring
+     *
      * @return polynomial ring with variables Y1,..,Yi,Yi+1 and coefficients of
-     *         ring.
+     * ring.
      */
     GenPolynomialRing<C> addIndeterminate(GenPolynomialRing<C> ring) {
         String[] stringIndeterminates = new String[1];
@@ -397,6 +408,7 @@ public class GroebnerBaseFGLM<C extends GcdRingElem<C>> extends GroebnerBaseAbst
 
     /**
      * Maximum of an array.
+     *
      * @return maximum of an array
      */
     long maxArray(long[] t) {

@@ -5,12 +5,12 @@
 package edu.jas.ufd;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.arith.BigInteger;
 import edu.jas.arith.PrimeInteger;
@@ -23,6 +23,7 @@ import edu.jas.structure.Power;
 
 /**
  * Cyclotomic polynomial utilities. Adapted from Sympy Python codes.
+ *
  * @author Heinz Kredel
  */
 
@@ -37,7 +38,8 @@ public class CycloUtil {
 
     /**
      * Compute n-th cyclotomic polynomial.
-     * @param n number of polynomial.
+     *
+     * @param n    number of polynomial.
      * @param ring univariate polynomial ring of cyclotomic polynomial.
      * @return n-th cyclotomic polynomial.
      */
@@ -69,12 +71,13 @@ public class CycloUtil {
 
     /**
      * Compute the factors of the n-th cyclotomic polynomial.
-     * @param n number of polynomial.
+     *
+     * @param n    number of polynomial.
      * @param ring univariate polynomial ring of cyclotomic polynomial.
      * @return list of factors of n-th cyclotomic polynomial.
      */
     public static List<GenPolynomial<BigInteger>> cyclotomicDecompose(GenPolynomialRing<BigInteger> ring,
-                    long n) {
+                                                                      long n) {
         GenPolynomialRing<BigInteger> pfac = ring;
         if (pfac == null) {
             throw new IllegalArgumentException("ring must be non null");
@@ -119,6 +122,7 @@ public class CycloUtil {
 
     /**
      * Compute the factors of the cyclotomic polynomial.
+     *
      * @param p cyclotomic polynomial.
      * @return list of factors of cyclotomic polynomial p or emtpy list.
      */
@@ -165,6 +169,7 @@ public class CycloUtil {
 
     /**
      * Test for cyclotomic polynomial.
+     *
      * @param p polynomial.
      * @return true if p is a cyclotomic polynomial, else false.
      */

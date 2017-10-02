@@ -17,8 +17,6 @@
 
 package org.hipparchus.analysis.function;
 
-import java.util.Arrays;
-
 import org.hipparchus.analysis.ParametricUnivariateFunction;
 import org.hipparchus.analysis.differentiation.DerivativeStructure;
 import org.hipparchus.analysis.differentiation.UnivariateDifferentiableFunction;
@@ -29,54 +27,63 @@ import org.hipparchus.util.FastMath;
 import org.hipparchus.util.MathUtils;
 import org.hipparchus.util.Precision;
 
+import java.util.Arrays;
+
 /**
  * <a href="http://en.wikipedia.org/wiki/Gaussian_function">
- *  Gaussian</a> function.
- *
+ * Gaussian</a> function.
  */
 public class Gaussian implements UnivariateDifferentiableFunction {
-    /** Mean. */
+    /**
+     * Mean.
+     */
     private final double mean;
-    /** Inverse of the standard deviation. */
+    /**
+     * Inverse of the standard deviation.
+     */
     private final double is;
-    /** Inverse of twice the square of the standard deviation. */
+    /**
+     * Inverse of twice the square of the standard deviation.
+     */
     private final double i2s2;
-    /** Normalization factor. */
+    /**
+     * Normalization factor.
+     */
     private final double norm;
 
     /**
      * Gaussian with given normalization factor, mean and standard deviation.
      *
-     * @param norm Normalization factor.
-     * @param mean Mean.
+     * @param norm  Normalization factor.
+     * @param mean  Mean.
      * @param sigma Standard deviation.
      * @throws MathIllegalArgumentException if {@code sigma <= 0}.
      */
     public Gaussian(double norm,
                     double mean,
                     double sigma)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         if (sigma <= 0) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.NUMBER_TOO_SMALL_BOUND_EXCLUDED,
-                                                   sigma, 0);
+                    sigma, 0);
         }
 
         this.norm = norm;
         this.mean = mean;
-        this.is   = 1 / sigma;
+        this.is = 1 / sigma;
         this.i2s2 = 0.5 * is * is;
     }
 
     /**
      * Normalized gaussian with given mean and standard deviation.
      *
-     * @param mean Mean.
+     * @param mean  Mean.
      * @param sigma Standard deviation.
      * @throws MathIllegalArgumentException if {@code sigma <= 0}.
      */
     public Gaussian(double mean,
                     double sigma)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         this(1 / (sigma * FastMath.sqrt(2 * Math.PI)), mean, sigma);
     }
 
@@ -87,102 +94,10 @@ public class Gaussian implements UnivariateDifferentiableFunction {
         this(0, 1);
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public double value(double x) {
-        return value(x - mean, norm, i2s2);
-    }
-
-    /**
-     * Parametric function where the input array contains the parameters of
-     * the Gaussian, ordered as follows:
-     * <ul>
-     *  <li>Norm</li>
-     *  <li>Mean</li>
-     *  <li>Standard deviation</li>
-     * </ul>
-     */
-    public static class Parametric implements ParametricUnivariateFunction {
-        /**
-         * Computes the value of the Gaussian at {@code x}.
-         *
-         * @param x Value for which the function must be computed.
-         * @param param Values of norm, mean and standard deviation.
-         * @return the value of the function.
-         * @throws NullArgumentException if {@code param} is {@code null}.
-         * @throws MathIllegalArgumentException if the size of {@code param} is
-         * not 3.
-         * @throws MathIllegalArgumentException if {@code param[2]} is negative.
-         */
-        @Override
-        public double value(double x, double ... param)
-            throws MathIllegalArgumentException, NullArgumentException {
-            validateParameters(param);
-
-            final double diff = x - param[1];
-            final double i2s2 = 1 / (2 * param[2] * param[2]);
-            return Gaussian.value(diff, param[0], i2s2);
-        }
-
-        /**
-         * Computes the value of the gradient at {@code x}.
-         * The components of the gradient vector are the partial
-         * derivatives of the function with respect to each of the
-         * <em>parameters</em> (norm, mean and standard deviation).
-         *
-         * @param x Value at which the gradient must be computed.
-         * @param param Values of norm, mean and standard deviation.
-         * @return the gradient vector at {@code x}.
-         * @throws NullArgumentException if {@code param} is {@code null}.
-         * @throws MathIllegalArgumentException if the size of {@code param} is
-         * not 3.
-         * @throws MathIllegalArgumentException if {@code param[2]} is negative.
-         */
-        @Override
-        public double[] gradient(double x, double ... param)
-            throws MathIllegalArgumentException, NullArgumentException {
-            validateParameters(param);
-
-            final double norm = param[0];
-            final double diff = x - param[1];
-            final double sigma = param[2];
-            final double i2s2 = 1 / (2 * sigma * sigma);
-
-            final double n = Gaussian.value(diff, 1, i2s2);
-            final double m = norm * n * 2 * i2s2 * diff;
-            final double s = m * diff / sigma;
-
-            return new double[] { n, m, s };
-        }
-
-        /**
-         * Validates parameters to ensure they are appropriate for the evaluation of
-         * the {@link #value(double,double[])} and {@link #gradient(double,double[])}
-         * methods.
-         *
-         * @param param Values of norm, mean and standard deviation.
-         * @throws NullArgumentException if {@code param} is {@code null}.
-         * @throws MathIllegalArgumentException if the size of {@code param} is
-         * not 3.
-         * @throws MathIllegalArgumentException if {@code param[2]} is negative.
-         */
-        private void validateParameters(double[] param)
-            throws MathIllegalArgumentException, NullArgumentException {
-            if (param == null) {
-                throw new NullArgumentException();
-            }
-            MathUtils.checkDimension(param.length, 3);
-            if (param[2] <= 0) {
-                throw new MathIllegalArgumentException(LocalizedCoreFormats.NUMBER_TOO_SMALL_BOUND_EXCLUDED,
-                                                       param[2], 0);
-            }
-        }
-    }
-
     /**
      * @param xMinusMean {@code x - mean}.
-     * @param norm Normalization factor.
-     * @param i2s2 Inverse of twice the square of the standard deviation.
+     * @param norm       Normalization factor.
+     * @param i2s2       Inverse of twice the square of the standard deviation.
      * @return the value of the Gaussian at {@code x}.
      */
     private static double value(double xMinusMean,
@@ -191,11 +106,20 @@ public class Gaussian implements UnivariateDifferentiableFunction {
         return norm * FastMath.exp(-xMinusMean * xMinusMean * i2s2);
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public double value(double x) {
+        return value(x - mean, norm, i2s2);
+    }
+
+    /**
+     * {@inheritDoc}
      */
     @Override
     public DerivativeStructure value(final DerivativeStructure t)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
 
         final double u = is * (t.getValue() - mean);
         double[] f = new double[t.getOrder() + 1];
@@ -240,6 +164,92 @@ public class Gaussian implements UnivariateDifferentiableFunction {
 
         return t.compose(f);
 
+    }
+
+    /**
+     * Parametric function where the input array contains the parameters of
+     * the Gaussian, ordered as follows:
+     * <ul>
+     * <li>Norm</li>
+     * <li>Mean</li>
+     * <li>Standard deviation</li>
+     * </ul>
+     */
+    public static class Parametric implements ParametricUnivariateFunction {
+        /**
+         * Computes the value of the Gaussian at {@code x}.
+         *
+         * @param x     Value for which the function must be computed.
+         * @param param Values of norm, mean and standard deviation.
+         * @return the value of the function.
+         * @throws NullArgumentException        if {@code param} is {@code null}.
+         * @throws MathIllegalArgumentException if the size of {@code param} is
+         *                                      not 3.
+         * @throws MathIllegalArgumentException if {@code param[2]} is negative.
+         */
+        @Override
+        public double value(double x, double... param)
+                throws MathIllegalArgumentException, NullArgumentException {
+            validateParameters(param);
+
+            final double diff = x - param[1];
+            final double i2s2 = 1 / (2 * param[2] * param[2]);
+            return Gaussian.value(diff, param[0], i2s2);
+        }
+
+        /**
+         * Computes the value of the gradient at {@code x}.
+         * The components of the gradient vector are the partial
+         * derivatives of the function with respect to each of the
+         * <em>parameters</em> (norm, mean and standard deviation).
+         *
+         * @param x     Value at which the gradient must be computed.
+         * @param param Values of norm, mean and standard deviation.
+         * @return the gradient vector at {@code x}.
+         * @throws NullArgumentException        if {@code param} is {@code null}.
+         * @throws MathIllegalArgumentException if the size of {@code param} is
+         *                                      not 3.
+         * @throws MathIllegalArgumentException if {@code param[2]} is negative.
+         */
+        @Override
+        public double[] gradient(double x, double... param)
+                throws MathIllegalArgumentException, NullArgumentException {
+            validateParameters(param);
+
+            final double norm = param[0];
+            final double diff = x - param[1];
+            final double sigma = param[2];
+            final double i2s2 = 1 / (2 * sigma * sigma);
+
+            final double n = Gaussian.value(diff, 1, i2s2);
+            final double m = norm * n * 2 * i2s2 * diff;
+            final double s = m * diff / sigma;
+
+            return new double[]{n, m, s};
+        }
+
+        /**
+         * Validates parameters to ensure they are appropriate for the evaluation of
+         * the {@link #value(double, double[])} and {@link #gradient(double, double[])}
+         * methods.
+         *
+         * @param param Values of norm, mean and standard deviation.
+         * @throws NullArgumentException        if {@code param} is {@code null}.
+         * @throws MathIllegalArgumentException if the size of {@code param} is
+         *                                      not 3.
+         * @throws MathIllegalArgumentException if {@code param[2]} is negative.
+         */
+        private void validateParameters(double[] param)
+                throws MathIllegalArgumentException, NullArgumentException {
+            if (param == null) {
+                throw new NullArgumentException();
+            }
+            MathUtils.checkDimension(param.length, 3);
+            if (param[2] <= 0) {
+                throw new MathIllegalArgumentException(LocalizedCoreFormats.NUMBER_TOO_SMALL_BOUND_EXCLUDED,
+                        param[2], 0);
+            }
+        }
     }
 
 }

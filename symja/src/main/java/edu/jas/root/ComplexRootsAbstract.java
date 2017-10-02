@@ -5,12 +5,12 @@
 package edu.jas.root;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.arith.BigDecimal;
 import edu.jas.arith.BigRational;
@@ -29,6 +29,7 @@ import edu.jas.ufd.SquarefreeFactory;
 
 /**
  * Complex roots abstract class.
+ *
  * @param <C> coefficient type.
  * @author Heinz Kredel
  */
@@ -49,19 +50,21 @@ public abstract class ComplexRootsAbstract<C extends RingElem<C> & Rational> imp
 
     /**
      * Constructor.
+     *
      * @param cf coefficient factory.
      */
     public ComplexRootsAbstract(RingFactory<Complex<C>> cf) {
         if (!(cf instanceof ComplexRing)) {
             throw new IllegalArgumentException("cf not supported coefficients " + cf);
         }
-        engine = SquarefreeFactory.<Complex<C>> getImplementation(cf);
+        engine = SquarefreeFactory.<Complex<C>>getImplementation(cf);
     }
 
 
     /**
      * Root bound. With f(-M + i M) * f(-M - i M) * f(M - i M) * f(M + i M) !=
      * 0.
+     *
      * @param f univariate polynomial.
      * @return M such that root(f) is contained in the rectangle spanned by M.
      */
@@ -89,8 +92,9 @@ public abstract class ComplexRootsAbstract<C extends RingElem<C> & Rational> imp
 
     /**
      * Magnitude bound.
+     *
      * @param rect rectangle.
-     * @param f univariate polynomial.
+     * @param f    univariate polynomial.
      * @return B such that |f(c)| &lt; B for c in rect.
      */
     public C magnitudeBound(Rectangle<C> rect, GenPolynomial<Complex<C>> f) {
@@ -135,7 +139,7 @@ public abstract class ComplexRootsAbstract<C extends RingElem<C> & Rational> imp
             Mc = M1c;
         }
         //System.out.println("M = " + M);
-        Complex<C> B = PolyUtil.<Complex<C>> evaluateMain(f.ring.coFac, fa, Mc);
+        Complex<C> B = PolyUtil.<Complex<C>>evaluateMain(f.ring.coFac, fa, Mc);
         //System.out.println("B = " + B);
         return B.getRe();
     }
@@ -143,30 +147,33 @@ public abstract class ComplexRootsAbstract<C extends RingElem<C> & Rational> imp
 
     /**
      * Complex root count of complex polynomial on rectangle.
+     *
      * @param rect rectangle.
-     * @param a univariate complex polynomial.
+     * @param a    univariate complex polynomial.
      * @return root count of a in rectangle.
      */
     public abstract long complexRootCount(Rectangle<C> rect, GenPolynomial<Complex<C>> a)
-                    throws InvalidBoundaryException;
+            throws InvalidBoundaryException;
 
 
     /**
      * List of complex roots of complex polynomial a on rectangle.
+     *
      * @param rect rectangle.
-     * @param a univariate squarefree complex polynomial.
+     * @param a    univariate squarefree complex polynomial.
      * @return list of complex roots.
      */
     public abstract List<Rectangle<C>> complexRoots(Rectangle<C> rect, GenPolynomial<Complex<C>> a)
-                    throws InvalidBoundaryException;
+            throws InvalidBoundaryException;
 
 
     /**
      * List of complex roots of complex polynomial.
+     *
      * @param a univariate complex polynomial.
      * @return list of complex roots.
      */
-    @SuppressWarnings({"cast","unchecked"})
+    @SuppressWarnings({"cast", "unchecked"})
     public List<Rectangle<C>> complexRoots(GenPolynomial<Complex<C>> a) {
         List<Rectangle<C>> roots = new ArrayList<Rectangle<C>>();
         if (a.isConstant() || a.isZERO()) {
@@ -206,14 +213,15 @@ public abstract class ComplexRootsAbstract<C extends RingElem<C> & Rational> imp
 
     /**
      * Complex root refinement of complex polynomial a on rectangle.
+     *
      * @param rect rectangle containing exactly one complex root.
-     * @param a univariate squarefree complex polynomial.
-     * @param len rational length for refinement.
+     * @param a    univariate squarefree complex polynomial.
+     * @param len  rational length for refinement.
      * @return refined complex root.
      */
-    @SuppressWarnings({"cast","unchecked"})
+    @SuppressWarnings({"cast", "unchecked"})
     public Rectangle<C> complexRootRefinement(Rectangle<C> rect, GenPolynomial<Complex<C>> a, BigRational len)
-                    throws InvalidBoundaryException {
+            throws InvalidBoundaryException {
         ComplexRing<C> cr = (ComplexRing<C>) a.ring.coFac;
         Rectangle<C> root = rect;
         long w;
@@ -320,11 +328,12 @@ public abstract class ComplexRootsAbstract<C extends RingElem<C> & Rational> imp
 
     /**
      * List of complex roots of complex polynomial.
-     * @param a univariate complex polynomial.
+     *
+     * @param a   univariate complex polynomial.
      * @param len rational length for refinement.
      * @return list of complex roots to desired precision.
      */
-    @SuppressWarnings({"cast","unchecked"})
+    @SuppressWarnings({"cast", "unchecked"})
     public List<Rectangle<C>> complexRoots(GenPolynomial<Complex<C>> a, BigRational len) {
         ComplexRing<C> cr = (ComplexRing<C>) a.ring.coFac;
         SortedMap<GenPolynomial<Complex<C>>, Long> sa = engine.squarefreeFactors(a);
@@ -364,19 +373,21 @@ public abstract class ComplexRootsAbstract<C extends RingElem<C> & Rational> imp
 
     /**
      * Invariant rectangle for algebraic number.
+     *
      * @param rect root isolating rectangle for f which contains exactly one
-     *            root.
-     * @param f univariate polynomial, non-zero.
-     * @param g univariate polynomial, gcd(f,g) == 1.
+     *             root.
+     * @param f    univariate polynomial, non-zero.
+     * @param g    univariate polynomial, gcd(f,g) == 1.
      * @return v with v a new rectangle contained in iv such that g(w) != 0 for
-     *         w in v.
+     * w in v.
      */
     public abstract Rectangle<C> invariantRectangle(Rectangle<C> rect, GenPolynomial<Complex<C>> f,
-                    GenPolynomial<Complex<C>> g) throws InvalidBoundaryException;
+                                                    GenPolynomial<Complex<C>> g) throws InvalidBoundaryException;
 
 
     /**
      * Get decimal approximation.
+     *
      * @param a complex number.
      * @return decimal(a).
      */
@@ -397,14 +408,15 @@ public abstract class ComplexRootsAbstract<C extends RingElem<C> & Rational> imp
 
     /**
      * Approximate complex root.
-     * @param rt root isolating rectangle.
-     * @param f univariate polynomial, non-zero.
+     *
+     * @param rt  root isolating rectangle.
+     * @param f   univariate polynomial, non-zero.
      * @param eps requested interval length.
      * @return a decimal approximation d such that |d-v| &lt; eps, for f(v) = 0,
-     *         v in rt.
+     * v in rt.
      */
     public Complex<BigDecimal> approximateRoot(Rectangle<C> rt, GenPolynomial<Complex<C>> f, BigRational eps)
-                    throws NoConvergenceException {
+            throws NoConvergenceException {
         if (rt == null) {
             throw new IllegalArgumentException("null interval not allowed");
         }
@@ -433,22 +445,22 @@ public abstract class ComplexRootsAbstract<C extends RingElem<C> & Rational> imp
 
         // polynomials with decimal coefficients
         GenPolynomialRing<Complex<BigDecimal>> dfac = new GenPolynomialRing<Complex<BigDecimal>>(cr, f.ring);
-        GenPolynomial<Complex<BigDecimal>> df = PolyUtil.<C> complexDecimalFromRational(dfac, f);
-        GenPolynomial<Complex<C>> fp = PolyUtil.<Complex<C>> baseDeriviative(f);
-        GenPolynomial<Complex<BigDecimal>> dfp = PolyUtil.<C> complexDecimalFromRational(dfac, fp);
+        GenPolynomial<Complex<BigDecimal>> df = PolyUtil.<C>complexDecimalFromRational(dfac, f);
+        GenPolynomial<Complex<C>> fp = PolyUtil.<Complex<C>>baseDeriviative(f);
+        GenPolynomial<Complex<BigDecimal>> dfp = PolyUtil.<C>complexDecimalFromRational(dfac, fp);
 
         // Newton Raphson iteration: x_{n+1} = x_n - f(x_n)/f'(x_n)
         int i = 0;
         final int MITER = 50;
         int dir = -1;
         while (i++ < MITER) {
-            Complex<BigDecimal> fx = PolyUtil.<Complex<BigDecimal>> evaluateMain(cr, df, d); // f(d)
+            Complex<BigDecimal> fx = PolyUtil.<Complex<BigDecimal>>evaluateMain(cr, df, d); // f(d)
             //BigDecimal fs = fx.norm().getRe();
             //System.out.println("fs = " + fs);
             if (fx.isZERO()) {
                 return d;
             }
-            Complex<BigDecimal> fpx = PolyUtil.<Complex<BigDecimal>> evaluateMain(cr, dfp, d); // f'(d)
+            Complex<BigDecimal> fpx = PolyUtil.<Complex<BigDecimal>>evaluateMain(cr, dfp, d); // f'(d)
             if (fpx.isZERO()) {
                 throw new NoConvergenceException("zero deriviative should not happen");
             }
@@ -480,7 +492,7 @@ public abstract class ComplexRootsAbstract<C extends RingElem<C> & Rational> imp
             //             }
             // check interval bounds
             while (dx.getRe().compareTo(ll.getRe()) < 0 || dx.getIm().compareTo(ll.getIm()) < 0
-                            || dx.getRe().compareTo(ur.getRe()) > 0 || dx.getIm().compareTo(ur.getIm()) > 0) {
+                    || dx.getRe().compareTo(ur.getRe()) > 0 || dx.getIm().compareTo(ur.getIm()) > 0) {
                 // dx < ll: dx - ll < 0
                 // dx > ur: dx - ur > 0
                 if (i++ > MITER) { // dx > right: dx - right > 0
@@ -558,11 +570,12 @@ public abstract class ComplexRootsAbstract<C extends RingElem<C> & Rational> imp
 
     /**
      * List of decimal approximations of complex roots of complex polynomial.
-     * @param a univariate complex polynomial.
+     *
+     * @param a   univariate complex polynomial.
      * @param eps length for refinement.
      * @return list of complex decimal root approximations to desired precision.
      */
-    @SuppressWarnings({"cast","unchecked"})
+    @SuppressWarnings({"cast", "unchecked"})
     public List<Complex<BigDecimal>> approximateRoots(GenPolynomial<Complex<C>> a, BigRational eps) {
         ComplexRing<C> cr = (ComplexRing<C>) a.ring.coFac;
         SortedMap<GenPolynomial<Complex<C>>, Long> sa = engine.squarefreeFactors(a);
@@ -631,7 +644,8 @@ public abstract class ComplexRootsAbstract<C extends RingElem<C> & Rational> imp
 
     /**
      * Copy the specified array.
-     * @param original array.
+     *
+     * @param original  array.
      * @param newLength new array length.
      * @return copy of this.
      */
@@ -644,16 +658,17 @@ public abstract class ComplexRootsAbstract<C extends RingElem<C> & Rational> imp
 
     /**
      * Invariant rectangle for algebraic number magnitude.
+     *
      * @param rect root isolating rectangle for f which contains exactly one
-     *            root.
-     * @param f univariate polynomial, non-zero.
-     * @param g univariate polynomial, gcd(f,g) == 1.
-     * @param eps length limit for rectangle length.
+     *             root.
+     * @param f    univariate polynomial, non-zero.
+     * @param g    univariate polynomial, gcd(f,g) == 1.
+     * @param eps  length limit for rectangle length.
      * @return v with v a new rectangle contained in rect such that |g(a) -
-     *         g(b)| &lt; eps for a, b in v in rect.
+     * g(b)| &lt; eps for a, b in v in rect.
      */
     public Rectangle<C> invariantMagnitudeRectangle(Rectangle<C> rect, GenPolynomial<Complex<C>> f,
-                    GenPolynomial<Complex<C>> g, BigRational eps) throws InvalidBoundaryException {
+                                                    GenPolynomial<Complex<C>> g, BigRational eps) throws InvalidBoundaryException {
         Rectangle<C> v = rect;
         if (g == null || g.isZERO()) {
             return v;
@@ -664,7 +679,7 @@ public abstract class ComplexRootsAbstract<C extends RingElem<C> & Rational> imp
         if (f == null || f.isZERO() || f.isConstant()) { // ?
             return v;
         }
-        GenPolynomial<Complex<C>> gp = PolyUtil.<Complex<C>> baseDeriviative(g);
+        GenPolynomial<Complex<C>> gp = PolyUtil.<Complex<C>>baseDeriviative(g);
         //System.out.println("g  = " + g);
         //System.out.println("gp = " + gp);
         BigRational B = magnitudeBound(rect, gp).getRational();
@@ -693,38 +708,40 @@ public abstract class ComplexRootsAbstract<C extends RingElem<C> & Rational> imp
 
     /**
      * Complex algebraic number magnitude.
+     *
      * @param rect root isolating rectangle for f which contains exactly one
-     *            root, with rect such that |g(a) - g(b)| &lt; eps for a, b in
-     *            rect.
-     * @param f univariate polynomial, non-zero.
-     * @param g univariate polynomial, gcd(f,g) == 1.
+     *             root, with rect such that |g(a) - g(b)| &lt; eps for a, b in
+     *             rect.
+     * @param f    univariate polynomial, non-zero.
+     * @param g    univariate polynomial, gcd(f,g) == 1.
      * @return g(rect) .
      */
     public Complex<C> complexRectangleMagnitude(Rectangle<C> rect, GenPolynomial<Complex<C>> f,
-                    GenPolynomial<Complex<C>> g) {
+                                                GenPolynomial<Complex<C>> g) {
         if (g.isZERO() || g.isConstant()) {
             return g.leadingBaseCoefficient();
         }
         RingFactory<Complex<C>> cfac = f.ring.coFac;
         //System.out.println("cfac = " + cfac + " : " + cfac.getClass());
         Complex<C> c = rect.getCenter();
-        Complex<C> ev = PolyUtil.<Complex<C>> evaluateMain(cfac, g, c);
+        Complex<C> ev = PolyUtil.<Complex<C>>evaluateMain(cfac, g, c);
         return ev;
     }
 
 
     /**
      * Complex algebraic number magnitude.
+     *
      * @param rect root isolating rectangle for f which contains exactly one
-     *            root, with rect such that |g(a) - g(b)| &lt; eps for a, b in
-     *            rect.
-     * @param f univariate polynomial, non-zero.
-     * @param g univariate polynomial, gcd(f,g) == 1.
-     * @param eps length limit for rectangle length.
+     *             root, with rect such that |g(a) - g(b)| &lt; eps for a, b in
+     *             rect.
+     * @param f    univariate polynomial, non-zero.
+     * @param g    univariate polynomial, gcd(f,g) == 1.
+     * @param eps  length limit for rectangle length.
      * @return g(rect) .
      */
     public Complex<C> complexMagnitude(Rectangle<C> rect, GenPolynomial<Complex<C>> f,
-                    GenPolynomial<Complex<C>> g, BigRational eps) throws InvalidBoundaryException {
+                                       GenPolynomial<Complex<C>> g, BigRational eps) throws InvalidBoundaryException {
         if (g.isZERO() || g.isConstant()) {
             return g.leadingBaseCoefficient();
         }

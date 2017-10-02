@@ -15,6 +15,7 @@ import edu.jas.structure.RingElem;
 /**
  * Local element based on RingElem pairs. Objects of this class are (nearly)
  * immutable.
+ *
  * @author Heinz Kredel
  */
 public class Local<C extends RingElem<C>> implements RingElem<Local<C>>, QuotPair<C> {
@@ -53,6 +54,7 @@ public class Local<C extends RingElem<C>> implements RingElem<Local<C>>, QuotPai
 
     /**
      * The constructor creates a Local object from a ring factory.
+     *
      * @param r ring factory.
      */
     public Local(LocalRing<C> r) {
@@ -63,6 +65,7 @@ public class Local<C extends RingElem<C>> implements RingElem<Local<C>>, QuotPai
     /**
      * The constructor creates a Local object from a ring factory and a
      * numerator element. The denominator is assumed to be 1.
+     *
      * @param r ring factory.
      * @param n numerator.
      */
@@ -74,6 +77,7 @@ public class Local<C extends RingElem<C>> implements RingElem<Local<C>>, QuotPai
     /**
      * The constructor creates a Local object from a ring factory and a
      * numerator and denominator element.
+     *
      * @param r ring factory.
      * @param n numerator.
      * @param d denominator.
@@ -86,9 +90,10 @@ public class Local<C extends RingElem<C>> implements RingElem<Local<C>>, QuotPai
     /**
      * The constructor creates a Local object from a ring factory and a
      * numerator and denominator element.
-     * @param r ring factory.
-     * @param n numerator.
-     * @param d denominator.
+     *
+     * @param r     ring factory.
+     * @param n     numerator.
+     * @param d     denominator.
      * @param isred true if gcd(n,d) == 1, else false.
      */
     @SuppressWarnings("unchecked")
@@ -137,6 +142,7 @@ public class Local<C extends RingElem<C>> implements RingElem<Local<C>>, QuotPai
 
     /**
      * Get the corresponding element factory.
+     *
      * @return factory for this Element.
      * @see edu.jas.structure.Element#factory()
      */
@@ -147,6 +153,7 @@ public class Local<C extends RingElem<C>> implements RingElem<Local<C>>, QuotPai
 
     /**
      * Numerator.
+     *
      * @see edu.jas.structure.QuotPair#numerator()
      */
     public C numerator() {
@@ -156,6 +163,7 @@ public class Local<C extends RingElem<C>> implements RingElem<Local<C>>, QuotPai
 
     /**
      * Denominator.
+     *
      * @see edu.jas.structure.QuotPair#denominator()
      */
     public C denominator() {
@@ -165,6 +173,7 @@ public class Local<C extends RingElem<C>> implements RingElem<Local<C>>, QuotPai
 
     /**
      * Is Local a constant. Not implemented.
+     *
      * @throws UnsupportedOperationException.
      */
     public boolean isConstant() {
@@ -174,6 +183,7 @@ public class Local<C extends RingElem<C>> implements RingElem<Local<C>>, QuotPai
 
     /**
      * Clone this.
+     *
      * @see java.lang.Object#clone()
      */
     @Override
@@ -184,6 +194,7 @@ public class Local<C extends RingElem<C>> implements RingElem<Local<C>>, QuotPai
 
     /**
      * Is Local zero.
+     *
      * @return If this is 0 then true is returned, else false.
      * @see edu.jas.structure.RingElem#isZERO()
      */
@@ -194,6 +205,7 @@ public class Local<C extends RingElem<C>> implements RingElem<Local<C>>, QuotPai
 
     /**
      * Is Local one.
+     *
      * @return If this is 1 then true is returned, else false.
      * @see edu.jas.structure.RingElem#isONE()
      */
@@ -204,6 +216,7 @@ public class Local<C extends RingElem<C>> implements RingElem<Local<C>>, QuotPai
 
     /**
      * Is Local unit.
+     *
      * @return If this is a unit then true is returned, else false.
      * @see edu.jas.structure.RingElem#isUnit()
      */
@@ -232,6 +245,7 @@ public class Local<C extends RingElem<C>> implements RingElem<Local<C>>, QuotPai
 
     /**
      * Get the String representation as RingElem.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -242,6 +256,7 @@ public class Local<C extends RingElem<C>> implements RingElem<Local<C>>, QuotPai
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this Element.
      * @see edu.jas.structure.Element#toScript()
      */
@@ -254,6 +269,7 @@ public class Local<C extends RingElem<C>> implements RingElem<Local<C>>, QuotPai
 
     /**
      * Get a scripting compatible string representation of the factory.
+     *
      * @return script compatible representation for this ElemFactory.
      * @see edu.jas.structure.Element#toScriptFactory()
      */
@@ -266,6 +282,7 @@ public class Local<C extends RingElem<C>> implements RingElem<Local<C>>, QuotPai
 
     /**
      * Local comparison.
+     *
      * @param b Local.
      * @return sign(this-b).
      */
@@ -283,6 +300,7 @@ public class Local<C extends RingElem<C>> implements RingElem<Local<C>>, QuotPai
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -301,6 +319,7 @@ public class Local<C extends RingElem<C>> implements RingElem<Local<C>>, QuotPai
 
     /**
      * Hash code for this local.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -315,6 +334,7 @@ public class Local<C extends RingElem<C>> implements RingElem<Local<C>>, QuotPai
 
     /**
      * Local absolute value.
+     *
      * @return the absolute value of this.
      * @see edu.jas.structure.RingElem#abs()
      */
@@ -325,6 +345,7 @@ public class Local<C extends RingElem<C>> implements RingElem<Local<C>>, QuotPai
 
     /**
      * Local summation.
+     *
      * @param S Local.
      * @return this+S.
      */
@@ -341,6 +362,7 @@ public class Local<C extends RingElem<C>> implements RingElem<Local<C>>, QuotPai
 
     /**
      * Local negate.
+     *
      * @return -this.
      * @see edu.jas.structure.RingElem#negate()
      */
@@ -351,8 +373,9 @@ public class Local<C extends RingElem<C>> implements RingElem<Local<C>>, QuotPai
 
     /**
      * Local signum.
-     * @see edu.jas.structure.RingElem#signum()
+     *
      * @return signum(this).
+     * @see edu.jas.structure.RingElem#signum()
      */
     public int signum() {
         return num.signum();
@@ -361,6 +384,7 @@ public class Local<C extends RingElem<C>> implements RingElem<Local<C>>, QuotPai
 
     /**
      * Local subtraction.
+     *
      * @param S Local.
      * @return this-S.
      */
@@ -377,6 +401,7 @@ public class Local<C extends RingElem<C>> implements RingElem<Local<C>>, QuotPai
 
     /**
      * Local division.
+     *
      * @param S Local.
      * @return this/S.
      */
@@ -387,8 +412,9 @@ public class Local<C extends RingElem<C>> implements RingElem<Local<C>>, QuotPai
 
     /**
      * Local inverse.
-     * @see edu.jas.structure.RingElem#inverse()
+     *
      * @return S with S = 1/this if defined.
+     * @see edu.jas.structure.RingElem#inverse()
      */
     public Local<C> inverse() {
         if (isONE()) {
@@ -403,6 +429,7 @@ public class Local<C extends RingElem<C>> implements RingElem<Local<C>>, QuotPai
 
     /**
      * Local remainder.
+     *
      * @param S Local.
      * @return this - (this/S)*S.
      */
@@ -419,16 +446,18 @@ public class Local<C extends RingElem<C>> implements RingElem<Local<C>>, QuotPai
 
     /**
      * Quotient and remainder by division of this by S.
+     *
      * @param S a Local
      * @return [this/S, this - (this/S)*S].
      */
     public Local<C>[] quotientRemainder(Local<C> S) {
-        return new Local[] { divide(S), remainder(S) };
+        return new Local[]{divide(S), remainder(S)};
     }
 
 
     /**
      * Local multiplication.
+     *
      * @param S Local.
      * @return this*S.
      */
@@ -454,8 +483,9 @@ public class Local<C extends RingElem<C>> implements RingElem<Local<C>>, QuotPai
     /**
      * Greatest common divisor. <b>Note: </b>Not implemented, throws
      * UnsupportedOperationException.
+     *
      * @param b other element.
-     * @return gcd(this,b).
+     * @return gcd(this, b).
      */
     public Local<C> gcd(Local<C> b) {
         throw new UnsupportedOperationException("gcd not implemented " + this.getClass().getName());
@@ -465,6 +495,7 @@ public class Local<C extends RingElem<C>> implements RingElem<Local<C>>, QuotPai
     /**
      * Extended greatest common divisor. <b>Note: </b>Not implemented, throws
      * UnsupportedOperationException.
+     *
      * @param b other element.
      * @return [ gcd(this,b), c1, c2 ] with c1*this + c2*b = gcd(this,b).
      */

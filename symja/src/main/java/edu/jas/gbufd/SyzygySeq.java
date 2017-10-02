@@ -5,11 +5,11 @@
 package edu.jas.gbufd;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.gb.ExtendedGB;
 import edu.jas.gb.GroebnerBaseAbstract;
@@ -23,6 +23,7 @@ import edu.jas.structure.RingFactory;
 
 /**
  * SyzygySeq class. Implements Syzygy computations and tests.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
@@ -50,6 +51,7 @@ public class SyzygySeq<C extends GcdRingElem<C>> extends SyzygyAbstract<C> {
 
     /**
      * Constructor.
+     *
      * @param cf coefficient ring.
      */
     public SyzygySeq(RingFactory<C> cf) {
@@ -61,6 +63,7 @@ public class SyzygySeq<C extends GcdRingElem<C>> extends SyzygyAbstract<C> {
 
     /**
      * Resolution of a module. Only with direct GBs.
+     *
      * @param M a module list of a Groebner basis.
      * @return a resolution of M.
      */
@@ -86,6 +89,7 @@ public class SyzygySeq<C extends GcdRingElem<C>> extends SyzygyAbstract<C> {
 
     /**
      * Resolution of a polynomial list. Only with direct GBs.
+     *
      * @param F a polynomial list of a Groebner basis.
      * @return a resolution of F.
      */
@@ -112,6 +116,7 @@ public class SyzygySeq<C extends GcdRingElem<C>> extends SyzygyAbstract<C> {
 
     /**
      * Resolution of a polynomial list.
+     *
      * @param F a polynomial list of an arbitrary basis.
      * @return a resolution of F.
      */
@@ -136,6 +141,7 @@ public class SyzygySeq<C extends GcdRingElem<C>> extends SyzygyAbstract<C> {
 
     /**
      * Resolution of a module.
+     *
      * @param M a module list of an arbitrary basis.
      * @return a resolution of M.
      */
@@ -159,8 +165,9 @@ public class SyzygySeq<C extends GcdRingElem<C>> extends SyzygyAbstract<C> {
 
     /**
      * Syzygy module from arbitrary base.
+     *
      * @param modv number of module variables.
-     * @param F a polynomial list.
+     * @param F    a polynomial list.
      * @return syz(F), a basis for the module of syzygies for F.
      */
     public List<List<GenPolynomial<C>>> zeroRelationsArbitrary(int modv, List<GenPolynomial<C>> F) {

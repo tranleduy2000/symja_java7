@@ -16,31 +16,35 @@
  */
 package org.hipparchus.ode;
 
-import java.util.Collections;
-import java.util.List;
-
 import org.hipparchus.exception.MathIllegalArgumentException;
 import org.hipparchus.exception.MathIllegalStateException;
 
-/** Interface expanding {@link OrdinaryDifferentialEquation first order
- *  differential equations} in order to compute exactly the Jacobian
- *  matrices for {@link VariationalEquation partial derivatives equations}.
+import java.util.Collections;
+import java.util.List;
+
+/**
+ * Interface expanding {@link OrdinaryDifferentialEquation first order
+ * differential equations} in order to compute exactly the Jacobian
+ * matrices for {@link VariationalEquation partial derivatives equations}.
  */
 public interface ODEJacobiansProvider
-    extends OrdinaryDifferentialEquation, NamedParameterJacobianProvider {
+        extends OrdinaryDifferentialEquation, NamedParameterJacobianProvider {
 
-    /** Compute the Jacobian matrix of ODE with respect to state.
-     * @param t current value of the independent <I>time</I> variable
-     * @param y array containing the current value of the main state vector
+    /**
+     * Compute the Jacobian matrix of ODE with respect to state.
+     *
+     * @param t    current value of the independent <I>time</I> variable
+     * @param y    array containing the current value of the main state vector
      * @param yDot array containing the current value of the time derivative of the main state vector
      * @return Jacobian matrix of the ODE w.r.t. the main state vector
-     * @exception MathIllegalStateException if the number of functions evaluations is exceeded
-     * @exception MathIllegalArgumentException if arrays dimensions do not match equations settings
+     * @throws MathIllegalStateException    if the number of functions evaluations is exceeded
+     * @throws MathIllegalArgumentException if arrays dimensions do not match equations settings
      */
     double[][] computeMainStateJacobian(double t, double[] y, double[] yDot)
-        throws MathIllegalArgumentException, MathIllegalStateException;
+            throws MathIllegalArgumentException, MathIllegalStateException;
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      * <p>
      * The default implementation has no parameters at all.
      * </p>
@@ -50,7 +54,8 @@ public interface ODEJacobiansProvider
         return Collections.emptyList();
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      * <p>
      * The default implementation supports no parameters at all.
      * </p>
@@ -60,7 +65,8 @@ public interface ODEJacobiansProvider
         return false;
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      * <p>
      * The default implementation supports no parameters at all.
      * </p>
@@ -68,9 +74,9 @@ public interface ODEJacobiansProvider
     @Override
     default double[] computeParameterJacobian(double t, double[] y, double[] yDot,
                                               String paramName)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         throw new MathIllegalArgumentException(LocalizedODEFormats.UNKNOWN_PARAMETER,
-                                               paramName);
+                paramName);
     }
 
 }

@@ -5,11 +5,11 @@
 package edu.jas.gb;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.poly.GenWordPolynomial;
 import edu.jas.poly.Word;
@@ -18,12 +18,13 @@ import edu.jas.structure.RingElem;
 
 /**
  * Polynomial word reduction sequential use algorithm. Implements normalform.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
 
 public class WordReductionSeq<C extends RingElem<C>> // should be FieldElem<C>>
-                extends WordReductionAbstract<C> {
+        extends WordReductionAbstract<C> {
 
 
     private static final Logger logger = Logger.getLogger(WordReductionSeq.class);
@@ -41,6 +42,7 @@ public class WordReductionSeq<C extends RingElem<C>> // should be FieldElem<C>>
 
     /**
      * Normalform.
+     *
      * @param Ap polynomial.
      * @param Pp polynomial list.
      * @return nf(Ap) with respect to Pp.
@@ -129,15 +131,16 @@ public class WordReductionSeq<C extends RingElem<C>> // should be FieldElem<C>>
 
     /**
      * Normalform with left and right recording.
+     *
      * @param lrow left recording matrix, is modified.
      * @param rrow right recording matrix, is modified.
-     * @param Pp a polynomial list for reduction.
-     * @param Ap a polynomial.
-     * @return nf(Pp,Ap), the normal form of Ap wrt. Pp.
+     * @param Pp   a polynomial list for reduction.
+     * @param Ap   a polynomial.
+     * @return nf(Pp, Ap), the normal form of Ap wrt. Pp.
      */
     @SuppressWarnings("unchecked")
     public GenWordPolynomial<C> normalform(List<GenWordPolynomial<C>> lrow, List<GenWordPolynomial<C>> rrow,
-                    List<GenWordPolynomial<C>> Pp, GenWordPolynomial<C> Ap) {
+                                           List<GenWordPolynomial<C>> Pp, GenWordPolynomial<C> Ap) {
         if (Pp == null || Pp.isEmpty()) {
             return Ap;
         }
@@ -280,9 +283,10 @@ public class WordReductionSeq<C extends RingElem<C>> // should be FieldElem<C>>
 
     /**
      * Left normalform with recording.
+     *
      * @param Pp a polynomial list for reduction.
      * @param Ap a polynomial.
-     * @return nf(Pp,Ap), the left normal form of Ap wrt. Pp.
+     * @return nf(Pp, Ap), the left normal form of Ap wrt. Pp.
      */
     public GenWordPolynomial<C> leftNormalform(List<GenWordPolynomial<C>> Pp, GenWordPolynomial<C> Ap) {
         if (Pp == null || Pp.isEmpty()) {
@@ -302,14 +306,15 @@ public class WordReductionSeq<C extends RingElem<C>> // should be FieldElem<C>>
 
     /**
      * Left normalform with recording.
+     *
      * @param lrow left recording matrix, is modified.
-     * @param Pp a polynomial list for reduction.
-     * @param Ap a polynomial.
-     * @return nf(Pp,Ap), the left normal form of Ap wrt. Pp.
+     * @param Pp   a polynomial list for reduction.
+     * @param Ap   a polynomial.
+     * @return nf(Pp, Ap), the left normal form of Ap wrt. Pp.
      */
     @SuppressWarnings("unchecked")
     public GenWordPolynomial<C> leftNormalform(List<GenWordPolynomial<C>> lrow,
-                    List<GenWordPolynomial<C>> Pp, GenWordPolynomial<C> Ap) {
+                                               List<GenWordPolynomial<C>> Pp, GenWordPolynomial<C> Ap) {
         if (Pp == null || Pp.isEmpty()) {
             return Ap;
         }
@@ -405,9 +410,10 @@ public class WordReductionSeq<C extends RingElem<C>> // should be FieldElem<C>>
 
     /**
      * Right normalform with recording.
+     *
      * @param Pp a polynomial list for reduction.
      * @param Ap a polynomial.
-     * @return nf(Pp,Ap), the right normal form of Ap wrt. Pp.
+     * @return nf(Pp, Ap), the right normal form of Ap wrt. Pp.
      */
     public GenWordPolynomial<C> rightNormalform(List<GenWordPolynomial<C>> Pp, GenWordPolynomial<C> Ap) {
         if (Pp == null || Pp.isEmpty()) {
@@ -427,14 +433,15 @@ public class WordReductionSeq<C extends RingElem<C>> // should be FieldElem<C>>
 
     /**
      * Right normalform with recording.
+     *
      * @param rrow right recording matrix, is modified.
-     * @param Pp a polynomial list for reduction.
-     * @param Ap a polynomial.
-     * @return nf(Pp,Ap), the right normal form of Ap wrt. Pp.
+     * @param Pp   a polynomial list for reduction.
+     * @param Ap   a polynomial.
+     * @return nf(Pp, Ap), the right normal form of Ap wrt. Pp.
      */
     @SuppressWarnings("unchecked")
     public GenWordPolynomial<C> rightNormalform(List<GenWordPolynomial<C>> rrow,
-                    List<GenWordPolynomial<C>> Pp, GenWordPolynomial<C> Ap) {
+                                                List<GenWordPolynomial<C>> Pp, GenWordPolynomial<C> Ap) {
         if (Pp == null || Pp.isEmpty()) {
             return Ap;
         }

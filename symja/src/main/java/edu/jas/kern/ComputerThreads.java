@@ -5,6 +5,8 @@
 package edu.jas.kern;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
@@ -12,33 +14,18 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.log4j.Logger;
-
 
 /**
  * ComputerThreads, provides global thread / executor service.
+ *
  * @author Heinz Kredel
  * @usage To obtain a reference to the thread pool use
- *        <code>ComputerThreads.getPool()</code>. Once a pool has been created
- *        it must be shutdown to exit JAS with
- *        <code>ComputerThreads.terminate()</code>.
+ * <code>ComputerThreads.getPool()</code>. Once a pool has been created
+ * it must be shutdown to exit JAS with
+ * <code>ComputerThreads.terminate()</code>.
  */
 
 public class ComputerThreads {
-
-
-    private static final Logger logger = Logger.getLogger(ComputerThreads.class);
-
-
-    // private static final boolean debug = logger.isInfoEnabled(); //logger.isInfoEnabled();
-
-
-    /**
-     * Flag for thread usage. <b>Note:</b> Only introduced because Google app
-     * engine does not support threads.
-     * @see edu.jas.ufd.GCDFactory#getProxy(edu.jas.structure.RingFactory)
-     */
-    public static boolean NO_THREADS = false;
 
 
     /**
@@ -47,25 +34,34 @@ public class ComputerThreads {
     public static final int N_CPUS = Runtime.getRuntime().availableProcessors();
 
 
+    // private static final boolean debug = logger.isInfoEnabled(); //logger.isInfoEnabled();
     /*
       * Core number of threads.
       * N_CPUS x 1.5, x 2, x 2.5, min 3, ?.
       */
     public static final int N_THREADS = (N_CPUS < 3 ? 3 : N_CPUS + N_CPUS / 2);
+    private static final Logger logger = Logger.getLogger(ComputerThreads.class);
+    /**
+     * Flag for thread usage. <b>Note:</b> Only introduced because Google app
+     * engine does not support threads.
+     *
+     * @see edu.jas.ufd.GCDFactory#getProxy(edu.jas.structure.RingFactory)
+     */
+    public static boolean NO_THREADS = false;
 
 
     //public static final int N_THREADS = ( N_CPUS < 3 ? 5 : 3*N_CPUS );
-
-
     /**
-     * Timeout for timed execution. 
+     * Timeout for timed execution.
+     *
      * @see edu.jas.fd.SGCDParallelProxy
      */
     static long timeout = 10L; //-1L;
 
 
     /**
-     * TimeUnit for timed execution. 
+     * TimeUnit for timed execution.
+     *
      * @see edu.jas.fd.SGCDParallelProxy
      */
     static TimeUnit timeunit = TimeUnit.SECONDS;
@@ -93,6 +89,7 @@ public class ComputerThreads {
 
     /**
      * Test if a pool is running.
+     *
      * @return true if a thread pool has been started or is running, else false.
      */
     public static synchronized boolean isRunning() {
@@ -108,6 +105,7 @@ public class ComputerThreads {
 
     /**
      * Get the thread pool.
+     *
      * @return pool ExecutorService.
      */
     public static synchronized ExecutorService getPool() {
@@ -186,40 +184,40 @@ public class ComputerThreads {
         NO_THREADS = false;
     }
 
-
-    /**
-     * Set timeout.
-     * @param t time value to set
-     */
-    public static synchronized void setTimeout(long t) {
-        timeout = t;
-    }
-
-
     /**
      * Get timeout.
+     *
      * @return timeout value
      */
     public static synchronized long getTimeout() {
         return timeout;
     }
 
-
     /**
-     * Set TimeUnit.
-     * @param t TimeUnit value to set
+     * Set timeout.
+     *
+     * @param t time value to set
      */
-    public static synchronized void setTimeUnit(TimeUnit t) {
-        timeunit = t;
+    public static synchronized void setTimeout(long t) {
+        timeout = t;
     }
-
 
     /**
      * Get TimeUnit.
+     *
      * @return timeunit value
      */
     public static synchronized TimeUnit getTimeUnit() {
         return timeunit;
+    }
+
+    /**
+     * Set TimeUnit.
+     *
+     * @param t TimeUnit value to set
+     */
+    public static synchronized void setTimeUnit(TimeUnit t) {
+        timeunit = t;
     }
 
 }

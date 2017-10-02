@@ -5,11 +5,11 @@
 package edu.jas.gbufd;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.gb.OrderedWordPairlist;
 import edu.jas.gb.WordGroebnerBaseAbstract;
@@ -30,12 +30,13 @@ import edu.jas.ufd.GreatestCommonDivisorAbstract;
  * Non-commutative word Groebner Base sequential algorithm. Implements Groebner
  * bases and GB test. Coefficients can for example be (commutative) multivariate
  * polynomials.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
 
 public class WordGroebnerBasePseudoRecSeq<C extends GcdRingElem<C>> extends
-                WordGroebnerBaseAbstract<GenPolynomial<C>> {
+        WordGroebnerBaseAbstract<GenPolynomial<C>> {
 
 
     private static final Logger logger = Logger.getLogger(WordGroebnerBasePseudoRecSeq.class);
@@ -72,6 +73,7 @@ public class WordGroebnerBasePseudoRecSeq<C extends GcdRingElem<C>> extends
 
     /**
      * Constructor.
+     *
      * @param rf coefficient ring factory.
      */
     public WordGroebnerBasePseudoRecSeq(RingFactory<GenPolynomial<C>> rf) {
@@ -81,24 +83,26 @@ public class WordGroebnerBasePseudoRecSeq<C extends GcdRingElem<C>> extends
 
     /**
      * Constructor.
-     * @param rf coefficient ring factory.
+     *
+     * @param rf  coefficient ring factory.
      * @param red Reduction engine
      */
     public WordGroebnerBasePseudoRecSeq(RingFactory<GenPolynomial<C>> rf,
-                    WordPseudoReductionSeq<GenPolynomial<C>> red) {
+                                        WordPseudoReductionSeq<GenPolynomial<C>> red) {
         this(rf, red, new OrderedWordPairlist<GenPolynomial<C>>());
     }
 
 
     /**
      * Constructor.
-     * @param rf coefficient ring factory.
+     *
+     * @param rf  coefficient ring factory.
      * @param red Reduction engine
-     * @param pl pair selection strategy
+     * @param pl  pair selection strategy
      */
     @SuppressWarnings("cast")
     public WordGroebnerBasePseudoRecSeq(RingFactory<GenPolynomial<C>> rf,
-                    WordPseudoReductionSeq<GenPolynomial<C>> red, WordPairList<GenPolynomial<C>> pl) {
+                                        WordPseudoReductionSeq<GenPolynomial<C>> red, WordPairList<GenPolynomial<C>> pl) {
         super(red, pl);
         this.red = red;
         redRec = (WordPseudoReduction<C>) (WordPseudoReduction) red;
@@ -106,13 +110,14 @@ public class WordGroebnerBasePseudoRecSeq<C extends GcdRingElem<C>> extends
         if (!cofac.isCommutative()) {
             logger.warn("reduction not correct for " + cofac.toScript());
         }
-        engine = GCDFactory.<C> getImplementation(cofac.coFac);
+        engine = GCDFactory.<C>getImplementation(cofac.coFac);
         //not used: engine = GCDFactory.<C>getProxy(cofac.coFac);
     }
 
 
     /**
      * Word Groebner base using word pairlist class.
+     *
      * @param F word polynomial list.
      * @return GB(F) a finite non-commutative Groebner base of F, if it exists.
      */
@@ -131,7 +136,7 @@ public class WordGroebnerBasePseudoRecSeq<C extends GcdRingElem<C>> extends
         }
         //Collections.sort(G);
         OrderedWordPairlist<GenPolynomial<C>> pairlist = (OrderedWordPairlist<GenPolynomial<C>>) strategy
-                        .create(ring);
+                .create(ring);
         pairlist.put(G);
         logger.info("start " + pairlist);
 
@@ -183,7 +188,7 @@ public class WordGroebnerBasePseudoRecSeq<C extends GcdRingElem<C>> extends
                 }
                 if (!t) {
                     logger.info("criterion3(" + pair.i + "," + pair.j + ") wrong: " + s.leadingWord()
-                                    + " --> '" + H.leadingWord() + "'");
+                            + " --> '" + H.leadingWord() + "'");
                 }
 
                 //H = H.monic();
@@ -218,6 +223,7 @@ public class WordGroebnerBasePseudoRecSeq<C extends GcdRingElem<C>> extends
 
     /**
      * Minimal ordered Groebner basis.
+     *
      * @param Gp a Groebner base.
      * @return a reduced Groebner base of Gp.
      */
@@ -228,7 +234,7 @@ public class WordGroebnerBasePseudoRecSeq<C extends GcdRingElem<C>> extends
         }
         // remove zero polynomials
         List<GenWordPolynomial<GenPolynomial<C>>> G = new ArrayList<GenWordPolynomial<GenPolynomial<C>>>(
-                        Gp.size());
+                Gp.size());
         for (GenWordPolynomial<GenPolynomial<C>> a : Gp) {
             if (a != null && !a.isZERO()) { // always true in GB()
                 // already positive a = a.abs();
@@ -289,6 +295,7 @@ public class WordGroebnerBasePseudoRecSeq<C extends GcdRingElem<C>> extends
 
     /**
      * Wird Groebner base simple test.
+     *
      * @param F recursive polynomial list.
      * @return true, if F is a Groebner base, else false.
      */
@@ -328,6 +335,7 @@ public class WordGroebnerBasePseudoRecSeq<C extends GcdRingElem<C>> extends
 
     /**
      * GenWordPolynomial recursive coefficient content.
+     *
      * @param P recursive GenWordPolynomial.
      * @return cont(P).
      */
@@ -359,6 +367,7 @@ public class WordGroebnerBasePseudoRecSeq<C extends GcdRingElem<C>> extends
 
     /**
      * GenWordPolynomial recursive coefficient primitive part.
+     *
      * @param P recursive GenWordPolynomial.
      * @return pp(P).
      */
@@ -374,7 +383,7 @@ public class WordGroebnerBasePseudoRecSeq<C extends GcdRingElem<C>> extends
             return P;
         }
         //GenWordPolynomial<GenPolynomial<C>> pp = P.divide(d);
-        GenWordPolynomial<GenPolynomial<C>> pp = PolyUtil.<C> recursiveDivide(P, d);
+        GenWordPolynomial<GenPolynomial<C>> pp = PolyUtil.<C>recursiveDivide(P, d);
         if (debug) {
             GenWordPolynomial<GenPolynomial<C>> p = pp.multiply(d);
             if (!p.equals(P)) {
@@ -387,16 +396,17 @@ public class WordGroebnerBasePseudoRecSeq<C extends GcdRingElem<C>> extends
 
     /**
      * List of GenWordPolynomial recursive coefficient primitive part.
+     *
      * @param F list of recursive GenWordPolynomials.
      * @return pp(F).
      */
     public List<GenWordPolynomial<GenPolynomial<C>>> recursivePrimitivePart(
-                    List<GenWordPolynomial<GenPolynomial<C>>> F) {
+            List<GenWordPolynomial<GenPolynomial<C>>> F) {
         if (F == null || F.isEmpty()) {
             return F;
         }
         List<GenWordPolynomial<GenPolynomial<C>>> Pp = new ArrayList<GenWordPolynomial<GenPolynomial<C>>>(
-                        F.size());
+                F.size());
         for (GenWordPolynomial<GenPolynomial<C>> f : F) {
             GenWordPolynomial<GenPolynomial<C>> p = recursivePrimitivePart(f);
             Pp.add(p);

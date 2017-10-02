@@ -16,6 +16,7 @@ import edu.jas.structure.RingFactory;
 
 /**
  * Interval. For example isolating interval for real roots.
+ *
  * @param <C> coefficient type.
  * @author Heinz Kredel
  */
@@ -36,7 +37,8 @@ public class Interval<C extends RingElem<C> & Rational> implements Serializable 
 
     /**
      * Constructor.
-     * @param left interval border.
+     *
+     * @param left  interval border.
      * @param right interval border.
      */
     public Interval(C left, C right) {
@@ -47,6 +49,7 @@ public class Interval<C extends RingElem<C> & Rational> implements Serializable 
 
     /**
      * Constructor.
+     *
      * @param mid left and right interval border.
      */
     public Interval(C mid) {
@@ -56,6 +59,7 @@ public class Interval<C extends RingElem<C> & Rational> implements Serializable 
 
     /**
      * String representation of Interval.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -67,6 +71,7 @@ public class Interval<C extends RingElem<C> & Rational> implements Serializable 
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this Interval.
      */
     public String toScript() {
@@ -77,6 +82,7 @@ public class Interval<C extends RingElem<C> & Rational> implements Serializable 
 
     /**
      * Copy this.
+     *
      * @return a copy of this.
      */
     public Interval<C> copy() {
@@ -86,6 +92,7 @@ public class Interval<C extends RingElem<C> & Rational> implements Serializable 
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -106,6 +113,7 @@ public class Interval<C extends RingElem<C> & Rational> implements Serializable 
 
     /**
      * Hash code for this Interval.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -116,6 +124,7 @@ public class Interval<C extends RingElem<C> & Rational> implements Serializable 
 
     /**
      * Test if an element is contained in this interval.
+     *
      * @param c element to test.
      * @return true, if left <= b <= right;
      */
@@ -126,6 +135,7 @@ public class Interval<C extends RingElem<C> & Rational> implements Serializable 
 
     /**
      * Test if an interval is contained in this interval.
+     *
      * @param vc interval to test.
      * @return true, if left <= vc.left and vc.right <= right;
      */
@@ -136,6 +146,7 @@ public class Interval<C extends RingElem<C> & Rational> implements Serializable 
 
     /**
      * Length.
+     *
      * @return |left-right|;
      */
     public C length() {
@@ -146,6 +157,7 @@ public class Interval<C extends RingElem<C> & Rational> implements Serializable 
 
     /**
      * BigRational Length.
+     *
      * @return |left-right|;
      */
     public BigRational rationalLength() {
@@ -167,6 +179,7 @@ public class Interval<C extends RingElem<C> & Rational> implements Serializable 
 
     /**
      * Rational middle point.
+     *
      * @return (left+right)/2;
      */
     public BigRational rationalMiddle() {
@@ -179,6 +192,7 @@ public class Interval<C extends RingElem<C> & Rational> implements Serializable 
 
     /**
      * Middle point.
+     *
      * @return (left+right)/2;
      */
     public C middle() {
@@ -191,6 +205,7 @@ public class Interval<C extends RingElem<C> & Rational> implements Serializable 
 
     /**
      * Random point of interval.
+     *
      * @return a random point contained in this interval.
      */
     public C randomPoint() {

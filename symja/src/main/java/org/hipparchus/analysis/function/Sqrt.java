@@ -23,16 +23,18 @@ import org.hipparchus.util.FastMath;
 
 /**
  * Square-root function.
- *
  */
 public class Sqrt implements UnivariateDifferentiableFunction {
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double value(double x) {
         return FastMath.sqrt(x);
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     @Override
     public DerivativeStructure value(final DerivativeStructure t) {

@@ -24,7 +24,6 @@ import org.hipparchus.util.Pair;
  * This class's implements {@link #integrate(UnivariateFunction) integrate}
  * method assuming that the integral is symmetric about 0.
  * This allows to reduce numerical errors.
- *
  */
 public class SymmetricGaussIntegrator extends GaussIntegrator {
     /**
@@ -32,15 +31,15 @@ public class SymmetricGaussIntegrator extends GaussIntegrator {
      * The integration interval is defined by the first and last value of
      * {@code points} which must be sorted in increasing order.
      *
-     * @param points Integration points.
+     * @param points  Integration points.
      * @param weights Weights of the corresponding integration nodes.
      * @throws MathIllegalArgumentException if the {@code points} are not
-     * sorted in increasing order.
+     *                                      sorted in increasing order.
      * @throws MathIllegalArgumentException if points and weights don't have the same length
      */
     public SymmetricGaussIntegrator(double[] points,
                                     double[] weights)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         super(points, weights);
     }
 
@@ -50,12 +49,11 @@ public class SymmetricGaussIntegrator extends GaussIntegrator {
      *
      * @param pointsAndWeights Integration points and corresponding weights.
      * @throws MathIllegalArgumentException if the {@code points} are not
-     * sorted in increasing order.
-     *
+     *                                      sorted in increasing order.
      * @see #SymmetricGaussIntegrator(double[], double[])
      */
     public SymmetricGaussIntegrator(Pair<double[], double[]> pointsAndWeights)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         this(pointsAndWeights.getFirst(), pointsAndWeights.getSecond());
     }
 

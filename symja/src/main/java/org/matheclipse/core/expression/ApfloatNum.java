@@ -221,7 +221,7 @@ public class ApfloatNum extends NumImpl {
             return ApcomplexNum.valueOf(fApfloat, Apcomplex.ZERO)
                     .add(ApcomplexNum.valueOf(cn.getRealPart(), cn.getImaginaryPart(), fApfloat.precision()));
         }
-        return  super.plus(that);
+        return super.plus(that);
     }
 
     @Override
@@ -350,7 +350,7 @@ public class ApfloatNum extends NumImpl {
             return ApcomplexNum.valueOf(fApfloat, Apcomplex.ZERO)
                     .multiply(ApcomplexNum.valueOf(cn.getRealPart(), cn.getImaginaryPart(), fApfloat.precision()));
         }
-        return  super.times(that);
+        return super.times(that);
     }
 
     /**
@@ -499,7 +499,7 @@ public class ApfloatNum extends NumImpl {
         if (expr.isSignedNumber()) {
             return Double.compare(fApfloat.doubleValue(), ((ISignedNumber) expr).doubleValue());
         }
-        return  super.compareTo(expr);
+        return super.compareTo(expr);
     }
 
     @Override

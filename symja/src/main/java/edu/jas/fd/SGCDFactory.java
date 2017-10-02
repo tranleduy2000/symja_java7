@@ -21,43 +21,43 @@ import edu.jas.structure.RingFactory;
 /**
  * Solvable greatest common divisor algorithms factory. Select appropriate SGCD
  * engine based on the coefficient types.
+ *
  * @author Heinz Kredel
  * @usage To create objects that implement the
- *        <code>GreatestCommonDivisor</code> interface use the
- *        <code>GCDFactory</code>. It will select an appropriate implementation
- *        based on the types of polynomial coefficients C. There are two methods
- *        to obtain an implementation: <code>getProxy()</code> and
- *        <code>getImplementation()</code>. <code>getImplementation()</code>
- *        returns an object of a class which implements the
- *        <code>GreatestCommonDivisor</code> interface. <code>getProxy()</code>
- *        returns a proxy object of a class which implements the
- *        <code>GreatestCommonDivisor</code> interface. The proxy will run two
- *        implementations in parallel, return the first computed result and
- *        cancel the second running task. On systems with one CPU the computing
- *        time will be two times the time of the fastest algorithm
- *        implementation. On systems with more than two CPUs the computing time
- *        will be the time of the fastest algorithm implementation.
- * 
- *        <pre>
+ * <code>GreatestCommonDivisor</code> interface use the
+ * <code>GCDFactory</code>. It will select an appropriate implementation
+ * based on the types of polynomial coefficients C. There are two methods
+ * to obtain an implementation: <code>getProxy()</code> and
+ * <code>getImplementation()</code>. <code>getImplementation()</code>
+ * returns an object of a class which implements the
+ * <code>GreatestCommonDivisor</code> interface. <code>getProxy()</code>
+ * returns a proxy object of a class which implements the
+ * <code>GreatestCommonDivisor</code> interface. The proxy will run two
+ * implementations in parallel, return the first computed result and
+ * cancel the second running task. On systems with one CPU the computing
+ * time will be two times the time of the fastest algorithm
+ * implementation. On systems with more than two CPUs the computing time
+ * will be the time of the fastest algorithm implementation.
+ * <p>
+ * <pre>
  *        GreatestCommonDivisor&lt;CT&gt; engine;
  *        engine = SGCDFactory.&lt;CT&gt; getImplementation(cofac);
  *        or engine = SGCDFactory.&lt;CT&gt; getProxy(cofac);
  *        c = engine.leftGcd(a, b);
  *        </pre>
- * 
- *        For example, if the coefficient type is <code>BigInteger</code>, the
- *        usage looks like
- * 
- *        <pre>
+ * <p>
+ * For example, if the coefficient type is <code>BigInteger</code>, the
+ * usage looks like
+ * <p>
+ * <pre>
  *        BigInteger cofac = new BigInteger();
  *        GreatestCommonDivisor&lt;BigInteger&gt; engine;
  *        engine = SGCDFactory.getImplementation(cofac);
  *        or engine = SGCDFactory.getProxy(cofac);
  *        c = engine.leftGcd(a, b);
  *        </pre>
- * 
  * @see edu.jas.fd.GreatestCommonDivisor#leftGcd(edu.jas.poly.GenSolvablePolynomial
- *      P, edu.jas.poly.GenSolvablePolynomial S)
+ * P, edu.jas.poly.GenSolvablePolynomial S)
  */
 
 public class SGCDFactory {
@@ -75,6 +75,7 @@ public class SGCDFactory {
 
     /**
      * Determine suitable implementation of gcd algorithms, case ModLong.
+     *
      * @param fac ModLongRing.
      * @return gcd algorithm implementation.
      */
@@ -91,6 +92,7 @@ public class SGCDFactory {
 
     /**
      * Determine suitable proxy for gcd algorithms, case ModLong.
+     *
      * @param fac ModLongRing.
      * @return gcd algorithm implementation.
      */
@@ -108,6 +110,7 @@ public class SGCDFactory {
 
     /**
      * Determine suitable implementation of gcd algorithms, case ModInteger.
+     *
      * @param fac ModIntegerRing.
      * @return gcd algorithm implementation.
      */
@@ -124,6 +127,7 @@ public class SGCDFactory {
 
     /**
      * Determine suitable proxy for gcd algorithms, case ModInteger.
+     *
      * @param fac ModIntegerRing.
      * @return gcd algorithm implementation.
      */
@@ -141,6 +145,7 @@ public class SGCDFactory {
 
     /**
      * Determine suitable implementation of gcd algorithms, case BigInteger.
+     *
      * @param fac BigInteger.
      * @return gcd algorithm implementation.
      */
@@ -158,6 +163,7 @@ public class SGCDFactory {
 
     /**
      * Determine suitable proxy for gcd algorithms, case BigInteger.
+     *
      * @param fac BigInteger.
      * @return gcd algorithm implementation.
      */
@@ -174,6 +180,7 @@ public class SGCDFactory {
 
     /**
      * Determine suitable implementation of gcd algorithms, case BigRational.
+     *
      * @param fac BigRational.
      * @return gcd algorithm implementation.
      */
@@ -189,6 +196,7 @@ public class SGCDFactory {
 
     /**
      * Determine suitable proxy for gcd algorithms, case BigRational.
+     *
      * @param fac BigRational.
      * @return gcd algorithm implementation.
      */
@@ -205,12 +213,13 @@ public class SGCDFactory {
 
     /**
      * Determine suitable implementation of gcd algorithms, other cases.
+     *
      * @param fac RingFactory&lt;C&gt;.
      * @return gcd algorithm implementation.
      */
     @SuppressWarnings("unchecked")
     public static <C extends GcdRingElem<C>> GreatestCommonDivisorAbstract<C> getImplementation(
-                    RingFactory<C> fac) {
+            RingFactory<C> fac) {
         GreatestCommonDivisorAbstract/*raw type<C>*/ ufd;
         logger.debug("fac = " + fac.getClass().getName());
         Object ofac = fac;
@@ -244,38 +253,39 @@ public class SGCDFactory {
 
     /**
      * Determine suitable proxy for gcd algorithms, other cases.
+     *
      * @param fac RingFactory&lt;C&gt;.
      * @return gcd algorithm implementation. <b>Note:</b> This method contains a
-     *         hack for Google app engine to not use threads.
+     * hack for Google app engine to not use threads.
      * @see edu.jas.kern.ComputerThreads#NO_THREADS
      */
     @SuppressWarnings("unchecked")
     public static <C extends GcdRingElem<C>> GreatestCommonDivisorAbstract<C> getProxy(RingFactory<C> fac) {
         if (ComputerThreads.NO_THREADS) { // hack for Google app engine
-            return SGCDFactory.<C> getImplementation(fac);
+            return SGCDFactory.<C>getImplementation(fac);
         }
         GreatestCommonDivisorAbstract/*raw type<C>*/ ufd;
         logger.debug("fac = " + fac.getClass().getName());
         Object ofac = fac;
         if (ofac instanceof BigInteger) {
             ufd = new SGCDParallelProxy<C>(fac, new GreatestCommonDivisorSimple<C>(fac),
-                            new GreatestCommonDivisorPrimitive<C>(fac));
+                    new GreatestCommonDivisorPrimitive<C>(fac));
         } else if (ofac instanceof ModIntegerRing) {
             ufd = new SGCDParallelProxy<C>(fac, new GreatestCommonDivisorSimple<C>(fac),
-                            new GreatestCommonDivisorPrimitive<C>(fac));
+                    new GreatestCommonDivisorPrimitive<C>(fac));
         } else if (ofac instanceof ModLongRing) {
             ufd = new SGCDParallelProxy<C>(fac, new GreatestCommonDivisorSimple<C>(fac),
-                            new GreatestCommonDivisorPrimitive<C>(fac));
+                    new GreatestCommonDivisorPrimitive<C>(fac));
         } else if (ofac instanceof BigRational) {
             ufd = new SGCDParallelProxy<C>(fac, new GreatestCommonDivisorPrimitive<C>(fac),
-                            new GreatestCommonDivisorSimple<C>(fac));
+                    new GreatestCommonDivisorSimple<C>(fac));
         } else {
             if (fac.isField()) {
                 ufd = new SGCDParallelProxy<C>(fac, new GreatestCommonDivisorSimple<C>(fac),
-                                new GreatestCommonDivisorPrimitive<C>(fac));
+                        new GreatestCommonDivisorPrimitive<C>(fac));
             } else {
                 ufd = new SGCDParallelProxy<C>(fac, new GreatestCommonDivisorSyzygy<C>(fac),
-                                new GreatestCommonDivisorPrimitive<C>(fac));
+                        new GreatestCommonDivisorPrimitive<C>(fac));
             }
         }
         logger.debug("ufd = " + ufd);

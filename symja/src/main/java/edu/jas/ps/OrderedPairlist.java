@@ -5,6 +5,8 @@
 package edu.jas.ps;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Iterator;
@@ -13,8 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.apache.log4j.Logger;
-
 import edu.jas.poly.ExpVector;
 import edu.jas.structure.RingElem;
 
@@ -22,50 +22,30 @@ import edu.jas.structure.RingElem;
 /**
  * Pair list management. Implemented using MultiVarPowerSeries, TreeMap and
  * BitSet.
+ *
  * @author Heinz Kredel
  */
 
 public class OrderedPairlist<C extends RingElem<C>> {
 
 
-    protected final ArrayList<MultiVarPowerSeries<C>> P;
-
-
-    protected final TreeMap<ExpVector, LinkedList<Pair<C>>> pairlist;
-
-
-    protected final ArrayList<BitSet> red;
-
-
-    protected final MultiVarPowerSeriesRing<C> ring;
-
-
-    protected final ReductionSeq<C> reduction;
-
-
-    protected boolean oneInGB = false;
-
-
-    protected boolean useCriterion4 = true;
-
-
-    protected boolean useCriterion3 = true;
-
-
-    protected int putCount;
-
-
-    protected int remCount;
-
-
-    protected final int moduleVars;
-
-
     private static final Logger logger = Logger.getLogger(OrderedPairlist.class);
+    protected final ArrayList<MultiVarPowerSeries<C>> P;
+    protected final TreeMap<ExpVector, LinkedList<Pair<C>>> pairlist;
+    protected final ArrayList<BitSet> red;
+    protected final MultiVarPowerSeriesRing<C> ring;
+    protected final ReductionSeq<C> reduction;
+    protected final int moduleVars;
+    protected boolean oneInGB = false;
+    protected boolean useCriterion4 = true;
+    protected boolean useCriterion3 = true;
+    protected int putCount;
+    protected int remCount;
 
 
     /**
      * Constructor for OrderedPairlist.
+     *
      * @param r power series factory.
      */
     public OrderedPairlist(MultiVarPowerSeriesRing<C> r) {
@@ -75,6 +55,7 @@ public class OrderedPairlist<C extends RingElem<C>> {
 
     /**
      * Constructor for OrderedPairlist.
+     *
      * @param m number of module variables.
      * @param r power series factory.
      */
@@ -110,6 +91,7 @@ public class OrderedPairlist<C extends RingElem<C>> {
 
     /**
      * Put one power Series to the pairlist and reduction matrix.
+     *
      * @param p power series.
      * @return the index of the added power series.
      */
@@ -154,6 +136,7 @@ public class OrderedPairlist<C extends RingElem<C>> {
 
     /**
      * Put all power series in F to the pairlist and reduction matrix.
+     *
      * @param F power series list.
      * @return the index of the last added power series.
      */
@@ -169,6 +152,7 @@ public class OrderedPairlist<C extends RingElem<C>> {
     /**
      * Remove the next required pair from the pairlist and reduction matrix.
      * Apply the criterions 3 and 4 to see if the S-power-series is required.
+     *
      * @return the next pair if one exists, otherwise null.
      */
     public synchronized Pair<C> removeNext() {
@@ -220,6 +204,7 @@ public class OrderedPairlist<C extends RingElem<C>> {
 
     /**
      * Test if there is possibly a pair in the list.
+     *
      * @return true if a next pair could exist, otherwise false.
      */
     public synchronized boolean hasNext() {
@@ -229,6 +214,7 @@ public class OrderedPairlist<C extends RingElem<C>> {
 
     /**
      * Get the list of power series.
+     *
      * @return the power series list.
      */
     public List<MultiVarPowerSeries<C>> getList() {
@@ -238,6 +224,7 @@ public class OrderedPairlist<C extends RingElem<C>> {
 
     /**
      * Get the number of power series put to the pairlist.
+     *
      * @return the number of calls to put.
      */
     public synchronized int putCount() {
@@ -247,6 +234,7 @@ public class OrderedPairlist<C extends RingElem<C>> {
 
     /**
      * Get the number of required pairs removed from the pairlist.
+     *
      * @return the number of non null pairs delivered.
      */
     public synchronized int remCount() {
@@ -256,6 +244,7 @@ public class OrderedPairlist<C extends RingElem<C>> {
 
     /**
      * Put to ONE-power-series to the pairlist.
+     *
      * @param one power series. (no more required)
      * @return the index of the last power series.
      */
@@ -273,6 +262,7 @@ public class OrderedPairlist<C extends RingElem<C>> {
 
     /**
      * Put the ONE-power-series to the pairlist.
+     *
      * @return the index of the last power-series.
      */
     public synchronized int putOne() {
@@ -287,6 +277,7 @@ public class OrderedPairlist<C extends RingElem<C>> {
 
     /**
      * GB criterion 3.
+     *
      * @return true if the S-power-series(i,j) is required.
      */
     public boolean criterion3(int i, int j, ExpVector eij) {

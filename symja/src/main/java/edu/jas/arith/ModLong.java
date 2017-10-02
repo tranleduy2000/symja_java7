@@ -11,6 +11,7 @@ import edu.jas.structure.NotInvertibleException;
 
 /**
  * ModLong class with RingElem interface. Objects of this class are immutable.
+ *
  * @author Heinz Kredel
  * @see ModInteger
  */
@@ -33,6 +34,7 @@ public final class ModLong implements GcdRingElem<ModLong>, Modular {
     /**
      * The constructor creates a ModLong object from a ModLongRing and a value
      * part.
+     *
      * @param m ModLongRing.
      * @param a math.BigInteger.
      */
@@ -44,6 +46,7 @@ public final class ModLong implements GcdRingElem<ModLong>, Modular {
     /**
      * The constructor creates a ModLong object from a ModLongRing and a long
      * value part.
+     *
      * @param m ModLongRing.
      * @param a long.
      */
@@ -57,6 +60,7 @@ public final class ModLong implements GcdRingElem<ModLong>, Modular {
     /**
      * The constructor creates a ModLong object from a ModLongRing and a Long
      * value part.
+     *
      * @param m ModLongRing.
      * @param a Long.
      */
@@ -68,6 +72,7 @@ public final class ModLong implements GcdRingElem<ModLong>, Modular {
     /**
      * The constructor creates a ModLong object from a ModLongRing and a String
      * value part.
+     *
      * @param m ModLongRing.
      * @param s String.
      */
@@ -78,6 +83,7 @@ public final class ModLong implements GcdRingElem<ModLong>, Modular {
 
     /**
      * The constructor creates a 0 ModLong object from a given ModLongRing.
+     *
      * @param m ModLongRing.
      */
     public ModLong(ModLongRing m) {
@@ -87,6 +93,7 @@ public final class ModLong implements GcdRingElem<ModLong>, Modular {
 
     /**
      * Get the value part.
+     *
      * @return val.
      */
     public long getVal() {
@@ -96,6 +103,7 @@ public final class ModLong implements GcdRingElem<ModLong>, Modular {
 
     /**
      * Get the module part.
+     *
      * @return modul.
      */
     public long getModul() {
@@ -105,6 +113,7 @@ public final class ModLong implements GcdRingElem<ModLong>, Modular {
 
     /**
      * Get the corresponding element factory.
+     *
      * @return factory for this Element.
      * @see edu.jas.structure.Element#factory()
      */
@@ -115,6 +124,7 @@ public final class ModLong implements GcdRingElem<ModLong>, Modular {
 
     /**
      * Get the symmetric value part.
+     *
      * @return val with -modul/2 <= val < modul/2.
      */
     public long getSymmetricVal() {
@@ -128,6 +138,7 @@ public final class ModLong implements GcdRingElem<ModLong>, Modular {
 
     /**
      * Return a BigInteger from this Element.
+     *
      * @return a BigInteger of this.
      */
     public BigInteger getInteger() {
@@ -137,6 +148,7 @@ public final class ModLong implements GcdRingElem<ModLong>, Modular {
 
     /**
      * Return a symmetric BigInteger from this Element.
+     *
      * @return a symmetric BigInteger of this.
      */
     public BigInteger getSymmetricInteger() {
@@ -151,6 +163,7 @@ public final class ModLong implements GcdRingElem<ModLong>, Modular {
 
     /**
      * Clone this.
+     *
      * @see java.lang.Object#clone()
      */
     @Override
@@ -161,6 +174,7 @@ public final class ModLong implements GcdRingElem<ModLong>, Modular {
 
     /**
      * Is ModLong number zero.
+     *
      * @return If this is 0 then true is returned, else false.
      * @see edu.jas.structure.RingElem#isZERO()
      */
@@ -171,6 +185,7 @@ public final class ModLong implements GcdRingElem<ModLong>, Modular {
 
     /**
      * Is ModLong number one.
+     *
      * @return If this is 1 then true is returned, else false.
      * @see edu.jas.structure.RingElem#isONE()
      */
@@ -181,6 +196,7 @@ public final class ModLong implements GcdRingElem<ModLong>, Modular {
 
     /**
      * Is ModLong number a unit.
+     *
      * @return If this is a unit then true is returned, else false.
      * @see edu.jas.structure.RingElem#isUnit()
      */
@@ -198,6 +214,7 @@ public final class ModLong implements GcdRingElem<ModLong>, Modular {
 
     /**
      * Get the String representation.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -208,6 +225,7 @@ public final class ModLong implements GcdRingElem<ModLong>, Modular {
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this Element.
      * @see edu.jas.structure.Element#toScript()
      */
@@ -220,6 +238,7 @@ public final class ModLong implements GcdRingElem<ModLong>, Modular {
 
     /**
      * Get a scripting compatible string representation of the factory.
+     *
      * @return script compatible representation for this ElemFactory.
      * @see edu.jas.structure.Element#toScriptFactory()
      */
@@ -232,6 +251,7 @@ public final class ModLong implements GcdRingElem<ModLong>, Modular {
 
     /**
      * ModLong comparison.
+     *
      * @param b ModLong.
      * @return sign(this-b).
      */
@@ -250,6 +270,7 @@ public final class ModLong implements GcdRingElem<ModLong>, Modular {
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -263,6 +284,7 @@ public final class ModLong implements GcdRingElem<ModLong>, Modular {
 
     /**
      * Hash code for this ModLong.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -273,6 +295,7 @@ public final class ModLong implements GcdRingElem<ModLong>, Modular {
 
     /**
      * ModLong absolute value.
+     *
      * @return the absolute value of this.
      * @see edu.jas.structure.RingElem#abs()
      */
@@ -283,8 +306,9 @@ public final class ModLong implements GcdRingElem<ModLong>, Modular {
 
     /**
      * ModLong negative.
-     * @see edu.jas.structure.RingElem#negate()
+     *
      * @return -this.
+     * @see edu.jas.structure.RingElem#negate()
      */
     public ModLong negate() {
         return new ModLong(ring, -val);
@@ -293,8 +317,9 @@ public final class ModLong implements GcdRingElem<ModLong>, Modular {
 
     /**
      * ModLong signum.
-     * @see edu.jas.structure.RingElem#signum()
+     *
      * @return signum(this).
+     * @see edu.jas.structure.RingElem#signum()
      */
     public int signum() {
         if (val > 0L) {
@@ -306,6 +331,7 @@ public final class ModLong implements GcdRingElem<ModLong>, Modular {
 
     /**
      * ModLong subtraction.
+     *
      * @param S ModLong.
      * @return this-S.
      */
@@ -316,6 +342,7 @@ public final class ModLong implements GcdRingElem<ModLong>, Modular {
 
     /**
      * ModLong divide.
+     *
      * @param S ModLong.
      * @return this/S.
      */
@@ -337,26 +364,28 @@ public final class ModLong implements GcdRingElem<ModLong>, Modular {
 
     /**
      * ModLong inverse.
-     * @see edu.jas.structure.RingElem#inverse()
-     * @throws NotInvertibleException if the element is not invertible.
+     *
      * @return S with S=1/this if defined.
+     * @throws NotInvertibleException if the element is not invertible.
+     * @see edu.jas.structure.RingElem#inverse()
      */
-    public ModLong inverse() /*throws NotInvertibleException*/{
+    public ModLong inverse() /*throws NotInvertibleException*/ {
         try {
             return new ModLong(ring, modInverse(val, ring.modul));
         } catch (ArithmeticException e) {
             long g = gcd(val, ring.modul);
             long f = ring.modul / g;
             throw new ModularNotInvertibleException(e, new BigInteger(ring.modul), new BigInteger(g),
-                            new BigInteger(f));
+                    new BigInteger(f));
         }
     }
 
 
     /**
      * ModLong remainder.
+     *
      * @param S ModLong.
-     * @return remainder(this,S).
+     * @return remainder(this, S).
      */
     public ModLong remainder(ModLong S) {
         if (S == null || S.isZERO()) {
@@ -374,6 +403,7 @@ public final class ModLong implements GcdRingElem<ModLong>, Modular {
 
     /**
      * ModLong multiply.
+     *
      * @param S ModLong.
      * @return this*S.
      */
@@ -384,6 +414,7 @@ public final class ModLong implements GcdRingElem<ModLong>, Modular {
 
     /**
      * ModLong summation.
+     *
      * @param S ModLong.
      * @return this+S.
      */
@@ -394,6 +425,7 @@ public final class ModLong implements GcdRingElem<ModLong>, Modular {
 
     /**
      * ModInteger greatest common divisor.
+     *
      * @param S ModInteger.
      * @return [ gcd(this,S), a, b ] with a*this + b*S = gcd(this,S).
      */
@@ -413,6 +445,7 @@ public final class ModLong implements GcdRingElem<ModLong>, Modular {
 
     /**
      * ModInteger extended greatest common divisor.
+     *
      * @param S ModInteger.
      * @return [ gcd(this,S), a, b ] with a*this + b*S = gcd(this,S).
      */
@@ -487,9 +520,10 @@ public final class ModLong implements GcdRingElem<ModLong>, Modular {
 
     /**
      * Long greatest common divisor.
+     *
      * @param T long.
      * @param S long.
-     * @return gcd(T,S).
+     * @return gcd(T, S).
      */
     public long gcd(long T, long S) {
         if (S == 0L) {
@@ -511,6 +545,7 @@ public final class ModLong implements GcdRingElem<ModLong>, Modular {
 
     /**
      * Long half extended greatest common divisor.
+     *
      * @param T long.
      * @param S long.
      * @return [ gcd(T,S), a ] with a*T + b*S = gcd(T,S).
@@ -552,6 +587,7 @@ public final class ModLong implements GcdRingElem<ModLong>, Modular {
 
     /**
      * Long modular inverse.
+     *
      * @param T long.
      * @param m long.
      * @return a with with a*T = 1 mod m.
@@ -564,7 +600,7 @@ public final class ModLong implements GcdRingElem<ModLong>, Modular {
         long a = hegcd[0];
         if (!(a == 1L || a == -1L)) { // gcd != 1
             throw new ModularNotInvertibleException("element not invertible, gcd != 1", new BigInteger(m),
-                            new BigInteger(a), new BigInteger(m / a));
+                    new BigInteger(a), new BigInteger(m / a));
         }
         long b = hegcd[1];
         if (b == 0L) { // when m divides this, e.g. m.isUnit()
@@ -580,8 +616,9 @@ public final class ModLong implements GcdRingElem<ModLong>, Modular {
     /**
      * Returns the number of bits in the representation of this ModLong,
      * including a sign bit.
+     *
      * @return number of bits in the representation of this ModLong, including a
-     *         sign bit.
+     * sign bit.
      */
     public long bitLength() {
         return BigInteger.bitLength(val);

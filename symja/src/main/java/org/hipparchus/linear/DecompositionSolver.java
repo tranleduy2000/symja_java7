@@ -31,7 +31,6 @@ import org.hipparchus.exception.MathIllegalArgumentException;
  * ||A &times; X - B|| is exactly 0. Other solvers can also find solutions
  * with non-square matrix A and with non-null minimal norm. If an exact linear
  * solution exists it is also the minimal norm solution.
- *
  */
 public interface DecompositionSolver {
 
@@ -43,8 +42,7 @@ public interface DecompositionSolver {
      *
      * @param b right-hand side of the equation A &times; X = B
      * @return a vector X that minimizes the two norm of A &times; X - B
-     * @throws MathIllegalArgumentException
-     * if the matrices dimensions do not match.
+     * @throws MathIllegalArgumentException if the matrices dimensions do not match.
      * @throws MathIllegalArgumentException if the decomposed matrix is singular.
      */
     RealVector solve(final RealVector b) throws MathIllegalArgumentException;
@@ -57,14 +55,14 @@ public interface DecompositionSolver {
      *
      * @param b right-hand side of the equation A &times; X = B
      * @return a matrix X that minimizes the two norm of A &times; X - B
-     * @throws MathIllegalArgumentException
-     * if the matrices dimensions do not match.
+     * @throws MathIllegalArgumentException if the matrices dimensions do not match.
      * @throws MathIllegalArgumentException if the decomposed matrix is singular.
      */
     RealMatrix solve(final RealMatrix b) throws MathIllegalArgumentException;
 
     /**
      * Check if the decomposed matrix is non-singular.
+     *
      * @return true if the decomposed matrix is non-singular.
      */
     boolean isNonSingular();
@@ -92,7 +90,7 @@ public interface DecompositionSolver {
      * @return pseudo-inverse matrix (which is the inverse, if it exists),
      * if the decomposition can pseudo-invert the decomposed matrix
      * @throws MathIllegalArgumentException if the decomposed matrix is singular and the decomposition
-     * can not compute a pseudo-inverse
+     *                                      can not compute a pseudo-inverse
      */
     RealMatrix getInverse() throws MathIllegalArgumentException;
 }

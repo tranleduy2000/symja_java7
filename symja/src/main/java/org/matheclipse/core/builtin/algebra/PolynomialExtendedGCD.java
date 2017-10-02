@@ -136,7 +136,7 @@ public class PolynomialExtendedGCD extends AbstractFunctionEvaluator {
                 return list;
             } catch (JASConversionException e) {
 //                if (Config.DEBUG) {
-                    e.printStackTrace();
+                e.printStackTrace();
 //                }
             }
         }

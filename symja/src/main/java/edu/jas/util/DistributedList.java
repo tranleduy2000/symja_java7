@@ -4,15 +4,16 @@
 
 package edu.jas.util;
 
+import org.apache.log4j.Logger;
+
 import java.io.IOException;
-import java.util.Iterator;
-//import java.util.Collection;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import org.apache.log4j.Logger;
+//import java.util.Collection;
 
 //import edu.unima.ky.parallel.ChannelFactory;
 //import edu.unima.ky.parallel.SocketChannel;
@@ -21,6 +22,7 @@ import org.apache.log4j.Logger;
 /**
  * Distributed version of a List.
  * Implemented with a SortedMap / TreeMap to keep the sequence order of elements.
+ *
  * @author Heinz Kredel
  */
 
@@ -28,7 +30,7 @@ public class DistributedList /* implements List not jet */ {
 
     private static final Logger logger = Logger.getLogger(DistributedList.class);
 
-    protected final SortedMap<Counter,Object> theList;
+    protected final SortedMap<Counter, Object> theList;
     protected final ChannelFactory cf;
     protected SocketChannel channel = null;
     protected Listener listener = null;
@@ -36,85 +38,89 @@ public class DistributedList /* implements List not jet */ {
 
     /**
      * Constructor for DistributedList.
+     *
      * @param host name or IP of server host.
-     */ 
+     */
     public DistributedList(String host) {
-        this(host,DistributedListServer.DEFAULT_PORT);
+        this(host, DistributedListServer.DEFAULT_PORT);
     }
 
 
     /**
      * Constructor for DistributedList.
+     *
      * @param host name or IP of server host.
      * @param port of server.
      */
-    public DistributedList(String host,int port) {
-        this(new ChannelFactory(port+1),host,port);
+    public DistributedList(String host, int port) {
+        this(new ChannelFactory(port + 1), host, port);
     }
 
 
     /**
      * Constructor for DistributedList.
-     * @param cf ChannelFactory to use.
+     *
+     * @param cf   ChannelFactory to use.
      * @param host name or IP of server host.
      * @param port of server.
      */
-    public DistributedList(ChannelFactory cf,String host,int port) {
+    public DistributedList(ChannelFactory cf, String host, int port) {
         this.cf = cf;
         cf.init();
         try {
-            channel = cf.getChannel(host,port);
+            channel = cf.getChannel(host, port);
         } catch (IOException e) {
             e.printStackTrace();
         }
         logger.debug("dl channel = " + channel);
-        theList = new TreeMap<Counter,Object>();
+        theList = new TreeMap<Counter, Object>();
     }
 
 
     /**
      * Constructor for DistributedList.
+     *
      * @param sc SocketChannel to use.
      */
     public DistributedList(SocketChannel sc) {
         cf = null;
         channel = sc;
-        theList = new TreeMap<Counter,Object>();
+        theList = new TreeMap<Counter, Object>();
     }
 
 
     /**
      * List thread initialization and start.
-     */ 
+     */
     public void init() {
-        listener = new Listener(channel,theList);
+        listener = new Listener(channel, theList);
         listener.start();
     }
 
 
     /**
      * Terminate the list thread.
-     */ 
+     */
     public void terminate() {
-        if ( cf != null ) {
+        if (cf != null) {
             cf.terminate();
             //logger.warn("terminating " + cf);
         }
-        if ( channel != null ) {
+        if (channel != null) {
             channel.close();
         }
         //theList.clear();
-        if ( listener == null ) { 
+        if (listener == null) {
             return;
         }
         logger.debug("terminate " + listener);
-        listener.setDone(); 
-        try { 
-            while ( listener.isAlive() ) {
-                listener.interrupt(); 
+        listener.setDone();
+        try {
+            while (listener.isAlive()) {
+                listener.interrupt();
                 listener.join(100);
             }
-        } catch (InterruptedException u) { 
+        } catch (InterruptedException u) {
             Thread.currentThread().interrupt();
         }
         listener = null;
@@ -123,15 +129,15 @@ public class DistributedList /* implements List not jet */ {
 
     /**
      * Get the internal list, convert from Collection.
-     */ 
+     */
     public List<Object> getList() {
-        return new ArrayList<Object>( theList.values() );
+        return new ArrayList<Object>(theList.values());
     }
 
 
     /**
      * Size of the (local) list.
-     */ 
+     */
     public int size() {
         return theList.size();
     }
@@ -141,6 +147,7 @@ public class DistributedList /* implements List not jet */ {
      * Add object to the list and distribute to other lists.
      * Blocks until the object is send and received from the server
      * (actually it blocks until some object is received).
+     *
      * @param o
      */
     public synchronized void add(Object o) {
@@ -152,7 +159,7 @@ public class DistributedList /* implements List not jet */ {
             e.printStackTrace();
         }
         try {
-            while ( theList.size() < sz1 ) {
+            while (theList.size() < sz1) {
                 this.wait(100);
             }
         } catch (InterruptedException e) {
@@ -165,7 +172,7 @@ public class DistributedList /* implements List not jet */ {
     /**
      * Clear the List.
      * caveat: must be called on all clients.
-     */ 
+     */
     public synchronized void clear() {
         theList.clear();
     }
@@ -173,7 +180,7 @@ public class DistributedList /* implements List not jet */ {
 
     /**
      * Is the List empty?
-     */ 
+     */
     public boolean isEmpty() {
         return theList.isEmpty();
     }
@@ -181,7 +188,7 @@ public class DistributedList /* implements List not jet */ {
 
     /**
      * List iterator.
-     */ 
+     */
     public Iterator iterator() {
         return theList.values().iterator();
     }
@@ -196,14 +203,14 @@ public class DistributedList /* implements List not jet */ {
 class Listener extends Thread {
 
     private SocketChannel channel;
-    private SortedMap<Counter,Object> theList;
+    private SortedMap<Counter, Object> theList;
     private boolean goon;
 
 
-    Listener(SocketChannel s, SortedMap<Counter,Object> list) {
+    Listener(SocketChannel s, SortedMap<Counter, Object> list) {
         channel = s;
         theList = list;
-    } 
+    }
 
 
     void setDone() {
@@ -221,15 +228,15 @@ class Listener extends Thread {
             o = null;
             try {
                 n = (Counter) channel.receive();
-                if ( this.isInterrupted() ) {
+                if (this.isInterrupted()) {
                     goon = false;
                 } else {
                     o = channel.receive();
                     //System.out.println("receive("+n+","+o+" @ "+Thread.currentThread());
-                    if ( this.isInterrupted() ) {
+                    if (this.isInterrupted()) {
                         goon = false;
                     }
-                    theList.put(n,o);
+                    theList.put(n, o);
                 }
             } catch (IOException e) {
                 goon = false;

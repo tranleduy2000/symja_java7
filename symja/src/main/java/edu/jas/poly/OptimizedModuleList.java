@@ -12,6 +12,7 @@ import edu.jas.structure.RingElem;
 
 /**
  * Container for optimization results.
+ *
  * @author Heinz Kredel
  */
 
@@ -44,6 +45,7 @@ public class OptimizedModuleList<C extends RingElem<C>> extends ModuleList<C> {
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

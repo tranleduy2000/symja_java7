@@ -16,17 +16,17 @@
  */
 package org.hipparchus.stat.regression;
 
-import java.util.Arrays;
-
 import org.hipparchus.exception.LocalizedCoreFormats;
 import org.hipparchus.exception.MathIllegalArgumentException;
 import org.hipparchus.util.FastMath;
 import org.hipparchus.util.MathUtils;
 import org.hipparchus.util.Precision;
 
+import java.util.Arrays;
+
 /**
  * This class is a concrete implementation of the {@link UpdatingMultipleLinearRegression} interface.
- *
+ * <p>
  * <p>The algorithm is described in: <pre>
  * Algorithm AS 274: Least Squares Routines to Supplement Those of Gentleman
  * Author(s): Alan J. Miller
@@ -35,54 +35,92 @@ import org.hipparchus.util.Precision;
  * (1992), pp. 458-478
  * Published by: Blackwell Publishing for the Royal Statistical Society
  * Stable URL: http://www.jstor.org/stable/2347583 </pre></p>
- *
+ * <p>
  * <p>This method for multiple regression forms the solution to the OLS problem
  * by updating the QR decomposition as described by Gentleman.</p>
- *
  */
 public class MillerUpdatingRegression implements UpdatingMultipleLinearRegression {
 
-    /** number of variables in regression */
+    /**
+     * number of variables in regression
+     */
     private final int nvars;
-    /** diagonals of cross products matrix */
+    /**
+     * diagonals of cross products matrix
+     */
     private final double[] d;
-    /** the elements of the R`Y */
+    /**
+     * the elements of the R`Y
+     */
     private final double[] rhs;
-    /** the off diagonal portion of the R matrix */
+    /**
+     * the off diagonal portion of the R matrix
+     */
     private final double[] r;
-    /** the tolerance for each of the variables */
+    /**
+     * the tolerance for each of the variables
+     */
     private final double[] tol;
-    /** residual sum of squares for all nested regressions */
+    /**
+     * residual sum of squares for all nested regressions
+     */
     private final double[] rss;
-    /** order of the regressors */
+    /**
+     * order of the regressors
+     */
     private final int[] vorder;
-    /** scratch space for tolerance calc */
+    /**
+     * scratch space for tolerance calc
+     */
     private final double[] work_tolset;
-    /** number of observations entered */
-    private long nobs = 0;
-    /** sum of squared errors of largest regression */
-    private double sserr = 0.0;
-    /** has rss been called? */
-    private boolean rss_set = false;
-    /** has the tolerance setting method been called */
-    private boolean tol_set = false;
-    /** flags for variables with linear dependency problems */
+    /**
+     * flags for variables with linear dependency problems
+     */
     private final boolean[] lindep;
-    /** singular x values */
+    /**
+     * singular x values
+     */
     private final double[] x_sing;
-    /** workspace for singularity method */
+    /**
+     * workspace for singularity method
+     */
     private final double[] work_sing;
-    /** summation of Y variable */
-    private double sumy = 0.0;
-    /** summation of squared Y values */
-    private double sumsqy = 0.0;
-    /** boolean flag whether a regression constant is added */
+    /**
+     * boolean flag whether a regression constant is added
+     */
     private final boolean hasIntercept;
-    /** zero tolerance */
+    /**
+     * zero tolerance
+     */
     private final double epsilon;
     /**
-     *  Set the default constructor to private access
-     *  to prevent inadvertent instantiation
+     * number of observations entered
+     */
+    private long nobs = 0;
+    /**
+     * sum of squared errors of largest regression
+     */
+    private double sserr = 0.0;
+    /**
+     * has rss been called?
+     */
+    private boolean rss_set = false;
+    /**
+     * has the tolerance setting method been called
+     */
+    private boolean tol_set = false;
+    /**
+     * summation of Y variable
+     */
+    private double sumy = 0.0;
+    /**
+     * summation of squared Y values
+     */
+    private double sumsqy = 0.0;
+
+    /**
+     * Set the default constructor to private access
+     * to prevent inadvertent instantiation
      */
     @SuppressWarnings("unused")
     private MillerUpdatingRegression() {
@@ -93,8 +131,8 @@ public class MillerUpdatingRegression implements UpdatingMultipleLinearRegressio
      * This is the augmented constructor for the MillerUpdatingRegression class.
      *
      * @param numberOfVariables number of regressors to expect, not including constant
-     * @param includeConstant include a constant automatically
-     * @param errorTolerance  zero tolerance, how machine zero is determined
+     * @param includeConstant   include a constant automatically
+     * @param errorTolerance    zero tolerance, how machine zero is determined
      * @throws MathIllegalArgumentException if {@code numberOfVariables is less than 1}
      */
     public MillerUpdatingRegression(int numberOfVariables, boolean includeConstant, double errorTolerance)
@@ -133,7 +171,7 @@ public class MillerUpdatingRegression implements UpdatingMultipleLinearRegressio
      * Primary constructor for the MillerUpdatingRegression.
      *
      * @param numberOfVariables maximum number of potential regressors
-     * @param includeConstant include a constant automatically
+     * @param includeConstant   include a constant automatically
      * @throws MathIllegalArgumentException if {@code numberOfVariables is less than 1}
      */
     public MillerUpdatingRegression(int numberOfVariables, boolean includeConstant)
@@ -143,6 +181,7 @@ public class MillerUpdatingRegression implements UpdatingMultipleLinearRegressio
 
     /**
      * A getter method which determines whether a constant is included.
+     *
      * @return true regression has an intercept, false no intercept
      */
     @Override
@@ -152,6 +191,7 @@ public class MillerUpdatingRegression implements UpdatingMultipleLinearRegressio
 
     /**
      * Gets the number of observations added to the regression model.
+     *
      * @return number of observations
      */
     @Override
@@ -161,17 +201,18 @@ public class MillerUpdatingRegression implements UpdatingMultipleLinearRegressio
 
     /**
      * Adds an observation to the regression model.
+     *
      * @param x the array with regressor values
-     * @param y  the value of dependent variable given these regressors
-     * @exception MathIllegalArgumentException if the length of {@code x} does not equal
-     * the number of independent variables in the model
+     * @param y the value of dependent variable given these regressors
+     * @throws MathIllegalArgumentException if the length of {@code x} does not equal
+     *                                      the number of independent variables in the model
      */
     @Override
     public void addObservation(final double[] x, final double y)
             throws MathIllegalArgumentException {
 
         if ((!this.hasIntercept && x.length != nvars) ||
-               (this.hasIntercept && x.length + 1 != nvars)) {
+                (this.hasIntercept && x.length + 1 != nvars)) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.INVALID_REGRESSION_OBSERVATION,
                     x.length, nvars);
         }
@@ -189,10 +230,11 @@ public class MillerUpdatingRegression implements UpdatingMultipleLinearRegressio
 
     /**
      * Adds multiple observations to the model.
+     *
      * @param x observations on the regressors
      * @param y observations on the regressand
      * @throws MathIllegalArgumentException if {@code x} is not rectangular, does not match
-     * the length of {@code y} or does not contain sufficient data to estimate the model
+     *                                      the length of {@code y} or does not contain sufficient data to estimate the model
      */
     @Override
     public void addObservations(double[][] x, double[] y) throws MathIllegalArgumentException {
@@ -204,8 +246,8 @@ public class MillerUpdatingRegression implements UpdatingMultipleLinearRegressio
         }
         if (x[0].length + 1 > x.length) {
             throw new MathIllegalArgumentException(
-                  LocalizedCoreFormats.NOT_ENOUGH_DATA_FOR_NUMBER_OF_PREDICTORS,
-                  x.length, x[0].length);
+                    LocalizedCoreFormats.NOT_ENOUGH_DATA_FOR_NUMBER_OF_PREDICTORS,
+                    x.length, x[0].length);
         }
         for (int i = 0; i < x.length; i++) {
             addObservation(x[i], y[i]);
@@ -222,7 +264,7 @@ public class MillerUpdatingRegression implements UpdatingMultipleLinearRegressio
      * of dense design matrices, there is some advantage in using the original gentleman algorithm
      * on sparse matrices.
      *
-     * @param x observations on the regressors
+     * @param x  observations on the regressors
      * @param wi weight of the this observation (-1,1)
      * @param yi observation on the regressand
      */
@@ -287,6 +329,7 @@ public class MillerUpdatingRegression implements UpdatingMultipleLinearRegressio
     /**
      * Adds to number a and b such that the contamination due to
      * numerical smallness of one addend does not corrupt the sum.
+     *
      * @param a - an addend
      * @param b - an addend
      * @return the sum of the a and b
@@ -364,10 +407,10 @@ public class MillerUpdatingRegression implements UpdatingMultipleLinearRegressio
      * with no alteration.
      *
      * @param nreq how many of the regressors to include (either in canonical
-     * order, or in the current reordered state)
+     *             order, or in the current reordered state)
      * @return an array with the estimated slope coefficients
      * @throws MathIllegalArgumentException if {@code nreq} is less than 1
-     * or greater than the number of independent variables
+     *                                      or greater than the number of independent variables
      */
     private double[] regcf(int nreq) throws MathIllegalArgumentException {
         int nextr;
@@ -486,7 +529,7 @@ public class MillerUpdatingRegression implements UpdatingMultipleLinearRegressio
      * } </pre>
      *
      * @param nreq how many of the regressors to include (either in canonical
-     * order, or in the current reordered state)
+     *             order, or in the current reordered state)
      * @return an array with the variance covariance of the included
      * regressors in lower triangular form
      */
@@ -527,7 +570,7 @@ public class MillerUpdatingRegression implements UpdatingMultipleLinearRegressio
                             ++pos1;
                             ++pos2;
                         }
-                        covmat[ (col + 1) * col / 2 + row] = total * var;
+                        covmat[(col + 1) * col / 2 + row] = total * var;
                     } else {
                         pos2 += nreq - col - 1;
                     }
@@ -541,9 +584,10 @@ public class MillerUpdatingRegression implements UpdatingMultipleLinearRegressio
     /**
      * This internal method calculates the inverse of the upper-triangular portion
      * of the R matrix.
-     * @param rinv  the storage for the inverse of r
+     *
+     * @param rinv the storage for the inverse of r
      * @param nreq how many of the regressors to include (either in canonical
-     * order, or in the current reordered state)
+     *             order, or in the current reordered state)
      */
     private void inverse(double[] rinv, int nreq) {
         int pos = nreq * (nreq - 1) / 2 - 1;
@@ -584,16 +628,16 @@ public class MillerUpdatingRegression implements UpdatingMultipleLinearRegressio
      * }
      * Replaces subroutines PCORR and COR of:
      * ALGORITHM AS274  APPL. STATIST. (1992) VOL.41, NO. 2 </pre>
-     *
+     * <p>
      * <p>Calculate partial correlations after the variables in rows
      * 1, 2, ..., IN have been forced into the regression.
      * If IN = 1, and the first row of R represents a constant in the
      * model, then the usual simple correlations are returned.</p>
-     *
+     * <p>
      * <p>If IN = 0, the value returned in array CORMAT for the correlation
      * of variables Xi & Xj is: <pre>
      * sum ( Xi.Xj ) / Sqrt ( sum (Xi^2) . sum (Xj^2) )</pre></p>
-     *
+     * <p>
      * <p>On return, array CORMAT contains the upper triangle of the matrix of
      * partial correlations stored by rows, excluding the 1's on the diagonal.
      * e.g. if IN = 2, the consecutive elements returned are:
@@ -603,7 +647,7 @@ public class MillerUpdatingRegression implements UpdatingMultipleLinearRegressio
      * position (IN+1). </p>
      *
      * @param in how many of the regressors to include (either in canonical
-     * order, or in the current reordered state)
+     *           order, or in the current reordered state)
      * @return an array with the partial correlations of the remainder of
      * regressors with each other and the regressand, in lower triangular form
      */
@@ -666,7 +710,7 @@ public class MillerUpdatingRegression implements UpdatingMultipleLinearRegressio
             for (int col2 = col1 + 1; col2 < nvars; col2++) {
                 work[col2 + wrk_off] += d[col1] * r[pos2];
                 ++pos2;
-                output[ (col2 - 1 - in) * (col2 - in) / 2 + col1 - in] =
+                output[(col2 - 1 - in) * (col2 - in) / 2 + col1 - in] =
                         work[col2 + wrk_off] * rms[col1 + rms_off] * rms[col2 + rms_off];
                 ++pos;
             }
@@ -683,7 +727,7 @@ public class MillerUpdatingRegression implements UpdatingMultipleLinearRegressio
      * orthogonal reduction produced by AS75.1.
      *
      * @param from initial position
-     * @param to destination
+     * @param to   destination
      */
     private void vmove(int from, int to) {
         double d1;
@@ -805,13 +849,13 @@ public class MillerUpdatingRegression implements UpdatingMultipleLinearRegressio
 
     /**
      * ALGORITHM AS274  APPL. STATIST. (1992) VOL.41, NO. 2
-     *
+     * <p>
      * <p> Re-order the variables in an orthogonal reduction produced by
      * AS75.1 so that the N variables in LIST start at position POS1,
      * though will not necessarily be in the same order as in LIST.
      * Any variables in VORDER before position POS1 are not moved.
      * Auxiliary routine called: VMOVE. </p>
-     *
+     * <p>
      * <p>This internal method reorders the regressors.</p>
      *
      * @param list the regressors to move
@@ -848,7 +892,7 @@ public class MillerUpdatingRegression implements UpdatingMultipleLinearRegressio
     /**
      * Gets the diagonal of the Hat matrix also known as the leverage matrix.
      *
-     * @param  row_data returns the diagonal of the hat matrix for this observation
+     * @param row_data returns the diagonal of the hat matrix for this observation
      * @return the diagonal element of the hatmatrix
      */
     public double getDiagonalOfHatMatrix(double[] row_data) {
@@ -892,7 +936,7 @@ public class MillerUpdatingRegression implements UpdatingMultipleLinearRegressio
      *
      * @return int[] with the current order of the regressors
      */
-    public int[] getOrderOfRegressors(){
+    public int[] getOrderOfRegressors() {
         return vorder.clone();
     }
 
@@ -900,8 +944,8 @@ public class MillerUpdatingRegression implements UpdatingMultipleLinearRegressio
      * Conducts a regression on the data in the model, using all regressors.
      *
      * @return RegressionResults the structure holding all regression results
-     * @exception  MathIllegalArgumentException - thrown if number of observations is
-     * less than the number of variables
+     * @throws MathIllegalArgumentException - thrown if number of observations is
+     *                                      less than the number of variables
      */
     @Override
     public RegressionResults regress() throws MathIllegalArgumentException {
@@ -912,19 +956,19 @@ public class MillerUpdatingRegression implements UpdatingMultipleLinearRegressio
      * Conducts a regression on the data in the model, using a subset of regressors.
      *
      * @param numberOfRegressors many of the regressors to include (either in canonical
-     * order, or in the current reordered state)
+     *                           order, or in the current reordered state)
      * @return RegressionResults the structure holding all regression results
-     * @exception  MathIllegalArgumentException - thrown if number of observations is
-     * less than the number of variables or number of regressors requested
-     * is greater than the regressors in the model
+     * @throws MathIllegalArgumentException - thrown if number of observations is
+     *                                      less than the number of variables or number of regressors requested
+     *                                      is greater than the regressors in the model
      */
     public RegressionResults regress(int numberOfRegressors) throws MathIllegalArgumentException {
         if (this.nobs <= numberOfRegressors) {
-           throw new MathIllegalArgumentException(
-                   LocalizedCoreFormats.NOT_ENOUGH_DATA_FOR_NUMBER_OF_PREDICTORS,
-                   this.nobs, numberOfRegressors);
+            throw new MathIllegalArgumentException(
+                    LocalizedCoreFormats.NOT_ENOUGH_DATA_FOR_NUMBER_OF_PREDICTORS,
+                    this.nobs, numberOfRegressors);
         }
-        if( numberOfRegressors > this.nvars ){
+        if (numberOfRegressors > this.nvars) {
             throw new MathIllegalArgumentException(
                     LocalizedCoreFormats.TOO_MANY_REGRESSORS, numberOfRegressors, this.nvars);
         }
@@ -964,7 +1008,7 @@ public class MillerUpdatingRegression implements UpdatingMultipleLinearRegressio
             for (int i = 0; i < nvars; i++) {
                 for (int j = 0; j < numberOfRegressors; j++) {
                     if (this.vorder[j] == i) {
-                        betaNew[i] = beta[ j];
+                        betaNew[i] = beta[j];
                         newIndices[i] = j;
                     }
                 }
@@ -997,12 +1041,12 @@ public class MillerUpdatingRegression implements UpdatingMultipleLinearRegressio
      * Calling this method will change the internal order of the regressors
      * and care is required in interpreting the hatmatrix.
      *
-     * @param  variablesToInclude array of variables to include in regression
+     * @param variablesToInclude array of variables to include in regression
      * @return RegressionResults the structure holding all regression results
-     * @exception  MathIllegalArgumentException - thrown if number of observations is
-     * less than the number of variables, the number of regressors requested
-     * is greater than the regressors in the model or a regressor index in
-     * regressor array does not exist
+     * @throws MathIllegalArgumentException - thrown if number of observations is
+     *                                      less than the number of variables, the number of regressors requested
+     *                                      is greater than the regressors in the model or a regressor index in
+     *                                      regressor array does not exist
      */
     @Override
     public RegressionResults regress(int[] variablesToInclude) throws MathIllegalArgumentException {
@@ -1075,7 +1119,7 @@ public class MillerUpdatingRegression implements UpdatingMultipleLinearRegressio
             for (int i = 0; i < series.length; i++) {
                 for (int j = 0; j < this.vorder.length; j++) {
                     if (this.vorder[j] == series[i]) {
-                        betaNew[i] = beta[ j];
+                        betaNew[i] = beta[j];
                         newIndices[i] = j;
                     }
                 }

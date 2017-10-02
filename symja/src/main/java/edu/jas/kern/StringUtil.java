@@ -12,6 +12,7 @@ import java.io.StringWriter;
 
 /**
  * Static String and Reader methods.
+ *
  * @author Heinz Kredel
  */
 
@@ -20,6 +21,7 @@ public class StringUtil {
 
     /**
      * Parse white space delimited String from Reader.
+     *
      * @param r Reader.
      * @return next non white space String from r.
      */
@@ -53,6 +55,7 @@ public class StringUtil {
 
     /**
      * Parse String with given delimiter from Reader.
+     *
      * @param c delimiter.
      * @param r Reader.
      * @return next String up to c from r.
@@ -79,6 +82,7 @@ public class StringUtil {
 
     /**
      * Parse paired String with given delimiters from Reader.
+     *
      * @param b opposite delimiter.
      * @param c delimiter.
      * @param r Reader.
@@ -113,6 +117,7 @@ public class StringUtil {
 
     /**
      * Select stack trace parts.
+     *
      * @param expr regular matching expression.
      * @return stack trace with elements matching expr.
      */

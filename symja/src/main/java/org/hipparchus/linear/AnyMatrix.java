@@ -25,6 +25,7 @@ public interface AnyMatrix {
 
     /**
      * Is this a square matrix?
+     *
      * @return true if the matrix is square (rowDimension = columnDimension)
      */
     boolean isSquare();

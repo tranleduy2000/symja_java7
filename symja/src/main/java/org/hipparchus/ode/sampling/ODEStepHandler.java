@@ -24,7 +24,7 @@ import org.hipparchus.ode.ODEStateAndDerivative;
 /**
  * This interface represents a handler that should be called after
  * each successful step.
- *
+ * <p>
  * <p>The ODE integrators compute the evolution of the state vector at
  * some grid points that depend on their own internal algorithm. Once
  * they have found a new grid point (possibly after having computed
@@ -40,7 +40,8 @@ import org.hipparchus.ode.ODEStateAndDerivative;
 
 public interface ODEStepHandler {
 
-    /** Initialize step handler at the start of an ODE integration.
+    /**
+     * Initialize step handler at the start of an ODE integration.
      * <p>
      * This method is called once at the start of the integration. It
      * may be used by the step handler to initialize some internal data
@@ -49,8 +50,9 @@ public interface ODEStepHandler {
      * <p>
      * The default implementation does nothing
      * </p>
+     *
      * @param initialState initial time, state vector and derivative
-     * @param finalTime target time for the integration
+     * @param finalTime    target time for the integration
      */
     default void init(ODEStateAndDerivative initialState, double finalTime) {
         // nothing by default
@@ -58,21 +60,22 @@ public interface ODEStepHandler {
 
     /**
      * Handle the last accepted step
+     *
      * @param interpolator interpolator for the last accepted step. For
-     * efficiency purposes, the various integrators reuse the same
-     * object on each call, so if the instance wants to keep it across
-     * all calls (for example to provide at the end of the integration a
-     * continuous model valid throughout the integration range, as the
-     * {@link org.hipparchus.migration.ode.ContinuousOutputModel
-     * ContinuousOutputModel} class does), it should build a local copy
-     * using the clone method of the interpolator and store this copy.
-     * Keeping only a reference to the interpolator and reusing it will
-     * result in unpredictable behavior (potentially crashing the application).
-     * @param isLast true if the step is the last one
-     * @exception MathIllegalStateException if the interpolator throws one because
-     * the number of functions evaluations is exceeded
+     *                     efficiency purposes, the various integrators reuse the same
+     *                     object on each call, so if the instance wants to keep it across
+     *                     all calls (for example to provide at the end of the integration a
+     *                     continuous model valid throughout the integration range, as the
+     *                     {@link org.hipparchus.migration.ode.ContinuousOutputModel
+     *                     ContinuousOutputModel} class does), it should build a local copy
+     *                     using the clone method of the interpolator and store this copy.
+     *                     Keeping only a reference to the interpolator and reusing it will
+     *                     result in unpredictable behavior (potentially crashing the application).
+     * @param isLast       true if the step is the last one
+     * @throws MathIllegalStateException if the interpolator throws one because
+     *                                   the number of functions evaluations is exceeded
      */
     void handleStep(ODEStateInterpolator interpolator, boolean isLast)
-        throws MathIllegalStateException;
+            throws MathIllegalStateException;
 
 }

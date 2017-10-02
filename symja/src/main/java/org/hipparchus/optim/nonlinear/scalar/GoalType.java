@@ -21,11 +21,14 @@ import org.hipparchus.optim.OptimizationData;
 /**
  * Goal type for an optimization problem (minimization or maximization of
  * a scalar function.
- *
  */
 public enum GoalType implements OptimizationData {
-    /** Maximization. */
+    /**
+     * Maximization.
+     */
     MAXIMIZE,
-    /** Minimization. */
+    /**
+     * Minimization.
+     */
     MINIMIZE
 }

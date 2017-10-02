@@ -5,11 +5,11 @@
 package edu.jas.application;
 
 
+import org.apache.log4j.Logger;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.gb.SolvableExtendedGB;
 import edu.jas.gb.SolvableGroebnerBaseAbstract;
@@ -30,6 +30,7 @@ import edu.jas.structure.NotInvertibleException;
 /**
  * Solvable Ideal implements some methods for ideal arithmetic, for example sum,
  * intersection, quotient. <b>Note:</b> only left ideals at the moment.
+ *
  * @author Heinz Kredel
  */
 public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<SolvableIdeal<C>>, Serializable {
@@ -39,40 +40,30 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
 
 
     private static final boolean debug = logger.isDebugEnabled();
-
-
     /**
-     * Side variant of ideal.
+     * Groebner base engine.
      */
-    public static enum Side {
-        left, right, twosided
-    }
-
-
+    protected final SolvableGroebnerBaseAbstract<C> bb;
+    /**
+     * Reduction engine.
+     */
+    protected final SolvableReduction<C> red;
     /**
      * The data structure is a PolynomialList.
      */
     protected PolynomialList<C> list;
-
-
     /**
      * Indicator if list is a Groebner Base.
      */
     protected boolean isGB;
-
-
     /**
      * Indicator of side of Groebner Base.
      */
     protected Side sided;
-
-
     /**
      * Indicator if test has been performed if this is a Groebner Base.
      */
     protected boolean testGB;
-
-
     /**
      * Indicator if list has optimized term order.
      */
@@ -80,19 +71,8 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
 
 
     /**
-     * Groebner base engine.
-     */
-    protected final SolvableGroebnerBaseAbstract<C> bb;
-
-
-    /**
-     * Reduction engine.
-     */
-    protected final SolvableReduction<C> red;
-
-
-    /**
      * Constructor.
+     *
      * @param ring solvable polynomial ring
      */
     public SolvableIdeal(GenSolvablePolynomialRing<C> ring) {
@@ -102,8 +82,9 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
 
     /**
      * Constructor.
+     *
      * @param ring solvable polynomial ring
-     * @param F list of solvable polynomials
+     * @param F    list of solvable polynomials
      */
     public SolvableIdeal(GenSolvablePolynomialRing<C> ring, List<GenSolvablePolynomial<C>> F) {
         this(new PolynomialList<C>(ring, F));
@@ -112,9 +93,10 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
 
     /**
      * Constructor.
+     *
      * @param ring solvable polynomial ring
-     * @param F list of solvable polynomials
-     * @param gb true if F is known to be a Groebner Base, else false
+     * @param F    list of solvable polynomials
+     * @param gb   true if F is known to be a Groebner Base, else false
      */
     public SolvableIdeal(GenSolvablePolynomialRing<C> ring, List<GenSolvablePolynomial<C>> F, boolean gb) {
         this(new PolynomialList<C>(ring, F), gb);
@@ -123,22 +105,24 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
 
     /**
      * Constructor.
+     *
      * @param ring solvable polynomial ring
-     * @param F list of solvable polynomials
-     * @param gb true if F is known to be a Groebner Base, else false
+     * @param F    list of solvable polynomials
+     * @param gb   true if F is known to be a Groebner Base, else false
      * @param topt true if term order is optimized, else false
      */
     public SolvableIdeal(GenSolvablePolynomialRing<C> ring, List<GenSolvablePolynomial<C>> F, boolean gb,
-                    boolean topt) {
+                         boolean topt) {
         this(new PolynomialList<C>(ring, F), gb, topt);
     }
 
 
     /**
      * Constructor.
+     *
      * @param ring solvable polynomial ring
-     * @param F list of solvable polynomials
-     * @param s side variant of ideal or Groebner Base
+     * @param F    list of solvable polynomials
+     * @param s    side variant of ideal or Groebner Base
      */
     public SolvableIdeal(GenSolvablePolynomialRing<C> ring, List<GenSolvablePolynomial<C>> F, Side s) {
         this(new PolynomialList<C>(ring, F), false, false, s);
@@ -147,19 +131,21 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
 
     /**
      * Constructor.
+     *
      * @param ring solvable polynomial ring
-     * @param F list of solvable polynomials
-     * @param gb true if F is known to be a Groebner Base, else false
-     * @param s side variant of ideal or Groebner Base
+     * @param F    list of solvable polynomials
+     * @param gb   true if F is known to be a Groebner Base, else false
+     * @param s    side variant of ideal or Groebner Base
      */
     public SolvableIdeal(GenSolvablePolynomialRing<C> ring, List<GenSolvablePolynomial<C>> F, boolean gb,
-                    Side s) {
+                         Side s) {
         this(new PolynomialList<C>(ring, F), gb, false, s);
     }
 
 
     /**
      * Constructor.
+     *
      * @param list solvable polynomial list
      */
     public SolvableIdeal(PolynomialList<C> list) {
@@ -169,20 +155,22 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
 
     /**
      * Constructor.
+     *
      * @param list solvable polynomial list
-     * @param bb Groebner Base engine
-     * @param red Reduction engine
+     * @param bb   Groebner Base engine
+     * @param red  Reduction engine
      */
     public SolvableIdeal(PolynomialList<C> list, SolvableGroebnerBaseAbstract<C> bb,
-                    SolvableReduction<C> red) {
+                         SolvableReduction<C> red) {
         this(list, false, bb, red);
     }
 
 
     /**
      * Constructor.
+     *
      * @param list solvable polynomial list
-     * @param gb true if list is known to be a Groebner Base, else false
+     * @param gb   true if list is known to be a Groebner Base, else false
      */
     public SolvableIdeal(PolynomialList<C> list, boolean gb) {
         //this(list, gb, new SolvableGroebnerBaseSeq<C>(), new SolvableReductionSeq<C>());
@@ -192,8 +180,9 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
 
     /**
      * Constructor.
+     *
      * @param list solvable polynomial list
-     * @param gb true if list is known to be a Groebner Base, else false
+     * @param gb   true if list is known to be a Groebner Base, else false
      * @param topt true if term order is optimized, else false
      */
     public SolvableIdeal(PolynomialList<C> list, boolean gb, boolean topt) {
@@ -204,23 +193,25 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
 
     /**
      * Constructor.
+     *
      * @param list solvable polynomial list
-     * @param gb true if list is known to be a Groebner Base, else false
-     * @param s side variant of ideal or Groebner Base
+     * @param gb   true if list is known to be a Groebner Base, else false
+     * @param s    side variant of ideal or Groebner Base
      */
     public SolvableIdeal(PolynomialList<C> list, boolean gb, Side s) {
         //this(list, gb, false, new SolvableGroebnerBaseSeq<C>(), new SolvableReductionSeq<C>());
         this(list, gb, false, SGBFactory.getImplementation(list.ring.coFac), new SolvableReductionSeq<C>(),
-                        s);
+                s);
     }
 
 
     /**
      * Constructor.
+     *
      * @param list solvable polynomial list
-     * @param gb true if list is known to be a Groebner Base, else false
+     * @param gb   true if list is known to be a Groebner Base, else false
      * @param topt true if term order is optimized, else false
-     * @param s side variant of ideal or Groebner Base
+     * @param s    side variant of ideal or Groebner Base
      */
     public SolvableIdeal(PolynomialList<C> list, boolean gb, boolean topt, Side s) {
         //this(list, gb, topt, new SolvableGroebnerBaseSeq<C>(), new SolvableReductionSeq<C>());
@@ -230,22 +221,24 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
 
     /**
      * Constructor.
+     *
      * @param list solvable polynomial list
-     * @param gb true if list is known to be a Groebner Base, else false
-     * @param bb Groebner Base engine
-     * @param red Reduction engine
+     * @param gb   true if list is known to be a Groebner Base, else false
+     * @param bb   Groebner Base engine
+     * @param red  Reduction engine
      */
     public SolvableIdeal(PolynomialList<C> list, boolean gb, SolvableGroebnerBaseAbstract<C> bb,
-                    SolvableReduction<C> red) {
+                         SolvableReduction<C> red) {
         this(list, gb, false, bb, red);
     }
 
 
     /**
      * Constructor.
+     *
      * @param list solvable polynomial list
-     * @param gb true if list is known to be a Groebner Base, else false
-     * @param bb Groebner Base engine
+     * @param gb   true if list is known to be a Groebner Base, else false
+     * @param bb   Groebner Base engine
      */
     public SolvableIdeal(PolynomialList<C> list, boolean gb, SolvableGroebnerBaseAbstract<C> bb) {
         this(list, gb, false, bb, bb.sred);
@@ -254,42 +247,45 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
 
     /**
      * Constructor.
+     *
      * @param list solvable polynomial list
-     * @param gb true if list is known to be a Groebner Base, else false
+     * @param gb   true if list is known to be a Groebner Base, else false
      * @param topt true if term order is optimized, else false
-     * @param bb Groebner Base engine
+     * @param bb   Groebner Base engine
      */
     public SolvableIdeal(PolynomialList<C> list, boolean gb, boolean topt,
-                    SolvableGroebnerBaseAbstract<C> bb) {
+                         SolvableGroebnerBaseAbstract<C> bb) {
         this(list, gb, topt, bb, bb.sred);
     }
 
 
     /**
      * Constructor.
+     *
      * @param list solvable polynomial list
-     * @param gb true if list is known to be a Groebner Base, else false
+     * @param gb   true if list is known to be a Groebner Base, else false
      * @param topt true if term order is optimized, else false
-     * @param bb Groebner Base engine
-     * @param red Reduction engine
+     * @param bb   Groebner Base engine
+     * @param red  Reduction engine
      */
     public SolvableIdeal(PolynomialList<C> list, boolean gb, boolean topt, SolvableGroebnerBaseAbstract<C> bb,
-                    SolvableReduction<C> red) {
+                         SolvableReduction<C> red) {
         this(list, gb, topt, bb, red, Side.left);
     }
 
 
     /**
      * Constructor.
+     *
      * @param list solvable polynomial list
-     * @param gb true if list is known to be a Groebner Base, else false
+     * @param gb   true if list is known to be a Groebner Base, else false
      * @param topt true if term order is optimized, else false
-     * @param bb Groebner Base engine
-     * @param red Reduction engine
-     * @param s side variant of ideal or Groebner Base
+     * @param bb   Groebner Base engine
+     * @param red  Reduction engine
+     * @param s    side variant of ideal or Groebner Base
      */
     public SolvableIdeal(PolynomialList<C> list, boolean gb, boolean topt, SolvableGroebnerBaseAbstract<C> bb,
-                    SolvableReduction<C> red, Side s) {
+                         SolvableReduction<C> red, Side s) {
         if (list == null || list.list == null) {
             throw new IllegalArgumentException("list and list.list may not be null");
         }
@@ -305,36 +301,36 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
         this.sided = s;
     }
 
-
     /**
      * Clone this.
+     *
      * @return a copy of this.
      */
     public SolvableIdeal<C> copy() {
         return new SolvableIdeal<C>(list.copy(), isGB, isTopt, bb, red, sided);
     }
 
-
     /**
      * Get the List of GenSolvablePolynomials.
+     *
      * @return (cast) list.list
      */
     public List<GenSolvablePolynomial<C>> getList() {
         return list.getSolvableList();
     }
 
-
     /**
      * Get the GenSolvablePolynomialRing.
+     *
      * @return (cast) list.ring
      */
     public GenSolvablePolynomialRing<C> getRing() {
         return list.getSolvableRing();
     }
 
-
     /**
      * Get the zero ideal.
+     *
      * @return ideal(0)
      */
     public SolvableIdeal<C> getZERO() {
@@ -343,9 +339,9 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
         return new SolvableIdeal<C>(pl, true, isTopt, bb, red, sided);
     }
 
-
     /**
      * Get the one ideal.
+     *
      * @return ideal(1)
      */
     public SolvableIdeal<C> getONE() {
@@ -355,9 +351,9 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
         return new SolvableIdeal<C>(pl, true, isTopt, bb, red, sided);
     }
 
-
     /**
      * String representation of the solvable ideal.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -365,9 +361,9 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
         return list.toString() + " # " + sided;
     }
 
-
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this Element.
      * @see edu.jas.structure.Element#toScript()
      */
@@ -376,10 +372,10 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
         return list.toScript() + " # " + sided;
     }
 
-
     /**
      * Comparison with any other object. <b>Note:</b> If not both ideals are
      * Groebner Bases, then false may be returned even the ideals are equal.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -402,9 +398,9 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
         //}
     }
 
-
     /**
      * SolvableIdeal comparison.
+     *
      * @param L other solvable ideal.
      * @return compareTo() of polynomial lists.
      */
@@ -412,9 +408,9 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
         return list.compareTo(L.list);
     }
 
-
     /**
      * Hash code for this solvable ideal.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -430,28 +426,28 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
         return h;
     }
 
-
     /**
      * Test if ZERO ideal.
+     *
      * @return true, if this is the 0 ideal, else false
      */
     public boolean isZERO() {
         return list.isZERO();
     }
 
-
     /**
      * Test if ONE is contained in the ideal. To test for a proper ideal use
      * <code>! id.isONE()</code>.
+     *
      * @return true, if this is the 1 ideal, else false
      */
     public boolean isONE() {
         return list.isONE();
     }
 
-
     /**
      * Test if this is a left Groebner base.
+     *
      * @return true, if this is a left Groebner base, else false
      */
     public boolean isGB() {
@@ -469,7 +465,6 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
         }
         return igb;
     }
-
 
     /**
      * Do Groebner Base. compute the left Groebner Base for this ideal.
@@ -507,9 +502,9 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
         return;
     }
 
-
     /**
      * Groebner Base. Get a left Groebner Base for this ideal.
+     *
      * @return leftGB(this)
      */
     public SolvableIdeal<C> GB() {
@@ -520,9 +515,9 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
         return this;
     }
 
-
     /**
      * Test if this is a twosided Groebner base.
+     *
      * @return true, if this is a twosided Groebner base, else false
      */
     public boolean isTwosidedGB() {
@@ -536,9 +531,9 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
         return isGB;
     }
 
-
     /**
      * Groebner Base. Get a twosided Groebner Base for this ideal.
+     *
      * @return twosidedGB(this)
      */
     public SolvableIdeal<C> twosidedGB() {
@@ -554,9 +549,9 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
         return tsgb;
     }
 
-
     /**
      * Test if this is a right Groebner base.
+     *
      * @return true, if this is a right Groebner base, else false
      */
     public boolean isRightGB() {
@@ -573,9 +568,9 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
         return isGB;
     }
 
-
     /**
      * Groebner Base. Get a right Groebner Base for this ideal.
+     *
      * @return rightGB(this)
      */
     public SolvableIdeal<C> rightGB() {
@@ -594,10 +589,10 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
         return rgb;
     }
 
-
     /**
      * Solvable ideal containment. Test if B is contained in this ideal. Note:
      * this is eventually modified to become a Groebner Base.
+     *
      * @param B solvable ideal
      * @return true, if B is contained in this, else false
      */
@@ -608,10 +603,10 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
         return contains(B.getList());
     }
 
-
     /**
      * Solvable ideal containment. Test if b is contained in this ideal. Note:
      * this is eventually modified to become a Groebner Base.
+     *
      * @param b solvable polynomial
      * @return true, if b is contained in this, else false
      */
@@ -635,10 +630,10 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
         return false;
     }
 
-
     /**
      * Solvable ideal containment. Test if each b in B is contained in this
      * ideal. Note: this is eventually modified to become a Groebner Base.
+     *
      * @param B list of solvable polynomials
      * @return true, if each b in B is contained in this, else false
      */
@@ -667,10 +662,10 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
         return true;
     }
 
-
     /**
      * Solvable ideal summation. Generators for the sum of ideals. Note: if both
      * ideals are Groebner bases, a Groebner base is returned.
+     *
      * @param B solvable ideal
      * @return ideal(this+B)
      */
@@ -693,10 +688,10 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
         return I;
     }
 
-
     /**
      * Solvable summation. Generators for the sum of ideal and a polynomial.
      * Note: if this ideal is a Groebner base, a Groebner base is returned.
+     *
      * @param b solvable polynomial
      * @return ideal(this+{b})
      */
@@ -716,11 +711,11 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
         return I;
     }
 
-
     /**
      * Solvable summation. Generators for the sum of this ideal and a list of
      * polynomials. Note: if this ideal is a Groebner base, a Groebner base is
      * returned.
+     *
      * @param L list of solvable polynomials
      * @return ideal(this+L)
      */
@@ -739,10 +734,10 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
         return I;
     }
 
-
     /**
      * Product. Generators for the product of ideals. Note: if both ideals are
      * Groebner bases, a Groebner base is returned.
+     *
      * @param B solvable ideal
      * @return ideal(this*B)
      */
@@ -769,9 +764,9 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
         return I;
     }
 
-
     /**
      * Left product. Generators for the product this by a polynomial.
+     *
      * @param b solvable polynomial
      * @return ideal(this*b)
      */
@@ -795,10 +790,10 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
         return I;
     }
 
-
     /**
      * Intersection. Generators for the intersection of ideals. Using an
      * iterative algorithm.
+     *
      * @param Bl list of solvable ideals
      * @return ideal(cap_i B_i), a Groebner base
      */
@@ -820,9 +815,9 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
         return I;
     }
 
-
     /**
      * Intersection. Generators for the intersection of ideals.
+     *
      * @param B solvable ideal
      * @return ideal(this \cap B), a Groebner base
      */
@@ -833,16 +828,16 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
         if (this.isZERO()) {
             return this;
         }
-        List<GenSolvablePolynomial<C>> c = PolyGBUtil.<C> intersect(getRing(), getList(), B.getList());
+        List<GenSolvablePolynomial<C>> c = PolyGBUtil.<C>intersect(getRing(), getList(), B.getList());
         SolvableIdeal<C> I = new SolvableIdeal<C>(getRing(), c, true, sided);
         return I;
     }
-
 
     /**
      * Intersection. Generators for the intersection of a ideal with a
      * polynomial ring. The polynomial ring of this ideal must be a contraction
      * of R and the TermOrder must be an elimination order.
+     *
      * @param R solvable polynomial ring
      * @return ideal(this \cap R)
      */
@@ -850,15 +845,15 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
         if (R == null) {
             throw new IllegalArgumentException("R may not be null");
         }
-        List<GenSolvablePolynomial<C>> H = PolyUtil.<C> intersect(R, getList());
+        List<GenSolvablePolynomial<C>> H = PolyUtil.<C>intersect(R, getList());
         return new SolvableIdeal<C>(R, H, isGB, sided);
     }
-
 
     /**
      * Eliminate. Generators for the intersection of this ideal with a solvable
      * polynomial ring. The solvable polynomial ring of this ideal must be a
      * contraction of R and the TermOrder must be an elimination order.
+     *
      * @param R solvable polynomial ring
      * @return ideal(this \cap R)
      */
@@ -872,9 +867,9 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
         return intersect(R);
     }
 
-
     /**
      * Quotient. Generators for the solvable ideal quotient.
+     *
      * @param h solvable polynomial
      * @return ideal(this : h), a Groebner base
      */
@@ -916,9 +911,9 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
         return new SolvableIdeal<C>(getRing(), Q, true /*false?*/, sided);
     }
 
-
     /**
      * Quotient. Generators for the solvable ideal quotient.
+     *
      * @param H solvable ideal
      * @return ideal(this : H), a Groebner base
      */
@@ -941,9 +936,9 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
         return Q;
     }
 
-
     /**
      * Infinite quotient. Generators for the infinite solvable ideal quotient.
+     *
      * @param h solvable polynomial
      * @return ideal(this : h<sup>s</sup>), a Groebner base
      */
@@ -986,9 +981,9 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
         return Is;
     }
 
-
     /**
      * Infinite quotient exponent.
+     *
      * @param h solvable polynomial
      * @param Q quotient this : h^\infinity
      * @return s with Q = this : h<sup>s</sup>
@@ -1023,9 +1018,9 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
         return s;
     }
 
-
     /**
      * Infinite quotient. Generators for the infinite solvable ideal quotient.
+     *
      * @param h solvable polynomial
      * @return ideal(this : h<sup>s</sup>), a Groebner base
      */
@@ -1057,7 +1052,7 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
             }
             eq = Is.contains(I); // I.contains(Is) always
             if (!eq) {
-                long ds = PolyUtil.<C> totalDegree(Is.list.getList());
+                long ds = PolyUtil.<C>totalDegree(Is.list.getList());
                 if (dm < 0) {
                     dm = ds;
                 }
@@ -1075,9 +1070,9 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
         return Is;
     }
 
-
     /**
      * Radical membership test.
+     *
      * @param h solvable polynomial
      * @return true if h is contained in the radical of ideal(this), else false.
      */
@@ -1098,9 +1093,9 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
         return x.isONE();
     }
 
-
     /**
      * Infinite Quotient. Generators for the solvable ideal infinite quotient.
+     *
      * @param H solvable ideal
      * @return ideal(this : H<sup>s</sup>), a Groebner base
      */
@@ -1126,9 +1121,9 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
         return Q;
     }
 
-
     /**
      * Infinite Quotient. Generators for the solvable ideal infinite quotient.
+     *
      * @param H solvable ideal
      * @return ideal(this : H<sup>s</sup>), a Groebner base
      */
@@ -1154,10 +1149,10 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
         return Q;
     }
 
-
     /**
      * Power. Generators for the power of this solvable ideal. Note: if this
      * ideal is a Groebner base, a Groebner base is returned.
+     *
      * @param d integer
      * @return ideal(this^d)
      */
@@ -1175,9 +1170,9 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
         return c;
     }
 
-
     /**
      * Normalform for element.
+     *
      * @param h solvable polynomial
      * @return left normalform of h with respect to this
      */
@@ -1196,12 +1191,12 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
         return r;
     }
 
-
     /**
      * Normalform for list of solvable elements.
+     *
      * @param L solvable polynomial list
      * @return list of left normalforms of the elements of L with respect to
-     *         this
+     * this
      */
     public List<GenSolvablePolynomial<C>> normalform(List<GenSolvablePolynomial<C>> L) {
         if (L == null) {
@@ -1223,9 +1218,9 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
         return M;
     }
 
-
     /**
      * Annihilator for element modulo this ideal.
+     *
      * @param h solvable polynomial
      * @return annihilator of h with respect to this
      */
@@ -1260,9 +1255,9 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
         return ann;
     }
 
-
     /**
      * Test for annihilator of element modulo this ideal.
+     *
      * @param h solvable polynomial
      * @param A solvable ideal
      * @return true, if A is the annihilator of h with respect to this
@@ -1272,9 +1267,9 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
         return contains(B);
     }
 
-
     /**
      * Annihilator for ideal modulo this ideal.
+     *
      * @param H solvable ideal
      * @return annihilator of H with respect to this
      */
@@ -1297,9 +1292,9 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
         return ann;
     }
 
-
     /**
      * Test for annihilator of ideal modulo this ideal.
+     *
      * @param H solvable ideal
      * @param A solvable ideal
      * @return true, if A is the annihilator of H with respect to this
@@ -1309,9 +1304,9 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
         return contains(B);
     }
 
-
     /**
      * Inverse for element modulo this ideal.
+     *
      * @param h solvable polynomial
      * @return inverse of h with respect to this, if defined
      */
@@ -1385,9 +1380,9 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
         return g;
     }
 
-
     /**
      * Test if element is a unit modulo this ideal.
+     *
      * @param h solvable polynomial
      * @return true if h is a unit with respect to this, else false
      */
@@ -1413,9 +1408,9 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
         return false;
     }
 
-
     /**
      * Ideal common zero test.
+     *
      * @return -1, 0 or 1 if dimension(this) &eq; -1, 0 or &ge; 1.
      */
     public int commonZeroTest() {
@@ -1431,9 +1426,9 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
         return bb.commonZeroTest(getList());
     }
 
-
     /**
      * Test if this ideal is maximal.
+     *
      * @return true, if this is maximal and not one, else false.
      */
     public boolean isMaximal() {
@@ -1449,9 +1444,9 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
         return true;
     }
 
-
     /**
      * Univariate head term degrees.
+     *
      * @return a list of the degrees of univariate head terms.
      */
     public List<Long> univariateDegrees() {
@@ -1468,9 +1463,9 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
         return bb.univariateDegrees(getList());
     }
 
-
     /**
      * Ideal dimension.
+     *
      * @return a dimension container (dim,maxIndep,list(maxIndep),vars).
      */
     public Dimension dimension() {
@@ -1478,12 +1473,12 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
         return ci.dimension();
     }
 
-
     /**
      * Construct univariate polynomials of minimal degree in all variables in
      * zero dimensional ideal(G).
+     *
      * @return list of univariate solvable polynomial of minimal degree in each
-     *         variable in ideal(G)
+     * variable in ideal(G)
      */
     public List<GenSolvablePolynomial<C>> constructUnivariate() {
         List<GenSolvablePolynomial<C>> univs = new ArrayList<GenSolvablePolynomial<C>>();
@@ -1494,17 +1489,25 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
         return univs;
     }
 
-
     /**
      * Construct univariate polynomial of minimal degree in variable i in zero
      * dimensional ideal(G).
+     *
      * @param i variable index.
      * @return univariate solvable polynomial of minimal degree in variable i in
-     *         ideal(G)
+     * ideal(G)
      */
     public GenSolvablePolynomial<C> constructUnivariate(int i) {
         doGB();
         return bb.constructUnivariate(i, getList());
+    }
+
+
+    /**
+     * Side variant of ideal.
+     */
+    public static enum Side {
+        left, right, twosided
     }
 
 }

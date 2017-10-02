@@ -31,6 +31,7 @@ public interface StorelessMultivariateStatistic {
 
     /**
      * Returns the current value of the Statistic.
+     *
      * @return value of the statistic, <code>Double.NaN</code> if it
      * has been cleared or just instantiated.
      */
@@ -38,6 +39,7 @@ public interface StorelessMultivariateStatistic {
 
     /**
      * Returns the number of values that have been added.
+     *
      * @return the number of values.
      */
     long getN();
@@ -49,6 +51,7 @@ public interface StorelessMultivariateStatistic {
 
     /**
      * Returns the dimension of the statistic.
+     *
      * @return the dimension of the statistic
      */
     int getDimension();

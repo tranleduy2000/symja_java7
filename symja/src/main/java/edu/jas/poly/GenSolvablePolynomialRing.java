@@ -5,6 +5,8 @@
 package edu.jas.poly;
 
 
+import org.apache.log4j.Logger;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
@@ -12,8 +14,6 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.kern.PrettyPrint;
 import edu.jas.kern.Scripting;
@@ -27,6 +27,7 @@ import edu.jas.structure.RingFactory;
  * ordered solvable polynomials over C. The non-commutative multiplication
  * relations are maintained in a relation table. Almost immutable object, except
  * variable names and relation table contents.
+ *
  * @param <C> coefficient type.
  * @author Heinz Kredel
  */
@@ -37,35 +38,28 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
     //  implements RingFactory< GenSolvablePolynomial<C> > {
 
 
+    private static final Logger logger = Logger.getLogger(GenSolvablePolynomialRing.class);
+    private static final boolean debug = logger.isDebugEnabled();
     /**
      * The solvable multiplication relations.
      */
     public final RelationTable<C> table;
-
-
     /**
      * The constant polynomial 0 for this ring. Hides super ZERO.
      */
     public final GenSolvablePolynomial<C> ZERO;
-
-
     /**
      * The constant polynomial 1 for this ring. Hides super ONE.
      */
     public final GenSolvablePolynomial<C> ONE;
 
 
-    private static final Logger logger = Logger.getLogger(GenSolvablePolynomialRing.class);
-
-
-    private static final boolean debug = logger.isDebugEnabled();
-
-
     /**
      * The constructor creates a solvable polynomial factory object with the
      * default term order and commutative relations.
+     *
      * @param cf factory for coefficients of type C.
-     * @param n number of variables.
+     * @param n  number of variables.
      */
     public GenSolvablePolynomialRing(RingFactory<C> cf, int n) {
         this(cf, n, new TermOrder(), null, null);
@@ -75,8 +69,9 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
     /**
      * The constructor creates a solvable polynomial factory object with the
      * default term order.
+     *
      * @param cf factory for coefficients of type C.
-     * @param n number of variables.
+     * @param n  number of variables.
      * @param rt solvable multiplication relations.
      */
     public GenSolvablePolynomialRing(RingFactory<C> cf, int n, RelationTable<C> rt) {
@@ -87,9 +82,10 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
     /**
      * The constructor creates a solvable polynomial factory object with the
      * given term order and commutative relations.
+     *
      * @param cf factory for coefficients of type C.
-     * @param n number of variables.
-     * @param t a term order.
+     * @param n  number of variables.
+     * @param t  a term order.
      */
     public GenSolvablePolynomialRing(RingFactory<C> cf, int n, TermOrder t) {
         this(cf, n, t, null, null);
@@ -99,9 +95,10 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
     /**
      * The constructor creates a solvable polynomial factory object with the
      * given term order.
+     *
      * @param cf factory for coefficients of type C.
-     * @param n number of variables.
-     * @param t a term order.
+     * @param n  number of variables.
+     * @param t  a term order.
      * @param rt solvable multiplication relations.
      */
     public GenSolvablePolynomialRing(RingFactory<C> cf, int n, TermOrder t, RelationTable<C> rt) {
@@ -112,10 +109,11 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
     /**
      * The constructor creates a solvable polynomial factory object with the
      * given term order and commutative relations.
+     *
      * @param cf factory for coefficients of type C.
-     * @param n number of variables.
-     * @param t a term order.
-     * @param v names for the variables.
+     * @param n  number of variables.
+     * @param t  a term order.
+     * @param v  names for the variables.
      */
     public GenSolvablePolynomialRing(RingFactory<C> cf, int n, TermOrder t, String[] v) {
         this(cf, n, t, v, null);
@@ -125,9 +123,10 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
     /**
      * The constructor creates a solvable polynomial factory object with the
      * given term order and commutative relations.
+     *
      * @param cf factory for coefficients of type C.
-     * @param t a term order.
-     * @param v names for the variables.
+     * @param t  a term order.
+     * @param v  names for the variables.
      */
     public GenSolvablePolynomialRing(RingFactory<C> cf, TermOrder t, String[] v) {
         this(cf, v.length, t, v, null);
@@ -137,8 +136,9 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
     /**
      * The constructor creates a solvable polynomial factory object with the
      * default term order.
+     *
      * @param cf factory for coefficients of type C.
-     * @param v names for the variables.
+     * @param v  names for the variables.
      */
     public GenSolvablePolynomialRing(RingFactory<C> cf, String[] v) {
         this(cf, v.length, new TermOrder(), v, null);
@@ -148,10 +148,11 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
     /**
      * The constructor creates a solvable polynomial factory object with the
      * given term order.
+     *
      * @param cf factory for coefficients of type C.
-     * @param n number of variables.
-     * @param t a term order.
-     * @param v names for the variables.
+     * @param n  number of variables.
+     * @param t  a term order.
+     * @param v  names for the variables.
      * @param rt solvable multiplication relations.
      */
     public GenSolvablePolynomialRing(RingFactory<C> cf, int n, TermOrder t, String[] v, RelationTable<C> rt) {
@@ -173,8 +174,9 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
      * same term order, number of variables and variable names as the given
      * polynomial factory, only the coefficient factories differ and the
      * solvable multiplication relations are <b>empty</b>.
+     *
      * @param cf factory for coefficients of type C.
-     * @param o other (solvable) polynomial ring.
+     * @param o  other (solvable) polynomial ring.
      */
     public GenSolvablePolynomialRing(RingFactory<C> cf, GenPolynomialRing o) {
         this(cf, o.nvar, o.tord, o.getVars(), null);
@@ -184,6 +186,7 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
     /**
      * Generate the relation table of the solvable polynomial ring from a
      * relation generator.
+     *
      * @param rg relation generator.
      */
     public void addRelations(RelationGenerator<C> rg) {
@@ -194,6 +197,7 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
     /**
      * Generate the relation table of the solvable polynomial ring from a
      * polynomial list of relations.
+     *
      * @param rel polynomial list of relations [..., ei, fj, pij, ... ] with ei
      *            * fj = pij.
      */
@@ -205,6 +209,7 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
     /**
      * Generate the relation table of the solvable polynomial ring from a
      * solvable polynomial list of relations.
+     *
      * @param rel solvable polynomial list of relations [..., ei, fj, pij, ... ]
      *            with ei * fj = pij.
      */
@@ -215,6 +220,7 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
 
     /**
      * Get the String representation.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -231,6 +237,7 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this Element.
      * @see edu.jas.structure.Element#toScript()
      */
@@ -238,12 +245,12 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
     public String toScript() {
         StringBuffer s = new StringBuffer();
         switch (Scripting.getLang()) {
-        case Ruby:
-            s.append("SolvPolyRing.new(");
-            break;
-        case Python:
-        default:
-            s.append("SolvPolyRing(");
+            case Ruby:
+                s.append("SolvPolyRing.new(");
+                break;
+            case Python:
+            default:
+                s.append("SolvPolyRing(");
         }
         if (coFac instanceof RingElem) {
             s.append(((RingElem<C>) coFac).toScriptFactory());
@@ -265,6 +272,7 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -291,6 +299,7 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
 
     /**
      * Hash code for this polynomial ring.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -304,6 +313,7 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
 
     /**
      * Get the zero element.
+     *
      * @return 0 as GenSolvablePolynomial<C>.
      */
     @Override
@@ -314,6 +324,7 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
 
     /**
      * Get the one element.
+     *
      * @return 1 as GenSolvablePolynomial<C>.
      */
     @Override
@@ -324,6 +335,7 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
 
     /**
      * Query if this ring is commutative.
+     *
      * @return true if this ring is commutative, else false.
      */
     @Override
@@ -338,6 +350,7 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
     /**
      * Query if this ring is associative. Test if the relations define an
      * associative solvable ring.
+     *
      * @return true, if this ring is associative, else false.
      */
     @SuppressWarnings("unused")
@@ -369,6 +382,7 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
 
     /**
      * Get a (constant) GenPolynomial&lt;C&gt; element from a coefficient value.
+     *
      * @param a coefficient.
      * @return a GenPolynomial&lt;C&gt;.
      */
@@ -380,6 +394,7 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
 
     /**
      * Get a GenPolynomial&lt;C&gt; element from an exponent vector.
+     *
      * @param e exponent vector.
      * @return a GenPolynomial&lt;C&gt;.
      */
@@ -392,6 +407,7 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
     /**
      * Get a GenPolynomial&lt;C&gt; element from a coeffcient and an exponent
      * vector.
+     *
      * @param a coefficient.
      * @param e exponent vector.
      * @return a GenPolynomial&lt;C&gt;.
@@ -405,6 +421,7 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
     /**
      * Get a (constant) GenSolvablePolynomial&lt;C&gt; element from a long
      * value.
+     *
      * @param a long.
      * @return a GenSolvablePolynomial&lt;C&gt;.
      */
@@ -417,6 +434,7 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
     /**
      * Get a (constant) GenSolvablePolynomial&lt;C&gt; element from a BigInteger
      * value.
+     *
      * @param a BigInteger.
      * @return a GenSolvablePolynomial&lt;C&gt;.
      */
@@ -429,6 +447,7 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
     /**
      * Random solvable polynomial. Generates a random solvable polynomial with k
      * = 5, l = n, d = (nvar == 1) ? n : 3, q = (nvar == 1) ? 0.7 : 0.3.
+     *
      * @param n number of terms.
      * @return a random solvable polynomial.
      */
@@ -441,7 +460,8 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
     /**
      * Random solvable polynomial. Generates a random solvable polynomial with k
      * = 5, l = n, d = (nvar == 1) ? n : 3, q = (nvar == 1) ? 0.7 : 0.3.
-     * @param n number of terms.
+     *
+     * @param n   number of terms.
      * @param rnd is a source for random bits.
      * @return a random solvable polynomial.
      */
@@ -456,6 +476,7 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
 
     /**
      * Generate a random solvable polynomial.
+     *
      * @param k bitsize of random coefficients.
      * @param l number of terms.
      * @param d maximal degree in each variable.
@@ -470,10 +491,11 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
 
     /**
      * Random solvable polynomial.
-     * @param k size of random coefficients.
-     * @param l number of terms.
-     * @param d maximal degree in each variable.
-     * @param q density of nozero exponents.
+     *
+     * @param k   size of random coefficients.
+     * @param l   number of terms.
+     * @param d   maximal degree in each variable.
+     * @param q   density of nozero exponents.
      * @param rnd is a source for random bits.
      * @return a random solvable polynomial.
      */
@@ -497,6 +519,7 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
 
     /**
      * Copy polynomial c.
+     *
      * @param c
      * @return a copy of c.
      */
@@ -507,6 +530,7 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
 
     /**
      * Parse a solvable polynomial with the use of GenPolynomialTokenizer
+     *
      * @param s String.
      * @return GenSolvablePolynomial from s.
      */
@@ -519,11 +543,12 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
 
     /**
      * Parse a solvable polynomial with the use of GenPolynomialTokenizer
+     *
      * @param r Reader.
      * @return next GenSolvablePolynomial from r.
      */
     @Override
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings({"unchecked", "cast"})
     public GenSolvablePolynomial<C> parse(Reader r) {
         GenPolynomialTokenizer pt = new GenPolynomialTokenizer(this, r);
         GenSolvablePolynomial<C> p = null;
@@ -539,6 +564,7 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
 
     /**
      * Generate univariate solvable polynomial in a given variable.
+     *
      * @param i the index of the variable.
      * @return X_i as solvable univariate polynomial.
      */
@@ -551,6 +577,7 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
     /**
      * Generate univariate solvable polynomial in a given variable with given
      * exponent.
+     *
      * @param i the index of the variable.
      * @param e the exponent of the variable.
      * @return X_i^e as solvable univariate polynomial.
@@ -564,9 +591,10 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
     /**
      * Generate univariate solvable polynomial in a given variable with given
      * exponent.
+     *
      * @param modv number of module variables.
-     * @param i the index of the variable.
-     * @param e the exponent of the variable.
+     * @param i    the index of the variable.
+     * @param e    the exponent of the variable.
      * @return X_i^e as solvable univariate polynomial.
      */
     @Override
@@ -577,7 +605,8 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
 
     /**
      * Generate list of univariate polynomials in all variables.
-     * @return List(X_1,...,X_n) a list of univariate polynomials.
+     *
+     * @return List(X_1, ..., X_n) a list of univariate polynomials.
      */
     @Override
     public List<GenSolvablePolynomial<C>> univariateList() {
@@ -588,8 +617,9 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
 
     /**
      * Generate list of univariate polynomials in all variables.
+     *
      * @param modv number of module variables.
-     * @return List(X_1,...,X_n) a list of univariate polynomials.
+     * @return List(X_1, ..., X_n) a list of univariate polynomials.
      */
     @Override
     public List<GenSolvablePolynomial<C>> univariateList(int modv) {
@@ -600,9 +630,10 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
     /**
      * Generate list of univariate polynomials in all variables with given
      * exponent.
+     *
      * @param modv number of module variables.
-     * @param e the exponent of the variables.
-     * @return List(X_1^e,...,X_n^e) a list of univariate polynomials.
+     * @param e    the exponent of the variables.
+     * @return List(X_1^e, ..., X_n^e) a list of univariate polynomials.
      */
     @Override
     public List<GenSolvablePolynomial<C>> univariateList(int modv, long e) {
@@ -619,6 +650,7 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
     /**
      * Extend variables. Used e.g. in module embedding. Extend number of
      * variables by i. New variables commute with the exiting variables.
+     *
      * @param i number of variables to extend.
      * @return extended solvable polynomial ring factory.
      */
@@ -626,7 +658,7 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
     public GenSolvablePolynomialRing<C> extend(int i) {
         GenPolynomialRing<C> pfac = super.extend(i);
         GenSolvablePolynomialRing<C> spfac = new GenSolvablePolynomialRing<C>(pfac.coFac, pfac.nvar,
-                        pfac.tord, pfac.vars);
+                pfac.tord, pfac.vars);
         spfac.table.extend(this.table);
         return spfac;
     }
@@ -636,6 +668,7 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
      * Extend variables. Used e.g. in module embedding. Extend number of
      * variables by length(vn). New variables commute with the exiting
      * variables.
+     *
      * @param vn names for extended variables.
      * @return extended polynomial ring factory.
      */
@@ -643,7 +676,7 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
     public GenSolvablePolynomialRing<C> extend(String[] vn) {
         GenPolynomialRing<C> pfac = super.extend(vn);
         GenSolvablePolynomialRing<C> spfac = new GenSolvablePolynomialRing<C>(pfac.coFac, pfac.nvar,
-                        pfac.tord, pfac.vars);
+                pfac.tord, pfac.vars);
         //GenSolvablePolynomialRing<C> spfac = new GenSolvablePolynomialRing<C>(pfac.coFac, pfac);
         spfac.table.extend(this.table);
         return spfac;
@@ -653,6 +686,7 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
     /**
      * Contract variables. Used e.g. in module embedding. Contract number of
      * variables by i.
+     *
      * @param i number of variables to remove.
      * @return contracted solvable polynomial ring factory.
      */
@@ -660,7 +694,7 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
     public GenSolvablePolynomialRing<C> contract(int i) {
         GenPolynomialRing<C> pfac = super.contract(i);
         GenSolvablePolynomialRing<C> spfac = new GenSolvablePolynomialRing<C>(pfac.coFac, pfac.nvar,
-                        pfac.tord, pfac.vars);
+                pfac.tord, pfac.vars);
         spfac.table.contract(this.table);
         return spfac;
     }
@@ -668,6 +702,7 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
 
     /**
      * Reverse variables. Used e.g. in opposite rings.
+     *
      * @return solvable polynomial ring factory with reversed variables.
      */
     @Override
@@ -678,6 +713,7 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
 
     /**
      * Reverse variables. Used e.g. in opposite rings.
+     *
      * @param partial true for partialy reversed term orders.
      * @return solvable polynomial ring factory with reversed variables.
      */
@@ -685,7 +721,7 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
     public GenSolvablePolynomialRing<C> reverse(boolean partial) {
         GenPolynomialRing<C> pfac = super.reverse(partial);
         GenSolvablePolynomialRing<C> spfac = new GenSolvablePolynomialRing<C>(pfac.coFac, pfac.nvar,
-                        pfac.tord, pfac.vars);
+                pfac.tord, pfac.vars);
         spfac.partial = partial;
         spfac.table.reverse(this.table);
         return spfac;
@@ -694,6 +730,7 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
 
     /**
      * Recursive representation as polynomial ring with i main variables.
+     *
      * @param i number of main variables.
      * @return recursive polynomial ring factory.
      */
@@ -725,9 +762,10 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
 
     /**
      * Distributive representation as polynomial with all main variables.
+     *
      * @return distributive polynomial ring factory.
      */
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings({"unchecked", "cast"})
     @Override
     public GenSolvablePolynomialRing<C> distribute() {
         if (!(coFac instanceof GenPolynomialRing)) {
@@ -746,7 +784,7 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
         //System.out.println("fac = " + fac.toScript());
         // fac could be a commutative polynomial ring, coefficient relations
         GenSolvablePolynomialRing<C> pfac = new GenSolvablePolynomialRing<C>(fac.coFac, fac.nvar, this.tord,
-                        fac.vars);
+                fac.vars);
         //System.out.println("pfac = " + pfac.toScript());
         if (fac instanceof GenSolvablePolynomialRing) {
             GenSolvablePolynomialRing<C> sfac = (GenSolvablePolynomialRing<C>) fac;
@@ -756,8 +794,8 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
         }
         // main relations
         List<GenPolynomial<GenPolynomial<C>>> rl = (List<GenPolynomial<GenPolynomial<C>>>) (List) PolynomialList
-                        .castToList(table.relationList());
-        List<GenPolynomial<C>> rld = PolyUtil.<C> distribute(pfac, rl);
+                .castToList(table.relationList());
+        List<GenPolynomial<C>> rld = PolyUtil.<C>distribute(pfac, rl);
         pfac.table.addRelations(rld);
         //System.out.println("pfac = " + pfac.toScript());
         // coeffTable not avaliable here
@@ -767,6 +805,7 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
 
     /**
      * Permutation of polynomial ring variables.
+     *
      * @param P permutation.
      * @return P(this).
      */
@@ -776,7 +815,7 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
         GenSolvablePolynomialRing<C> spfac;
         spfac = new GenSolvablePolynomialRing<C>(pfac.coFac, pfac.nvar, pfac.tord, pfac.vars);
         List<GenSolvablePolynomial<C>> rl = this.table.relationList();
-        PolynomialList<C> prl = new PolynomialList<C>(spfac,rl);
+        PolynomialList<C> prl = new PolynomialList<C>(spfac, rl);
         List<GenPolynomial<C>> pl = prl.getList();
         pl = TermOrderOptimization.permutation(P, spfac, pl);
         spfac.table.addRelations(pl);

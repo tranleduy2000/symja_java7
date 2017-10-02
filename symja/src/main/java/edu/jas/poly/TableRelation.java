@@ -12,6 +12,7 @@ import edu.jas.structure.RingElem;
 
 /**
  * TableRelation container for storage and printing in RelationTable.
+ *
  * @author Heinz Kredel
  */
 public class TableRelation<C extends RingElem<C>> implements Serializable {
@@ -37,6 +38,7 @@ public class TableRelation<C extends RingElem<C>> implements Serializable {
 
     /**
      * Constructor to setup the data structure.
+     *
      * @param e first term.
      * @param f second term.
      * @param p product polynomial.
@@ -50,6 +52,7 @@ public class TableRelation<C extends RingElem<C>> implements Serializable {
 
     /**
      * Get the String representation.
+     *
      * @see java.lang.Object#toString()
      */
     @Override

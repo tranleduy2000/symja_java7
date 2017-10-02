@@ -16,8 +16,6 @@
  */
 package org.hipparchus.stat.descriptive.summary;
 
-import java.io.Serializable;
-
 import org.hipparchus.exception.MathIllegalArgumentException;
 import org.hipparchus.exception.NullArgumentException;
 import org.hipparchus.stat.descriptive.AbstractStorelessUnivariateStatistic;
@@ -26,6 +24,8 @@ import org.hipparchus.stat.descriptive.WeightedEvaluation;
 import org.hipparchus.util.FastMath;
 import org.hipparchus.util.MathArrays;
 import org.hipparchus.util.MathUtils;
+
+import java.io.Serializable;
 
 /**
  * Returns the product of the available values.
@@ -40,15 +40,21 @@ import org.hipparchus.util.MathUtils;
  * <code>clear()</code> method, it must be synchronized externally.
  */
 public class Product extends AbstractStorelessUnivariateStatistic
-    implements AggregatableStatistic<Product>, WeightedEvaluation, Serializable {
+        implements AggregatableStatistic<Product>, WeightedEvaluation, Serializable {
 
-    /** Serializable version identifier */
+    /**
+     * Serializable version identifier
+     */
     private static final long serialVersionUID = 20150412L;
 
-    /** The number of values that have been added */
+    /**
+     * The number of values that have been added
+     */
     private long n;
 
-    /** The current Running Product */
+    /**
+     * The current Running Product
+     */
     private double value;
 
     /**
@@ -64,46 +70,56 @@ public class Product extends AbstractStorelessUnivariateStatistic
      * to the {@code original}.
      *
      * @param original the {@code Product} instance to copy
-     * @throws NullArgumentException  if original is null
+     * @throws NullArgumentException if original is null
      */
     public Product(Product original) throws NullArgumentException {
         MathUtils.checkNotNull(original);
-        this.n     = original.n;
+        this.n = original.n;
         this.value = original.value;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void increment(final double d) {
         value *= d;
         n++;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getResult() {
         return value;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public long getN() {
         return n;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void clear() {
         value = 1;
         n = 0;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void aggregate(Product other) {
         MathUtils.checkNotNull(other);
         if (other.n > 0) {
-            this.n     += other.n;
+            this.n += other.n;
             this.value *= other.value;
         }
     }
@@ -114,15 +130,15 @@ public class Product extends AbstractStorelessUnivariateStatistic
      * is empty.
      *
      * @param values the input array
-     * @param begin index of the first array element to include
+     * @param begin  index of the first array element to include
      * @param length the number of elements to include
      * @return the product of the values or 1 if length = 0
      * @throws MathIllegalArgumentException if the array is null or the array index
-     *  parameters are not valid
+     *                                      parameters are not valid
      */
     @Override
     public double evaluate(final double[] values, final int begin, final int length)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         double product = Double.NaN;
         if (MathArrays.verifyValues(values, begin, length, true)) {
             product = 1.0;
@@ -140,12 +156,12 @@ public class Product extends AbstractStorelessUnivariateStatistic
      * <p>
      * Throws <code>MathIllegalArgumentException</code> if any of the following are true:
      * <ul><li>the values array is null</li>
-     *     <li>the weights array is null</li>
-     *     <li>the weights array does not have the same length as the values array</li>
-     *     <li>the weights array contains one or more infinite values</li>
-     *     <li>the weights array contains one or more NaN values</li>
-     *     <li>the weights array contains negative values</li>
-     *     <li>the start and length arguments do not determine a valid array</li>
+     * <li>the weights array is null</li>
+     * <li>the weights array does not have the same length as the values array</li>
+     * <li>the weights array contains one or more infinite values</li>
+     * <li>the weights array contains one or more NaN values</li>
+     * <li>the weights array contains negative values</li>
+     * <li>the start and length arguments do not determine a valid array</li>
      * </ul>
      * <p>
      * Uses the formula,
@@ -155,10 +171,10 @@ public class Product extends AbstractStorelessUnivariateStatistic
      * <p>
      * that is, the weights are applied as exponents when computing the weighted product.
      *
-     * @param values the input array
+     * @param values  the input array
      * @param weights the weights array
-     * @param begin index of the first array element to include
-     * @param length the number of elements to include
+     * @param begin   index of the first array element to include
+     * @param length  the number of elements to include
      * @return the product of the values or 1 if length = 0
      * @throws MathIllegalArgumentException if the parameters are not valid
      */
@@ -175,7 +191,9 @@ public class Product extends AbstractStorelessUnivariateStatistic
         return product;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Product copy() {
         return new Product(this);

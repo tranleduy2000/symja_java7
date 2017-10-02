@@ -25,47 +25,29 @@ import edu.jas.structure.RingFactory;
 /**
  * GenMatrixRing implements a generic matrix algebra factory with RingFactory.
  * Matrices of n rows and m columns over C.
+ *
  * @author Heinz Kredel
  */
 
 public class GenMatrixRing<C extends RingElem<C>> implements AlgebraFactory<GenMatrix<C>, C> {
 
 
-    private static final Logger logger = Logger.getLogger(GenMatrixRing.class);
-
-
-    public final RingFactory<C> coFac;
-
-
-    public final int rows;
-
-
-    public final int cols;
-
-
-    public final int blocksize;
-
-
     public final static int DEFAULT_BSIZE = 10;
-
-
-    public final GenMatrix<C> ZERO;
-
-
-    public final GenMatrix<C> ONE;
-
-
-    private final static Random random = new Random();
-
-
     public final static float DEFAULT_DENSITY = 0.5f;
-
-
+    private static final Logger logger = Logger.getLogger(GenMatrixRing.class);
+    private final static Random random = new Random();
+    public final RingFactory<C> coFac;
+    public final int rows;
+    public final int cols;
+    public final int blocksize;
+    public final GenMatrix<C> ZERO;
+    public final GenMatrix<C> ONE;
     private final float density = DEFAULT_DENSITY;
 
 
     /**
      * Constructors for GenMatrixRing.
+     *
      * @param b coefficient factory.
      * @param r number of rows.
      * @param c number of colums.
@@ -77,6 +59,7 @@ public class GenMatrixRing<C extends RingElem<C>> implements AlgebraFactory<GenM
 
     /**
      * Constructors for GenMatrixRing.
+     *
      * @param b coefficient factory.
      * @param r number of rows.
      * @param c number of colums.
@@ -118,12 +101,13 @@ public class GenMatrixRing<C extends RingElem<C>> implements AlgebraFactory<GenM
         }
         ONE = new GenMatrix<C>(this, m);
         logger.info(rows + " x " + cols + " with blocksize " + blocksize + " matrix ring over "
-                        + coFac.toScript() + " constructed");
+                + coFac.toScript() + " constructed");
     }
 
 
     /**
      * Get the String representation as RingElem.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -137,6 +121,7 @@ public class GenMatrixRing<C extends RingElem<C>> implements AlgebraFactory<GenM
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this ElemFactory.
      * @see edu.jas.structure.ElemFactory#toScript()
      */
@@ -157,6 +142,7 @@ public class GenMatrixRing<C extends RingElem<C>> implements AlgebraFactory<GenM
 
     /**
      * Get the constant one for the GenMatrix.
+     *
      * @return ZERO.
      */
     public GenMatrix<C> getZERO() {
@@ -166,6 +152,7 @@ public class GenMatrixRing<C extends RingElem<C>> implements AlgebraFactory<GenM
 
     /**
      * Get the constant one for the GenMatrix.
+     *
      * @return 1.
      */
     public GenMatrix<C> getONE() {
@@ -175,6 +162,7 @@ public class GenMatrixRing<C extends RingElem<C>> implements AlgebraFactory<GenM
 
     /**
      * Get a list of the generating elements.
+     *
      * @return list of generators for the algebraic structure.
      * @see edu.jas.structure.ElemFactory#generators()
      */
@@ -195,6 +183,7 @@ public class GenMatrixRing<C extends RingElem<C>> implements AlgebraFactory<GenM
 
     /**
      * Is this structure finite or infinite.
+     *
      * @return true if this structure is finite, else false.
      * @see edu.jas.structure.ElemFactory#isFinite()
      */
@@ -205,6 +194,7 @@ public class GenMatrixRing<C extends RingElem<C>> implements AlgebraFactory<GenM
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -228,6 +218,7 @@ public class GenMatrixRing<C extends RingElem<C>> implements AlgebraFactory<GenM
 
     /**
      * Hash code for this matrix ring.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -242,6 +233,7 @@ public class GenMatrixRing<C extends RingElem<C>> implements AlgebraFactory<GenM
     /**
      * Query if this ring is a field. May return false if it is to hard to
      * determine if this ring is a field.
+     *
      * @return true if it is known that this ring is a field, else false.
      */
     public boolean isField() {
@@ -251,6 +243,7 @@ public class GenMatrixRing<C extends RingElem<C>> implements AlgebraFactory<GenM
 
     /**
      * Query if this monoid is commutative.
+     *
      * @return true if this monoid is commutative, else false.
      */
     public boolean isCommutative() {
@@ -260,6 +253,7 @@ public class GenMatrixRing<C extends RingElem<C>> implements AlgebraFactory<GenM
 
     /**
      * Query if this ring is associative.
+     *
      * @return true if this monoid is associative, else false.
      */
     public boolean isAssociative() {
@@ -269,6 +263,7 @@ public class GenMatrixRing<C extends RingElem<C>> implements AlgebraFactory<GenM
 
     /**
      * Characteristic of this ring.
+     *
      * @return characteristic of this ring.
      */
     public java.math.BigInteger characteristic() {
@@ -278,6 +273,7 @@ public class GenMatrixRing<C extends RingElem<C>> implements AlgebraFactory<GenM
 
     /**
      * Transposed matrix ring.
+     *
      * @return transposed ring factory.
      */
     public GenMatrixRing<C> transpose() {
@@ -290,6 +286,7 @@ public class GenMatrixRing<C extends RingElem<C>> implements AlgebraFactory<GenM
 
     /**
      * Product matrix ring for multiplication.
+     *
      * @param other matrix ring factory.
      * @return product ring factory.
      */
@@ -309,6 +306,7 @@ public class GenMatrixRing<C extends RingElem<C>> implements AlgebraFactory<GenM
 
     /**
      * Get the matrix for a.
+     *
      * @param a long
      * @return matrix corresponding to a.
      */
@@ -320,6 +318,7 @@ public class GenMatrixRing<C extends RingElem<C>> implements AlgebraFactory<GenM
 
     /**
      * Get the matrix for a.
+     *
      * @param a long
      * @return matrix corresponding to a.
      */
@@ -331,6 +330,7 @@ public class GenMatrixRing<C extends RingElem<C>> implements AlgebraFactory<GenM
 
     /**
      * From List of coefficients.
+     *
      * @param om list of list of coefficients.
      */
     public GenMatrix<C> fromList(List<List<C>> om) {
@@ -365,6 +365,7 @@ public class GenMatrixRing<C extends RingElem<C>> implements AlgebraFactory<GenM
 
     /**
      * Random matrix.
+     *
      * @param k size of random coefficients.
      */
     public GenMatrix<C> random(int k) {
@@ -374,6 +375,7 @@ public class GenMatrixRing<C extends RingElem<C>> implements AlgebraFactory<GenM
 
     /**
      * Random matrix.
+     *
      * @param k size of random coefficients.
      * @param q density of nozero coefficients.
      */
@@ -384,7 +386,8 @@ public class GenMatrixRing<C extends RingElem<C>> implements AlgebraFactory<GenM
 
     /**
      * Random matrix.
-     * @param k size of random coefficients.
+     *
+     * @param k      size of random coefficients.
      * @param random is a source for random bits.
      * @return a random element.
      */
@@ -395,8 +398,9 @@ public class GenMatrixRing<C extends RingElem<C>> implements AlgebraFactory<GenM
 
     /**
      * Random matrix.
-     * @param k size of random coefficients.
-     * @param q density of nozero coefficients.
+     *
+     * @param k      size of random coefficients.
+     * @param q      density of nozero coefficients.
      * @param random is a source for random bits.
      * @return a random element.
      */
@@ -421,6 +425,7 @@ public class GenMatrixRing<C extends RingElem<C>> implements AlgebraFactory<GenM
 
     /**
      * Random upper triangular matrix.
+     *
      * @param k size of random coefficients.
      * @param q density of nozero coefficients.
      */
@@ -431,8 +436,9 @@ public class GenMatrixRing<C extends RingElem<C>> implements AlgebraFactory<GenM
 
     /**
      * Random upper triangular matrix.
-     * @param k size of random coefficients.
-     * @param q density of nozero coefficients.
+     *
+     * @param k      size of random coefficients.
+     * @param q      density of nozero coefficients.
      * @param random is a source for random bits.
      * @return a random element.
      */
@@ -457,6 +463,7 @@ public class GenMatrixRing<C extends RingElem<C>> implements AlgebraFactory<GenM
 
     /**
      * Random lower triangular matrix.
+     *
      * @param k size of random coefficients.
      * @param q density of nozero coefficients.
      */
@@ -467,8 +474,9 @@ public class GenMatrixRing<C extends RingElem<C>> implements AlgebraFactory<GenM
 
     /**
      * Random lower triangular matrix.
-     * @param k size of random coefficients.
-     * @param q density of nozero coefficients.
+     *
+     * @param k      size of random coefficients.
+     * @param q      density of nozero coefficients.
      * @param random is a source for random bits.
      * @return a random element.
      */
@@ -493,6 +501,7 @@ public class GenMatrixRing<C extends RingElem<C>> implements AlgebraFactory<GenM
 
     /**
      * Copy matrix.
+     *
      * @param c matrix to copy.
      * @return copy of the matrix
      */
@@ -506,6 +515,7 @@ public class GenMatrixRing<C extends RingElem<C>> implements AlgebraFactory<GenM
 
     /**
      * Generate matrix via lambda expression.
+     *
      * @param gener lambda expression.
      * @return the generated matrix.
      */
@@ -526,6 +536,7 @@ public class GenMatrixRing<C extends RingElem<C>> implements AlgebraFactory<GenM
     /**
      * Parse a matrix from a String. Syntax: [ [ c, ..., c ], ..., [ c, ..., c ]
      * ]
+     *
      * @param s input String.
      * @return parsed matrix
      */
@@ -572,6 +583,7 @@ public class GenMatrixRing<C extends RingElem<C>> implements AlgebraFactory<GenM
 
     /**
      * Parse a matrix from a Reader.
+     *
      * @param r Reader.
      * @return parsed matrix
      */

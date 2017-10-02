@@ -41,8 +41,8 @@ import org.hipparchus.util.MathUtils;
  * <p>
  * The generator supports two modes:
  * <ul>
- *   <li>sequential generation of points: {@link #nextVector()}</li>
- *   <li>random access to the i-th point in the sequence: {@link #skipTo(int)}</li>
+ * <li>sequential generation of points: {@link #nextVector()}</li>
+ * <li>random access to the i-th point in the sequence: {@link #skipTo(int)}</li>
  * </ul>
  *
  * @see <a href="http://en.wikipedia.org/wiki/Halton_sequence">Halton sequence (Wikipedia)</a>
@@ -51,31 +51,40 @@ import org.hipparchus.util.MathUtils;
  */
 public class HaltonSequenceGenerator implements RandomVectorGenerator {
 
-    /** The first 40 primes. */
-    private static final int[] PRIMES = new int[] {
-        2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67,
-        71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139,
-        149, 151, 157, 163, 167, 173
+    /**
+     * The first 40 primes.
+     */
+    private static final int[] PRIMES = new int[]{
+            2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67,
+            71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139,
+            149, 151, 157, 163, 167, 173
     };
 
-    /** The optimal weights used for scrambling of the first 40 dimension. */
-    private static final int[] WEIGHTS = new int[] {
-        1, 2, 3, 3, 8, 11, 12, 14, 7, 18, 12, 13, 17, 18, 29, 14, 18, 43, 41,
-        44, 40, 30, 47, 65, 71, 28, 40, 60, 79, 89, 56, 50, 52, 61, 108, 56,
-        66, 63, 60, 66
+    /**
+     * The optimal weights used for scrambling of the first 40 dimension.
+     */
+    private static final int[] WEIGHTS = new int[]{
+            1, 2, 3, 3, 8, 11, 12, 14, 7, 18, 12, 13, 17, 18, 29, 14, 18, 43, 41,
+            44, 40, 30, 47, 65, 71, 28, 40, 60, 79, 89, 56, 50, 52, 61, 108, 56,
+            66, 63, 60, 66
     };
 
-    /** Space dimension. */
+    /**
+     * Space dimension.
+     */
     private final int dimension;
-
-    /** The current index in the sequence. */
-    private int count = 0;
-
-    /** The base numbers for each component. */
+    /**
+     * The base numbers for each component.
+     */
     private final int[] base;
-
-    /** The scrambling weights for each component. */
+    /**
+     * The scrambling weights for each component.
+     */
     private final int[] weight;
+    /**
+     * The current index in the sequence.
+     */
+    private int count = 0;
 
     /**
      * Construct a new Halton sequence generator for the given space dimension.
@@ -92,11 +101,11 @@ public class HaltonSequenceGenerator implements RandomVectorGenerator {
      * The length of the bases array defines the space dimension and is required to be &gt; 0.
      *
      * @param dimension the space dimension
-     * @param bases the base number for each dimension, entries should be (pairwise) prime, may not be null
-     * @param weights the weights used during scrambling, may be null in which case no scrambling will be performed
-     * @throws NullArgumentException if base is null
+     * @param bases     the base number for each dimension, entries should be (pairwise) prime, may not be null
+     * @param weights   the weights used during scrambling, may be null in which case no scrambling will be performed
+     * @throws NullArgumentException        if base is null
      * @throws MathIllegalArgumentException if the space dimension is outside the range [1, len], where
-     *   len refers to the length of the bases array
+     *                                      len refers to the length of the bases array
      * @throws MathIllegalArgumentException if weights is non-null and the length of the input arrays differ
      */
     public HaltonSequenceGenerator(final int dimension, final int[] bases, final int[] weights)
@@ -107,7 +116,7 @@ public class HaltonSequenceGenerator implements RandomVectorGenerator {
 
         if (weights != null && weights.length != bases.length) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.DIMENSIONS_MISMATCH,
-                                                   weights.length, bases.length);
+                    weights.length, bases.length);
         }
 
         this.dimension = dimension;
@@ -116,7 +125,9 @@ public class HaltonSequenceGenerator implements RandomVectorGenerator {
         count = 0;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double[] nextVector() {
         final double[] v = new double[dimension];
@@ -143,9 +154,9 @@ public class HaltonSequenceGenerator implements RandomVectorGenerator {
      * </pre>
      * Implementations can override this method to do a different scrambling.
      *
-     * @param i the dimension index
-     * @param j the digit index
-     * @param b the base for this dimension
+     * @param i     the dimension index
+     * @param j     the digit index
+     * @param b     the base for this dimension
      * @param digit the j-th digit
      * @return the scrambled digit
      */

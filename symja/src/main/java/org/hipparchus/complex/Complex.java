@@ -17,10 +17,6 @@
 
 package org.hipparchus.complex;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.hipparchus.FieldElement;
 import org.hipparchus.exception.LocalizedCoreFormats;
 import org.hipparchus.exception.MathIllegalArgumentException;
@@ -28,6 +24,10 @@ import org.hipparchus.exception.NullArgumentException;
 import org.hipparchus.util.FastMath;
 import org.hipparchus.util.MathUtils;
 import org.hipparchus.util.Precision;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Representation of a Complex number, i.e. a number which has both a
@@ -39,43 +39,63 @@ import org.hipparchus.util.Precision;
  * a {@code NaN} in either real or imaginary part, e.g. the following are
  * considered equal:
  * <ul>
- *  <li>{@code 1 + NaNi}</li>
- *  <li>{@code NaN + i}</li>
- *  <li>{@code NaN + NaNi}</li>
+ * <li>{@code 1 + NaNi}</li>
+ * <li>{@code NaN + i}</li>
+ * <li>{@code NaN + NaNi}</li>
  * </ul>
  * <p>
  * Note that this contradicts the IEEE-754 standard for floating
  * point numbers (according to which the test {@code x == x} must fail if
  * {@code x} is {@code NaN}). The method
- * {@link org.hipparchus.util.Precision#equals(double,double,int)
+ * {@link org.hipparchus.util.Precision#equals(double, double, int)
  * equals for primitive double} in {@link org.hipparchus.util.Precision}
  * conforms with IEEE-754 while this class conforms with the standard behavior
  * for Java object types.
  */
-public class Complex implements FieldElement<Complex>, Serializable  {
-    /** The square root of -1. A number representing "0.0 + 1.0i" */
+public class Complex implements FieldElement<Complex>, Serializable {
+    /**
+     * The square root of -1. A number representing "0.0 + 1.0i"
+     */
     public static final Complex I = new Complex(0.0, 1.0);
     // CHECKSTYLE: stop ConstantName
-    /** A complex number representing "NaN + NaNi" */
+    /**
+     * A complex number representing "NaN + NaNi"
+     */
     public static final Complex NaN = new Complex(Double.NaN, Double.NaN);
     // CHECKSTYLE: resume ConstantName
-    /** A complex number representing "+INF + INFi" */
+    /**
+     * A complex number representing "+INF + INFi"
+     */
     public static final Complex INF = new Complex(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
-    /** A complex number representing "1.0 + 0.0i" */
+    /**
+     * A complex number representing "1.0 + 0.0i"
+     */
     public static final Complex ONE = new Complex(1.0, 0.0);
-    /** A complex number representing "0.0 + 0.0i" */
+    /**
+     * A complex number representing "0.0 + 0.0i"
+     */
     public static final Complex ZERO = new Complex(0.0, 0.0);
 
-    /** Serializable version identifier */
+    /**
+     * Serializable version identifier
+     */
     private static final long serialVersionUID = 20160305L;
 
-    /** The imaginary part. */
+    /**
+     * The imaginary part.
+     */
     private final double imaginary;
-    /** The real part. */
+    /**
+     * The real part.
+     */
     private final double real;
-    /** Record whether this complex number is equal to NaN. */
+    /**
+     * Record whether this complex number is equal to NaN.
+     */
     private final transient boolean isNaN;
-    /** Record whether this complex number is infinite. */
+    /**
+     * Record whether this complex number is infinite.
+     */
     private final transient boolean isInfinite;
 
     /**
@@ -90,7 +110,7 @@ public class Complex implements FieldElement<Complex>, Serializable  {
     /**
      * Create a complex number given the real and imaginary parts.
      *
-     * @param real Real part.
+     * @param real      Real part.
      * @param imaginary Imaginary part.
      */
     public Complex(double real, double imaginary) {
@@ -99,7 +119,106 @@ public class Complex implements FieldElement<Complex>, Serializable  {
 
         isNaN = Double.isNaN(real) || Double.isNaN(imaginary);
         isInfinite = !isNaN &&
-            (Double.isInfinite(real) || Double.isInfinite(imaginary));
+                (Double.isInfinite(real) || Double.isInfinite(imaginary));
+    }
+
+    /**
+     * Test for the floating-point equality between Complex objects.
+     * It returns {@code true} if both arguments are equal or within the
+     * range of allowed error (inclusive).
+     *
+     * @param x       First value (cannot be {@code null}).
+     * @param y       Second value (cannot be {@code null}).
+     * @param maxUlps {@code (maxUlps - 1)} is the number of floating point
+     *                values between the real (resp. imaginary) parts of {@code x} and
+     *                {@code y}.
+     * @return {@code true} if there are fewer than {@code maxUlps} floating
+     * point values between the real (resp. imaginary) parts of {@code x}
+     * and {@code y}.
+     * @see Precision#equals(double, double, int)
+     */
+    public static boolean equals(Complex x, Complex y, int maxUlps) {
+        return Precision.equals(x.real, y.real, maxUlps) &&
+                Precision.equals(x.imaginary, y.imaginary, maxUlps);
+    }
+
+    /**
+     * Returns {@code true} iff the values are equal as defined by
+     * {@link #equals(Complex, Complex, int) equals(x, y, 1)}.
+     *
+     * @param x First value (cannot be {@code null}).
+     * @param y Second value (cannot be {@code null}).
+     * @return {@code true} if the values are equal.
+     */
+    public static boolean equals(Complex x, Complex y) {
+        return equals(x, y, 1);
+    }
+
+    /**
+     * Returns {@code true} if, both for the real part and for the imaginary
+     * part, there is no double value strictly between the arguments or the
+     * difference between them is within the range of allowed error
+     * (inclusive).  Returns {@code false} if either of the arguments is NaN.
+     *
+     * @param x   First value (cannot be {@code null}).
+     * @param y   Second value (cannot be {@code null}).
+     * @param eps Amount of allowed absolute error.
+     * @return {@code true} if the values are two adjacent floating point
+     * numbers or they are within range of each other.
+     * @see Precision#equals(double, double, double)
+     */
+    public static boolean equals(Complex x, Complex y, double eps) {
+        return Precision.equals(x.real, y.real, eps) &&
+                Precision.equals(x.imaginary, y.imaginary, eps);
+    }
+
+    /**
+     * Returns {@code true} if, both for the real part and for the imaginary
+     * part, there is no double value strictly between the arguments or the
+     * relative difference between them is smaller or equal to the given
+     * tolerance. Returns {@code false} if either of the arguments is NaN.
+     *
+     * @param x   First value (cannot be {@code null}).
+     * @param y   Second value (cannot be {@code null}).
+     * @param eps Amount of allowed relative error.
+     * @return {@code true} if the values are two adjacent floating point
+     * numbers or they are within range of each other.
+     * @see Precision#equalsWithRelativeTolerance(double, double, double)
+     */
+    public static boolean equalsWithRelativeTolerance(Complex x,
+                                                      Complex y,
+                                                      double eps) {
+        return Precision.equalsWithRelativeTolerance(x.real, y.real, eps) &&
+                Precision.equalsWithRelativeTolerance(x.imaginary, y.imaginary, eps);
+    }
+
+    /**
+     * Create a complex number given the real and imaginary parts.
+     *
+     * @param realPart      Real part.
+     * @param imaginaryPart Imaginary part.
+     * @return a Complex instance.
+     */
+    public static Complex valueOf(double realPart,
+                                  double imaginaryPart) {
+        if (Double.isNaN(realPart) ||
+                Double.isNaN(imaginaryPart)) {
+            return NaN;
+        }
+        return new Complex(realPart, imaginaryPart);
+    }
+
+    /**
+     * Create a complex number given only the real part.
+     *
+     * @param realPart Real part.
+     * @return a Complex instance.
+     */
+    public static Complex valueOf(double realPart) {
+        if (Double.isNaN(realPart)) {
+            return NaN;
+        }
+        return new Complex(realPart);
     }
 
     /**
@@ -137,14 +256,14 @@ public class Complex implements FieldElement<Complex>, Serializable  {
      * {@code (this + addend)}.
      * Uses the definitional formula
      * <p>
-     *   {@code (a + bi) + (c + di) = (a+c) + (b+d)i}
+     * {@code (a + bi) + (c + di) = (a+c) + (b+d)i}
      * </p>
      * If either {@code this} or {@code addend} has a {@code NaN} value in
      * either part, {@link #NaN} is returned; otherwise {@code Infinite}
      * and {@code NaN} values are returned in the parts of the result
      * according to the rules for {@link Double} arithmetic.
      *
-     * @param  addend Value to be added to this {@code Complex}.
+     * @param addend Value to be added to this {@code Complex}.
      * @return {@code this + addend}.
      * @throws NullArgumentException if {@code addend} is {@code null}.
      */
@@ -156,7 +275,7 @@ public class Complex implements FieldElement<Complex>, Serializable  {
         }
 
         return createComplex(real + addend.getReal(),
-                             imaginary + addend.getImaginary());
+                imaginary + addend.getImaginary());
     }
 
     /**
@@ -175,7 +294,7 @@ public class Complex implements FieldElement<Complex>, Serializable  {
         return createComplex(real + addend, imaginary);
     }
 
-     /**
+    /**
      * Returns the conjugate of this complex number.
      * The conjugate of {@code a + bi} is {@code a - bi}.
      * <p>
@@ -187,6 +306,7 @@ public class Complex implements FieldElement<Complex>, Serializable  {
      * of the opposite sign, e.g. the conjugate of
      * {@code 1 + POSITIVE_INFINITY i} is {@code 1 - NEGATIVE_INFINITY i}.
      * </p>
+     *
      * @return the conjugate of this Complex object.
      */
     public Complex conjugate() {
@@ -216,23 +336,23 @@ public class Complex implements FieldElement<Complex>, Serializable  {
      * {@code Infinite} and {@code NaN} values are handled according to the
      * following rules, applied in the order presented:
      * <ul>
-     *  <li>If either {@code this} or {@code divisor} has a {@code NaN} value
-     *   in either part, {@link #NaN} is returned.
-     *  </li>
-     *  <li>If {@code divisor} equals {@link #ZERO}, {@link #NaN} is returned.
-     *  </li>
-     *  <li>If {@code this} and {@code divisor} are both infinite,
-     *   {@link #NaN} is returned.
-     *  </li>
-     *  <li>If {@code this} is finite (i.e., has no {@code Infinite} or
-     *   {@code NaN} parts) and {@code divisor} is infinite (one or both parts
-     *   infinite), {@link #ZERO} is returned.
-     *  </li>
-     *  <li>If {@code this} is infinite and {@code divisor} is finite,
-     *   {@code NaN} values are returned in the parts of the result if the
-     *   {@link Double} rules applied to the definitional formula
-     *   force {@code NaN} results.
-     *  </li>
+     * <li>If either {@code this} or {@code divisor} has a {@code NaN} value
+     * in either part, {@link #NaN} is returned.
+     * </li>
+     * <li>If {@code divisor} equals {@link #ZERO}, {@link #NaN} is returned.
+     * </li>
+     * <li>If {@code this} and {@code divisor} are both infinite,
+     * {@link #NaN} is returned.
+     * </li>
+     * <li>If {@code this} is finite (i.e., has no {@code Infinite} or
+     * {@code NaN} parts) and {@code divisor} is infinite (one or both parts
+     * infinite), {@link #ZERO} is returned.
+     * </li>
+     * <li>If {@code this} is infinite and {@code divisor} is finite,
+     * {@code NaN} values are returned in the parts of the result if the
+     * {@link Double} rules applied to the definitional formula
+     * force {@code NaN} results.
+     * </li>
      * </ul>
      *
      * @param divisor Value by which this {@code Complex} is to be divided.
@@ -241,7 +361,7 @@ public class Complex implements FieldElement<Complex>, Serializable  {
      */
     @Override
     public Complex divide(Complex divisor)
-        throws NullArgumentException {
+            throws NullArgumentException {
         MathUtils.checkNotNull(divisor);
         if (isNaN || divisor.isNaN) {
             return NaN;
@@ -261,12 +381,12 @@ public class Complex implements FieldElement<Complex>, Serializable  {
             double q = c / d;
             double denominator = c * q + d;
             return createComplex((real * q + imaginary) / denominator,
-                (imaginary * q - real) / denominator);
+                    (imaginary * q - real) / denominator);
         } else {
             double q = d / c;
             double denominator = d * q + c;
             return createComplex((imaginary * q + real) / denominator,
-                (imaginary - real * q) / denominator);
+                    (imaginary - real * q) / denominator);
         }
     }
 
@@ -274,7 +394,7 @@ public class Complex implements FieldElement<Complex>, Serializable  {
      * Returns a {@code Complex} whose value is {@code (this / divisor)},
      * with {@code divisor} interpreted as a real number.
      *
-     * @param  divisor Value by which this {@code Complex} is to be divided.
+     * @param divisor Value by which this {@code Complex} is to be divided.
      * @return {@code this / divisor}.
      * @see #divide(Complex)
      */
@@ -289,10 +409,12 @@ public class Complex implements FieldElement<Complex>, Serializable  {
             return !isInfinite() ? ZERO : NaN;
         }
         return createComplex(real / divisor,
-                             imaginary  / divisor);
+                imaginary / divisor);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Complex reciprocal() {
         if (isNaN) {
@@ -326,15 +448,15 @@ public class Complex implements FieldElement<Complex>, Serializable  {
      * The behavior is the same as for JDK's {@link Double#equals(Object)
      * Double}:
      * <ul>
-     *  <li>All {@code NaN} values are considered to be equal,
-     *   i.e, if either (or both) real and imaginary parts of the complex
-     *   number are equal to {@code Double.NaN}, the complex number is equal
-     *   to {@code NaN}.
-     *  </li>
-     *  <li>
-     *   Instances constructed with different representations of zero (i.e.
-     *   either "0" or "-0") are <em>not</em> considered to be equal.
-     *  </li>
+     * <li>All {@code NaN} values are considered to be equal,
+     * i.e, if either (or both) real and imaginary parts of the complex
+     * number are equal to {@code Double.NaN}, the complex number is equal
+     * to {@code NaN}.
+     * </li>
+     * <li>
+     * Instances constructed with different representations of zero (i.e.
+     * either "0" or "-0") are <em>not</em> considered to be equal.
+     * </li>
      * </ul>
      *
      * @param other Object to test for equality with this instance.
@@ -347,89 +469,16 @@ public class Complex implements FieldElement<Complex>, Serializable  {
         if (this == other) {
             return true;
         }
-        if (other instanceof Complex){
+        if (other instanceof Complex) {
             Complex c = (Complex) other;
             if (c.isNaN) {
                 return isNaN;
             } else {
                 return MathUtils.equals(real, c.real) &&
-                       MathUtils.equals(imaginary, c.imaginary);
+                        MathUtils.equals(imaginary, c.imaginary);
             }
         }
         return false;
-    }
-
-    /**
-     * Test for the floating-point equality between Complex objects.
-     * It returns {@code true} if both arguments are equal or within the
-     * range of allowed error (inclusive).
-     *
-     * @param x First value (cannot be {@code null}).
-     * @param y Second value (cannot be {@code null}).
-     * @param maxUlps {@code (maxUlps - 1)} is the number of floating point
-     * values between the real (resp. imaginary) parts of {@code x} and
-     * {@code y}.
-     * @return {@code true} if there are fewer than {@code maxUlps} floating
-     * point values between the real (resp. imaginary) parts of {@code x}
-     * and {@code y}.
-     *
-     * @see Precision#equals(double,double,int)
-     */
-    public static boolean equals(Complex x, Complex y, int maxUlps) {
-        return Precision.equals(x.real, y.real, maxUlps) &&
-               Precision.equals(x.imaginary, y.imaginary, maxUlps);
-    }
-
-    /**
-     * Returns {@code true} iff the values are equal as defined by
-     * {@link #equals(Complex,Complex,int) equals(x, y, 1)}.
-     *
-     * @param x First value (cannot be {@code null}).
-     * @param y Second value (cannot be {@code null}).
-     * @return {@code true} if the values are equal.
-     */
-    public static boolean equals(Complex x, Complex y) {
-        return equals(x, y, 1);
-    }
-
-    /**
-     * Returns {@code true} if, both for the real part and for the imaginary
-     * part, there is no double value strictly between the arguments or the
-     * difference between them is within the range of allowed error
-     * (inclusive).  Returns {@code false} if either of the arguments is NaN.
-     *
-     * @param x First value (cannot be {@code null}).
-     * @param y Second value (cannot be {@code null}).
-     * @param eps Amount of allowed absolute error.
-     * @return {@code true} if the values are two adjacent floating point
-     * numbers or they are within range of each other.
-     *
-     * @see Precision#equals(double,double,double)
-     */
-    public static boolean equals(Complex x, Complex y, double eps) {
-        return Precision.equals(x.real, y.real, eps) &&
-               Precision.equals(x.imaginary, y.imaginary, eps);
-    }
-
-    /**
-     * Returns {@code true} if, both for the real part and for the imaginary
-     * part, there is no double value strictly between the arguments or the
-     * relative difference between them is smaller or equal to the given
-     * tolerance. Returns {@code false} if either of the arguments is NaN.
-     *
-     * @param x First value (cannot be {@code null}).
-     * @param y Second value (cannot be {@code null}).
-     * @param eps Amount of allowed relative error.
-     * @return {@code true} if the values are two adjacent floating point
-     * numbers or they are within range of each other.
-     *
-     * @see Precision#equalsWithRelativeTolerance(double,double,double)
-     */
-    public static boolean equalsWithRelativeTolerance(Complex x,
-                                                      Complex y,
-                                                      double eps) {
-        return Precision.equalsWithRelativeTolerance(x.real, y.real, eps) &&
-               Precision.equalsWithRelativeTolerance(x.imaginary, y.imaginary, eps);
     }
 
     /**
@@ -445,7 +494,7 @@ public class Complex implements FieldElement<Complex>, Serializable  {
             return 7;
         }
         return 37 * (17 * MathUtils.hash(imaginary) +
-            MathUtils.hash(real));
+                MathUtils.hash(real));
     }
 
     /**
@@ -495,7 +544,7 @@ public class Complex implements FieldElement<Complex>, Serializable  {
      * Implements preliminary checks for {@code NaN} and infinity followed by
      * the definitional formula:
      * <p>
-     *   {@code (a + bi)(c + di) = (ac - bd) + (ad + bc)i}
+     * {@code (a + bi)(c + di) = (ac - bd) + (ad + bc)i}
      * </p>
      * Returns {@link #NaN} if either {@code this} or {@code factor} has one or
      * more {@code NaN} parts.
@@ -508,33 +557,33 @@ public class Complex implements FieldElement<Complex>, Serializable  {
      * Returns finite values in components of the result per the definitional
      * formula in all remaining cases.</p>
      *
-     * @param  factor value to be multiplied by this {@code Complex}.
+     * @param factor value to be multiplied by this {@code Complex}.
      * @return {@code this * factor}.
      * @throws NullArgumentException if {@code factor} is {@code null}.
      */
     @Override
     public Complex multiply(Complex factor)
-        throws NullArgumentException {
+            throws NullArgumentException {
         MathUtils.checkNotNull(factor);
         if (isNaN || factor.isNaN) {
             return NaN;
         }
         if (Double.isInfinite(real) ||
-            Double.isInfinite(imaginary) ||
-            Double.isInfinite(factor.real) ||
-            Double.isInfinite(factor.imaginary)) {
+                Double.isInfinite(imaginary) ||
+                Double.isInfinite(factor.real) ||
+                Double.isInfinite(factor.imaginary)) {
             // we don't use isInfinite() to avoid testing for NaN again
             return INF;
         }
         return createComplex(real * factor.real - imaginary * factor.imaginary,
-                             real * factor.imaginary + imaginary * factor.real);
+                real * factor.imaginary + imaginary * factor.real);
     }
 
     /**
      * Returns a {@code Complex} whose value is {@code this * factor}, with {@code factor}
      * interpreted as a integer number.
      *
-     * @param  factor value to be multiplied by this {@code Complex}.
+     * @param factor value to be multiplied by this {@code Complex}.
      * @return {@code this * factor}.
      * @see #multiply(Complex)
      */
@@ -544,7 +593,7 @@ public class Complex implements FieldElement<Complex>, Serializable  {
             return NaN;
         }
         if (Double.isInfinite(real) ||
-            Double.isInfinite(imaginary)) {
+                Double.isInfinite(imaginary)) {
             return INF;
         }
         return createComplex(real * factor, imaginary * factor);
@@ -554,7 +603,7 @@ public class Complex implements FieldElement<Complex>, Serializable  {
      * Returns a {@code Complex} whose value is {@code this * factor}, with {@code factor}
      * interpreted as a real number.
      *
-     * @param  factor value to be multiplied by this {@code Complex}.
+     * @param factor value to be multiplied by this {@code Complex}.
      * @return {@code this * factor}.
      * @see #multiply(Complex)
      */
@@ -563,8 +612,8 @@ public class Complex implements FieldElement<Complex>, Serializable  {
             return NaN;
         }
         if (Double.isInfinite(real) ||
-            Double.isInfinite(imaginary) ||
-            Double.isInfinite(factor)) {
+                Double.isInfinite(imaginary) ||
+                Double.isInfinite(factor)) {
             // we don't use isInfinite() to avoid testing for NaN again
             return INF;
         }
@@ -592,34 +641,34 @@ public class Complex implements FieldElement<Complex>, Serializable  {
      * {@code (this - subtrahend)}.
      * Uses the definitional formula
      * <p>
-     *  {@code (a + bi) - (c + di) = (a-c) + (b-d)i}
+     * {@code (a + bi) - (c + di) = (a-c) + (b-d)i}
      * </p>
      * If either {@code this} or {@code subtrahend} has a {@code NaN]} value in either part,
      * {@link #NaN} is returned; otherwise infinite and {@code NaN} values are
      * returned in the parts of the result according to the rules for
      * {@link Double} arithmetic.
      *
-     * @param  subtrahend value to be subtracted from this {@code Complex}.
+     * @param subtrahend value to be subtracted from this {@code Complex}.
      * @return {@code this - subtrahend}.
      * @throws NullArgumentException if {@code subtrahend} is {@code null}.
      */
     @Override
     public Complex subtract(Complex subtrahend)
-        throws NullArgumentException {
+            throws NullArgumentException {
         MathUtils.checkNotNull(subtrahend);
         if (isNaN || subtrahend.isNaN) {
             return NaN;
         }
 
         return createComplex(real - subtrahend.getReal(),
-                             imaginary - subtrahend.getImaginary());
+                imaginary - subtrahend.getImaginary());
     }
 
     /**
      * Returns a {@code Complex} whose value is
      * {@code (this - subtrahend)}.
      *
-     * @param  subtrahend value to be subtracted from this {@code Complex}.
+     * @param subtrahend value to be subtracted from this {@code Complex}.
      * @return {@code this - subtrahend}.
      * @see #subtract(Complex)
      */
@@ -636,7 +685,7 @@ public class Complex implements FieldElement<Complex>, Serializable  {
      * inverse cosine</a> of this complex number.
      * Implements the formula:
      * <p>
-     *  {@code acos(z) = -i (log(z + i (sqrt(1 - z<sup>2</sup>))))}
+     * {@code acos(z) = -i (log(z + i (sqrt(1 - z<sup>2</sup>))))}
      * </p>
      * Returns {@link Complex#NaN} if either real or imaginary part of the
      * input argument is {@code NaN} or infinite.
@@ -657,7 +706,7 @@ public class Complex implements FieldElement<Complex>, Serializable  {
      * inverse sine</a> of this complex number.
      * Implements the formula:
      * <p>
-     *  {@code asin(z) = -i (log(sqrt(1 - z<sup>2</sup>) + iz))}
+     * {@code asin(z) = -i (log(sqrt(1 - z<sup>2</sup>) + iz))}
      * </p><p>
      * Returns {@link Complex#NaN} if either real or imaginary part of the
      * input argument is {@code NaN} or infinite.</p>
@@ -691,7 +740,7 @@ public class Complex implements FieldElement<Complex>, Serializable  {
         }
 
         return this.add(I).divide(I.subtract(this)).log()
-                   .multiply(I.divide(createComplex(2.0, 0.0)));
+                .multiply(I.divide(createComplex(2.0, 0.0)));
     }
 
     /**
@@ -700,7 +749,7 @@ public class Complex implements FieldElement<Complex>, Serializable  {
      * cosine</a> of this complex number.
      * Implements the formula:
      * <p>
-     *  {@code cos(a + bi) = cos(a)cosh(b) - sin(a)sinh(b)i}
+     * {@code cos(a + bi) = cos(a)cosh(b) - sin(a)sinh(b)i}
      * </p><p>
      * where the (real) functions on the right-hand side are
      * {@link FastMath#sin}, {@link FastMath#cos},
@@ -728,7 +777,7 @@ public class Complex implements FieldElement<Complex>, Serializable  {
         }
 
         return createComplex(FastMath.cos(real) * FastMath.cosh(imaginary),
-                             -FastMath.sin(real) * FastMath.sinh(imaginary));
+                -FastMath.sin(real) * FastMath.sinh(imaginary));
     }
 
     /**
@@ -767,7 +816,7 @@ public class Complex implements FieldElement<Complex>, Serializable  {
         }
 
         return createComplex(FastMath.cosh(real) * FastMath.cos(imaginary),
-                             FastMath.sinh(real) * FastMath.sin(imaginary));
+                FastMath.sinh(real) * FastMath.sin(imaginary));
     }
 
     /**
@@ -807,8 +856,8 @@ public class Complex implements FieldElement<Complex>, Serializable  {
         }
 
         double expReal = FastMath.exp(real);
-        return createComplex(expReal *  FastMath.cos(imaginary),
-                             expReal * FastMath.sin(imaginary));
+        return createComplex(expReal * FastMath.cos(imaginary),
+                expReal * FastMath.sin(imaginary));
     }
 
     /**
@@ -851,7 +900,7 @@ public class Complex implements FieldElement<Complex>, Serializable  {
         }
 
         return createComplex(FastMath.log(abs()),
-                             FastMath.atan2(imaginary, real));
+                FastMath.atan2(imaginary, real));
     }
 
     /**
@@ -869,12 +918,12 @@ public class Complex implements FieldElement<Complex>, Serializable  {
      * input argument is {@code NaN} or infinite, or if {@code y}
      * equals {@link Complex#ZERO}.</p>
      *
-     * @param  x exponent to which this {@code Complex} is to be raised.
+     * @param x exponent to which this {@code Complex} is to be raised.
      * @return <code> this<sup>x</sup></code>.
      * @throws NullArgumentException if x is {@code null}.
      */
     public Complex pow(Complex x)
-        throws NullArgumentException {
+            throws NullArgumentException {
         MathUtils.checkNotNull(x);
         return this.log().multiply(x).exp();
     }
@@ -882,11 +931,11 @@ public class Complex implements FieldElement<Complex>, Serializable  {
     /**
      * Returns of value of this complex number raised to the power of {@code x}.
      *
-     * @param  x exponent to which this {@code Complex} is to be raised.
+     * @param x exponent to which this {@code Complex} is to be raised.
      * @return <code>this<sup>x</sup></code>.
      * @see #pow(Complex)
      */
-     public Complex pow(double x) {
+    public Complex pow(double x) {
         return this.log().multiply(x).exp();
     }
 
@@ -927,7 +976,7 @@ public class Complex implements FieldElement<Complex>, Serializable  {
         }
 
         return createComplex(FastMath.sin(real) * FastMath.cosh(imaginary),
-                             FastMath.cos(real) * FastMath.sinh(imaginary));
+                FastMath.cos(real) * FastMath.sinh(imaginary));
     }
 
     /**
@@ -966,7 +1015,7 @@ public class Complex implements FieldElement<Complex>, Serializable  {
         }
 
         return createComplex(FastMath.sinh(real) * FastMath.cos(imaginary),
-                             FastMath.cosh(real) * FastMath.sin(imaginary));
+                FastMath.cosh(real) * FastMath.sin(imaginary));
     }
 
     /**
@@ -981,7 +1030,7 @@ public class Complex implements FieldElement<Complex>, Serializable  {
      * where <ul>
      * <li>{@code |a| = }{@link FastMath#abs}(a)</li>
      * <li>{@code |a + bi| = }{@link Complex#abs}(a + bi)</li>
-     * <li>{@code sign(b) =  }{@link FastMath#copySign(double,double) copySign(1d, b)}
+     * <li>{@code sign(b) =  }{@link FastMath#copySign(double, double) copySign(1d, b)}
      * </ul>
      * <p>
      * Returns {@link Complex#NaN} if either real or imaginary part of the
@@ -1016,7 +1065,7 @@ public class Complex implements FieldElement<Complex>, Serializable  {
             return createComplex(t, imaginary / (2.0 * t));
         } else {
             return createComplex(FastMath.abs(imaginary) / (2.0 * t),
-                                 FastMath.copySign(1d, imaginary) * t);
+                    FastMath.copySign(1d, imaginary) * t);
         }
     }
 
@@ -1087,7 +1136,7 @@ public class Complex implements FieldElement<Complex>, Serializable  {
         double d = FastMath.cos(real2) + FastMath.cosh(imaginary2);
 
         return createComplex(FastMath.sin(real2) / d,
-                             FastMath.sinh(imaginary2) / d);
+                FastMath.sinh(imaginary2) / d);
     }
 
     /**
@@ -1136,10 +1185,8 @@ public class Complex implements FieldElement<Complex>, Serializable  {
         double d = FastMath.cosh(real2) + FastMath.cos(imaginary2);
 
         return createComplex(FastMath.sinh(real2) / d,
-                             FastMath.sin(imaginary2) / d);
+                FastMath.sin(imaginary2) / d);
     }
-
-
 
     /**
      * Compute the argument of this complex number.
@@ -1187,7 +1234,7 @@ public class Complex implements FieldElement<Complex>, Serializable  {
 
         if (n <= 0) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.CANNOT_COMPUTE_NTH_ROOT_FOR_NEGATIVE_N,
-                                                   n);
+                    n);
         }
 
         final List<Complex> result = new ArrayList<Complex>();
@@ -1208,10 +1255,10 @@ public class Complex implements FieldElement<Complex>, Serializable  {
         final double nthPhi = getArgument() / n;
         final double slice = 2 * FastMath.PI / n;
         double innerPart = nthPhi;
-        for (int k = 0; k < n ; k++) {
+        for (int k = 0; k < n; k++) {
             // inner part
-            final double realPart = nthRootOfAbs *  FastMath.cos(innerPart);
-            final double imaginaryPart = nthRootOfAbs *  FastMath.sin(innerPart);
+            final double realPart = nthRootOfAbs * FastMath.cos(innerPart);
+            final double imaginaryPart = nthRootOfAbs * FastMath.sin(innerPart);
             result.add(createComplex(realPart, imaginaryPart));
             innerPart += slice;
         }
@@ -1222,44 +1269,14 @@ public class Complex implements FieldElement<Complex>, Serializable  {
     /**
      * Create a complex number given the real and imaginary parts.
      *
-     * @param realPart Real part.
+     * @param realPart      Real part.
      * @param imaginaryPart Imaginary part.
      * @return a new complex number instance.
-     *
      * @see #valueOf(double, double)
      */
     protected Complex createComplex(double realPart,
                                     double imaginaryPart) {
         return new Complex(realPart, imaginaryPart);
-    }
-
-    /**
-     * Create a complex number given the real and imaginary parts.
-     *
-     * @param realPart Real part.
-     * @param imaginaryPart Imaginary part.
-     * @return a Complex instance.
-     */
-    public static Complex valueOf(double realPart,
-                                  double imaginaryPart) {
-        if (Double.isNaN(realPart) ||
-            Double.isNaN(imaginaryPart)) {
-            return NaN;
-        }
-        return new Complex(realPart, imaginaryPart);
-    }
-
-    /**
-     * Create a complex number given only the real part.
-     *
-     * @param realPart Real part.
-     * @return a Complex instance.
-     */
-    public static Complex valueOf(double realPart) {
-        if (Double.isNaN(realPart)) {
-            return NaN;
-        }
-        return new Complex(realPart);
     }
 
     /**
@@ -1273,13 +1290,17 @@ public class Complex implements FieldElement<Complex>, Serializable  {
         return createComplex(real, imaginary);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ComplexField getField() {
         return ComplexField.getInstance();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return "(" + real + ", " + imaginary + ")";

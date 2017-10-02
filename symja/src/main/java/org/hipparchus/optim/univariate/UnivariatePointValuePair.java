@@ -23,14 +23,19 @@ import java.io.Serializable;
  * This class holds a point and the value of an objective function at this
  * point.
  * This is a simple immutable container.
- *
  */
 public class UnivariatePointValuePair implements Serializable {
-    /** Serializable version identifier. */
+    /**
+     * Serializable version identifier.
+     */
     private static final long serialVersionUID = 1003888396256744753L;
-    /** Point. */
+    /**
+     * Point.
+     */
     private final double point;
-    /** Value of the objective function at the point. */
+    /**
+     * Value of the objective function at the point.
+     */
     private final double value;
 
     /**

@@ -5,11 +5,11 @@
 package edu.jas.gbufd;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.gb.GroebnerBaseAbstract;
 import edu.jas.gb.OrderedPairlist;
@@ -27,17 +27,17 @@ import edu.jas.ufd.GreatestCommonDivisorAbstract;
 /**
  * Groebner Base with pseudo reduction sequential algorithm for integral
  * function coefficients. Implements polynomial fraction free coefficients
- * Groebner bases. Coefficients can for example be 
+ * Groebner bases. Coefficients can for example be
  * (commutative) multivariate polynomials.
+ *
  * @param <C> base coefficient type
  * @author Heinz Kredel
- * 
  * @see edu.jas.application.GBAlgorithmBuilder
  * @see edu.jas.gbufd.GBFactory
  */
 
 public class GroebnerBasePseudoRecSeq<C extends GcdRingElem<C>> extends
-                GroebnerBaseAbstract<GenPolynomial<C>> {
+        GroebnerBaseAbstract<GenPolynomial<C>> {
 
 
     private static final Logger logger = Logger.getLogger(GroebnerBasePseudoRecSeq.class);
@@ -79,16 +79,18 @@ public class GroebnerBasePseudoRecSeq<C extends GcdRingElem<C>> extends
 
     /**
      * Constructor.
+     *
      * @param rf coefficient ring factory.
      */
     public GroebnerBasePseudoRecSeq(RingFactory<GenPolynomial<C>> rf) {
         this(new PseudoReductionSeq<GenPolynomial<C>>(), rf, new OrderedPairlist<GenPolynomial<C>>(
-                        new GenPolynomialRing<GenPolynomial<C>>(rf, 1))); // 1=hack
+                new GenPolynomialRing<GenPolynomial<C>>(rf, 1))); // 1=hack
     }
 
 
     /**
      * Constructor.
+     *
      * @param rf coefficient ring factory.
      * @param pl pair selection strategy
      */
@@ -99,14 +101,15 @@ public class GroebnerBasePseudoRecSeq<C extends GcdRingElem<C>> extends
 
     /**
      * Constructor.
+     *
      * @param red pseudo reduction engine. <b>Note:</b> red must be an instance
      *            of PseudoReductionSeq.
-     * @param rf coefficient ring factory.
-     * @param pl pair selection strategy
+     * @param rf  coefficient ring factory.
+     * @param pl  pair selection strategy
      */
     @SuppressWarnings("cast")
     public GroebnerBasePseudoRecSeq(PseudoReduction<GenPolynomial<C>> red, RingFactory<GenPolynomial<C>> rf,
-                    PairList<GenPolynomial<C>> pl) {
+                                    PairList<GenPolynomial<C>> pl) {
         super(red, pl);
         this.red = red;
         this.redRec = (PseudoReduction<C>) (PseudoReduction) red;
@@ -115,14 +118,15 @@ public class GroebnerBasePseudoRecSeq<C extends GcdRingElem<C>> extends
         baseCofac = rp.coFac;
         //engine = (GreatestCommonDivisorAbstract<C>)GCDFactory.<C>getImplementation( baseCofac );
         //not used: 
-        engine = GCDFactory.<C> getProxy(baseCofac);
+        engine = GCDFactory.<C>getProxy(baseCofac);
     }
 
 
     /**
      * Groebner base using pairlist class.
+     *
      * @param modv module variable number.
-     * @param F polynomial list.
+     * @param F    polynomial list.
      * @return GB(F) a Groebner base of F.
      */
     //@Override
@@ -227,6 +231,7 @@ public class GroebnerBasePseudoRecSeq<C extends GcdRingElem<C>> extends
 
     /**
      * Minimal ordered Groebner basis.
+     *
      * @param Gp a Groebner base.
      * @return a reduced Groebner base of Gp.
      */
@@ -296,8 +301,9 @@ public class GroebnerBasePseudoRecSeq<C extends GcdRingElem<C>> extends
 
     /**
      * Groebner base simple test.
+     *
      * @param modv module variable number.
-     * @param F recursive polynomial list.
+     * @param F    recursive polynomial list.
      * @return true, if F is a Groebner base, else false.
      */
     @Override

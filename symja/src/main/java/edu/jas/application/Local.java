@@ -11,18 +11,19 @@ import edu.jas.kern.PrettyPrint;
 import edu.jas.poly.ExpVector;
 import edu.jas.poly.GenPolynomial;
 import edu.jas.structure.GcdRingElem;
-import edu.jas.structure.RingElem;
 import edu.jas.structure.QuotPair;
+import edu.jas.structure.RingElem;
 
 
 /**
  * Local ring element based on GenPolynomial with RingElem interface. Objects of
  * this class are (nearly) immutable.
+ *
  * @author Heinz Kredel
  */
 // To be fixed?: Not jet working because of monic GBs.
-public class Local<C extends GcdRingElem<C>> 
-       implements RingElem<Local<C>>, QuotPair<GenPolynomial<C>> {
+public class Local<C extends GcdRingElem<C>>
+        implements RingElem<Local<C>>, QuotPair<GenPolynomial<C>> {
 
 
     private static final Logger logger = Logger.getLogger(Local.class);
@@ -58,6 +59,7 @@ public class Local<C extends GcdRingElem<C>>
 
     /**
      * The constructor creates a Local object from a ring factory.
+     *
      * @param r ring factory.
      */
     public Local(LocalRing<C> r) {
@@ -68,6 +70,7 @@ public class Local<C extends GcdRingElem<C>>
     /**
      * The constructor creates a Local object from a ring factory and a
      * numerator polynomial. The denominator is assumed to be 1.
+     *
      * @param r ring factory.
      * @param n numerator polynomial.
      */
@@ -79,6 +82,7 @@ public class Local<C extends GcdRingElem<C>>
     /**
      * The constructor creates a Local object from a ring factory and a
      * numerator and denominator polynomial.
+     *
      * @param r ring factory.
      * @param n numerator polynomial.
      * @param d denominator polynomial.
@@ -91,9 +95,10 @@ public class Local<C extends GcdRingElem<C>>
     /**
      * The constructor creates a Local object from a ring factory and a
      * numerator and denominator polynomial.
-     * @param r ring factory.
-     * @param n numerator polynomial.
-     * @param d denominator polynomial.
+     *
+     * @param r     ring factory.
+     * @param n     numerator polynomial.
+     * @param d     denominator polynomial.
      * @param isred true if gcd(n,d) == 1, else false.
      */
     protected Local(LocalRing<C> r, GenPolynomial<C> n, GenPolynomial<C> d, boolean isred) {
@@ -161,6 +166,7 @@ public class Local<C extends GcdRingElem<C>>
 
     /**
      * Get the corresponding element factory.
+     *
      * @return factory for this Element.
      * @see edu.jas.structure.Element#factory()
      */
@@ -171,6 +177,7 @@ public class Local<C extends GcdRingElem<C>>
 
     /**
      * Numerator.
+     *
      * @see edu.jas.structure.QuotPair#numerator()
      */
     public GenPolynomial<C> numerator() {
@@ -180,6 +187,7 @@ public class Local<C extends GcdRingElem<C>>
 
     /**
      * Denominator.
+     *
      * @see edu.jas.structure.QuotPair#denominator()
      */
     public GenPolynomial<C> denominator() {
@@ -189,6 +197,7 @@ public class Local<C extends GcdRingElem<C>>
 
     /**
      * Clone this.
+     *
      * @see java.lang.Object#clone()
      */
     @Override
@@ -199,6 +208,7 @@ public class Local<C extends GcdRingElem<C>>
 
     /**
      * Is Local zero.
+     *
      * @return If this is 0 then true is returned, else false.
      * @see edu.jas.structure.RingElem#isZERO()
      */
@@ -209,6 +219,7 @@ public class Local<C extends GcdRingElem<C>>
 
     /**
      * Is Local one.
+     *
      * @return If this is 1 then true is returned, else false.
      * @see edu.jas.structure.RingElem#isONE()
      */
@@ -219,6 +230,7 @@ public class Local<C extends GcdRingElem<C>>
 
     /**
      * Is Local unit.
+     *
      * @return If this is a unit then true is returned, else false.
      * @see edu.jas.structure.RingElem#isUnit()
      */
@@ -247,6 +259,7 @@ public class Local<C extends GcdRingElem<C>>
 
     /**
      * Is Qoutient a constant.
+     *
      * @return true, if this has constant numerator and denominator, else false.
      */
     public boolean isConstant() {
@@ -256,6 +269,7 @@ public class Local<C extends GcdRingElem<C>>
 
     /**
      * Get the String representation as RingElem.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -273,6 +287,7 @@ public class Local<C extends GcdRingElem<C>>
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this Element.
      * @see edu.jas.structure.Element#toScript()
      */
@@ -288,6 +303,7 @@ public class Local<C extends GcdRingElem<C>>
 
     /**
      * Get a scripting compatible string representation of the factory.
+     *
      * @return script compatible representation for this ElemFactory.
      * @see edu.jas.structure.Element#toScriptFactory()
      */
@@ -300,6 +316,7 @@ public class Local<C extends GcdRingElem<C>>
 
     /**
      * Local comparison.
+     *
      * @param b Local.
      * @return sign(this-b).
      */
@@ -332,6 +349,7 @@ public class Local<C extends GcdRingElem<C>>
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @SuppressWarnings("unchecked")
@@ -354,6 +372,7 @@ public class Local<C extends GcdRingElem<C>>
 
     /**
      * Hash code for this local.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -368,6 +387,7 @@ public class Local<C extends GcdRingElem<C>>
 
     /**
      * Local absolute value.
+     *
      * @return the absolute value of this.
      * @see edu.jas.structure.RingElem#abs()
      */
@@ -378,6 +398,7 @@ public class Local<C extends GcdRingElem<C>>
 
     /**
      * Local summation.
+     *
      * @param S Local.
      * @return this+S.
      */
@@ -394,6 +415,7 @@ public class Local<C extends GcdRingElem<C>>
 
     /**
      * Local negate.
+     *
      * @return -this.
      * @see edu.jas.structure.RingElem#negate()
      */
@@ -404,8 +426,9 @@ public class Local<C extends GcdRingElem<C>>
 
     /**
      * Local signum.
-     * @see edu.jas.structure.RingElem#signum()
+     *
      * @return signum(this).
+     * @see edu.jas.structure.RingElem#signum()
      */
     public int signum() {
         return num.signum();
@@ -414,6 +437,7 @@ public class Local<C extends GcdRingElem<C>>
 
     /**
      * Local subtraction.
+     *
      * @param S Local.
      * @return this-S.
      */
@@ -430,6 +454,7 @@ public class Local<C extends GcdRingElem<C>>
 
     /**
      * Local division.
+     *
      * @param S Local.
      * @return this/S.
      */
@@ -440,8 +465,9 @@ public class Local<C extends GcdRingElem<C>>
 
     /**
      * Local inverse.
-     * @see edu.jas.structure.RingElem#inverse()
+     *
      * @return S with S = 1/this if defined.
+     * @see edu.jas.structure.RingElem#inverse()
      */
     public Local<C> inverse() {
         if (isONE()) {
@@ -456,6 +482,7 @@ public class Local<C extends GcdRingElem<C>>
 
     /**
      * Local remainder.
+     *
      * @param S Local.
      * @return this - (this/S)*S.
      */
@@ -469,6 +496,7 @@ public class Local<C extends GcdRingElem<C>>
 
     /**
      * Local multiplication.
+     *
      * @param S Local.
      * @return this*S.
      */
@@ -493,6 +521,7 @@ public class Local<C extends GcdRingElem<C>>
 
     /**
      * Local multiplication by GenPolynomial.
+     *
      * @param b GenPolynomial.
      * @return this*b.
      */
@@ -513,6 +542,7 @@ public class Local<C extends GcdRingElem<C>>
 
     /**
      * Local multiplication by coefficient.
+     *
      * @param b coefficient.
      * @return this*b.
      */
@@ -533,6 +563,7 @@ public class Local<C extends GcdRingElem<C>>
 
     /**
      * Local multiplication by exponent.
+     *
      * @param e exponent vector.
      * @return this*b.
      */
@@ -550,6 +581,7 @@ public class Local<C extends GcdRingElem<C>>
 
     /**
      * Local monic.
+     *
      * @return this with monic value part.
      */
     public Local<C> monic() {
@@ -568,8 +600,9 @@ public class Local<C extends GcdRingElem<C>>
 
     /**
      * Greatest common divisor.
+     *
      * @param b other element.
-     * @return gcd(this,b).
+     * @return gcd(this, b).
      */
     public Local<C> gcd(Local<C> b) {
         GenPolynomial<C> x = ring.engine.gcd(num, b.num);
@@ -581,6 +614,7 @@ public class Local<C extends GcdRingElem<C>>
     /**
      * Extended greatest common divisor. <b>Note: </b>Not implemented, throws
      * UnsupportedOperationException.
+     *
      * @param b other element.
      * @return [ gcd(this,b), c1, c2 ] with c1*this + c2*b = gcd(this,b).
      */

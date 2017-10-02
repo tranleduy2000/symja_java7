@@ -5,12 +5,12 @@
 package edu.jas.arith;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.Iterator;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.structure.NotInvertibleException;
 import edu.jas.structure.RegularRingElem;
@@ -21,6 +21,7 @@ import edu.jas.structure.RingFactory;
 /**
  * Direct product element based on RingElem. Objects of this class are (nearly)
  * immutable.
+ *
  * @author Heinz Kredel
  */
 public class Product<C extends RingElem<C>> implements RegularRingElem<Product<C>> {
@@ -53,6 +54,7 @@ public class Product<C extends RingElem<C>> implements RegularRingElem<Product<C
 
     /**
      * The constructor creates a Product object from a ring factory.
+     *
      * @param r ring factory.
      */
     public Product(ProductRing<C> r) {
@@ -63,6 +65,7 @@ public class Product<C extends RingElem<C>> implements RegularRingElem<Product<C
     /**
      * The constructor creates a Product object from a ring factory and a ring
      * element.
+     *
      * @param r ring factory.
      * @param a ring element.
      */
@@ -74,6 +77,7 @@ public class Product<C extends RingElem<C>> implements RegularRingElem<Product<C
     /**
      * The constructor creates a Product object from a ring factory, a ring
      * element and an indicator if a is a unit.
+     *
      * @param r ring factory.
      * @param a ring element.
      * @param u isunit indicator, -1, 0, 1.
@@ -87,6 +91,7 @@ public class Product<C extends RingElem<C>> implements RegularRingElem<Product<C
 
     /**
      * Get component.
+     *
      * @param i index of component.
      * @return val(i).
      */
@@ -97,6 +102,7 @@ public class Product<C extends RingElem<C>> implements RegularRingElem<Product<C
 
     /**
      * Get the corresponding element factory.
+     *
      * @return factory for this Element.
      * @see edu.jas.structure.Element#factory()
      */
@@ -107,6 +113,7 @@ public class Product<C extends RingElem<C>> implements RegularRingElem<Product<C
 
     /**
      * Clone this.
+     *
      * @see java.lang.Object#clone()
      */
     @Override
@@ -117,6 +124,7 @@ public class Product<C extends RingElem<C>> implements RegularRingElem<Product<C
 
     /**
      * Is Product zero.
+     *
      * @return If this is 0 then true is returned, else false.
      * @see edu.jas.structure.RingElem#isZERO()
      */
@@ -127,6 +135,7 @@ public class Product<C extends RingElem<C>> implements RegularRingElem<Product<C
 
     /**
      * Is Product one.
+     *
      * @return If this is 1 then true is returned, else false.
      * @see edu.jas.structure.RingElem#isONE()
      */
@@ -145,8 +154,9 @@ public class Product<C extends RingElem<C>> implements RegularRingElem<Product<C
 
     /**
      * Is Product full.
+     *
      * @return If every component is non-zero, then true is returned, else
-     *         false.
+     * false.
      */
     public boolean isFull() {
         if (val.size() != ring.length()) {
@@ -158,6 +168,7 @@ public class Product<C extends RingElem<C>> implements RegularRingElem<Product<C
 
     /**
      * Is Product unit.
+     *
      * @return If this is a unit then true is returned, else false.
      * @see edu.jas.structure.RingElem#isUnit()
      */
@@ -185,8 +196,9 @@ public class Product<C extends RingElem<C>> implements RegularRingElem<Product<C
 
     /**
      * Is Product idempotent.
+     *
      * @return If this is a idempotent element then true is returned, else
-     *         false.
+     * false.
      */
     public boolean isIdempotent() {
         for (C e : val.values()) {
@@ -200,6 +212,7 @@ public class Product<C extends RingElem<C>> implements RegularRingElem<Product<C
 
     /**
      * Get the String representation as RingElem.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -210,6 +223,7 @@ public class Product<C extends RingElem<C>> implements RegularRingElem<Product<C
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this Element.
      * @see edu.jas.structure.Element#toScript()
      */
@@ -218,7 +232,7 @@ public class Product<C extends RingElem<C>> implements RegularRingElem<Product<C
         // Python case
         StringBuffer s = new StringBuffer("( ");
         boolean first = true;
-        for (Map.Entry<Integer,C> me : val.entrySet()) {
+        for (Map.Entry<Integer, C> me : val.entrySet()) {
             Integer i = me.getKey();
             C v = me.getValue();
             if (first) {
@@ -243,6 +257,7 @@ public class Product<C extends RingElem<C>> implements RegularRingElem<Product<C
 
     /**
      * Get a scripting compatible string representation of the factory.
+     *
      * @return script compatible representation for this ElemFactory.
      * @see edu.jas.structure.Element#toScriptFactory()
      */
@@ -255,6 +270,7 @@ public class Product<C extends RingElem<C>> implements RegularRingElem<Product<C
 
     /**
      * Product comparison.
+     *
      * @param b Product.
      * @return sign(this-b).
      */
@@ -292,6 +308,7 @@ public class Product<C extends RingElem<C>> implements RegularRingElem<Product<C
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @SuppressWarnings("unchecked")
@@ -310,6 +327,7 @@ public class Product<C extends RingElem<C>> implements RegularRingElem<Product<C
 
     /**
      * Hash code for this local.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -322,6 +340,7 @@ public class Product<C extends RingElem<C>> implements RegularRingElem<Product<C
 
     /**
      * Product extend. Add new component j with value of component i.
+     *
      * @param i from index.
      * @param j to index.
      * @return the extended value of this.
@@ -340,12 +359,13 @@ public class Product<C extends RingElem<C>> implements RegularRingElem<Product<C
 
     /**
      * Product absolute value.
+     *
      * @return the absolute value of this.
      * @see edu.jas.structure.RingElem#abs()
      */
     public Product<C> abs() {
         SortedMap<Integer, C> elem = new TreeMap<Integer, C>();
-        for (Map.Entry<Integer,C> e : val.entrySet()) {
+        for (Map.Entry<Integer, C> e : val.entrySet()) {
             Integer i = e.getKey();
             C v = e.getValue().abs();
             elem.put(i, v);
@@ -356,6 +376,7 @@ public class Product<C extends RingElem<C>> implements RegularRingElem<Product<C
 
     /**
      * Product summation.
+     *
      * @param S Product.
      * @return this+S.
      */
@@ -389,12 +410,13 @@ public class Product<C extends RingElem<C>> implements RegularRingElem<Product<C
 
     /**
      * Product negate.
+     *
      * @return -this.
      * @see edu.jas.structure.RingElem#negate()
      */
     public Product<C> negate() {
         SortedMap<Integer, C> elem = new TreeMap<Integer, C>();
-        for (Map.Entry<Integer,C> me : val.entrySet()) {
+        for (Map.Entry<Integer, C> me : val.entrySet()) {
             Integer i = me.getKey();
             C v = me.getValue().negate();
             elem.put(i, v);
@@ -405,8 +427,9 @@ public class Product<C extends RingElem<C>> implements RegularRingElem<Product<C
 
     /**
      * Product signum.
-     * @see edu.jas.structure.RingElem#signum()
+     *
      * @return signum of first non-zero component.
+     * @see edu.jas.structure.RingElem#signum()
      */
     public int signum() {
         if (val.size() == 0) {
@@ -419,6 +442,7 @@ public class Product<C extends RingElem<C>> implements RegularRingElem<Product<C
 
     /**
      * Product subtraction.
+     *
      * @param S Product.
      * @return this-S.
      */
@@ -429,8 +453,9 @@ public class Product<C extends RingElem<C>> implements RegularRingElem<Product<C
 
     /**
      * Product quasi-inverse.
-     * @see edu.jas.structure.RingElem#inverse()
+     *
      * @return S with S = 1/this if defined.
+     * @see edu.jas.structure.RingElem#inverse()
      */
     public Product<C> inverse() {
         if (this.isZERO()) {
@@ -438,7 +463,7 @@ public class Product<C extends RingElem<C>> implements RegularRingElem<Product<C
         }
         int isu = 0;
         SortedMap<Integer, C> elem = new TreeMap<Integer, C>();
-        for (Map.Entry<Integer,C> me : val.entrySet()) {
+        for (Map.Entry<Integer, C> me : val.entrySet()) {
             Integer i = me.getKey();
             C x = me.getValue(); // is non zero
             try {
@@ -458,6 +483,7 @@ public class Product<C extends RingElem<C>> implements RegularRingElem<Product<C
 
     /**
      * Product idempotent.
+     *
      * @return smallest S with this*S = this.
      */
     public Product<C> idempotent() {
@@ -476,6 +502,7 @@ public class Product<C extends RingElem<C>> implements RegularRingElem<Product<C
 
     /**
      * Product idempotent complement.
+     *
      * @return 1-this.idempotent().
      */
     public Product<C> idemComplement() {
@@ -499,6 +526,7 @@ public class Product<C extends RingElem<C>> implements RegularRingElem<Product<C
 
     /**
      * Product idempotent and.
+     *
      * @param S Product.
      * @return this.idempotent() and S.idempotent().
      */
@@ -524,6 +552,7 @@ public class Product<C extends RingElem<C>> implements RegularRingElem<Product<C
 
     /**
      * Product idempotent or.
+     *
      * @param S Product.
      * @return this.idempotent() or S.idempotent().
      */
@@ -549,6 +578,7 @@ public class Product<C extends RingElem<C>> implements RegularRingElem<Product<C
 
     /**
      * Product fill with idempotent.
+     *
      * @param S Product.
      * @return fill this with S.idempotent().
      */
@@ -575,6 +605,7 @@ public class Product<C extends RingElem<C>> implements RegularRingElem<Product<C
 
     /**
      * Product fill with one.
+     *
      * @return fill this with one.
      */
     public Product<C> fillOne() {
@@ -600,6 +631,7 @@ public class Product<C extends RingElem<C>> implements RegularRingElem<Product<C
 
     /**
      * Product quasi-division.
+     *
      * @param S Product.
      * @return this/S.
      */
@@ -615,7 +647,7 @@ public class Product<C extends RingElem<C>> implements RegularRingElem<Product<C
         }
         SortedMap<Integer, C> elem = new TreeMap<Integer, C>();
         SortedMap<Integer, C> sel = S.val;
-        for (Map.Entry<Integer,C> me : val.entrySet()) {
+        for (Map.Entry<Integer, C> me : val.entrySet()) {
             Integer i = me.getKey();
             C y = sel.get(i);
             if (y != null) {
@@ -639,6 +671,7 @@ public class Product<C extends RingElem<C>> implements RegularRingElem<Product<C
 
     /**
      * Product quasi-remainder.
+     *
      * @param S Product.
      * @return this - (this/S)*S.
      */
@@ -654,7 +687,7 @@ public class Product<C extends RingElem<C>> implements RegularRingElem<Product<C
         }
         SortedMap<Integer, C> elem = new TreeMap<Integer, C>();
         SortedMap<Integer, C> sel = S.val;
-        for (Map.Entry<Integer,C> me : val.entrySet()) {
+        for (Map.Entry<Integer, C> me : val.entrySet()) {
             Integer i = me.getKey();
             C y = sel.get(i);
             if (y != null) {
@@ -671,16 +704,18 @@ public class Product<C extends RingElem<C>> implements RegularRingElem<Product<C
 
     /**
      * Quotient and remainder by division of this by S.
+     *
      * @param S a product
      * @return [this/S, this - (this/S)*S].
      */
     public Product<C>[] quotientRemainder(Product<C> S) {
-        return new Product[] { divide(S), remainder(S) };
+        return new Product[]{divide(S), remainder(S)};
     }
 
 
     /**
      * Product multiplication.
+     *
      * @param S Product.
      * @return this*S.
      */
@@ -696,7 +731,7 @@ public class Product<C extends RingElem<C>> implements RegularRingElem<Product<C
         }
         SortedMap<Integer, C> elem = new TreeMap<Integer, C>();
         SortedMap<Integer, C> sel = S.val;
-        for (Map.Entry<Integer,C> me : val.entrySet()) {
+        for (Map.Entry<Integer, C> me : val.entrySet()) {
             Integer i = me.getKey();
             C y = sel.get(i);
             if (y != null) {
@@ -713,12 +748,13 @@ public class Product<C extends RingElem<C>> implements RegularRingElem<Product<C
 
     /**
      * Product multiply by coefficient.
+     *
      * @param c coefficient.
      * @return this*c.
      */
     public Product<C> multiply(C c) {
         SortedMap<Integer, C> elem = new TreeMap<Integer, C>();
-        for (Map.Entry<Integer,C> me : val.entrySet()) {
+        for (Map.Entry<Integer, C> me : val.entrySet()) {
             Integer i = me.getKey();
             C v = me.getValue().multiply(c);
             if (v != null && !v.isZERO()) {
@@ -731,8 +767,9 @@ public class Product<C extends RingElem<C>> implements RegularRingElem<Product<C
 
     /**
      * Greatest common divisor.
+     *
      * @param S other element.
-     * @return gcd(this,S).
+     * @return gcd(this, S).
      */
     public Product<C> gcd(Product<C> S) {
         if (S == null || S.isZERO()) {
@@ -764,6 +801,7 @@ public class Product<C extends RingElem<C>> implements RegularRingElem<Product<C
 
     /**
      * Extended greatest common divisor.
+     *
      * @param S other element.
      * @return [ gcd(this,S), c1, c2 ] with c1*this + c2*b = gcd(this,S).
      */

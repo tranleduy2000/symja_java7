@@ -14,6 +14,7 @@ import edu.jas.structure.GcdRingElem;
 /**
  * Greatest common divisor algorithms with gcd always 1. The computation is
  * faked as the gcd is always 1.
+ *
  * @author Heinz Kredel
  */
 
@@ -28,6 +29,7 @@ public class GreatestCommonDivisorFake<C extends GcdRingElem<C>> extends Greates
 
     /**
      * GenPolynomial base coefficient content. Always returns 1.
+     *
      * @param P GenPolynomial.
      * @return cont(P).
      */
@@ -45,6 +47,7 @@ public class GreatestCommonDivisorFake<C extends GcdRingElem<C>> extends Greates
 
     /**
      * GenPolynomial base coefficient primitive part. Always returns P.
+     *
      * @param P GenPolynomial.
      * @return pp(P).
      */
@@ -69,9 +72,10 @@ public class GreatestCommonDivisorFake<C extends GcdRingElem<C>> extends Greates
 
     /**
      * Univariate GenPolynomial greatest comon divisor. Always returns 1.
+     *
      * @param P univariate GenPolynomial.
      * @param S univariate GenPolynomial.
-     * @return gcd(P,S).
+     * @return gcd(P, S).
      */
     @Override
     public GenPolynomial<C> baseGcd(GenPolynomial<C> P, GenPolynomial<C> S) {
@@ -90,6 +94,7 @@ public class GreatestCommonDivisorFake<C extends GcdRingElem<C>> extends Greates
 
     /**
      * GenPolynomial recursive content. Always returns 1.
+     *
      * @param P recursive GenPolynomial.
      * @return cont(P).
      */
@@ -107,6 +112,7 @@ public class GreatestCommonDivisorFake<C extends GcdRingElem<C>> extends Greates
 
     /**
      * GenPolynomial recursive primitive part. Always returns P.
+     *
      * @param P recursive GenPolynomial.
      * @return pp(P).
      */
@@ -132,13 +138,14 @@ public class GreatestCommonDivisorFake<C extends GcdRingElem<C>> extends Greates
     /**
      * Univariate GenPolynomial recursive greatest comon divisor. Always returns
      * 1.
+     *
      * @param P univariate recursive GenPolynomial.
      * @param S univariate recursive GenPolynomial.
-     * @return gcd(P,S).
+     * @return gcd(P, S).
      */
     @Override
     public GenPolynomial<GenPolynomial<C>> recursiveUnivariateGcd(GenPolynomial<GenPolynomial<C>> P,
-                    GenPolynomial<GenPolynomial<C>> S) {
+                                                                  GenPolynomial<GenPolynomial<C>> S) {
         if (S == null || S.isZERO()) {
             return P;
         }

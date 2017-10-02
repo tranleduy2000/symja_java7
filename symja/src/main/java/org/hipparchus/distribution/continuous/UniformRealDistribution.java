@@ -28,11 +28,17 @@ import org.hipparchus.util.MathUtils;
  * Uniform distribution (continuous), at Wikipedia</a>
  */
 public class UniformRealDistribution extends AbstractRealDistribution {
-    /** Serializable version identifier. */
+    /**
+     * Serializable version identifier.
+     */
     private static final long serialVersionUID = 20120109L;
-    /** Lower bound of this distribution (inclusive). */
+    /**
+     * Lower bound of this distribution (inclusive).
+     */
     private final double lower;
-    /** Upper bound of this distribution (exclusive). */
+    /**
+     * Upper bound of this distribution (exclusive).
+     */
     private final double upper;
 
     /**
@@ -52,19 +58,21 @@ public class UniformRealDistribution extends AbstractRealDistribution {
      * @throws MathIllegalArgumentException if {@code lower >= upper}.
      */
     public UniformRealDistribution(double lower, double upper)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         super();
         if (lower >= upper) {
             throw new MathIllegalArgumentException(
-                            LocalizedCoreFormats.LOWER_BOUND_NOT_BELOW_UPPER_BOUND,
-                            lower, upper, false);
+                    LocalizedCoreFormats.LOWER_BOUND_NOT_BELOW_UPPER_BOUND,
+                    lower, upper, false);
         }
 
         this.lower = lower;
         this.upper = upper;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double density(double x) {
         if (x < lower || x > upper) {
@@ -73,9 +81,11 @@ public class UniformRealDistribution extends AbstractRealDistribution {
         return 1 / (upper - lower);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public double cumulativeProbability(double x)  {
+    public double cumulativeProbability(double x) {
         if (x <= lower) {
             return 0;
         }
@@ -85,17 +95,19 @@ public class UniformRealDistribution extends AbstractRealDistribution {
         return (x - lower) / (upper - lower);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double inverseCumulativeProbability(final double p)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         MathUtils.checkRangeInclusive(p, 0, 1);
         return p * (upper - lower) + lower;
     }
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * For lower bound {@code lower} and upper bound {@code upper}, the mean is
      * {@code 0.5 * (lower + upper)}.
      */
@@ -106,7 +118,7 @@ public class UniformRealDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * For lower bound {@code lower} and upper bound {@code upper}, the
      * variance is {@code (upper - lower)^2 / 12}.
      */
@@ -118,7 +130,7 @@ public class UniformRealDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The lower bound of the support is equal to the lower bound parameter
      * of the distribution.
      *
@@ -131,7 +143,7 @@ public class UniformRealDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The upper bound of the support is equal to the upper bound parameter
      * of the distribution.
      *
@@ -144,7 +156,7 @@ public class UniformRealDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The support of this distribution is connected.
      *
      * @return {@code true}

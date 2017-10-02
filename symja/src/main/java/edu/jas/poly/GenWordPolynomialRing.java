@@ -5,17 +5,16 @@
 package edu.jas.poly;
 
 
-import java.io.Reader;
+import org.apache.log4j.Logger;
+
 import java.io.IOException;
+import java.io.Reader;
 import java.io.StringReader;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.Random;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.kern.PreemptStatus;
 import edu.jas.kern.Scripting;
@@ -26,50 +25,47 @@ import edu.jas.structure.RingFactory;
 /**
  * GenWordPolynomialRing generic polynomial factory implementing RingFactory;
  * Factory for non-commutative string polynomials over C.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
 
 public final class GenWordPolynomialRing<C extends RingElem<C>> implements RingFactory<GenWordPolynomial<C>>
-/*, Iterable<GenWordPolynomial<C>>*/{
-
-
-    /**
-     * The factory for the coefficients.
-     */
-    public final RingFactory<C> coFac;
-
-
-    /**
-     * The factory for the alphabet.
-     */
-    public final WordFactory alphabet;
-
-
-    /**
-     * The constant polynomial 0 for this ring.
-     */
-    public final GenWordPolynomial<C> ZERO;
-
-
-    /**
-     * The constant polynomial 1 for this ring.
-     */
-    public final GenWordPolynomial<C> ONE;
-
-
-    /**
-     * The constant empty word exponent for this ring.
-     */
-    public final Word wone;
+/*, Iterable<GenWordPolynomial<C>>*/ {
 
 
     /**
      * A default random sequence generator.
      */
     final static Random random = new Random();
-
-
+    /**
+     * Log4j logger object.
+     */
+    private static final Logger logger = Logger.getLogger(GenWordPolynomialRing.class);
+    /**
+     * The factory for the coefficients.
+     */
+    public final RingFactory<C> coFac;
+    /**
+     * The factory for the alphabet.
+     */
+    public final WordFactory alphabet;
+    /**
+     * The constant polynomial 0 for this ring.
+     */
+    public final GenWordPolynomial<C> ZERO;
+    /**
+     * The constant polynomial 1 for this ring.
+     */
+    public final GenWordPolynomial<C> ONE;
+    /**
+     * The constant empty word exponent for this ring.
+     */
+    public final Word wone;
+    /**
+     * Flag to enable if preemptive interrrupt is checked.
+     */
+    final boolean checkPreempt = PreemptStatus.isAllowed();
     /**
      * Indicator if this ring is a field.
      */
@@ -77,20 +73,9 @@ public final class GenWordPolynomialRing<C extends RingElem<C>> implements RingF
 
 
     /**
-     * Log4j logger object.
-     */
-    private static final Logger logger = Logger.getLogger(GenWordPolynomialRing.class);
-
-
-    /**
-     * Flag to enable if preemptive interrrupt is checked.
-     */
-    final boolean checkPreempt = PreemptStatus.isAllowed();
-
-
-    /**
      * The constructor creates a polynomial factory object with the default term
      * order.
+     *
      * @param cf factory for coefficients of type C.
      * @param wf factory for strings.
      */
@@ -106,8 +91,9 @@ public final class GenWordPolynomialRing<C extends RingElem<C>> implements RingF
 
     /**
      * The constructor creates a polynomial factory object.
+     *
      * @param cf factory for coefficients of type C.
-     * @param s array of variable names.
+     * @param s  array of variable names.
      */
     public GenWordPolynomialRing(RingFactory<C> cf, String[] s) {
         this(cf, new WordFactory(s));
@@ -116,8 +102,9 @@ public final class GenWordPolynomialRing<C extends RingElem<C>> implements RingF
 
     /**
      * The constructor creates a polynomial factory object.
+     *
      * @param cf factory for coefficients of type C.
-     * @param s string of single letter variable names.
+     * @param s  string of single letter variable names.
      */
     public GenWordPolynomialRing(RingFactory<C> cf, String s) {
         this(cf, new WordFactory(s));
@@ -126,8 +113,9 @@ public final class GenWordPolynomialRing<C extends RingElem<C>> implements RingF
 
     /**
      * The constructor creates a polynomial factory object.
+     *
      * @param cf factory for coefficients of type C.
-     * @param o other polynomial ring.
+     * @param o  other polynomial ring.
      */
     public GenWordPolynomialRing(RingFactory<C> cf, GenWordPolynomialRing o) {
         this(cf, o.alphabet);
@@ -136,6 +124,7 @@ public final class GenWordPolynomialRing<C extends RingElem<C>> implements RingF
 
     /**
      * The constructor creates a polynomial factory object.
+     *
      * @param fac polynomial ring.
      */
     public GenWordPolynomialRing(GenPolynomialRing<C> fac) {
@@ -145,6 +134,7 @@ public final class GenWordPolynomialRing<C extends RingElem<C>> implements RingF
 
     /**
      * Copy this factory.
+     *
      * @return a clone of this.
      */
     public GenWordPolynomialRing<C> copy() {
@@ -154,6 +144,7 @@ public final class GenWordPolynomialRing<C extends RingElem<C>> implements RingF
 
     /**
      * Get the String representation.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -174,6 +165,7 @@ public final class GenWordPolynomialRing<C extends RingElem<C>> implements RingF
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this Element.
      * @see edu.jas.structure.Element#toScript()
      */
@@ -181,12 +173,12 @@ public final class GenWordPolynomialRing<C extends RingElem<C>> implements RingF
     public String toScript() {
         StringBuffer s = new StringBuffer();
         switch (Scripting.getLang()) {
-        case Ruby:
-            s.append("WordPolyRing.new(");
-            break;
-        case Python:
-        default:
-            s.append("WordPolyRing(");
+            case Ruby:
+                s.append("WordPolyRing.new(");
+                break;
+            case Python:
+            default:
+                s.append("WordPolyRing(");
         }
         if (coFac instanceof RingElem) {
             s.append(((RingElem<C>) coFac).toScriptFactory());
@@ -202,6 +194,7 @@ public final class GenWordPolynomialRing<C extends RingElem<C>> implements RingF
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -226,6 +219,7 @@ public final class GenWordPolynomialRing<C extends RingElem<C>> implements RingF
 
     /**
      * Hash code for this polynomial ring.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -239,6 +233,7 @@ public final class GenWordPolynomialRing<C extends RingElem<C>> implements RingF
 
     /**
      * Get the variable names.
+     *
      * @return vars.
      */
     public String[] getVars() {
@@ -248,6 +243,7 @@ public final class GenWordPolynomialRing<C extends RingElem<C>> implements RingF
 
     /**
      * Get the zero element from the coefficients.
+     *
      * @return 0 as C.
      */
     public C getZEROCoefficient() {
@@ -257,6 +253,7 @@ public final class GenWordPolynomialRing<C extends RingElem<C>> implements RingF
 
     /**
      * Get the one element from the coefficients.
+     *
      * @return 1 as C.
      */
     public C getONECoefficient() {
@@ -266,6 +263,7 @@ public final class GenWordPolynomialRing<C extends RingElem<C>> implements RingF
 
     /**
      * Get the zero element.
+     *
      * @return 0 as GenWordPolynomial<C>.
      */
     public GenWordPolynomial<C> getZERO() {
@@ -275,6 +273,7 @@ public final class GenWordPolynomialRing<C extends RingElem<C>> implements RingF
 
     /**
      * Get the one element.
+     *
      * @return 1 as GenWordPolynomial<C>.
      */
     public GenWordPolynomial<C> getONE() {
@@ -284,6 +283,7 @@ public final class GenWordPolynomialRing<C extends RingElem<C>> implements RingF
 
     /**
      * Query if this ring is commutative.
+     *
      * @return true if this ring is commutative, else false.
      */
     public boolean isCommutative() {
@@ -293,6 +293,7 @@ public final class GenWordPolynomialRing<C extends RingElem<C>> implements RingF
 
     /**
      * Query if this ring is associative.
+     *
      * @return true if this ring is associative, else false.
      */
     public boolean isAssociative() {
@@ -302,6 +303,7 @@ public final class GenWordPolynomialRing<C extends RingElem<C>> implements RingF
 
     /**
      * Is this structure finite or infinite.
+     *
      * @return true if this structure is finite, else false.
      * @see edu.jas.structure.ElemFactory#isFinite()
      */
@@ -312,6 +314,7 @@ public final class GenWordPolynomialRing<C extends RingElem<C>> implements RingF
 
     /**
      * Query if this ring is a field.
+     *
      * @return false.
      */
     public boolean isField() {
@@ -332,6 +335,7 @@ public final class GenWordPolynomialRing<C extends RingElem<C>> implements RingF
 
     /**
      * Characteristic of this ring.
+     *
      * @return characteristic of this ring.
      */
     public java.math.BigInteger characteristic() {
@@ -342,6 +346,7 @@ public final class GenWordPolynomialRing<C extends RingElem<C>> implements RingF
     /**
      * Get a (constant) GenWordPolynomial&lt;C&gt; element from a coefficient
      * value.
+     *
      * @param a coefficient.
      * @return a GenWordPolynomial&lt;C&gt;.
      */
@@ -352,6 +357,7 @@ public final class GenWordPolynomialRing<C extends RingElem<C>> implements RingF
 
     /**
      * Get a GenWordPolynomial&lt;C&gt; element from a word.
+     *
      * @param e word.
      * @return a GenWordPolynomial&lt;C&gt;.
      */
@@ -362,6 +368,7 @@ public final class GenWordPolynomialRing<C extends RingElem<C>> implements RingF
 
     /**
      * Get a GenWordPolynomial&lt;C&gt; element from an ExpVector.
+     *
      * @param e exponent vector.
      * @return a GenWordPolynomial&lt;C&gt;.
      */
@@ -372,6 +379,7 @@ public final class GenWordPolynomialRing<C extends RingElem<C>> implements RingF
 
     /**
      * Get a GenWordPolynomial&lt;C&gt; element from a coeffcient and a word.
+     *
      * @param a coefficient.
      * @param e word.
      * @return a GenWordPolynomial&lt;C&gt;.
@@ -383,6 +391,7 @@ public final class GenWordPolynomialRing<C extends RingElem<C>> implements RingF
 
     /**
      * Get a GenWordPolynomial&lt;C&gt; element from a coeffcient and an ExpVector.
+     *
      * @param a coefficient.
      * @param e exponent vector.
      * @return a GenWordPolynomial&lt;C&gt;.
@@ -394,6 +403,7 @@ public final class GenWordPolynomialRing<C extends RingElem<C>> implements RingF
 
     /**
      * Get a GenWordPolynomial&lt;C&gt; element from a GenPolynomial&lt;C&gt;.
+     *
      * @param a GenPolynomial.
      * @return a GenWordPolynomial&lt;C&gt;.
      */
@@ -418,6 +428,7 @@ public final class GenWordPolynomialRing<C extends RingElem<C>> implements RingF
     /**
      * Get a list of GenWordPolynomial&lt;C&gt; element from a list of
      * GenPolynomial&lt;C&gt;.
+     *
      * @param A GenPolynomial list.
      * @return a GenWordPolynomial&lt;C&gt; list.
      */
@@ -436,6 +447,7 @@ public final class GenWordPolynomialRing<C extends RingElem<C>> implements RingF
 
     /**
      * Get a (constant) GenWordPolynomial&lt;C&gt; element from a long value.
+     *
      * @param a long.
      * @return a GenWordPolynomial&lt;C&gt;.
      */
@@ -447,6 +459,7 @@ public final class GenWordPolynomialRing<C extends RingElem<C>> implements RingF
     /**
      * Get a (constant) GenWordPolynomial&lt;C&gt; element from a BigInteger
      * value.
+     *
      * @param a BigInteger.
      * @return a GenWordPolynomial&lt;C&gt;.
      */
@@ -457,6 +470,7 @@ public final class GenWordPolynomialRing<C extends RingElem<C>> implements RingF
 
     /**
      * Random polynomial. Generates a random polynomial.
+     *
      * @param n number of terms.
      * @return a random polynomial.
      */
@@ -468,7 +482,8 @@ public final class GenWordPolynomialRing<C extends RingElem<C>> implements RingF
     /**
      * Random polynomial. Generates a random polynomial with k = 5, l = n, d =
      * 3.
-     * @param n number of terms.
+     *
+     * @param n   number of terms.
      * @param rnd is a source for random bits.
      * @return a random polynomial.
      */
@@ -479,6 +494,7 @@ public final class GenWordPolynomialRing<C extends RingElem<C>> implements RingF
 
     /**
      * Generate a random polynomial.
+     *
      * @param k bitsize of random coefficients.
      * @param l number of terms.
      * @param d maximal length of a random word.
@@ -491,9 +507,10 @@ public final class GenWordPolynomialRing<C extends RingElem<C>> implements RingF
 
     /**
      * Generate a random polynomial.
-     * @param k bitsize of random coefficients.
-     * @param l number of terms.
-     * @param d maximal length of a random word.
+     *
+     * @param k   bitsize of random coefficients.
+     * @param l   number of terms.
+     * @param d   maximal length of a random word.
      * @param rnd is a source for random bits.
      * @return a random polynomial.
      */
@@ -513,6 +530,7 @@ public final class GenWordPolynomialRing<C extends RingElem<C>> implements RingF
 
     /**
      * Copy polynomial c.
+     *
      * @param c polynomial to copy.
      * @return a copy of c.
      */
@@ -523,6 +541,7 @@ public final class GenWordPolynomialRing<C extends RingElem<C>> implements RingF
 
     /**
      * Parse a polynomial with the use of GenWordPolynomialTokenizer.
+     *
      * @param s String.
      * @return GenWordPolynomial from s.
      */
@@ -537,19 +556,20 @@ public final class GenWordPolynomialRing<C extends RingElem<C>> implements RingF
 
     /**
      * Parse a polynomial with the use of GenWordPolynomialTokenizer.
+     *
      * @param r Reader.
      * @return next GenWordPolynomial from r.
      */
     @SuppressWarnings("unchecked")
     public GenWordPolynomial<C> parse(Reader r) {
         if (alphabet.length() <= 4) { // todo, hack for commuative like cases
-            GenPolynomialRing<C> cr = new GenPolynomialRing<C>(coFac, alphabet.getVars() );
+            GenPolynomialRing<C> cr = new GenPolynomialRing<C>(coFac, alphabet.getVars());
             GenPolynomialTokenizer pt = new GenPolynomialTokenizer(cr, r);
             GenPolynomial<C> p = null;
             try {
-                  p = pt.nextPolynomial();
+                p = pt.nextPolynomial();
             } catch (IOException e) {
-                  logger.error(e.toString() + " parse " + this);
+                logger.error(e.toString() + " parse " + this);
             }
             GenWordPolynomial<C> wp = this.valueOf(p);
             return wp;
@@ -561,6 +581,7 @@ public final class GenWordPolynomialRing<C extends RingElem<C>> implements RingF
 
     /**
      * Generate univariate polynomial in a given variable.
+     *
      * @param i the index of the variable.
      * @return X_i as univariate polynomial.
      */
@@ -578,6 +599,7 @@ public final class GenWordPolynomialRing<C extends RingElem<C>> implements RingF
 
     /**
      * Generate commute polynomial in two variables.
+     *
      * @param i the index of the first variable.
      * @param j the index of the second variable.
      * @return X_i * x_j - X_j * X_i as polynomial.
@@ -601,15 +623,16 @@ public final class GenWordPolynomialRing<C extends RingElem<C>> implements RingF
 
     /**
      * Generate commute polynomials for given variable.
+     *
      * @param i the index of the variable.
      * @return [X_i * x_j - X_j * X_i, i != j] as list of polynomials.
      */
     public List<GenWordPolynomial<C>> commute(int i) {
         int n = alphabet.length();
-        List<GenWordPolynomial<C>> pols = new ArrayList<GenWordPolynomial<C>>(n-1);
-        for ( int j = 0; j < n; j++ ) {
+        List<GenWordPolynomial<C>> pols = new ArrayList<GenWordPolynomial<C>>(n - 1);
+        for (int j = 0; j < n; j++) {
             if (i != j) {
-                pols.add(commute(i,j));
+                pols.add(commute(i, j));
             }
         }
         return pols;
@@ -618,13 +641,14 @@ public final class GenWordPolynomialRing<C extends RingElem<C>> implements RingF
 
     /**
      * Generate commute polynomials for all variables.
+     *
      * @return [X_i * x_j - X_j * X_i, i != j] as list of polynomials.
      */
     public List<GenWordPolynomial<C>> commute() {
         int n = alphabet.length();
-        List<GenWordPolynomial<C>> pols = new ArrayList<GenWordPolynomial<C>>(n*(n-1));
-        for ( int i = 0; i < n; i++ ) {
-             pols.addAll( commute(i) );
+        List<GenWordPolynomial<C>> pols = new ArrayList<GenWordPolynomial<C>>(n * (n - 1));
+        for (int i = 0; i < n; i++) {
+            pols.addAll(commute(i));
         }
         return pols;
     }
@@ -632,7 +656,8 @@ public final class GenWordPolynomialRing<C extends RingElem<C>> implements RingF
 
     /**
      * Generate list of univariate polynomials in all variables.
-     * @return List(X_1,...,X_n) a list of univariate polynomials.
+     *
+     * @return List(X_1, ..., X_n) a list of univariate polynomials.
      */
     public List<GenWordPolynomial<C>> univariateList() {
         int n = alphabet.length();
@@ -648,6 +673,7 @@ public final class GenWordPolynomialRing<C extends RingElem<C>> implements RingF
     /**
      * Get the generating elements <b>excluding</b> the generators for the
      * coefficient ring.
+     *
      * @return a list of generating elements for this ring.
      */
     public List<GenWordPolynomial<C>> getGenerators() {
@@ -661,6 +687,7 @@ public final class GenWordPolynomialRing<C extends RingElem<C>> implements RingF
 
     /**
      * Get a list of all generating elements.
+     *
      * @return list of generators for the algebraic structure.
      * @see edu.jas.structure.ElemFactory#generators()
      */

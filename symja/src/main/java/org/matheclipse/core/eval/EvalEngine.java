@@ -1575,15 +1575,14 @@ public class EvalEngine implements Serializable, IEvaluationEngine {
     // }
     // return list;
     // }
+
     /**
      * Parse the given <code>expression String</code> into an <code>ASTNode</code>
      * without evaluation.
      *
-     * @param astString
-     *            an expression in math formula notation
+     * @param astString an expression in math formula notation
      * @return
-     * @throws org.matheclipse.parser.client.SyntaxError
-     *             if a parsing error occurs
+     * @throws org.matheclipse.parser.client.SyntaxError if a parsing error occurs
      */
     // final public ASTNode parseNode(String expression) {
     // if (fRelaxedSyntax) {
@@ -1594,7 +1593,6 @@ public class EvalEngine implements Serializable, IEvaluationEngine {
     // return parser.parse(expression);
     // }
     // }
-
     public boolean isPackageMode() {
         return fPackageMode;
     }

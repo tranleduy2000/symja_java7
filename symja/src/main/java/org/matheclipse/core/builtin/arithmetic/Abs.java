@@ -14,7 +14,6 @@ import org.matheclipse.core.interfaces.INumber;
 import org.matheclipse.core.interfaces.ISymbol;
 import org.matheclipse.core.reflection.system.rules.AbsRules;
 
-import java.util.function.DoubleFunction;
 import java.util.function.DoubleUnaryOperator;
 
 /**
@@ -111,7 +110,6 @@ public class Abs extends AbstractTrigArg1 implements INumeric, AbsRules, DoubleU
         newSymbol.setAttributes(ISymbol.LISTABLE | ISymbol.NUMERICFUNCTION);
         super.setUp(newSymbol);
     }
-
 
 
 }

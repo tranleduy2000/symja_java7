@@ -6,13 +6,14 @@ package edu.jas.vector;
 
 
 // import java.io.IOException;
+
+import org.apache.log4j.Logger;
+
 import java.io.Reader;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.kern.StringUtil;
 import edu.jas.structure.ModulFactory;
@@ -23,33 +24,20 @@ import edu.jas.structure.RingFactory;
 /**
  * GenVectorModul implements a generic vector factory with RingElem entries.
  * Vectors of n columns over C.
+ *
  * @author Heinz Kredel
  */
 
 public class GenVectorModul<C extends RingElem<C>> implements ModulFactory<GenVector<C>, C> {
 
 
-    private static final Logger logger = Logger.getLogger(GenVectorModul.class);
-
-
-    public final RingFactory<C> coFac;
-
-
-    public final int cols;
-
-
-    public final GenVector<C> ZERO;
-
-
-    public final List<GenVector<C>> BASIS;
-
-
-    private final static Random random = new Random();
-
-
     public final static float DEFAULT_DENSITY = 0.5f;
-
-
+    private static final Logger logger = Logger.getLogger(GenVectorModul.class);
+    private final static Random random = new Random();
+    public final RingFactory<C> coFac;
+    public final int cols;
+    public final GenVector<C> ZERO;
+    public final List<GenVector<C>> BASIS;
     private final float density = DEFAULT_DENSITY;
 
 
@@ -81,6 +69,7 @@ public class GenVectorModul<C extends RingElem<C>> implements ModulFactory<GenVe
 
     /**
      * Get the String representation as RingElem.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -94,6 +83,7 @@ public class GenVectorModul<C extends RingElem<C>> implements ModulFactory<GenVe
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this ElemFactory.
      * @see edu.jas.structure.ElemFactory#toScript()
      */
@@ -114,6 +104,7 @@ public class GenVectorModul<C extends RingElem<C>> implements ModulFactory<GenVe
 
     /**
      * getZERO.
+     *
      * @return ZERO.
      */
     public GenVector<C> getZERO() {
@@ -123,6 +114,7 @@ public class GenVectorModul<C extends RingElem<C>> implements ModulFactory<GenVe
 
     /**
      * Get a list of the generating elements.
+     *
      * @return list of generators for the algebraic structure.
      * @see edu.jas.structure.ElemFactory#generators()
      */
@@ -133,6 +125,7 @@ public class GenVectorModul<C extends RingElem<C>> implements ModulFactory<GenVe
 
     /**
      * Is this structure finite or infinite.
+     *
      * @return true if this structure is finite, else false.
      * @see edu.jas.structure.ElemFactory#isFinite()
      */
@@ -143,6 +136,7 @@ public class GenVectorModul<C extends RingElem<C>> implements ModulFactory<GenVe
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -164,6 +158,7 @@ public class GenVectorModul<C extends RingElem<C>> implements ModulFactory<GenVe
 
     /**
      * Hash code for this vector module.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -177,6 +172,7 @@ public class GenVectorModul<C extends RingElem<C>> implements ModulFactory<GenVe
 
     /**
      * Get the vector for a.
+     *
      * @param a long
      * @return vector corresponding to a.
      */
@@ -188,6 +184,7 @@ public class GenVectorModul<C extends RingElem<C>> implements ModulFactory<GenVe
 
     /**
      * Get the vector for a.
+     *
      * @param a long
      * @return vector corresponding to a.
      */
@@ -199,6 +196,7 @@ public class GenVectorModul<C extends RingElem<C>> implements ModulFactory<GenVe
 
     /**
      * From List of coefficients.
+     *
      * @param v list of coefficients.
      * @return vector from v.
      */
@@ -221,6 +219,7 @@ public class GenVectorModul<C extends RingElem<C>> implements ModulFactory<GenVe
 
     /**
      * Random vector.
+     *
      * @param k size of random coefficients.
      * @return random vector.
      */
@@ -231,6 +230,7 @@ public class GenVectorModul<C extends RingElem<C>> implements ModulFactory<GenVe
 
     /**
      * Random vector.
+     *
      * @param k size of random coefficients.
      * @param q density of nonzero coefficients.
      * @return random vector.
@@ -242,7 +242,8 @@ public class GenVectorModul<C extends RingElem<C>> implements ModulFactory<GenVe
 
     /**
      * Random vector.
-     * @param k size of random coefficients.
+     *
+     * @param k      size of random coefficients.
      * @param random is a source for random bits.
      * @return a random element.
      */
@@ -253,8 +254,9 @@ public class GenVectorModul<C extends RingElem<C>> implements ModulFactory<GenVe
 
     /**
      * Random vector.
-     * @param k size of random coefficients.
-     * @param q density of nonzero coefficients.
+     *
+     * @param k      size of random coefficients.
+     * @param q      density of nonzero coefficients.
      * @param random is a source for random bits.
      * @return a random element.
      */
@@ -273,6 +275,7 @@ public class GenVectorModul<C extends RingElem<C>> implements ModulFactory<GenVe
 
     /**
      * copy vector.
+     *
      * @param c vector.
      * @return copy of vector c.
      */
@@ -286,6 +289,7 @@ public class GenVectorModul<C extends RingElem<C>> implements ModulFactory<GenVe
 
     /**
      * Parse a vector from a String. Syntax: [ c, ..., c ]
+     *
      * @param s String with vector.
      * @return parsed vector.
      */
@@ -320,6 +324,7 @@ public class GenVectorModul<C extends RingElem<C>> implements ModulFactory<GenVe
 
     /**
      * Parse a vector from a Reader.
+     *
      * @param r Reader containing a vector.
      * @return parsed vector.
      */

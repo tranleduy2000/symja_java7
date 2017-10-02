@@ -17,42 +17,46 @@
 
 package org.hipparchus.linear;
 
-import java.io.Serializable;
-
 import org.hipparchus.exception.LocalizedCoreFormats;
 import org.hipparchus.exception.MathIllegalArgumentException;
 import org.hipparchus.exception.MathIllegalStateException;
 import org.hipparchus.exception.NullArgumentException;
 import org.hipparchus.util.MathUtils;
 
+import java.io.Serializable;
+
 /**
  * Implementation of {@link RealMatrix} using a {@code double[][]} array to
  * store entries.
- *
  */
 public class Array2DRowRealMatrix extends AbstractRealMatrix implements Serializable {
-    /** Serializable version identifier. */
+    /**
+     * Serializable version identifier.
+     */
     private static final long serialVersionUID = -1067294169172445528L;
 
-    /** Entries of the matrix. */
+    /**
+     * Entries of the matrix.
+     */
     private double data[][];
 
     /**
      * Creates a matrix with no data
      */
-    public Array2DRowRealMatrix() {}
+    public Array2DRowRealMatrix() {
+    }
 
     /**
      * Create a new RealMatrix with the supplied row and column dimensions.
      *
-     * @param rowDimension Number of rows in the new matrix.
+     * @param rowDimension    Number of rows in the new matrix.
      * @param columnDimension Number of columns in the new matrix.
      * @throws MathIllegalArgumentException if the row or column dimension is
-     * not positive.
+     *                                      not positive.
      */
     public Array2DRowRealMatrix(final int rowDimension,
                                 final int columnDimension)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         super(rowDimension, columnDimension);
         data = new double[rowDimension][columnDimension];
     }
@@ -67,11 +71,11 @@ public class Array2DRowRealMatrix extends AbstractRealMatrix implements Serializ
      * @param d Data for the new matrix.
      * @throws MathIllegalArgumentException if {@code d} is not rectangular.
      * @throws MathIllegalArgumentException if {@code d} row or column dimension is zero.
-     * @throws NullArgumentException if {@code d} is {@code null}.
+     * @throws NullArgumentException        if {@code d} is {@code null}.
      * @see #Array2DRowRealMatrix(double[][], boolean)
      */
     public Array2DRowRealMatrix(final double[][] d)
-        throws MathIllegalArgumentException, NullArgumentException {
+            throws MathIllegalArgumentException, NullArgumentException {
         copyIn(d);
     }
 
@@ -83,17 +87,17 @@ public class Array2DRowRealMatrix extends AbstractRealMatrix implements Serializ
      * set to {@code false}. This will prevent the copying and improve
      * performance as no new array will be built and no data will be copied.
      *
-     * @param d Data for new matrix.
+     * @param d         Data for new matrix.
      * @param copyArray if {@code true}, the input array will be copied,
-     * otherwise it will be referenced.
+     *                  otherwise it will be referenced.
      * @throws MathIllegalArgumentException if {@code d} is not rectangular.
      * @throws MathIllegalArgumentException if {@code d} row or column dimension is zero.
-     * @throws NullArgumentException if {@code d} is {@code null}.
+     * @throws NullArgumentException        if {@code d} is {@code null}.
      * @see #Array2DRowRealMatrix(double[][])
      */
     public Array2DRowRealMatrix(final double[][] d, final boolean copyArray)
-        throws MathIllegalArgumentException,
-        NullArgumentException {
+            throws MathIllegalArgumentException,
+            NullArgumentException {
         if (copyArray) {
             copyIn(d);
         } else {
@@ -111,7 +115,7 @@ public class Array2DRowRealMatrix extends AbstractRealMatrix implements Serializ
             for (int r = 1; r < nRows; r++) {
                 if (d[r].length != nCols) {
                     throw new MathIllegalArgumentException(LocalizedCoreFormats.DIMENSIONS_MISMATCH,
-                                                           d[r].length, nCols);
+                            d[r].length, nCols);
                 }
             }
             data = d;
@@ -133,15 +137,19 @@ public class Array2DRowRealMatrix extends AbstractRealMatrix implements Serializ
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RealMatrix createMatrix(final int rowDimension,
                                    final int columnDimension)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         return new Array2DRowRealMatrix(rowDimension, columnDimension);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RealMatrix copy() {
         return new Array2DRowRealMatrix(copyOut(), false);
@@ -153,19 +161,19 @@ public class Array2DRowRealMatrix extends AbstractRealMatrix implements Serializ
      * @param m Matrix to be added.
      * @return {@code this + m}.
      * @throws MathIllegalArgumentException if {@code m} is not the same
-     * size as {@code this}.
+     *                                      size as {@code this}.
      */
     public Array2DRowRealMatrix add(final Array2DRowRealMatrix m)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         // Safety check.
         MatrixUtils.checkAdditionCompatible(this, m);
 
-        final int rowCount    = getRowDimension();
+        final int rowCount = getRowDimension();
         final int columnCount = getColumnDimension();
         final double[][] outData = new double[rowCount][columnCount];
         for (int row = 0; row < rowCount; row++) {
-            final double[] dataRow    = data[row];
-            final double[] mRow       = m.data[row];
+            final double[] dataRow = data[row];
+            final double[] mRow = m.data[row];
             final double[] outDataRow = outData[row];
             for (int col = 0; col < columnCount; col++) {
                 outDataRow[col] = dataRow[col] + mRow[col];
@@ -181,18 +189,18 @@ public class Array2DRowRealMatrix extends AbstractRealMatrix implements Serializ
      * @param m Matrix to be subtracted.
      * @return {@code this - m}
      * @throws MathIllegalArgumentException if {@code m} is not the same
-     * size as {@code this}.
+     *                                      size as {@code this}.
      */
     public Array2DRowRealMatrix subtract(final Array2DRowRealMatrix m)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         MatrixUtils.checkSubtractionCompatible(this, m);
 
-        final int rowCount    = getRowDimension();
+        final int rowCount = getRowDimension();
         final int columnCount = getColumnDimension();
         final double[][] outData = new double[rowCount][columnCount];
         for (int row = 0; row < rowCount; row++) {
-            final double[] dataRow    = data[row];
-            final double[] mRow       = m.data[row];
+            final double[] dataRow = data[row];
+            final double[] mRow = m.data[row];
             final double[] outDataRow = outData[row];
             for (int col = 0; col < columnCount; col++) {
                 outDataRow[col] = dataRow[col] - mRow[col];
@@ -208,10 +216,10 @@ public class Array2DRowRealMatrix extends AbstractRealMatrix implements Serializ
      * @param m matrix to postmultiply by
      * @return {@code this * m}
      * @throws MathIllegalArgumentException if
-     * {@code columnDimension(this) != rowDimension(m)}
+     *                                      {@code columnDimension(this) != rowDimension(m)}
      */
     public Array2DRowRealMatrix multiply(final Array2DRowRealMatrix m)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         MatrixUtils.checkMultiplicationCompatible(this, m);
 
         final int nRows = this.getRowDimension();
@@ -244,7 +252,9 @@ public class Array2DRowRealMatrix extends AbstractRealMatrix implements Serializ
         return new Array2DRowRealMatrix(outData, false);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double[][] getData() {
         return copyOut();
@@ -259,11 +269,13 @@ public class Array2DRowRealMatrix extends AbstractRealMatrix implements Serializ
         return data;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setSubMatrix(final double[][] subMatrix, final int row,
                              final int column)
-        throws MathIllegalArgumentException, NullArgumentException {
+            throws MathIllegalArgumentException, NullArgumentException {
         if (data == null) {
             if (row > 0) {
                 throw new MathIllegalStateException(LocalizedCoreFormats.FIRST_ROWS_NOT_INITIALIZED_YET, row);
@@ -285,7 +297,7 @@ public class Array2DRowRealMatrix extends AbstractRealMatrix implements Serializ
             for (int i = 0; i < data.length; ++i) {
                 if (subMatrix[i].length != nCols) {
                     throw new MathIllegalArgumentException(LocalizedCoreFormats.DIMENSIONS_MISMATCH,
-                                                           subMatrix[i].length, nCols);
+                            subMatrix[i].length, nCols);
                 }
                 System.arraycopy(subMatrix[i], 0, data[i + row], column, nCols);
             }
@@ -295,61 +307,75 @@ public class Array2DRowRealMatrix extends AbstractRealMatrix implements Serializ
 
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getEntry(final int row, final int column)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         MatrixUtils.checkMatrixIndex(this, row, column);
         return data[row][column];
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setEntry(final int row, final int column, final double value)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         MatrixUtils.checkMatrixIndex(this, row, column);
         data[row][column] = value;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addToEntry(final int row, final int column,
                            final double increment)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         MatrixUtils.checkMatrixIndex(this, row, column);
         data[row][column] += increment;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void multiplyEntry(final int row, final int column,
                               final double factor)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         MatrixUtils.checkMatrixIndex(this, row, column);
         data[row][column] *= factor;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getRowDimension() {
         return (data == null) ? 0 : data.length;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getColumnDimension() {
         return ((data == null) || (data[0] == null)) ? 0 : data[0].length;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double[] operate(final double[] v)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         final int nRows = this.getRowDimension();
         final int nCols = this.getColumnDimension();
         if (v.length != nCols) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.DIMENSIONS_MISMATCH,
-                                                   v.length, nCols);
+                    v.length, nCols);
         }
         final double[] out = new double[nRows];
         for (int row = 0; row < nRows; row++) {
@@ -363,15 +389,17 @@ public class Array2DRowRealMatrix extends AbstractRealMatrix implements Serializ
         return out;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double[] preMultiply(final double[] v)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         final int nRows = getRowDimension();
         final int nCols = getColumnDimension();
         if (v.length != nRows) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.DIMENSIONS_MISMATCH,
-                                                   v.length, nRows);
+                    v.length, nRows);
         }
 
         final double[] out = new double[nCols];
@@ -387,11 +415,13 @@ public class Array2DRowRealMatrix extends AbstractRealMatrix implements Serializ
 
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RealMatrix getSubMatrix(final int startRow, final int endRow,
                                    final int startColumn, final int endColumn)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         MatrixUtils.checkSubMatrixIndex(this, startRow, endRow, startColumn, endColumn);
         final int rowCount = endRow - startRow + 1;
         final int columnCount = endColumn - startColumn + 1;
@@ -405,10 +435,12 @@ public class Array2DRowRealMatrix extends AbstractRealMatrix implements Serializ
         return subMatrix;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double walkInRowOrder(final RealMatrixChangingVisitor visitor) {
-        final int rows    = getRowDimension();
+        final int rows = getRowDimension();
         final int columns = getColumnDimension();
         visitor.start(rows, columns, 0, rows - 1, 0, columns - 1);
         for (int i = 0; i < rows; ++i) {
@@ -420,10 +452,12 @@ public class Array2DRowRealMatrix extends AbstractRealMatrix implements Serializ
         return visitor.end();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double walkInRowOrder(final RealMatrixPreservingVisitor visitor) {
-        final int rows    = getRowDimension();
+        final int rows = getRowDimension();
         final int columns = getColumnDimension();
         visitor.start(rows, columns, 0, rows - 1, 0, columns - 1);
         for (int i = 0; i < rows; ++i) {
@@ -435,15 +469,17 @@ public class Array2DRowRealMatrix extends AbstractRealMatrix implements Serializ
         return visitor.end();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double walkInRowOrder(final RealMatrixChangingVisitor visitor,
                                  final int startRow, final int endRow,
                                  final int startColumn, final int endColumn)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         MatrixUtils.checkSubMatrixIndex(this, startRow, endRow, startColumn, endColumn);
         visitor.start(getRowDimension(), getColumnDimension(),
-                      startRow, endRow, startColumn, endColumn);
+                startRow, endRow, startColumn, endColumn);
         for (int i = startRow; i <= endRow; ++i) {
             final double[] rowI = data[i];
             for (int j = startColumn; j <= endColumn; ++j) {
@@ -453,15 +489,17 @@ public class Array2DRowRealMatrix extends AbstractRealMatrix implements Serializ
         return visitor.end();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double walkInRowOrder(final RealMatrixPreservingVisitor visitor,
                                  final int startRow, final int endRow,
                                  final int startColumn, final int endColumn)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         MatrixUtils.checkSubMatrixIndex(this, startRow, endRow, startColumn, endColumn);
         visitor.start(getRowDimension(), getColumnDimension(),
-                      startRow, endRow, startColumn, endColumn);
+                startRow, endRow, startColumn, endColumn);
         for (int i = startRow; i <= endRow; ++i) {
             final double[] rowI = data[i];
             for (int j = startColumn; j <= endColumn; ++j) {
@@ -471,10 +509,12 @@ public class Array2DRowRealMatrix extends AbstractRealMatrix implements Serializ
         return visitor.end();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double walkInColumnOrder(final RealMatrixChangingVisitor visitor) {
-        final int rows    = getRowDimension();
+        final int rows = getRowDimension();
         final int columns = getColumnDimension();
         visitor.start(rows, columns, 0, rows - 1, 0, columns - 1);
         for (int j = 0; j < columns; ++j) {
@@ -486,10 +526,12 @@ public class Array2DRowRealMatrix extends AbstractRealMatrix implements Serializ
         return visitor.end();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double walkInColumnOrder(final RealMatrixPreservingVisitor visitor) {
-        final int rows    = getRowDimension();
+        final int rows = getRowDimension();
         final int columns = getColumnDimension();
         visitor.start(rows, columns, 0, rows - 1, 0, columns - 1);
         for (int j = 0; j < columns; ++j) {
@@ -500,15 +542,17 @@ public class Array2DRowRealMatrix extends AbstractRealMatrix implements Serializ
         return visitor.end();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double walkInColumnOrder(final RealMatrixChangingVisitor visitor,
                                     final int startRow, final int endRow,
                                     final int startColumn, final int endColumn)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         MatrixUtils.checkSubMatrixIndex(this, startRow, endRow, startColumn, endColumn);
         visitor.start(getRowDimension(), getColumnDimension(),
-                      startRow, endRow, startColumn, endColumn);
+                startRow, endRow, startColumn, endColumn);
         for (int j = startColumn; j <= endColumn; ++j) {
             for (int i = startRow; i <= endRow; ++i) {
                 final double[] rowI = data[i];
@@ -518,15 +562,17 @@ public class Array2DRowRealMatrix extends AbstractRealMatrix implements Serializ
         return visitor.end();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double walkInColumnOrder(final RealMatrixPreservingVisitor visitor,
                                     final int startRow, final int endRow,
                                     final int startColumn, final int endColumn)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         MatrixUtils.checkSubMatrixIndex(this, startRow, endRow, startColumn, endColumn);
         visitor.start(getRowDimension(), getColumnDimension(),
-                      startRow, endRow, startColumn, endColumn);
+                startRow, endRow, startColumn, endColumn);
         for (int j = startColumn; j <= endColumn; ++j) {
             for (int i = startRow; i <= endRow; ++i) {
                 visitor.visit(i, j, data[i][j]);
@@ -556,10 +602,10 @@ public class Array2DRowRealMatrix extends AbstractRealMatrix implements Serializ
      * @param in Data to copy.
      * @throws MathIllegalArgumentException if the input array is empty.
      * @throws MathIllegalArgumentException if the input array is not rectangular.
-     * @throws NullArgumentException if the input array is {@code null}.
+     * @throws NullArgumentException        if the input array is {@code null}.
      */
     private void copyIn(final double[][] in)
-        throws MathIllegalArgumentException, NullArgumentException {
+            throws MathIllegalArgumentException, NullArgumentException {
         setSubMatrix(in, 0, 0);
     }
 }

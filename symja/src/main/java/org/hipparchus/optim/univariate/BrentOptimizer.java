@@ -34,10 +34,9 @@ import org.hipparchus.util.Precision;
  * This code is an adaptation, partly based on the Python code from SciPy
  * (module "optimize.py" v0.5); the original algorithm is also modified
  * <ul>
- *  <li>to use an initial guess provided by the user,</li>
- *  <li>to ensure that the best point encountered is the one returned.</li>
+ * <li>to use an initial guess provided by the user,</li>
+ * <li>to ensure that the best point encountered is the one returned.</li>
  * </ul>
- *
  */
 public class BrentOptimizer extends UnivariateOptimizer {
     /**
@@ -66,10 +65,10 @@ public class BrentOptimizer extends UnivariateOptimizer {
      * where <em>macheps</em> is the relative machine precision. {@code abs} must
      * be positive.
      *
-     * @param rel Relative threshold.
-     * @param abs Absolute threshold.
+     * @param rel     Relative threshold.
+     * @param abs     Absolute threshold.
      * @param checker Additional, user-defined, convergence checking
-     * procedure.
+     *                procedure.
      * @throws MathIllegalArgumentException if {@code abs <= 0}.
      * @throws MathIllegalArgumentException if {@code rel < 2 * Math.ulp(1d)}.
      */
@@ -80,11 +79,11 @@ public class BrentOptimizer extends UnivariateOptimizer {
 
         if (rel < MIN_RELATIVE_TOLERANCE) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.NUMBER_TOO_SMALL,
-                                                   rel, MIN_RELATIVE_TOLERANCE);
+                    rel, MIN_RELATIVE_TOLERANCE);
         }
         if (abs <= 0) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.NUMBER_TOO_SMALL_BOUND_EXCLUDED,
-                                                   abs, 0);
+                    abs, 0);
         }
 
         relativeThreshold = rel;
@@ -110,7 +109,9 @@ public class BrentOptimizer extends UnivariateOptimizer {
         this(rel, abs, null);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected UnivariatePointValuePair doOptimize() {
         final boolean isMinim = getGoalType() == GoalType.MINIMIZE;
@@ -120,7 +121,7 @@ public class BrentOptimizer extends UnivariateOptimizer {
 
         // Optional additional convergence criteria.
         final ConvergenceChecker<UnivariatePointValuePair> checker
-            = getConvergenceChecker();
+                = getConvergenceChecker();
 
         double a;
         double b;
@@ -146,7 +147,7 @@ public class BrentOptimizer extends UnivariateOptimizer {
 
         UnivariatePointValuePair previous = null;
         UnivariatePointValuePair current
-            = new UnivariatePointValuePair(x, isMinim ? fx : -fx);
+                = new UnivariatePointValuePair(x, isMinim ? fx : -fx);
         // Best point encountered so far (which is the initial guess).
         UnivariatePointValuePair best = current;
 
@@ -179,8 +180,8 @@ public class BrentOptimizer extends UnivariateOptimizer {
                     e = d;
 
                     if (p > q * (a - x) &&
-                        p < q * (b - x) &&
-                        FastMath.abs(p) < FastMath.abs(0.5 * q * r)) {
+                            p < q * (b - x) &&
+                            FastMath.abs(p) < FastMath.abs(0.5 * q * r)) {
                         // Parabolic interpolation step.
                         d = p / q;
                         u = x + d;
@@ -232,10 +233,10 @@ public class BrentOptimizer extends UnivariateOptimizer {
                 previous = current;
                 current = new UnivariatePointValuePair(u, isMinim ? fu : -fu);
                 best = best(best,
-                            best(previous,
-                                 current,
-                                 isMinim),
-                            isMinim);
+                        best(previous,
+                                current,
+                                isMinim),
+                        isMinim);
 
                 if (checker != null && checker.converged(getIterations(), previous, current)) {
                     return best;
@@ -261,24 +262,24 @@ public class BrentOptimizer extends UnivariateOptimizer {
                         b = u;
                     }
                     if (fu <= fw ||
-                        Precision.equals(w, x)) {
+                            Precision.equals(w, x)) {
                         v = w;
                         fv = fw;
                         w = u;
                         fw = fu;
                     } else if (fu <= fv ||
-                               Precision.equals(v, x) ||
-                               Precision.equals(v, w)) {
+                            Precision.equals(v, x) ||
+                            Precision.equals(v, w)) {
                         v = u;
                         fv = fu;
                     }
                 }
             } else { // Default termination (Brent's criterion).
                 return best(best,
-                            best(previous,
-                                 current,
-                                 isMinim),
-                            isMinim);
+                        best(previous,
+                                current,
+                                isMinim),
+                        isMinim);
             }
 
             incrementIterationCount();
@@ -288,10 +289,10 @@ public class BrentOptimizer extends UnivariateOptimizer {
     /**
      * Selects the best of two points.
      *
-     * @param a Point and value.
-     * @param b Point and value.
+     * @param a       Point and value.
+     * @param b       Point and value.
      * @param isMinim {@code true} if the selected point must be the one with
-     * the lowest value.
+     *                the lowest value.
      * @return the best point, or {@code null} if {@code a} and {@code b} are
      * both {@code null}. When {@code a} and {@code b} have the same function
      * value, {@code a} is returned.

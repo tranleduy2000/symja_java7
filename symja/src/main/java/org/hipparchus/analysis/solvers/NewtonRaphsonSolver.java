@@ -26,10 +26,11 @@ import org.hipparchus.util.FastMath;
  * Implements <a href="http://mathworld.wolfram.com/NewtonsMethod.html">
  * Newton's Method</a> for finding zeros of real univariate differentiable
  * functions.
- *
  */
 public class NewtonRaphsonSolver extends AbstractUnivariateDifferentiableSolver {
-    /** Default absolute accuracy. */
+    /**
+     * Default absolute accuracy.
+     */
     private static final double DEFAULT_ABSOLUTE_ACCURACY = 1e-6;
 
     /**
@@ -38,6 +39,7 @@ public class NewtonRaphsonSolver extends AbstractUnivariateDifferentiableSolver 
     public NewtonRaphsonSolver() {
         this(DEFAULT_ABSOLUTE_ACCURACY);
     }
+
     /**
      * Construct a solver.
      *
@@ -50,20 +52,18 @@ public class NewtonRaphsonSolver extends AbstractUnivariateDifferentiableSolver 
     /**
      * Find a zero near the midpoint of {@code min} and {@code max}.
      *
-     * @param f Function to solve.
-     * @param min Lower bound for the interval.
-     * @param max Upper bound for the interval.
+     * @param f       Function to solve.
+     * @param min     Lower bound for the interval.
+     * @param max     Upper bound for the interval.
      * @param maxEval Maximum number of evaluations.
      * @return the value where the function is zero.
-     * @throws org.hipparchus.exception.MathIllegalStateException
-     * if the maximum evaluation count is exceeded.
-     * @throws org.hipparchus.exception.MathIllegalArgumentException
-     * if {@code min >= max}.
+     * @throws org.hipparchus.exception.MathIllegalStateException    if the maximum evaluation count is exceeded.
+     * @throws org.hipparchus.exception.MathIllegalArgumentException if {@code min >= max}.
      */
     @Override
     public double solve(int maxEval, final UnivariateDifferentiableFunction f,
                         final double min, final double max)
-        throws MathIllegalStateException {
+            throws MathIllegalStateException {
         return super.solve(maxEval, f, UnivariateSolverUtils.midpoint(min, max));
     }
 
@@ -72,7 +72,7 @@ public class NewtonRaphsonSolver extends AbstractUnivariateDifferentiableSolver 
      */
     @Override
     protected double doSolve()
-        throws MathIllegalStateException {
+            throws MathIllegalStateException {
         final double startValue = getStartValue();
         final double absoluteAccuracy = getAbsoluteAccuracy();
 

@@ -10,7 +10,8 @@ import java.io.Serializable;
 
 /**
  * Container for overlap words.
- * A container of four words l1, r1, l2, r2. 
+ * A container of four words l1, r1, l2, r2.
+ *
  * @author Heinz Kredel
  */
 
@@ -35,6 +36,7 @@ public class Overlap implements Serializable {
 
     /**
      * Is word overlap.
+     *
      * @param u word
      * @param v word
      * @return true if l1 * u * r1 = l2 * v * r2, else false.
@@ -43,7 +45,7 @@ public class Overlap implements Serializable {
         Word a = l1.multiply(u).multiply(r1);
         Word b = l2.multiply(v).multiply(r2);
         boolean t = a.equals(b);
-        if ( !t ) {
+        if (!t) {
             System.out.println("a = " + a + " !=  b = " + b);
         }
         return t;
@@ -52,6 +54,7 @@ public class Overlap implements Serializable {
 
     /**
      * Get the string representation.
+     *
      * @see java.lang.Object#toString()
      */
     @Override

@@ -23,9 +23,13 @@ package org.hipparchus.distribution.continuous;
  * @see <a href="http://mathworld.wolfram.com/Chi-SquaredDistribution.html">Chi-squared Distribution (MathWorld)</a>
  */
 public class ChiSquaredDistribution extends AbstractRealDistribution {
-    /** Serializable version identifier */
+    /**
+     * Serializable version identifier
+     */
     private static final long serialVersionUID = 20160320L;
-    /** Internal Gamma distribution. */
+    /**
+     * Internal Gamma distribution.
+     */
     private final GammaDistribution gamma;
 
     /**
@@ -41,10 +45,10 @@ public class ChiSquaredDistribution extends AbstractRealDistribution {
      * Create a Chi-Squared distribution with the given degrees of freedom and
      * inverse cumulative probability accuracy.
      *
-     * @param degreesOfFreedom Degrees of freedom.
+     * @param degreesOfFreedom   Degrees of freedom.
      * @param inverseCumAccuracy the maximum absolute error in inverse
-     * cumulative probability estimates (defaults to
-     * {@link #DEFAULT_SOLVER_ABSOLUTE_ACCURACY}).
+     *                           cumulative probability estimates (defaults to
+     *                           {@link #DEFAULT_SOLVER_ABSOLUTE_ACCURACY}).
      */
     public ChiSquaredDistribution(double degreesOfFreedom,
                                   double inverseCumAccuracy) {
@@ -62,27 +66,33 @@ public class ChiSquaredDistribution extends AbstractRealDistribution {
         return gamma.getShape() * 2.0;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double density(double x) {
         return gamma.density(x);
     }
 
-    /** {@inheritDoc} **/
+    /**
+     * {@inheritDoc}
+     **/
     @Override
     public double logDensity(double x) {
         return gamma.logDensity(x);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public double cumulativeProbability(double x)  {
+    public double cumulativeProbability(double x) {
         return gamma.cumulativeProbability(x);
     }
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * For {@code k} degrees of freedom, the mean is {@code k}.
      */
     @Override
@@ -102,7 +112,7 @@ public class ChiSquaredDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The lower bound of the support is always 0 no matter the
      * degrees of freedom.
      *
@@ -115,7 +125,7 @@ public class ChiSquaredDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The upper bound of the support is always positive infinity no matter the
      * degrees of freedom.
      *
@@ -128,7 +138,7 @@ public class ChiSquaredDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The support of this distribution is connected.
      *
      * @return {@code true}

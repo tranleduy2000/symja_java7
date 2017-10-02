@@ -5,13 +5,12 @@
 package edu.jas.gbufd;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.concurrent.Semaphore;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.gb.GroebnerBaseAbstract;
 import edu.jas.gb.OrderedPairlist;
@@ -31,9 +30,9 @@ import edu.jas.util.ThreadPool;
  * Groebner Base with pseudo reduction multi-threaded parallel algorithm.
  * Implements coefficient fraction free Groebner bases.
  * Coefficients can for example be integers or (commutative) univariate polynomials.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
- * 
  * @see edu.jas.application.GBAlgorithmBuilder
  * @see edu.jas.gbufd.GBFactory
  */
@@ -80,8 +79,9 @@ public class GroebnerBasePseudoParallel<C extends GcdRingElem<C>> extends Groebn
 
     /**
      * Constructor.
+     *
      * @param threads number of threads to use.
-     * @param rf coefficient ring factory.
+     * @param rf      coefficient ring factory.
      */
     public GroebnerBasePseudoParallel(int threads, RingFactory<C> rf) {
         this(threads, rf, new PseudoReductionPar<C>());
@@ -90,10 +90,11 @@ public class GroebnerBasePseudoParallel<C extends GcdRingElem<C>> extends Groebn
 
     /**
      * Constructor.
+     *
      * @param threads number of threads to use.
-     * @param rf coefficient ring factory. <b>Note:</b> red must be an instance
-     *            of PseudoReductionPar.
-     * @param red pseudo reduction engine.
+     * @param rf      coefficient ring factory. <b>Note:</b> red must be an instance
+     *                of PseudoReductionPar.
+     * @param red     pseudo reduction engine.
      */
     public GroebnerBasePseudoParallel(int threads, RingFactory<C> rf, PseudoReduction<C> red) {
         this(threads, rf, red, new ThreadPool(threads));
@@ -102,11 +103,12 @@ public class GroebnerBasePseudoParallel<C extends GcdRingElem<C>> extends Groebn
 
     /**
      * Constructor.
+     *
      * @param threads number of threads to use.
-     * @param rf coefficient ring factory. <b>Note:</b> red must be an instance
-     *            of PseudoReductionPar.
-     * @param red pseudo reduction engine.
-     * @param pool ThreadPool to use.
+     * @param rf      coefficient ring factory. <b>Note:</b> red must be an instance
+     *                of PseudoReductionPar.
+     * @param red     pseudo reduction engine.
+     * @param pool    ThreadPool to use.
      */
     public GroebnerBasePseudoParallel(int threads, RingFactory<C> rf, PseudoReduction<C> red, ThreadPool pool) {
         this(threads, rf, red, pool, new OrderedPairlist<C>());
@@ -115,10 +117,11 @@ public class GroebnerBasePseudoParallel<C extends GcdRingElem<C>> extends Groebn
 
     /**
      * Constructor.
+     *
      * @param threads number of threads to use.
-     * @param rf coefficient ring factory. <b>Note:</b> red must be an instance
-     *            of PseudoReductionPar.
-     * @param pl pair selection strategy
+     * @param rf      coefficient ring factory. <b>Note:</b> red must be an instance
+     *                of PseudoReductionPar.
+     * @param pl      pair selection strategy
      */
     public GroebnerBasePseudoParallel(int threads, RingFactory<C> rf, PairList<C> pl) {
         this(threads, rf, new PseudoReductionPar<C>(), new ThreadPool(threads), pl);
@@ -127,15 +130,16 @@ public class GroebnerBasePseudoParallel<C extends GcdRingElem<C>> extends Groebn
 
     /**
      * Constructor.
+     *
      * @param threads number of threads to use.
-     * @param rf coefficient ring factory. <b>Note:</b> red must be an instance
-     *            of PseudoReductionPar.
-     * @param red pseudo reduction engine.
-     * @param pool ThreadPool to use.
-     * @param pl pair selection strategy
+     * @param rf      coefficient ring factory. <b>Note:</b> red must be an instance
+     *                of PseudoReductionPar.
+     * @param red     pseudo reduction engine.
+     * @param pool    ThreadPool to use.
+     * @param pl      pair selection strategy
      */
     public GroebnerBasePseudoParallel(int threads, RingFactory<C> rf, PseudoReduction<C> red,
-                    ThreadPool pool, PairList<C> pl) {
+                                      ThreadPool pool, PairList<C> pl) {
         super(red, pl);
         if (!(red instanceof PseudoReductionPar)) {
             logger.warn("parallel GB should use parallel aware reduction");
@@ -146,7 +150,7 @@ public class GroebnerBasePseudoParallel<C extends GcdRingElem<C>> extends Groebn
             threads = 1;
         }
         this.threads = threads;
-        engine = GCDFactory.<C> getImplementation(rf);
+        engine = GCDFactory.<C>getImplementation(rf);
         //not used: engine = (GreatestCommonDivisorAbstract<C>)GCDFactory.<C>getProxy( rf );
         this.pool = pool;
     }
@@ -179,21 +183,22 @@ public class GroebnerBasePseudoParallel<C extends GcdRingElem<C>> extends Groebn
 
     /**
      * Groebner base using pairlist class.
+     *
      * @param modv module variable number.
-     * @param F polynomial list.
+     * @param F    polynomial list.
      * @return GB(F) a Groebner base of F.
      */
     public List<GenPolynomial<C>> GB(int modv, List<GenPolynomial<C>> F) {
         List<GenPolynomial<C>> G = normalizeZerosOnes(F);
         G = engine.basePrimitivePart(G);
-        if ( G.size() <= 1 ) {
+        if (G.size() <= 1) {
             return G;
         }
         GenPolynomialRing<C> ring = G.get(0).ring;
-        if ( ring.coFac.isField() ) { // TODO remove
+        if (ring.coFac.isField()) { // TODO remove
             throw new IllegalArgumentException("coefficients from a field");
         }
-        PairList<C> pairlist = strategy.create( modv, ring ); 
+        PairList<C> pairlist = strategy.create(modv, ring);
         pairlist.put(G);
 
         /*
@@ -248,6 +253,7 @@ public class GroebnerBasePseudoParallel<C extends GcdRingElem<C>> extends Groebn
 
     /**
      * Minimal ordered Groebner basis.
+     *
      * @param Gp a Groebner base.
      * @return a reduced Groebner base of Gp.
      */
@@ -332,26 +338,16 @@ public class GroebnerBasePseudoParallel<C extends GcdRingElem<C>> extends Groebn
 class PseudoReducer<C extends GcdRingElem<C>> implements Runnable {
 
 
+    private static final Logger logger = Logger.getLogger(PseudoReducer.class);
     private final List<GenPolynomial<C>> G;
-
-
     private final PairList<C> pairlist;
-
-
     private final Terminator fin;
-
-
     private final PseudoReductionPar<C> red;
-
-
     private final GreatestCommonDivisorAbstract<C> engine;
 
 
-    private static final Logger logger = Logger.getLogger(PseudoReducer.class);
-
-
     PseudoReducer(Terminator fin, List<GenPolynomial<C>> G, PairList<C> L,
-                    GreatestCommonDivisorAbstract<C> engine) {
+                  GreatestCommonDivisorAbstract<C> engine) {
         this.fin = fin;
         this.G = G;
         pairlist = L;
@@ -475,12 +471,8 @@ class PseudoReducer<C extends GcdRingElem<C>> implements Runnable {
 class PseudoMiReducer<C extends GcdRingElem<C>> implements Runnable {
 
 
+    private static final Logger logger = Logger.getLogger(PseudoMiReducer.class);
     private final List<GenPolynomial<C>> G;
-
-
-    private GenPolynomial<C> H;
-
-
     private final PseudoReductionPar<C> red;
 
 
@@ -488,9 +480,7 @@ class PseudoMiReducer<C extends GcdRingElem<C>> implements Runnable {
 
 
     private final GreatestCommonDivisorAbstract<C> engine;
-
-
-    private static final Logger logger = Logger.getLogger(PseudoMiReducer.class);
+    private GenPolynomial<C> H;
 
 
     PseudoMiReducer(List<GenPolynomial<C>> G, GenPolynomial<C> p, GreatestCommonDivisorAbstract<C> engine) {
@@ -512,6 +502,7 @@ class PseudoMiReducer<C extends GcdRingElem<C>> implements Runnable {
 
     /**
      * getNF. Blocks until the normal form is computed.
+     *
      * @return the computed normal form.
      */
     public GenPolynomial<C> getNF() {

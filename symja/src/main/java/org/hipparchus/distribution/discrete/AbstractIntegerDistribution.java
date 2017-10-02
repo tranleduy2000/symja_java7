@@ -16,14 +16,14 @@
  */
 package org.hipparchus.distribution.discrete;
 
-import java.io.Serializable;
-
 import org.hipparchus.distribution.IntegerDistribution;
 import org.hipparchus.exception.LocalizedCoreFormats;
 import org.hipparchus.exception.MathIllegalArgumentException;
 import org.hipparchus.exception.MathRuntimeException;
 import org.hipparchus.util.FastMath;
 import org.hipparchus.util.MathUtils;
+
+import java.io.Serializable;
 
 /**
  * Base class for integer-valued discrete distributions.
@@ -33,12 +33,14 @@ import org.hipparchus.util.MathUtils;
  */
 public abstract class AbstractIntegerDistribution implements IntegerDistribution, Serializable {
 
-    /** Serializable version identifier */
+    /**
+     * Serializable version identifier
+     */
     private static final long serialVersionUID = 20160320L;
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The default implementation uses the identity
      * <p>
      * {@code P(x0 < X <= x1) = P(X <= x1) - P(X <= x0)}
@@ -47,20 +49,20 @@ public abstract class AbstractIntegerDistribution implements IntegerDistribution
     public double probability(int x0, int x1) throws MathIllegalArgumentException {
         if (x1 < x0) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.LOWER_ENDPOINT_ABOVE_UPPER_ENDPOINT,
-                                                   x0, x1, true);
+                    x0, x1, true);
         }
         return cumulativeProbability(x1) - cumulativeProbability(x0);
     }
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The default implementation returns
      * <ul>
      * <li>{@link #getSupportLowerBound()} for {@code p = 0},</li>
      * <li>{@link #getSupportUpperBound()} for {@code p = 1}, and</li>
      * <li>{@link #solveInverseCumulativeProbability(double, int, int)} for
-     *     {@code 0 < p < 1}.</li>
+     * {@code 0 < p < 1}.</li>
      * </ul>
      */
     @Override
@@ -77,7 +79,7 @@ public abstract class AbstractIntegerDistribution implements IntegerDistribution
             }
         } else {
             lower -= 1; // this ensures cumulativeProbability(lower) < p, which
-                        // is important for the solving step
+            // is important for the solving step
         }
 
         int upper = getSupportUpperBound();
@@ -90,9 +92,9 @@ public abstract class AbstractIntegerDistribution implements IntegerDistribution
         final double mu = getNumericalMean();
         final double sigma = FastMath.sqrt(getNumericalVariance());
         final boolean chebyshevApplies =
-                !(Double.isInfinite(mu)    || Double.isNaN(mu)    ||
-                  Double.isInfinite(sigma) || Double.isNaN(sigma) ||
-                  sigma == 0.0);
+                !(Double.isInfinite(mu) || Double.isNaN(mu) ||
+                        Double.isInfinite(sigma) || Double.isNaN(sigma) ||
+                        sigma == 0.0);
         if (chebyshevApplies) {
             double k = FastMath.sqrt((1.0 - p) / p);
             double tmp = mu - k * sigma;
@@ -116,7 +118,7 @@ public abstract class AbstractIntegerDistribution implements IntegerDistribution
      * (lower, upper]}. The implementation does simple bisection to find the
      * smallest {@code p}-quantile <code>inf{x in Z | P(X<=x) >= p}</code>.
      *
-     * @param p the cumulative probability
+     * @param p     the cumulative probability
      * @param lower a value satisfying {@code cumulativeProbability(lower) < p}
      * @param upper a value satisfying {@code p <= cumulativeProbability(upper)}
      * @return the smallest {@code p}-quantile of this distribution
@@ -158,11 +160,11 @@ public abstract class AbstractIntegerDistribution implements IntegerDistribution
      * @throws MathRuntimeException if the cumulative probability is {@code NaN}
      */
     private double checkedCumulativeProbability(int argument)
-        throws MathRuntimeException {
+            throws MathRuntimeException {
         double result = cumulativeProbability(argument);
         if (Double.isNaN(result)) {
             throw new MathRuntimeException(LocalizedCoreFormats.DISCRETE_CUMULATIVE_PROBABILITY_RETURNED_NAN,
-                                           argument);
+                    argument);
         }
         return result;
     }

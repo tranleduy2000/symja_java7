@@ -20,9 +20,10 @@ package org.hipparchus.ode.sampling;
 import org.hipparchus.RealFieldElement;
 import org.hipparchus.ode.FieldODEStateAndDerivative;
 
-/** This interface represents an interpolator over the last step
+/**
+ * This interface represents an interpolator over the last step
  * during an ODE integration.
- *
+ * <p>
  * <p>The various ODE integrators provide objects implementing this
  * interface to the step handlers. These objects are often custom
  * objects tightly bound to the integrator internal algorithms. The
@@ -39,6 +40,7 @@ public interface FieldODEStateInterpolator<T extends RealFieldElement<T>> {
 
     /**
      * Get the state at previous grid point time.
+     *
      * @return state at previous grid point time
      */
     FieldODEStateAndDerivative<T> getPreviousState();
@@ -47,7 +49,7 @@ public interface FieldODEStateInterpolator<T extends RealFieldElement<T>> {
      * Determines if the {@link #getPreviousState() previous state} is computed directly
      * by the integrator, or if it is calculated using {@link #getInterpolatedState(RealFieldElement)
      * interpolation}.
-     *
+     * <p>
      * <p> Typically the previous state is directly computed by the integrator, but when
      * events are detected the steps are shortened so that events occur on step boundaries
      * which means the previous state may be computed by the interpolator.
@@ -59,6 +61,7 @@ public interface FieldODEStateInterpolator<T extends RealFieldElement<T>> {
 
     /**
      * Get the state at current grid point time.
+     *
      * @return state at current grid point time
      */
     FieldODEStateAndDerivative<T> getCurrentState();
@@ -67,7 +70,7 @@ public interface FieldODEStateInterpolator<T extends RealFieldElement<T>> {
      * Determines if the {@link #getCurrentState() current state} is computed directly by
      * the integrator, or if it is calculated using {@link #getInterpolatedState(RealFieldElement)
      * interpolation}.
-     *
+     * <p>
      * <p> Typically the current state is directly computed by the integrator, but when
      * events are detected the steps are shortened so that events occur on step boundaries
      * which means the current state may be computed by the interpolator.
@@ -84,17 +87,20 @@ public interface FieldODEStateInterpolator<T extends RealFieldElement<T>> {
      * probably be very poor far from this step. This allowance has been
      * added to simplify implementation of search algorithms near the
      * step endpoints.</p>
+     *
      * @param time time of the interpolated point
      * @return state at interpolated time
      */
     FieldODEStateAndDerivative<T> getInterpolatedState(T time);
 
-    /** Check if the natural integration direction is forward.
+    /**
+     * Check if the natural integration direction is forward.
      * <p>This method provides the integration direction as specified by
      * the integrator itself, it avoid some nasty problems in
      * degenerated cases like null steps due to cancellation at step
      * initialization, step control or discrete events
      * triggering.</p>
+     *
      * @return true if the integration variable (time) increases during
      * integration
      */

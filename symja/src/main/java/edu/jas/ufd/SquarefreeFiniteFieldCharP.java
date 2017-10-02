@@ -5,11 +5,11 @@
 package edu.jas.ufd;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.arith.BigInteger;
 import edu.jas.poly.ExpVector;
@@ -23,6 +23,7 @@ import edu.jas.structure.RingFactory;
 
 /**
  * Squarefree decomposition for finite coefficient fields of characteristic p.
+ *
  * @author Heinz Kredel
  */
 
@@ -52,9 +53,10 @@ public class SquarefreeFiniteFieldCharP<C extends GcdRingElem<C>> extends Square
     /**
      * Characteristics root of a coefficient. <b>Note:</b> not needed at the
      * moment.
+     *
      * @param p coefficient.
      * @return [p -&gt; k] if exists k with e=k*charactristic(c) and c = p**e,
-     *         else null.
+     * else null.
      */
     public SortedMap<C, Long> rootCharacteristic(C p) {
         if (p == null) {
@@ -77,6 +79,7 @@ public class SquarefreeFiniteFieldCharP<C extends GcdRingElem<C>> extends Square
 
     /**
      * Characteristics root of a coefficient.
+     *
      * @param c coefficient.
      * @return r with r**p == c, if such an r exists, else null.
      */
@@ -97,9 +100,9 @@ public class SquarefreeFiniteFieldCharP<C extends GcdRingElem<C>> extends Square
                 return r;
             }
             BigInteger p = new BigInteger(aCoFac.characteristic());
-            BigInteger q = p.power(d-1); //Power.<BigInteger> positivePower(p, d - 1);
+            BigInteger q = p.power(d - 1); //Power.<BigInteger> positivePower(p, d - 1);
             //System.out.println("p**(d-1) = " + q);
-            r = Power.<C> positivePower(r, q.getVal()); // r.power(q.getVal());
+            r = Power.<C>positivePower(r, q.getVal()); // r.power(q.getVal());
             //System.out.println("r**q = " + r);
             return r;
         }
@@ -113,9 +116,10 @@ public class SquarefreeFiniteFieldCharP<C extends GcdRingElem<C>> extends Square
     /**
      * Characteristics root of a polynomial. <b>Note:</b> call only in
      * recursion.
+     *
      * @param P polynomial.
      * @return [p -&gt; k] if exists k with e=k*charactristic(P) and P = p**e,
-     *         else null.
+     * else null.
      */
     public SortedMap<GenPolynomial<C>, Long> rootCharacteristic(GenPolynomial<C> P) {
         if (P == null) {
@@ -196,6 +200,7 @@ public class SquarefreeFiniteFieldCharP<C extends GcdRingElem<C>> extends Square
      * GenPolynomial char-th root univariate polynomial. Base coefficient type
      * must be finite field, that is ModInteger or
      * AlgebraicNumber&lt;ModInteger&gt; etc.
+     *
      * @param P GenPolynomial.
      * @return char-th_rootOf(P), or null if no char-th root.
      */
@@ -235,12 +240,13 @@ public class SquarefreeFiniteFieldCharP<C extends GcdRingElem<C>> extends Square
     /**
      * GenPolynomial char-th root univariate polynomial with polynomial
      * coefficients.
+     *
      * @param P recursive univariate GenPolynomial.
      * @return char-th_rootOf(P), or null if P is no char-th root.
      */
     @Override
     public GenPolynomial<GenPolynomial<C>> recursiveUnivariateRootCharacteristic(
-                    GenPolynomial<GenPolynomial<C>> P) {
+            GenPolynomial<GenPolynomial<C>> P) {
         if (P == null || P.isZERO()) {
             return P;
         }

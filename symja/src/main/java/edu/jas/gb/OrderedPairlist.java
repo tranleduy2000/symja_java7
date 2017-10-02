@@ -5,6 +5,8 @@
 package edu.jas.gb;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Iterator;
@@ -13,8 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.poly.ExpVector;
 import edu.jas.poly.GenPolynomial;
@@ -26,43 +26,24 @@ import edu.jas.structure.RingElem;
  * Pair list management. The original Buchberger algorithm with criterions
  * following Winkler in SAC-1, Kredelin ALDES/SAC-2, Kredel in MAS. Implemented
  * using GenPolynomial, TreeMap and BitSet.
+ *
  * @author Heinz Kredel
  */
 
 public class OrderedPairlist<C extends RingElem<C>> implements PairList<C> {
 
 
-    protected final List<GenPolynomial<C>> P;
-
-
-    protected final SortedMap<ExpVector, LinkedList<Pair<C>>> pairlist;
-
-
-    protected final List<BitSet> red;
-
-
-    protected final GenPolynomialRing<C> ring;
-
-
-    protected final Reduction<C> reduction;
-
-
-    protected boolean oneInGB = false;
-
-
-    protected boolean useCriterion4 = true;
-
-
-    protected int putCount;
-
-
-    protected int remCount;
-
-
-    protected final int moduleVars;
-
-
     private static final Logger logger = Logger.getLogger(OrderedPairlist.class);
+    protected final List<GenPolynomial<C>> P;
+    protected final SortedMap<ExpVector, LinkedList<Pair<C>>> pairlist;
+    protected final List<BitSet> red;
+    protected final GenPolynomialRing<C> ring;
+    protected final Reduction<C> reduction;
+    protected final int moduleVars;
+    protected boolean oneInGB = false;
+    protected boolean useCriterion4 = true;
+    protected int putCount;
+    protected int remCount;
 
 
     /**
@@ -82,6 +63,7 @@ public class OrderedPairlist<C extends RingElem<C>> implements PairList<C> {
 
     /**
      * Constructor.
+     *
      * @param r polynomial factory.
      */
     public OrderedPairlist(GenPolynomialRing<C> r) {
@@ -91,6 +73,7 @@ public class OrderedPairlist<C extends RingElem<C>> implements PairList<C> {
 
     /**
      * Constructor.
+     *
      * @param m number of module variables.
      * @param r polynomial factory.
      */
@@ -112,6 +95,7 @@ public class OrderedPairlist<C extends RingElem<C>> implements PairList<C> {
 
     /**
      * Create a new PairList.
+     *
      * @param r polynomial ring.
      */
     public PairList<C> create(GenPolynomialRing<C> r) {
@@ -121,6 +105,7 @@ public class OrderedPairlist<C extends RingElem<C>> implements PairList<C> {
 
     /**
      * Create a new PairList.
+     *
      * @param m number of module variables.
      * @param r polynomial ring.
      */
@@ -151,6 +136,7 @@ public class OrderedPairlist<C extends RingElem<C>> implements PairList<C> {
 
     /**
      * Put one Polynomial to the pairlist and reduction matrix.
+     *
      * @param p polynomial.
      * @return the index of the added polynomial.
      */
@@ -194,6 +180,7 @@ public class OrderedPairlist<C extends RingElem<C>> implements PairList<C> {
 
     /**
      * Put all polynomials in F to the pairlist and reduction matrix.
+     *
      * @param F polynomial list.
      * @return the index of the last added polynomial.
      */
@@ -209,6 +196,7 @@ public class OrderedPairlist<C extends RingElem<C>> implements PairList<C> {
     /**
      * Remove the next required pair from the pairlist and reduction matrix.
      * Appy the criterions 3 and 4 to see if the S-polynomial is required.
+     *
      * @return the next pair if one exists, otherwise null.
      */
     public synchronized Pair<C> removeNext() {
@@ -267,6 +255,7 @@ public class OrderedPairlist<C extends RingElem<C>> implements PairList<C> {
 
     /**
      * Test if there is possibly a pair in the list.
+     *
      * @return true if a next pair could exist, otherwise false.
      */
     public synchronized boolean hasNext() {
@@ -276,6 +265,7 @@ public class OrderedPairlist<C extends RingElem<C>> implements PairList<C> {
 
     /**
      * Get the list of polynomials.
+     *
      * @return the polynomial list.
      */
     public List<GenPolynomial<C>> getList() {
@@ -285,6 +275,7 @@ public class OrderedPairlist<C extends RingElem<C>> implements PairList<C> {
 
     /**
      * Set the list of polynomials.
+     *
      * @param F the polynomial list.
      */
     public void setList(List<GenPolynomial<C>> F) {
@@ -302,6 +293,7 @@ public class OrderedPairlist<C extends RingElem<C>> implements PairList<C> {
 
     /**
      * Get the size of the list of polynomials.
+     *
      * @return size of the polynomial list.
      */
     public int size() {
@@ -311,6 +303,7 @@ public class OrderedPairlist<C extends RingElem<C>> implements PairList<C> {
 
     /**
      * Get the number of polynomials put to the pairlist.
+     *
      * @return the number of calls to put.
      */
     public synchronized int putCount() {
@@ -320,6 +313,7 @@ public class OrderedPairlist<C extends RingElem<C>> implements PairList<C> {
 
     /**
      * Get the number of required pairs removed from the pairlist.
+     *
      * @return the number of non null pairs delivered.
      */
     public synchronized int remCount() {
@@ -329,6 +323,7 @@ public class OrderedPairlist<C extends RingElem<C>> implements PairList<C> {
 
     /**
      * Put the ONE-Polynomial to the pairlist.
+     *
      * @param one polynomial. (no more required)
      * @return the index of the last polynomial.
      */
@@ -345,6 +340,7 @@ public class OrderedPairlist<C extends RingElem<C>> implements PairList<C> {
 
     /**
      * Put the ONE-Polynomial to the pairlist.
+     *
      * @return the index of the last polynomial.
      */
     public synchronized int putOne() {
@@ -361,6 +357,7 @@ public class OrderedPairlist<C extends RingElem<C>> implements PairList<C> {
 
     /**
      * GB criterium 3.
+     *
      * @return true if the S-polynomial(i,j) is required.
      */
     public boolean criterion3(int i, int j, ExpVector eij) {

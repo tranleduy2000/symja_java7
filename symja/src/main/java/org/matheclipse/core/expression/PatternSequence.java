@@ -18,6 +18,7 @@ import org.matheclipse.core.visit.IVisitorLong;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.function.Predicate;
 
 /**
  * A concrete pattern sequence implementation (i.e. x__)

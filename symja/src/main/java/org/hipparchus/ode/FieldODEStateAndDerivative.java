@@ -20,50 +20,61 @@ package org.hipparchus.ode;
 import org.hipparchus.RealFieldElement;
 import org.hipparchus.util.MathArrays;
 
-/** Container for time, main and secondary state vectors as well as their derivatives.
-
+/**
+ * Container for time, main and secondary state vectors as well as their derivatives.
+ *
+ * @param <T> the type of the field elements
  * @see FieldOrdinaryDifferentialEquation
  * @see FieldSecondaryODE
  * @see FieldODEIntegrator
- * @param <T> the type of the field elements
  */
 
 public class FieldODEStateAndDerivative<T extends RealFieldElement<T>> extends FieldODEState<T> {
 
-    /** Derivative of the primary state at time. */
+    /**
+     * Derivative of the primary state at time.
+     */
     private final T[] primaryDerivative;
 
-    /** Derivative of the secondary state at time. */
+    /**
+     * Derivative of the secondary state at time.
+     */
     private final T[][] secondaryDerivative;
 
-    /** Simple constructor.
+    /**
+     * Simple constructor.
      * <p>Calling this constructor is equivalent to call {@link
      * #FieldODEStateAndDerivative(RealFieldElement, RealFieldElement[], RealFieldElement[],
      * RealFieldElement[][], RealFieldElement[][]) FieldODEStateAndDerivative(time, state,
      * derivative, null, null)}.</p>
-     * @param time time
-     * @param primaryState primary state at time
+     *
+     * @param time              time
+     * @param primaryState      primary state at time
      * @param primaryDerivative derivative of the primary state at time
      */
     public FieldODEStateAndDerivative(T time, T[] primaryState, T[] primaryDerivative) {
         this(time, primaryState, primaryDerivative, null, null);
     }
 
-    /** Simple constructor.
-     * @param time time
-     * @param primaryState primary state at time
-     * @param primaryDerivative derivative of the primary state at time
-     * @param secondaryState state at time (may be null)
+    /**
+     * Simple constructor.
+     *
+     * @param time                time
+     * @param primaryState        primary state at time
+     * @param primaryDerivative   derivative of the primary state at time
+     * @param secondaryState      state at time (may be null)
      * @param secondaryDerivative derivative of the state at time (may be null)
      */
     public FieldODEStateAndDerivative(T time, T[] primaryState, T[] primaryDerivative,
                                       T[][] secondaryState, T[][] secondaryDerivative) {
         super(time, primaryState, secondaryState);
-        this.primaryDerivative   = primaryDerivative.clone();
+        this.primaryDerivative = primaryDerivative.clone();
         this.secondaryDerivative = copy(secondaryDerivative);
     }
 
-    /** Get derivative of the primary state at time.
+    /**
+     * Get derivative of the primary state at time.
+     *
      * @return derivative of the primary state at time
      * @see #getSecondaryDerivative(int)
      * @see #getCompleteDerivative()
@@ -72,10 +83,12 @@ public class FieldODEStateAndDerivative<T extends RealFieldElement<T>> extends F
         return primaryDerivative.clone();
     }
 
-    /** Get derivative of the secondary state at time.
+    /**
+     * Get derivative of the secondary state at time.
+     *
      * @param index index of the secondary set as returned
-     * by {@link FieldExpandableODE#addSecondaryEquations(FieldSecondaryODE)}
-     * (beware index 0 corresponds to primary state, secondary states start at 1)
+     *              by {@link FieldExpandableODE#addSecondaryEquations(FieldSecondaryODE)}
+     *              (beware index 0 corresponds to primary state, secondary states start at 1)
      * @return derivative of the secondary state at time
      * @see #getPrimaryDerivative()
      * @see #getCompleteDerivative()
@@ -84,7 +97,9 @@ public class FieldODEStateAndDerivative<T extends RealFieldElement<T>> extends F
         return index == 0 ? primaryDerivative.clone() : secondaryDerivative[index - 1].clone();
     }
 
-    /** Get complete derivative at time.
+    /**
+     * Get complete derivative at time.
+     *
      * @return complete derivative at time, starting with
      * {@link #getPrimaryDerivative() primary derivative}, followed
      * by all {@link #getSecondaryDerivative(int) secondary derivatives} in
@@ -99,8 +114,8 @@ public class FieldODEStateAndDerivative<T extends RealFieldElement<T>> extends F
         if (secondaryDerivative != null) {
             for (int index = 0; index < secondaryDerivative.length; ++index) {
                 System.arraycopy(secondaryDerivative[index], 0,
-                                 completeDerivative, offset,
-                                 secondaryDerivative[index].length);
+                        completeDerivative, offset,
+                        secondaryDerivative[index].length);
                 offset += secondaryDerivative[index].length;
             }
         }

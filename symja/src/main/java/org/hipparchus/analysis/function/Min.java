@@ -22,10 +22,11 @@ import org.hipparchus.util.FastMath;
 
 /**
  * Minimum function.
- *
  */
 public class Min implements BivariateFunction {
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double value(double x, double y) {
         return FastMath.min(x, y);

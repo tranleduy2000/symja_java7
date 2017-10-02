@@ -17,8 +17,6 @@
 
 package org.hipparchus.analysis.function;
 
-import java.util.Arrays;
-
 import org.hipparchus.analysis.ParametricUnivariateFunction;
 import org.hipparchus.analysis.differentiation.DerivativeStructure;
 import org.hipparchus.analysis.differentiation.UnivariateDifferentiableFunction;
@@ -27,18 +25,23 @@ import org.hipparchus.exception.NullArgumentException;
 import org.hipparchus.util.FastMath;
 import org.hipparchus.util.MathUtils;
 
+import java.util.Arrays;
+
 /**
  * <a href="http://en.wikipedia.org/wiki/Sigmoid_function">
- *  Sigmoid</a> function.
+ * Sigmoid</a> function.
  * It is the inverse of the {@link Logit logit} function.
  * A more flexible version, the generalised logistic, is implemented
  * by the {@link Logistic} class.
- *
  */
 public class Sigmoid implements UnivariateDifferentiableFunction {
-    /** Lower asymptote. */
+    /**
+     * Lower asymptote.
+     */
     private final double lo;
-    /** Higher asymptote. */
+    /**
+     * Higher asymptote.
+     */
     private final double hi;
 
     /**
@@ -61,81 +64,8 @@ public class Sigmoid implements UnivariateDifferentiableFunction {
         this.hi = hi;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public double value(double x) {
-        return value(x, lo, hi);
-    }
-
     /**
-     * Parametric function where the input array contains the parameters of
-     * the {@link Sigmoid#Sigmoid(double,double) sigmoid function}, ordered
-     * as follows:
-     * <ul>
-     *  <li>Lower asymptote</li>
-     *  <li>Higher asymptote</li>
-     * </ul>
-     */
-    public static class Parametric implements ParametricUnivariateFunction {
-        /**
-         * Computes the value of the sigmoid at {@code x}.
-         *
-         * @param x Value for which the function must be computed.
-         * @param param Values of lower asymptote and higher asymptote.
-         * @return the value of the function.
-         * @throws NullArgumentException if {@code param} is {@code null}.
-         * @throws MathIllegalArgumentException if the size of {@code param} is
-         * not 2.
-         */
-        @Override
-        public double value(double x, double ... param)
-            throws MathIllegalArgumentException, NullArgumentException {
-            validateParameters(param);
-            return Sigmoid.value(x, param[0], param[1]);
-        }
-
-        /**
-         * Computes the value of the gradient at {@code x}.
-         * The components of the gradient vector are the partial
-         * derivatives of the function with respect to each of the
-         * <em>parameters</em> (lower asymptote and higher asymptote).
-         *
-         * @param x Value at which the gradient must be computed.
-         * @param param Values for lower asymptote and higher asymptote.
-         * @return the gradient vector at {@code x}.
-         * @throws NullArgumentException if {@code param} is {@code null}.
-         * @throws MathIllegalArgumentException if the size of {@code param} is
-         * not 2.
-         */
-        @Override
-        public double[] gradient(double x, double ... param)
-            throws MathIllegalArgumentException, NullArgumentException {
-            validateParameters(param);
-
-            final double invExp1 = 1 / (1 + FastMath.exp(-x));
-
-            return new double[] { 1 - invExp1, invExp1 };
-        }
-
-        /**
-         * Validates parameters to ensure they are appropriate for the evaluation of
-         * the {@link #value(double,double[])} and {@link #gradient(double,double[])}
-         * methods.
-         *
-         * @param param Values for lower and higher asymptotes.
-         * @throws NullArgumentException if {@code param} is {@code null}.
-         * @throws MathIllegalArgumentException if the size of {@code param} is
-         * not 2.
-         */
-        private void validateParameters(double[] param)
-            throws MathIllegalArgumentException, NullArgumentException {
-            MathUtils.checkNotNull(param);
-            MathUtils.checkDimension(param.length, 2);
-        }
-    }
-
-    /**
-     * @param x Value at which to compute the sigmoid.
+     * @param x  Value at which to compute the sigmoid.
      * @param lo Lower asymptote.
      * @param hi Higher asymptote.
      * @return the value of the sigmoid function at {@code x}.
@@ -146,11 +76,20 @@ public class Sigmoid implements UnivariateDifferentiableFunction {
         return lo + (hi - lo) / (1 + FastMath.exp(-x));
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public double value(double x) {
+        return value(x, lo, hi);
+    }
+
+    /**
+     * {@inheritDoc}
      */
     @Override
     public DerivativeStructure value(final DerivativeStructure t)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
 
         double[] f = new double[t.getOrder() + 1];
         final double exp = FastMath.exp(-t.getValue());
@@ -170,7 +109,7 @@ public class Sigmoid implements UnivariateDifferentiableFunction {
             // P_n(x) = n t P_(n-1)(t) - t (1 + t) P_(n-1)'(t)
             final double[] p = new double[f.length];
 
-            final double inv   = 1 / (1 + exp);
+            final double inv = 1 / (1 + exp);
             double coeff = hi - lo;
             for (int n = 0; n < f.length; ++n) {
 
@@ -187,7 +126,7 @@ public class Sigmoid implements UnivariateDifferentiableFunction {
                 }
 
                 coeff *= inv;
-                f[n]   = coeff * v;
+                f[n] = coeff * v;
 
             }
 
@@ -198,6 +137,73 @@ public class Sigmoid implements UnivariateDifferentiableFunction {
 
         return t.compose(f);
 
+    }
+
+    /**
+     * Parametric function where the input array contains the parameters of
+     * the {@link Sigmoid#Sigmoid(double, double) sigmoid function}, ordered
+     * as follows:
+     * <ul>
+     * <li>Lower asymptote</li>
+     * <li>Higher asymptote</li>
+     * </ul>
+     */
+    public static class Parametric implements ParametricUnivariateFunction {
+        /**
+         * Computes the value of the sigmoid at {@code x}.
+         *
+         * @param x     Value for which the function must be computed.
+         * @param param Values of lower asymptote and higher asymptote.
+         * @return the value of the function.
+         * @throws NullArgumentException        if {@code param} is {@code null}.
+         * @throws MathIllegalArgumentException if the size of {@code param} is
+         *                                      not 2.
+         */
+        @Override
+        public double value(double x, double... param)
+                throws MathIllegalArgumentException, NullArgumentException {
+            validateParameters(param);
+            return Sigmoid.value(x, param[0], param[1]);
+        }
+
+        /**
+         * Computes the value of the gradient at {@code x}.
+         * The components of the gradient vector are the partial
+         * derivatives of the function with respect to each of the
+         * <em>parameters</em> (lower asymptote and higher asymptote).
+         *
+         * @param x     Value at which the gradient must be computed.
+         * @param param Values for lower asymptote and higher asymptote.
+         * @return the gradient vector at {@code x}.
+         * @throws NullArgumentException        if {@code param} is {@code null}.
+         * @throws MathIllegalArgumentException if the size of {@code param} is
+         *                                      not 2.
+         */
+        @Override
+        public double[] gradient(double x, double... param)
+                throws MathIllegalArgumentException, NullArgumentException {
+            validateParameters(param);
+
+            final double invExp1 = 1 / (1 + FastMath.exp(-x));
+
+            return new double[]{1 - invExp1, invExp1};
+        }
+
+        /**
+         * Validates parameters to ensure they are appropriate for the evaluation of
+         * the {@link #value(double, double[])} and {@link #gradient(double, double[])}
+         * methods.
+         *
+         * @param param Values for lower and higher asymptotes.
+         * @throws NullArgumentException        if {@code param} is {@code null}.
+         * @throws MathIllegalArgumentException if the size of {@code param} is
+         *                                      not 2.
+         */
+        private void validateParameters(double[] param)
+                throws MathIllegalArgumentException, NullArgumentException {
+            MathUtils.checkNotNull(param);
+            MathUtils.checkDimension(param.length, 2);
+        }
     }
 
 }

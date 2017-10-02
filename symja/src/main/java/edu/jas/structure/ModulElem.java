@@ -10,6 +10,7 @@ import java.util.List;
 
 /**
  * Module element interface. Defines scalar operations.
+ *
  * @param <M> module type
  * @param <C> scalar type
  * @author Heinz Kredel
@@ -19,6 +20,7 @@ public interface ModulElem<M extends ModulElem<M, C>, C extends RingElem<C>> ext
 
     /**
      * Scalar multiplication. Multiply this by a scalar.
+     *
      * @param s scalar
      * @return this * s.
      */
@@ -27,6 +29,7 @@ public interface ModulElem<M extends ModulElem<M, C>, C extends RingElem<C>> ext
 
     /**
      * Linear combination.
+     *
      * @param a scalar
      * @param b module element
      * @param s scalar
@@ -37,6 +40,7 @@ public interface ModulElem<M extends ModulElem<M, C>, C extends RingElem<C>> ext
 
     /**
      * Linear combination.
+     *
      * @param b module element
      * @param s scalar
      * @return b + this * s.
@@ -46,6 +50,7 @@ public interface ModulElem<M extends ModulElem<M, C>, C extends RingElem<C>> ext
 
     /**
      * Scalar product. Multiply two vectors to become a scalar.
+     *
      * @param b module element
      * @return this * b, a scalar.
      */
@@ -55,6 +60,7 @@ public interface ModulElem<M extends ModulElem<M, C>, C extends RingElem<C>> ext
     /**
      * Scalar product. Multiply this vectors by list of vectors to become a
      * vector.
+     *
      * @param b list of module elements
      * @return this * b, a list of scalars, a module element.
      */

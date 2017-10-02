@@ -24,12 +24,15 @@ import java.util.Arrays;
  * (in one or both directions).
  * <br/>
  * Immutable class.
- *
  */
 public class SimpleBounds implements OptimizationData {
-    /** Lower bounds. */
+    /**
+     * Lower bounds.
+     */
     private final double[] lower;
-    /** Upper bounds. */
+    /**
+     * Upper bounds.
+     */
     private final double[] upper;
 
     /**
@@ -40,23 +43,6 @@ public class SimpleBounds implements OptimizationData {
                         double[] uB) {
         lower = lB.clone();
         upper = uB.clone();
-    }
-
-    /**
-     * Gets the lower bounds.
-     *
-     * @return the lower bounds.
-     */
-    public double[] getLower() {
-        return lower.clone();
-    }
-    /**
-     * Gets the upper bounds.
-     *
-     * @return the upper bounds.
-     */
-    public double[] getUpper() {
-        return upper.clone();
     }
 
     /**
@@ -74,5 +60,23 @@ public class SimpleBounds implements OptimizationData {
         Arrays.fill(uB, Double.POSITIVE_INFINITY);
 
         return new SimpleBounds(lB, uB);
+    }
+
+    /**
+     * Gets the lower bounds.
+     *
+     * @return the lower bounds.
+     */
+    public double[] getLower() {
+        return lower.clone();
+    }
+
+    /**
+     * Gets the upper bounds.
+     *
+     * @return the upper bounds.
+     */
+    public double[] getUpper() {
+        return upper.clone();
     }
 }

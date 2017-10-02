@@ -16,11 +16,11 @@
  */
 package org.hipparchus.stat.descriptive.moment;
 
-import java.io.Serializable;
-
 import org.hipparchus.exception.NullArgumentException;
 import org.hipparchus.stat.descriptive.AbstractStorelessUnivariateStatistic;
 import org.hipparchus.util.MathUtils;
+
+import java.io.Serializable;
 
 /**
  * Computes the first moment (arithmetic mean). Uses the definitional formula:
@@ -35,7 +35,7 @@ import org.hipparchus.util.MathUtils;
  * <ol>
  * <li>Initialize <code>m = </code> the first value</li>
  * <li>For each additional value, update using <br>
- *   <code>m = m + (new value - m) / (number of observations)</code></li>
+ * <code>m = m + (new value - m) / (number of observations)</code></li>
  * </ol>
  * <p>
  * Returns <code>Double.NaN</code> if the dataset is empty. Note that
@@ -48,15 +48,21 @@ import org.hipparchus.util.MathUtils;
  * <code>clear()</code> method, it must be synchronized externally.
  */
 class FirstMoment extends AbstractStorelessUnivariateStatistic
-    implements Serializable {
+        implements Serializable {
 
-    /** Serializable version identifier */
+    /**
+     * Serializable version identifier
+     */
     private static final long serialVersionUID = 20150412L;
 
-    /** Count of values that have been added */
+    /**
+     * Count of values that have been added
+     */
     protected long n;
 
-    /** First moment of values that have been added */
+    /**
+     * First moment of values that have been added
+     */
     protected double m1;
 
     /**
@@ -89,16 +95,18 @@ class FirstMoment extends AbstractStorelessUnivariateStatistic
      * @param original the {@code FirstMoment} instance to copy
      * @throws NullArgumentException if original is null
      */
-     FirstMoment(FirstMoment original) throws NullArgumentException {
-         MathUtils.checkNotNull(original);
-         this.n    = original.n;
-         this.m1   = original.m1;
-         this.dev  = original.dev;
-         this.nDev = original.nDev;
-     }
+    FirstMoment(FirstMoment original) throws NullArgumentException {
+        MathUtils.checkNotNull(original);
+        this.n = original.n;
+        this.m1 = original.m1;
+        this.dev = original.dev;
+        this.nDev = original.nDev;
+    }
 
-    /** {@inheritDoc} */
-     @Override
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void increment(final double d) {
         if (n == 0) {
             m1 = 0.0;
@@ -110,7 +118,9 @@ class FirstMoment extends AbstractStorelessUnivariateStatistic
         m1 += nDev;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void clear() {
         m1 = Double.NaN;
@@ -119,13 +129,17 @@ class FirstMoment extends AbstractStorelessUnivariateStatistic
         nDev = Double.NaN;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getResult() {
         return m1;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public long getN() {
         return n;
@@ -143,14 +157,16 @@ class FirstMoment extends AbstractStorelessUnivariateStatistic
             if (this.n == 0) {
                 this.m1 = 0.0;
             }
-            this.n   += other.n;
-            this.dev  = other.m1 - this.m1;
+            this.n += other.n;
+            this.dev = other.m1 - this.m1;
             this.nDev = this.dev / this.n;
-            this.m1  += other.n / (double) this.n * this.dev;
+            this.m1 += other.n / (double) this.n * this.dev;
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FirstMoment copy() {
         return new FirstMoment(this);

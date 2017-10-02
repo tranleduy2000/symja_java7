@@ -5,8 +5,6 @@
 package org.matheclipse.core.polynomials;
 
 
-
-
 // import org.apache.log4j.Logger;
 
 
@@ -19,14 +17,14 @@ package org.matheclipse.core.polynomials;
  * "Some comments on term-ordering in Gr&ouml;bner basis computations"</a>. Not
  * all algorithms may work with all term orders since not all are well-founded,
  * so watch your step.
- * 
+ * <p>
  * <b>Note:</b> Variables in printed JAS polynomial <b>(low, ..., medium, ...,
  * high)</b> Variables in other CAS polynomial <b>(high, ..., medium, ...,
  * low)</b> with <b>low</b> &lt; <b>medium</b> &lt; <b>high</b>. Example: for
  * variables x<sub>1</sub>, ..., x<sub>r</sub> it is assumed in JAS that
  * x<sub>1</sub> &lt; ... &lt; x<sub>r</sub> in other CAS it means x<sub>1</sub>
  * &gt; ... &gt; x<sub>r</sub>.
- * 
+ *
  * @author Heinz Kredel
  */
 
@@ -252,9 +250,9 @@ public class ExprTermOrderByName {
     /**
      * Construct elimination block ExprTermOrder. Variables {x<sub>1</sub>, ...,
      * x<sub>s-1</sub>} &lt; {x<sub>s</sub>, ..., x<sub>r</sub>}
-     * 
+     *
      * @param t1 term order for both blocks
-     * @param s split index
+     * @param s  split index
      * @return constructed term order
      */
     public final static ExprTermOrder blockOrder(ExprTermOrder t1, int s) {
@@ -265,10 +263,10 @@ public class ExprTermOrderByName {
     /**
      * Construct elimination block ExprTermOrder. Variables {x<sub>1</sub>, ...,
      * x<sub>s-1</sub>} &lt; {x<sub>s</sub>, ..., x<sub>r</sub>}
-     * 
+     *
      * @param t1 term order for both blocks
-     * @param e exponent vector of desired length, r = length(e)
-     * @param s split index
+     * @param e  exponent vector of desired length, r = length(e)
+     * @param s  split index
      * @return constructed term order
      */
     public final static ExprTermOrder blockOrder(ExprTermOrder t1, ExpVectorLong e, int s) {
@@ -279,10 +277,10 @@ public class ExprTermOrderByName {
     /**
      * Construct elimination block ExprTermOrder. Variables {x<sub>1</sub>, ...,
      * x<sub>s-1</sub>} &lt; {x<sub>s</sub>, ..., x<sub>r</sub>}
-     * 
+     *
      * @param t1 term order for lower valiables
      * @param t2 term order for higher variables
-     * @param s split index
+     * @param s  split index
      * @return constructed term order
      */
     public final static ExprTermOrder blockOrder(ExprTermOrder t1, ExprTermOrder t2, int s) {
@@ -293,11 +291,11 @@ public class ExprTermOrderByName {
     /**
      * Construct elimination block ExprTermOrder. Variables {x<sub>1</sub>, ...,
      * x<sub>s-1</sub>} &lt; {x<sub>s</sub>, ..., x<sub>r</sub>}
-     * 
+     *
      * @param t1 term order for lower valiables
      * @param t2 term order for higher variables
-     * @param e exponent vector of desired length, r = length(e)
-     * @param s split index
+     * @param e  exponent vector of desired length, r = length(e)
+     * @param s  split index
      * @return constructed term order
      */
     public final static ExprTermOrder blockOrder(ExprTermOrder t1, ExprTermOrder t2, ExpVectorLong e, int s) {
@@ -307,18 +305,18 @@ public class ExprTermOrderByName {
 
     /**
      * Construct weight ExprTermOrder.
-     * 
+     *
      * @param v weight vector
      * @return constructed term order
      */
     public final static ExprTermOrder weightOrder(long[] v) {
-        return ExprTermOrder.reverseWeight(new long[][] { v });
+        return ExprTermOrder.reverseWeight(new long[][]{v});
     }
 
 
     /**
-     * 
      * Construct weight ExprTermOrder.
+     *
      * @param w weight matrix
      * @return constructed term order
      */
@@ -328,40 +326,40 @@ public class ExprTermOrderByName {
 
 
     /**
-     * 
      * Construct weight for INVLEX.
+     *
      * @return weight matrix
      */
     public final static long[][] weightForOrder(int to, int n) {
         long[][] w = new long[n][];
         switch (to) {
-        case ExprTermOrder.INVLEX:
-        default:
-	    for (int i = 0; i < n; i++ ) {
-		w[i] = new long[n];
-		long[] wi = w[i];
-		for( int j = 0; j < n; j++ ) { 
-		    if ((n-1-i) == j) {
-			wi[j] = 1L;
-		    } else {
-			wi[j] = 0L;
-		    }
-		}
-	    }
-            break;
-        case ExprTermOrder.REVILEX:
-	    for (int i = 0; i < n; i++ ) {
-		w[i] = new long[n];
-		long[] wi = w[i];
-		for( int j = 0; j < n; j++ ) { 
-		    if (i == j) {
-			wi[j] = 1L;
-		    } else {
-			wi[j] = 0L;
-		    }
-		}
-	    }
-            break;
+            case ExprTermOrder.INVLEX:
+            default:
+                for (int i = 0; i < n; i++) {
+                    w[i] = new long[n];
+                    long[] wi = w[i];
+                    for (int j = 0; j < n; j++) {
+                        if ((n - 1 - i) == j) {
+                            wi[j] = 1L;
+                        } else {
+                            wi[j] = 0L;
+                        }
+                    }
+                }
+                break;
+            case ExprTermOrder.REVILEX:
+                for (int i = 0; i < n; i++) {
+                    w[i] = new long[n];
+                    long[] wi = w[i];
+                    for (int j = 0; j < n; j++) {
+                        if (i == j) {
+                            wi[j] = 1L;
+                        } else {
+                            wi[j] = 0L;
+                        }
+                    }
+                }
+                break;
         }
         return w;
     }

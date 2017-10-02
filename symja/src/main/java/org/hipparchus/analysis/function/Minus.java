@@ -22,16 +22,18 @@ import org.hipparchus.analysis.differentiation.UnivariateDifferentiableFunction;
 
 /**
  * Minus function.
- *
  */
 public class Minus implements UnivariateDifferentiableFunction {
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double value(double x) {
         return -x;
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     @Override
     public DerivativeStructure value(final DerivativeStructure t) {

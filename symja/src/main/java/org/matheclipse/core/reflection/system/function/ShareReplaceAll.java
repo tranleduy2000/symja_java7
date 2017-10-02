@@ -13,6 +13,8 @@ import org.matheclipse.core.interfaces.IStringX;
 import org.matheclipse.core.interfaces.ISymbol;
 import org.matheclipse.core.visit.VisitorExpr;
 
+import java.util.function.Function;
+
 /**
  * Replace all occurrences of expressions where the given
  * <code>function.apply()</code> method returns a non <code>F.NIL</code>

@@ -5,12 +5,12 @@
 package edu.jas.gbufd;
 
 
+import org.apache.log4j.Logger;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.gb.Reduction;
 import edu.jas.gb.ReductionSeq;
@@ -27,6 +27,7 @@ import edu.jas.vector.GenVectorModul;
 
 /**
  * SyzygyAbstract class. Implements Syzygy computations and tests.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
@@ -63,6 +64,7 @@ public abstract class SyzygyAbstract<C extends GcdRingElem<C>> implements Syzygy
 
     /**
      * Syzygy module from Groebner base. F must be a Groebner base.
+     *
      * @param F a Groebner base.
      * @return syz(F), a basis for the module of syzygies for F.
      */
@@ -73,8 +75,9 @@ public abstract class SyzygyAbstract<C extends GcdRingElem<C>> implements Syzygy
 
     /**
      * Syzygy module from Groebner base. F must be a Groebner base.
+     *
      * @param modv number of module variables.
-     * @param F a Groebner base.
+     * @param F    a Groebner base.
      * @return syz(F), a basis for the module of syzygies for F.
      */
     public List<List<GenPolynomial<C>>> zeroRelations(int modv, List<GenPolynomial<C>> F) {
@@ -101,8 +104,9 @@ public abstract class SyzygyAbstract<C extends GcdRingElem<C>> implements Syzygy
 
     /**
      * Syzygy module from Groebner base. v must be a Groebner base.
+     *
      * @param modv number of module variables.
-     * @param v a Groebner base.
+     * @param v    a Groebner base.
      * @return syz(v), a basis for the module of syzygies for v.
      */
     public List<List<GenPolynomial<C>>> zeroRelations(int modv, GenVector<GenPolynomial<C>> v) {
@@ -147,6 +151,7 @@ public abstract class SyzygyAbstract<C extends GcdRingElem<C>> implements Syzygy
     /**
      * Syzygy module from module Groebner base. M must be a module Groebner
      * base.
+     *
      * @param M a module Groebner base.
      * @return syz(M), a basis for the module of syzygies for M.
      */
@@ -202,6 +207,7 @@ public abstract class SyzygyAbstract<C extends GcdRingElem<C>> implements Syzygy
 
     /**
      * Test if sysygy.
+     *
      * @param Z list of sysygies.
      * @param F a polynomial list.
      * @return true, if Z is a list of syzygies for F, else false.
@@ -226,6 +232,7 @@ public abstract class SyzygyAbstract<C extends GcdRingElem<C>> implements Syzygy
 
     /**
      * Test if sysygy of modules.
+     *
      * @param Z list of sysygies.
      * @param F a module list.
      * @return true, if Z is a list of syzygies for F, else false.
@@ -248,6 +255,7 @@ public abstract class SyzygyAbstract<C extends GcdRingElem<C>> implements Syzygy
 
     /**
      * Syzygy module from arbitrary base.
+     *
      * @param F a polynomial list.
      * @return syz(F), a basis for the module of syzygies for F.
      */
@@ -258,6 +266,7 @@ public abstract class SyzygyAbstract<C extends GcdRingElem<C>> implements Syzygy
 
     /**
      * Syzygy module from arbitrary module base.
+     *
      * @param M an arbitrary module base.
      * @return syz(M), a basis for the module of syzygies for M.
      */
@@ -315,6 +324,7 @@ public abstract class SyzygyAbstract<C extends GcdRingElem<C>> implements Syzygy
 
 /**
  * Container for module resolution components.
+ *
  * @param <C> coefficient type
  */
 class ResPart<C extends RingElem<C>> implements Serializable {
@@ -331,6 +341,7 @@ class ResPart<C extends RingElem<C>> implements Serializable {
 
     /**
      * ResPart.
+     *
      * @param m a module list.
      * @param g a module list GB.
      * @param z a syzygy module list.
@@ -374,6 +385,7 @@ class ResPolPart<C extends RingElem<C>> implements Serializable {
 
     /**
      * ResPolPart.
+     *
      * @param m a polynomial list.
      * @param g a polynomial list GB.
      * @param z a syzygy module list.

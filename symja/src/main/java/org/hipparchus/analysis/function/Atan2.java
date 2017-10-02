@@ -22,10 +22,11 @@ import org.hipparchus.util.FastMath;
 
 /**
  * Arc-tangent function.
- *
  */
 public class Atan2 implements BivariateFunction {
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double value(double x, double y) {
         return FastMath.atan2(x, y);

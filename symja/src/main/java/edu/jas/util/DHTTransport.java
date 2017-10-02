@@ -5,32 +5,28 @@
 package edu.jas.util;
 
 
-import java.io.Serializable;
 import java.io.IOException;
+import java.io.Serializable;
 import java.rmi.MarshalledObject;
 
 
 /**
- * Transport container for a distributed version of a HashTable. 
- * <b>Note:</b> Contains code for timing of marshalled versus plain 
+ * Transport container for a distributed version of a HashTable.
+ * <b>Note:</b> Contains code for timing of marshalled versus plain
  * object serialization which can be removed later.
+ *
  * @author Heinz Kredel
  */
 public abstract class DHTTransport<K, V> implements Serializable {
 
 
-    static long etime  = 0L; // encode marshalled
-    static long dtime  = 0L; // decode marshalled
+    public static final Stor stor = Stor.marshal; //Stor.plain;
+    static long etime = 0L; // encode marshalled
+    static long dtime = 0L; // decode marshalled
     static long ertime = 0L; // encode plain raw
     static long drtime = 0L; // decode plain raw
 
-
-    public static enum Stor { // storage and transport class
-        marshal, plain
-    };
-
-
-    public static final Stor stor = Stor.marshal; //Stor.plain; 
+    ;
 
 
     /**
@@ -39,32 +35,32 @@ public abstract class DHTTransport<K, V> implements Serializable {
     protected DHTTransport() {
     }
 
-
     /**
      * Create a new DHTTransport Container.
+     *
      * @param key
      * @param value
      */
-    public static <K,V> DHTTransport<K,V> create(K key, V value) throws IOException {
+    public static <K, V> DHTTransport<K, V> create(K key, V value) throws IOException {
         switch (stor) {
-        case marshal: return new DHTTransportMarshal<K,V>(key,value);
-        case plain:   return new DHTTransportPlain<K,V>(key,value);
-        default: throw new IllegalArgumentException("this should not happen");
+            case marshal:
+                return new DHTTransportMarshal<K, V>(key, value);
+            case plain:
+                return new DHTTransportPlain<K, V>(key, value);
+            default:
+                throw new IllegalArgumentException("this should not happen");
         }
     }
-
 
     /**
      * Get the key from this DHTTransport Container.
      */
     public abstract K key() throws IOException, ClassNotFoundException;
 
-
     /**
      * Get the value from this DHTTransport Container.
      */
     public abstract V value() throws IOException, ClassNotFoundException;
-
 
     /**
      * toString.
@@ -73,6 +69,11 @@ public abstract class DHTTransport<K, V> implements Serializable {
     public String toString() {
         return this.getClass().getName();
 
+    }
+
+
+    public static enum Stor { // storage and transport class
+        marshal, plain
     }
 
 }
@@ -103,7 +104,7 @@ class DHTTransportTerminate<K, V> extends DHTTransport<K, V> {
 
 
 /**
- * Transport container to signal clearing contents of the 
+ * Transport container to signal clearing contents of the
  * other HashTables including the server. Contains no objects.
  */
 class DHTTransportClear<K, V> extends DHTTransport<K, V> {
@@ -141,6 +142,7 @@ class DHTTransportMarshal<K, V> extends DHTTransport<K, V> {
 
     /**
      * Constructs a new DHTTransport Container.
+     *
      * @param key
      * @param value
      */
@@ -150,7 +152,7 @@ class DHTTransportMarshal<K, V> extends DHTTransport<K, V> {
         this.key = new MarshalledObject/*<K>*/(key);
         this.value = new MarshalledObject/*<V>*/(value);
         t = System.currentTimeMillis() - t;
-        synchronized( DHTTransport.class ) {
+        synchronized (DHTTransport.class) {
             etime += t;
         }
         //System.out.println("         marshal time = " + t);
@@ -165,7 +167,7 @@ class DHTTransportMarshal<K, V> extends DHTTransport<K, V> {
         long t = System.currentTimeMillis();
         K k = (K) this.key.get();
         t = System.currentTimeMillis() - t;
-        synchronized( DHTTransport.class ) {
+        synchronized (DHTTransport.class) {
             dtime += t;
         }
         return k;
@@ -180,7 +182,7 @@ class DHTTransportMarshal<K, V> extends DHTTransport<K, V> {
         long t = System.currentTimeMillis();
         V v = (V) this.value.get();
         t = System.currentTimeMillis() - t;
-        synchronized( DHTTransport.class ) {
+        synchronized (DHTTransport.class) {
             dtime += t;
         }
         return v;
@@ -200,7 +202,7 @@ class DHTTransportMarshal<K, V> extends DHTTransport<K, V> {
         long t = System.currentTimeMillis();
         out.defaultWriteObject();
         t = System.currentTimeMillis() - t;
-        synchronized( DHTTransport.class ) {
+        synchronized (DHTTransport.class) {
             ertime += t;
         }
     }
@@ -210,7 +212,7 @@ class DHTTransportMarshal<K, V> extends DHTTransport<K, V> {
         long t = System.currentTimeMillis();
         in.defaultReadObject();
         t = System.currentTimeMillis() - t; // not meaningful, includes waiting time
-        synchronized( DHTTransport.class ) {
+        synchronized (DHTTransport.class) {
             drtime += t;
         }
     }
@@ -233,6 +235,7 @@ class DHTTransportPlain<K, V> extends DHTTransport<K, V> {
 
     /**
      * Constructs a new DHTTransport Container.
+     *
      * @param key
      * @param value
      */
@@ -271,7 +274,7 @@ class DHTTransportPlain<K, V> extends DHTTransport<K, V> {
         long t = System.currentTimeMillis();
         out.defaultWriteObject();
         t = System.currentTimeMillis() - t;
-        synchronized( DHTTransport.class ) {
+        synchronized (DHTTransport.class) {
             ertime += t;
         }
     }
@@ -281,7 +284,7 @@ class DHTTransportPlain<K, V> extends DHTTransport<K, V> {
         long t = System.currentTimeMillis();
         in.defaultReadObject();
         t = System.currentTimeMillis() - t;
-        synchronized( DHTTransport.class ) {
+        synchronized (DHTTransport.class) {
             drtime += t;
         }
     }

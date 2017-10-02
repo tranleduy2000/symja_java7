@@ -26,18 +26,19 @@ import org.hipparchus.util.Pair;
  * The Legendre polynomials are evaluated using the recurrence relation
  * presented in <a href="http://en.wikipedia.org/wiki/Abramowitz_and_Stegun">
  * Abramowitz and Stegun, 1964</a>.
- *
  */
 public class LegendreRuleFactory extends BaseRuleFactory<Double> {
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Pair<Double[], Double[]> computeRule(int numberOfPoints)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
 
         if (numberOfPoints == 1) {
             // Break recursion.
-            return new Pair<Double[], Double[]>(new Double[] { 0d },
-                                                new Double[] { 2d });
+            return new Pair<Double[], Double[]>(new Double[]{0d},
+                    new Double[]{2d});
         }
 
         // Get previous rule.

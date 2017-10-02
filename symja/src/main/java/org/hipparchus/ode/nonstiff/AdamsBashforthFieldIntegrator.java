@@ -32,7 +32,7 @@ import org.hipparchus.util.MathArrays;
 /**
  * This class implements explicit Adams-Bashforth integrators for Ordinary
  * Differential Equations.
- *
+ * <p>
  * <p>Adams-Bashforth methods (in fact due to Adams alone) are explicit
  * multistep ODE solvers. This implementation is a variation of the classical
  * one: it uses adaptive stepsize to implement error control, whereas
@@ -42,24 +42,24 @@ import org.hipparchus.util.MathArrays;
  * steps one wants to use for computing the next value, different formulas
  * are available:</p>
  * <ul>
- *   <li>k = 1: y<sub>n+1</sub> = y<sub>n</sub> + h y'<sub>n</sub></li>
- *   <li>k = 2: y<sub>n+1</sub> = y<sub>n</sub> + h (3y'<sub>n</sub>-y'<sub>n-1</sub>)/2</li>
- *   <li>k = 3: y<sub>n+1</sub> = y<sub>n</sub> + h (23y'<sub>n</sub>-16y'<sub>n-1</sub>+5y'<sub>n-2</sub>)/12</li>
- *   <li>k = 4: y<sub>n+1</sub> = y<sub>n</sub> + h (55y'<sub>n</sub>-59y'<sub>n-1</sub>+37y'<sub>n-2</sub>-9y'<sub>n-3</sub>)/24</li>
- *   <li>...</li>
+ * <li>k = 1: y<sub>n+1</sub> = y<sub>n</sub> + h y'<sub>n</sub></li>
+ * <li>k = 2: y<sub>n+1</sub> = y<sub>n</sub> + h (3y'<sub>n</sub>-y'<sub>n-1</sub>)/2</li>
+ * <li>k = 3: y<sub>n+1</sub> = y<sub>n</sub> + h (23y'<sub>n</sub>-16y'<sub>n-1</sub>+5y'<sub>n-2</sub>)/12</li>
+ * <li>k = 4: y<sub>n+1</sub> = y<sub>n</sub> + h (55y'<sub>n</sub>-59y'<sub>n-1</sub>+37y'<sub>n-2</sub>-9y'<sub>n-3</sub>)/24</li>
+ * <li>...</li>
  * </ul>
- *
+ * <p>
  * <p>A k-steps Adams-Bashforth method is of order k.</p>
- *
+ * <p>
  * <p> There must be sufficient time for the {@link #setStarterIntegrator(org.hipparchus.ode.FieldODEIntegrator)
  * starter integrator} to take several steps between the the last reset event, and the end
  * of integration, otherwise an exception may be thrown during integration. The user can
  * adjust the end date of integration, or the step size of the starter integrator to
  * ensure a sufficient number of steps can be completed before the end of integration.
  * </p>
- *
+ * <p>
  * <h3>Implementation details</h3>
- *
+ * <p>
  * <p>We define scaled derivatives s<sub>i</sub>(n) at step n as:
  * <pre>
  * s<sub>1</sub>(n) = h y'<sub>n</sub> for first derivative
@@ -77,13 +77,13 @@ import org.hipparchus.util.MathArrays;
  * (we omit the k index in the notation for clarity). With these definitions,
  * Adams-Bashforth methods can be written:
  * <ul>
- *   <li>k = 1: y<sub>n+1</sub> = y<sub>n</sub> + s<sub>1</sub>(n)</li>
- *   <li>k = 2: y<sub>n+1</sub> = y<sub>n</sub> + 3/2 s<sub>1</sub>(n) + [ -1/2 ] q<sub>n</sub></li>
- *   <li>k = 3: y<sub>n+1</sub> = y<sub>n</sub> + 23/12 s<sub>1</sub>(n) + [ -16/12 5/12 ] q<sub>n</sub></li>
- *   <li>k = 4: y<sub>n+1</sub> = y<sub>n</sub> + 55/24 s<sub>1</sub>(n) + [ -59/24 37/24 -9/24 ] q<sub>n</sub></li>
- *   <li>...</li>
+ * <li>k = 1: y<sub>n+1</sub> = y<sub>n</sub> + s<sub>1</sub>(n)</li>
+ * <li>k = 2: y<sub>n+1</sub> = y<sub>n</sub> + 3/2 s<sub>1</sub>(n) + [ -1/2 ] q<sub>n</sub></li>
+ * <li>k = 3: y<sub>n+1</sub> = y<sub>n</sub> + 23/12 s<sub>1</sub>(n) + [ -16/12 5/12 ] q<sub>n</sub></li>
+ * <li>k = 4: y<sub>n+1</sub> = y<sub>n</sub> + 55/24 s<sub>1</sub>(n) + [ -59/24 37/24 -9/24 ] q<sub>n</sub></li>
+ * <li>...</li>
  * </ul></p>
- *
+ * <p>
  * <p>Instead of using the classical representation with first derivatives only (y<sub>n</sub>,
  * s<sub>1</sub>(n) and q<sub>n</sub>), our implementation uses the Nordsieck vector with
  * higher degrees scaled derivatives all taken at the same step (y<sub>n</sub>, s<sub>1</sub>(n)
@@ -93,7 +93,7 @@ import org.hipparchus.util.MathArrays;
  * </pre>
  * (here again we omit the k index in the notation for clarity)
  * </p>
- *
+ * <p>
  * <p>Taylor series formulas show that for any index offset i, s<sub>1</sub>(n-i) can be
  * computed from s<sub>1</sub>(n), s<sub>2</sub>(n) ... s<sub>k</sub>(n), the formula being exact
  * for degree k polynomials.
@@ -119,18 +119,18 @@ import org.hipparchus.util.MathArrays;
  *
  * <p>Using the Nordsieck vector has several advantages:
  * <ul>
- *   <li>it greatly simplifies step interpolation as the interpolator mainly applies
- *   Taylor series formulas,</li>
- *   <li>it simplifies step changes that occur when discrete events that truncate
- *   the step are triggered,</li>
- *   <li>it allows to extend the methods in order to support adaptive stepsize.</li>
+ * <li>it greatly simplifies step interpolation as the interpolator mainly applies
+ * Taylor series formulas,</li>
+ * <li>it simplifies step changes that occur when discrete events that truncate
+ * the step are triggered,</li>
+ * <li>it allows to extend the methods in order to support adaptive stepsize.</li>
  * </ul></p>
  *
  * <p>The Nordsieck vector at step n+1 is computed from the Nordsieck vector at step n as follows:
  * <ul>
- *   <li>y<sub>n+1</sub> = y<sub>n</sub> + s<sub>1</sub>(n) + u<sup>T</sup> r<sub>n</sub></li>
- *   <li>s<sub>1</sub>(n+1) = h f(t<sub>n+1</sub>, y<sub>n+1</sub>)</li>
- *   <li>r<sub>n+1</sub> = (s<sub>1</sub>(n) - s<sub>1</sub>(n+1)) P<sup>-1</sup> u + P<sup>-1</sup> A P r<sub>n</sub></li>
+ * <li>y<sub>n+1</sub> = y<sub>n</sub> + s<sub>1</sub>(n) + u<sup>T</sup> r<sub>n</sub></li>
+ * <li>s<sub>1</sub>(n+1) = h f(t<sub>n+1</sub>, y<sub>n+1</sub>)</li>
+ * <li>r<sub>n+1</sub> = (s<sub>1</sub>(n) - s<sub>1</sub>(n+1)) P<sup>-1</sup> u + P<sup>-1</sup> A P r<sub>n</sub></li>
  * </ul>
  * where A is a rows shifting matrix (the lower left part is an identity matrix):
  * <pre>
@@ -150,63 +150,69 @@ import org.hipparchus.util.MathArrays;
  */
 public class AdamsBashforthFieldIntegrator<T extends RealFieldElement<T>> extends AdamsFieldIntegrator<T> {
 
-    /** Integrator method name. */
+    /**
+     * Integrator method name.
+     */
     private static final String METHOD_NAME = "Adams-Bashforth";
 
     /**
      * Build an Adams-Bashforth integrator with the given order and step control parameters.
-     * @param field field to which the time and state vector elements belong
-     * @param nSteps number of steps of the method excluding the one being computed
-     * @param minStep minimal step (sign is irrelevant, regardless of
-     * integration direction, forward or backward), the last step can
-     * be smaller than this
-     * @param maxStep maximal step (sign is irrelevant, regardless of
-     * integration direction, forward or backward), the last step can
-     * be smaller than this
+     *
+     * @param field                 field to which the time and state vector elements belong
+     * @param nSteps                number of steps of the method excluding the one being computed
+     * @param minStep               minimal step (sign is irrelevant, regardless of
+     *                              integration direction, forward or backward), the last step can
+     *                              be smaller than this
+     * @param maxStep               maximal step (sign is irrelevant, regardless of
+     *                              integration direction, forward or backward), the last step can
+     *                              be smaller than this
      * @param scalAbsoluteTolerance allowed absolute error
      * @param scalRelativeTolerance allowed relative error
-     * @exception MathIllegalArgumentException if order is 1 or less
+     * @throws MathIllegalArgumentException if order is 1 or less
      */
     public AdamsBashforthFieldIntegrator(final Field<T> field, final int nSteps,
                                          final double minStep, final double maxStep,
                                          final double scalAbsoluteTolerance,
                                          final double scalRelativeTolerance)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         super(field, METHOD_NAME, nSteps, nSteps, minStep, maxStep,
-              scalAbsoluteTolerance, scalRelativeTolerance);
+                scalAbsoluteTolerance, scalRelativeTolerance);
     }
 
     /**
      * Build an Adams-Bashforth integrator with the given order and step control parameters.
-     * @param field field to which the time and state vector elements belong
-     * @param nSteps number of steps of the method excluding the one being computed
-     * @param minStep minimal step (sign is irrelevant, regardless of
-     * integration direction, forward or backward), the last step can
-     * be smaller than this
-     * @param maxStep maximal step (sign is irrelevant, regardless of
-     * integration direction, forward or backward), the last step can
-     * be smaller than this
+     *
+     * @param field                field to which the time and state vector elements belong
+     * @param nSteps               number of steps of the method excluding the one being computed
+     * @param minStep              minimal step (sign is irrelevant, regardless of
+     *                             integration direction, forward or backward), the last step can
+     *                             be smaller than this
+     * @param maxStep              maximal step (sign is irrelevant, regardless of
+     *                             integration direction, forward or backward), the last step can
+     *                             be smaller than this
      * @param vecAbsoluteTolerance allowed absolute error
      * @param vecRelativeTolerance allowed relative error
-     * @exception IllegalArgumentException if order is 1 or less
+     * @throws IllegalArgumentException if order is 1 or less
      */
     public AdamsBashforthFieldIntegrator(final Field<T> field, final int nSteps,
                                          final double minStep, final double maxStep,
                                          final double[] vecAbsoluteTolerance,
                                          final double[] vecRelativeTolerance)
-        throws IllegalArgumentException {
+            throws IllegalArgumentException {
         super(field, METHOD_NAME, nSteps, nSteps, minStep, maxStep,
-              vecAbsoluteTolerance, vecRelativeTolerance);
+                vecAbsoluteTolerance, vecRelativeTolerance);
     }
 
-    /** Estimate error.
+    /**
+     * Estimate error.
      * <p>
      * Error is estimated by interpolating back to previous state using
      * the state Taylor expansion and comparing to real previous state.
      * </p>
-     * @param previousState state vector at step start
-     * @param predictedState predicted state vector at step end
-     * @param predictedScaled predicted value of the scaled derivatives at step end
+     *
+     * @param previousState      state vector at step start
+     * @param predictedState     predicted state vector at step end
+     * @param predictedScaled    predicted value of the scaled derivatives at step end
      * @param predictedNordsieck predicted value of the Nordsieck vector at step end
      * @return estimated normalized local discretization error
      */
@@ -219,8 +225,8 @@ public class AdamsBashforthFieldIntegrator<T extends RealFieldElement<T>> extend
         for (int i = 0; i < mainSetDimension; ++i) {
             final T yScale = predictedState[i].abs();
             final T tol = (vecAbsoluteTolerance == null) ?
-                          yScale.multiply(scalRelativeTolerance).add(scalAbsoluteTolerance) :
-                          yScale.multiply(vecRelativeTolerance[i]).add(vecAbsoluteTolerance[i]);
+                    yScale.multiply(scalRelativeTolerance).add(scalAbsoluteTolerance) :
+                    yScale.multiply(vecRelativeTolerance[i]).add(vecAbsoluteTolerance[i]);
 
             // apply Taylor formula from high order to low order,
             // for the sake of numerical accuracy
@@ -228,11 +234,11 @@ public class AdamsBashforthFieldIntegrator<T extends RealFieldElement<T>> extend
             int sign = predictedNordsieck.getRowDimension() % 2 == 0 ? -1 : 1;
             for (int k = predictedNordsieck.getRowDimension() - 1; k >= 0; --k) {
                 variation = variation.add(predictedNordsieck.getEntry(k, i).multiply(sign));
-                sign      = -sign;
+                sign = -sign;
             }
             variation = variation.subtract(predictedScaled[i]);
 
-            final T ratio  = predictedState[i].subtract(previousState[i]).add(variation).divide(tol);
+            final T ratio = predictedState[i].subtract(previousState[i]).add(variation).divide(tol);
             error = error.add(ratio.multiply(ratio));
 
         }
@@ -241,12 +247,14 @@ public class AdamsBashforthFieldIntegrator<T extends RealFieldElement<T>> extend
 
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FieldODEStateAndDerivative<T> integrate(final FieldExpandableODE<T> equations,
                                                    final FieldODEState<T> initialState,
                                                    final T finalTime)
-        throws MathIllegalArgumentException, MathIllegalStateException {
+            throws MathIllegalArgumentException, MathIllegalStateException {
 
         sanityChecks(initialState, finalTime);
         setStepStart(initIntegration(equations, initialState, finalTime));
@@ -256,10 +264,10 @@ public class AdamsBashforthFieldIntegrator<T extends RealFieldElement<T>> extend
         start(equations, getStepStart(), finalTime);
 
         // reuse the step that was chosen by the starter integrator
-        FieldODEStateAndDerivative<T> stepEnd   =
-                        AdamsFieldStateInterpolator.taylor(equations.getMapper(), getStepStart(),
-                                                           getStepStart().getTime().add(getStepSize()),
-                                                           getStepSize(), scaled, nordsieck);
+        FieldODEStateAndDerivative<T> stepEnd =
+                AdamsFieldStateInterpolator.taylor(equations.getMapper(), getStepStart(),
+                        getStepStart().getTime().add(getStepSize()),
+                        getStepSize(), scaled, nordsieck);
 
         // main integration loop
         setIsLastStep(false);
@@ -293,21 +301,21 @@ public class AdamsBashforthFieldIntegrator<T extends RealFieldElement<T>> extend
                     final T factor = computeStepGrowShrinkFactor(error);
                     rescale(filterStep(getStepSize().multiply(factor), forward, false));
                     stepEnd = AdamsFieldStateInterpolator.taylor(equations.getMapper(), getStepStart(),
-                                                                 getStepStart().getTime().add(getStepSize()),
-                                                                 getStepSize(),
-                                                                 scaled,
-                                                                 nordsieck);
+                            getStepStart().getTime().add(getStepSize()),
+                            getStepSize(),
+                            scaled,
+                            nordsieck);
 
                 }
             }
 
             // discrete events handling
             setStepStart(acceptStep(new AdamsFieldStateInterpolator<T>(getStepSize(), stepEnd,
-                                                                       predictedScaled, predictedNordsieck, forward,
-                                                                       getStepStart(), stepEnd,
-                                                                       equations.getMapper()),
-                                    finalTime));
-            scaled    = predictedScaled;
+                            predictedScaled, predictedNordsieck, forward,
+                            getStepStart(), stepEnd,
+                            equations.getMapper()),
+                    finalTime));
+            scaled = predictedScaled;
             nordsieck = predictedNordsieck;
 
             if (!isLastStep()) {
@@ -318,10 +326,10 @@ public class AdamsBashforthFieldIntegrator<T extends RealFieldElement<T>> extend
                     // invalidate the derivatives, we need to restart from scratch
                     start(equations, getStepStart(), finalTime);
 
-                    final T  nextT      = getStepStart().getTime().add(getStepSize());
+                    final T nextT = getStepStart().getTime().add(getStepSize());
                     final boolean nextIsLast = forward ?
-                                               nextT.subtract(finalTime).getReal() >= 0 :
-                                               nextT.subtract(finalTime).getReal() <= 0;
+                            nextT.subtract(finalTime).getReal() >= 0 :
+                            nextT.subtract(finalTime).getReal() <= 0;
                     final T hNew = nextIsLast ? finalTime.subtract(getStepStart().getTime()) : getStepSize();
 
                     rescale(hNew);
@@ -330,18 +338,18 @@ public class AdamsBashforthFieldIntegrator<T extends RealFieldElement<T>> extend
                 } else {
 
                     // stepsize control for next step
-                    final T       factor     = computeStepGrowShrinkFactor(error);
-                    final T       scaledH    = getStepSize().multiply(factor);
-                    final T       nextT      = getStepStart().getTime().add(scaledH);
+                    final T factor = computeStepGrowShrinkFactor(error);
+                    final T scaledH = getStepSize().multiply(factor);
+                    final T nextT = getStepStart().getTime().add(scaledH);
                     final boolean nextIsLast = forward ?
-                                               nextT.subtract(finalTime).getReal() >= 0 :
-                                               nextT.subtract(finalTime).getReal() <= 0;
+                            nextT.subtract(finalTime).getReal() >= 0 :
+                            nextT.subtract(finalTime).getReal() <= 0;
                     T hNew = filterStep(scaledH, forward, nextIsLast);
 
-                    final T       filteredNextT      = getStepStart().getTime().add(hNew);
+                    final T filteredNextT = getStepStart().getTime().add(hNew);
                     final boolean filteredNextIsLast = forward ?
-                                                       filteredNextT.subtract(finalTime).getReal() >= 0 :
-                                                       filteredNextT.subtract(finalTime).getReal() <= 0;
+                            filteredNextT.subtract(finalTime).getReal() >= 0 :
+                            filteredNextT.subtract(finalTime).getReal() <= 0;
                     if (filteredNextIsLast) {
                         hNew = finalTime.subtract(getStepStart().getTime());
                     }
@@ -352,8 +360,8 @@ public class AdamsBashforthFieldIntegrator<T extends RealFieldElement<T>> extend
                 }
 
                 stepEnd = AdamsFieldStateInterpolator.taylor(equations.getMapper(), getStepStart(),
-                                                             getStepStart().getTime().add(getStepSize()),
-                                                             getStepSize(), scaled, nordsieck);
+                        getStepStart().getTime().add(getStepSize()),
+                        getStepSize(), scaled, nordsieck);
 
             }
 

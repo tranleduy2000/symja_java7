@@ -10,16 +10,18 @@ import java.util.List;
 
 /**
  * Module factory interface. Defines conversion from list and sparse random.
+ *
  * @param <M> module type
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
 public interface ModulFactory<M extends ModulElem<M, C>, C extends RingElem<C>> extends
-                AbelianGroupFactory<M> {
+        AbelianGroupFactory<M> {
 
 
     /**
      * Convert list to module.
+     *
      * @param v list of ring elements.
      * @return a module element with the elements from v.
      */
@@ -28,6 +30,7 @@ public interface ModulFactory<M extends ModulElem<M, C>, C extends RingElem<C>> 
 
     /**
      * Random vector.
+     *
      * @param k size of coefficients.
      * @param q fraction of non zero elements.
      * @return a random vector.

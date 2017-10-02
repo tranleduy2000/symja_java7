@@ -8,6 +8,7 @@ package edu.jas.ufd;
 /**
  * Non existing Hensel lifting. Exception to be thrown when a valid
  * Hensel lifting cannot be constructed.
+ *
  * @author Heinz Kredel
  */
 

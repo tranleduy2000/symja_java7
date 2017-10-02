@@ -32,34 +32,33 @@ import org.matheclipse.core.expression.F;
 import org.matheclipse.core.interfaces.IInteger;
 
 /**
- *
  * @author Dmitry Bolotin
  * @author Stanislav Poslavsky
  */
 final class SingleSolutionProvider extends SolutionProviderAbstract {
-	SingleSolutionProvider(SolutionProvider provider, int position, IInteger[] coefficient) {
-		super(provider, position, coefficient);
-	}
+    SingleSolutionProvider(SolutionProvider provider, int position, IInteger[] coefficient) {
+        super(provider, position, coefficient);
+    }
 
-	@Override
-	public IInteger[] take() {
-		if (currentSolution == null)
-			return null;
+    @Override
+    public IInteger[] take() {
+        if (currentSolution == null)
+            return null;
 
-		int i;
-		IInteger remainder;
-		for (i = 0; i < coefficients.length; ++i) {
-			remainder = currentRemainder[i].subtract(coefficients[i].multiply(currentCounter));
-			if (remainder.compareInt(0) < 0) {
-				currentCounter = F.C0;
-				currentSolution = null;
-				return null;
-			}
-		}
+        int i;
+        IInteger remainder;
+        for (i = 0; i < coefficients.length; ++i) {
+            remainder = currentRemainder[i].subtract(coefficients[i].multiply(currentCounter));
+            if (remainder.compareInt(0) < 0) {
+                currentCounter = F.C0;
+                currentSolution = null;
+                return null;
+            }
+        }
 
-		IInteger[] solution = currentSolution.clone();
-		solution[position] = solution[position].add(currentCounter);
-		currentCounter = currentCounter.add(F.C1);
-		return solution;
-	}
+        IInteger[] solution = currentSolution.clone();
+        solution[position] = solution[position].add(currentCounter);
+        currentCounter = currentCounter.add(F.C1);
+        return solution;
+    }
 }

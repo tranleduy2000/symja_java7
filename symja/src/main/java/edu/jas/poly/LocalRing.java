@@ -5,12 +5,12 @@
 package edu.jas.poly;
 
 
+import org.apache.log4j.Logger;
+
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.structure.QuotPairFactory;
 import edu.jas.structure.RingElem;
@@ -20,6 +20,7 @@ import edu.jas.structure.RingFactory;
 /**
  * Local ring factory based on RingElem principal ideal. Objects of this class
  * are immutable.
+ *
  * @author Heinz Kredel
  */
 public class LocalRing<C extends RingElem<C>> implements RingFactory<Local<C>>, QuotPairFactory<C, Local<C>> {
@@ -52,6 +53,7 @@ public class LocalRing<C extends RingElem<C>> implements RingFactory<Local<C>>, 
     /**
      * The constructor creates a LocalRing object from a RingFactory and a
      * RingElem.
+     *
      * @param i localization ideal generator.
      */
     public LocalRing(RingFactory<C> r, C i) {
@@ -92,6 +94,7 @@ public class LocalRing<C extends RingElem<C>> implements RingFactory<Local<C>>, 
 
     /**
      * Is this structure finite or infinite.
+     *
      * @return true if this structure is finite, else false.
      * @see edu.jas.structure.ElemFactory#isFinite()
      */
@@ -102,6 +105,7 @@ public class LocalRing<C extends RingElem<C>> implements RingFactory<Local<C>>, 
 
     /**
      * Copy Local element c.
+     *
      * @param c
      * @return a copy of c.
      */
@@ -112,6 +116,7 @@ public class LocalRing<C extends RingElem<C>> implements RingFactory<Local<C>>, 
 
     /**
      * Get the zero element.
+     *
      * @return 0 as Local.
      */
     public Local<C> getZERO() {
@@ -121,6 +126,7 @@ public class LocalRing<C extends RingElem<C>> implements RingFactory<Local<C>>, 
 
     /**
      * Get the one element.
+     *
      * @return 1 as Local.
      */
     public Local<C> getONE() {
@@ -130,6 +136,7 @@ public class LocalRing<C extends RingElem<C>> implements RingFactory<Local<C>>, 
 
     /**
      * Get a list of the generating elements.
+     *
      * @return list of generators for the algebraic structure.
      * @see edu.jas.structure.ElemFactory#generators()
      */
@@ -147,6 +154,7 @@ public class LocalRing<C extends RingElem<C>> implements RingFactory<Local<C>>, 
 
     /**
      * Query if this ring is commutative.
+     *
      * @return true if this ring is commutative, else false.
      */
     public boolean isCommutative() {
@@ -156,6 +164,7 @@ public class LocalRing<C extends RingElem<C>> implements RingFactory<Local<C>>, 
 
     /**
      * Query if this ring is associative.
+     *
      * @return true if this ring is associative, else false.
      */
     public boolean isAssociative() {
@@ -165,6 +174,7 @@ public class LocalRing<C extends RingElem<C>> implements RingFactory<Local<C>>, 
 
     /**
      * Query if this ring is a field.
+     *
      * @return false.
      */
     public boolean isField() {
@@ -181,6 +191,7 @@ public class LocalRing<C extends RingElem<C>> implements RingFactory<Local<C>>, 
 
     /**
      * Characteristic of this ring.
+     *
      * @return characteristic of this ring.
      */
     public java.math.BigInteger characteristic() {
@@ -190,6 +201,7 @@ public class LocalRing<C extends RingElem<C>> implements RingFactory<Local<C>>, 
 
     /**
      * Get a Local element from a BigInteger value.
+     *
      * @param a BigInteger.
      * @return a Local.
      */
@@ -200,6 +212,7 @@ public class LocalRing<C extends RingElem<C>> implements RingFactory<Local<C>>, 
 
     /**
      * Get a Local element from a long value.
+     *
      * @param a long.
      * @return a Local.
      */
@@ -210,6 +223,7 @@ public class LocalRing<C extends RingElem<C>> implements RingFactory<Local<C>>, 
 
     /**
      * Get the String representation as RingFactory.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -220,6 +234,7 @@ public class LocalRing<C extends RingElem<C>> implements RingFactory<Local<C>>, 
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this ElemFactory.
      * @see edu.jas.structure.ElemFactory#toScript()
      */
@@ -232,6 +247,7 @@ public class LocalRing<C extends RingElem<C>> implements RingFactory<Local<C>>, 
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -254,6 +270,7 @@ public class LocalRing<C extends RingElem<C>> implements RingFactory<Local<C>>, 
 
     /**
      * Hash code for this local ring.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -267,6 +284,7 @@ public class LocalRing<C extends RingElem<C>> implements RingFactory<Local<C>>, 
 
     /**
      * Local random.
+     *
      * @param n such that 0 &le; v &le; (2<sup>n</sup>-1).
      * @return a random residue element.
      */
@@ -285,7 +303,8 @@ public class LocalRing<C extends RingElem<C>> implements RingFactory<Local<C>>, 
 
     /**
      * Local random.
-     * @param n such that 0 &le; v &le; (2<sup>n</sup>-1).
+     *
+     * @param n   such that 0 &le; v &le; (2<sup>n</sup>-1).
      * @param rnd is a source for random bits.
      * @return a random residue element.
      */
@@ -304,6 +323,7 @@ public class LocalRing<C extends RingElem<C>> implements RingFactory<Local<C>>, 
 
     /**
      * Parse Local from String.
+     *
      * @param s String.
      * @return Local from s.
      */
@@ -315,6 +335,7 @@ public class LocalRing<C extends RingElem<C>> implements RingFactory<Local<C>>, 
 
     /**
      * Parse Local from Reader.
+     *
      * @param r Reader.
      * @return next Local from r.
      */

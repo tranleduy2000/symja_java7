@@ -17,10 +17,6 @@
 
 package org.hipparchus.ode;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.hipparchus.exception.LocalizedCoreFormats;
 import org.hipparchus.exception.MathIllegalArgumentException;
 import org.hipparchus.exception.MathIllegalStateException;
@@ -28,11 +24,15 @@ import org.hipparchus.ode.sampling.ODEStateInterpolator;
 import org.hipparchus.ode.sampling.ODEStepHandler;
 import org.hipparchus.util.FastMath;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * This class stores all information provided by an ODE integrator
  * during the integration process and build a continuous model of the
  * solution from this.
- *
+ * <p>
  * <p>This class act as a step handler from the integrator point of
  * view. It is called iteratively during the integration process and
  * stores a copy of all steps information in a sorted collection for
@@ -43,14 +43,14 @@ import org.hipparchus.util.FastMath;
  * {@link #getInterpolatedState(double) getInterpolatedState} because
  * some internal variables are set only once the last step has been
  * handled.</p>
- *
+ * <p>
  * <p>This is useful for example if the main loop of the user
  * application should remain independent from the integration process
  * or if one needs to mimic the behaviour of an analytical model
  * despite a numerical model is used (i.e. one needs the ability to
  * get the model value at any time or to navigate through the
  * data).</p>
- *
+ * <p>
  * <p>If problem modeling is done with several separate
  * integration phases for contiguous intervals, the same
  * ContinuousOutputModel can be used as step handler for all
@@ -64,7 +64,7 @@ import org.hipparchus.util.FastMath;
  * output model handles the steps of all integration phases, the user
  * do not need to bother when the maneuver begins or ends, he has all
  * the data available in a transparent manner.</p>
- *
+ * <p>
  * <p>An important feature of this class is that it implements the
  * <code>Serializable</code> interface. This means that the result of
  * an integration can be serialized and reused later (if stored into a
@@ -72,7 +72,7 @@ import org.hipparchus.util.FastMath;
  * sent to another application). Only the result of the integration is
  * stored, there is no reference to the integrated problem by
  * itself.</p>
- *
+ * <p>
  * <p>One should be aware that the amount of data stored in a
  * ContinuousOutputModel instance can be important if the state vector
  * is large, if the integration interval is long or if the steps are
@@ -86,45 +86,60 @@ import org.hipparchus.util.FastMath;
 
 public class DenseOutputModel implements ODEStepHandler, Serializable {
 
-    /** Serializable version identifier */
+    /**
+     * Serializable version identifier
+     */
     private static final long serialVersionUID = 20160328L;
 
-    /** Initial integration time. */
+    /**
+     * Initial integration time.
+     */
     private double initialTime;
 
-    /** Final integration time. */
+    /**
+     * Final integration time.
+     */
     private double finalTime;
 
-    /** Integration direction indicator. */
+    /**
+     * Integration direction indicator.
+     */
     private boolean forward;
 
-    /** Current interpolator index. */
+    /**
+     * Current interpolator index.
+     */
     private int index;
 
-    /** Steps table. */
+    /**
+     * Steps table.
+     */
     private List<ODEStateInterpolator> steps;
 
-    /** Simple constructor.
+    /**
+     * Simple constructor.
      * Build an empty continuous output model.
      */
     public DenseOutputModel() {
-        steps       = new ArrayList<ODEStateInterpolator>();
+        steps = new ArrayList<ODEStateInterpolator>();
         initialTime = Double.NaN;
-        finalTime   = Double.NaN;
-        forward     = true;
-        index       = 0;
+        finalTime = Double.NaN;
+        forward = true;
+        index = 0;
     }
 
-    /** Append another model at the end of the instance.
+    /**
+     * Append another model at the end of the instance.
+     *
      * @param model model to add at the end of the instance
-     * @exception MathIllegalArgumentException if the model to append is not
-     * compatible with the instance (dimension of the state vector,
-     * propagation direction, hole between the dates)
-     * @exception MathIllegalStateException if the number of functions evaluations is exceeded
-     * during step finalization
+     * @throws MathIllegalArgumentException if the model to append is not
+     *                                      compatible with the instance (dimension of the state vector,
+     *                                      propagation direction, hole between the dates)
+     * @throws MathIllegalStateException    if the number of functions evaluations is exceeded
+     *                                      during step finalization
      */
     public void append(final DenseOutputModel model)
-        throws MathIllegalArgumentException, MathIllegalStateException {
+            throws MathIllegalArgumentException, MathIllegalStateException {
 
         if (model.steps.size() == 0) {
             return;
@@ -132,7 +147,7 @@ public class DenseOutputModel implements ODEStepHandler, Serializable {
 
         if (steps.size() == 0) {
             initialTime = model.initialTime;
-            forward     = model.forward;
+            forward = model.forward;
         } else {
 
             final ODEStateAndDerivative s1 = steps.get(0).getPreviousState();
@@ -148,13 +163,13 @@ public class DenseOutputModel implements ODEStepHandler, Serializable {
             }
 
             final ODEStateInterpolator lastInterpolator = steps.get(index);
-            final double current  = lastInterpolator.getCurrentState().getTime();
+            final double current = lastInterpolator.getCurrentState().getTime();
             final double previous = lastInterpolator.getPreviousState().getTime();
             final double step = current - previous;
             final double gap = model.getInitialTime() - current;
             if (FastMath.abs(gap) > 1.0e-3 * FastMath.abs(step)) {
                 throw new MathIllegalArgumentException(LocalizedODEFormats.HOLE_BETWEEN_MODELS_TIME_RANGES,
-                                                       FastMath.abs(gap));
+                        FastMath.abs(gap));
             }
 
         }
@@ -168,56 +183,63 @@ public class DenseOutputModel implements ODEStepHandler, Serializable {
 
     }
 
-    /** Check dimensions equality.
+    /**
+     * Check dimensions equality.
+     *
      * @param d1 first dimension
      * @param d2 second dimansion
-     * @exception MathIllegalArgumentException if dimensions do not match
+     * @throws MathIllegalArgumentException if dimensions do not match
      */
     private void checkDimensionsEquality(final int d1, final int d2)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         if (d1 != d2) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.DIMENSIONS_MISMATCH,
-                                                   d2, d1);
+                    d2, d1);
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void init(final ODEStateAndDerivative initialState, final double targetTime) {
-        initialTime    = initialState.getTime();
+        initialTime = initialState.getTime();
         this.finalTime = targetTime;
-        forward        = true;
-        index          = 0;
+        forward = true;
+        index = 0;
         steps.clear();
     }
 
-    /** Handle the last accepted step.
+    /**
+     * Handle the last accepted step.
      * A copy of the information provided by the last step is stored in
      * the instance for later use.
+     *
      * @param interpolator interpolator for the last accepted step.
-     * @param isLast true if the step is the last one
-     * @exception MathIllegalStateException if the number of functions evaluations is exceeded
-     * during step finalization
+     * @param isLast       true if the step is the last one
+     * @throws MathIllegalStateException if the number of functions evaluations is exceeded
+     *                                   during step finalization
      */
     public void handleStep(final ODEStateInterpolator interpolator, final boolean isLast)
-        throws MathIllegalStateException {
+            throws MathIllegalStateException {
 
         if (steps.size() == 0) {
             initialTime = interpolator.getPreviousState().getTime();
-            forward     = interpolator.isForward();
+            forward = interpolator.isForward();
         }
 
         steps.add(interpolator);
 
         if (isLast) {
             finalTime = interpolator.getCurrentState().getTime();
-            index     = steps.size() - 1;
+            index = steps.size() - 1;
         }
 
     }
 
     /**
      * Get the initial integration time.
+     *
      * @return initial integration time
      */
     public double getInitialTime() {
@@ -226,6 +248,7 @@ public class DenseOutputModel implements ODEStepHandler, Serializable {
 
     /**
      * Get the final integration time.
+     *
      * @return final integration time
      */
     public double getFinalTime() {
@@ -234,6 +257,7 @@ public class DenseOutputModel implements ODEStepHandler, Serializable {
 
     /**
      * Get the state at interpolated time.
+     *
      * @param time time of the interpolated point
      * @return state at interpolated time
      */
@@ -295,14 +319,14 @@ public class DenseOutputModel implements ODEStepHandler, Serializable {
                 final double dt2 = time - tMed;
                 final double dt3 = time - tMin;
                 final double iLagrange = ((dt2 * dt3 * d23) * iMax -
-                                (dt1 * dt3 * d13) * iMed +
-                                (dt1 * dt2 * d12) * iMin) /
-                                (d12 * d23 * d13);
+                        (dt1 * dt3 * d13) * iMed +
+                        (dt1 * dt2 * d12) * iMin) /
+                        (d12 * d23 * d13);
                 index = (int) FastMath.rint(iLagrange);
             }
 
             // force the next size reduction to be at least one tenth
-            final int low  = FastMath.max(iMin + 1, (9 * iMin + iMax) / 10);
+            final int low = FastMath.max(iMin + 1, (9 * iMin + iMax) / 10);
             final int high = FastMath.min(iMax - 1, (iMin + 9 * iMax) / 10);
             if (index < low) {
                 index = low;
@@ -322,8 +346,10 @@ public class DenseOutputModel implements ODEStepHandler, Serializable {
 
     }
 
-    /** Compare a step interval and a double.
-     * @param time point to locate
+    /**
+     * Compare a step interval and a double.
+     *
+     * @param time     point to locate
      * @param interval step interval
      * @return -1 if the double is before the interval, 0 if it is in
      * the interval, and +1 if it is after the interval, according to

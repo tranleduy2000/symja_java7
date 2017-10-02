@@ -5,6 +5,8 @@
 package edu.jas.arith;
 
 
+import org.apache.log4j.Logger;
+
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -13,8 +15,6 @@ import java.util.Random;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import org.apache.log4j.Logger;
-
 import edu.jas.structure.RingElem;
 import edu.jas.structure.RingFactory;
 
@@ -22,23 +22,20 @@ import edu.jas.structure.RingFactory;
 /**
  * Direct product ring factory based on RingElem and RingFactory module. Objects
  * of this class are <b>mutable</b>.
+ *
  * @author Heinz Kredel
  */
 public class ProductRing<C extends RingElem<C>> implements RingFactory<Product<C>> {
 
 
-    private static final Logger logger = Logger.getLogger(ProductRing.class);
+    /**
+     * A default random sequence generator.
+     */
+    protected final static Random random = new Random();
 
 
     //private static final boolean debug = logger.isDebugEnabled();
-
-
-    /**
-     * Ring factory is n copies.
-     */
-    protected int nCopies;
-
-
+    private static final Logger logger = Logger.getLogger(ProductRing.class);
     /**
      * One Ring factory.
      */
@@ -49,17 +46,16 @@ public class ProductRing<C extends RingElem<C>> implements RingFactory<Product<C
      * Ring factory list.
      */
     protected final List<RingFactory<C>> ringList;
-
-
     /**
-     * A default random sequence generator.
+     * Ring factory is n copies.
      */
-    protected final static Random random = new Random();
+    protected int nCopies;
 
 
     /**
      * The constructor creates a ProductRing object from an ring factory and a
      * modul.
+     *
      * @param r ring factory.
      * @param n number of copies.
      */
@@ -73,6 +69,7 @@ public class ProductRing<C extends RingElem<C>> implements RingFactory<Product<C
     /**
      * The constructor creates a ProductRing object from an ring factory and a
      * modul.
+     *
      * @param l list of ring factories.
      */
     public ProductRing(List<RingFactory<C>> l) {
@@ -84,6 +81,7 @@ public class ProductRing<C extends RingElem<C>> implements RingFactory<Product<C
 
     /**
      * Get ring factory at index i.
+     *
      * @param i index.
      * @return RingFactory_i.
      */
@@ -101,6 +99,7 @@ public class ProductRing<C extends RingElem<C>> implements RingFactory<Product<C
 
     /**
      * Add a ring factory.
+     *
      * @param rf new ring factory.
      */
     public synchronized void addFactory(RingFactory<C> rf) {
@@ -116,6 +115,7 @@ public class ProductRing<C extends RingElem<C>> implements RingFactory<Product<C
 
     /**
      * Contains a ring factory.
+     *
      * @param rf ring factory.
      * @return true, if rf is contained in this, else false.
      */
@@ -132,6 +132,7 @@ public class ProductRing<C extends RingElem<C>> implements RingFactory<Product<C
 
     /**
      * Is this structure finite or infinite.
+     *
      * @return true if this structure is finite, else false.
      * @see edu.jas.structure.ElemFactory#isFinite()
      */
@@ -151,6 +152,7 @@ public class ProductRing<C extends RingElem<C>> implements RingFactory<Product<C
 
     /**
      * Copy Product element c.
+     *
      * @param c
      * @return a copy of c.
      */
@@ -161,6 +163,7 @@ public class ProductRing<C extends RingElem<C>> implements RingFactory<Product<C
 
     /**
      * Get the zero element.
+     *
      * @return 0 as Product.
      */
     public Product<C> getZERO() {
@@ -170,6 +173,7 @@ public class ProductRing<C extends RingElem<C>> implements RingFactory<Product<C
 
     /**
      * Get the one element.
+     *
      * @return 1 as Product.
      */
     public Product<C> getONE() {
@@ -191,6 +195,7 @@ public class ProductRing<C extends RingElem<C>> implements RingFactory<Product<C
 
     /**
      * Get a list of the generating elements.
+     *
      * @return list of generators for the algebraic structure.
      * @see edu.jas.structure.ElemFactory#generators()
      */
@@ -218,6 +223,7 @@ public class ProductRing<C extends RingElem<C>> implements RingFactory<Product<C
 
     /**
      * Get an atomic element.
+     *
      * @param i index.
      * @return e_i as Product.
      */
@@ -238,6 +244,7 @@ public class ProductRing<C extends RingElem<C>> implements RingFactory<Product<C
 
     /**
      * Get the number of factors of this ring.
+     *
      * @return nCopies or ringList.size().
      */
     public int length() {
@@ -250,6 +257,7 @@ public class ProductRing<C extends RingElem<C>> implements RingFactory<Product<C
 
     /**
      * Query if this ring is commutative.
+     *
      * @return true if this ring is commutative, else false.
      */
     public boolean isCommutative() {
@@ -267,6 +275,7 @@ public class ProductRing<C extends RingElem<C>> implements RingFactory<Product<C
 
     /**
      * Query if this ring is associative.
+     *
      * @return true if this ring is associative, else false.
      */
     public boolean isAssociative() {
@@ -284,6 +293,7 @@ public class ProductRing<C extends RingElem<C>> implements RingFactory<Product<C
 
     /**
      * Query if this ring is a field.
+     *
      * @return true or false.
      */
     public boolean isField() {
@@ -302,6 +312,7 @@ public class ProductRing<C extends RingElem<C>> implements RingFactory<Product<C
 
     /**
      * Query if this ring consists only of fields.
+     *
      * @return true or false.
      */
     public boolean onlyFields() {
@@ -319,6 +330,7 @@ public class ProductRing<C extends RingElem<C>> implements RingFactory<Product<C
 
     /**
      * Characteristic of this ring.
+     *
      * @return minimal characteristic of ring component.
      */
     public java.math.BigInteger characteristic() {
@@ -343,6 +355,7 @@ public class ProductRing<C extends RingElem<C>> implements RingFactory<Product<C
 
     /**
      * Get a Product element from a BigInteger value.
+     *
      * @param a BigInteger.
      * @return a Product.
      */
@@ -366,6 +379,7 @@ public class ProductRing<C extends RingElem<C>> implements RingFactory<Product<C
 
     /**
      * Get a Product element from a long value.
+     *
      * @param a long.
      * @return a Product.
      */
@@ -376,6 +390,7 @@ public class ProductRing<C extends RingElem<C>> implements RingFactory<Product<C
 
     /**
      * Get the String representation as RingFactory.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -407,6 +422,7 @@ public class ProductRing<C extends RingElem<C>> implements RingFactory<Product<C
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this ElemFactory.
      * @see edu.jas.structure.ElemFactory#toScript()
      */
@@ -434,6 +450,7 @@ public class ProductRing<C extends RingElem<C>> implements RingFactory<Product<C
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -468,6 +485,7 @@ public class ProductRing<C extends RingElem<C>> implements RingFactory<Product<C
 
     /**
      * Hash code for this product ring.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -487,6 +505,7 @@ public class ProductRing<C extends RingElem<C>> implements RingFactory<Product<C
 
     /**
      * Product random.
+     *
      * @param n such that 0 &le; v &le; (2<sup>n</sup>-1).
      * @return a random product element v.
      */
@@ -497,6 +516,7 @@ public class ProductRing<C extends RingElem<C>> implements RingFactory<Product<C
 
     /**
      * Product random.
+     *
      * @param n such that 0 &le; v &le; (2<sup>n</sup>-1).
      * @param q density of nozero entries.
      * @return a random product element v.
@@ -508,7 +528,8 @@ public class ProductRing<C extends RingElem<C>> implements RingFactory<Product<C
 
     /**
      * Product random.
-     * @param n such that 0 &le; v &le; (2<sup>n</sup>-1).
+     *
+     * @param n   such that 0 &le; v &le; (2<sup>n</sup>-1).
      * @param rnd is a source for random bits.
      * @return a random product element v.
      */
@@ -519,8 +540,9 @@ public class ProductRing<C extends RingElem<C>> implements RingFactory<Product<C
 
     /**
      * Product random.
-     * @param n such that 0 &le; v &le; (2<sup>n</sup>-1).
-     * @param q density of nozero entries.
+     *
+     * @param n   such that 0 &le; v &le; (2<sup>n</sup>-1).
+     * @param q   density of nozero entries.
      * @param rnd is a source for random bits.
      * @return a random product element v.
      */
@@ -556,6 +578,7 @@ public class ProductRing<C extends RingElem<C>> implements RingFactory<Product<C
 
     /**
      * Parse Product from String.
+     *
      * @param s String.
      * @return Product from s.
      */
@@ -567,6 +590,7 @@ public class ProductRing<C extends RingElem<C>> implements RingFactory<Product<C
 
     /**
      * Parse Product from Reader. Syntax: p1 ... pn (no commas)
+     *
      * @param r Reader.
      * @return next Product from r.
      */

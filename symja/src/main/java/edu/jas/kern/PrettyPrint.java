@@ -7,6 +7,7 @@ package edu.jas.kern;
 
 /**
  * PrettyPrint, defines global pretty print status.
+ *
  * @author Heinz Kredel
  */
 
@@ -22,6 +23,7 @@ public class PrettyPrint {
 
     /**
      * isTrue.
+     *
      * @return true, if to use pretty printing, else false.
      */
     public static boolean isTrue() {

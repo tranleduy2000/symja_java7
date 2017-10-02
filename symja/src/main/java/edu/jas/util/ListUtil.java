@@ -15,6 +15,7 @@ import edu.jas.structure.UnaryFunctor;
 
 /**
  * List utilities. For example map functor on list elements.
+ *
  * @author Heinz Kredel
  */
 
@@ -29,6 +30,7 @@ public class ListUtil {
 
     /**
      * Map a unary function to the list.
+     *
      * @param f evaluation functor.
      * @return new list elements f(list(i)).
      */
@@ -54,9 +56,10 @@ public class ListUtil {
 
     /**
      * Tuple from lists.
+     *
      * @param A list of lists.
      * @return new list with tuples (a_1,...,an) with ai in Ai,
-     *         i=0,...,length(A)-1.
+     * i=0,...,length(A)-1.
      */
     public static <C> List<List<C>> tupleFromList(List<List<C>> A) {
         if (A == null) {
@@ -93,6 +96,7 @@ public class ListUtil {
 
     /**
      * Create a list of given length and content.
+     *
      * @param n length of new list
      * @param e object to be filled in
      * @return list (e, ..., e) of length n

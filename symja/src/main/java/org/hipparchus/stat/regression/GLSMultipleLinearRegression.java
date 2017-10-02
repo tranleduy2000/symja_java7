@@ -23,12 +23,12 @@ import org.hipparchus.linear.RealVector;
 
 /**
  * The GLS implementation of multiple linear regression.
- *
+ * <p>
  * GLS assumes a general covariance matrix Omega of the error
  * <pre>
  * u ~ N(0, Omega)
  * </pre>
- *
+ * <p>
  * Estimated by GLS,
  * <pre>
  * b=(X' Omega^-1 X)^-1X'Omega^-1 y
@@ -40,15 +40,21 @@ import org.hipparchus.linear.RealVector;
  */
 public class GLSMultipleLinearRegression extends AbstractMultipleLinearRegression {
 
-    /** Covariance matrix. */
+    /**
+     * Covariance matrix.
+     */
     private RealMatrix Omega;
 
-    /** Inverse of covariance matrix. */
+    /**
+     * Inverse of covariance matrix.
+     */
     private RealMatrix OmegaInverse;
 
-    /** Replace sample data, overriding any previous sample.
-     * @param y y values of the sample
-     * @param x x values of the sample
+    /**
+     * Replace sample data, overriding any previous sample.
+     *
+     * @param y          y values of the sample
+     * @param x          x values of the sample
      * @param covariance array representing the covariance matrix
      */
     public void newSampleData(double[] y, double[][] x, double[][] covariance) {
@@ -64,7 +70,7 @@ public class GLSMultipleLinearRegression extends AbstractMultipleLinearRegressio
      *
      * @param omega the [n,n] array representing the covariance
      */
-    protected void newCovarianceData(double[][] omega){
+    protected void newCovarianceData(double[][] omega) {
         this.Omega = new Array2DRowRealMatrix(omega);
         this.OmegaInverse = null;
     }
@@ -72,6 +78,7 @@ public class GLSMultipleLinearRegression extends AbstractMultipleLinearRegressio
     /**
      * Get the inverse of the covariance.
      * <p>The inverse of the covariance matrix is lazily evaluated and cached.</p>
+     *
      * @return inverse of the covariance
      */
     protected RealMatrix getOmegaInverse() {
@@ -86,6 +93,7 @@ public class GLSMultipleLinearRegression extends AbstractMultipleLinearRegressio
      * <pre>
      *  b=(X' Omega^-1 X)^-1X'Omega^-1 y
      * </pre>
+     *
      * @return beta
      */
     @Override
@@ -102,6 +110,7 @@ public class GLSMultipleLinearRegression extends AbstractMultipleLinearRegressio
      * <pre>
      *  Var(b)=(X' Omega^-1 X)^-1
      * </pre>
+     *
      * @return The beta variance matrix
      */
     @Override

@@ -22,26 +22,27 @@ package org.hipparchus.analysis.solvers;
  * Implements the <em>Illinois</em> method for root-finding (approximating
  * a zero of a univariate real function). It is a modified
  * {@link RegulaFalsiSolver <em>Regula Falsi</em>} method.
- *
+ * <p>
  * <p>Like the <em>Regula Falsi</em> method, convergence is guaranteed by
  * maintaining a bracketed solution. The <em>Illinois</em> method however,
  * should converge much faster than the original <em>Regula Falsi</em>
  * method. Furthermore, this implementation of the <em>Illinois</em> method
  * should not suffer from the same implementation issues as the <em>Regula
  * Falsi</em> method, which may fail to convergence in certain cases.</p>
- *
+ * <p>
  * <p>The <em>Illinois</em> method assumes that the function is continuous,
  * but not necessarily smooth.</p>
- *
+ * <p>
  * <p>Implementation based on the following article: M. Dowell and P. Jarratt,
  * <em>A modified regula falsi method for computing the root of an
  * equation</em>, BIT Numerical Mathematics, volume 11, number 2,
  * pages 168-174, Springer, 1971.</p>
- *
  */
 public class IllinoisSolver extends BaseSecantSolver {
 
-    /** Construct a solver with default accuracy (1e-6). */
+    /**
+     * Construct a solver with default accuracy (1e-6).
+     */
     public IllinoisSolver() {
         super(DEFAULT_ABSOLUTE_ACCURACY, Method.ILLINOIS);
     }
@@ -69,8 +70,8 @@ public class IllinoisSolver extends BaseSecantSolver {
     /**
      * Construct a solver.
      *
-     * @param relativeAccuracy Relative accuracy.
-     * @param absoluteAccuracy Absolute accuracy.
+     * @param relativeAccuracy      Relative accuracy.
+     * @param absoluteAccuracy      Absolute accuracy.
      * @param functionValueAccuracy Maximum function value error.
      */
     public IllinoisSolver(final double relativeAccuracy,

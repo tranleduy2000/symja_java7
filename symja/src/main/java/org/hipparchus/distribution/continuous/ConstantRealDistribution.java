@@ -25,9 +25,13 @@ import org.hipparchus.util.MathUtils;
  */
 public class ConstantRealDistribution extends AbstractRealDistribution {
 
-    /** Serialization ID */
+    /**
+     * Serialization ID
+     */
     private static final long serialVersionUID = 20160320L;
-    /** Constant value of the distribution */
+    /**
+     * Constant value of the distribution
+     */
     private final double value;
 
     /**
@@ -39,22 +43,28 @@ public class ConstantRealDistribution extends AbstractRealDistribution {
         this.value = value;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double density(double x) {
         return x == value ? 1 : 0;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public double cumulativeProbability(double x)  {
+    public double cumulativeProbability(double x) {
         return x < value ? 0 : 1;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double inverseCumulativeProbability(final double p)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         MathUtils.checkRangeInclusive(p, 0, 1);
         return value;
     }

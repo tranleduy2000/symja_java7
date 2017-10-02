@@ -21,7 +21,7 @@ package org.hipparchus.analysis.solvers;
  * Implements the <em>Regula Falsi</em> or <em>False position</em> method for
  * root-finding (approximating a zero of a univariate real function). It is a
  * modified {@link SecantSolver <em>Secant</em>} method.
- *
+ * <p>
  * <p>The <em>Regula Falsi</em> method is included for completeness, for
  * testing purposes, for educational purposes, for comparison to other
  * algorithms, etc. It is however <strong>not</strong> intended to be used
@@ -32,7 +32,7 @@ package org.hipparchus.analysis.solvers;
  * algorithms solve the fundamental issues of the original <em>Regula
  * Falsi</em> algorithm, and greatly out-performs it for most, if not all,
  * (practical) functions.
- *
+ * <p>
  * <p>Unlike the <em>Secant</em> method, the <em>Regula Falsi</em> guarantees
  * convergence, by maintaining a bracketed solution. Note however, that due to
  * the finite/limited precision of Java's {@link Double double} type, which is
@@ -41,19 +41,20 @@ package org.hipparchus.analysis.solvers;
  * in a {@code MathIllegalStateException} exception being thrown. In other words,
  * the algorithm theoretically guarantees convergence, but the implementation
  * does not.</p>
- *
+ * <p>
  * <p>The <em>Regula Falsi</em> method assumes that the function is continuous,
  * but not necessarily smooth.</p>
- *
+ * <p>
  * <p>Implementation based on the following article: M. Dowell and P. Jarratt,
  * <em>A modified regula falsi method for computing the root of an
  * equation</em>, BIT Numerical Mathematics, volume 11, number 2,
  * pages 168-174, Springer, 1971.</p>
- *
  */
 public class RegulaFalsiSolver extends BaseSecantSolver {
 
-    /** Construct a solver with default accuracy (1e-6). */
+    /**
+     * Construct a solver with default accuracy (1e-6).
+     */
     public RegulaFalsiSolver() {
         super(DEFAULT_ABSOLUTE_ACCURACY, Method.REGULA_FALSI);
     }
@@ -81,8 +82,8 @@ public class RegulaFalsiSolver extends BaseSecantSolver {
     /**
      * Construct a solver.
      *
-     * @param relativeAccuracy Relative accuracy.
-     * @param absoluteAccuracy Absolute accuracy.
+     * @param relativeAccuracy      Relative accuracy.
+     * @param absoluteAccuracy      Absolute accuracy.
      * @param functionValueAccuracy Maximum function value error.
      */
     public RegulaFalsiSolver(final double relativeAccuracy,

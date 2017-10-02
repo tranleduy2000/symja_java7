@@ -14,6 +14,7 @@ import edu.jas.structure.GcdRingElem;
 /**
  * Residue ring element based on GenPolynomial with RingElem interface. Objects
  * of this class are (nearly) immutable.
+ *
  * @author Heinz Kredel
  */
 public class Residue<C extends GcdRingElem<C>> implements GcdRingElem<Residue<C>> {
@@ -40,6 +41,7 @@ public class Residue<C extends GcdRingElem<C>> implements GcdRingElem<Residue<C>
 
     /**
      * The constructor creates a Residue object from a ring factory.
+     *
      * @param r residue ring factory.
      */
     public Residue(ResidueRing<C> r) {
@@ -50,6 +52,7 @@ public class Residue<C extends GcdRingElem<C>> implements GcdRingElem<Residue<C>
     /**
      * The constructor creates a Residue object from a ring factory and a
      * polynomial.
+     *
      * @param r residue ring factory.
      * @param a polynomial.
      */
@@ -61,6 +64,7 @@ public class Residue<C extends GcdRingElem<C>> implements GcdRingElem<Residue<C>
     /**
      * The constructor creates a Residue object from a ring factory, a
      * polynomial and an indicator if a is a unit.
+     *
      * @param r residue ring factory.
      * @param a polynomial.
      * @param u isunit indicator, -1, 0, 1.
@@ -68,7 +72,7 @@ public class Residue<C extends GcdRingElem<C>> implements GcdRingElem<Residue<C>
     public Residue(ResidueRing<C> r, GenPolynomial<C> a, int u) {
         ring = r;
         val = ring.ideal.normalform(a); //.monic() no go
-        if ( u == 0 || u == 1 ) {
+        if (u == 0 || u == 1) {
             isunit = u;
             return;
         }
@@ -80,10 +84,10 @@ public class Residue<C extends GcdRingElem<C>> implements GcdRingElem<Residue<C>
             isunit = 1;
             return;
         }
-        if ( val.isUnit() ) {
-           isunit = 1;
-           //} else { // not possible
-           //isunit = 0;
+        if (val.isUnit()) {
+            isunit = 1;
+            //} else { // not possible
+            //isunit = 0;
         }
         isunit = -1;
     }
@@ -91,6 +95,7 @@ public class Residue<C extends GcdRingElem<C>> implements GcdRingElem<Residue<C>
 
     /**
      * Get the corresponding element factory.
+     *
      * @return factory for this Element.
      * @see edu.jas.structure.Element#factory()
      */
@@ -101,6 +106,7 @@ public class Residue<C extends GcdRingElem<C>> implements GcdRingElem<Residue<C>
 
     /**
      * Clone this.
+     *
      * @see java.lang.Object#clone()
      */
     @Override
@@ -111,6 +117,7 @@ public class Residue<C extends GcdRingElem<C>> implements GcdRingElem<Residue<C>
 
     /**
      * Is Residue zero.
+     *
      * @return If this is 0 then true is returned, else false.
      * @see edu.jas.structure.RingElem#isZERO()
      */
@@ -121,6 +128,7 @@ public class Residue<C extends GcdRingElem<C>> implements GcdRingElem<Residue<C>
 
     /**
      * Is Residue one.
+     *
      * @return If this is 1 then true is returned, else false.
      * @see edu.jas.structure.RingElem#isONE()
      */
@@ -131,6 +139,7 @@ public class Residue<C extends GcdRingElem<C>> implements GcdRingElem<Residue<C>
 
     /**
      * Is Residue unit.
+     *
      * @return If this is a unit then true is returned, else false.
      * @see edu.jas.structure.RingElem#isUnit()
      */
@@ -154,6 +163,7 @@ public class Residue<C extends GcdRingElem<C>> implements GcdRingElem<Residue<C>
 
     /**
      * Is Residue a constant.
+     *
      * @return true if this.val is a constant polynomial, else false.
      */
     public boolean isConstant() {
@@ -163,6 +173,7 @@ public class Residue<C extends GcdRingElem<C>> implements GcdRingElem<Residue<C>
 
     /**
      * Get the String representation as RingElem.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -176,6 +187,7 @@ public class Residue<C extends GcdRingElem<C>> implements GcdRingElem<Residue<C>
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this Element.
      * @see edu.jas.structure.Element#toScript()
      */
@@ -190,6 +202,7 @@ public class Residue<C extends GcdRingElem<C>> implements GcdRingElem<Residue<C>
 
     /**
      * Get a scripting compatible string representation of the factory.
+     *
      * @return script compatible representation for this ElemFactory.
      * @see edu.jas.structure.Element#toScriptFactory()
      */
@@ -202,9 +215,10 @@ public class Residue<C extends GcdRingElem<C>> implements GcdRingElem<Residue<C>
 
     /**
      * Residue comparison.
+     *
      * @param b Residue.
      * @return sign(this-b), 0 means that this and b are equivalent in this
-     *         residue class ring.
+     * residue class ring.
      */
     @Override
     public int compareTo(Residue<C> b) {
@@ -218,9 +232,10 @@ public class Residue<C extends GcdRingElem<C>> implements GcdRingElem<Residue<C>
 
     /**
      * Comparison with any other object.
-     * @see java.lang.Object#equals(java.lang.Object)
+     *
      * @return true means that this and b are equivalent in this residue class
-     *         ring.
+     * ring.
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -242,6 +257,7 @@ public class Residue<C extends GcdRingElem<C>> implements GcdRingElem<Residue<C>
 
     /**
      * Hash code for this residue.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -255,6 +271,7 @@ public class Residue<C extends GcdRingElem<C>> implements GcdRingElem<Residue<C>
 
     /**
      * Residue absolute value.
+     *
      * @return the absolute value of this.
      * @see edu.jas.structure.RingElem#abs()
      */
@@ -265,6 +282,7 @@ public class Residue<C extends GcdRingElem<C>> implements GcdRingElem<Residue<C>
 
     /**
      * Residue summation.
+     *
      * @param S Residue.
      * @return this+S.
      */
@@ -275,6 +293,7 @@ public class Residue<C extends GcdRingElem<C>> implements GcdRingElem<Residue<C>
 
     /**
      * Residue negate.
+     *
      * @return -this.
      * @see edu.jas.structure.RingElem#negate()
      */
@@ -285,8 +304,9 @@ public class Residue<C extends GcdRingElem<C>> implements GcdRingElem<Residue<C>
 
     /**
      * Residue signum.
-     * @see edu.jas.structure.RingElem#signum()
+     *
      * @return signum(this).
+     * @see edu.jas.structure.RingElem#signum()
      */
     public int signum() {
         return val.signum();
@@ -295,6 +315,7 @@ public class Residue<C extends GcdRingElem<C>> implements GcdRingElem<Residue<C>
 
     /**
      * Residue subtraction.
+     *
      * @param S Residue.
      * @return this-S.
      */
@@ -305,6 +326,7 @@ public class Residue<C extends GcdRingElem<C>> implements GcdRingElem<Residue<C>
 
     /**
      * Residue division.
+     *
      * @param S Residue.
      * @return this/S.
      */
@@ -312,15 +334,16 @@ public class Residue<C extends GcdRingElem<C>> implements GcdRingElem<Residue<C>
         if (ring.isField()) {
             return multiply(S.inverse());
         }
-        GenPolynomial<C> x = PolyUtil.<C> basePseudoDivide(val, S.val);
+        GenPolynomial<C> x = PolyUtil.<C>basePseudoDivide(val, S.val);
         return new Residue<C>(ring, x);
     }
 
 
     /**
      * Residue inverse.
-     * @see edu.jas.structure.RingElem#inverse()
+     *
      * @return S with S = 1/this if defined.
+     * @see edu.jas.structure.RingElem#inverse()
      */
     public Residue<C> inverse() {
         GenPolynomial<C> x = ring.ideal.inverse(val);
@@ -330,18 +353,20 @@ public class Residue<C extends GcdRingElem<C>> implements GcdRingElem<Residue<C>
 
     /**
      * Residue remainder.
+     *
      * @param S Residue.
      * @return this - (this/S)*S.
      */
     public Residue<C> remainder(Residue<C> S) {
         //GenPolynomial<C> x = val.remainder( S.val );
-        GenPolynomial<C> x = PolyUtil.<C> baseSparsePseudoRemainder(val, S.val);
+        GenPolynomial<C> x = PolyUtil.<C>baseSparsePseudoRemainder(val, S.val);
         return new Residue<C>(ring, x);
     }
 
 
     /**
      * Residue multiplication.
+     *
      * @param S Residue.
      * @return this*S.
      */
@@ -359,6 +384,7 @@ public class Residue<C extends GcdRingElem<C>> implements GcdRingElem<Residue<C>
 
     /**
      * Residue monic.
+     *
      * @return this with monic value part.
      */
     public Residue<C> monic() {
@@ -368,8 +394,9 @@ public class Residue<C extends GcdRingElem<C>> implements GcdRingElem<Residue<C>
 
     /**
      * Greatest common divisor.
+     *
      * @param b other element.
-     * @return gcd(this,b).
+     * @return gcd(this, b).
      */
     public Residue<C> gcd(Residue<C> b) {
         GenPolynomial<C> x = ring.engine.gcd(val, b.val);
@@ -389,6 +416,7 @@ public class Residue<C extends GcdRingElem<C>> implements GcdRingElem<Residue<C>
     /**
      * Extended greatest common divisor. <b>Note: </b>Not implemented, throws
      * UnsupportedOperationException.
+     *
      * @param b other element.
      * @return [ gcd(this,b), c1, c2 ] with c1*this + c2*b = gcd(this,b).
      */

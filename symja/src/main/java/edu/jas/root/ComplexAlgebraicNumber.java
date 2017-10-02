@@ -20,12 +20,13 @@ import edu.jas.structure.NotInvertibleException;
 /**
  * Complex algebraic number class based on AlgebraicNumber. Objects of this
  * class are immutable.
+ *
  * @author Heinz Kredel
  */
 
 public class ComplexAlgebraicNumber<C extends GcdRingElem<C> & Rational>
                 /*extends AlgebraicNumber<C>*/
-                implements GcdRingElem<ComplexAlgebraicNumber<C>> {
+        implements GcdRingElem<ComplexAlgebraicNumber<C>> {
 
 
     /**
@@ -43,6 +44,7 @@ public class ComplexAlgebraicNumber<C extends GcdRingElem<C> & Rational>
     /**
      * The constructor creates a ComplexAlgebraicNumber object from
      * ComplexAlgebraicRing modul and a GenPolynomial value.
+     *
      * @param r ring ComplexAlgebraicRing<C>.
      * @param a value GenPolynomial<C>.
      */
@@ -55,6 +57,7 @@ public class ComplexAlgebraicNumber<C extends GcdRingElem<C> & Rational>
     /**
      * The constructor creates a ComplexAlgebraicNumber object from
      * ComplexAlgebraicRing modul and a AlgebraicNumber value.
+     *
      * @param r ring ComplexAlgebraicRing<C>.
      * @param a value AlgebraicNumber<C>.
      */
@@ -67,6 +70,7 @@ public class ComplexAlgebraicNumber<C extends GcdRingElem<C> & Rational>
     /**
      * The constructor creates a ComplexAlgebraicNumber object from a
      * GenPolynomial object module.
+     *
      * @param r ring ComplexAlgebraicRing<C>.
      */
     public ComplexAlgebraicNumber(ComplexAlgebraicRing<C> r) {
@@ -76,6 +80,7 @@ public class ComplexAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * Get the corresponding element factory.
+     *
      * @return factory for this Element.
      * @see edu.jas.structure.Element#factory()
      */
@@ -86,6 +91,7 @@ public class ComplexAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * Copy this.
+     *
      * @see edu.jas.structure.Element#copy()
      */
     @Override
@@ -96,6 +102,7 @@ public class ComplexAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * Is ComplexAlgebraicNumber zero.
+     *
      * @return If this is 0 then true is returned, else false.
      * @see edu.jas.structure.RingElem#isZERO()
      */
@@ -106,6 +113,7 @@ public class ComplexAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * Is ComplexAlgebraicNumber one.
+     *
      * @return If this is 1 then true is returned, else false.
      * @see edu.jas.structure.RingElem#isONE()
      */
@@ -116,6 +124,7 @@ public class ComplexAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * Is ComplexAlgebraicNumber unit.
+     *
      * @return If this is a unit then true is returned, else false.
      * @see edu.jas.structure.RingElem#isUnit()
      */
@@ -126,8 +135,9 @@ public class ComplexAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * Is ComplexAlgebraicNumber a root of unity.
+     *
      * @return true if |this**i| == 1, for some 0 &lt; i &le; deg(modul), else
-     *         false.
+     * false.
      */
     public boolean isRootOfUnity() {
         return number.isRootOfUnity();
@@ -136,6 +146,7 @@ public class ComplexAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * Get the String representation as RingElem.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -149,6 +160,7 @@ public class ComplexAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this Element.
      * @see edu.jas.structure.Element#toScript()
      */
@@ -161,6 +173,7 @@ public class ComplexAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * Get a scripting compatible string representation of the factory.
+     *
      * @return script compatible representation for this ElemFactory.
      * @see edu.jas.structure.Element#toScriptFactory()
      */
@@ -173,6 +186,7 @@ public class ComplexAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * ComplexAlgebraicNumber comparison.
+     *
      * @param b ComplexAlgebraicNumber.
      * @return sign(this-b).
      */
@@ -194,6 +208,7 @@ public class ComplexAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * ComplexAlgebraicNumber comparison.
+     *
      * @param b AlgebraicNumber.
      * @return polynomial sign(this-b).
      */
@@ -206,6 +221,7 @@ public class ComplexAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -227,6 +243,7 @@ public class ComplexAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * Hash code for this ComplexAlgebraicNumber.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -237,6 +254,7 @@ public class ComplexAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * ComplexAlgebraicNumber absolute value.
+     *
      * @return the absolute value of this.
      * @see edu.jas.structure.RingElem#abs()
      */
@@ -250,6 +268,7 @@ public class ComplexAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * ComplexAlgebraicNumber summation.
+     *
      * @param S ComplexAlgebraicNumber.
      * @return this+S.
      */
@@ -260,6 +279,7 @@ public class ComplexAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * ComplexAlgebraicNumber summation.
+     *
      * @param c complex polynomial.
      * @return this+c.
      */
@@ -270,6 +290,7 @@ public class ComplexAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * ComplexAlgebraicNumber summation.
+     *
      * @param c algebraic number.
      * @return this+c.
      */
@@ -280,6 +301,7 @@ public class ComplexAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * ComplexAlgebraicNumber summation.
+     *
      * @param c coefficient.
      * @return this+c.
      */
@@ -290,6 +312,7 @@ public class ComplexAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * ComplexAlgebraicNumber negate.
+     *
      * @return -this.
      * @see edu.jas.structure.RingElem#negate()
      */
@@ -300,6 +323,7 @@ public class ComplexAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * ComplexAlgebraicNumber subtraction.
+     *
      * @param S ComplexAlgebraicNumber.
      * @return this-S.
      */
@@ -310,6 +334,7 @@ public class ComplexAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * ComplexAlgebraicNumber division.
+     *
      * @param S ComplexAlgebraicNumber.
      * @return this/S.
      */
@@ -320,9 +345,10 @@ public class ComplexAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * ComplexAlgebraicNumber inverse.
-     * @see edu.jas.structure.RingElem#inverse()
-     * @throws NotInvertibleException if the element is not invertible.
+     *
      * @return S with S = 1/this if defined.
+     * @throws NotInvertibleException if the element is not invertible.
+     * @see edu.jas.structure.RingElem#inverse()
      */
     public ComplexAlgebraicNumber<C> inverse() {
         return new ComplexAlgebraicNumber<C>(ring, number.inverse());
@@ -331,6 +357,7 @@ public class ComplexAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * ComplexAlgebraicNumber remainder.
+     *
      * @param S ComplexAlgebraicNumber.
      * @return this - (this/S)*S.
      */
@@ -341,16 +368,18 @@ public class ComplexAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * Quotient and remainder by division of this by S.
+     *
      * @param S a ComplexAlgebraicNumber
      * @return [this/S, this - (this/S)*S].
      */
     public ComplexAlgebraicNumber<C>[] quotientRemainder(ComplexAlgebraicNumber<C> S) {
-        return new ComplexAlgebraicNumber[] { divide(S), remainder(S) };
+        return new ComplexAlgebraicNumber[]{divide(S), remainder(S)};
     }
 
 
     /**
      * ComplexAlgebraicNumber multiplication.
+     *
      * @param S ComplexAlgebraicNumber.
      * @return this*S.
      */
@@ -361,6 +390,7 @@ public class ComplexAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * ComplexAlgebraicNumber multiplication.
+     *
      * @param c coefficient.
      * @return this*c.
      */
@@ -371,6 +401,7 @@ public class ComplexAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * ComplexAlgebraicNumber multiplication.
+     *
      * @param c polynomial.
      * @return this*c.
      */
@@ -381,6 +412,7 @@ public class ComplexAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * ComplexAlgebraicNumber monic.
+     *
      * @return this with monic value part.
      */
     public ComplexAlgebraicNumber<C> monic() {
@@ -390,8 +422,9 @@ public class ComplexAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * ComplexAlgebraicNumber greatest common divisor.
+     *
      * @param S ComplexAlgebraicNumber.
-     * @return gcd(this,S).
+     * @return gcd(this, S).
      */
     public ComplexAlgebraicNumber<C> gcd(ComplexAlgebraicNumber<C> S) {
         return new ComplexAlgebraicNumber<C>(ring, number.gcd(S.number));
@@ -400,6 +433,7 @@ public class ComplexAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * ComplexAlgebraicNumber extended greatest common divisor.
+     *
      * @param S ComplexAlgebraicNumber.
      * @return [ gcd(this,S), a, b ] with a*this + b*S = gcd(this,S).
      */
@@ -416,8 +450,9 @@ public class ComplexAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * ComplexAlgebraicNumber signum.
-     * @see edu.jas.structure.RingElem#signum()
+     *
      * @return signum(this).
+     * @see edu.jas.structure.RingElem#signum()
      */
     public int signum() {
         try {
@@ -434,12 +469,13 @@ public class ComplexAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * ComplexAlgebraicNumber magnitude.
+     *
      * @return |this| as complex rational number.
      */
     public Complex<BigRational> magnitude() {
         try {
             Rectangle<C> v = ring.engine.invariantMagnitudeRectangle(ring.root, ring.algebraic.modul,
-                            number.val, ring.getEps());
+                    number.val, ring.getEps());
             ring.setRoot(v);
             //System.out.println("new v = " + v);
             Complex<C> ev = ring.engine.complexRectangleMagnitude(v, ring.algebraic.modul, number.val); //, ring.eps);
@@ -456,6 +492,7 @@ public class ComplexAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * ComplexAlgebraicNumber magnitude.
+     *
      * @return |this| as complex big decimal.
      */
     public Complex<BigDecimal> decimalMagnitude() {

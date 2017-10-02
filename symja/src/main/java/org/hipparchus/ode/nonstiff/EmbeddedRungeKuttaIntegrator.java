@@ -29,7 +29,7 @@ import org.hipparchus.util.FastMath;
 /**
  * This class implements the common part of all embedded Runge-Kutta
  * integrators for Ordinary Differential Equations.
- *
+ * <p>
  * <p>These methods are embedded explicit Runge-Kutta methods with two
  * sets of coefficients allowing to estimate the error, their Butcher
  * arrays are as follows :
@@ -44,11 +44,11 @@ import org.hipparchus.util.FastMath;
  *       |  b'1  b'2 ...   b's-1 b's
  * </pre>
  * </p>
- *
+ * <p>
  * <p>In fact, we rather use the array defined by ej = bj - b'j to
  * compute directly the error rather than computing two estimates and
  * then comparing them.</p>
- *
+ * <p>
  * <p>Some methods are qualified as <i>fsal</i> (first same as last)
  * methods. This means the last evaluation of the derivatives in one
  * step is the same as the first in the next step. Then, this
@@ -58,47 +58,64 @@ import org.hipparchus.util.FastMath;
  * the step is rejected after the error estimation phase, no
  * evaluation is saved. For an <i>fsal</i> method, we have cs = 1 and
  * asi = bi for all i.</p>
- *
  */
 
 public abstract class EmbeddedRungeKuttaIntegrator
-    extends AdaptiveStepsizeIntegrator
-    implements ButcherArrayProvider {
+        extends AdaptiveStepsizeIntegrator
+        implements ButcherArrayProvider {
 
-    /** Index of the pre-computed derivative for <i>fsal</i> methods. */
+    /**
+     * Index of the pre-computed derivative for <i>fsal</i> methods.
+     */
     private final int fsal;
 
-    /** Time steps from Butcher array (without the first zero). */
+    /**
+     * Time steps from Butcher array (without the first zero).
+     */
     private final double[] c;
 
-    /** Internal weights from Butcher array (without the first empty row). */
+    /**
+     * Internal weights from Butcher array (without the first empty row).
+     */
     private final double[][] a;
 
-    /** External weights for the high order method from Butcher array. */
+    /**
+     * External weights for the high order method from Butcher array.
+     */
     private final double[] b;
 
-    /** Stepsize control exponent. */
+    /**
+     * Stepsize control exponent.
+     */
     private final double exp;
 
-    /** Safety factor for stepsize control. */
+    /**
+     * Safety factor for stepsize control.
+     */
     private double safety;
 
-    /** Minimal reduction factor for stepsize control. */
+    /**
+     * Minimal reduction factor for stepsize control.
+     */
     private double minReduction;
 
-    /** Maximal growth factor for stepsize control. */
+    /**
+     * Maximal growth factor for stepsize control.
+     */
     private double maxGrowth;
 
-    /** Build a Runge-Kutta integrator with the given Butcher array.
-     * @param name name of the method
-     * @param fsal index of the pre-computed derivative for <i>fsal</i> methods
-     * or -1 if method is not <i>fsal</i>
-     * @param minStep minimal step (sign is irrelevant, regardless of
-     * integration direction, forward or backward), the last step can
-     * be smaller than this
-     * @param maxStep maximal step (sign is irrelevant, regardless of
-     * integration direction, forward or backward), the last step can
-     * be smaller than this
+    /**
+     * Build a Runge-Kutta integrator with the given Butcher array.
+     *
+     * @param name                  name of the method
+     * @param fsal                  index of the pre-computed derivative for <i>fsal</i> methods
+     *                              or -1 if method is not <i>fsal</i>
+     * @param minStep               minimal step (sign is irrelevant, regardless of
+     *                              integration direction, forward or backward), the last step can
+     *                              be smaller than this
+     * @param maxStep               maximal step (sign is irrelevant, regardless of
+     *                              integration direction, forward or backward), the last step can
+     *                              be smaller than this
      * @param scalAbsoluteTolerance allowed absolute error
      * @param scalRelativeTolerance allowed relative error
      */
@@ -110,9 +127,9 @@ public abstract class EmbeddedRungeKuttaIntegrator
         super(name, minStep, maxStep, scalAbsoluteTolerance, scalRelativeTolerance);
 
         this.fsal = fsal;
-        this.c    = getC();
-        this.a    = getA();
-        this.b    = getB();
+        this.c = getC();
+        this.a = getA();
+        this.b = getB();
 
         exp = -1.0 / getOrder();
 
@@ -123,28 +140,30 @@ public abstract class EmbeddedRungeKuttaIntegrator
 
     }
 
-    /** Build a Runge-Kutta integrator with the given Butcher array.
-     * @param name name of the method
-     * @param fsal index of the pre-computed derivative for <i>fsal</i> methods
-     * or -1 if method is not <i>fsal</i>
-     * @param minStep minimal step (must be positive even for backward
-     * integration), the last step can be smaller than this
-     * @param maxStep maximal step (must be positive even for backward
-     * integration)
+    /**
+     * Build a Runge-Kutta integrator with the given Butcher array.
+     *
+     * @param name                 name of the method
+     * @param fsal                 index of the pre-computed derivative for <i>fsal</i> methods
+     *                             or -1 if method is not <i>fsal</i>
+     * @param minStep              minimal step (must be positive even for backward
+     *                             integration), the last step can be smaller than this
+     * @param maxStep              maximal step (must be positive even for backward
+     *                             integration)
      * @param vecAbsoluteTolerance allowed absolute error
      * @param vecRelativeTolerance allowed relative error
      */
     protected EmbeddedRungeKuttaIntegrator(final String name, final int fsal,
-                                           final double   minStep, final double maxStep,
+                                           final double minStep, final double maxStep,
                                            final double[] vecAbsoluteTolerance,
                                            final double[] vecRelativeTolerance) {
 
         super(name, minStep, maxStep, vecAbsoluteTolerance, vecRelativeTolerance);
 
         this.fsal = fsal;
-        this.c    = getC();
-        this.a    = getA();
-        this.b    = getB();
+        this.c = getC();
+        this.a = getA();
+        this.b = getB();
 
         exp = -1.0 / getOrder();
 
@@ -155,54 +174,65 @@ public abstract class EmbeddedRungeKuttaIntegrator
 
     }
 
-    /** Create an interpolator.
-     * @param forward integration direction indicator
-     * @param yDotK slopes at the intermediate points
+    /**
+     * Create an interpolator.
+     *
+     * @param forward             integration direction indicator
+     * @param yDotK               slopes at the intermediate points
      * @param globalPreviousState start of the global step
-     * @param globalCurrentState end of the global step
-     * @param mapper equations mapper for the all equations
+     * @param globalCurrentState  end of the global step
+     * @param mapper              equations mapper for the all equations
      * @return external weights for the high order method from Butcher array
      */
     protected abstract RungeKuttaStateInterpolator createInterpolator(boolean forward, double[][] yDotK,
-                                                                     ODEStateAndDerivative globalPreviousState,
-                                                                     ODEStateAndDerivative globalCurrentState,
-                                                                     EquationsMapper mapper);
-    /** Get the order of the method.
+                                                                      ODEStateAndDerivative globalPreviousState,
+                                                                      ODEStateAndDerivative globalCurrentState,
+                                                                      EquationsMapper mapper);
+
+    /**
+     * Get the order of the method.
+     *
      * @return order of the method
      */
     public abstract int getOrder();
 
-    /** Get the safety factor for stepsize control.
+    /**
+     * Get the safety factor for stepsize control.
+     *
      * @return safety factor
      */
     public double getSafety() {
         return safety;
     }
 
-    /** Set the safety factor for stepsize control.
+    /**
+     * Set the safety factor for stepsize control.
+     *
      * @param safety safety factor
      */
     public void setSafety(final double safety) {
         this.safety = safety;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ODEStateAndDerivative integrate(final ExpandableODE equations,
                                            final ODEState initialState, final double finalTime)
-        throws MathIllegalArgumentException, MathIllegalStateException {
+            throws MathIllegalArgumentException, MathIllegalStateException {
 
         sanityChecks(initialState, finalTime);
         setStepStart(initIntegration(equations, initialState, finalTime));
         final boolean forward = finalTime > initialState.getTime();
 
         // create some internal working arrays
-        final int        stages  = c.length + 1;
-        final double[][] yDotK   = new double[stages][];
-        final double[]   yTmp    = new double[equations.getMapper().getTotalDimension()];
+        final int stages = c.length + 1;
+        final double[][] yDotK = new double[stages][];
+        final double[] yTmp = new double[equations.getMapper().getTotalDimension()];
 
         // set up integration control objects
-        double  hNew      = 0;
+        double hNew = 0;
         boolean firstTime = true;
 
         // main integration loop
@@ -247,22 +277,22 @@ public abstract class EmbeddedRungeKuttaIntegrator
                 for (int k = 1; k < stages; ++k) {
 
                     for (int j = 0; j < y.length; ++j) {
-                        double sum = a[k-1][0] * yDotK[0][j];
+                        double sum = a[k - 1][0] * yDotK[0][j];
                         for (int l = 1; l < k; ++l) {
-                            sum += a[k-1][l] * yDotK[l][j];
+                            sum += a[k - 1][l] * yDotK[l][j];
                         }
                         yTmp[j] = y[j] + getStepSize() * sum;
                     }
 
-                    yDotK[k] = computeDerivatives(getStepStart().getTime() + c[k-1] * getStepSize(), yTmp);
+                    yDotK[k] = computeDerivatives(getStepStart().getTime() + c[k - 1] * getStepSize(), yTmp);
 
                 }
 
                 // estimate the state at the end of the step
                 for (int j = 0; j < y.length; ++j) {
-                    double sum    = b[0] * yDotK[0][j];
+                    double sum = b[0] * yDotK[0][j];
                     for (int l = 1; l < stages; ++l) {
-                        sum    += b[l] * yDotK[l][j];
+                        sum += b[l] * yDotK[l][j];
                     }
                     yTmp[j] = y[j] + getStepSize() * sum;
                 }
@@ -271,36 +301,36 @@ public abstract class EmbeddedRungeKuttaIntegrator
                 error = estimateError(yDotK, y, yTmp, getStepSize());
                 if (Double.isNaN(error)) {
                     throw new MathIllegalStateException(LocalizedODEFormats.NAN_APPEARING_DURING_INTEGRATION,
-                                                        getStepStart().getTime() + getStepSize());
+                            getStepStart().getTime() + getStepSize());
                 }
                 if (error >= 1.0) {
                     // reject the step and attempt to reduce error by stepsize control
                     final double factor =
-                                    FastMath.min(maxGrowth,
-                                                 FastMath.max(minReduction, safety * FastMath.pow(error, exp)));
+                            FastMath.min(maxGrowth,
+                                    FastMath.max(minReduction, safety * FastMath.pow(error, exp)));
                     hNew = filterStep(getStepSize() * factor, forward, false);
                 }
 
             }
-            final double   stepEnd = getStepStart().getTime() + getStepSize();
+            final double stepEnd = getStepStart().getTime() + getStepSize();
             final double[] yDotTmp = (fsal >= 0) ? yDotK[fsal] : computeDerivatives(stepEnd, yTmp);
             final ODEStateAndDerivative stateTmp = equations.getMapper().mapStateAndDerivative(stepEnd, yTmp, yDotTmp);
 
             // local error is small enough: accept the step, trigger events and step handlers
             setStepStart(acceptStep(createInterpolator(forward, yDotK, getStepStart(), stateTmp, equations.getMapper()),
-                                    finalTime));
+                    finalTime));
 
             if (!isLastStep()) {
 
                 // stepsize control for next step
                 final double factor =
-                                FastMath.min(maxGrowth, FastMath.max(minReduction, safety * FastMath.pow(error, exp)));
-                final double  scaledH    = getStepSize() * factor;
-                final double  nextT      = getStepStart().getTime() + scaledH;
+                        FastMath.min(maxGrowth, FastMath.max(minReduction, safety * FastMath.pow(error, exp)));
+                final double scaledH = getStepSize() * factor;
+                final double nextT = getStepStart().getTime() + scaledH;
                 final boolean nextIsLast = forward ? (nextT >= finalTime) : (nextT <= finalTime);
                 hNew = filterStep(scaledH, forward, nextIsLast);
 
-                final double  filteredNextT      = getStepStart().getTime() + hNew;
+                final double filteredNextT = getStepStart().getTime() + hNew;
                 final boolean filteredNextIsLast = forward ? (filteredNextT >= finalTime) : (filteredNextT <= finalTime);
                 if (filteredNextIsLast) {
                     hNew = finalTime - getStepStart().getTime();
@@ -316,39 +346,49 @@ public abstract class EmbeddedRungeKuttaIntegrator
 
     }
 
-    /** Get the minimal reduction factor for stepsize control.
+    /**
+     * Get the minimal reduction factor for stepsize control.
+     *
      * @return minimal reduction factor
      */
     public double getMinReduction() {
         return minReduction;
     }
 
-    /** Set the minimal reduction factor for stepsize control.
+    /**
+     * Set the minimal reduction factor for stepsize control.
+     *
      * @param minReduction minimal reduction factor
      */
     public void setMinReduction(final double minReduction) {
         this.minReduction = minReduction;
     }
 
-    /** Get the maximal growth factor for stepsize control.
+    /**
+     * Get the maximal growth factor for stepsize control.
+     *
      * @return maximal growth factor
      */
     public double getMaxGrowth() {
         return maxGrowth;
     }
 
-    /** Set the maximal growth factor for stepsize control.
+    /**
+     * Set the maximal growth factor for stepsize control.
+     *
      * @param maxGrowth maximal growth factor
      */
     public void setMaxGrowth(final double maxGrowth) {
         this.maxGrowth = maxGrowth;
     }
 
-    /** Compute the error ratio.
+    /**
+     * Compute the error ratio.
+     *
      * @param yDotK derivatives computed during the first stages
-     * @param y0 estimate of the step at the start of the step
-     * @param y1 estimate of the step at the end of the step
-     * @param h  current step
+     * @param y0    estimate of the step at the start of the step
+     * @param y1    estimate of the step at the end of the step
+     * @param h     current step
      * @return error ratio, greater than 1 if step should be rejected
      */
     protected abstract double estimateError(double[][] yDotK,

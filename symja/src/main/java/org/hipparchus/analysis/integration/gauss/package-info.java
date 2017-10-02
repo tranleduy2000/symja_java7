@@ -15,8 +15,6 @@
  * limitations under the License.
  */
 /**
- *
  * Gauss family of quadrature schemes.
- *
  */
 package org.hipparchus.analysis.integration.gauss;

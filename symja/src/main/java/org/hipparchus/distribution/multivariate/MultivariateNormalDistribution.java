@@ -34,16 +34,26 @@ import org.hipparchus.util.FastMath;
  * Multivariate normal distribution (MathWorld)</a>
  */
 public class MultivariateNormalDistribution
-    extends AbstractMultivariateRealDistribution {
-    /** Vector of means. */
+        extends AbstractMultivariateRealDistribution {
+    /**
+     * Vector of means.
+     */
     private final double[] means;
-    /** Covariance matrix. */
+    /**
+     * Covariance matrix.
+     */
     private final RealMatrix covarianceMatrix;
-    /** The matrix inverse of the covariance matrix. */
+    /**
+     * The matrix inverse of the covariance matrix.
+     */
     private final RealMatrix covarianceMatrixInverse;
-    /** The determinant of the covariance matrix. */
+    /**
+     * The determinant of the covariance matrix.
+     */
     private final double covarianceMatrixDeterminant;
-    /** Matrix used in computation of samples. */
+    /**
+     * Matrix used in computation of samples.
+     */
     private final RealMatrix samplingMatrix;
 
     /**
@@ -61,18 +71,18 @@ public class MultivariateNormalDistribution
      * as random generator via the appropriate constructors to avoid the
      * additional initialisation overhead.
      *
-     * @param means Vector of means.
+     * @param means       Vector of means.
      * @param covariances Covariance matrix.
      * @throws MathIllegalArgumentException if the arrays length are
-     * inconsistent.
+     *                                      inconsistent.
      * @throws MathIllegalArgumentException if the eigenvalue decomposition cannot
-     * be performed on the provided covariance matrix.
+     *                                      be performed on the provided covariance matrix.
      * @throws MathIllegalArgumentException if any of the eigenvalues is
-     * negative.
+     *                                      negative.
      */
     public MultivariateNormalDistribution(final double[] means,
                                           final double[][] covariances)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         this(new Well19937c(), means, covariances);
     }
 
@@ -84,15 +94,15 @@ public class MultivariateNormalDistribution
      * and to the number of rows and columns of the covariance matrix.
      * It is frequently written as "p" in formulae.
      *
-     * @param rng Random Number Generator.
-     * @param means Vector of means.
+     * @param rng         Random Number Generator.
+     * @param means       Vector of means.
      * @param covariances Covariance matrix.
      * @throws MathIllegalArgumentException if the arrays length are
-     * inconsistent.
+     *                                      inconsistent.
      * @throws MathIllegalArgumentException if the eigenvalue decomposition cannot
-     * be performed on the provided covariance matrix.
+     *                                      be performed on the provided covariance matrix.
      * @throws MathIllegalArgumentException if any of the eigenvalues is
-     * negative.
+     *                                      negative.
      */
     public MultivariateNormalDistribution(RandomGenerator rng,
                                           final double[] means,
@@ -104,13 +114,13 @@ public class MultivariateNormalDistribution
 
         if (covariances.length != dim) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.DIMENSIONS_MISMATCH,
-                                                   covariances.length, dim);
+                    covariances.length, dim);
         }
 
         for (int i = 0; i < dim; i++) {
             if (dim != covariances[i].length) {
                 throw new MathIllegalArgumentException(LocalizedCoreFormats.DIMENSIONS_MISMATCH,
-                                                       covariances[i].length, dim);
+                        covariances[i].length, dim);
             }
         }
 
@@ -173,18 +183,20 @@ public class MultivariateNormalDistribution
         return covarianceMatrix.copy();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double density(final double[] vals) throws MathIllegalArgumentException {
         final int dim = getDimension();
         if (vals.length != dim) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.DIMENSIONS_MISMATCH,
-                                                   vals.length, dim);
+                    vals.length, dim);
         }
 
         return FastMath.pow(2 * FastMath.PI, -0.5 * dim) *
-            FastMath.pow(covarianceMatrixDeterminant, -0.5) *
-            getExponentTerm(vals);
+                FastMath.pow(covarianceMatrixDeterminant, -0.5) *
+                getExponentTerm(vals);
     }
 
     /**
@@ -203,7 +215,9 @@ public class MultivariateNormalDistribution
         return std;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double[] sample() {
         final int dim = getDimension();

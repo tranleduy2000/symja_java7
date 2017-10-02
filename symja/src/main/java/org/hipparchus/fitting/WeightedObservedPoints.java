@@ -16,22 +16,25 @@
  */
 package org.hipparchus.fitting;
 
-import java.util.List;
-import java.util.ArrayList;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Simple container for weighted observed points used
  * in {@link AbstractCurveFitter curve fitting} algorithms.
- *
  */
 public class WeightedObservedPoints implements Serializable {
-    /** Serializable version id. */
+    /**
+     * Serializable version id.
+     */
     private static final long serialVersionUID = 20130813L;
 
-    /** Observed points. */
+    /**
+     * Observed points.
+     */
     private final List<WeightedObservedPoint> observations
-        = new ArrayList<WeightedObservedPoint>();
+            = new ArrayList<WeightedObservedPoint>();
 
     /**
      * Adds a point to the sample.
@@ -40,8 +43,7 @@ public class WeightedObservedPoints implements Serializable {
      *
      * @param x Abscissa of the point.
      * @param y Observed value  at {@code x}. After fitting we should
-     * have {@code f(x)} as close as possible to this value.
-     *
+     *          have {@code f(x)} as close as possible to this value.
      * @see #add(double, double, double)
      * @see #add(WeightedObservedPoint)
      * @see #toList()
@@ -54,10 +56,9 @@ public class WeightedObservedPoints implements Serializable {
      * Adds a point to the sample.
      *
      * @param weight Weight of the observed point.
-     * @param x Abscissa of the point.
-     * @param y Observed value  at {@code x}. After fitting we should
-     * have {@code f(x)} as close as possible to this value.
-     *
+     * @param x      Abscissa of the point.
+     * @param y      Observed value  at {@code x}. After fitting we should
+     *               have {@code f(x)} as close as possible to this value.
      * @see #add(double, double)
      * @see #add(WeightedObservedPoint)
      * @see #toList()
@@ -70,7 +71,6 @@ public class WeightedObservedPoints implements Serializable {
      * Adds a point to the sample.
      *
      * @param observed Observed point to add.
-     *
      * @see #add(double, double)
      * @see #add(double, double, double)
      * @see #toList()
@@ -90,7 +90,6 @@ public class WeightedObservedPoints implements Serializable {
      *
      * @return the observed points, in the order they were added to this
      * container.
-     *
      * @see #add(double, double)
      * @see #add(double, double, double)
      * @see #add(WeightedObservedPoint)

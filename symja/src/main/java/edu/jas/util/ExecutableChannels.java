@@ -5,16 +5,16 @@
 package edu.jas.util;
 
 
+import org.apache.log4j.Logger;
+
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileInputStream;
-import java.io.InputStreamReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.log4j.Logger;
 
 
 // import edu.unima.ky.parallel.ChannelFactory;
@@ -22,6 +22,7 @@ import org.apache.log4j.Logger;
 
 /**
  * ExecutableChannels used to receive and execute classes.
+ *
  * @author Heinz Kredel
  */
 
@@ -29,21 +30,15 @@ import org.apache.log4j.Logger;
 public class ExecutableChannels {
 
 
-    private static final Logger logger = Logger.getLogger(ExecutableChannels.class);
-
-
     /**
      * default port.
      */
     protected final static int DEFAULT_PORT = 7114; //ChannelFactory.DEFAULT_PORT;
-
-
     /**
      * default machine file.
      */
     protected final static String DEFAULT_MFILE = "examples/machines.test";
-
-
+    private static final Logger logger = Logger.getLogger(ExecutableChannels.class);
     protected final ChannelFactory cf;
 
 
@@ -67,6 +62,7 @@ public class ExecutableChannels {
 
     /**
      * Constructor from array of server:port strings.
+     *
      * @param srvs A String array.
      */
     public ExecutableChannels(String[] srvs) {
@@ -84,6 +80,7 @@ public class ExecutableChannels {
 
     /**
      * Constructor from machine file.
+     *
      * @param mfile
      * @throws FileNotFoundException.
      */
@@ -92,7 +89,7 @@ public class ExecutableChannels {
         if (mfile == null || mfile.length() == 0) {
             mfile = DEFAULT_MFILE;
         }
-        InputStreamReader isr = new InputStreamReader(new FileInputStream(mfile),Charset.forName("UTF8"));
+        InputStreamReader isr = new InputStreamReader(new FileInputStream(mfile), Charset.forName("UTF8"));
         BufferedReader in = new BufferedReader(isr);
         String line = null;
         List<String> list = new ArrayList<String>();
@@ -228,6 +225,7 @@ public class ExecutableChannels {
 
     /**
      * open, setup of SocketChannels.
+     *
      * @throws IOException.
      */
     public void open() throws IOException {
@@ -245,6 +243,7 @@ public class ExecutableChannels {
     /**
      * open, setup of SocketChannels. If nc &gt; servers.length open in round
      * robin fashion.
+     *
      * @param nc number of channels to open.
      * @throws IOException.
      */
@@ -294,6 +293,7 @@ public class ExecutableChannels {
 
     /**
      * getChannel.
+     *
      * @param i channel number.
      */
     public SocketChannel getChannel(int i) {
@@ -314,6 +314,7 @@ public class ExecutableChannels {
 
     /**
      * send on channel i.
+     *
      * @param i channel number.
      * @param o object to send.
      */
@@ -326,6 +327,7 @@ public class ExecutableChannels {
 
     /**
      * recieve on channel i.
+     *
      * @param i channel number.
      * @return object recieved.
      */

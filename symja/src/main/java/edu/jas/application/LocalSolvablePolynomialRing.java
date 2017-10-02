@@ -5,6 +5,8 @@
 package edu.jas.application;
 
 
+import org.apache.log4j.Logger;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
@@ -13,8 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.kern.PrettyPrint;
 import edu.jas.kern.Scripting;
@@ -42,13 +42,14 @@ import edu.jas.structure.RingFactory;
  * coefficients and the main variables are maintained in a coefficient relation
  * table. Almost immutable object, except variable names and relation table
  * contents.
+ *
  * @param <C> coefficient type.
  * @author Heinz Kredel
- * will be deprecated use QLRSolvablePolynomialRing
+ *         will be deprecated use QLRSolvablePolynomialRing
  */
 
 public class LocalSolvablePolynomialRing<C extends GcdRingElem<C>> extends
-                GenSolvablePolynomialRing<SolvableLocal<C>> {
+        GenSolvablePolynomialRing<SolvableLocal<C>> {
 
 
     /*
@@ -57,25 +58,19 @@ public class LocalSolvablePolynomialRing<C extends GcdRingElem<C>> extends
     //public final RelationTable<GenPolynomial<C>> coeffTable;
 
 
+    private static final Logger logger = Logger.getLogger(LocalSolvablePolynomialRing.class);
     /**
      * Recursive solvable polynomial ring with polynomial coefficients.
      */
     public final RecSolvablePolynomialRing<C> polCoeff;
-
-
     /**
      * The constant polynomial 0 for this ring. Hides super ZERO.
      */
     public final LocalSolvablePolynomial<C> ZERO;
-
-
     /**
      * The constant polynomial 1 for this ring. Hides super ONE.
      */
     public final LocalSolvablePolynomial<C> ONE;
-
-
-    private static final Logger logger = Logger.getLogger(LocalSolvablePolynomialRing.class);
 
 
     //private static final boolean debug = logger.isDebugEnabled();
@@ -84,8 +79,9 @@ public class LocalSolvablePolynomialRing<C extends GcdRingElem<C>> extends
     /**
      * The constructor creates a solvable polynomial factory object with the
      * default term order and commutative relations.
+     *
      * @param cf factory for coefficients of type C.
-     * @param n number of variables.
+     * @param n  number of variables.
      */
     public LocalSolvablePolynomialRing(RingFactory<SolvableLocal<C>> cf, int n) {
         this(cf, n, new TermOrder(), null, null);
@@ -95,12 +91,13 @@ public class LocalSolvablePolynomialRing<C extends GcdRingElem<C>> extends
     /**
      * The constructor creates a solvable polynomial factory object with the
      * default term order.
+     *
      * @param cf factory for coefficients of type C.
-     * @param n number of variables.
+     * @param n  number of variables.
      * @param rt solvable multiplication relations.
      */
     public LocalSolvablePolynomialRing(RingFactory<SolvableLocal<C>> cf, int n,
-                    RelationTable<SolvableLocal<C>> rt) {
+                                       RelationTable<SolvableLocal<C>> rt) {
         this(cf, n, new TermOrder(), null, rt);
     }
 
@@ -108,9 +105,10 @@ public class LocalSolvablePolynomialRing<C extends GcdRingElem<C>> extends
     /**
      * The constructor creates a solvable polynomial factory object with the
      * given term order and commutative relations.
+     *
      * @param cf factory for coefficients of type C.
-     * @param n number of variables.
-     * @param t a term order.
+     * @param n  number of variables.
+     * @param t  a term order.
      */
     public LocalSolvablePolynomialRing(RingFactory<SolvableLocal<C>> cf, int n, TermOrder t) {
         this(cf, n, t, null, null);
@@ -120,13 +118,14 @@ public class LocalSolvablePolynomialRing<C extends GcdRingElem<C>> extends
     /**
      * The constructor creates a solvable polynomial factory object with the
      * given term order.
+     *
      * @param cf factory for coefficients of type C.
-     * @param n number of variables.
-     * @param t a term order.
+     * @param n  number of variables.
+     * @param t  a term order.
      * @param rt solvable multiplication relations.
      */
     public LocalSolvablePolynomialRing(RingFactory<SolvableLocal<C>> cf, int n, TermOrder t,
-                    RelationTable<SolvableLocal<C>> rt) {
+                                       RelationTable<SolvableLocal<C>> rt) {
         this(cf, n, t, null, rt);
     }
 
@@ -134,10 +133,11 @@ public class LocalSolvablePolynomialRing<C extends GcdRingElem<C>> extends
     /**
      * The constructor creates a solvable polynomial factory object with the
      * given term order and commutative relations.
+     *
      * @param cf factory for coefficients of type C.
-     * @param n number of variables.
-     * @param t a term order.
-     * @param v names for the variables.
+     * @param n  number of variables.
+     * @param t  a term order.
+     * @param v  names for the variables.
      */
     public LocalSolvablePolynomialRing(RingFactory<SolvableLocal<C>> cf, int n, TermOrder t, String[] v) {
         this(cf, n, t, v, null);
@@ -147,9 +147,10 @@ public class LocalSolvablePolynomialRing<C extends GcdRingElem<C>> extends
     /**
      * The constructor creates a solvable polynomial factory object with the
      * given term order and commutative relations.
+     *
      * @param cf factory for coefficients of type C.
-     * @param t a term order.
-     * @param v names for the variables.
+     * @param t  a term order.
+     * @param v  names for the variables.
      */
     public LocalSolvablePolynomialRing(RingFactory<SolvableLocal<C>> cf, TermOrder t, String[] v) {
         this(cf, v.length, t, v, null);
@@ -159,8 +160,9 @@ public class LocalSolvablePolynomialRing<C extends GcdRingElem<C>> extends
     /**
      * The constructor creates a solvable polynomial factory object with the
      * default term order.
+     *
      * @param cf factory for coefficients of type C.
-     * @param v names for the variables.
+     * @param v  names for the variables.
      */
     public LocalSolvablePolynomialRing(RingFactory<SolvableLocal<C>> cf, String[] v) {
         this(cf, v.length, new TermOrder(), v, null);
@@ -170,14 +172,15 @@ public class LocalSolvablePolynomialRing<C extends GcdRingElem<C>> extends
     /**
      * The constructor creates a solvable polynomial factory object with the
      * given term order.
+     *
      * @param cf factory for coefficients of type C.
-     * @param n number of variables.
-     * @param t a term order.
-     * @param v names for the variables.
+     * @param n  number of variables.
+     * @param t  a term order.
+     * @param v  names for the variables.
      * @param rt solvable multiplication relations.
      */
     public LocalSolvablePolynomialRing(RingFactory<SolvableLocal<C>> cf, int n, TermOrder t, String[] v,
-                    RelationTable<SolvableLocal<C>> rt) {
+                                       RelationTable<SolvableLocal<C>> rt) {
         super(cf, n, t, v, rt);
         //if (rt == null) { // handled in super }
         SolvableLocalRing<C> cfring = (SolvableLocalRing<C>) cf; // == coFac
@@ -201,8 +204,9 @@ public class LocalSolvablePolynomialRing<C extends GcdRingElem<C>> extends
      * same term order, number of variables and variable names as the given
      * polynomial factory, only the coefficient factories differ and the
      * solvable multiplication relations are <b>empty</b>.
+     *
      * @param cf factory for coefficients of type C.
-     * @param o other solvable polynomial ring.
+     * @param o  other solvable polynomial ring.
      */
     public LocalSolvablePolynomialRing(RingFactory<SolvableLocal<C>> cf, GenSolvablePolynomialRing o) {
         this(cf, o.nvar, o.tord, o.getVars(), null);
@@ -214,8 +218,9 @@ public class LocalSolvablePolynomialRing<C extends GcdRingElem<C>> extends
      * same term order, number of variables and variable names as the given
      * polynomial factory, only the coefficient factories differ and the
      * solvable multiplication relations are <b>empty</b>.
+     *
      * @param cf factory for coefficients of type C.
-     * @param o other solvable polynomial ring.
+     * @param o  other solvable polynomial ring.
      */
     public LocalSolvablePolynomialRing(RingFactory<SolvableLocal<C>> cf, LocalSolvablePolynomialRing o) {
         this(cf, (GenSolvablePolynomialRing) o);
@@ -224,6 +229,7 @@ public class LocalSolvablePolynomialRing<C extends GcdRingElem<C>> extends
 
     /**
      * Get the String representation.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -241,6 +247,7 @@ public class LocalSolvablePolynomialRing<C extends GcdRingElem<C>> extends
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this Element.
      * @see edu.jas.structure.Element#toScript()
      */
@@ -248,12 +255,12 @@ public class LocalSolvablePolynomialRing<C extends GcdRingElem<C>> extends
     public String toScript() {
         StringBuffer s = new StringBuffer();
         switch (Scripting.getLang()) {
-        case Ruby:
-            s.append("SolvPolyRing.new(");
-            break;
-        case Python:
-        default:
-            s.append("SolvPolyRing(");
+            case Ruby:
+                s.append("SolvPolyRing.new(");
+                break;
+            case Python:
+            default:
+                s.append("SolvPolyRing(");
         }
         if (coFac instanceof RingElem) {
             s.append(((RingElem<SolvableLocal<C>>) coFac).toScriptFactory());
@@ -280,6 +287,7 @@ public class LocalSolvablePolynomialRing<C extends GcdRingElem<C>> extends
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -313,6 +321,7 @@ public class LocalSolvablePolynomialRing<C extends GcdRingElem<C>> extends
 
     /**
      * Hash code for this polynomial ring.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -327,6 +336,7 @@ public class LocalSolvablePolynomialRing<C extends GcdRingElem<C>> extends
 
     /**
      * Get the zero element.
+     *
      * @return 0 as LocalSolvablePolynomial<C>.
      */
     @Override
@@ -337,6 +347,7 @@ public class LocalSolvablePolynomialRing<C extends GcdRingElem<C>> extends
 
     /**
      * Get the one element.
+     *
      * @return 1 as LocalSolvablePolynomial<C>.
      */
     @Override
@@ -347,6 +358,7 @@ public class LocalSolvablePolynomialRing<C extends GcdRingElem<C>> extends
 
     /**
      * Query if this ring is commutative.
+     *
      * @return true if this ring is commutative, else false.
      */
     @Override
@@ -363,6 +375,7 @@ public class LocalSolvablePolynomialRing<C extends GcdRingElem<C>> extends
      * Query if this ring is associative. Test if the relations between the mian
      * variables and the coefficient generators define an associative solvable
      * ring.
+     *
      * @return true, if this ring is associative, else false.
      */
     @Override
@@ -405,6 +418,7 @@ public class LocalSolvablePolynomialRing<C extends GcdRingElem<C>> extends
     /**
      * Get a (constant) LocalSolvablePolynomial&lt;C&gt; element from a long
      * value.
+     *
      * @param a long.
      * @return a LocalSolvablePolynomial&lt;C&gt;.
      */
@@ -417,6 +431,7 @@ public class LocalSolvablePolynomialRing<C extends GcdRingElem<C>> extends
     /**
      * Get a (constant) LocalSolvablePolynomial&lt;C&gt; element from a
      * BigInteger value.
+     *
      * @param a BigInteger.
      * @return a LocalSolvablePolynomial&lt;C&gt;.
      */
@@ -429,6 +444,7 @@ public class LocalSolvablePolynomialRing<C extends GcdRingElem<C>> extends
     /**
      * Random solvable polynomial. Generates a random solvable polynomial with k
      * = 5, l = n, d = (nvar == 1) ? n : 3, q = (nvar == 1) ? 0.7 : 0.3.
+     *
      * @param n number of terms.
      * @return a random solvable polynomial.
      */
@@ -441,7 +457,8 @@ public class LocalSolvablePolynomialRing<C extends GcdRingElem<C>> extends
     /**
      * Random solvable polynomial. Generates a random solvable polynomial with k
      * = 5, l = n, d = (nvar == 1) ? n : 3, q = (nvar == 1) ? 0.7 : 0.3.
-     * @param n number of terms.
+     *
+     * @param n   number of terms.
      * @param rnd is a source for random bits.
      * @return a random solvable polynomial.
      */
@@ -456,6 +473,7 @@ public class LocalSolvablePolynomialRing<C extends GcdRingElem<C>> extends
 
     /**
      * Generate a random solvable polynomial.
+     *
      * @param k bitsize of random coefficients.
      * @param l number of terms.
      * @param d maximal degree in each variable.
@@ -470,10 +488,11 @@ public class LocalSolvablePolynomialRing<C extends GcdRingElem<C>> extends
 
     /**
      * Random solvable polynomial.
-     * @param k size of random coefficients.
-     * @param l number of terms.
-     * @param d maximal degree in each variable.
-     * @param q density of nozero exponents.
+     *
+     * @param k   size of random coefficients.
+     * @param l   number of terms.
+     * @param d   maximal degree in each variable.
+     * @param q   density of nozero exponents.
      * @param rnd is a source for random bits.
      * @return a random solvable polynomial.
      */
@@ -495,6 +514,7 @@ public class LocalSolvablePolynomialRing<C extends GcdRingElem<C>> extends
 
     /**
      * Copy polynomial c.
+     *
      * @param c
      * @return a copy of c.
      */
@@ -505,6 +525,7 @@ public class LocalSolvablePolynomialRing<C extends GcdRingElem<C>> extends
 
     /**
      * Parse a solvable polynomial with the use of GenPolynomialTokenizer
+     *
      * @param s String.
      * @return LocalSolvablePolynomial from s.
      */
@@ -516,6 +537,7 @@ public class LocalSolvablePolynomialRing<C extends GcdRingElem<C>> extends
 
     /**
      * Parse a solvable polynomial with the use of GenPolynomialTokenizer
+     *
      * @param r Reader.
      * @return next LocalSolvablePolynomial from r.
      */
@@ -537,6 +559,7 @@ public class LocalSolvablePolynomialRing<C extends GcdRingElem<C>> extends
 
     /**
      * Generate univariate solvable polynomial in a given variable.
+     *
      * @param i the index of the variable.
      * @return X_i as solvable univariate polynomial.
      */
@@ -549,6 +572,7 @@ public class LocalSolvablePolynomialRing<C extends GcdRingElem<C>> extends
     /**
      * Generate univariate solvable polynomial in a given variable with given
      * exponent.
+     *
      * @param i the index of the variable.
      * @param e the exponent of the variable.
      * @return X_i^e as solvable univariate polynomial.
@@ -562,9 +586,10 @@ public class LocalSolvablePolynomialRing<C extends GcdRingElem<C>> extends
     /**
      * Generate univariate solvable polynomial in a given variable with given
      * exponent.
+     *
      * @param modv number of module variables.
-     * @param i the index of the variable.
-     * @param e the exponent of the variable.
+     * @param i    the index of the variable.
+     * @param e    the exponent of the variable.
      * @return X_i^e as solvable univariate polynomial.
      */
     @Override
@@ -575,7 +600,8 @@ public class LocalSolvablePolynomialRing<C extends GcdRingElem<C>> extends
 
     /**
      * Generate list of univariate polynomials in all variables.
-     * @return List(X_1,...,X_n) a list of univariate polynomials.
+     *
+     * @return List(X_1, ..., X_n) a list of univariate polynomials.
      */
     //todo Override
     @SuppressWarnings("unchecked")
@@ -587,8 +613,9 @@ public class LocalSolvablePolynomialRing<C extends GcdRingElem<C>> extends
 
     /**
      * Generate list of univariate polynomials in all variables.
+     *
      * @param modv number of module variables.
-     * @return List(X_1,...,X_n) a list of univariate polynomials.
+     * @return List(X_1, ..., X_n) a list of univariate polynomials.
      */
     //todo Override
     @SuppressWarnings("unchecked")
@@ -600,9 +627,10 @@ public class LocalSolvablePolynomialRing<C extends GcdRingElem<C>> extends
     /**
      * Generate list of univariate polynomials in all variables with given
      * exponent.
+     *
      * @param modv number of module variables.
-     * @param e the exponent of the variables.
-     * @return List(X_1^e,...,X_n^e) a list of univariate polynomials.
+     * @param e    the exponent of the variables.
+     * @return List(X_1^e, ..., X_n^e) a list of univariate polynomials.
      */
     //todo Override
     public List<LocalSolvablePolynomial<C>> recUnivariateList(int modv, long e) {
@@ -643,6 +671,7 @@ public class LocalSolvablePolynomialRing<C extends GcdRingElem<C>> extends
     /**
      * Extend variables. Used e.g. in module embedding. Extend number of
      * variables by i.
+     *
      * @param i number of variables to extend.
      * @return extended solvable polynomial ring factory.
      */
@@ -650,7 +679,7 @@ public class LocalSolvablePolynomialRing<C extends GcdRingElem<C>> extends
     public LocalSolvablePolynomialRing<C> extend(int i) {
         GenPolynomialRing<SolvableLocal<C>> pfac = super.extend(i);
         LocalSolvablePolynomialRing<C> spfac = new LocalSolvablePolynomialRing<C>(pfac.coFac, pfac.nvar,
-                        pfac.tord, pfac.getVars());
+                pfac.tord, pfac.getVars());
         spfac.table.extend(this.table);
         spfac.polCoeff.coeffTable.extend(this.polCoeff.coeffTable);
         return spfac;
@@ -660,6 +689,7 @@ public class LocalSolvablePolynomialRing<C extends GcdRingElem<C>> extends
     /**
      * Contract variables. Used e.g. in module embedding. Contract number of
      * variables by i.
+     *
      * @param i number of variables to remove.
      * @return contracted solvable polynomial ring factory.
      */
@@ -667,7 +697,7 @@ public class LocalSolvablePolynomialRing<C extends GcdRingElem<C>> extends
     public LocalSolvablePolynomialRing<C> contract(int i) {
         GenPolynomialRing<SolvableLocal<C>> pfac = super.contract(i);
         LocalSolvablePolynomialRing<C> spfac = new LocalSolvablePolynomialRing<C>(pfac.coFac, pfac.nvar,
-                        pfac.tord, pfac.getVars());
+                pfac.tord, pfac.getVars());
         spfac.table.contract(this.table);
         spfac.polCoeff.coeffTable.contract(this.polCoeff.coeffTable);
         return spfac;
@@ -676,6 +706,7 @@ public class LocalSolvablePolynomialRing<C extends GcdRingElem<C>> extends
 
     /**
      * Reverse variables. Used e.g. in opposite rings.
+     *
      * @return solvable polynomial ring factory with reversed variables.
      */
     @Override
@@ -686,6 +717,7 @@ public class LocalSolvablePolynomialRing<C extends GcdRingElem<C>> extends
 
     /**
      * Reverse variables. Used e.g. in opposite rings.
+     *
      * @param partial true for partialy reversed term orders.
      * @return solvable polynomial ring factory with reversed variables.
      */
@@ -693,7 +725,7 @@ public class LocalSolvablePolynomialRing<C extends GcdRingElem<C>> extends
     public LocalSolvablePolynomialRing<C> reverse(boolean partial) {
         GenPolynomialRing<SolvableLocal<C>> pfac = super.reverse(partial);
         LocalSolvablePolynomialRing<C> spfac = new LocalSolvablePolynomialRing<C>(pfac.coFac, pfac.nvar,
-                        pfac.tord, pfac.getVars());
+                pfac.tord, pfac.getVars());
         spfac.partial = partial;
         spfac.table.reverse(this.table);
         spfac.polCoeff.coeffTable.reverse(this.polCoeff.coeffTable);
@@ -704,8 +736,9 @@ public class LocalSolvablePolynomialRing<C extends GcdRingElem<C>> extends
     /**
      * Rational function from integral polynomial coefficients. Represent as
      * polynomial with type SolvableLocal<C> coefficients.
+     *
      * @param A polynomial with integral polynomial coefficients to be
-     *            converted.
+     *          converted.
      * @return polynomial with type SolvableLocal<C> coefficients.
      */
     public LocalSolvablePolynomial<C> fromPolyCoefficients(GenSolvablePolynomial<GenPolynomial<C>> A) {
@@ -731,8 +764,9 @@ public class LocalSolvablePolynomialRing<C extends GcdRingElem<C>> extends
     /**
      * Integral function from rational polynomial coefficients. Represent as
      * polynomial with type GenSolvablePolynomial<C> coefficients.
+     *
      * @param A polynomial with rational polynomial coefficients to be
-     *            converted.
+     *          converted.
      * @return polynomial with type GenSolvablePolynomial<C> coefficients.
      */
     public RecSolvablePolynomial<C> toPolyCoefficients(LocalSolvablePolynomial<C> A) {
@@ -759,8 +793,9 @@ public class LocalSolvablePolynomialRing<C extends GcdRingElem<C>> extends
     /**
      * Integral function from rational polynomial coefficients. Represent as
      * polynomial with type GenSolvablePolynomial<C> coefficients.
+     *
      * @param A polynomial with rational polynomial coefficients to be
-     *            converted.
+     *          converted.
      * @return polynomial with type GenSolvablePolynomial<C> coefficients.
      */
     public RecSolvablePolynomial<C> toPolyCoefficients(GenPolynomial<SolvableLocal<C>> A) {

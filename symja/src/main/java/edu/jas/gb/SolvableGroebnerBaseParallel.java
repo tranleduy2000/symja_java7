@@ -5,18 +5,18 @@
 package edu.jas.gb;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.concurrent.Semaphore;
 
-import org.apache.log4j.Logger;
-
 import edu.jas.poly.ExpVector;
 import edu.jas.poly.GenSolvablePolynomial;
 import edu.jas.poly.GenSolvablePolynomialRing;
-import edu.jas.poly.PolynomialList;
 import edu.jas.poly.PolyUtil;
+import edu.jas.poly.PolynomialList;
 import edu.jas.structure.RingElem;
 import edu.jas.util.Terminator;
 import edu.jas.util.ThreadPool;
@@ -25,6 +25,7 @@ import edu.jas.util.ThreadPool;
 /**
  * Solvable Groebner Base parallel algorithm. Implements a shared memory
  * parallel version of Groebner bases. Threads maintain pairlist.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
@@ -60,6 +61,7 @@ public class SolvableGroebnerBaseParallel<C extends RingElem<C>> extends Solvabl
 
     /**
      * Constructor.
+     *
      * @param threads number of threads to use.
      */
     public SolvableGroebnerBaseParallel(int threads) {
@@ -69,8 +71,9 @@ public class SolvableGroebnerBaseParallel<C extends RingElem<C>> extends Solvabl
 
     /**
      * Constructor.
+     *
      * @param threads number of threads to use.
-     * @param pool ThreadPool to use.
+     * @param pool    ThreadPool to use.
      */
     public SolvableGroebnerBaseParallel(int threads, ThreadPool pool) {
         this(threads, pool, new SolvableReductionPar<C>());
@@ -79,8 +82,9 @@ public class SolvableGroebnerBaseParallel<C extends RingElem<C>> extends Solvabl
 
     /**
      * Constructor.
+     *
      * @param threads number of threads to use.
-     * @param sred parallelism aware reduction engine
+     * @param sred    parallelism aware reduction engine
      */
     public SolvableGroebnerBaseParallel(int threads, SolvableReduction<C> sred) {
         this(threads, new ThreadPool(threads), sred);
@@ -89,8 +93,9 @@ public class SolvableGroebnerBaseParallel<C extends RingElem<C>> extends Solvabl
 
     /**
      * Constructor.
+     *
      * @param threads number of threads to use.
-     * @param pl pair selection strategy
+     * @param pl      pair selection strategy
      */
     public SolvableGroebnerBaseParallel(int threads, PairList<C> pl) {
         this(threads, new ThreadPool(threads), new SolvableReductionPar<C>(), pl);
@@ -99,9 +104,10 @@ public class SolvableGroebnerBaseParallel<C extends RingElem<C>> extends Solvabl
 
     /**
      * Constructor.
+     *
      * @param threads number of threads to use.
-     * @param sred parallelism aware reduction engine
-     * @param pl pair selection strategy
+     * @param sred    parallelism aware reduction engine
+     * @param pl      pair selection strategy
      */
     public SolvableGroebnerBaseParallel(int threads, SolvableReduction<C> sred, PairList<C> pl) {
         this(threads, new ThreadPool(threads), sred, pl);
@@ -110,9 +116,10 @@ public class SolvableGroebnerBaseParallel<C extends RingElem<C>> extends Solvabl
 
     /**
      * Constructor.
+     *
      * @param threads number of threads to use.
-     * @param pool ThreadPool to use.
-     * @param sred parallelism aware reduction engine
+     * @param pool    ThreadPool to use.
+     * @param sred    parallelism aware reduction engine
      */
     public SolvableGroebnerBaseParallel(int threads, ThreadPool pool, SolvableReduction<C> sred) {
         this(threads, pool, sred, new OrderedPairlist<C>());
@@ -121,13 +128,14 @@ public class SolvableGroebnerBaseParallel<C extends RingElem<C>> extends Solvabl
 
     /**
      * Constructor.
+     *
      * @param threads number of threads to use.
-     * @param pool ThreadPool to use.
-     * @param sred parallelism aware reduction engine
-     * @param pl pair selection strategy
+     * @param pool    ThreadPool to use.
+     * @param sred    parallelism aware reduction engine
+     * @param pl      pair selection strategy
      */
     public SolvableGroebnerBaseParallel(int threads, ThreadPool pool, SolvableReduction<C> sred,
-                    PairList<C> pl) {
+                                        PairList<C> pl) {
         super(sred, pl);
         if (!(sred instanceof SolvableReductionPar)) {
             logger.warn("parallel GB should use parallel aware reduction");
@@ -155,13 +163,14 @@ public class SolvableGroebnerBaseParallel<C extends RingElem<C>> extends Solvabl
     /**
      * Parallel Groebner base using sequential pair order class. Threads
      * maintain pairlist.
+     *
      * @param modv number of module variables.
-     * @param F polynomial list.
+     * @param F    polynomial list.
      * @return GB(F) a Groebner base of F.
      */
     public List<GenSolvablePolynomial<C>> leftGB(int modv, List<GenSolvablePolynomial<C>> F) {
         List<GenSolvablePolynomial<C>> G = normalizeZerosOnes(F);
-        G = PolynomialList.castToSolvableList(PolyUtil.<C> monic(PolynomialList.castToList(G)));
+        G = PolynomialList.castToSolvableList(PolyUtil.<C>monic(PolynomialList.castToList(G)));
         if (G.size() <= 1) {
             return G;
         }
@@ -190,6 +199,7 @@ public class SolvableGroebnerBaseParallel<C extends RingElem<C>> extends Solvabl
 
     /**
      * Minimal ordered groebner basis, parallel.
+     *
      * @param Fp a Groebner base.
      * @return minimalGB(F) a minimal Groebner base of Fp.
      */
@@ -271,8 +281,9 @@ public class SolvableGroebnerBaseParallel<C extends RingElem<C>> extends Solvabl
 
     /**
      * Solvable Extended Groebner base using critical pair class.
+     *
      * @param modv module variable number.
-     * @param F solvable polynomial list.
+     * @param F    solvable polynomial list.
      * @return a container for an extended left Groebner base of F.
      */
     @Override
@@ -283,20 +294,21 @@ public class SolvableGroebnerBaseParallel<C extends RingElem<C>> extends Solvabl
 
     /**
      * Twosided Groebner base using pairlist class.
+     *
      * @param modv number of module variables.
-     * @param Fp solvable polynomial list.
+     * @param Fp   solvable polynomial list.
      * @return tsGB(Fp) a twosided Groebner base of F.
      */
     @SuppressWarnings("unchecked")
     public List<GenSolvablePolynomial<C>> twosidedGB(int modv, List<GenSolvablePolynomial<C>> Fp) {
         List<GenSolvablePolynomial<C>> G = normalizeZerosOnes(Fp);
-        G = PolynomialList.castToSolvableList(PolyUtil.<C> monic(PolynomialList.castToList(G)));
+        G = PolynomialList.castToSolvableList(PolyUtil.<C>monic(PolynomialList.castToList(G)));
         if (G.size() < 1) { // 0 not 1
             return G;
         }
-        if (G.size() <= 1) { 
+        if (G.size() <= 1) {
             if (G.get(0).isONE()) {
-                return G; 
+                return G;
             }
         }
         GenSolvablePolynomialRing<C> ring = G.get(0).ring;
@@ -305,10 +317,10 @@ public class SolvableGroebnerBaseParallel<C extends RingElem<C>> extends Solvabl
         }
         // add also coefficient generators
         List<GenSolvablePolynomial<C>> X;
-        X = PolynomialList.castToSolvableList(ring.generators(modv)); 
+        X = PolynomialList.castToSolvableList(ring.generators(modv));
         logger.info("right multipliers = " + X);
         List<GenSolvablePolynomial<C>> F = new ArrayList<GenSolvablePolynomial<C>>(G.size() * (1 + X.size()));
-        F.addAll(G); 
+        F.addAll(G);
         GenSolvablePolynomial<C> p, x, q;
         for (int i = 0; i < F.size(); i++) { // F changes
             p = F.get(i);
@@ -325,7 +337,7 @@ public class SolvableGroebnerBaseParallel<C extends RingElem<C>> extends Solvabl
                         G.clear();
                         G.add(q);
                         return G;
-                    } 
+                    }
                     F.add(q);
                 }
             }
@@ -358,27 +370,18 @@ public class SolvableGroebnerBaseParallel<C extends RingElem<C>> extends Solvabl
 
 /**
  * Reducing left worker threads.
+ *
  * @param <C> coefficient type
  */
 class LeftSolvableReducer<C extends RingElem<C>> implements Runnable {
 
 
-    private final List<GenSolvablePolynomial<C>> G;
-
-
-    private final PairList<C> pairlist;
-
-
-    private final Terminator pool;
-
-
-    private final SolvableReductionPar<C> sred;
-
-
     private static final Logger logger = Logger.getLogger(LeftSolvableReducer.class);
-
-
     private static final boolean debug = logger.isDebugEnabled();
+    private final List<GenSolvablePolynomial<C>> G;
+    private final PairList<C> pairlist;
+    private final Terminator pool;
+    private final SolvableReductionPar<C> sred;
 
 
     LeftSolvableReducer(Terminator fin, List<GenSolvablePolynomial<C>> G, PairList<C> L) {
@@ -483,37 +486,24 @@ class LeftSolvableReducer<C extends RingElem<C>> implements Runnable {
 
 /**
  * Reducing twosided worker threads.
+ *
  * @param <C> coefficient type
  */
 class TwosidedSolvableReducer<C extends RingElem<C>> implements Runnable {
 
 
+    private static final Logger logger = Logger.getLogger(TwosidedSolvableReducer.class);
+    private static final boolean debug = logger.isDebugEnabled();
     private final List<GenSolvablePolynomial<C>> X;
-
-
     private final List<GenSolvablePolynomial<C>> G;
-
-
     private final PairList<C> pairlist;
-
-
     private final int modv;
-
-
     private final Terminator pool;
-
-
     private final SolvableReductionPar<C> sred;
 
 
-    private static final Logger logger = Logger.getLogger(TwosidedSolvableReducer.class);
-
-
-    private static final boolean debug = logger.isDebugEnabled();
-
-
     TwosidedSolvableReducer(Terminator fin, int modv, List<GenSolvablePolynomial<C>> X,
-                    List<GenSolvablePolynomial<C>> G, PairList<C> L) {
+                            List<GenSolvablePolynomial<C>> G, PairList<C> L) {
         pool = fin;
         this.modv = modv;
         this.X = X;
@@ -626,27 +616,18 @@ class TwosidedSolvableReducer<C extends RingElem<C>> implements Runnable {
 
 /**
  * Reducing worker threads for minimal GB.
+ *
  * @param <C> coefficient type
  */
 class SolvableMiReducer<C extends RingElem<C>> implements Runnable {
 
 
-    private final List<GenSolvablePolynomial<C>> G;
-
-
-    private GenSolvablePolynomial<C> H;
-
-
-    private final SolvableReductionPar<C> sred;
-
-
-    private final Semaphore done = new Semaphore(0);
-
-
     private static final Logger logger = Logger.getLogger(SolvableMiReducer.class);
-
-
     private static final boolean debug = logger.isDebugEnabled();
+    private final List<GenSolvablePolynomial<C>> G;
+    private final SolvableReductionPar<C> sred;
+    private final Semaphore done = new Semaphore(0);
+    private GenSolvablePolynomial<C> H;
 
 
     SolvableMiReducer(List<GenSolvablePolynomial<C>> G, GenSolvablePolynomial<C> p) {
@@ -658,6 +639,7 @@ class SolvableMiReducer<C extends RingElem<C>> implements Runnable {
 
     /**
      * getNF. Blocks until the normal form is computed.
+     *
      * @return the computed normal form.
      */
     public GenSolvablePolynomial<C> getNF() {

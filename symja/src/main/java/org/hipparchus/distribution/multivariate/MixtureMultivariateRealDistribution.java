@@ -16,9 +16,6 @@
  */
 package org.hipparchus.distribution.multivariate;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.hipparchus.distribution.MultivariateRealDistribution;
 import org.hipparchus.exception.LocalizedCoreFormats;
 import org.hipparchus.exception.MathIllegalArgumentException;
@@ -27,6 +24,9 @@ import org.hipparchus.random.RandomGenerator;
 import org.hipparchus.random.Well19937c;
 import org.hipparchus.util.Pair;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Class for representing <a href="http://en.wikipedia.org/wiki/Mixture_model">
  * mixture model</a> distributions.
@@ -34,10 +34,14 @@ import org.hipparchus.util.Pair;
  * @param <T> Type of the mixture components.
  */
 public class MixtureMultivariateRealDistribution<T extends MultivariateRealDistribution>
-    extends AbstractMultivariateRealDistribution {
-    /** Normalized weight of each mixture component. */
+        extends AbstractMultivariateRealDistribution {
+    /**
+     * Normalized weight of each mixture component.
+     */
     private final double[] weight;
-    /** Mixture components. */
+    /**
+     * Mixture components.
+     */
     private final List<T> distribution;
 
     /**
@@ -61,11 +65,11 @@ public class MixtureMultivariateRealDistribution<T extends MultivariateRealDistr
      * Creates a mixture model from a list of distributions and their
      * associated weights.
      *
-     * @param rng Random number generator.
+     * @param rng        Random number generator.
      * @param components Distributions from which to sample.
      * @throws MathIllegalArgumentException if any of the weights is negative.
      * @throws MathIllegalArgumentException if not all components have the same
-     * number of variables.
+     *                                      number of variables.
      */
     public MixtureMultivariateRealDistribution(RandomGenerator rng,
                                                List<Pair<Double, T>> components) {
@@ -78,7 +82,7 @@ public class MixtureMultivariateRealDistribution<T extends MultivariateRealDistr
             final Pair<Double, T> comp = components.get(i);
             if (comp.getSecond().getDimension() != dim) {
                 throw new MathIllegalArgumentException(LocalizedCoreFormats.DIMENSIONS_MISMATCH,
-                                                       comp.getSecond().getDimension(), dim);
+                        comp.getSecond().getDimension(), dim);
             }
             if (comp.getFirst() < 0) {
                 throw new MathIllegalArgumentException(LocalizedCoreFormats.NUMBER_TOO_SMALL, comp.getFirst(), 0);
@@ -101,7 +105,9 @@ public class MixtureMultivariateRealDistribution<T extends MultivariateRealDistr
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double density(final double[] values) {
         double p = 0;
@@ -111,7 +117,9 @@ public class MixtureMultivariateRealDistribution<T extends MultivariateRealDistr
         return p;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double[] sample() {
         // Sampled values.
@@ -140,7 +148,9 @@ public class MixtureMultivariateRealDistribution<T extends MultivariateRealDistr
         return vals;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void reseedRandomGenerator(long seed) {
         // Seed needs to be propagated to underlying components

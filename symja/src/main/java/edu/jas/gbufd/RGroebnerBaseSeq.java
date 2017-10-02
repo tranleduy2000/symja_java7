@@ -5,11 +5,11 @@
 package edu.jas.gbufd;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.gb.GroebnerBaseAbstract;
 import edu.jas.gb.Pair;
@@ -21,6 +21,7 @@ import edu.jas.structure.RegularRingElem;
 /**
  * Regular ring Groebner Base sequential algorithm. Implements R-Groebner bases
  * and GB test.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
@@ -50,6 +51,7 @@ public class RGroebnerBaseSeq<C extends RegularRingElem<C>> extends GroebnerBase
 
     /**
      * Constructor.
+     *
      * @param rred R-Reduction engine
      */
     public RGroebnerBaseSeq(RReduction<C> rred) {
@@ -61,8 +63,9 @@ public class RGroebnerBaseSeq<C extends RegularRingElem<C>> extends GroebnerBase
 
     /**
      * R-Groebner base test.
+     *
      * @param modv module variable number.
-     * @param F polynomial list.
+     * @param F    polynomial list.
      * @return true, if F is a R-Groebner base, else false.
      */
     @Override
@@ -107,8 +110,9 @@ public class RGroebnerBaseSeq<C extends RegularRingElem<C>> extends GroebnerBase
 
     /**
      * R-Groebner base using pairlist class.
+     *
      * @param modv module variable number.
-     * @param F polynomial list.
+     * @param F    polynomial list.
      * @return GB(F) a R-Groebner base of F.
      */
     public List<GenPolynomial<C>> GB(int modv, List<GenPolynomial<C>> F) {
@@ -220,6 +224,7 @@ public class RGroebnerBaseSeq<C extends RegularRingElem<C>> extends GroebnerBase
 
     /**
      * Minimal ordered Groebner basis.
+     *
      * @param Gp a Groebner base.
      * @return a reduced Groebner base of Gp.
      */
@@ -237,7 +242,7 @@ public class RGroebnerBaseSeq<C extends RegularRingElem<C>> extends GroebnerBase
             }
         }
         //if (G.size() <= 1) {
-            //wg monic do not return G;
+        //wg monic do not return G;
         //}
         // remove top reducible polynomials
         GenPolynomial<C> a, b;
@@ -274,7 +279,7 @@ public class RGroebnerBaseSeq<C extends RegularRingElem<C>> extends GroebnerBase
         }
         G = F;
         //if (G.size() <= 1) {
-            // wg monic return G;
+        // wg monic return G;
         //}
         Collections.reverse(G); // important for lex GB
         // reduce remaining polynomials

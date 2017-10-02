@@ -5,6 +5,8 @@
 package edu.jas.application;
 
 
+import org.apache.log4j.Logger;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -14,8 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.poly.ExpVector;
 import edu.jas.poly.GenPolynomial;
@@ -28,6 +28,7 @@ import edu.jas.structure.RingFactory;
 /**
  * Pair list management. Implemented for ColorPolynomials using TreeMap and
  * BitSet.
+ *
  * @author Heinz Kredel
  */
 
@@ -50,25 +51,16 @@ public class OrderedCPairlist<C extends GcdRingElem<C>> implements Serializable 
 
 
     protected final CReductionSeq<C> reduction;
-
-
-    protected boolean oneInGB = false;
-
-
-    protected boolean useCriterion4 = false; // unused
-
-
-    protected int putCount;
-
-
-    protected int remCount;
-
-
     protected final int moduleVars; // unused
+    protected boolean oneInGB = false;
+    protected boolean useCriterion4 = false; // unused
+    protected int putCount;
+    protected int remCount;
 
 
     /**
      * Constructor for OrderedPairlist.
+     *
      * @param r polynomial factory.
      */
     public OrderedCPairlist(GenPolynomialRing<GenPolynomial<C>> r) {
@@ -78,6 +70,7 @@ public class OrderedCPairlist<C extends GcdRingElem<C>> implements Serializable 
 
     /**
      * Constructor for OrderedPairlist.
+     *
      * @param m number of module variables.
      * @param r polynomial factory.
      */
@@ -101,12 +94,13 @@ public class OrderedCPairlist<C extends GcdRingElem<C>> implements Serializable 
 
     /**
      * Internal constructor for OrderedPairlist. Used to clone this pair list.
+     *
      * @param m number of module variables.
      * @param r polynomial factory.
      */
     private OrderedCPairlist(int m, GenPolynomialRing<GenPolynomial<C>> ring, List<ColorPolynomial<C>> P,
-                    SortedMap<ExpVector, LinkedList<CPair<C>>> pl, List<BitSet> red, CReductionSeq<C> cred,
-                    int pc, int rc) {
+                             SortedMap<ExpVector, LinkedList<CPair<C>>> pl, List<BitSet> red, CReductionSeq<C> cred,
+                             int pc, int rc) {
         moduleVars = m;
         this.ring = ring;
         this.P = P;
@@ -120,21 +114,23 @@ public class OrderedCPairlist<C extends GcdRingElem<C>> implements Serializable 
 
     /**
      * Clone this OrderedPairlist.
+     *
      * @return a 2 level clone of this.
      */
     public synchronized OrderedCPairlist<C> copy() {
         return new OrderedCPairlist<C>(moduleVars, ring, new ArrayList<ColorPolynomial<C>>(P),
-                        clonePairlist(), cloneBitSet(), reduction, putCount, remCount);
+                clonePairlist(), cloneBitSet(), reduction, putCount, remCount);
     }
 
 
     /**
      * Clone this pairlist.
+     *
      * @return a 2 level clone of this pairlist.
      */
     private SortedMap<ExpVector, LinkedList<CPair<C>>> clonePairlist() {
         SortedMap<ExpVector, LinkedList<CPair<C>>> pl = new TreeMap<ExpVector, LinkedList<CPair<C>>>(
-                        ring.tord.getAscendComparator());
+                ring.tord.getAscendComparator());
         for (Map.Entry<ExpVector, LinkedList<CPair<C>>> m : pairlist.entrySet()) {
             ExpVector e = m.getKey();
             LinkedList<CPair<C>> l = m.getValue();
@@ -147,6 +143,7 @@ public class OrderedCPairlist<C extends GcdRingElem<C>> implements Serializable 
 
     /**
      * Count remaining Pairs.
+     *
      * @return number of pairs remaining in this pairlist.
      */
     public int pairCount() {
@@ -161,6 +158,7 @@ public class OrderedCPairlist<C extends GcdRingElem<C>> implements Serializable 
 
     /**
      * Clone this reduction BitSet.
+     *
      * @return a 2 level clone of this reduction BitSet.
      */
     private List<BitSet> cloneBitSet() {
@@ -175,6 +173,7 @@ public class OrderedCPairlist<C extends GcdRingElem<C>> implements Serializable 
 
     /**
      * bitCount.
+     *
      * @return number of bits set in this bitset.
      */
     public int bitCount() {
@@ -188,6 +187,7 @@ public class OrderedCPairlist<C extends GcdRingElem<C>> implements Serializable 
 
     /**
      * toString.
+     *
      * @return counters of this.
      */
     @Override
@@ -196,15 +196,16 @@ public class OrderedCPairlist<C extends GcdRingElem<C>> implements Serializable 
         int b = bitCount();
         if (p != b) {
             return "OrderedCPairlist( pairCount=" + p + ", bitCount=" + b + ", putCount=" + putCount
-                            + ", remCount=" + remCount + " )";
+                    + ", remCount=" + remCount + " )";
         }
         return "OrderedCPairlist( pairCount=" + p + ", putCount=" + putCount + ", remCount=" + remCount
-                        + " )";
+                + " )";
     }
 
 
     /**
      * Equals.
+     *
      * @param ob an Object.
      * @return true if this is equal to o, else false.
      */
@@ -234,6 +235,7 @@ public class OrderedCPairlist<C extends GcdRingElem<C>> implements Serializable 
 
     /**
      * Hash code for this pair list.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -248,6 +250,7 @@ public class OrderedCPairlist<C extends GcdRingElem<C>> implements Serializable 
 
     /**
      * Put one Polynomial to the pairlist and reduction matrix.
+     *
      * @param p polynomial.
      * @return the index of the added polynomial.
      */
@@ -296,6 +299,7 @@ public class OrderedCPairlist<C extends GcdRingElem<C>> implements Serializable 
     /**
      * Remove the next required pair from the pairlist and reduction matrix.
      * Appy the criterions 3 and 4 to see if the S-polynomial is required.
+     *
      * @return the next pair if one exists, otherwise null.
      */
     public synchronized CPair<C> removeNext() {
@@ -322,14 +326,14 @@ public class OrderedCPairlist<C extends GcdRingElem<C>> implements Serializable 
                 j = pair.j;
                 // System.out.println("pair(" + j + "," +i+") ");
                 //if (useCriterion4) {
-                    // c = reduction.criterion4( pair.pi, pair.pj, g );
+                // c = reduction.criterion4( pair.pi, pair.pj, g );
                 //    c = true;
                 //}
-                c = true; 
+                c = true;
                 // System.out.println("c4 = " + c);
                 //if (c) {
-                    // c = criterion3( i, j, g );
-                    // System.out.println("c3 = " + c);
+                // c = criterion3( i, j, g );
+                // System.out.println("c3 = " + c);
                 //}
                 red.get(j).clear(i); // set(i,false) jdk1.4
             }
@@ -348,6 +352,7 @@ public class OrderedCPairlist<C extends GcdRingElem<C>> implements Serializable 
 
     /**
      * Test if there is possibly a pair in the list.
+     *
      * @return true if a next pair could exist, otherwise false.
      */
     public synchronized boolean hasNext() {
@@ -357,6 +362,7 @@ public class OrderedCPairlist<C extends GcdRingElem<C>> implements Serializable 
 
     /**
      * Get the list of polynomials.
+     *
      * @return the polynomial list.
      */
     public List<ColorPolynomial<C>> getList() {
@@ -366,6 +372,7 @@ public class OrderedCPairlist<C extends GcdRingElem<C>> implements Serializable 
 
     /**
      * Get the number of polynomials put to the pairlist.
+     *
      * @return the number of calls to put.
      */
     public synchronized int putCount() {
@@ -375,6 +382,7 @@ public class OrderedCPairlist<C extends GcdRingElem<C>> implements Serializable 
 
     /**
      * Get the number of required pairs removed from the pairlist.
+     *
      * @return the number of non null pairs delivered.
      */
     public synchronized int remCount() {
@@ -384,6 +392,7 @@ public class OrderedCPairlist<C extends GcdRingElem<C>> implements Serializable 
 
     /**
      * Put to ONE-Polynomial to the pairlist.
+     *
      * @param one polynomial. (no more required)
      * @return the index of the last polynomial.
      */
@@ -406,6 +415,7 @@ public class OrderedCPairlist<C extends GcdRingElem<C>> implements Serializable 
 
     /**
      * GB criterium 3.
+     *
      * @return true if the S-polynomial(i,j) is required.
      */
     public boolean criterion3(int i, int j, ExpVector eij) {

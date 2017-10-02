@@ -18,7 +18,8 @@ package org.hipparchus.analysis.differentiation;
 
 import org.hipparchus.analysis.MultivariateMatrixFunction;
 
-/** Class representing the Jacobian of a multivariate vector function.
+/**
+ * Class representing the Jacobian of a multivariate vector function.
  * <p>
  * The rows iterate on the model functions while the columns iterate on the parameters; thus,
  * the numbers of rows is equal to the dimension of the underlying function vector
@@ -28,17 +29,23 @@ import org.hipparchus.analysis.MultivariateMatrixFunction;
  */
 public class JacobianFunction implements MultivariateMatrixFunction {
 
-    /** Underlying vector-valued function. */
+    /**
+     * Underlying vector-valued function.
+     */
     private final MultivariateDifferentiableVectorFunction f;
 
-    /** Simple constructor.
+    /**
+     * Simple constructor.
+     *
      * @param f underlying vector-valued function
      */
     public JacobianFunction(final MultivariateDifferentiableVectorFunction f) {
         this.f = f;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double[][] value(double[] point) {
 

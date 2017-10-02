@@ -5,8 +5,6 @@
 package edu.jas.util;
 
 
-
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -16,6 +14,7 @@ import java.util.NoSuchElementException;
 /**
  * Cartesian product for Long with iterator. Similar to CartesianProduct but
  * returns only tuples of given total degree.
+ *
  * @author Heinz Kredel
  */
 public class CartesianProductLong implements Iterable<List<Long>> {
@@ -32,8 +31,9 @@ public class CartesianProductLong implements Iterable<List<Long>> {
 
     /**
      * CartesianProduct constructor.
+     *
      * @param comps components of the Cartesian product.
-     * @param ub an upper bound for the total degree of the elements.
+     * @param ub    an upper bound for the total degree of the elements.
      */
     public CartesianProductLong(List<LongIterable> comps, long ub) {
         if (comps == null) {
@@ -46,6 +46,7 @@ public class CartesianProductLong implements Iterable<List<Long>> {
 
     /**
      * Get an iterator over subsets.
+     *
      * @return an iterator.
      */
     public Iterator<List<Long>> iterator() {
@@ -58,33 +59,27 @@ public class CartesianProductLong implements Iterable<List<Long>> {
 /**
  * Cartesian product iterator for Longs. Similar to CartesianProductIterator but
  * returns only tuples of given total degree.
+ *
  * @author Heinz Kredel
  */
 class CartesianProductLongIterator implements Iterator<List<Long>> {
 
 
+    public final long upperBound;
     /**
      * data structure.
      */
     final List<LongIterable> comps;
-
-
     final List<LongIterator> compit;
-
-
     List<Long> current;
-
-
     boolean empty;
-
-
-    public final long upperBound;
 
 
     /**
      * CartesianProduct iterator constructor.
+     *
      * @param comps components of the Cartesian product.
-     * @param un an upper bound for the total degree of the elements.
+     * @param un    an upper bound for the total degree of the elements.
      */
     public CartesianProductLongIterator(List<LongIterable> comps, long ub) {
         if (comps == null) {
@@ -99,7 +94,7 @@ class CartesianProductLongIterator implements Iterator<List<Long>> {
             LongIterator it = (LongIterator) ci.iterator();
             if (it.getUpperBound() < this.upperBound) {
                 throw new IllegalArgumentException("each iterator (" + it.getUpperBound()
-                                + ") must be able to reach total upper bound " + upperBound);
+                        + ") must be able to reach total upper bound " + upperBound);
             }
             if (!it.hasNext()) {
                 empty = true;
@@ -131,6 +126,7 @@ class CartesianProductLongIterator implements Iterator<List<Long>> {
 
     /**
      * Test for availability of a next tuple.
+     *
      * @return true if the iteration has more tuples, else false.
      */
     public synchronized boolean hasNext() {
@@ -140,6 +136,7 @@ class CartesianProductLongIterator implements Iterator<List<Long>> {
 
     /**
      * Get next tuple.
+     *
      * @return next tuple.
      */
     public synchronized List<Long> next() {
@@ -221,6 +218,7 @@ class CartesianProductLongIterator implements Iterator<List<Long>> {
 
     /**
      * Total degree of a tuple.
+     *
      * @param e list of Longs.
      * @return sum of all elements in e.
      */

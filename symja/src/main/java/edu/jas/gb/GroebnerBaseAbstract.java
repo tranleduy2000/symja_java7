@@ -5,6 +5,8 @@
 package edu.jas.gb;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -13,8 +15,6 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.poly.ExpVector;
 import edu.jas.poly.GenPolynomial;
@@ -32,9 +32,9 @@ import edu.jas.vector.BasicLinAlg;
 /**
  * Groebner Bases abstract class. Implements common Groebner bases and GB test
  * methods.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
- * 
  * @see edu.jas.application.GBAlgorithmBuilder
  * @see edu.jas.gbufd.GBFactory
  */
@@ -76,6 +76,7 @@ public abstract class GroebnerBaseAbstract<C extends RingElem<C>> implements Gro
 
     /**
      * Constructor.
+     *
      * @param red Reduction engine
      */
     public GroebnerBaseAbstract(Reduction<C> red) {
@@ -85,6 +86,7 @@ public abstract class GroebnerBaseAbstract<C extends RingElem<C>> implements Gro
 
     /**
      * Constructor.
+     *
      * @param pl pair selection strategy
      */
     public GroebnerBaseAbstract(PairList<C> pl) {
@@ -94,8 +96,9 @@ public abstract class GroebnerBaseAbstract<C extends RingElem<C>> implements Gro
 
     /**
      * Constructor.
+     *
      * @param red Reduction engine
-     * @param pl pair selection strategy
+     * @param pl  pair selection strategy
      */
     public GroebnerBaseAbstract(Reduction<C> red, PairList<C> pl) {
         if (red == null) {
@@ -112,6 +115,7 @@ public abstract class GroebnerBaseAbstract<C extends RingElem<C>> implements Gro
 
     /**
      * Get the String representation with GB engines.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -122,6 +126,7 @@ public abstract class GroebnerBaseAbstract<C extends RingElem<C>> implements Gro
 
     /**
      * Normalize polynomial list.
+     *
      * @param A list of polynomials.
      * @return list of polynomials with zeros removed and ones/units reduced.
      */
@@ -151,6 +156,7 @@ public abstract class GroebnerBaseAbstract<C extends RingElem<C>> implements Gro
 
     /**
      * Groebner base test.
+     *
      * @param F polynomial list.
      * @return true, if F is a Groebner base, else false.
      */
@@ -161,8 +167,9 @@ public abstract class GroebnerBaseAbstract<C extends RingElem<C>> implements Gro
 
     /**
      * Groebner base test.
+     *
      * @param modv module variable number.
-     * @param F polynomial list.
+     * @param F    polynomial list.
      * @return true, if F is a Groebner base, else false.
      */
     public boolean isGB(int modv, List<GenPolynomial<C>> F) {
@@ -172,6 +179,7 @@ public abstract class GroebnerBaseAbstract<C extends RingElem<C>> implements Gro
 
     /**
      * Groebner base test.
+     *
      * @param F polynomial list.
      * @param b true for simple test, false for GB test.
      * @return true, if F is a Groebner base, else false.
@@ -183,9 +191,10 @@ public abstract class GroebnerBaseAbstract<C extends RingElem<C>> implements Gro
 
     /**
      * Groebner base test.
+     *
      * @param modv module variable number.
-     * @param F polynomial list.
-     * @param b true for simple test, false for GB test.
+     * @param F    polynomial list.
+     * @param b    true for simple test, false for GB test.
      * @return true, if F is a Groebner base, else false.
      */
     public boolean isGB(int modv, List<GenPolynomial<C>> F, boolean b) {
@@ -198,8 +207,9 @@ public abstract class GroebnerBaseAbstract<C extends RingElem<C>> implements Gro
 
     /**
      * Groebner base simple test.
+     *
      * @param modv module variable number.
-     * @param F polynomial list.
+     * @param F    polynomial list.
      * @return true, if F is a Groebner base, else false.
      */
     public boolean isGBsimple(int modv, List<GenPolynomial<C>> F) {
@@ -243,6 +253,7 @@ public abstract class GroebnerBaseAbstract<C extends RingElem<C>> implements Gro
 
     /**
      * GB criterium 3.
+     *
      * @return true if the S-polynomial(i,j) is required.
      */
     boolean criterion3(int i, int j, ExpVector eij, List<GenPolynomial<C>> P) {
@@ -262,8 +273,9 @@ public abstract class GroebnerBaseAbstract<C extends RingElem<C>> implements Gro
 
     /**
      * Groebner base idempotence test.
+     *
      * @param modv module variable number.
-     * @param F polynomial list.
+     * @param F    polynomial list.
      * @return true, if F is equal to GB(F), else false.
      */
     public boolean isGBidem(int modv, List<GenPolynomial<C>> F) {
@@ -280,6 +292,7 @@ public abstract class GroebnerBaseAbstract<C extends RingElem<C>> implements Gro
 
     /**
      * Common zero test.
+     *
      * @param F polynomial list.
      * @return -1, 0 or 1 if dimension(ideal(F)) &eq; -1, 0 or &ge; 1.
      */
@@ -322,6 +335,7 @@ public abstract class GroebnerBaseAbstract<C extends RingElem<C>> implements Gro
 
     /**
      * Groebner base using pairlist class.
+     *
      * @param F polynomial list.
      * @return GB(F) a Groebner base of F.
      */
@@ -332,6 +346,7 @@ public abstract class GroebnerBaseAbstract<C extends RingElem<C>> implements Gro
 
     /**
      * isGB.
+     *
      * @param M a module basis.
      * @return true, if M is a Groebner base, else false.
      */
@@ -350,6 +365,7 @@ public abstract class GroebnerBaseAbstract<C extends RingElem<C>> implements Gro
 
     /**
      * GB.
+     *
      * @param M a module basis.
      * @return GB(M), a Groebner base of M.
      */
@@ -373,9 +389,10 @@ public abstract class GroebnerBaseAbstract<C extends RingElem<C>> implements Gro
 
     /**
      * Extended Groebner base using critical pair class.
+     *
      * @param F polynomial list.
      * @return a container for a Groebner base G of F together with
-     *         back-and-forth transformations.
+     * back-and-forth transformations.
      */
     public ExtendedGB<C> extGB(List<GenPolynomial<C>> F) {
         return extGB(0, F);
@@ -384,10 +401,11 @@ public abstract class GroebnerBaseAbstract<C extends RingElem<C>> implements Gro
 
     /**
      * Extended Groebner base using critical pair class.
+     *
      * @param modv module variable number.
-     * @param F polynomial list.
+     * @param F    polynomial list.
      * @return a container for a Groebner base G of F together with
-     *         back-and-forth transformations.
+     * back-and-forth transformations.
      */
     public ExtendedGB<C> extGB(int modv, List<GenPolynomial<C>> F) {
         throw new UnsupportedOperationException("extGB not implemented in " + this.getClass().getSimpleName());
@@ -396,6 +414,7 @@ public abstract class GroebnerBaseAbstract<C extends RingElem<C>> implements Gro
 
     /**
      * Minimal ordered Groebner basis.
+     *
      * @param Gp a Groebner base.
      * @return a reduced Groebner base of Gp.
      */
@@ -466,6 +485,7 @@ public abstract class GroebnerBaseAbstract<C extends RingElem<C>> implements Gro
 
     /**
      * Test for minimal ordered Groebner basis.
+     *
      * @param Gp an ideal base.
      * @return true, if Gp is a reduced minimal Groebner base.
      */
@@ -519,6 +539,7 @@ public abstract class GroebnerBaseAbstract<C extends RingElem<C>> implements Gro
 
     /**
      * Test if reduction matrix.
+     *
      * @param exgb an ExtendedGB container.
      * @return true, if exgb contains a reduction matrix, else false.
      */
@@ -532,14 +553,15 @@ public abstract class GroebnerBaseAbstract<C extends RingElem<C>> implements Gro
 
     /**
      * Test if reduction matrix.
-     * @param F a polynomial list.
-     * @param G a Groebner base.
+     *
+     * @param F  a polynomial list.
+     * @param G  a Groebner base.
      * @param Mf a possible reduction matrix.
      * @param Mg a possible reduction matrix.
      * @return true, if Mg and Mf are reduction matrices, else false.
      */
     public boolean isReductionMatrix(List<GenPolynomial<C>> F, List<GenPolynomial<C>> G,
-                    List<List<GenPolynomial<C>>> Mf, List<List<GenPolynomial<C>>> Mg) {
+                                     List<List<GenPolynomial<C>>> Mf, List<List<GenPolynomial<C>>> Mg) {
         // no more check G and Mg: G * Mg[i] == 0
         // check F and Mg: F * Mg[i] == G[i]
         int k = 0;
@@ -568,6 +590,7 @@ public abstract class GroebnerBaseAbstract<C extends RingElem<C>> implements Gro
     /**
      * Normalize M. Make all rows the same size and make certain column elements
      * zero.
+     *
      * @param M a reduction matrix.
      * @return normalized M.
      */
@@ -638,8 +661,9 @@ public abstract class GroebnerBaseAbstract<C extends RingElem<C>> implements Gro
 
     /**
      * Minimal extended groebner basis.
+     *
      * @param Gp a Groebner base.
-     * @param M a reduction matrix, is modified.
+     * @param M  a reduction matrix, is modified.
      * @return a (partially) reduced Groebner base of Gp in a container.
      */
     public ExtendedGB<C> minimalExtendedGB(int flen, List<GenPolynomial<C>> Gp, List<List<GenPolynomial<C>>> M) {
@@ -754,6 +778,7 @@ public abstract class GroebnerBaseAbstract<C extends RingElem<C>> implements Gro
 
     /**
      * Univariate head term degrees.
+     *
      * @param A list of polynomials.
      * @return a list of the degrees of univariate head terms.
      */
@@ -797,9 +822,10 @@ public abstract class GroebnerBaseAbstract<C extends RingElem<C>> implements Gro
     /**
      * Construct univariate polynomial of minimal degree in variable i of a zero
      * dimensional ideal(G).
+     *
      * @param i variable index.
      * @param G list of polynomials, a monic reduced Gr&ouml;bner base of a zero
-     *            dimensional ideal.
+     *          dimensional ideal.
      * @return univariate polynomial of minimal degree in variable i in ideal(G)
      */
     public GenPolynomial<C> constructUnivariate(int i, List<GenPolynomial<C>> G) {
@@ -808,7 +834,7 @@ public abstract class GroebnerBaseAbstract<C extends RingElem<C>> implements Gro
         }
         //logger.info("G in  = " + G);
         //Collections.reverse(G); // test
-        G = OrderedPolynomialList.<C> sort(G); // better performance
+        G = OrderedPolynomialList.<C>sort(G); // better performance
         List<Long> ud = univariateDegrees(G);
         if (ud.size() <= i) {
             //logger.info("univ pol, ud = " + ud);
@@ -832,7 +858,7 @@ public abstract class GroebnerBaseAbstract<C extends RingElem<C>> implements Gro
         RingFactory<C> cfac = pfac.coFac;
         String var = pfac.getVars()[pfac.nvar - 1 - i];
         GenPolynomialRing<C> ufac = new GenPolynomialRing<C>(cfac, 1, new TermOrder(TermOrder.INVLEX),
-                        new String[] { var });
+                new String[]{var});
 
         GenPolynomialRing<C> cpfac = new GenPolynomialRing<C>(cfac, ll, new TermOrder(TermOrder.INVLEX));
         GenPolynomialRing<GenPolynomial<C>> rfac = new GenPolynomialRing<GenPolynomial<C>>(cpfac, pfac);
@@ -864,7 +890,7 @@ public abstract class GroebnerBaseAbstract<C extends RingElem<C>> implements Gro
             if (debug) {
                 logger.info("XP = " + XP);
             }
-            GenPolynomial<GenPolynomial<C>> XPp = PolyUtil.<C> toRecursive(rfac, XP);
+            GenPolynomial<GenPolynomial<C>> XPp = PolyUtil.<C>toRecursive(rfac, XP);
             GenPolynomial<GenPolynomial<C>> XPs = XPp.sum(P);
             ls = new ArrayList<GenPolynomial<C>>(XPs.getMap().values());
             //System.out.println("ls,1 = " + ls);
@@ -877,12 +903,12 @@ public abstract class GroebnerBaseAbstract<C extends RingElem<C>> implements Gro
                     logger.info("univariate construction, nf(P) = " + XP);
                     logger.info("G = " + G);
                     throw new ArithmeticException(
-                                    "univariate polynomial degree greater than vector space dimansion");
+                            "univariate polynomial degree greater than vector space dimansion");
                 }
                 cpfac = cpfac.extend(1);
                 rfac = new GenPolynomialRing<GenPolynomial<C>>(cpfac, pfac);
-                P = PolyUtil.<C> extendCoefficients(rfac, P, 0, 0L);
-                XPp = PolyUtil.<C> extendCoefficients(rfac, XPp, 0, 1L);
+                P = PolyUtil.<C>extendCoefficients(rfac, P, 0, 0L);
+                XPp = PolyUtil.<C>extendCoefficients(rfac, XPp, 0, 1L);
                 P = P.sum(XPp);
             }
         } while (z != 0); // && ll <= 5 && !XP.isZERO()

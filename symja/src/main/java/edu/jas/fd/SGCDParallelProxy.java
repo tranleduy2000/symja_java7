@@ -5,14 +5,14 @@
 package edu.jas.fd;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeoutException;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.kern.ComputerThreads;
 import edu.jas.kern.PreemptingException;
@@ -27,6 +27,7 @@ import edu.jas.structure.RingFactory;
  * implementations in parallel and returns the result from the fastest run. Uses
  * timeout on <code>invokeAny()</code> and return fake common divisor <it>1</it>
  * in case of timeout.
+ *
  * @author Heinz Kredel
  */
 
@@ -59,10 +60,11 @@ public class SGCDParallelProxy<C extends GcdRingElem<C>> extends GreatestCommonD
 
     /**
      * ParallelProxy constructor.
+     *
      * @param cf coefficient ring.
      */
     public SGCDParallelProxy(RingFactory<C> cf, GreatestCommonDivisorAbstract<C> e1,
-                    GreatestCommonDivisorAbstract<C> e2) {
+                             GreatestCommonDivisorAbstract<C> e2) {
         super(cf);
         this.e0 = new GreatestCommonDivisorFake<C>(cf);
         this.e1 = e1;
@@ -74,6 +76,7 @@ public class SGCDParallelProxy<C extends GcdRingElem<C>> extends GreatestCommonD
 
     /**
      * Get the String representation with gcd engines.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -84,13 +87,14 @@ public class SGCDParallelProxy<C extends GcdRingElem<C>> extends GreatestCommonD
 
     /**
      * Left univariate GenSolvablePolynomial greatest common divisor.
+     *
      * @param P univariate GenSolvablePolynomial.
      * @param S univariate GenSolvablePolynomial.
-     * @return gcd(P,S).
+     * @return gcd(P, S).
      */
     @Override
     public GenSolvablePolynomial<C> leftBaseGcd(final GenSolvablePolynomial<C> P,
-                    final GenSolvablePolynomial<C> S) {
+                                                final GenSolvablePolynomial<C> S) {
         if (debug) {
             if (ComputerThreads.NO_THREADS) {
                 throw new RuntimeException("this should not happen");
@@ -169,7 +173,7 @@ public class SGCDParallelProxy<C extends GcdRingElem<C>> extends GreatestCommonD
             Thread.currentThread().interrupt();
         } catch (TimeoutException e) {
             logger.info("TimeoutException after " + ComputerThreads.getTimeout() + " "
-                            + ComputerThreads.getTimeUnit());
+                    + ComputerThreads.getTimeUnit());
             g = e0.leftBaseGcd(P, S); // fake returns 1
         }
         return g;
@@ -178,14 +182,15 @@ public class SGCDParallelProxy<C extends GcdRingElem<C>> extends GreatestCommonD
 
     /**
      * left univariate GenSolvablePolynomial recursive greatest common divisor.
+     *
      * @param P univariate recursive GenSolvablePolynomial.
      * @param S univariate recursive GenSolvablePolynomial.
-     * @return gcd(P,S).
+     * @return gcd(P, S).
      */
     @Override
     public GenSolvablePolynomial<GenPolynomial<C>> leftRecursiveUnivariateGcd(
-                    final GenSolvablePolynomial<GenPolynomial<C>> P,
-                    final GenSolvablePolynomial<GenPolynomial<C>> S) {
+            final GenSolvablePolynomial<GenPolynomial<C>> P,
+            final GenSolvablePolynomial<GenPolynomial<C>> S) {
         if (debug) {
             if (ComputerThreads.NO_THREADS) {
                 throw new RuntimeException("this should not happen");
@@ -202,7 +207,7 @@ public class SGCDParallelProxy<C extends GcdRingElem<C>> extends GreatestCommonD
         //Callable<GenSolvablePolynomial<GenPolynomial<C>>> c0;
         //Callable<GenSolvablePolynomial<GenPolynomial<C>>> c1;
         List<Callable<GenSolvablePolynomial<GenPolynomial<C>>>> cs = new ArrayList<Callable<GenSolvablePolynomial<GenPolynomial<C>>>>(
-                        2);
+                2);
         cs.add(new Callable<GenSolvablePolynomial<GenPolynomial<C>>>() {
 
 
@@ -263,7 +268,7 @@ public class SGCDParallelProxy<C extends GcdRingElem<C>> extends GreatestCommonD
             Thread.currentThread().interrupt();
         } catch (TimeoutException e) {
             logger.info("TimeoutException after " + ComputerThreads.getTimeout() + " "
-                            + ComputerThreads.getTimeUnit());
+                    + ComputerThreads.getTimeUnit());
             g = e0.leftRecursiveUnivariateGcd(P, S); // fake returns 1
         }
         return g;
@@ -272,13 +277,14 @@ public class SGCDParallelProxy<C extends GcdRingElem<C>> extends GreatestCommonD
 
     /**
      * Left GenSolvablePolynomial greatest common divisor.
+     *
      * @param P GenSolvablePolynomial.
      * @param S GenSolvablePolynomial.
-     * @return leftGcd(P,S).
+     * @return leftGcd(P, S).
      */
     @Override
     public GenSolvablePolynomial<C> leftGcd(final GenSolvablePolynomial<C> P,
-                    final GenSolvablePolynomial<C> S) {
+                                            final GenSolvablePolynomial<C> S) {
         if (debug) {
             if (ComputerThreads.NO_THREADS) {
                 throw new RuntimeException("this should not happen");
@@ -357,7 +363,7 @@ public class SGCDParallelProxy<C extends GcdRingElem<C>> extends GreatestCommonD
             Thread.currentThread().interrupt();
         } catch (TimeoutException e) {
             logger.info("TimeoutException after " + ComputerThreads.getTimeout() + " "
-                            + ComputerThreads.getTimeUnit());
+                    + ComputerThreads.getTimeUnit());
             g = e0.leftGcd(P, S); // fake returns 1
         }
         return g;
@@ -366,13 +372,14 @@ public class SGCDParallelProxy<C extends GcdRingElem<C>> extends GreatestCommonD
 
     /**
      * Right univariate GenSolvablePolynomial greatest common divisor.
+     *
      * @param P univariate GenSolvablePolynomial.
      * @param S univariate GenSolvablePolynomial.
-     * @return gcd(P,S).
+     * @return gcd(P, S).
      */
     @Override
     public GenSolvablePolynomial<C> rightBaseGcd(final GenSolvablePolynomial<C> P,
-                    final GenSolvablePolynomial<C> S) {
+                                                 final GenSolvablePolynomial<C> S) {
         if (debug) {
             if (ComputerThreads.NO_THREADS) {
                 throw new RuntimeException("this should not happen");
@@ -451,7 +458,7 @@ public class SGCDParallelProxy<C extends GcdRingElem<C>> extends GreatestCommonD
             Thread.currentThread().interrupt();
         } catch (TimeoutException e) {
             logger.info("TimeoutException after " + ComputerThreads.getTimeout() + " "
-                            + ComputerThreads.getTimeUnit());
+                    + ComputerThreads.getTimeUnit());
             g = e0.rightBaseGcd(P, S); // fake returns 1
         }
         return g;
@@ -460,14 +467,15 @@ public class SGCDParallelProxy<C extends GcdRingElem<C>> extends GreatestCommonD
 
     /**
      * right univariate GenSolvablePolynomial recursive greatest common divisor.
+     *
      * @param P univariate recursive GenSolvablePolynomial.
      * @param S univariate recursive GenSolvablePolynomial.
-     * @return gcd(P,S).
+     * @return gcd(P, S).
      */
     @Override
     public GenSolvablePolynomial<GenPolynomial<C>> rightRecursiveUnivariateGcd(
-                    final GenSolvablePolynomial<GenPolynomial<C>> P,
-                    final GenSolvablePolynomial<GenPolynomial<C>> S) {
+            final GenSolvablePolynomial<GenPolynomial<C>> P,
+            final GenSolvablePolynomial<GenPolynomial<C>> S) {
         if (debug) {
             if (ComputerThreads.NO_THREADS) {
                 throw new RuntimeException("this should not happen");
@@ -484,7 +492,7 @@ public class SGCDParallelProxy<C extends GcdRingElem<C>> extends GreatestCommonD
         //Callable<GenSolvablePolynomial<GenPolynomial<C>>> c0;
         //Callable<GenSolvablePolynomial<GenPolynomial<C>>> c1;
         List<Callable<GenSolvablePolynomial<GenPolynomial<C>>>> cs = new ArrayList<Callable<GenSolvablePolynomial<GenPolynomial<C>>>>(
-                        2);
+                2);
         cs.add(new Callable<GenSolvablePolynomial<GenPolynomial<C>>>() {
 
 
@@ -545,7 +553,7 @@ public class SGCDParallelProxy<C extends GcdRingElem<C>> extends GreatestCommonD
             Thread.currentThread().interrupt();
         } catch (TimeoutException e) {
             logger.info("TimeoutException after " + ComputerThreads.getTimeout() + " "
-                            + ComputerThreads.getTimeUnit());
+                    + ComputerThreads.getTimeUnit());
             g = e0.rightRecursiveUnivariateGcd(P, S); // fake returns 1
         }
         return g;
@@ -554,13 +562,14 @@ public class SGCDParallelProxy<C extends GcdRingElem<C>> extends GreatestCommonD
 
     /**
      * Right GenSolvablePolynomial greatest common divisor.
+     *
      * @param P GenSolvablePolynomial.
      * @param S GenSolvablePolynomial.
-     * @return rightGcd(P,S).
+     * @return rightGcd(P, S).
      */
     @Override
     public GenSolvablePolynomial<C> rightGcd(final GenSolvablePolynomial<C> P,
-                    final GenSolvablePolynomial<C> S) {
+                                             final GenSolvablePolynomial<C> S) {
         if (debug) {
             if (ComputerThreads.NO_THREADS) {
                 throw new RuntimeException("this should not happen");
@@ -639,7 +648,7 @@ public class SGCDParallelProxy<C extends GcdRingElem<C>> extends GreatestCommonD
             Thread.currentThread().interrupt();
         } catch (TimeoutException e) {
             logger.info("TimeoutException after " + ComputerThreads.getTimeout() + " "
-                            + ComputerThreads.getTimeUnit());
+                    + ComputerThreads.getTimeUnit());
             g = e0.rightGcd(P, S); // fake returns 1
         }
         return g;

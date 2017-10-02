@@ -5,10 +5,10 @@
 package edu.jas.ufd;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.poly.AlgebraicNumber;
 import edu.jas.poly.AlgebraicNumberRing;
@@ -16,7 +16,6 @@ import edu.jas.poly.Complex;
 import edu.jas.poly.ComplexRing;
 import edu.jas.poly.GenPolynomial;
 import edu.jas.poly.GenPolynomialRing;
-import edu.jas.poly.TermOrder;
 import edu.jas.poly.PolyUtil;
 import edu.jas.structure.GcdRingElem;
 import edu.jas.structure.RingFactory;
@@ -28,8 +27,9 @@ import edu.jas.structure.RingFactory;
  * number C(i) over rational numbers or over (prime) modular integers. <b>Note:</b>
  * Decomposition to linear factors is only via absolute factorization since
  * Complex are not the analytic complex numbers.
- * @author Heinz Kredel
+ *
  * @param <C> coefficient type
+ * @author Heinz Kredel
  */
 
 public class FactorComplex<C extends GcdRingElem<C>> extends FactorAbsolute<Complex<C>> {
@@ -63,6 +63,7 @@ public class FactorComplex<C extends GcdRingElem<C>> extends FactorAbsolute<Comp
 
     /**
      * Constructor.
+     *
      * @param fac complex number factory.
      */
     public FactorComplex(RingFactory<Complex<C>> fac) { // why is this constructor required?
@@ -72,18 +73,20 @@ public class FactorComplex<C extends GcdRingElem<C>> extends FactorAbsolute<Comp
 
     /**
      * Constructor.
+     *
      * @param fac complex number factory.
      */
     public FactorComplex(ComplexRing<C> fac) {
         super(fac);
         this.afac = fac.algebraicRing();
-        this.factorAlgeb = FactorFactory.<C> getImplementation(afac);
+        this.factorAlgeb = FactorFactory.<C>getImplementation(afac);
     }
 
 
     /**
      * Constructor.
-     * @param fac complex number factory.
+     *
+     * @param fac         complex number factory.
      * @param factorAlgeb factorization engine for polynomials over algebraic coefficients.
      */
     public FactorComplex(ComplexRing<C> fac, FactorAbstract<AlgebraicNumber<C>> factorAlgeb) {
@@ -95,8 +98,9 @@ public class FactorComplex<C extends GcdRingElem<C>> extends FactorAbsolute<Comp
 
     /**
      * GenPolynomial base factorization of a squarefree polynomial.
+     *
      * @param P squarefree GenPolynomial&lt;AlgebraicNumber&lt;C&gt;&gt;.
-     * @return [p_1,...,p_k] with P = prod_{i=1, ..., k} p_i.
+     * @return [p_1, ..., p_k] with P = prod_{i=1, ..., k} p_i.
      */
     @Override
     public List<GenPolynomial<Complex<C>>> baseFactorsSquarefree(GenPolynomial<Complex<C>> P) {
@@ -126,7 +130,7 @@ public class FactorComplex<C extends GcdRingElem<C>> extends FactorAbsolute<Comp
         }
         //System.out.println("\nP = " + P);
         GenPolynomialRing<AlgebraicNumber<C>> pafac = new GenPolynomialRing<AlgebraicNumber<C>>(afac, pfac);
-        GenPolynomial<AlgebraicNumber<C>> A = PolyUtil.<C> algebraicFromComplex(pafac, P);
+        GenPolynomial<AlgebraicNumber<C>> A = PolyUtil.<C>algebraicFromComplex(pafac, P);
         //System.out.println("A = " + A);
         List<GenPolynomial<AlgebraicNumber<C>>> afactors = factorAlgeb.baseFactorsSquarefree(A);
         if (debug) {
@@ -134,7 +138,7 @@ public class FactorComplex<C extends GcdRingElem<C>> extends FactorAbsolute<Comp
             logger.info("complex afactors = " + afactors);
         }
         for (GenPolynomial<AlgebraicNumber<C>> pa : afactors) {
-            GenPolynomial<Complex<C>> pc = PolyUtil.<C> complexFromAlgebraic(pfac, pa);
+            GenPolynomial<Complex<C>> pc = PolyUtil.<C>complexFromAlgebraic(pfac, pa);
             factors.add(pc);
         }
         //System.out.println("cfactors = " + factors);

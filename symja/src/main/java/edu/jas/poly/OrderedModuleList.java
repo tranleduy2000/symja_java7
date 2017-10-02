@@ -17,6 +17,7 @@ import edu.jas.structure.RingElem;
  * Ordered list of vectors of polynomials. Mainly for storage and printing /
  * toString and conversions to other representations. Lists of polynomials in
  * this list are sorted according to the head terms of the first column.
+ *
  * @author Heinz Kredel
  */
 
@@ -25,6 +26,7 @@ public class OrderedModuleList<C extends RingElem<C>> extends ModuleList<C> {
 
     /**
      * Constructor.
+     *
      * @param r polynomial ring factory.
      * @param l list of list of polynomials.
      */
@@ -32,53 +34,18 @@ public class OrderedModuleList<C extends RingElem<C>> extends ModuleList<C> {
         super(r, sort(r, ModuleList.padCols(r, l)));
     }
 
-
-    /**
-     * Comparison with any other object.
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
-    @Override
-    @SuppressWarnings("unchecked")
-    // not jet working
-    public boolean equals(Object m) {
-        if (!super.equals(m)) {
-            return false;
-        }
-        OrderedModuleList<C> ml = null;
-        try {
-            ml = (OrderedModuleList<C>) m;
-        } catch (ClassCastException ignored) {
-        }
-        if (ml == null) {
-            return false;
-        }
-        // compare sorted lists
-        // done already in super.equals()
-        return true;
-    }
-
-
-    /**
-     * Hash code for OrderedModuleList.
-     * @see java.lang.Object#hashCode()
-     */
-    @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
-
-
     /**
      * Sort a list of vectors of polynomials with respect to the ascending order
      * of the leading Exponent vectors of the first column. The term order is
      * taken from the ring.
+     *
      * @param r polynomial ring factory.
      * @param l list of polynomial lists.
      * @return sorted list of polynomial lists from l.
      */
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings({"unchecked", "cast"})
     public static <C extends RingElem<C>> List<List<GenPolynomial<C>>> sort(GenPolynomialRing<C> r,
-                    List<List<GenPolynomial<C>>> l) {
+                                                                            List<List<GenPolynomial<C>>> l) {
         if (l == null) {
             return l;
         }
@@ -135,12 +102,47 @@ public class OrderedModuleList<C extends RingElem<C>> extends ModuleList<C> {
             for (List<GenPolynomial<C>> p : l) {
                 s[i++] = p;
             }
-            Arrays.<List<GenPolynomial<C>>> sort(s, cmp);
-            return new ArrayList<List<GenPolynomial<C>>>(Arrays.<List<GenPolynomial<C>>> asList(s));
+            Arrays.<List<GenPolynomial<C>>>sort(s, cmp);
+            return new ArrayList<List<GenPolynomial<C>>>(Arrays.<List<GenPolynomial<C>>>asList(s));
         } catch (ClassCastException ok) {
             System.out.println("Warning: polynomials not sorted");
         }
         return l; // unsorted
+    }
+
+    /**
+     * Comparison with any other object.
+     *
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    @SuppressWarnings("unchecked")
+    // not jet working
+    public boolean equals(Object m) {
+        if (!super.equals(m)) {
+            return false;
+        }
+        OrderedModuleList<C> ml = null;
+        try {
+            ml = (OrderedModuleList<C>) m;
+        } catch (ClassCastException ignored) {
+        }
+        if (ml == null) {
+            return false;
+        }
+        // compare sorted lists
+        // done already in super.equals()
+        return true;
+    }
+
+    /**
+     * Hash code for OrderedModuleList.
+     *
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 
 }

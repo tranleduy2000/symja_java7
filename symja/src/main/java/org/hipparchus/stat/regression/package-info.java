@@ -15,8 +15,6 @@
  * limitations under the License.
  */
 /**
- *
- *      Statistical routines involving multivariate data.
- *
+ * Statistical routines involving multivariate data.
  */
 package org.hipparchus.stat.regression;

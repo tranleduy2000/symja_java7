@@ -5,11 +5,11 @@
 package edu.jas.gb;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.poly.ExpVector;
 import edu.jas.poly.GenPolynomial;
@@ -18,6 +18,7 @@ import edu.jas.structure.RingElem;
 
 /**
  * Polynomial E-Reduction sequential use algorithm. Implements normalform.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
@@ -37,6 +38,7 @@ public class EReductionSeq<C extends RingElem<C>> extends DReductionSeq<C> imple
 
     /**
      * Is top reducible.
+     *
      * @param A polynomial.
      * @param P polynomial list.
      * @return true if A is top reducible with respect to P.
@@ -70,6 +72,7 @@ public class EReductionSeq<C extends RingElem<C>> extends DReductionSeq<C> imple
 
     /**
      * Is in Normalform.
+     *
      * @param Ap polynomial.
      * @param Pp polynomial list.
      * @return true if Ap is in normalform with respect to Pp.
@@ -132,6 +135,7 @@ public class EReductionSeq<C extends RingElem<C>> extends DReductionSeq<C> imple
 
     /**
      * Normalform using e-reduction.
+     *
      * @param Ap polynomial.
      * @param Pp polynomial list.
      * @return e-nf(Ap) with respect to Pp.
@@ -231,16 +235,17 @@ public class EReductionSeq<C extends RingElem<C>> extends DReductionSeq<C> imple
 
     /**
      * Normalform with recording.
+     *
      * @param row recording matrix, is modified.
-     * @param Pp a polynomial list for reduction.
-     * @param Ap a polynomial.
-     * @return nf(Pp,Ap), the normal form of Ap wrt. Pp.
+     * @param Pp  a polynomial list for reduction.
+     * @param Ap  a polynomial.
+     * @return nf(Pp, Ap), the normal form of Ap wrt. Pp.
      */
     @Override
     @SuppressWarnings("unchecked")
     // not jet working
     public GenPolynomial<C> normalform(List<GenPolynomial<C>> row, List<GenPolynomial<C>> Pp,
-                    GenPolynomial<C> Ap) {
+                                       GenPolynomial<C> Ap) {
         if (Pp == null || Pp.isEmpty()) {
             return Ap;
         }
@@ -320,6 +325,7 @@ public class EReductionSeq<C extends RingElem<C>> extends DReductionSeq<C> imple
 
     /**
      * Irreducible set.
+     *
      * @param Pp polynomial list.
      * @return a list P of polynomials which are in normalform wrt. P.
      */

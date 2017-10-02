@@ -5,15 +5,15 @@
 package edu.jas.root;
 
 
+import org.apache.log4j.Logger;
+
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.apache.log4j.Logger;
-
-import edu.jas.arith.BigRational;
 import edu.jas.arith.BigDecimal;
+import edu.jas.arith.BigRational;
 import edu.jas.arith.Rational;
 import edu.jas.poly.AlgebraicNumber;
 import edu.jas.poly.AlgebraicNumberRing;
@@ -28,52 +28,44 @@ import edu.jas.structure.RingFactory;
  * Complex algebraic number factory class based on AlgebraicNumberRing with
  * RingFactory interface. Objects of this class are immutable with the exception
  * of the isolating intervals.
+ *
  * @author Heinz Kredel
  */
 
 public class ComplexAlgebraicRing<C extends GcdRingElem<C> & Rational>
                 /*extends AlgebraicNumberRing<C>*/
-                implements RingFactory<ComplexAlgebraicNumber<C>> {
-
-
-    private static final Logger logger = Logger.getLogger(ComplexAlgebraicRing.class);
-
-
-    /**
-     * Representing AlgebraicNumberRing.
-     */
-    public final AlgebraicNumberRing<Complex<C>> algebraic;
-
-
-    /**
-     * Isolating rectangle for a complex root. <b>Note: </b> interval may shrink
-     * eventually.
-     */
-    /*package*/Rectangle<C> root;
-
-
-    /**
-     * Epsilon of the isolating rectangle for a complex root.
-     */
-    protected BigRational eps;
+        implements RingFactory<ComplexAlgebraicNumber<C>> {
 
 
     /**
      * Precision of the isolating rectangle for a complex root.
      */
     public static final int PRECISION = BigDecimal.DEFAULT_PRECISION;
-
-
+    private static final Logger logger = Logger.getLogger(ComplexAlgebraicRing.class);
+    /**
+     * Representing AlgebraicNumberRing.
+     */
+    public final AlgebraicNumberRing<Complex<C>> algebraic;
     /**
      * Complex root computation engine.
      */
     public final ComplexRootsSturm<C> engine;
+    /**
+     * Epsilon of the isolating rectangle for a complex root.
+     */
+    protected BigRational eps;
+    /**
+     * Isolating rectangle for a complex root. <b>Note: </b> interval may shrink
+     * eventually.
+     */
+    /*package*/ Rectangle<C> root;
 
 
     /**
      * The constructor creates a ComplexAlgebraicNumber factory object from a
      * GenPolynomial objects module.
-     * @param m module GenPolynomial&lt;C&gt;.
+     *
+     * @param m    module GenPolynomial&lt;C&gt;.
      * @param root isolating rectangle for a complex root.
      */
     public ComplexAlgebraicRing(GenPolynomial<Complex<C>> m, Rectangle<C> root) {
@@ -84,7 +76,7 @@ public class ComplexAlgebraicRing<C extends GcdRingElem<C> & Rational>
             throw new IllegalArgumentException("characteristic not zero");
         }
         BigRational e = new BigRational(10L); //m.ring.coFac.fromInteger(10L).getRe();
-        e = e.power( - PRECISION/2 ); //Power.positivePower(e, PRECISION);
+        e = e.power(-PRECISION / 2); //Power.positivePower(e, PRECISION);
         eps = e; //BigRational.ONE; // initially
     }
 
@@ -92,8 +84,9 @@ public class ComplexAlgebraicRing<C extends GcdRingElem<C> & Rational>
     /**
      * The constructor creates a ComplexAlgebraicNumber factory object from a
      * GenPolynomial objects module.
-     * @param m module GenPolynomial&lt;C&gt;.
-     * @param root isolating rectangle for a complex root.
+     *
+     * @param m       module GenPolynomial&lt;C&gt;.
+     * @param root    isolating rectangle for a complex root.
      * @param isField indicator if m is prime.
      */
     public ComplexAlgebraicRing(GenPolynomial<Complex<C>> m, Rectangle<C> root, boolean isField) {
@@ -101,10 +94,19 @@ public class ComplexAlgebraicRing<C extends GcdRingElem<C> & Rational>
         setField(isField);
     }
 
+    /**
+     * Get rectangle for the complex root.
+     *
+     * @return v rectangle.
+     */
+    public synchronized Rectangle<C> getRoot() {
+        return this.root;
+    }
 
     /**
      * Set a refined rectangle for the complex root. <b>Note: </b> rectangle may
      * shrink eventually.
+     *
      * @param v rectangle.
      */
     public synchronized void setRoot(Rectangle<C> v) {
@@ -113,53 +115,44 @@ public class ComplexAlgebraicRing<C extends GcdRingElem<C> & Rational>
         this.root = v;
     }
 
-
-    /**
-     * Get rectangle for the complex root.
-     * @return v rectangle.
-     */
-    public synchronized Rectangle<C> getRoot() {
-        return this.root;
-    }
-
-
     /**
      * Get epsilon.
+     *
      * @return epsilon.
      */
     public synchronized BigRational getEps() {
         return this.eps;
     }
 
-
     /**
      * Set a new epsilon.
-     * @param e epsilon.
-     */
-    public synchronized void setEps(C e) {
-        setEps(e.getRational());
-    }
-
-
-    /**
-     * Set a new epsilon.
+     *
      * @param e epsilon.
      */
     public synchronized void setEps(BigRational e) {
         this.eps = e; //algebraic.ring.coFac.parse(e.toString()).getRe();
     }
 
+    /**
+     * Set a new epsilon.
+     *
+     * @param e epsilon.
+     */
+    public synchronized void setEps(C e) {
+        setEps(e.getRational());
+    }
 
     /**
      * Refine root.
      */
     public synchronized void refineRoot() {
-	    refineRoot(eps);
+        refineRoot(eps);
     }
 
 
     /**
      * Refine root.
+     *
      * @param e epsilon.
      */
     public synchronized void refineRoot(BigRational e) {
@@ -170,12 +163,13 @@ public class ComplexAlgebraicRing<C extends GcdRingElem<C> & Rational>
             //e1.printStackTrace();
             return; // ignore new eps
         }
-        this.eps = e; 
+        this.eps = e;
     }
 
 
     /**
      * Is this structure finite or infinite.
+     *
      * @return true if this structure is finite, else false.
      * @see edu.jas.structure.ElemFactory#isFinite()
      */
@@ -186,6 +180,7 @@ public class ComplexAlgebraicRing<C extends GcdRingElem<C> & Rational>
 
     /**
      * Copy ComplexAlgebraicNumber element c.
+     *
      * @param c
      * @return a copy of c.
      */
@@ -196,6 +191,7 @@ public class ComplexAlgebraicRing<C extends GcdRingElem<C> & Rational>
 
     /**
      * Get the zero element.
+     *
      * @return 0 as ComplexAlgebraicNumber.
      */
     public ComplexAlgebraicNumber<C> getZERO() {
@@ -205,6 +201,7 @@ public class ComplexAlgebraicRing<C extends GcdRingElem<C> & Rational>
 
     /**
      * Get the one element.
+     *
      * @return 1 as ComplexAlgebraicNumber.
      */
     public ComplexAlgebraicNumber<C> getONE() {
@@ -214,6 +211,7 @@ public class ComplexAlgebraicRing<C extends GcdRingElem<C> & Rational>
 
     /**
      * Get the i element.
+     *
      * @return i as ComplexAlgebraicNumber.
      */
     public ComplexAlgebraicNumber<C> getIMAG() {
@@ -225,6 +223,7 @@ public class ComplexAlgebraicRing<C extends GcdRingElem<C> & Rational>
 
     /**
      * Get the generating element.
+     *
      * @return alpha as ComplexAlgebraicNumber.
      */
     public ComplexAlgebraicNumber<C> getGenerator() {
@@ -234,6 +233,7 @@ public class ComplexAlgebraicRing<C extends GcdRingElem<C> & Rational>
 
     /**
      * Get a list of the generating elements.
+     *
      * @return list of generators for the algebraic structure.
      * @see edu.jas.structure.ElemFactory#generators()
      */
@@ -249,6 +249,7 @@ public class ComplexAlgebraicRing<C extends GcdRingElem<C> & Rational>
 
     /**
      * Query if this ring is commutative.
+     *
      * @return true if this ring is commutative, else false.
      */
     public boolean isCommutative() {
@@ -258,6 +259,7 @@ public class ComplexAlgebraicRing<C extends GcdRingElem<C> & Rational>
 
     /**
      * Query if this ring is associative.
+     *
      * @return true if this ring is associative, else false.
      */
     public boolean isAssociative() {
@@ -267,6 +269,7 @@ public class ComplexAlgebraicRing<C extends GcdRingElem<C> & Rational>
 
     /**
      * Query if this ring is a field.
+     *
      * @return true if algebraic is prime, else false.
      */
     public boolean isField() {
@@ -276,6 +279,7 @@ public class ComplexAlgebraicRing<C extends GcdRingElem<C> & Rational>
 
     /**
      * Assert that this ring is a field.
+     *
      * @param isField true if this ring is a field, else false.
      */
     public void setField(boolean isField) {
@@ -285,6 +289,7 @@ public class ComplexAlgebraicRing<C extends GcdRingElem<C> & Rational>
 
     /**
      * Characteristic of this ring.
+     *
      * @return characteristic of this ring.
      */
     public java.math.BigInteger characteristic() {
@@ -294,6 +299,7 @@ public class ComplexAlgebraicRing<C extends GcdRingElem<C> & Rational>
 
     /**
      * Get a ComplexAlgebraicNumber element from a BigInteger value.
+     *
      * @param a BigInteger.
      * @return a ComplexAlgebraicNumber.
      */
@@ -304,6 +310,7 @@ public class ComplexAlgebraicRing<C extends GcdRingElem<C> & Rational>
 
     /**
      * Get a ComplexAlgebraicNumber element from a long value.
+     *
      * @param a long.
      * @return a ComplexAlgebraicNumber.
      */
@@ -314,17 +321,19 @@ public class ComplexAlgebraicRing<C extends GcdRingElem<C> & Rational>
 
     /**
      * Get the String representation as RingFactory.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
         return "ComplexAlgebraicRing[ " + algebraic.modul.toString() + " in " + root + " | isField="
-                        + algebraic.isField() + " :: " + algebraic.ring.toString() + " ]";
+                + algebraic.isField() + " :: " + algebraic.ring.toString() + " ]";
     }
 
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this ElemFactory.
      * @see edu.jas.structure.ElemFactory#toScript()
      */
@@ -332,14 +341,15 @@ public class ComplexAlgebraicRing<C extends GcdRingElem<C> & Rational>
     public String toScript() {
         // Python case
         return "ComplexN( " + algebraic.modul.toScript() + ", " + root.toScript()
-        //+ ", " + algebraic.isField() 
-        //+ ", " + algebraic.ring.toScript() 
-                        + " )";
+                //+ ", " + algebraic.isField()
+                //+ ", " + algebraic.ring.toScript()
+                + " )";
     }
 
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -358,6 +368,7 @@ public class ComplexAlgebraicRing<C extends GcdRingElem<C> & Rational>
 
     /**
      * Hash code for this ComplexAlgebraicNumber.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -368,6 +379,7 @@ public class ComplexAlgebraicRing<C extends GcdRingElem<C> & Rational>
 
     /**
      * ComplexAlgebraicNumber random.
+     *
      * @param n such that 0 &le; v &le; (2<sup>n</sup>-1).
      * @return a random integer mod modul.
      */
@@ -378,7 +390,8 @@ public class ComplexAlgebraicRing<C extends GcdRingElem<C> & Rational>
 
     /**
      * ComplexAlgebraicNumber random.
-     * @param n such that 0 &le; v &le; (2<sup>n</sup>-1).
+     *
+     * @param n   such that 0 &le; v &le; (2<sup>n</sup>-1).
      * @param rnd is a source for random bits.
      * @return a random integer mod modul.
      */
@@ -389,6 +402,7 @@ public class ComplexAlgebraicRing<C extends GcdRingElem<C> & Rational>
 
     /**
      * Parse ComplexAlgebraicNumber from String.
+     *
      * @param s String.
      * @return ComplexAlgebraicNumber from s.
      */
@@ -399,6 +413,7 @@ public class ComplexAlgebraicRing<C extends GcdRingElem<C> & Rational>
 
     /**
      * Parse ComplexAlgebraicNumber from Reader.
+     *
      * @param r Reader.
      * @return next ComplexAlgebraicNumber from r.
      */

@@ -36,48 +36,51 @@ import org.hipparchus.util.FastMath;
  * In particular, a change of variables aimed at estimating integrals
  * over infinite intervals as proposed
  * <a href="http://en.wikipedia.org/w/index.php?title=Numerical_integration#Integrals_over_infinite_intervals">
- *  here</a> should be avoided when using this class.
- *
+ * here</a> should be avoided when using this class.
  */
 
 public class IterativeLegendreGaussIntegrator
-    extends BaseAbstractUnivariateIntegrator {
-    /** Factory that computes the points and weights. */
+        extends BaseAbstractUnivariateIntegrator {
+    /**
+     * Factory that computes the points and weights.
+     */
     private static final GaussIntegratorFactory FACTORY
-        = new GaussIntegratorFactory();
-    /** Number of integration points (per interval). */
+            = new GaussIntegratorFactory();
+    /**
+     * Number of integration points (per interval).
+     */
     private final int numberOfPoints;
 
     /**
      * Builds an integrator with given accuracies and iterations counts.
      *
-     * @param n Number of integration points.
-     * @param relativeAccuracy Relative accuracy of the result.
-     * @param absoluteAccuracy Absolute accuracy of the result.
+     * @param n                     Number of integration points.
+     * @param relativeAccuracy      Relative accuracy of the result.
+     * @param absoluteAccuracy      Absolute accuracy of the result.
      * @param minimalIterationCount Minimum number of iterations.
      * @param maximalIterationCount Maximum number of iterations.
      * @throws MathIllegalArgumentException if minimal number of iterations
-     * or number of points are not strictly positive.
+     *                                      or number of points are not strictly positive.
      * @throws MathIllegalArgumentException if maximal number of iterations
-     * is smaller than or equal to the minimal number of iterations.
+     *                                      is smaller than or equal to the minimal number of iterations.
      */
     public IterativeLegendreGaussIntegrator(final int n,
                                             final double relativeAccuracy,
                                             final double absoluteAccuracy,
                                             final int minimalIterationCount,
                                             final int maximalIterationCount)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         super(relativeAccuracy, absoluteAccuracy, minimalIterationCount, maximalIterationCount);
         if (n <= 0) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.NUMBER_OF_POINTS, n);
         }
-       numberOfPoints = n;
+        numberOfPoints = n;
     }
 
     /**
      * Builds an integrator with given accuracies.
      *
-     * @param n Number of integration points.
+     * @param n                Number of integration points.
      * @param relativeAccuracy Relative accuracy of the result.
      * @param absoluteAccuracy Absolute accuracy of the result.
      * @throws MathIllegalArgumentException if {@code n < 1}.
@@ -85,35 +88,37 @@ public class IterativeLegendreGaussIntegrator
     public IterativeLegendreGaussIntegrator(final int n,
                                             final double relativeAccuracy,
                                             final double absoluteAccuracy)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         this(n, relativeAccuracy, absoluteAccuracy,
-             DEFAULT_MIN_ITERATIONS_COUNT, DEFAULT_MAX_ITERATIONS_COUNT);
+                DEFAULT_MIN_ITERATIONS_COUNT, DEFAULT_MAX_ITERATIONS_COUNT);
     }
 
     /**
      * Builds an integrator with given iteration counts.
      *
-     * @param n Number of integration points.
+     * @param n                     Number of integration points.
      * @param minimalIterationCount Minimum number of iterations.
      * @param maximalIterationCount Maximum number of iterations.
      * @throws MathIllegalArgumentException if minimal number of iterations
-     * is not strictly positive.
+     *                                      is not strictly positive.
      * @throws MathIllegalArgumentException if maximal number of iterations
-     * is smaller than or equal to the minimal number of iterations.
+     *                                      is smaller than or equal to the minimal number of iterations.
      * @throws MathIllegalArgumentException if {@code n < 1}.
      */
     public IterativeLegendreGaussIntegrator(final int n,
                                             final int minimalIterationCount,
                                             final int maximalIterationCount)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         this(n, DEFAULT_RELATIVE_ACCURACY, DEFAULT_ABSOLUTE_ACCURACY,
-             minimalIterationCount, maximalIterationCount);
+                minimalIterationCount, maximalIterationCount);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected double doIntegrate()
-        throws MathIllegalArgumentException, MathIllegalStateException {
+            throws MathIllegalArgumentException, MathIllegalStateException {
         // Compute first estimate with a single step.
         double oldt = stage(1);
 
@@ -125,12 +130,12 @@ public class IterativeLegendreGaussIntegrator
             // Estimate the error.
             final double delta = FastMath.abs(t - oldt);
             final double limit =
-                FastMath.max(getAbsoluteAccuracy(),
-                             getRelativeAccuracy() * (FastMath.abs(oldt) + FastMath.abs(t)) * 0.5);
+                    FastMath.max(getAbsoluteAccuracy(),
+                            getRelativeAccuracy() * (FastMath.abs(oldt) + FastMath.abs(t)) * 0.5);
 
             // check convergence
             if (iterations.getCount() + 1 >= getMinimalIterationCount() &&
-                delta <= limit) {
+                    delta <= limit) {
                 return t;
             }
 
@@ -148,19 +153,19 @@ public class IterativeLegendreGaussIntegrator
      * @param n Number of steps.
      * @return the value of n-th stage integral.
      * @throws MathIllegalStateException if the maximum number of evaluations
-     * is exceeded.
+     *                                   is exceeded.
      */
     private double stage(final int n)
-        throws MathIllegalStateException {
+            throws MathIllegalStateException {
         // Function to be integrated is stored in the base class.
         final UnivariateFunction f = new UnivariateFunction() {
-                /** {@inheritDoc} */
-                @Override
-                public double value(double x)
+            /** {@inheritDoc} */
+            @Override
+            public double value(double x)
                     throws MathIllegalArgumentException, MathIllegalStateException {
-                    return computeObjectiveValue(x);
-                }
-            };
+                return computeObjectiveValue(x);
+            }
+        };
 
         final double min = getMin();
         final double max = getMax();

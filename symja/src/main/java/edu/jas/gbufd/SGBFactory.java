@@ -39,34 +39,34 @@ import edu.jas.ufd.QuotientRing;
 /**
  * Solvable Groebner bases algorithms factory. Select appropriate Solvable
  * Groebner bases engine based on the coefficient types.
+ *
  * @author Heinz Kredel
  * @usage To create objects that implement the <code>SolvableGroebnerBase</code>
- *        interface use the <code>SGBFactory</code>. It will select an
- *        appropriate implementation based on the types of polynomial
- *        coefficients C. The method to obtain an implementation is
- *        <code>getImplementation()</code>. It returns an object of a class
- *        which implements the <code>SolvableGroebnerBase</code> interface, more
- *        precisely an object of abstract class
- *        <code>SolvableGroebnerBaseAbstract</code>.
- * 
- *        <pre>
- * 
+ * interface use the <code>SGBFactory</code>. It will select an
+ * appropriate implementation based on the types of polynomial
+ * coefficients C. The method to obtain an implementation is
+ * <code>getImplementation()</code>. It returns an object of a class
+ * which implements the <code>SolvableGroebnerBase</code> interface, more
+ * precisely an object of abstract class
+ * <code>SolvableGroebnerBaseAbstract</code>.
+ * <p>
+ * <pre>
+ *
  * SolvableGroebnerBase&lt;CT&gt; engine;
  * engine = SGBFactory.&lt;CT&gt; getImplementation(cofac);
  * c = engine.GB(A);
  * </pre>
- * 
- *        For example, if the coefficient type is BigInteger, the usage looks
- *        like
- * 
- *        <pre>
- * 
+ * <p>
+ * For example, if the coefficient type is BigInteger, the usage looks
+ * like
+ * <p>
+ * <pre>
+ *
  * BigInteger cofac = new BigInteger();
  * SolvableGroebnerBase&lt;BigInteger&gt; engine;
  * engine = SGBFactory.getImplementation(cofac);
  * c = engine.GB(A);
  * </pre>
- * 
  * @see edu.jas.gb.GroebnerBase
  * @see edu.jas.gb.SolvableGroebnerBase
  * @see edu.jas.application.GBAlgorithmBuilder
@@ -90,6 +90,7 @@ public class SGBFactory {
 
     /**
      * Determine suitable implementation of GB algorithms, no factory case.
+     *
      * @return GB algorithm implementation for field coefficients.
      */
     public static <C extends GcdRingElem<C>> SolvableGroebnerBaseAbstract<C> getImplementation() {
@@ -101,6 +102,7 @@ public class SGBFactory {
 
     /**
      * Determine suitable implementation of GB algorithms, case ModLong.
+     *
      * @param fac ModLongRing.
      * @return GB algorithm implementation.
      */
@@ -111,12 +113,13 @@ public class SGBFactory {
 
     /**
      * Determine suitable implementation of GB algorithms, case ModLong.
+     *
      * @param fac ModLongRing.
-     * @param pl pair selection strategy
+     * @param pl  pair selection strategy
      * @return GB algorithm implementation.
      */
     public static SolvableGroebnerBaseAbstract<ModLong> getImplementation(ModLongRing fac,
-                    PairList<ModLong> pl) {
+                                                                          PairList<ModLong> pl) {
         SolvableGroebnerBaseAbstract<ModLong> bba;
         if (fac.isField()) {
             bba = new SolvableGroebnerBaseSeq<ModLong>(pl);
@@ -129,6 +132,7 @@ public class SGBFactory {
 
     /**
      * Determine suitable implementation of GB algorithms, case ModInteger.
+     *
      * @param fac ModIntegerRing.
      * @return GB algorithm implementation.
      */
@@ -139,12 +143,13 @@ public class SGBFactory {
 
     /**
      * Determine suitable implementation of GB algorithms, case ModInteger.
+     *
      * @param fac ModIntegerRing.
-     * @param pl pair selection strategy
+     * @param pl  pair selection strategy
      * @return GB algorithm implementation.
      */
     public static SolvableGroebnerBaseAbstract<ModInteger> getImplementation(ModIntegerRing fac,
-                    PairList<ModInteger> pl) {
+                                                                             PairList<ModInteger> pl) {
         SolvableGroebnerBaseAbstract<ModInteger> bba;
         if (fac.isField()) {
             bba = new SolvableGroebnerBaseSeq<ModInteger>(pl);
@@ -157,6 +162,7 @@ public class SGBFactory {
 
     /**
      * Determine suitable implementation of GB algorithms, case BigInteger.
+     *
      * @param fac BigInteger.
      * @return GB algorithm implementation.
      */
@@ -167,8 +173,9 @@ public class SGBFactory {
 
     /**
      * Determine suitable implementation of GB algorithms, case BigInteger.
+     *
      * @param fac BigInteger.
-     * @param a algorithm, a = igb, egb, dgb.
+     * @param a   algorithm, a = igb, egb, dgb.
      * @return GB algorithm implementation.
      */
     public static SolvableGroebnerBaseAbstract<BigInteger> getImplementation(BigInteger fac, GBFactory.Algo a) {
@@ -178,36 +185,38 @@ public class SGBFactory {
 
     /**
      * Determine suitable implementation of GB algorithms, case BigInteger.
+     *
      * @param fac BigInteger.
-     * @param pl pair selection strategy
+     * @param pl  pair selection strategy
      * @return GB algorithm implementation.
      */
     public static SolvableGroebnerBaseAbstract<BigInteger> getImplementation(BigInteger fac,
-                    PairList<BigInteger> pl) {
+                                                                             PairList<BigInteger> pl) {
         return getImplementation(fac, GBFactory.Algo.igb, pl);
     }
 
 
     /**
      * Determine suitable implementation of GB algorithms, case BigInteger.
+     *
      * @param fac BigInteger.
-     * @param a algorithm, a = igb, egb, dgb.
-     * @param pl pair selection strategy
+     * @param a   algorithm, a = igb, egb, dgb.
+     * @param pl  pair selection strategy
      * @return GB algorithm implementation.
      */
     public static SolvableGroebnerBaseAbstract<BigInteger> getImplementation(BigInteger fac,
-                    GBFactory.Algo a, PairList<BigInteger> pl) {
+                                                                             GBFactory.Algo a, PairList<BigInteger> pl) {
         SolvableGroebnerBaseAbstract<BigInteger> bba;
         switch (a) {
-        case igb:
-            bba = new SolvableGroebnerBasePseudoSeq<BigInteger>(fac, pl);
-            break;
-        case egb:
-            throw new UnsupportedOperationException("egb algorithm not available for BigInteger " + a);
-        case dgb:
-            throw new UnsupportedOperationException("dgb algorithm not available for BigInteger " + a);
-        default:
-            throw new IllegalArgumentException("algorithm not available for BigInteger " + a);
+            case igb:
+                bba = new SolvableGroebnerBasePseudoSeq<BigInteger>(fac, pl);
+                break;
+            case egb:
+                throw new UnsupportedOperationException("egb algorithm not available for BigInteger " + a);
+            case dgb:
+                throw new UnsupportedOperationException("dgb algorithm not available for BigInteger " + a);
+            default:
+                throw new IllegalArgumentException("algorithm not available for BigInteger " + a);
         }
         return bba;
     }
@@ -215,6 +224,7 @@ public class SGBFactory {
 
     /**
      * Determine suitable implementation of GB algorithms, case BigRational.
+     *
      * @param fac BigRational.
      * @return GB algorithm implementation.
      */
@@ -225,57 +235,60 @@ public class SGBFactory {
 
     /**
      * Determine suitable implementation of GB algorithms, case BigRational.
+     *
      * @param fac BigRational.
-     * @param a algorithm, a = qgb, ffgb.
+     * @param a   algorithm, a = qgb, ffgb.
      * @return GB algorithm implementation.
      */
     public static SolvableGroebnerBaseAbstract<BigRational> getImplementation(BigRational fac,
-                    GBFactory.Algo a) {
+                                                                              GBFactory.Algo a) {
         return getImplementation(fac, a, new OrderedPairlist<BigRational>());
     }
 
 
     /**
      * Determine suitable implementation of GB algorithms, case BigRational.
+     *
      * @param fac BigRational.
-     * @param pl pair selection strategy
+     * @param pl  pair selection strategy
      * @return GB algorithm implementation.
      */
     public static SolvableGroebnerBaseAbstract<BigRational> getImplementation(BigRational fac,
-                    PairList<BigRational> pl) {
+                                                                              PairList<BigRational> pl) {
         return getImplementation(fac, GBFactory.Algo.qgb, pl);
     }
 
 
     /**
      * Determine suitable implementation of GB algorithms, case BigRational.
+     *
      * @param fac BigRational.
-     * @param a algorithm, a = qgb, ffgb.
-     * @param pl pair selection strategy
+     * @param a   algorithm, a = qgb, ffgb.
+     * @param pl  pair selection strategy
      * @return GB algorithm implementation.
      */
     public static SolvableGroebnerBaseAbstract<BigRational> getImplementation(BigRational fac,
-                    GBFactory.Algo a, PairList<BigRational> pl) {
+                                                                              GBFactory.Algo a, PairList<BigRational> pl) {
         SolvableGroebnerBaseAbstract<BigRational> bba;
         switch (a) {
-        case qgb:
-            bba = new SolvableGroebnerBaseSeq<BigRational>(pl);
-            break;
-        case ffgb:
-            throw new UnsupportedOperationException("ffgb algorithm not available for BigRational " + a);
-            //PairList<BigInteger> pli;
-            //if (pl instanceof OrderedMinPairlist) {
-            //    pli = new OrderedMinPairlist<BigInteger>();
-            //} else if (pl instanceof OrderedSyzPairlist) {
-            //    pli = new OrderedSyzPairlist<BigInteger>();
-            //} else {
-            //    pli = new OrderedPairlist<BigInteger>();
-            //}
-            //bba = new SolvableGroebnerBaseRational<BigRational>(pli); // pl not possible
-            //break;
-        default:
-            throw new IllegalArgumentException("algorithm not available for " + fac.toScriptFactory()
-                            + ", Algo = " + a);
+            case qgb:
+                bba = new SolvableGroebnerBaseSeq<BigRational>(pl);
+                break;
+            case ffgb:
+                throw new UnsupportedOperationException("ffgb algorithm not available for BigRational " + a);
+                //PairList<BigInteger> pli;
+                //if (pl instanceof OrderedMinPairlist) {
+                //    pli = new OrderedMinPairlist<BigInteger>();
+                //} else if (pl instanceof OrderedSyzPairlist) {
+                //    pli = new OrderedSyzPairlist<BigInteger>();
+                //} else {
+                //    pli = new OrderedPairlist<BigInteger>();
+                //}
+                //bba = new SolvableGroebnerBaseRational<BigRational>(pli); // pl not possible
+                //break;
+            default:
+                throw new IllegalArgumentException("algorithm not available for " + fac.toScriptFactory()
+                        + ", Algo = " + a);
         }
         return bba;
     }
@@ -284,11 +297,12 @@ public class SGBFactory {
     /**
      * Determine suitable implementation of GB algorithms, case Quotient
      * coefficients.
+     *
      * @param fac QuotientRing.
      * @return GB algorithm implementation.
      */
     public static <C extends GcdRingElem<C>> SolvableGroebnerBaseAbstract<Quotient<C>> getImplementation(
-                    QuotientRing<C> fac) {
+            QuotientRing<C> fac) {
         return getImplementation(fac, GBFactory.Algo.qgb);
     }
 
@@ -296,12 +310,13 @@ public class SGBFactory {
     /**
      * Determine suitable implementation of GB algorithms, case Quotient
      * coefficients.
+     *
      * @param fac QuotientRing.
-     * @param a algorithm, a = qgb, ffgb.
+     * @param a   algorithm, a = qgb, ffgb.
      * @return GB algorithm implementation.
      */
     public static <C extends GcdRingElem<C>> SolvableGroebnerBaseAbstract<Quotient<C>> getImplementation(
-                    QuotientRing<C> fac, GBFactory.Algo a) {
+            QuotientRing<C> fac, GBFactory.Algo a) {
         return getImplementation(fac, a, new OrderedPairlist<Quotient<C>>());
     }
 
@@ -309,12 +324,13 @@ public class SGBFactory {
     /**
      * Determine suitable implementation of GB algorithms, case Quotient
      * coefficients.
+     *
      * @param fac QuotientRing.
-     * @param pl pair selection strategy
+     * @param pl  pair selection strategy
      * @return GB algorithm implementation.
      */
     public static <C extends GcdRingElem<C>> SolvableGroebnerBaseAbstract<Quotient<C>> getImplementation(
-                    QuotientRing<C> fac, PairList<Quotient<C>> pl) {
+            QuotientRing<C> fac, PairList<Quotient<C>> pl) {
         return getImplementation(fac, GBFactory.Algo.qgb, pl);
     }
 
@@ -322,35 +338,36 @@ public class SGBFactory {
     /**
      * Determine suitable implementation of GB algorithms, case Quotient
      * coefficients.
+     *
      * @param fac QuotientRing.
-     * @param a algorithm, a = qgb, ffgb.
-     * @param pl pair selection strategy
+     * @param a   algorithm, a = qgb, ffgb.
+     * @param pl  pair selection strategy
      * @return GB algorithm implementation.
      */
     public static <C extends GcdRingElem<C>> SolvableGroebnerBaseAbstract<Quotient<C>> getImplementation(
-                    QuotientRing<C> fac, GBFactory.Algo a, PairList<Quotient<C>> pl) {
+            QuotientRing<C> fac, GBFactory.Algo a, PairList<Quotient<C>> pl) {
         SolvableGroebnerBaseAbstract<Quotient<C>> bba;
         if (logger.isInfoEnabled()) {
             logger.info("QuotientRing, fac = " + fac);
         }
         switch (a) {
-        case qgb:
-            bba = new SolvableGroebnerBaseSeq<Quotient<C>>(new SolvableReductionSeq<Quotient<C>>(), pl);
-            break;
-        case ffgb:
-            throw new UnsupportedOperationException("ffgb algorithm not available for " + a);
-            //PairList<GenPolynomial<C>> pli;
-            //if (pl instanceof OrderedMinPairlist) {
-            //    pli = new OrderedMinPairlist<GenPolynomial<C>>();
-            //} else if (pl instanceof OrderedSyzPairlist) {
-            //    pli = new OrderedSyzPairlist<GenPolynomial<C>>();
-            //} else {
-            //    pli = new OrderedPairlist<GenPolynomial<C>>();
-            //}
-            //bba = new SolvableGroebnerBaseQuotient<C>(fac, pli); // pl not possible
-            //break;
-        default:
-            throw new IllegalArgumentException("algorithm not available for Quotient " + a);
+            case qgb:
+                bba = new SolvableGroebnerBaseSeq<Quotient<C>>(new SolvableReductionSeq<Quotient<C>>(), pl);
+                break;
+            case ffgb:
+                throw new UnsupportedOperationException("ffgb algorithm not available for " + a);
+                //PairList<GenPolynomial<C>> pli;
+                //if (pl instanceof OrderedMinPairlist) {
+                //    pli = new OrderedMinPairlist<GenPolynomial<C>>();
+                //} else if (pl instanceof OrderedSyzPairlist) {
+                //    pli = new OrderedSyzPairlist<GenPolynomial<C>>();
+                //} else {
+                //    pli = new OrderedPairlist<GenPolynomial<C>>();
+                //}
+                //bba = new SolvableGroebnerBaseQuotient<C>(fac, pli); // pl not possible
+                //break;
+            default:
+                throw new IllegalArgumentException("algorithm not available for Quotient " + a);
         }
         return bba;
     }
@@ -359,11 +376,12 @@ public class SGBFactory {
     /**
      * Determine suitable implementation of GB algorithms, case (recursive)
      * polynomial.
+     *
      * @param fac GenPolynomialRing&lt;C&gt;.
      * @return GB algorithm implementation.
      */
     public static <C extends GcdRingElem<C>> SolvableGroebnerBaseAbstract<GenPolynomial<C>> getImplementation(
-                    GenPolynomialRing<C> fac) {
+            GenPolynomialRing<C> fac) {
         return getImplementation(fac, GBFactory.Algo.igb);
     }
 
@@ -371,13 +389,14 @@ public class SGBFactory {
     /**
      * Determine suitable implementation of GB algorithms, case (recursive)
      * polynomial.
+     *
      * @param fac GenPolynomialRing&lt;C&gt;.
-     * @param a algorithm, a = igb or egb, dgb if fac is univariate over a
+     * @param a   algorithm, a = igb or egb, dgb if fac is univariate over a
      *            field.
      * @return GB algorithm implementation.
      */
     public static <C extends GcdRingElem<C>> SolvableGroebnerBaseAbstract<GenPolynomial<C>> getImplementation(
-                    GenPolynomialRing<C> fac, GBFactory.Algo a) {
+            GenPolynomialRing<C> fac, GBFactory.Algo a) {
         return getImplementation(fac, a, new OrderedPairlist<GenPolynomial<C>>());
     }
 
@@ -385,12 +404,13 @@ public class SGBFactory {
     /**
      * Determine suitable implementation of GB algorithms, case (recursive)
      * polynomial.
+     *
      * @param fac GenPolynomialRing&lt;C&gt;.
-     * @param pl pair selection strategy
+     * @param pl  pair selection strategy
      * @return GB algorithm implementation.
      */
     public static <C extends GcdRingElem<C>> SolvableGroebnerBaseAbstract<GenPolynomial<C>> getImplementation(
-                    GenPolynomialRing<C> fac, PairList<GenPolynomial<C>> pl) {
+            GenPolynomialRing<C> fac, PairList<GenPolynomial<C>> pl) {
         return getImplementation(fac, GBFactory.Algo.igb, pl);
     }
 
@@ -398,35 +418,36 @@ public class SGBFactory {
     /**
      * Determine suitable implementation of GB algorithms, case (recursive)
      * polynomial.
+     *
      * @param fac GenPolynomialRing&lt;C&gt;.
-     * @param a algorithm, a = igb or egb, dgb if fac is univariate over a
+     * @param a   algorithm, a = igb or egb, dgb if fac is univariate over a
      *            field.
-     * @param pl pair selection strategy
+     * @param pl  pair selection strategy
      * @return GB algorithm implementation.
      */
     public static <C extends GcdRingElem<C>> SolvableGroebnerBaseAbstract<GenPolynomial<C>> getImplementation(
-                    GenPolynomialRing<C> fac, GBFactory.Algo a, PairList<GenPolynomial<C>> pl) {
+            GenPolynomialRing<C> fac, GBFactory.Algo a, PairList<GenPolynomial<C>> pl) {
         SolvableGroebnerBaseAbstract<GenPolynomial<C>> bba;
         switch (a) {
-        case igb:
-            bba = new SolvableGroebnerBasePseudoRecSeq<C>(fac, pl);
-            break;
-        case egb:
-            throw new UnsupportedOperationException("egb algorithm not available for " + a);
-            //if (fac.nvar > 1 || !fac.coFac.isField()) {
-            //    throw new IllegalArgumentException("coefficients not univariate or not over a field" + fac);
-            //}
-            //bba = new ESolvableGroebnerBaseSeq<GenPolynomial<C>>(); // pl not suitable
-            //break;
-        case dgb:
-            throw new UnsupportedOperationException("dgb algorithm not available for " + a);
-            //if (fac.nvar > 1 || !fac.coFac.isField()) {
-            //    throw new IllegalArgumentException("coefficients not univariate or not over a field" + fac);
-            //}
-            //bba = new DSolvableGroebnerBaseSeq<GenPolynomial<C>>(); // pl not suitable
-            //break;
-        default:
-            throw new IllegalArgumentException("algorithm not available for GenPolynomial<C> " + a);
+            case igb:
+                bba = new SolvableGroebnerBasePseudoRecSeq<C>(fac, pl);
+                break;
+            case egb:
+                throw new UnsupportedOperationException("egb algorithm not available for " + a);
+                //if (fac.nvar > 1 || !fac.coFac.isField()) {
+                //    throw new IllegalArgumentException("coefficients not univariate or not over a field" + fac);
+                //}
+                //bba = new ESolvableGroebnerBaseSeq<GenPolynomial<C>>(); // pl not suitable
+                //break;
+            case dgb:
+                throw new UnsupportedOperationException("dgb algorithm not available for " + a);
+                //if (fac.nvar > 1 || !fac.coFac.isField()) {
+                //    throw new IllegalArgumentException("coefficients not univariate or not over a field" + fac);
+                //}
+                //bba = new DSolvableGroebnerBaseSeq<GenPolynomial<C>>(); // pl not suitable
+                //break;
+            default:
+                throw new IllegalArgumentException("algorithm not available for GenPolynomial<C> " + a);
         }
         return bba;
     }
@@ -451,6 +472,7 @@ public class SGBFactory {
 
     /**
      * Determine suitable implementation of GB algorithms, other cases.
+     *
      * @param fac RingFactory&lt;C&gt;.
      * @return GB algorithm implementation.
      */
@@ -462,15 +484,16 @@ public class SGBFactory {
 
     /**
      * Determine suitable implementation of GB algorithms, other cases.
+     *
      * @param fac RingFactory&lt;C&gt;.
-     * @param pl pair selection strategy
+     * @param pl  pair selection strategy
      * @return GB algorithm implementation.
      */
-    @SuppressWarnings({ "cast", "unchecked" })
+    @SuppressWarnings({"cast", "unchecked"})
     public static <C extends GcdRingElem<C>> // interface RingElem not sufficient 
     SolvableGroebnerBaseAbstract<C> getImplementation(RingFactory<C> fac, PairList<C> pl) {
         if (debug) {
-           logger.debug("fac = " + fac.getClass().getName()); // + ", fac = " + fac.toScript());
+            logger.debug("fac = " + fac.getClass().getName()); // + ", fac = " + fac.toScript());
         }
         if (fac.isField()) {
             return new SolvableGroebnerBaseSeq<C>(pl);
@@ -494,7 +517,7 @@ public class SGBFactory {
             }
             GenPolynomialRing<C> rofac = (GenPolynomialRing<C>) ofac;
             SolvableGroebnerBaseAbstract<GenPolynomial<C>> bbr = new SolvableGroebnerBasePseudoRecSeq<C>(
-                            rofac, pli); // not pl
+                    rofac, pli); // not pl
             bba = (SolvableGroebnerBaseAbstract) bbr;
             //} else if (ofac instanceof ProductRing) {
             //    ProductRing pfac = (ProductRing) ofac;
@@ -514,6 +537,7 @@ public class SGBFactory {
     /**
      * Determine suitable parallel/concurrent implementation of GB algorithms if
      * possible.
+     *
      * @param fac RingFactory&lt;C&gt;.
      * @return GB proxy algorithm implementation.
      */
@@ -526,15 +550,16 @@ public class SGBFactory {
     /**
      * Determine suitable parallel/concurrent implementation of GB algorithms if
      * possible.
+     *
      * @param fac RingFactory&lt;C&gt;.
-     * @param pl pair selection strategy
+     * @param pl  pair selection strategy
      * @return GB proxy algorithm implementation.
      */
-    @SuppressWarnings({ "unchecked" })
+    @SuppressWarnings({"unchecked"})
     public static <C extends GcdRingElem<C>> // interface RingElem not sufficient 
     SolvableGroebnerBaseAbstract<C> getProxy(RingFactory<C> fac, PairList<C> pl) {
         if (ComputerThreads.NO_THREADS) {
-            return SGBFactory.<C> getImplementation(fac, pl);
+            return SGBFactory.<C>getImplementation(fac, pl);
         }
         if (debug) {
             logger.debug("proxy fac = " + fac.getClass().getName());
@@ -567,6 +592,7 @@ public class SGBFactory {
     /**
      * Determine suitable parallel/concurrent implementation of GB algorithms if
      * possible.
+     *
      * @param fac RingFactory&lt;C&gt;.
      * @return GB proxy algorithm implementation.
      */

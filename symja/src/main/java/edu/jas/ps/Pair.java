@@ -12,6 +12,7 @@ import edu.jas.structure.RingElem;
 
 /**
  * Serializable subclass to hold pairs of power series.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
@@ -44,6 +45,7 @@ public class Pair<C extends RingElem<C>> implements Serializable, Comparable<Pai
 
     /**
      * Pair constructor.
+     *
      * @param a power series i.
      * @param b power series j.
      * @param i first index.
@@ -71,6 +73,7 @@ public class Pair<C extends RingElem<C>> implements Serializable, Comparable<Pai
 
     /**
      * Set removed pair number.
+     *
      * @param n number of this pair generated in OrderedPairlist.
      */
     public void pairNumber(int n) {
@@ -80,6 +83,7 @@ public class Pair<C extends RingElem<C>> implements Serializable, Comparable<Pai
 
     /**
      * Get removed pair number.
+     *
      * @return n number of this pair generated in OrderedPairlist.
      */
     public int getPairNumber() {
@@ -97,8 +101,9 @@ public class Pair<C extends RingElem<C>> implements Serializable, Comparable<Pai
 
     /**
      * Is reduced to zero.
+     *
      * @return true if the S-power-series of this Pair was reduced to zero, else
-     *         false.
+     * false.
      */
     public boolean isZero() {
         return toZero;
@@ -107,6 +112,7 @@ public class Pair<C extends RingElem<C>> implements Serializable, Comparable<Pai
 
     /**
      * equals.
+     *
      * @param ob an Object.
      * @return true if this is equal to o, else false.
      */
@@ -123,6 +129,7 @@ public class Pair<C extends RingElem<C>> implements Serializable, Comparable<Pai
     /**
      * compareTo used in TreeMap // not used at moment. Comparison is based on
      * the number of the pairs.
+     *
      * @param p a Pair.
      * @return 1 if (this &lt; o), 0 if (this == o), -1 if (this &gt; o).
      */
@@ -140,6 +147,7 @@ public class Pair<C extends RingElem<C>> implements Serializable, Comparable<Pai
 
     /**
      * Hash code for this Pair.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -147,40 +155,40 @@ public class Pair<C extends RingElem<C>> implements Serializable, Comparable<Pai
         return (i << 16) + j;
     }
 
-
-    /**
-     * Set useCriterion4.
-     * @param c boolean value to set.
-     */
-    public void setUseCriterion4(boolean c) {
-        this.useCriterion4 = c;
-    }
-
-
     /**
      * Get useCriterion4.
+     *
      * @return boolean value.
      */
     public boolean getUseCriterion4() {
         return this.useCriterion4;
     }
 
-
     /**
-     * Set useCriterion3.
+     * Set useCriterion4.
+     *
      * @param c boolean value to set.
      */
-    public void setUseCriterion3(boolean c) {
-        this.useCriterion3 = c;
+    public void setUseCriterion4(boolean c) {
+        this.useCriterion4 = c;
     }
-
 
     /**
      * Get useCriterion3.
+     *
      * @return boolean value.
      */
     public boolean getUseCriterion3() {
         return this.useCriterion3;
+    }
+
+    /**
+     * Set useCriterion3.
+     *
+     * @param c boolean value to set.
+     */
+    public void setUseCriterion3(boolean c) {
+        this.useCriterion3 = c;
     }
 
 }

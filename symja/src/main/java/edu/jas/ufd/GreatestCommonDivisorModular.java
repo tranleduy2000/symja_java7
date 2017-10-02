@@ -20,17 +20,17 @@ import edu.jas.poly.GenPolynomialRing;
 import edu.jas.poly.PolyUtil;
 import edu.jas.structure.GcdRingElem;
 import edu.jas.structure.RingFactory;
-import edu.jas.structure.Power;
 
 
 /**
  * Greatest common divisor algorithms with modular computation and chinese
  * remainder algorithm.
+ *
  * @author Heinz Kredel
  */
 
 public class GreatestCommonDivisorModular<MOD extends GcdRingElem<MOD> & Modular> extends
-                GreatestCommonDivisorAbstract<BigInteger> {
+        GreatestCommonDivisorAbstract<BigInteger> {
 
 
     private static final Logger logger = Logger.getLogger(GreatestCommonDivisorModular.class);
@@ -62,6 +62,7 @@ public class GreatestCommonDivisorModular<MOD extends GcdRingElem<MOD> & Modular
 
     /**
      * Constructor to set recursive algorithm.
+     *
      * @param simple , true if the simple PRS should be used.
      */
     public GreatestCommonDivisorModular(boolean simple) {
@@ -76,9 +77,10 @@ public class GreatestCommonDivisorModular<MOD extends GcdRingElem<MOD> & Modular
     /**
      * Univariate GenPolynomial greatest comon divisor. Delegate to subresultant
      * baseGcd, should not be needed.
+     *
      * @param P univariate GenPolynomial.
      * @param S univariate GenPolynomial.
-     * @return gcd(P,S).
+     * @return gcd(P, S).
      */
     @Override
     public GenPolynomial<BigInteger> baseGcd(GenPolynomial<BigInteger> P, GenPolynomial<BigInteger> S) {
@@ -89,33 +91,35 @@ public class GreatestCommonDivisorModular<MOD extends GcdRingElem<MOD> & Modular
     /**
      * Univariate GenPolynomial recursive greatest comon divisor. Delegate to
      * subresultant recursiveGcd, should not be needed.
+     *
      * @param P univariate recursive GenPolynomial.
      * @param S univariate recursive GenPolynomial.
-     * @return gcd(P,S).
+     * @return gcd(P, S).
      */
     @Override
     public GenPolynomial<GenPolynomial<BigInteger>> recursiveUnivariateGcd(
-                    GenPolynomial<GenPolynomial<BigInteger>> P, GenPolynomial<GenPolynomial<BigInteger>> S) {
+            GenPolynomial<GenPolynomial<BigInteger>> P, GenPolynomial<GenPolynomial<BigInteger>> S) {
         //return iufd.recursiveUnivariateGcd(P, S); // bad performance
         // distributed polynomials gcd
         GenPolynomialRing<GenPolynomial<BigInteger>> rfac = P.ring;
         RingFactory<GenPolynomial<BigInteger>> rrfac = rfac.coFac;
         GenPolynomialRing<BigInteger> cfac = (GenPolynomialRing<BigInteger>) rrfac;
         GenPolynomialRing<BigInteger> dfac = cfac.extend(rfac.nvar);
-        GenPolynomial<BigInteger> Pd = PolyUtil.<BigInteger> distribute(dfac, P);
-        GenPolynomial<BigInteger> Sd = PolyUtil.<BigInteger> distribute(dfac, S);
+        GenPolynomial<BigInteger> Pd = PolyUtil.<BigInteger>distribute(dfac, P);
+        GenPolynomial<BigInteger> Sd = PolyUtil.<BigInteger>distribute(dfac, S);
         GenPolynomial<BigInteger> Dd = gcd(Pd, Sd);
         // convert to recursive
-        GenPolynomial<GenPolynomial<BigInteger>> C = PolyUtil.<BigInteger> recursive(rfac, Dd);
+        GenPolynomial<GenPolynomial<BigInteger>> C = PolyUtil.<BigInteger>recursive(rfac, Dd);
         return C;
     }
 
 
     /**
      * GenPolynomial greatest comon divisor, modular algorithm.
+     *
      * @param P GenPolynomial.
      * @param S GenPolynomial.
-     * @return gcd(P,S).
+     * @return gcd(P, S).
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -227,11 +231,11 @@ public class GreatestCommonDivisorModular<MOD extends GcdRingElem<MOD> & Modular
             }
             // initialize polynomial factory and map polynomials
             mfac = new GenPolynomialRing<MOD>(cofac, fac.nvar, fac.tord, fac.getVars());
-            qm = PolyUtil.<MOD> fromIntegerCoefficients(mfac, q);
+            qm = PolyUtil.<MOD>fromIntegerCoefficients(mfac, q);
             if (qm.isZERO() || !qm.degreeVector().equals(qdegv)) {
                 continue;
             }
-            rm = PolyUtil.<MOD> fromIntegerCoefficients(mfac, r);
+            rm = PolyUtil.<MOD>fromIntegerCoefficients(mfac, r);
             if (rm.isZERO() || !rm.degreeVector().equals(rdegv)) {
                 continue;
             }
@@ -298,31 +302,31 @@ public class GreatestCommonDivisorModular<MOD extends GcdRingElem<MOD> & Modular
                 rfac = new GenPolynomialRing<MOD>(cofacM, fac);
                 if (!cofac.getClass().equals(cofacM.getClass())) {
                     logger.info("adjusting coefficents: cofacM = " + cofacM.getClass() + ", cofacP = "
-                                    + cofac.getClass());
+                            + cofac.getClass());
                     cofac = (ModularRingFactory) new ModIntegerRing(p);
                     mfac = new GenPolynomialRing<MOD>(cofac, fac);
-                    GenPolynomial<BigInteger> mm = PolyUtil.<MOD> integerFromModularCoefficients(fac, cm);
-                    cm = PolyUtil.<MOD> fromIntegerCoefficients(mfac, mm);
+                    GenPolynomial<BigInteger> mm = PolyUtil.<MOD>integerFromModularCoefficients(fac, cm);
+                    cm = PolyUtil.<MOD>fromIntegerCoefficients(mfac, mm);
                     mi = cofac.fromInteger(Mp.getVal());
                     mi = mi.inverse(); // mod p
                 }
                 if (!cp.ring.coFac.getClass().equals(cofacM.getClass())) {
                     logger.info("adjusting coefficents: cofacM = " + cofacM.getClass() + ", cofacM' = "
-                                    + cp.ring.coFac.getClass());
+                            + cp.ring.coFac.getClass());
                     ModularRingFactory cop = (ModularRingFactory) cp.ring.coFac;
                     cofac = (ModularRingFactory) new ModIntegerRing(cop.getIntegerModul().getVal());
                     mfac = new GenPolynomialRing<MOD>(cofac, fac);
-                    GenPolynomial<BigInteger> mm = PolyUtil.<MOD> integerFromModularCoefficients(fac, cp);
-                    cp = PolyUtil.<MOD> fromIntegerCoefficients(mfac, mm);
+                    GenPolynomial<BigInteger> mm = PolyUtil.<MOD>integerFromModularCoefficients(fac, cp);
+                    cp = PolyUtil.<MOD>fromIntegerCoefficients(mfac, mm);
                 }
-                cp = PolyUtil.<MOD> chineseRemainder(rfac, cp, mi, cm);
+                cp = PolyUtil.<MOD>chineseRemainder(rfac, cp, mi, cm);
             }
             // test for completion
             if (n.compareTo(M) <= 0) {
                 break;
             }
             // must use integer.sumNorm
-            cpi = PolyUtil.<MOD> integerFromModularCoefficients(fac, cp);
+            cpi = PolyUtil.<MOD>integerFromModularCoefficients(fac, cp);
             BigInteger cmn = cpi.sumNorm();
             cmn = cmn.multiply(cmn.fromInteger(4));
             //if ( cmn.compareTo( M ) <= 0 ) {
@@ -332,12 +336,12 @@ public class GreatestCommonDivisorModular<MOD extends GcdRingElem<MOD> & Modular
             if (i % 2 != 0 && !cp.isZERO()) {
                 // check if done on every second prime
                 GenPolynomial<BigInteger> x;
-                x = PolyUtil.<MOD> integerFromModularCoefficients(fac, cp);
+                x = PolyUtil.<MOD>integerFromModularCoefficients(fac, cp);
                 x = basePrimitivePart(x);
-                if (!PolyUtil.<BigInteger> baseSparsePseudoRemainder(q, x).isZERO()) {
+                if (!PolyUtil.<BigInteger>baseSparsePseudoRemainder(q, x).isZERO()) {
                     continue;
                 }
-                if (!PolyUtil.<BigInteger> baseSparsePseudoRemainder(r, x).isZERO()) {
+                if (!PolyUtil.<BigInteger>baseSparsePseudoRemainder(r, x).isZERO()) {
                     continue;
                 }
                 logger.info("done on exact division, #primes = " + i);
@@ -348,7 +352,7 @@ public class GreatestCommonDivisorModular<MOD extends GcdRingElem<MOD> & Modular
             logger.info("done on M = " + M + ", #primes = " + i);
         }
         // remove normalization
-        q = PolyUtil.<MOD> integerFromModularCoefficients(fac, cp);
+        q = PolyUtil.<MOD>integerFromModularCoefficients(fac, cp);
         q = basePrimitivePart(q);
         return q.abs().multiply(c);
     }
@@ -356,9 +360,10 @@ public class GreatestCommonDivisorModular<MOD extends GcdRingElem<MOD> & Modular
 
     /**
      * Univariate GenPolynomial resultant.
+     *
      * @param P univariate GenPolynomial.
      * @param S univariate GenPolynomial.
-     * @return res(P,S).
+     * @return res(P, S).
      */
     @Override
     public GenPolynomial<BigInteger> baseResultant(GenPolynomial<BigInteger> P, GenPolynomial<BigInteger> S) {
@@ -369,13 +374,14 @@ public class GreatestCommonDivisorModular<MOD extends GcdRingElem<MOD> & Modular
 
     /**
      * Univariate GenPolynomial recursive resultant.
+     *
      * @param P univariate recursive GenPolynomial.
      * @param S univariate recursive GenPolynomial.
-     * @return res(P,S).
+     * @return res(P, S).
      */
     @Override
     public GenPolynomial<GenPolynomial<BigInteger>> recursiveUnivariateResultant(
-                    GenPolynomial<GenPolynomial<BigInteger>> P, GenPolynomial<GenPolynomial<BigInteger>> S) {
+            GenPolynomial<GenPolynomial<BigInteger>> P, GenPolynomial<GenPolynomial<BigInteger>> S) {
         // only in this class
         return recursiveResultant(P, S);
     }
@@ -383,9 +389,10 @@ public class GreatestCommonDivisorModular<MOD extends GcdRingElem<MOD> & Modular
 
     /**
      * GenPolynomial resultant, modular algorithm.
+     *
      * @param P GenPolynomial.
      * @param S GenPolynomial.
-     * @return res(P,S).
+     * @return res(P, S).
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -471,21 +478,21 @@ public class GreatestCommonDivisorModular<MOD extends GcdRingElem<MOD> & Modular
             }
             // initialize polynomial factory and map polynomials
             mfac = new GenPolynomialRing<MOD>(cofac, fac);
-            qm = PolyUtil.<MOD> fromIntegerCoefficients(mfac, q);
+            qm = PolyUtil.<MOD>fromIntegerCoefficients(mfac, q);
             if (qm.isZERO() || !qm.leadingExpVector().equals(qdegv)) { //degreeVector()
                 //logger.info("qm = " + qm);
                 if (debug) {
                     logger.info("unlucky prime = " + cofac.getIntegerModul() + ", degv = "
-                                    + qm.leadingExpVector());
+                            + qm.leadingExpVector());
                 }
                 continue;
             }
-            rm = PolyUtil.<MOD> fromIntegerCoefficients(mfac, r);
+            rm = PolyUtil.<MOD>fromIntegerCoefficients(mfac, r);
             if (rm.isZERO() || !rm.leadingExpVector().equals(rdegv)) { //degreeVector()
                 //logger.info("rm = " + rm);
                 if (debug) {
                     logger.info("unlucky prime = " + cofac.getIntegerModul() + ", degv = "
-                                    + rm.leadingExpVector());
+                            + rm.leadingExpVector());
                 }
                 continue;
             }
@@ -518,24 +525,24 @@ public class GreatestCommonDivisorModular<MOD extends GcdRingElem<MOD> & Modular
                 rfac = new GenPolynomialRing<MOD>(cofacM, fac);
                 if (!cofac.getClass().equals(cofacM.getClass())) {
                     logger.info("adjusting coefficents: cofacM = " + cofacM.getClass() + ", cofacP = "
-                                    + cofac.getClass());
+                            + cofac.getClass());
                     cofac = (ModularRingFactory) new ModIntegerRing(p);
                     mfac = new GenPolynomialRing<MOD>(cofac, fac);
-                    GenPolynomial<BigInteger> mm = PolyUtil.<MOD> integerFromModularCoefficients(fac, cm);
-                    cm = PolyUtil.<MOD> fromIntegerCoefficients(mfac, mm);
+                    GenPolynomial<BigInteger> mm = PolyUtil.<MOD>integerFromModularCoefficients(fac, cm);
+                    cm = PolyUtil.<MOD>fromIntegerCoefficients(mfac, mm);
                     mi = cofac.fromInteger(Mp.getVal());
                     mi = mi.inverse(); // mod p
                 }
                 if (!cp.ring.coFac.getClass().equals(cofacM.getClass())) {
                     logger.info("adjusting coefficents: cofacM = " + cofacM.getClass() + ", cofacM' = "
-                                    + cp.ring.coFac.getClass());
+                            + cp.ring.coFac.getClass());
                     ModularRingFactory cop = (ModularRingFactory) cp.ring.coFac;
                     cofac = (ModularRingFactory) new ModIntegerRing(cop.getIntegerModul().getVal());
                     mfac = new GenPolynomialRing<MOD>(cofac, fac);
-                    GenPolynomial<BigInteger> mm = PolyUtil.<MOD> integerFromModularCoefficients(fac, cp);
-                    cp = PolyUtil.<MOD> fromIntegerCoefficients(mfac, mm);
+                    GenPolynomial<BigInteger> mm = PolyUtil.<MOD>integerFromModularCoefficients(fac, cp);
+                    cp = PolyUtil.<MOD>fromIntegerCoefficients(mfac, mm);
                 }
-                cp = PolyUtil.<MOD> chineseRemainder(rfac, cp, mi, cm);
+                cp = PolyUtil.<MOD>chineseRemainder(rfac, cp, mi, cm);
             }
             // test for completion
             if (n.compareTo(M) <= 0) {
@@ -546,7 +553,7 @@ public class GreatestCommonDivisorModular<MOD extends GcdRingElem<MOD> & Modular
             logger.info("done on M = " + M + ", #primes = " + i);
         }
         // convert to integer polynomial
-        q = PolyUtil.<MOD> integerFromModularCoefficients(fac, cp);
+        q = PolyUtil.<MOD>integerFromModularCoefficients(fac, cp);
         return q;
     }
 

@@ -16,17 +16,17 @@
  */
 package org.hipparchus.distribution.continuous;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import org.hipparchus.distribution.EnumeratedDistribution;
 import org.hipparchus.exception.MathIllegalArgumentException;
 import org.hipparchus.util.MathArrays;
 import org.hipparchus.util.MathUtils;
 import org.hipparchus.util.Pair;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * Implementation of a real-valued {@link EnumeratedDistribution}.
@@ -39,7 +39,9 @@ import org.hipparchus.util.Pair;
  */
 public class EnumeratedRealDistribution extends AbstractRealDistribution {
 
-    /** Serializable UID. */
+    /**
+     * Serializable UID.
+     */
     private static final long serialVersionUID = 20130308L;
 
     /**
@@ -83,16 +85,16 @@ public class EnumeratedRealDistribution extends AbstractRealDistribution {
      * Create a discrete real-valued distribution using the given probability mass function
      * enumeration.
      *
-     * @param singletons array of random variable values.
+     * @param singletons    array of random variable values.
      * @param probabilities array of probabilities.
      * @throws MathIllegalArgumentException if
-     * {@code singletons.length != probabilities.length}
+     *                                      {@code singletons.length != probabilities.length}
      * @throws MathIllegalArgumentException if any of the probabilities are negative.
      * @throws MathIllegalArgumentException if any of the probabilities are NaN.
      * @throws MathIllegalArgumentException if any of the probabilities are infinite.
      */
     public EnumeratedRealDistribution(final double[] singletons, final double[] probabilities)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         super();
         innerDistribution =
                 new EnumeratedDistribution<Double>(createDistribution(singletons, probabilities));
@@ -102,7 +104,7 @@ public class EnumeratedRealDistribution extends AbstractRealDistribution {
     /**
      * Create the list of Pairs representing the distribution from singletons and probabilities.
      *
-     * @param singletons values
+     * @param singletons    values
      * @param probabilities probabilities
      * @return list of value/probability pairs
      * @throws MathIllegalArgumentException if probabilities contains negative, infinite or NaN values or only 0's
@@ -226,7 +228,7 @@ public class EnumeratedRealDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * Returns the lowest value with non-zero probability.
      *
      * @return the lowest value with non-zero probability.
@@ -245,7 +247,7 @@ public class EnumeratedRealDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * Returns the highest value with non-zero probability.
      *
      * @return the highest value with non-zero probability.
@@ -264,7 +266,7 @@ public class EnumeratedRealDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The support of this distribution is connected.
      *
      * @return {@code true}

@@ -28,11 +28,17 @@ import org.hipparchus.util.MathUtils;
  * @see <a href="http://mathworld.wolfram.com/ExponentialDistribution.html">Exponential distribution (MathWorld)</a>
  */
 public class ExponentialDistribution extends AbstractRealDistribution {
-    /** Serializable version identifier */
+    /**
+     * Serializable version identifier
+     */
     private static final long serialVersionUID = 20160320L;
-    /** The mean of this distribution. */
+    /**
+     * The mean of this distribution.
+     */
     private final double mean;
-    /** The logarithm of the mean, stored to reduce computing time. **/
+    /**
+     * The logarithm of the mean, stored to reduce computing time.
+     **/
     private final double logMean;
 
     /**
@@ -42,12 +48,12 @@ public class ExponentialDistribution extends AbstractRealDistribution {
      * @throws MathIllegalArgumentException if {@code mean <= 0}.
      */
     public ExponentialDistribution(double mean)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         if (mean <= 0) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.MEAN, mean);
         }
 
-        this.mean    = mean;
+        this.mean = mean;
         this.logMean = FastMath.log(mean);
     }
 
@@ -60,14 +66,18 @@ public class ExponentialDistribution extends AbstractRealDistribution {
         return mean;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double density(double x) {
         final double logDensity = logDensity(x);
         return logDensity == Double.NEGATIVE_INFINITY ? 0 : FastMath.exp(logDensity);
     }
 
-    /** {@inheritDoc} **/
+    /**
+     * {@inheritDoc}
+     **/
     @Override
     public double logDensity(double x) {
         if (x < 0) {
@@ -78,7 +88,7 @@ public class ExponentialDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The implementation of this method is based on:
      * <ul>
      * <li>
@@ -87,7 +97,7 @@ public class ExponentialDistribution extends AbstractRealDistribution {
      * </ul>
      */
     @Override
-    public double cumulativeProbability(double x)  {
+    public double cumulativeProbability(double x) {
         double ret;
         if (x <= 0.0) {
             ret = 0.0;
@@ -99,7 +109,7 @@ public class ExponentialDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * Returns {@code 0} when {@code p= = 0} and
      * {@code Double.POSITIVE_INFINITY} when {@code p == 1}.
      */
@@ -119,7 +129,7 @@ public class ExponentialDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * For mean parameter {@code k}, the mean is {@code k}.
      */
     @Override
@@ -129,7 +139,7 @@ public class ExponentialDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * For mean parameter {@code k}, the variance is {@code k^2}.
      */
     @Override
@@ -140,7 +150,7 @@ public class ExponentialDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The lower bound of the support is always 0 no matter the mean parameter.
      *
      * @return lower bound of the support (always 0)
@@ -152,7 +162,7 @@ public class ExponentialDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The upper bound of the support is always positive infinity
      * no matter the mean parameter.
      *
@@ -165,7 +175,7 @@ public class ExponentialDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The support of this distribution is connected.
      *
      * @return {@code true}

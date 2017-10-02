@@ -16,9 +16,9 @@
  */
 package org.hipparchus.random;
 
-import java.io.Serializable;
-
 import org.hipparchus.util.FastMath;
+
+import java.io.Serializable;
 
 
 /**
@@ -37,43 +37,52 @@ import org.hipparchus.util.FastMath;
  */
 public abstract class AbstractWell extends IntRandomGenerator implements Serializable {
 
-    /** Serializable version identifier. */
+    /**
+     * Serializable version identifier.
+     */
     private static final long serialVersionUID = 20150223L;
-
-    /** Current index in the bytes pool. */
+    /**
+     * Bytes pool.
+     */
+    protected final int[] v;
+    /**
+     * Current index in the bytes pool.
+     */
     protected int index;
 
-    /** Bytes pool. */
-    protected final int[] v;
-
-    /** Creates a new random number generator.
+    /**
+     * Creates a new random number generator.
      * <p>The instance is initialized using the current time plus the
      * system identity hash code of this instance as the seed.</p>
+     *
      * @param k number of bits in the pool (not necessarily a multiple of 32)
      */
     protected AbstractWell(final int k) {
         this(k, null);
     }
 
-    /** Creates a new random number generator using a single int seed.
-     * @param k number of bits in the pool (not necessarily a multiple of 32)
+    /**
+     * Creates a new random number generator using a single int seed.
+     *
+     * @param k    number of bits in the pool (not necessarily a multiple of 32)
      * @param seed the initial seed (32 bits integer)
      */
     protected AbstractWell(final int k, final int seed) {
-        this(k, new int[] { seed });
+        this(k, new int[]{seed});
     }
 
     /**
      * Creates a new random number generator using an int array seed.
-     * @param k number of bits in the pool (not necessarily a multiple of 32)
+     *
+     * @param k    number of bits in the pool (not necessarily a multiple of 32)
      * @param seed the initial seed (32 bits integers array), if null
-     * the seed of the generator will be related to the current time
+     *             the seed of the generator will be related to the current time
      */
     protected AbstractWell(final int k, final int[] seed) {
 
         final int r = calculateBlockCount(k);
-        this.v      = new int[r];
-        this.index  = 0;
+        this.v = new int[r];
+        this.index = 0;
 
         // initialize the pool content
         setSeed(seed);
@@ -81,11 +90,27 @@ public abstract class AbstractWell extends IntRandomGenerator implements Seriali
 
     /**
      * Creates a new random number generator using a single long seed.
-     * @param k number of bits in the pool (not necessarily a multiple of 32)
+     *
+     * @param k    number of bits in the pool (not necessarily a multiple of 32)
      * @param seed the initial seed (64 bits integer)
      */
     protected AbstractWell(final int k, final long seed) {
-        this(k, new int[] { (int) (seed >>> 32), (int) (seed & 0xffffffffl) });
+        this(k, new int[]{(int) (seed >>> 32), (int) (seed & 0xffffffffl)});
+    }
+
+    /**
+     * Calculate the number of 32-bits blocks.
+     *
+     * @param k number of bits in the pool (not necessarily a multiple of 32)
+     * @return the number of 32-bits blocks
+     */
+    private static int calculateBlockCount(final int k) {
+        // the bits pool contains k bits, k = r w - p where r is the number
+        // of w bits blocks, w is the block size (always 32 in the original paper)
+        // and p is the number of unused bits in the last block
+        final int w = 32;
+        final int r = (k + w - 1) / w;
+        return r;
     }
 
     /**
@@ -95,8 +120,8 @@ public abstract class AbstractWell extends IntRandomGenerator implements Seriali
      * generator built with the same seed.
      *
      * @param seed the initial seed (32 bits integers array). If null
-     * the seed of the generator will be the system time plus the system identity
-     * hash code of the instance.
+     *             the seed of the generator will be the system time plus the system identity
+     *             hash code of the instance.
      */
     @Override
     public void setSeed(final int[] seed) {
@@ -116,20 +141,6 @@ public abstract class AbstractWell extends IntRandomGenerator implements Seriali
 
         index = 0;
         clearCache(); // Clear normal deviate cache
-    }
-
-    /**
-     * Calculate the number of 32-bits blocks.
-     * @param k number of bits in the pool (not necessarily a multiple of 32)
-     * @return the number of 32-bits blocks
-     */
-    private static int calculateBlockCount(final int k) {
-        // the bits pool contains k bits, k = r w - p where r is the number
-        // of w bits blocks, w is the block size (always 32 in the original paper)
-        // and p is the number of unused bits in the last block
-        final int w = 32;
-        final int r = (k + w - 1) / w;
-        return r;
     }
 
     /**
@@ -169,7 +180,8 @@ public abstract class AbstractWell extends IntRandomGenerator implements Seriali
 
         /**
          * Creates a new pre-calculated indirection index table.
-         * @param k number of bits in the pool (not necessarily a multiple of 32)
+         *
+         * @param k  number of bits in the pool (not necessarily a multiple of 32)
          * @param m1 first parameter of the algorithm
          * @param m2 second parameter of the algorithm
          * @param m3 third parameter of the algorithm
@@ -182,20 +194,21 @@ public abstract class AbstractWell extends IntRandomGenerator implements Seriali
             // they allow saving computations like "(j + r - 2) % r" with costly modulo operations
             iRm1 = new int[r];
             iRm2 = new int[r];
-            i1   = new int[r];
-            i2   = new int[r];
-            i3   = new int[r];
+            i1 = new int[r];
+            i2 = new int[r];
+            i3 = new int[r];
             for (int j = 0; j < r; ++j) {
                 iRm1[j] = (j + r - 1) % r;
                 iRm2[j] = (j + r - 2) % r;
-                i1[j]   = (j + m1)    % r;
-                i2[j]   = (j + m2)    % r;
-                i3[j]   = (j + m3)    % r;
+                i1[j] = (j + m1) % r;
+                i2[j] = (j + m2) % r;
+                i3[j] = (j + m3) % r;
             }
         }
 
         /**
          * Returns the predecessor of the given index modulo the table size.
+         *
          * @param index the index to look at
          * @return (index - 1) % table size
          */
@@ -205,6 +218,7 @@ public abstract class AbstractWell extends IntRandomGenerator implements Seriali
 
         /**
          * Returns the second predecessor of the given index modulo the table size.
+         *
          * @param index the index to look at
          * @return (index - 2) % table size
          */
@@ -214,6 +228,7 @@ public abstract class AbstractWell extends IntRandomGenerator implements Seriali
 
         /**
          * Returns index + M1 modulo the table size.
+         *
          * @param index the index to look at
          * @return (index + M1) % table size
          */
@@ -223,6 +238,7 @@ public abstract class AbstractWell extends IntRandomGenerator implements Seriali
 
         /**
          * Returns index + M2 modulo the table size.
+         *
          * @param index the index to look at
          * @return (index + M2) % table size
          */
@@ -232,6 +248,7 @@ public abstract class AbstractWell extends IntRandomGenerator implements Seriali
 
         /**
          * Returns index + M3 modulo the table size.
+         *
          * @param index the index to look at
          * @return (index + M3) % table size
          */

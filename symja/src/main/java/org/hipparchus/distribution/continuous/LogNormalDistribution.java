@@ -46,21 +46,33 @@ import org.hipparchus.util.FastMath;
  */
 public class LogNormalDistribution extends AbstractRealDistribution {
 
-    /** Serializable version identifier. */
+    /**
+     * Serializable version identifier.
+     */
     private static final long serialVersionUID = 20120112;
 
-    /** &radic;(2 &pi;) */
+    /**
+     * &radic;(2 &pi;)
+     */
     private static final double SQRT2PI = FastMath.sqrt(2 * FastMath.PI);
 
-    /** &radic;(2) */
+    /**
+     * &radic;(2)
+     */
     private static final double SQRT2 = FastMath.sqrt(2.0);
 
-    /** The scale parameter of this distribution. */
+    /**
+     * The scale parameter of this distribution.
+     */
     private final double scale;
 
-    /** The shape parameter of this distribution. */
+    /**
+     * The shape parameter of this distribution.
+     */
     private final double shape;
-    /** The value of {@code log(shape) + 0.5 * log(2*PI)} stored for faster computation. */
+    /**
+     * The value of {@code log(shape) + 0.5 * log(2*PI)} stored for faster computation.
+     */
     private final double logShapePlusHalfLog2Pi;
 
     /**
@@ -82,7 +94,7 @@ public class LogNormalDistribution extends AbstractRealDistribution {
      * @throws MathIllegalArgumentException if {@code shape <= 0}.
      */
     public LogNormalDistribution(double scale, double shape)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         this(scale, shape, DEFAULT_SOLVER_ABSOLUTE_ACCURACY);
     }
 
@@ -90,15 +102,15 @@ public class LogNormalDistribution extends AbstractRealDistribution {
     /**
      * Creates a log-normal distribution.
      *
-     * @param scale Scale parameter of this distribution.
-     * @param shape Shape parameter of this distribution.
+     * @param scale              Scale parameter of this distribution.
+     * @param shape              Shape parameter of this distribution.
      * @param inverseCumAccuracy Inverse cumulative probability accuracy.
      * @throws MathIllegalArgumentException if {@code shape <= 0}.
      */
     public LogNormalDistribution(double scale,
                                  double shape,
                                  double inverseCumAccuracy)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         super(inverseCumAccuracy);
 
         if (shape <= 0) {
@@ -130,7 +142,7 @@ public class LogNormalDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * For scale {@code m}, and shape {@code s} of this distribution, the PDF
      * is given by
      * <ul>
@@ -149,8 +161,9 @@ public class LogNormalDistribution extends AbstractRealDistribution {
         return FastMath.exp(-0.5 * x1 * x1) / (shape * SQRT2PI * x);
     }
 
-    /** {@inheritDoc}
-     *
+    /**
+     * {@inheritDoc}
+     * <p>
      * See documentation of {@link #density(double)} for computation details.
      */
     @Override
@@ -166,7 +179,7 @@ public class LogNormalDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * For scale {@code m}, and shape {@code s} of this distribution, the CDF
      * is given by
      * <ul>
@@ -179,7 +192,7 @@ public class LogNormalDistribution extends AbstractRealDistribution {
      * </ul>
      */
     @Override
-    public double cumulativeProbability(double x)  {
+    public double cumulativeProbability(double x) {
         if (x <= 0) {
             return 0;
         }
@@ -190,14 +203,16 @@ public class LogNormalDistribution extends AbstractRealDistribution {
         return 0.5 + 0.5 * Erf.erf(dev / (shape * SQRT2));
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double probability(double x0,
                               double x1)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         if (x0 > x1) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.LOWER_ENDPOINT_ABOVE_UPPER_ENDPOINT,
-                                                x0, x1, true);
+                    x0, x1, true);
         }
         if (x0 <= 0 || x1 <= 0) {
             return super.probability(x0, x1);
@@ -210,7 +225,7 @@ public class LogNormalDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * For scale {@code m} and shape {@code s}, the mean is
      * {@code exp(m + s^2 / 2)}.
      */
@@ -222,7 +237,7 @@ public class LogNormalDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * For scale {@code m} and shape {@code s}, the variance is
      * {@code (exp(s^2) - 1) * exp(2 * m + s^2)}.
      */
@@ -235,7 +250,7 @@ public class LogNormalDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The lower bound of the support is always 0 no matter the parameters.
      *
      * @return lower bound of the support (always 0)
@@ -247,7 +262,7 @@ public class LogNormalDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The upper bound of the support is always positive infinity
      * no matter the parameters.
      *
@@ -261,7 +276,7 @@ public class LogNormalDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The support of this distribution is connected.
      *
      * @return {@code true}

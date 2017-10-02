@@ -28,11 +28,17 @@ import org.hipparchus.util.Incrementor;
 public abstract class AbstractOptimizationProblem<PAIR>
         implements OptimizationProblem<PAIR> {
 
-    /** max evaluations */
+    /**
+     * max evaluations
+     */
     private final int maxEvaluations;
-    /** max iterations */
+    /**
+     * max iterations
+     */
     private final int maxIterations;
-    /** Convergence checker. */
+    /**
+     * Convergence checker.
+     */
     private final ConvergenceChecker<PAIR> checker;
 
     /**
@@ -50,19 +56,25 @@ public abstract class AbstractOptimizationProblem<PAIR>
         this.checker = checker;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Incrementor getEvaluationCounter() {
         return new Incrementor(this.maxEvaluations);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Incrementor getIterationCounter() {
         return new Incrementor(this.maxIterations);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ConvergenceChecker<PAIR> getConvergenceChecker() {
         return checker;

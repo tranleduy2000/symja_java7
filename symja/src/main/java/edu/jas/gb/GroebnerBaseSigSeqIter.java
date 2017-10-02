@@ -5,10 +5,10 @@
 package edu.jas.gb;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.poly.ExpVector;
 import edu.jas.poly.GenPolynomial;
@@ -25,10 +25,9 @@ import edu.jas.structure.RingElem;
  * John Perry, ISSAC 2011. Compare the jython+JAS code in
  * examples/basic_sigbased_gb.py. Originally the Python+Sage code is from
  * http://www.math.usm.edu/perry/Research/basic_sigbased_gb.py
- * 
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
- * 
  * @see edu.jas.application.GBAlgorithmBuilder
  * @see edu.jas.gbufd.GBFactory
  * @see edu.jas.gb.GroebnerBaseGGVSigSeqIter
@@ -58,6 +57,7 @@ public class GroebnerBaseSigSeqIter<C extends RingElem<C>> extends GroebnerBaseA
 
     /**
      * Constructor.
+     *
      * @param red Reduction engine
      */
     public GroebnerBaseSigSeqIter(SigReductionSeq<C> red) {
@@ -68,19 +68,20 @@ public class GroebnerBaseSigSeqIter<C extends RingElem<C>> extends GroebnerBaseA
 
     /**
      * Groebner base signature iterative algorithm.
+     *
      * @param modv module variable number.
-     * @param F polynomial list.
+     * @param F    polynomial list.
      * @return GB(F) a Groebner base of F.
      */
     public List<GenPolynomial<C>> GB(int modv, List<GenPolynomial<C>> F) {
         List<GenPolynomial<C>> G = normalizeZerosOnes(F);
-        G = PolyUtil.<C> monic(G);
+        G = PolyUtil.<C>monic(G);
         if (G.size() <= 1) {
             return G;
         }
         // sort, no reverse
         //  G = OrderedPolynomialList.<C> sort(G);
-        G = OrderedPolynomialList.<C> sortDegree(G);
+        G = OrderedPolynomialList.<C>sortDegree(G);
         //no: Collections.reverse(G);
         logger.info("G-sort = " + G);
         List<GenPolynomial<C>> Gp = new ArrayList<GenPolynomial<C>>();
@@ -105,10 +106,11 @@ public class GroebnerBaseSigSeqIter<C extends RingElem<C>> extends GroebnerBaseA
 
     /**
      * Groebner base iterated.
+     *
      * @param modv module variable number.
-     * @param G polynomial list of a Groebner base.
-     * @param f polynomial.
-     * @return GB(G,f) a Groebner base of G+(f).
+     * @param G    polynomial list of a Groebner base.
+     * @param f    polynomial.
+     * @return GB(G, f) a Groebner base of G+(f).
      */
     public List<GenPolynomial<C>> GB(int modv, List<GenPolynomial<C>> G, GenPolynomial<C> f) {
         List<GenPolynomial<C>> F = new ArrayList<GenPolynomial<C>>(G);
@@ -267,9 +269,10 @@ public class GroebnerBaseSigSeqIter<C extends RingElem<C>> extends GroebnerBaseA
 
     /**
      * S-Polynomial.
+     *
      * @param A monic polynomial.
      * @param B monic polynomial.
-     * @return spol(A,B) the S-polynomial of the A and B.
+     * @return spol(A, B) the S-polynomial of the A and B.
      */
     GenPolynomial<C> SPolynomial(SigPoly<C> A, SigPoly<C> B) {
         return sred.SPolynomial(A, B);
@@ -278,8 +281,9 @@ public class GroebnerBaseSigSeqIter<C extends RingElem<C>> extends GroebnerBaseA
 
     /**
      * S-Polynomial.
+     *
      * @param P pair.
-     * @return spol(A,B) the S-polynomial of the pair (A,B).
+     * @return spol(A, B) the S-polynomial of the pair (A,B).
      */
     GenPolynomial<C> SPolynomial(SigPair<C> P) {
         return sred.SPolynomial(P.pi, P.pj);
@@ -288,6 +292,7 @@ public class GroebnerBaseSigSeqIter<C extends RingElem<C>> extends GroebnerBaseA
 
     /**
      * S-Polynomial polynomial factors.
+     *
      * @param A monic polynomial.
      * @param B monic polynomial.
      * @return polynomials [e,f] such that spol(A,B) = e*a - f*B.
@@ -299,6 +304,7 @@ public class GroebnerBaseSigSeqIter<C extends RingElem<C>> extends GroebnerBaseA
 
     /**
      * Pair with signature.
+     *
      * @param A polynomial with signature.
      * @param B polynomial with signature.
      * @param G polynomial ith signature list.
@@ -306,13 +312,14 @@ public class GroebnerBaseSigSeqIter<C extends RingElem<C>> extends GroebnerBaseA
      */
     SigPair<C> newPair(SigPoly<C> A, SigPoly<C> B, List<SigPoly<C>> G) {
         ExpVector e = A.poly.leadingExpVector().lcm(B.poly.leadingExpVector())
-                        .subtract(A.poly.leadingExpVector());
+                .subtract(A.poly.leadingExpVector());
         return new SigPair<C>(e, A, B, G);
     }
 
 
     /**
      * Pair with signature.
+     *
      * @param s signature for pair.
      * @param A polynomial with signature.
      * @param B polynomial with signature.
@@ -326,6 +333,7 @@ public class GroebnerBaseSigSeqIter<C extends RingElem<C>> extends GroebnerBaseA
 
     /**
      * Top normalform.
+     *
      * @param A polynomial.
      * @param F polynomial list.
      * @param G polynomial list.
@@ -338,7 +346,8 @@ public class GroebnerBaseSigSeqIter<C extends RingElem<C>> extends GroebnerBaseA
 
     /**
      * Prune total pair list P.
-     * @param P pair list.
+     *
+     * @param P   pair list.
      * @param syz list of exponent vectors representing syzygies.
      * @return updated pair list.
      */
@@ -352,14 +361,15 @@ public class GroebnerBaseSigSeqIter<C extends RingElem<C>> extends GroebnerBaseA
 
     /**
      * Prune pair list of degree d.
-     * @param S pair list.
-     * @param syz list of exponent vectors representing syzygies.
+     *
+     * @param S    pair list.
+     * @param syz  list of exponent vectors representing syzygies.
      * @param done list of treated polynomials.
-     * @param G polynomial with signature list.
+     * @param G    polynomial with signature list.
      * @return updated pair list.
      */
     List<SigPair<C>> pruneS(List<SigPair<C>> S, List<ExpVector> syz, List<SigPoly<C>> done,
-                    List<SigPoly<C>> G) {
+                            List<SigPoly<C>> G) {
         if (debug) {
             logger.debug("unused " + syz + " " + done + " " + G);
         }
@@ -369,6 +379,7 @@ public class GroebnerBaseSigSeqIter<C extends RingElem<C>> extends GroebnerBaseA
 
     /**
      * Initializes syzygy list.
+     *
      * @param F polynomial list.
      * @param G polynomial with signature list.
      * @return list of exponent vectors representing syzygies.
@@ -384,8 +395,9 @@ public class GroebnerBaseSigSeqIter<C extends RingElem<C>> extends GroebnerBaseA
 
     /**
      * Update syzygy list.
+     *
      * @param syz list of exponent vectors representing syzygies.
-     * @param r polynomial. <b>Note:</b> szy is modified to represent updated
+     * @param r   polynomial. <b>Note:</b> szy is modified to represent updated
      *            list of exponent vectors.
      */
     void updateSyz(List<ExpVector> syz, SigPoly<C> r) {

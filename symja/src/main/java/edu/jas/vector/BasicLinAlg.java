@@ -5,12 +5,12 @@
 package edu.jas.vector;
 
 
+import org.apache.log4j.Logger;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.structure.RingElem;
 
@@ -19,6 +19,7 @@ import edu.jas.structure.RingElem;
  * Basic linear algebra methods. Implements Basic linear algebra computations
  * and tests. <b>Note:</b> will use wrong method dispatch in JRE when used with
  * GenSolvablePolynomial.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
@@ -41,6 +42,7 @@ public class BasicLinAlg<C extends RingElem<C>> implements Serializable {
 
     /**
      * Scalar product of vectors of ring elements.
+     *
      * @param G a ring element list.
      * @param F a ring element list.
      * @return the scalar product of G and F.
@@ -70,6 +72,7 @@ public class BasicLinAlg<C extends RingElem<C>> implements Serializable {
 
     /**
      * Scalar product of vectors and a matrix of ring elements.
+     *
      * @param G a ring element list.
      * @param F a list of ring element lists.
      * @return the scalar product of G and F.
@@ -100,6 +103,7 @@ public class BasicLinAlg<C extends RingElem<C>> implements Serializable {
 
     /**
      * Scalar product of vectors and a matrix of ring elements.
+     *
      * @param G a ring element list.
      * @param F a list of ring element lists.
      * @return the right scalar product of G and F.
@@ -130,6 +134,7 @@ public class BasicLinAlg<C extends RingElem<C>> implements Serializable {
 
     /**
      * Addition of vectors of ring elements.
+     *
      * @param a a ring element list.
      * @param b a ring element list.
      * @return a+b, the vector sum of a and b.
@@ -161,6 +166,7 @@ public class BasicLinAlg<C extends RingElem<C>> implements Serializable {
 
     /**
      * Test vector of zero ring elements.
+     *
      * @param a a ring element list.
      * @return true, if all polynomial in a are zero, else false.
      */
@@ -182,6 +188,7 @@ public class BasicLinAlg<C extends RingElem<C>> implements Serializable {
 
     /**
      * Scalar product of ring element with vector of ring elements.
+     *
      * @param p a ring element.
      * @param F a ring element list.
      * @return the scalar product of p and F.
@@ -202,6 +209,7 @@ public class BasicLinAlg<C extends RingElem<C>> implements Serializable {
 
     /**
      * Scalar product of vector of ring element with ring element.
+     *
      * @param F a ring element list.
      * @param p a ring element.
      * @return the scalar product of F and p.

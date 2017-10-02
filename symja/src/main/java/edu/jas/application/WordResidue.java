@@ -22,10 +22,11 @@ import edu.jas.structure.Value;
 /**
  * WordResidue ring element based on GenWordPolynomial with GcdRingElem
  * interface. Objects of this class are immutable.
+ *
  * @author Heinz Kredel
  */
 public class WordResidue<C extends GcdRingElem<C>> implements GcdRingElem<WordResidue<C>>,
-                NoncomRingElem<WordResidue<C>>, QuotPair<GenWordPolynomial<C>>, Value<GenWordPolynomial<C>> {
+        NoncomRingElem<WordResidue<C>>, QuotPair<GenWordPolynomial<C>>, Value<GenWordPolynomial<C>> {
 
 
     /**
@@ -49,6 +50,7 @@ public class WordResidue<C extends GcdRingElem<C>> implements GcdRingElem<WordRe
 
     /**
      * The constructor creates a WordResidue object from a ring factory.
+     *
      * @param r solvable residue ring factory.
      */
     public WordResidue(WordResidueRing<C> r) {
@@ -59,6 +61,7 @@ public class WordResidue<C extends GcdRingElem<C>> implements GcdRingElem<WordRe
     /**
      * The constructor creates a WordResidue object from a ring factory and a
      * polynomial.
+     *
      * @param r solvable residue ring factory.
      * @param a solvable polynomial.
      */
@@ -70,6 +73,7 @@ public class WordResidue<C extends GcdRingElem<C>> implements GcdRingElem<WordRe
     /**
      * The constructor creates a WordResidue object from a ring factory, a
      * polynomial and an indicator if a is a unit.
+     *
      * @param r solvable residue ring factory.
      * @param a solvable polynomial.
      * @param u isunit indicator, -1, 0, 1.
@@ -100,6 +104,7 @@ public class WordResidue<C extends GcdRingElem<C>> implements GcdRingElem<WordRe
 
     /**
      * Get the corresponding element factory.
+     *
      * @return factory for this Element.
      * @see edu.jas.structure.Element#factory()
      */
@@ -110,6 +115,7 @@ public class WordResidue<C extends GcdRingElem<C>> implements GcdRingElem<WordRe
 
     /**
      * Value. Returns the value.
+     *
      * @see edu.jas.structure.Value#value()
      */
     public GenWordPolynomial<C> value() {
@@ -119,6 +125,7 @@ public class WordResidue<C extends GcdRingElem<C>> implements GcdRingElem<WordRe
 
     /**
      * Numerator. Returns the value.
+     *
      * @see edu.jas.structure.QuotPair#numerator()
      */
     public GenWordPolynomial<C> numerator() {
@@ -128,6 +135,7 @@ public class WordResidue<C extends GcdRingElem<C>> implements GcdRingElem<WordRe
 
     /**
      * Denominator. Returns 1.
+     *
      * @see edu.jas.structure.QuotPair#denominator()
      */
     public GenWordPolynomial<C> denominator() {
@@ -137,6 +145,7 @@ public class WordResidue<C extends GcdRingElem<C>> implements GcdRingElem<WordRe
 
     /**
      * Clone this.
+     *
      * @see java.lang.Object#clone()
      */
     @Override
@@ -147,6 +156,7 @@ public class WordResidue<C extends GcdRingElem<C>> implements GcdRingElem<WordRe
 
     /**
      * Is WordResidue zero.
+     *
      * @return If this is 0 then true is returned, else false.
      * @see edu.jas.structure.RingElem#isZERO()
      */
@@ -157,6 +167,7 @@ public class WordResidue<C extends GcdRingElem<C>> implements GcdRingElem<WordRe
 
     /**
      * Is WordResidue one.
+     *
      * @return If this is 1 then true is returned, else false.
      * @see edu.jas.structure.RingElem#isONE()
      */
@@ -167,6 +178,7 @@ public class WordResidue<C extends GcdRingElem<C>> implements GcdRingElem<WordRe
 
     /**
      * Is WordResidue unit.
+     *
      * @return If this is a unit then true is returned, else false.
      * @see edu.jas.structure.RingElem#isUnit()
      */
@@ -191,6 +203,7 @@ public class WordResidue<C extends GcdRingElem<C>> implements GcdRingElem<WordRe
 
     /**
      * Is WordResidue a constant.
+     *
      * @return true if this.val is a constant polynomial, else false.
      */
     public boolean isConstant() {
@@ -200,6 +213,7 @@ public class WordResidue<C extends GcdRingElem<C>> implements GcdRingElem<WordRe
 
     /**
      * Get the String representation as RingElem.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -213,6 +227,7 @@ public class WordResidue<C extends GcdRingElem<C>> implements GcdRingElem<WordRe
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this Element.
      * @see edu.jas.structure.Element#toScript()
      */
@@ -227,6 +242,7 @@ public class WordResidue<C extends GcdRingElem<C>> implements GcdRingElem<WordRe
 
     /**
      * Get a scripting compatible string representation of the factory.
+     *
      * @return script compatible representation for this ElemFactory.
      * @see edu.jas.structure.Element#toScriptFactory()
      */
@@ -239,9 +255,10 @@ public class WordResidue<C extends GcdRingElem<C>> implements GcdRingElem<WordRe
 
     /**
      * WordResidue comparison.
+     *
      * @param b WordResidue.
      * @return sign(this-b), 0 means that this and b are equivalent in this
-     *         residue class ring.
+     * residue class ring.
      */
     @Override
     public int compareTo(WordResidue<C> b) {
@@ -255,9 +272,10 @@ public class WordResidue<C extends GcdRingElem<C>> implements GcdRingElem<WordRe
 
     /**
      * Comparison with any other object.
-     * @see java.lang.Object#equals(java.lang.Object)
+     *
      * @return true means that this and b are equivalent in this residue class
-     *         ring.
+     * ring.
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -279,6 +297,7 @@ public class WordResidue<C extends GcdRingElem<C>> implements GcdRingElem<WordRe
 
     /**
      * Hash code for this residue.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -292,6 +311,7 @@ public class WordResidue<C extends GcdRingElem<C>> implements GcdRingElem<WordRe
 
     /**
      * WordResidue absolute value.
+     *
      * @return the absolute value of this.
      * @see edu.jas.structure.RingElem#abs()
      */
@@ -302,6 +322,7 @@ public class WordResidue<C extends GcdRingElem<C>> implements GcdRingElem<WordRe
 
     /**
      * WordResidue summation.
+     *
      * @param S WordResidue.
      * @return this+S.
      */
@@ -312,6 +333,7 @@ public class WordResidue<C extends GcdRingElem<C>> implements GcdRingElem<WordRe
 
     /**
      * WordResidue negate.
+     *
      * @return -this.
      * @see edu.jas.structure.RingElem#negate()
      */
@@ -322,8 +344,9 @@ public class WordResidue<C extends GcdRingElem<C>> implements GcdRingElem<WordRe
 
     /**
      * WordResidue signum.
-     * @see edu.jas.structure.RingElem#signum()
+     *
      * @return signum(this).
+     * @see edu.jas.structure.RingElem#signum()
      */
     public int signum() {
         return val.signum();
@@ -332,6 +355,7 @@ public class WordResidue<C extends GcdRingElem<C>> implements GcdRingElem<WordRe
 
     /**
      * WordResidue subtraction.
+     *
      * @param S WordResidue.
      * @return this-S.
      */
@@ -342,6 +366,7 @@ public class WordResidue<C extends GcdRingElem<C>> implements GcdRingElem<WordRe
 
     /**
      * WordResidue left division.
+     *
      * @param S WordResidue.
      * @return left, with left*S = this
      */
@@ -377,6 +402,7 @@ public class WordResidue<C extends GcdRingElem<C>> implements GcdRingElem<WordRe
 
     /**
      * WordResidue two-sided division.
+     *
      * @param S WordResidue.
      * @return [left, right] with left*S*right + remainder = this.
      */
@@ -402,6 +428,7 @@ public class WordResidue<C extends GcdRingElem<C>> implements GcdRingElem<WordRe
 
     /**
      * WordResidue right division.
+     *
      * @param S WordResidue.
      * @return right, with S * right = this
      */
@@ -437,19 +464,20 @@ public class WordResidue<C extends GcdRingElem<C>> implements GcdRingElem<WordRe
 
     /**
      * WordResidue inverse.
-     * @see edu.jas.structure.RingElem#inverse()
+     *
      * @return S with S = 1/this if defined.
+     * @see edu.jas.structure.RingElem#inverse()
      */
     public WordResidue<C> inverse() {
         GenWordPolynomial<C> x = ring.ideal.inverse(val);
         WordResidue<C> xp = new WordResidue<C>(ring, x, 1);
         if (xp.isZERO()) {
             throw new NotInvertibleException("(" + x + ") * (" + val + ") = " + x.multiply(val) + " = 0 mod "
-                            + ring.ideal);
+                    + ring.ideal);
         }
         if (!xp.multiply(this).isONE()) {
             throw new NotInvertibleException("(" + x + ") * (" + val + ") = " + x.multiply(val)
-                            + " != 1 mod " + ring.ideal);
+                    + " != 1 mod " + ring.ideal);
         }
         return xp;
     }
@@ -457,6 +485,7 @@ public class WordResidue<C extends GcdRingElem<C>> implements GcdRingElem<WordRe
 
     /**
      * WordResidue remainder.
+     *
      * @param S WordResidue.
      * @return this - (this/S) * S.
      */
@@ -470,6 +499,7 @@ public class WordResidue<C extends GcdRingElem<C>> implements GcdRingElem<WordRe
 
     /**
      * WordResidue right remainder.
+     *
      * @param S WordResidue.
      * @return r = this - S * (S/right), where S * right = this.
      */
@@ -483,6 +513,7 @@ public class WordResidue<C extends GcdRingElem<C>> implements GcdRingElem<WordRe
 
     /**
      * WordResidue two-sided remainder.
+     *
      * @param S WordResidue.
      * @return r = this - left*S*right.
      */
@@ -497,6 +528,7 @@ public class WordResidue<C extends GcdRingElem<C>> implements GcdRingElem<WordRe
 
     /**
      * WordResidue multiplication.
+     *
      * @param S WordResidue.
      * @return this*S.
      */
@@ -514,6 +546,7 @@ public class WordResidue<C extends GcdRingElem<C>> implements GcdRingElem<WordRe
 
     /**
      * WordResidue multiplication.
+     *
      * @param S GenWordPolynomial.
      * @return this*S.
      */
@@ -548,6 +581,7 @@ public class WordResidue<C extends GcdRingElem<C>> implements GcdRingElem<WordRe
 
     /**
      * WordResidue multiplication.
+     *
      * @param e word.
      * @return this*e.
      */
@@ -565,6 +599,7 @@ public class WordResidue<C extends GcdRingElem<C>> implements GcdRingElem<WordRe
 
     /**
      * WordResidue monic.
+     *
      * @return this with monic value part.
      */
     public WordResidue<C> monic() {
@@ -574,8 +609,9 @@ public class WordResidue<C extends GcdRingElem<C>> implements GcdRingElem<WordRe
 
     /**
      * Greatest common divisor.
+     *
      * @param b other element.
-     * @return gcd(this,b).
+     * @return gcd(this, b).
      */
     public WordResidue<C> gcd(WordResidue<C> b) {
         throw new UnsupportedOperationException("gcd not implemented");
@@ -596,6 +632,7 @@ public class WordResidue<C extends GcdRingElem<C>> implements GcdRingElem<WordRe
     /**
      * Extended greatest common divisor. <b>Note: </b>Not implemented, throws
      * UnsupportedOperationException.
+     *
      * @param b other element.
      * @return [ gcd(this,b), c1, c2 ] with c1*this + c2*b = gcd(this,b).
      */

@@ -24,7 +24,6 @@ import org.hipparchus.util.MathArrays;
 
 /**
  * Implements a linear function for interpolation of real univariate functions.
- *
  */
 public class LinearInterpolator implements UnivariateInterpolator {
     /**
@@ -34,23 +33,23 @@ public class LinearInterpolator implements UnivariateInterpolator {
      * @param y the values for the interpolation points
      * @return a function which interpolates the data set
      * @throws MathIllegalArgumentException if {@code x} and {@code y}
-     * have different sizes.
+     *                                      have different sizes.
      * @throws MathIllegalArgumentException if {@code x} is not sorted in
-     * strict increasing order.
+     *                                      strict increasing order.
      * @throws MathIllegalArgumentException if the size of {@code x} is smaller
-     * than 2.
+     *                                      than 2.
      */
     @Override
     public PolynomialSplineFunction interpolate(double x[], double y[])
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         if (x.length != y.length) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.DIMENSIONS_MISMATCH,
-                                                   x.length, y.length);
+                    x.length, y.length);
         }
 
         if (x.length < 2) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.NUMBER_OF_POINTS,
-                                                x.length, 2, true);
+                    x.length, 2, true);
         }
 
         // Number of intervals.  The number of data points is n + 1.

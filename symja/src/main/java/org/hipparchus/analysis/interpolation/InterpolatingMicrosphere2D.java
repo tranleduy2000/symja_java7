@@ -24,30 +24,30 @@ import org.hipparchus.util.MathUtils;
  * For 2D interpolation, this class constructs the microsphere as a series of
  * evenly spaced facets (rather than generating random normals as in the
  * base implementation).
- *
  */
 public class InterpolatingMicrosphere2D extends InterpolatingMicrosphere {
-    /** Space dimension. */
+    /**
+     * Space dimension.
+     */
     private static final int DIMENSION = 2;
 
     /**
      * Create a sphere from vectors regularly sampled around a circle.
      *
-     * @param size Number of surface elements of the sphere.
+     * @param size            Number of surface elements of the sphere.
      * @param maxDarkFraction Maximum fraction of the facets that can be dark.
-     * If the fraction of "non-illuminated" facets is larger, no estimation
-     * of the value will be performed, and the {@code background} value will
-     * be returned instead.
-     * @param darkThreshold Value of the illumination below which a facet is
-     * considered dark.
-     * @param background Value returned when the {@code maxDarkFraction}
-     * threshold is exceeded.
-     * @throws org.hipparchus.exception.MathIllegalArgumentException
-     * if {@code size <= 0}.
+     *                        If the fraction of "non-illuminated" facets is larger, no estimation
+     *                        of the value will be performed, and the {@code background} value will
+     *                        be returned instead.
+     * @param darkThreshold   Value of the illumination below which a facet is
+     *                        considered dark.
+     * @param background      Value returned when the {@code maxDarkFraction}
+     *                        threshold is exceeded.
+     * @throws org.hipparchus.exception.MathIllegalArgumentException if {@code size <= 0}.
      * @throws org.hipparchus.exception.MathIllegalArgumentException if
-     * {@code darkThreshold < 0}.
+     *                                                               {@code darkThreshold < 0}.
      * @throws org.hipparchus.exception.MathIllegalArgumentException if
-     * {@code maxDarkFraction} does not belong to the interval {@code [0, 1]}.
+     *                                                               {@code maxDarkFraction} does not belong to the interval {@code [0, 1]}.
      */
     public InterpolatingMicrosphere2D(int size,
                                       double maxDarkFraction,
@@ -59,9 +59,9 @@ public class InterpolatingMicrosphere2D extends InterpolatingMicrosphere {
         for (int i = 0; i < size; i++) {
             final double angle = i * MathUtils.TWO_PI / size;
 
-            add(new double[] { FastMath.cos(angle),
-                               FastMath.sin(angle) },
-                false);
+            add(new double[]{FastMath.cos(angle),
+                            FastMath.sin(angle)},
+                    false);
         }
     }
 

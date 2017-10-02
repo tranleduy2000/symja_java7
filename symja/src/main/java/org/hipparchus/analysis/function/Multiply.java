@@ -21,10 +21,11 @@ import org.hipparchus.analysis.BivariateFunction;
 
 /**
  * Multiply the two operands.
- *
  */
 public class Multiply implements BivariateFunction {
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double value(double x, double y) {
         return x * y;

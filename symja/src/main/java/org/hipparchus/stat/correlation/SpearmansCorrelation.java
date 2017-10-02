@@ -37,13 +37,19 @@ import org.hipparchus.util.MathArrays;
  */
 public class SpearmansCorrelation {
 
-    /** Input data */
+    /**
+     * Input data
+     */
     private final RealMatrix data;
 
-    /** Ranking algorithm  */
+    /**
+     * Ranking algorithm
+     */
     private final RankingAlgorithm rankingAlgorithm;
 
-    /** Rank correlation */
+    /**
+     * Rank correlation
+     */
     private final PearsonsCorrelation rankCorrelation;
 
     /**
@@ -58,15 +64,15 @@ public class SpearmansCorrelation {
      *
      * @param rankingAlgorithm ranking algorithm
      * @throws MathIllegalArgumentException if the provided {@link RankingAlgorithm} is of
-     * type {@link NaturalRanking} and uses a {@link NaNStrategy#REMOVED} strategy
+     *                                      type {@link NaturalRanking} and uses a {@link NaNStrategy#REMOVED} strategy
      */
     public SpearmansCorrelation(final RankingAlgorithm rankingAlgorithm)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
 
         if (rankingAlgorithm instanceof NaturalRanking &&
-            NaNStrategy.REMOVED == ((NaturalRanking) rankingAlgorithm).getNanStrategy()) {
+                NaNStrategy.REMOVED == ((NaturalRanking) rankingAlgorithm).getNanStrategy()) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.NOT_SUPPORTED_NAN_STRATEGY,
-                                                   NaNStrategy.REMOVED);
+                    NaNStrategy.REMOVED);
         }
 
         data = null;
@@ -78,7 +84,7 @@ public class SpearmansCorrelation {
      * Create a SpearmansCorrelation from the given data matrix.
      *
      * @param dataMatrix matrix of data with columns representing
-     * variables to correlate
+     *                   variables to correlate
      */
     public SpearmansCorrelation(final RealMatrix dataMatrix) {
         this(dataMatrix, new NaturalRanking());
@@ -88,19 +94,19 @@ public class SpearmansCorrelation {
      * Create a SpearmansCorrelation with the given input data matrix
      * and ranking algorithm.
      *
-     * @param dataMatrix matrix of data with columns representing
-     * variables to correlate
+     * @param dataMatrix       matrix of data with columns representing
+     *                         variables to correlate
      * @param rankingAlgorithm ranking algorithm
      * @throws MathIllegalArgumentException if the provided {@link RankingAlgorithm} is of
-     * type {@link NaturalRanking} and uses a {@link NaNStrategy#REMOVED} strategy
+     *                                      type {@link NaturalRanking} and uses a {@link NaNStrategy#REMOVED} strategy
      */
     public SpearmansCorrelation(final RealMatrix dataMatrix, final RankingAlgorithm rankingAlgorithm)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
 
         if (rankingAlgorithm instanceof NaturalRanking &&
-            NaNStrategy.REMOVED == ((NaturalRanking) rankingAlgorithm).getNanStrategy()) {
+                NaNStrategy.REMOVED == ((NaturalRanking) rankingAlgorithm).getNanStrategy()) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.NOT_SUPPORTED_NAN_STRATEGY,
-                                                   NaNStrategy.REMOVED);
+                    NaNStrategy.REMOVED);
         }
 
         this.rankingAlgorithm = rankingAlgorithm;
@@ -127,7 +133,7 @@ public class SpearmansCorrelation {
      * <code>rankTransform(matrix)</code> is the result of applying the
      * configured <code>RankingAlgorithm</code> to each of the columns of
      * <code>matrix.</code>
-     *
+     * <p>
      * <p>Returns null if this instance was created with no data.</p>
      *
      * @return PearsonsCorrelation among ranked column data
@@ -157,7 +163,7 @@ public class SpearmansCorrelation {
      * @return correlation matrix
      */
     public RealMatrix computeCorrelationMatrix(final double[][] matrix) {
-       return computeCorrelationMatrix(new BlockRealMatrix(matrix));
+        return computeCorrelationMatrix(new BlockRealMatrix(matrix));
     }
 
     /**
@@ -173,11 +179,11 @@ public class SpearmansCorrelation {
         MathArrays.checkEqualLength(xArray, yArray);
         if (xArray.length < 2) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.INSUFFICIENT_DIMENSION,
-                                                   xArray.length, 2);
+                    xArray.length, 2);
         }
 
         return new PearsonsCorrelation().correlation(rankingAlgorithm.rank(xArray),
-                                                     rankingAlgorithm.rank(yArray));
+                rankingAlgorithm.rank(yArray));
     }
 
     /**

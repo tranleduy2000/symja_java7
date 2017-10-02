@@ -17,16 +17,16 @@
 
 package org.hipparchus.optim.univariate;
 
-import java.util.Arrays;
-import java.util.Comparator;
-
 import org.hipparchus.exception.LocalizedCoreFormats;
-import org.hipparchus.exception.MathIllegalStateException;
 import org.hipparchus.exception.MathIllegalArgumentException;
+import org.hipparchus.exception.MathIllegalStateException;
 import org.hipparchus.optim.MaxEval;
 import org.hipparchus.optim.OptimizationData;
 import org.hipparchus.optim.nonlinear.scalar.GoalType;
 import org.hipparchus.random.RandomGenerator;
+
+import java.util.Arrays;
+import java.util.Comparator;
 
 /**
  * Special implementation of the {@link UnivariateOptimizer} interface
@@ -35,21 +35,32 @@ import org.hipparchus.random.RandomGenerator;
  * This class wraps an optimizer in order to use it several times in
  * turn with different starting points (trying to avoid being trapped
  * in a local extremum when looking for a global one).
- *
  */
 public class MultiStartUnivariateOptimizer
-    extends UnivariateOptimizer {
-    /** Underlying classical optimizer. */
+        extends UnivariateOptimizer {
+    /**
+     * Underlying classical optimizer.
+     */
     private final UnivariateOptimizer optimizer;
-    /** Number of evaluations already performed for all starts. */
-    private int totalEvaluations;
-    /** Number of starts to go. */
+    /**
+     * Number of starts to go.
+     */
     private final int starts;
-    /** Random generator for multi-start. */
+    /**
+     * Random generator for multi-start.
+     */
     private final RandomGenerator generator;
-    /** Found optima. */
+    /**
+     * Number of evaluations already performed for all starts.
+     */
+    private int totalEvaluations;
+    /**
+     * Found optima.
+     */
     private UnivariatePointValuePair[] optima;
-    /** Optimization data. */
+    /**
+     * Optimization data.
+     */
     private OptimizationData[] optimData;
     /**
      * Location in {@link #optimData} where the updated maximum
@@ -66,9 +77,9 @@ public class MultiStartUnivariateOptimizer
      * Create a multi-start optimizer from a single-start optimizer.
      *
      * @param optimizer Single-start optimizer to wrap.
-     * @param starts Number of starts to perform. If {@code starts == 1},
-     * the {@code optimize} methods will return the same solution as
-     * {@code optimizer} would.
+     * @param starts    Number of starts to perform. If {@code starts == 1},
+     *                  the {@code optimize} methods will return the same solution as
+     *                  {@code optimizer} would.
      * @param generator Random generator to use for restarts.
      * @throws MathIllegalArgumentException if {@code starts < 1}.
      */
@@ -79,7 +90,7 @@ public class MultiStartUnivariateOptimizer
 
         if (starts < 1) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.NUMBER_TOO_SMALL,
-                                                   starts, 1);
+                    starts, 1);
         }
 
         this.optimizer = optimizer;
@@ -87,7 +98,9 @@ public class MultiStartUnivariateOptimizer
         this.generator = generator;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getEvaluations() {
         return totalEvaluations;
@@ -113,7 +126,7 @@ public class MultiStartUnivariateOptimizer
      *
      * @return an array containing the optima.
      * @throws MathIllegalStateException if {@link #optimize(OptimizationData[])
-     * optimize} has not been called.
+     *                                   optimize} has not been called.
      */
     public UnivariatePointValuePair[] getOptima() {
         if (optima == null) {
@@ -126,17 +139,19 @@ public class MultiStartUnivariateOptimizer
      * {@inheritDoc}
      *
      * @throws MathIllegalStateException if {@code optData} does not contain an
-     * instance of {@link MaxEval} or {@link SearchInterval}.
+     *                                   instance of {@link MaxEval} or {@link SearchInterval}.
      */
     @Override
     public UnivariatePointValuePair optimize(OptimizationData... optData) {
         // Store arguments in order to pass them to the internal optimizer.
-       optimData = optData;
+        optimData = optData;
         // Set up base class and perform computations.
         return super.optimize(optData);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected UnivariatePointValuePair doOptimize() {
         // Remove all instances of "MaxEval" and "SearchInterval" from the
@@ -180,8 +195,8 @@ public class MultiStartUnivariateOptimizer
                 optimData[maxEvalIndex] = new MaxEval(maxEval - totalEvaluations);
                 // New start value.
                 final double s = (i == 0) ?
-                    startValue :
-                    min + generator.nextDouble() * (max - min);
+                        startValue :
+                        min + generator.nextDouble() * (max - min);
                 optimData[searchIntervalIndex] = new SearchInterval(min, max, s);
                 // Optimize.
                 optima[i] = optimizer.optimize(optimData);
@@ -211,20 +226,20 @@ public class MultiStartUnivariateOptimizer
      */
     private void sortPairs(final GoalType goal) {
         Arrays.sort(optima, new Comparator<UnivariatePointValuePair>() {
-                /** {@inheritDoc} */
-                @Override
-                public int compare(final UnivariatePointValuePair o1,
-                                   final UnivariatePointValuePair o2) {
-                    if (o1 == null) {
-                        return (o2 == null) ? 0 : 1;
-                    } else if (o2 == null) {
-                        return -1;
-                    }
-                    final double v1 = o1.getValue();
-                    final double v2 = o2.getValue();
-                    return (goal == GoalType.MINIMIZE) ?
-                        Double.compare(v1, v2) : Double.compare(v2, v1);
+            /** {@inheritDoc} */
+            @Override
+            public int compare(final UnivariatePointValuePair o1,
+                               final UnivariatePointValuePair o2) {
+                if (o1 == null) {
+                    return (o2 == null) ? 0 : 1;
+                } else if (o2 == null) {
+                    return -1;
                 }
-            });
+                final double v1 = o1.getValue();
+                final double v2 = o2.getValue();
+                return (goal == GoalType.MINIMIZE) ?
+                        Double.compare(v1, v2) : Double.compare(v2, v1);
+            }
+        });
     }
 }

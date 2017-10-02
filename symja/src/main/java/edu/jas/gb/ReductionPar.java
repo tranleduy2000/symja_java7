@@ -15,6 +15,7 @@ import edu.jas.structure.RingElem;
 
 /**
  * Polynomial reduction parallel usable algorithm. Implements normalform.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
@@ -34,6 +35,7 @@ public class ReductionPar<C extends RingElem<C>> extends ReductionAbstract<C> {
 
     /**
      * Normalform. Allows concurrent modification of the list.
+     *
      * @param Ap polynomial.
      * @param Pp polynomial list, concurrent modification allowed.
      * @return nf(Ap) with respect to Pp.
@@ -121,22 +123,24 @@ public class ReductionPar<C extends RingElem<C>> extends ReductionAbstract<C> {
 
     /**
      * Normalform with recording.
+     *
      * @param row recording matrix, is modified.
-     * @param Pp a polynomial list for reduction.
-     * @param Ap a polynomial.
-     * @return nf(Pp,Ap), the normal form of Ap wrt. Pp.
+     * @param Pp  a polynomial list for reduction.
+     * @param Ap  a polynomial.
+     * @return nf(Pp, Ap), the normal form of Ap wrt. Pp.
      */
     public GenPolynomial<C> normalform(List<GenPolynomial<C>> row, List<GenPolynomial<C>> Pp,
-                    GenPolynomial<C> Ap) {
+                                       GenPolynomial<C> Ap) {
         throw new RuntimeException("normalform with recording not implemented");
     }
 
 
     /**
      * Normalform. Allows concurrent modification of the DHT.
+     *
      * @param Ap polynomial.
      * @param mp a map from Integers to polynomials, e.g. a distributed hash
-     *            table, concurrent modification allowed.
+     *           table, concurrent modification allowed.
      * @return nf(Ap) with respect to Pp.
      */
     @SuppressWarnings("cast")

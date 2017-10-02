@@ -5,10 +5,10 @@
 package edu.jas.gbufd;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.List;
 import java.util.Map;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.gb.WordReductionAbstract;
 import edu.jas.poly.GenPolynomial;
@@ -20,12 +20,13 @@ import edu.jas.structure.RingElem;
 
 /**
  * Polynomial word reduction sequential use algorithm. Implements normalform.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
 
 public class WordPseudoReductionSeq<C extends RingElem<C>> extends WordReductionAbstract<C> implements
-                WordPseudoReduction<C> {
+        WordPseudoReduction<C> {
 
 
     private static final Logger logger = Logger.getLogger(WordPseudoReductionSeq.class);
@@ -43,6 +44,7 @@ public class WordPseudoReductionSeq<C extends RingElem<C>> extends WordReduction
 
     /**
      * Normalform.
+     *
      * @param Ap polynomial.
      * @param Pp polynomial list.
      * @return nf(Ap) with respect to Pp.
@@ -128,15 +130,16 @@ public class WordPseudoReductionSeq<C extends RingElem<C>> extends WordReduction
 
     /**
      * Normalform with left and right recording.
+     *
      * @param lrow left recording matrix, is modified.
      * @param rrow right recording matrix, is modified.
-     * @param Pp a polynomial list for reduction.
-     * @param Ap a polynomial.
-     * @return nf(Pp,Ap), the normal form of Ap wrt. Pp.
+     * @param Pp   a polynomial list for reduction.
+     * @param Ap   a polynomial.
+     * @return nf(Pp, Ap), the normal form of Ap wrt. Pp.
      */
     //@SuppressWarnings("unchecked")
     public GenWordPolynomial<C> normalform(List<GenWordPolynomial<C>> lrow, List<GenWordPolynomial<C>> rrow,
-                    List<GenWordPolynomial<C>> Pp, GenWordPolynomial<C> Ap) {
+                                           List<GenWordPolynomial<C>> Pp, GenWordPolynomial<C> Ap) {
         if (Pp == null || Pp.isEmpty()) {
             return Ap;
         }
@@ -234,10 +237,11 @@ public class WordPseudoReductionSeq<C extends RingElem<C>> extends WordReduction
 
     /**
      * Normalform with multiplication factor.
+     *
      * @param Pp polynomial list.
      * @param Ap polynomial.
-     * @return ( nf(Ap), mf ) with respect to Pp and mf as multiplication factor
-     *         for Ap.
+     * @return (nf(Ap), mf ) with respect to Pp and mf as multiplication factor
+     * for Ap.
      */
     public WordPseudoReductionEntry<C> normalformFactor(List<GenWordPolynomial<C>> Pp, GenWordPolynomial<C> Ap) {
         throw new UnsupportedOperationException("normalformFactor not imlemented");
@@ -246,13 +250,14 @@ public class WordPseudoReductionSeq<C extends RingElem<C>> extends WordReduction
 
     /**
      * Normalform with polynomial coefficients.
+     *
      * @param Ap polynomial.
      * @param Pp polynomial list.
      * @return nf(Ap) with respect to Pp.
      */
     //@SuppressWarnings("unchecked")
     public GenWordPolynomial<GenPolynomial<C>> normalformRecursive(
-                    List<GenWordPolynomial<GenPolynomial<C>>> Pp, GenWordPolynomial<GenPolynomial<C>> Ap) {
+            List<GenWordPolynomial<GenPolynomial<C>>> Pp, GenWordPolynomial<GenPolynomial<C>> Ap) {
         if (Pp == null || Pp.isEmpty()) {
             return Ap;
         }
@@ -316,8 +321,8 @@ public class WordPseudoReductionSeq<C extends RingElem<C>> extends WordReduction
                     logger.info("redRec divideWord: e = " + e + ", fl = " + fl + ", fr = " + fr);
                 }
                 GenPolynomial<C> c = lbc[i];
-                if (PolyUtil.<C> baseSparsePseudoRemainder(a, c).isZERO()) {
-                    b = PolyUtil.<C> basePseudoDivide(a, c);
+                if (PolyUtil.<C>baseSparsePseudoRemainder(a, c).isZERO()) {
+                    b = PolyUtil.<C>basePseudoDivide(a, c);
                     Q = p[i].multiply(b, fl, cone, fr);
                 } else {
                     R = R.multiply(c);
@@ -349,7 +354,7 @@ public class WordPseudoReductionSeq<C extends RingElem<C>> extends WordReduction
 
     @Override
     public GenWordPolynomial<C> leftNormalform(List<GenWordPolynomial<C>> lrow,
-                    List<GenWordPolynomial<C>> Pp, GenWordPolynomial<C> Ap) {
+                                               List<GenWordPolynomial<C>> Pp, GenWordPolynomial<C> Ap) {
         throw new UnsupportedOperationException("leftNormalform not imlemented");
     }
 
@@ -362,7 +367,7 @@ public class WordPseudoReductionSeq<C extends RingElem<C>> extends WordReduction
 
     @Override
     public GenWordPolynomial<C> rightNormalform(List<GenWordPolynomial<C>> rrow,
-                    List<GenWordPolynomial<C>> Pp, GenWordPolynomial<C> Ap) {
+                                                List<GenWordPolynomial<C>> Pp, GenWordPolynomial<C> Ap) {
         throw new UnsupportedOperationException("rightNormalform not imlemented");
     }
 

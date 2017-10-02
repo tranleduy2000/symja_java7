@@ -42,21 +42,37 @@ import org.hipparchus.util.FastMath;
  * @see <a href="https://en.wikipedia.org/wiki/Harmonic_number#Generalized_harmonic_numbers">Generalized harmonic numbers</a>
  */
 public class ZipfDistribution extends AbstractIntegerDistribution {
-    /** Serializable version identifier. */
+    /**
+     * Serializable version identifier.
+     */
     private static final long serialVersionUID = 20150501L;
-    /** Number of elements. */
+    /**
+     * Number of elements.
+     */
     private final int numberOfElements;
-    /** Exponent parameter of the distribution. */
+    /**
+     * Exponent parameter of the distribution.
+     */
     private final double exponent;
-    /** Cached values of the nth generalized harmonic. */
+    /**
+     * Cached values of the nth generalized harmonic.
+     */
     private final double nthHarmonic;
-    /** Cached numerical mean */
+    /**
+     * Cached numerical mean
+     */
     private double numericalMean = Double.NaN;
-    /** Whether or not the numerical mean has been calculated */
+    /**
+     * Whether or not the numerical mean has been calculated
+     */
     private boolean numericalMeanIsCalculated = false;
-    /** Cached numerical variance */
+    /**
+     * Cached numerical variance
+     */
     private double numericalVariance = Double.NaN;
-    /** Whether or not the numerical variance has been calculated */
+    /**
+     * Whether or not the numerical variance has been calculated
+     */
     private boolean numericalVarianceIsCalculated = false;
 
     /**
@@ -64,19 +80,19 @@ public class ZipfDistribution extends AbstractIntegerDistribution {
      * exponent.
      *
      * @param numberOfElements Number of elements.
-     * @param exponent Exponent.
-     * @exception MathIllegalArgumentException if {@code numberOfElements <= 0}
-     * or {@code exponent <= 0}.
+     * @param exponent         Exponent.
+     * @throws MathIllegalArgumentException if {@code numberOfElements <= 0}
+     *                                      or {@code exponent <= 0}.
      */
     public ZipfDistribution(final int numberOfElements, final double exponent)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         if (numberOfElements <= 0) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.DIMENSION,
-                                                   numberOfElements);
+                    numberOfElements);
         }
         if (exponent <= 0) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.EXPONENT,
-                                                   exponent);
+                    exponent);
         }
 
         this.numberOfElements = numberOfElements;
@@ -102,7 +118,9 @@ public class ZipfDistribution extends AbstractIntegerDistribution {
         return exponent;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double probability(final int x) {
         if (x <= 0 || x > numberOfElements) {
@@ -112,7 +130,9 @@ public class ZipfDistribution extends AbstractIntegerDistribution {
         return (1.0 / FastMath.pow(x, exponent)) / nthHarmonic;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double logProbability(int x) {
         if (x <= 0 || x > numberOfElements) {
@@ -122,7 +142,9 @@ public class ZipfDistribution extends AbstractIntegerDistribution {
         return -FastMath.log(x) * exponent - FastMath.log(nthHarmonic);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double cumulativeProbability(final int x) {
         if (x <= 0) {
@@ -136,12 +158,12 @@ public class ZipfDistribution extends AbstractIntegerDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * For number of elements {@code N} and exponent {@code s}, the mean is
      * {@code Hs1 / Hs}, where
      * <ul>
-     *  <li>{@code Hs1 = generalizedHarmonic(N, s - 1)},</li>
-     *  <li>{@code Hs = generalizedHarmonic(N, s)}.</li>
+     * <li>{@code Hs1 = generalizedHarmonic(N, s - 1)},</li>
+     * <li>{@code Hs = generalizedHarmonic(N, s)}.</li>
      * </ul>
      */
     @Override
@@ -170,13 +192,13 @@ public class ZipfDistribution extends AbstractIntegerDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * For number of elements {@code N} and exponent {@code s}, the mean is
      * {@code (Hs2 / Hs) - (Hs1^2 / Hs^2)}, where
      * <ul>
-     *  <li>{@code Hs2 = generalizedHarmonic(N, s - 2)},</li>
-     *  <li>{@code Hs1 = generalizedHarmonic(N, s - 1)},</li>
-     *  <li>{@code Hs = generalizedHarmonic(N, s)}.</li>
+     * <li>{@code Hs2 = generalizedHarmonic(N, s - 2)},</li>
+     * <li>{@code Hs1 = generalizedHarmonic(N, s - 1)},</li>
+     * <li>{@code Hs = generalizedHarmonic(N, s)}.</li>
      * </ul>
      */
     @Override
@@ -223,7 +245,7 @@ public class ZipfDistribution extends AbstractIntegerDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The lower bound of the support is always 1 no matter the parameters.
      *
      * @return lower bound of the support (always 1)
@@ -235,7 +257,7 @@ public class ZipfDistribution extends AbstractIntegerDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The upper bound of the support is the number of elements.
      *
      * @return upper bound of the support
@@ -247,7 +269,7 @@ public class ZipfDistribution extends AbstractIntegerDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The support of this distribution is connected.
      *
      * @return {@code true}

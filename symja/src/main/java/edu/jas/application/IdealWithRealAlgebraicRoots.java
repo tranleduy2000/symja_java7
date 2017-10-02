@@ -5,7 +5,6 @@
 package edu.jas.application;
 
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,12 +13,12 @@ import edu.jas.arith.Rational;
 import edu.jas.poly.GenPolynomial;
 import edu.jas.root.RealAlgebraicNumber;
 import edu.jas.structure.GcdRingElem;
-import edu.jas.structure.RingElem;
 
 
 /**
  * Container for Ideals together with univariate polynomials and real algebraic
  * roots.
+ *
  * @author Heinz Kredel
  */
 public class IdealWithRealAlgebraicRoots<D extends GcdRingElem<D> & Rational>
@@ -48,12 +47,13 @@ public class IdealWithRealAlgebraicRoots<D extends GcdRingElem<D> & Rational>
 
     /**
      * Constructor.
+     *
      * @param id the ideal
      * @param up the list of univaraite polynomials
      * @param rr the list of real algebraic roots
      */
     public IdealWithRealAlgebraicRoots(Ideal<D> id, List<GenPolynomial<D>> up,
-            List<List<RealAlgebraicNumber<D>>> rr) {
+                                       List<List<RealAlgebraicNumber<D>>> rr) {
         super(id, up);
         ran = rr;
     }
@@ -61,6 +61,7 @@ public class IdealWithRealAlgebraicRoots<D extends GcdRingElem<D> & Rational>
 
     /**
      * Constructor.
+     *
      * @param iu the ideal with univariate polynomials
      * @param rr the list of real algebraic roots
      */
@@ -72,6 +73,7 @@ public class IdealWithRealAlgebraicRoots<D extends GcdRingElem<D> & Rational>
 
     /**
      * String representation of the ideal.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -111,6 +113,7 @@ public class IdealWithRealAlgebraicRoots<D extends GcdRingElem<D> & Rational>
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this Element.
      * @see edu.jas.structure.Element#toScript()
      */
@@ -147,7 +150,7 @@ public class IdealWithRealAlgebraicRoots<D extends GcdRingElem<D> & Rational>
      */
     public void doDecimalApproximation() {
         List<List<BigDecimal>> unused = decimalApproximation();
-        if ( unused.isEmpty() ) { // use for findbugs
+        if (unused.isEmpty()) { // use for findbugs
             System.out.println("unused is empty");
         }
         return;

@@ -20,6 +20,7 @@ import edu.jas.structure.RingFactory;
  * BigDecimal class to make java.math.BigDecimal available with RingElem
  * interface. Objects of this class are immutable. Experimental, use with care,
  * compareTo is hacked.
+ *
  * @author Heinz Kredel
  * @see java.math.BigDecimal
  */
@@ -27,45 +28,32 @@ import edu.jas.structure.RingFactory;
 public final class BigDecimal implements GcdRingElem<BigDecimal>, RingFactory<BigDecimal> {
 
 
-    /**
-     * The data structure.
-     */
-    public final java.math.BigDecimal val;
-
-
-    private final static Random random = new Random();
-
-
     public static final MathContext DEFAULT_CONTEXT = MathContext.DECIMAL64; //32; //64; //128;
-
-
     public static final int DEFAULT_PRECISION = DEFAULT_CONTEXT.getPrecision();
-
-
-    public final MathContext context;
-
-
     /**
      * If true, then use equals from java.math.BigDecimal, else use hacked
      * approximate compareTo().
      */
     public final static boolean EXACT_EQUAL = true;
-
-
     /**
      * The constant 0.
      */
     public final static BigDecimal ZERO = new BigDecimal(java.math.BigDecimal.ZERO);
-
-
     /**
      * The constant 1.
      */
     public final static BigDecimal ONE = new BigDecimal(java.math.BigDecimal.ONE);
+    private final static Random random = new Random();
+    /**
+     * The data structure.
+     */
+    public final java.math.BigDecimal val;
+    public final MathContext context;
 
 
     /**
      * Constructor for BigDecimal from math.BigDecimal.
+     *
      * @param a java.math.BigDecimal.
      */
     public BigDecimal(java.math.BigDecimal a) {
@@ -75,7 +63,8 @@ public final class BigDecimal implements GcdRingElem<BigDecimal>, RingFactory<Bi
 
     /**
      * Constructor for BigDecimal from math.BigDecimal.
-     * @param a java.math.BigDecimal.
+     *
+     * @param a  java.math.BigDecimal.
      * @param mc MathContext.
      */
     public BigDecimal(java.math.BigDecimal a, MathContext mc) {
@@ -86,6 +75,7 @@ public final class BigDecimal implements GcdRingElem<BigDecimal>, RingFactory<Bi
 
     /**
      * Constructor for BigDecimal from long.
+     *
      * @param a long.
      */
     public BigDecimal(long a) {
@@ -95,7 +85,8 @@ public final class BigDecimal implements GcdRingElem<BigDecimal>, RingFactory<Bi
 
     /**
      * Constructor for BigDecimal from long and a context.
-     * @param a long.
+     *
+     * @param a  long.
      * @param mc MathContext.
      */
     public BigDecimal(long a, MathContext mc) {
@@ -105,6 +96,7 @@ public final class BigDecimal implements GcdRingElem<BigDecimal>, RingFactory<Bi
 
     /**
      * Constructor for BigDecimal from double.
+     *
      * @param a double.
      */
     public BigDecimal(double a) {
@@ -114,7 +106,8 @@ public final class BigDecimal implements GcdRingElem<BigDecimal>, RingFactory<Bi
 
     /**
      * Constructor for BigDecimal from double and a context.
-     * @param a double.
+     *
+     * @param a  double.
      * @param mc MathContext.
      */
     public BigDecimal(double a, MathContext mc) {
@@ -124,6 +117,7 @@ public final class BigDecimal implements GcdRingElem<BigDecimal>, RingFactory<Bi
 
     /**
      * Constructor for BigDecimal from java.math.BigInteger.
+     *
      * @param a java.math.BigInteger.
      */
     public BigDecimal(java.math.BigInteger a) {
@@ -133,7 +127,8 @@ public final class BigDecimal implements GcdRingElem<BigDecimal>, RingFactory<Bi
 
     /**
      * Constructor for BigDecimal from java.math.BigInteger.
-     * @param a java.math.BigInteger.
+     *
+     * @param a  java.math.BigInteger.
      * @param mc MathContext.
      */
     public BigDecimal(java.math.BigInteger a, MathContext mc) {
@@ -143,6 +138,7 @@ public final class BigDecimal implements GcdRingElem<BigDecimal>, RingFactory<Bi
 
     /**
      * Constructor for BigDecimal from BigRational.
+     *
      * @param a edu.jas.arith.BigRational.
      */
     public BigDecimal(BigRational a) {
@@ -152,7 +148,8 @@ public final class BigDecimal implements GcdRingElem<BigDecimal>, RingFactory<Bi
 
     /**
      * Constructor for BigDecimal from BigRational.
-     * @param a edu.jas.arith.BigRational.
+     *
+     * @param a  edu.jas.arith.BigRational.
      * @param mc MathContext.
      */
     public BigDecimal(BigRational a, MathContext mc) {
@@ -162,6 +159,7 @@ public final class BigDecimal implements GcdRingElem<BigDecimal>, RingFactory<Bi
 
     /**
      * Constructor for BigDecimal from String.
+     *
      * @param s String.
      */
     public BigDecimal(String s) {
@@ -171,7 +169,8 @@ public final class BigDecimal implements GcdRingElem<BigDecimal>, RingFactory<Bi
 
     /**
      * Constructor for BigDecimal from String.
-     * @param s String.
+     *
+     * @param s  String.
      * @param mc MathContext.
      */
     public BigDecimal(String s, MathContext mc) {
@@ -193,9 +192,29 @@ public final class BigDecimal implements GcdRingElem<BigDecimal>, RingFactory<Bi
      *         return val; }
      */
 
+    /**
+     * Get a BigDecimal element from a math.BigDecimal.
+     *
+     * @param a math.BigDecimal.
+     * @return a as BigDecimal.
+     */
+    public static BigDecimal valueOf(java.math.BigDecimal a) {
+        return new BigDecimal(a, DEFAULT_CONTEXT);
+    }
+
+    /**
+     * Get a BigDecimal element from long.
+     *
+     * @param a long.
+     * @return a as BigDecimal.
+     */
+    public static BigDecimal valueOf(long a) {
+        return new BigDecimal(a, DEFAULT_CONTEXT);
+    }
 
     /**
      * Get the corresponding element factory.
+     *
      * @return factory for this Element.
      * @see edu.jas.structure.Element#factory()
      */
@@ -203,9 +222,9 @@ public final class BigDecimal implements GcdRingElem<BigDecimal>, RingFactory<Bi
         return this;
     }
 
-
     /**
      * Get a list of the generating elements.
+     *
      * @return list of generators for the algebraic structure.
      * @see edu.jas.structure.ElemFactory#generators()
      */
@@ -215,20 +234,20 @@ public final class BigDecimal implements GcdRingElem<BigDecimal>, RingFactory<Bi
         return g;
     }
 
-
     /**
      * Is this structure finite or infinite.
+     *
      * @return true if this structure is finite, else false.
      * @see edu.jas.structure.ElemFactory#isFinite() <b>Note: </b> is actually
-     *      finite but returns false.
+     * finite but returns false.
      */
     public boolean isFinite() {
         return false;
     }
 
-
     /**
      * Clone this.
+     *
      * @see java.lang.Object#clone()
      */
     @Override
@@ -236,9 +255,9 @@ public final class BigDecimal implements GcdRingElem<BigDecimal>, RingFactory<Bi
         return new BigDecimal(val, context);
     }
 
-
     /**
      * Copy BigDecimal element c.
+     *
      * @param c BigDecimal.
      * @return a copy of c.
      */
@@ -246,64 +265,64 @@ public final class BigDecimal implements GcdRingElem<BigDecimal>, RingFactory<Bi
         return new BigDecimal(c.val, c.context);
     }
 
-
     /**
      * Get the zero element.
+     *
      * @return 0.
      */
     public BigDecimal getZERO() {
         return ZERO;
     }
 
-
     /**
      * Get the one element.
+     *
      * @return 1.
      */
     public BigDecimal getONE() {
         return ONE;
     }
 
-
     /**
      * Query if this ring is commutative.
+     *
      * @return true.
      */
     public boolean isCommutative() {
         return true;
     }
 
-
     /**
      * Query if this ring is associative. Floating point number addition is not
      * associative, but multiplication is.
+     *
      * @return true.
      */
     public boolean isAssociative() {
         return true;
     }
 
-
     /**
      * Query if this ring is a field.
+     *
      * @return true.
      */
     public boolean isField() {
         return true;
     }
 
-
     /**
      * Characteristic of this ring.
+     *
      * @return characteristic of this ring.
      */
     public java.math.BigInteger characteristic() {
         return java.math.BigInteger.ZERO;
     }
 
-
     /**
      * Get a BigDecimal element from a math.BigDecimal.
+     *
      * @param a math.BigDecimal.
      * @return a as BigDecimal.
      */
@@ -311,19 +330,9 @@ public final class BigDecimal implements GcdRingElem<BigDecimal>, RingFactory<Bi
         return new BigDecimal(new java.math.BigDecimal(a), context);
     }
 
-
-    /**
-     * Get a BigDecimal element from a math.BigDecimal.
-     * @param a math.BigDecimal.
-     * @return a as BigDecimal.
-     */
-    public static BigDecimal valueOf(java.math.BigDecimal a) {
-        return new BigDecimal(a, DEFAULT_CONTEXT);
-    }
-
-
     /**
      * Get a BigDecimal element from long.
+     *
      * @param a long.
      * @return a as BigDecimal.
      */
@@ -331,19 +340,9 @@ public final class BigDecimal implements GcdRingElem<BigDecimal>, RingFactory<Bi
         return new BigDecimal(a, context);
     }
 
-
-    /**
-     * Get a BigDecimal element from long.
-     * @param a long.
-     * @return a as BigDecimal.
-     */
-    public static BigDecimal valueOf(long a) {
-        return new BigDecimal(a, DEFAULT_CONTEXT);
-    }
-
-
     /**
      * Is BigDecimal number zero.
+     *
      * @return If this is 0 then true is returned, else false.
      * @see edu.jas.structure.RingElem#isZERO()
      */
@@ -357,6 +356,7 @@ public final class BigDecimal implements GcdRingElem<BigDecimal>, RingFactory<Bi
 
     /**
      * Is BigDecimal number one.
+     *
      * @see edu.jas.structure.RingElem#isONE()
      */
     public boolean isONE() {
@@ -369,6 +369,7 @@ public final class BigDecimal implements GcdRingElem<BigDecimal>, RingFactory<Bi
 
     /**
      * Is BigDecimal number unit.
+     *
      * @see edu.jas.structure.RingElem#isUnit()
      */
     public boolean isUnit() {
@@ -378,6 +379,7 @@ public final class BigDecimal implements GcdRingElem<BigDecimal>, RingFactory<Bi
 
     /**
      * Get the String representation.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -389,6 +391,7 @@ public final class BigDecimal implements GcdRingElem<BigDecimal>, RingFactory<Bi
 
     /**
      * Get this decimal as a <tt>double</tt>.
+     *
      * @return the decimal as a <tt>double</tt>
      * @see java.lang.Number#doubleValue()
      */
@@ -399,6 +402,7 @@ public final class BigDecimal implements GcdRingElem<BigDecimal>, RingFactory<Bi
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this Element.
      * @see edu.jas.structure.Element#toScript()
      */
@@ -411,6 +415,7 @@ public final class BigDecimal implements GcdRingElem<BigDecimal>, RingFactory<Bi
 
     /**
      * Get a scripting compatible string representation of the factory.
+     *
      * @return script compatible representation for this ElemFactory.
      * @see edu.jas.structure.Element#toScriptFactory()
      */
@@ -423,9 +428,10 @@ public final class BigDecimal implements GcdRingElem<BigDecimal>, RingFactory<Bi
 
     /**
      * Compare to BigDecimal b. Experimental, is hacked.
+     *
      * @param b BigDecimal.
      * @return 0 if abs(this-b) &lt; epsilon, 1 if this &gt; b, -1 if this &lt;
-     *         b.
+     * b.
      */
     @Override
     public int compareTo(BigDecimal b) {
@@ -436,9 +442,10 @@ public final class BigDecimal implements GcdRingElem<BigDecimal>, RingFactory<Bi
 
     /**
      * Compare absolute to BigDecimal b. Experimental, is hacked.
+     *
      * @param b BigDecimal.
      * @return 0 if abs(this-b) &lt; epsilon, 1 if this &gt; b, -1 if this &lt;
-     *         b.
+     * b.
      */
     public int compareToAbsolute(BigDecimal b) {
         //if (EXACT_EQUAL) {
@@ -468,9 +475,10 @@ public final class BigDecimal implements GcdRingElem<BigDecimal>, RingFactory<Bi
 
     /**
      * Compare to relative BigDecimal b. Experimental, is hacked.
+     *
      * @param b BigDecimal.
      * @return 0 if abs(this-b)/max(this,b) &lt; epsilon, 1 if this &gt; b, -1
-     *         if this &lt; b.
+     * if this &lt; b.
      */
     public int compareToRelative(BigDecimal b) {
         //if (EXACT_EQUAL) {
@@ -506,6 +514,7 @@ public final class BigDecimal implements GcdRingElem<BigDecimal>, RingFactory<Bi
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -523,6 +532,7 @@ public final class BigDecimal implements GcdRingElem<BigDecimal>, RingFactory<Bi
 
     /**
      * Hash code for this BigDecimal.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -533,6 +543,7 @@ public final class BigDecimal implements GcdRingElem<BigDecimal>, RingFactory<Bi
 
     /**
      * Absolute value of this.
+     *
      * @see edu.jas.structure.RingElem#abs()
      */
     public BigDecimal abs() {
@@ -550,6 +561,7 @@ public final class BigDecimal implements GcdRingElem<BigDecimal>, RingFactory<Bi
 
     /**
      * signum.
+     *
      * @see edu.jas.structure.RingElem#signum()
      */
     public int signum() {
@@ -559,6 +571,7 @@ public final class BigDecimal implements GcdRingElem<BigDecimal>, RingFactory<Bi
 
     /**
      * BigDecimal subtract.
+     *
      * @param S BigDecimal.
      * @return this-S.
      */
@@ -569,6 +582,7 @@ public final class BigDecimal implements GcdRingElem<BigDecimal>, RingFactory<Bi
 
     /**
      * BigDecimal divide.
+     *
      * @param S BigDecimal.
      * @return this/S.
      */
@@ -579,6 +593,7 @@ public final class BigDecimal implements GcdRingElem<BigDecimal>, RingFactory<Bi
 
     /**
      * Integer inverse. R is a non-zero integer. S=1/R if defined else 0.
+     *
      * @see edu.jas.structure.RingElem#inverse()
      */
     public BigDecimal inverse() {
@@ -588,6 +603,7 @@ public final class BigDecimal implements GcdRingElem<BigDecimal>, RingFactory<Bi
 
     /**
      * BigDecimal remainder.
+     *
      * @param S BigDecimal.
      * @return this - (this/S)*S.
      */
@@ -598,6 +614,7 @@ public final class BigDecimal implements GcdRingElem<BigDecimal>, RingFactory<Bi
 
     /**
      * BigDecimal compute quotient and remainder.
+     *
      * @param S BigDecimal.
      * @return BigDecimal[] { q, r } with q = this/S and r = rem(this,S).
      */
@@ -612,8 +629,9 @@ public final class BigDecimal implements GcdRingElem<BigDecimal>, RingFactory<Bi
 
     /**
      * BigDecimal greatest common divisor.
+     *
      * @param S BigDecimal.
-     * @return gcd(this,S).
+     * @return gcd(this, S).
      */
     public BigDecimal gcd(BigDecimal S) {
         throw new UnsupportedOperationException("BigDecimal.gcd() not implemented");
@@ -623,6 +641,7 @@ public final class BigDecimal implements GcdRingElem<BigDecimal>, RingFactory<Bi
 
     /**
      * BigDecimal extended greatest common divisor.
+     *
      * @param S BigDecimal.
      * @return [ gcd(this,S), a, b ] with a*this + b*S = gcd(this,S).
      */
@@ -633,8 +652,9 @@ public final class BigDecimal implements GcdRingElem<BigDecimal>, RingFactory<Bi
 
     /**
      * BigDecimal random.
+     *
      * @param n such that 0 &le; val(r) &le; (2<sup>n</sup>-1). 0 &le; exp(r)
-     *            &le; (10-1).
+     *          &le; (10-1).
      * @return r, a random BigDecimal.
      */
     public BigDecimal random(int n) {
@@ -644,7 +664,8 @@ public final class BigDecimal implements GcdRingElem<BigDecimal>, RingFactory<Bi
 
     /**
      * BigDecimal random.
-     * @param n such that 0 &le; val(r) &le; (2<sup>n</sup>-1). 0 &le; exp(r)
+     *
+     * @param n   such that 0 &le; val(r) &le; (2<sup>n</sup>-1). 0 &le; exp(r)
      *            &le; (10-1).
      * @param rnd is a source for random bits.
      * @return r, a random BigDecimal.
@@ -656,6 +677,7 @@ public final class BigDecimal implements GcdRingElem<BigDecimal>, RingFactory<Bi
 
     /**
      * BigDecimal random.
+     *
      * @param n such that 0 &le; val(r) &le; (2<sup>n</sup>-1).
      * @param e such that 0 &le; exp(r) &le; (e-1).
      * @return r, a random BigDecimal.
@@ -667,8 +689,9 @@ public final class BigDecimal implements GcdRingElem<BigDecimal>, RingFactory<Bi
 
     /**
      * BigDecimal random.
-     * @param n such that 0 &le; val(r) &le; (2<sup>n</sup>-1).
-     * @param e such that 0 &le; exp(r) &le; (e-1).
+     *
+     * @param n   such that 0 &le; val(r) &le; (2<sup>n</sup>-1).
+     * @param e   such that 0 &le; exp(r) &le; (e-1).
      * @param rnd is a source for random bits.
      * @return r, a random BigDecimal.
      */
@@ -688,6 +711,7 @@ public final class BigDecimal implements GcdRingElem<BigDecimal>, RingFactory<Bi
 
     /**
      * BigDecimal multiply.
+     *
      * @param S BigDecimal.
      * @return this*S.
      */
@@ -698,6 +722,7 @@ public final class BigDecimal implements GcdRingElem<BigDecimal>, RingFactory<Bi
 
     /**
      * BigDecimal summation.
+     *
      * @param S BigDecimal.
      * @return this+S.
      */
@@ -708,6 +733,7 @@ public final class BigDecimal implements GcdRingElem<BigDecimal>, RingFactory<Bi
 
     /**
      * BigDecimal parse from String.
+     *
      * @param s String.
      * @return Biginteger from s.
      */
@@ -718,6 +744,7 @@ public final class BigDecimal implements GcdRingElem<BigDecimal>, RingFactory<Bi
 
     /**
      * BigDecimal parse from Reader.
+     *
      * @param r Reader.
      * @return next Biginteger from r.
      */
@@ -730,8 +757,9 @@ public final class BigDecimal implements GcdRingElem<BigDecimal>, RingFactory<Bi
      * Returns the number of bits in the representation of this BigDecimal,
      * including a sign bit. For positive BigDecimal, this is equivalent to
      * {@code val.unscaledValue().bitLength()}.)
+     *
      * @return number of bits in the representation of this BigDecimal,
-     *         including a sign bit.
+     * including a sign bit.
      */
     public long bitLength() {
         long n = val.unscaledValue().bitLength();

@@ -5,6 +5,8 @@
 package edu.jas.application;
 
 
+import org.apache.log4j.Logger;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -16,8 +18,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.arith.BigComplex;
 import edu.jas.arith.BigDecimal;
@@ -46,8 +46,9 @@ import edu.jas.ufd.QuotientRing;
 /**
  * RingFactory Tokenizer. Used to read ring factories from input streams. It can
  * also read QuotientRing factory.
- * @see edu.jas.poly.GenPolynomialTokenizer
+ *
  * @author Heinz Kredel
+ * @see edu.jas.poly.GenPolynomialTokenizer
  */
 public class RingFactoryTokenizer {
 
@@ -56,50 +57,22 @@ public class RingFactoryTokenizer {
 
 
     private static final boolean debug = logger.isDebugEnabled();
-
-
-    private String[] vars;
-
-
-    private int nvars = 1;
-
-
-    private TermOrder tord;
-
-
-    private RelationTable table;
-
-
     private final StreamTokenizer tok;
-
-
     private final Reader reader;
-
-
+    private String[] vars;
+    private int nvars = 1;
+    private TermOrder tord;
+    private RelationTable table;
     private RingFactory fac;
-
-
-    private static enum coeffType {
-        BigRat, BigInt, ModInt, BigC, BigQ, BigD, ANrat, ANmod, RatFunc, ModFunc, IntFunc
-    };
-
-
     private coeffType parsedCoeff = coeffType.BigRat;
 
-
+    ;
     private GenPolynomialRing pfac;
-
-
-    private static enum polyType {
-        PolBigRat, PolBigInt, PolModInt, PolBigC, PolBigD, PolBigQ, PolANrat, PolANmod, PolRatFunc, PolModFunc, PolIntFunc
-    };
-
-
     @SuppressWarnings("unused")
     private polyType parsedPoly = polyType.PolBigRat;
-
-
     private GenSolvablePolynomialRing spfac;
+
+    ;
 
 
     /**
@@ -112,8 +85,9 @@ public class RingFactoryTokenizer {
 
     /**
      * Constructor with Ring and Reader.
+     *
      * @param rf ring factory.
-     * @param r reader stream.
+     * @param r  reader stream.
      */
     public RingFactoryTokenizer(GenPolynomialRing rf, Reader r) {
         this(r);
@@ -144,6 +118,7 @@ public class RingFactoryTokenizer {
 
     /**
      * Constructor with Reader.
+     *
      * @param r reader stream.
      */
     @SuppressWarnings("unchecked")
@@ -178,9 +153,63 @@ public class RingFactoryTokenizer {
 
     }
 
+    static boolean digit(char x) {
+        return '0' <= x && x <= '9';
+    }
+
+    /**
+     * Parse variable list from String.
+     *
+     * @param s String. Syntax:
+     *          <p>
+     *          <pre>
+     *          (n1,...,nk)
+     *                     </pre>
+     *          <p>
+     *          or
+     *          <p>
+     *          <pre>
+     *          (n1 ... nk)
+     *                     </pre>
+     *          <p>
+     *          parenthesis are optional.
+     * @return array of variable names found in s.
+     */
+    public static String[] variableList(String s) {
+        String[] vl = null;
+        if (s == null) {
+            return vl;
+        }
+        String st = s.trim();
+        if (st.length() == 0) {
+            return new String[0];
+        }
+        if (st.charAt(0) == '(') {
+            st = st.substring(1);
+        }
+        if (st.charAt(st.length() - 1) == ')') {
+            st = st.substring(0, st.length() - 1);
+        }
+        st = st.replaceAll(",", " ");
+        List<String> sl = new ArrayList<String>();
+        Scanner sc = new Scanner(st);
+        while (sc.hasNext()) {
+            String sn = sc.next();
+            sl.add(sn);
+        }
+        sc.close();
+        vl = new String[sl.size()];
+        int i = 0;
+        for (String si : sl) {
+            vl[i] = si;
+            i++;
+        }
+        return vl;
+    }
 
     /**
      * Initialize coefficient and polynomial factories.
+     *
      * @param rf ring factory.
      * @param ct coefficient type.
      */
@@ -190,51 +219,52 @@ public class RingFactoryTokenizer {
         parsedCoeff = ct;
 
         switch (ct) {
-        case BigRat:
-            pfac = new GenPolynomialRing<BigRational>(fac, nvars, tord, vars);
-            parsedPoly = polyType.PolBigRat;
-            break;
-        case BigInt:
-            pfac = new GenPolynomialRing<BigInteger>(fac, nvars, tord, vars);
-            parsedPoly = polyType.PolBigInt;
-            break;
-        case ModInt:
-            pfac = new GenPolynomialRing<ModInteger>(fac, nvars, tord, vars);
-            parsedPoly = polyType.PolModInt;
-            break;
-        case BigC:
-            pfac = new GenPolynomialRing<BigComplex>(fac, nvars, tord, vars);
-            parsedPoly = polyType.PolBigC;
-            break;
-        case BigQ:
-            pfac = new GenPolynomialRing<BigQuaternion>(fac, nvars, tord, vars);
-            parsedPoly = polyType.PolBigQ;
-            break;
-        case BigD:
-            pfac = new GenPolynomialRing<BigDecimal>(fac, nvars, tord, vars);
-            parsedPoly = polyType.PolBigD;
-            break;
-        case RatFunc:
-            pfac = new GenPolynomialRing<Quotient<BigInteger>>(fac, nvars, tord, vars);
-            parsedPoly = polyType.PolRatFunc;
-            break;
-        case ModFunc:
-            pfac = new GenPolynomialRing<Quotient<ModInteger>>(fac, nvars, tord, vars);
-            parsedPoly = polyType.PolModFunc;
-            break;
-        case IntFunc:
-            pfac = new GenPolynomialRing<GenPolynomial<BigRational>>(fac, nvars, tord, vars);
-            parsedPoly = polyType.PolIntFunc;
-            break;
-        default:
-            pfac = new GenPolynomialRing<BigRational>(fac, nvars, tord, vars);
-            parsedPoly = polyType.PolBigRat;
+            case BigRat:
+                pfac = new GenPolynomialRing<BigRational>(fac, nvars, tord, vars);
+                parsedPoly = polyType.PolBigRat;
+                break;
+            case BigInt:
+                pfac = new GenPolynomialRing<BigInteger>(fac, nvars, tord, vars);
+                parsedPoly = polyType.PolBigInt;
+                break;
+            case ModInt:
+                pfac = new GenPolynomialRing<ModInteger>(fac, nvars, tord, vars);
+                parsedPoly = polyType.PolModInt;
+                break;
+            case BigC:
+                pfac = new GenPolynomialRing<BigComplex>(fac, nvars, tord, vars);
+                parsedPoly = polyType.PolBigC;
+                break;
+            case BigQ:
+                pfac = new GenPolynomialRing<BigQuaternion>(fac, nvars, tord, vars);
+                parsedPoly = polyType.PolBigQ;
+                break;
+            case BigD:
+                pfac = new GenPolynomialRing<BigDecimal>(fac, nvars, tord, vars);
+                parsedPoly = polyType.PolBigD;
+                break;
+            case RatFunc:
+                pfac = new GenPolynomialRing<Quotient<BigInteger>>(fac, nvars, tord, vars);
+                parsedPoly = polyType.PolRatFunc;
+                break;
+            case ModFunc:
+                pfac = new GenPolynomialRing<Quotient<ModInteger>>(fac, nvars, tord, vars);
+                parsedPoly = polyType.PolModFunc;
+                break;
+            case IntFunc:
+                pfac = new GenPolynomialRing<GenPolynomial<BigRational>>(fac, nvars, tord, vars);
+                parsedPoly = polyType.PolIntFunc;
+                break;
+            default:
+                pfac = new GenPolynomialRing<BigRational>(fac, nvars, tord, vars);
+                parsedPoly = polyType.PolBigRat;
         }
     }
 
 
     /**
      * Initialize coefficient and solvable polynomial factories.
+     *
      * @param rf ring factory.
      * @param ct coefficient type.
      */
@@ -244,57 +274,58 @@ public class RingFactoryTokenizer {
         parsedCoeff = ct;
 
         switch (ct) {
-        case BigRat:
-            spfac = new GenSolvablePolynomialRing<BigRational>(fac, nvars, tord, vars);
-            parsedPoly = polyType.PolBigRat;
-            break;
-        case BigInt:
-            spfac = new GenSolvablePolynomialRing<BigInteger>(fac, nvars, tord, vars);
-            parsedPoly = polyType.PolBigInt;
-            break;
-        case ModInt:
-            spfac = new GenSolvablePolynomialRing<ModInteger>(fac, nvars, tord, vars);
-            parsedPoly = polyType.PolModInt;
-            break;
-        case BigC:
-            spfac = new GenSolvablePolynomialRing<BigComplex>(fac, nvars, tord, vars);
-            parsedPoly = polyType.PolBigC;
-            break;
-        case BigQ:
-            spfac = new GenSolvablePolynomialRing<BigQuaternion>(fac, nvars, tord, vars);
-            parsedPoly = polyType.PolBigQ;
-            break;
-        case BigD:
-            spfac = new GenSolvablePolynomialRing<BigDecimal>(fac, nvars, tord, vars);
-            parsedPoly = polyType.PolBigD;
-            break;
-        case RatFunc:
-            spfac = new GenSolvablePolynomialRing<Quotient<BigInteger>>(fac, nvars, tord, vars);
-            parsedPoly = polyType.PolRatFunc;
-            break;
-        case ModFunc:
-            spfac = new GenSolvablePolynomialRing<Quotient<ModInteger>>(fac, nvars, tord, vars);
-            parsedPoly = polyType.PolModFunc;
-            break;
-        case IntFunc:
-            spfac = new GenSolvablePolynomialRing<GenPolynomial<BigRational>>(fac, nvars, tord, vars);
-            parsedPoly = polyType.PolIntFunc;
-            break;
-        default:
-            spfac = new GenSolvablePolynomialRing<BigRational>(fac, nvars, tord, vars);
-            parsedPoly = polyType.PolBigRat;
+            case BigRat:
+                spfac = new GenSolvablePolynomialRing<BigRational>(fac, nvars, tord, vars);
+                parsedPoly = polyType.PolBigRat;
+                break;
+            case BigInt:
+                spfac = new GenSolvablePolynomialRing<BigInteger>(fac, nvars, tord, vars);
+                parsedPoly = polyType.PolBigInt;
+                break;
+            case ModInt:
+                spfac = new GenSolvablePolynomialRing<ModInteger>(fac, nvars, tord, vars);
+                parsedPoly = polyType.PolModInt;
+                break;
+            case BigC:
+                spfac = new GenSolvablePolynomialRing<BigComplex>(fac, nvars, tord, vars);
+                parsedPoly = polyType.PolBigC;
+                break;
+            case BigQ:
+                spfac = new GenSolvablePolynomialRing<BigQuaternion>(fac, nvars, tord, vars);
+                parsedPoly = polyType.PolBigQ;
+                break;
+            case BigD:
+                spfac = new GenSolvablePolynomialRing<BigDecimal>(fac, nvars, tord, vars);
+                parsedPoly = polyType.PolBigD;
+                break;
+            case RatFunc:
+                spfac = new GenSolvablePolynomialRing<Quotient<BigInteger>>(fac, nvars, tord, vars);
+                parsedPoly = polyType.PolRatFunc;
+                break;
+            case ModFunc:
+                spfac = new GenSolvablePolynomialRing<Quotient<ModInteger>>(fac, nvars, tord, vars);
+                parsedPoly = polyType.PolModFunc;
+                break;
+            case IntFunc:
+                spfac = new GenSolvablePolynomialRing<GenPolynomial<BigRational>>(fac, nvars, tord, vars);
+                parsedPoly = polyType.PolIntFunc;
+                break;
+            default:
+                spfac = new GenSolvablePolynomialRing<BigRational>(fac, nvars, tord, vars);
+                parsedPoly = polyType.PolBigRat;
         }
     }
 
 
     /**
      * Parsing method for variable list. Syntax:
-     * 
+     * <p>
      * <pre>
      * (a, b c, de)
      * </pre>
-     * 
+     * <p>
      * gives <code>[ "a", "b", "c", "de" ]</code>
+     *
      * @return the next variable list.
      * @throws IOException
      */
@@ -331,17 +362,17 @@ public class RingFactoryTokenizer {
 
     /**
      * Parsing method for coefficient ring. Syntax:
-     * 
+     * <p>
      * <pre>
      * Rat | Q | Int | Z | Mod modul | Complex | C | D | Quat |
-    AN[ (var) ( poly ) | AN[ modul (var) ( poly ) ] | 
-    RatFunc (var_list) | ModFunc modul (var_list) | IntFunc (var_list)
+     * AN[ (var) ( poly ) | AN[ modul (var) ( poly ) ] |
+     * RatFunc (var_list) | ModFunc modul (var_list) | IntFunc (var_list)
      * </pre>
-     * 
+     *
      * @return the next coefficient factory.
      * @throws IOException
      */
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings({"unchecked", "cast"})
     public RingFactory nextCoefficientRing() throws IOException {
         RingFactory coeff = null;
         coeffType ct = null;
@@ -458,8 +489,8 @@ public class RingFactoryTokenizer {
                     int vs = anv.length;
                     if (vs != 1) {
                         throw new InvalidExpressionException(
-                                        "AlgebraicNumber only for univariate polynomials "
-                                                        + Arrays.toString(anv));
+                                "AlgebraicNumber only for univariate polynomials "
+                                        + Arrays.toString(anv));
                     }
                     String[] ovars = vars;
                     vars = anv;
@@ -521,11 +552,11 @@ public class RingFactoryTokenizer {
 
     /**
      * Parsing method for weight list. Syntax:
-     * 
+     * <p>
      * <pre>
      * (w1, w2, w3, ..., wn)
      * </pre>
-     * 
+     *
      * @return the next weight list.
      * @throws IOException
      */
@@ -568,11 +599,11 @@ public class RingFactoryTokenizer {
 
     /**
      * Parsing method for weight array. Syntax:
-     * 
+     * <p>
      * <pre>
      * ( (w11, ...,w1n), ..., (wm1, ..., wmn) )
      * </pre>
-     * 
+     *
      * @return the next weight array.
      * @throws IOException
      */
@@ -623,11 +654,11 @@ public class RingFactoryTokenizer {
 
     /**
      * Parsing method for split index. Syntax:
-     * 
+     * <p>
      * <pre>
      * |i|
      * </pre>
-     * 
+     *
      * @return the next split index.
      * @throws IOException
      */
@@ -697,11 +728,11 @@ public class RingFactoryTokenizer {
 
     /**
      * Parsing method for term order name. Syntax:
-     * 
+     * <p>
      * <pre>
      * L | IL | LEX | G | IG | GRLEX | W(weights) | '|'split index'|'
      * </pre>
-     * 
+     *
      * @return the next term order.
      * @throws IOException
      */
@@ -749,13 +780,14 @@ public class RingFactoryTokenizer {
 
     /**
      * Parsing method for solvable polynomial relation table. Syntax:
-     * 
+     * <p>
      * <pre>
      * ( p_1, p_2, p_3, ..., p_{n+1}, p_{n+2}, p_{n+3} )
      * </pre>
-     * 
+     * <p>
      * semantics: <code>p_{n+1} * p_{n+2} = p_{n+3}</code>. The next relation
      * table is stored into the solvable polynomial factory.
+     *
      * @throws IOException
      */
     @SuppressWarnings("unchecked")
@@ -783,7 +815,7 @@ public class RingFactoryTokenizer {
             tok.pushBack();
             return;
         }
-        for (Iterator<GenPolynomial> it = rels.iterator(); it.hasNext();) {
+        for (Iterator<GenPolynomial> it = rels.iterator(); it.hasNext(); ) {
             p = it.next();
             ExpVector e = p.leadingExpVector();
             if (it.hasNext()) {
@@ -806,11 +838,11 @@ public class RingFactoryTokenizer {
 
     /**
      * Parsing method for polynomial ring. Syntax:
-     * 
+     * <p>
      * <pre>
      * coeffRing varList termOrderName polyList
      * </pre>
-     * 
+     *
      * @return the next polynomial ring.
      * @throws IOException
      */
@@ -841,11 +873,11 @@ public class RingFactoryTokenizer {
 
     /**
      * Parsing method for solvable polynomial ring. Syntax:
-     * 
+     * <p>
      * <pre>
      * varList termOrderName relationTable polyList
      * </pre>
-     * 
+     *
      * @return the next solvable polynomial ring.
      * @throws IOException
      */
@@ -881,17 +913,6 @@ public class RingFactoryTokenizer {
         return spfac;
     }
 
-
-    static boolean digit(char x) {
-        return '0' <= x && x <= '9';
-    }
-
-
-    //static boolean letter(char x) {
-    //    return ('a' <= x && x <= 'z') || ('A' <= x && x <= 'Z');
-    //}
-
-
     // unused
     public void nextComma() throws IOException {
         int tt;
@@ -904,53 +925,18 @@ public class RingFactoryTokenizer {
     }
 
 
-    /**
-     * Parse variable list from String.
-     * @param s String. Syntax:
-     * 
-     *            <pre>
-     * (n1,...,nk)
-     *            </pre>
-     * 
-     *            or
-     * 
-     *            <pre>
-     * (n1 ... nk)
-     *            </pre>
-     * 
-     *            parenthesis are optional.
-     * @return array of variable names found in s.
-     */
-    public static String[] variableList(String s) {
-        String[] vl = null;
-        if (s == null) {
-            return vl;
-        }
-        String st = s.trim();
-        if (st.length() == 0) {
-            return new String[0];
-        }
-        if (st.charAt(0) == '(') {
-            st = st.substring(1);
-        }
-        if (st.charAt(st.length() - 1) == ')') {
-            st = st.substring(0, st.length() - 1);
-        }
-        st = st.replaceAll(",", " ");
-        List<String> sl = new ArrayList<String>();
-        Scanner sc = new Scanner(st);
-        while (sc.hasNext()) {
-            String sn = sc.next();
-            sl.add(sn);
-        }
-        sc.close();
-        vl = new String[sl.size()];
-        int i = 0;
-        for (String si : sl) {
-            vl[i] = si;
-            i++;
-        }
-        return vl;
+    //static boolean letter(char x) {
+    //    return ('a' <= x && x <= 'z') || ('A' <= x && x <= 'Z');
+    //}
+
+
+    private static enum coeffType {
+        BigRat, BigInt, ModInt, BigC, BigQ, BigD, ANrat, ANmod, RatFunc, ModFunc, IntFunc
+    }
+
+
+    private static enum polyType {
+        PolBigRat, PolBigInt, PolModInt, PolBigC, PolBigD, PolBigQ, PolANrat, PolANmod, PolRatFunc, PolModFunc, PolIntFunc
     }
 
 }

@@ -18,12 +18,13 @@ import edu.jas.structure.NotInvertibleException;
 /**
  * Real algebraic number class based on AlgebraicNumber. Objects of this class
  * are immutable.
+ *
  * @author Heinz Kredel
  */
 
 public class RealAlgebraicNumber<C extends GcdRingElem<C> & Rational>
                 /*extends AlgebraicNumber<C>*/
-                implements GcdRingElem<RealAlgebraicNumber<C>>, Rational {
+        implements GcdRingElem<RealAlgebraicNumber<C>>, Rational {
 
 
     /**
@@ -41,6 +42,7 @@ public class RealAlgebraicNumber<C extends GcdRingElem<C> & Rational>
     /**
      * The constructor creates a RealAlgebraicNumber object from
      * RealAlgebraicRing modul and a GenPolynomial value.
+     *
      * @param r ring RealAlgebraicRing<C>.
      * @param a value GenPolynomial<C>.
      */
@@ -53,6 +55,7 @@ public class RealAlgebraicNumber<C extends GcdRingElem<C> & Rational>
     /**
      * The constructor creates a RealAlgebraicNumber object from
      * RealAlgebraicRing modul and a AlgebraicNumber value.
+     *
      * @param r ring RealAlgebraicRing<C>.
      * @param a value AlgebraicNumber<C>.
      */
@@ -65,6 +68,7 @@ public class RealAlgebraicNumber<C extends GcdRingElem<C> & Rational>
     /**
      * The constructor creates a RealAlgebraicNumber object from a GenPolynomial
      * object module.
+     *
      * @param r ring RealAlgebraicRing<C>.
      */
     public RealAlgebraicNumber(RealAlgebraicRing<C> r) {
@@ -74,6 +78,7 @@ public class RealAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * Get the corresponding element factory.
+     *
      * @return factory for this Element.
      * @see edu.jas.structure.Element#factory()
      */
@@ -84,6 +89,7 @@ public class RealAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * Copy this.
+     *
      * @see edu.jas.structure.Element#copy()
      */
     @Override
@@ -94,6 +100,7 @@ public class RealAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * Return a BigRational approximation of this Element.
+     *
      * @return a BigRational approximation of this.
      * @see edu.jas.arith.Rational#getRational()
      */
@@ -104,6 +111,7 @@ public class RealAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * Is RealAlgebraicNumber zero.
+     *
      * @return If this is 0 then true is returned, else false.
      * @see edu.jas.structure.RingElem#isZERO()
      */
@@ -114,6 +122,7 @@ public class RealAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * Is RealAlgebraicNumber one.
+     *
      * @return If this is 1 then true is returned, else false.
      * @see edu.jas.structure.RingElem#isONE()
      */
@@ -124,6 +133,7 @@ public class RealAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * Is RealAlgebraicNumber unit.
+     *
      * @return If this is a unit then true is returned, else false.
      * @see edu.jas.structure.RingElem#isUnit()
      */
@@ -134,8 +144,9 @@ public class RealAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * Is RealAlgebraicNumber a root of unity.
+     *
      * @return true if |this**i| == 1, for some 0 &lt; i &le; deg(modul), else
-     *         false.
+     * false.
      */
     public boolean isRootOfUnity() {
         return number.isRootOfUnity();
@@ -144,6 +155,7 @@ public class RealAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * Get the String representation as RingElem.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -157,6 +169,7 @@ public class RealAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this Element.
      * @see edu.jas.structure.Element#toScript()
      */
@@ -169,6 +182,7 @@ public class RealAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * Get a scripting compatible string representation of the factory.
+     *
      * @return script compatible representation for this ElemFactory.
      * @see edu.jas.structure.Element#toScriptFactory()
      */
@@ -181,6 +195,7 @@ public class RealAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * RealAlgebraicNumber comparison.
+     *
      * @param b RealAlgebraicNumber.
      * @return real sign(this-b).
      */
@@ -202,6 +217,7 @@ public class RealAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * RealAlgebraicNumber comparison.
+     *
      * @param b AlgebraicNumber.
      * @return polynomial sign(this-b).
      */
@@ -214,6 +230,7 @@ public class RealAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -235,6 +252,7 @@ public class RealAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * Hash code for this RealAlgebraicNumber.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -245,6 +263,7 @@ public class RealAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * RealAlgebraicNumber absolute value.
+     *
      * @return the absolute value of this.
      * @see edu.jas.structure.RingElem#abs()
      */
@@ -258,6 +277,7 @@ public class RealAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * RealAlgebraicNumber summation.
+     *
      * @param S RealAlgebraicNumber.
      * @return this+S.
      */
@@ -268,6 +288,7 @@ public class RealAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * RealAlgebraicNumber summation.
+     *
      * @param c coefficient.
      * @return this+c.
      */
@@ -278,6 +299,7 @@ public class RealAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * RealAlgebraicNumber summation.
+     *
      * @param c polynomial.
      * @return this+c.
      */
@@ -288,6 +310,7 @@ public class RealAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * RealAlgebraicNumber negate.
+     *
      * @return -this.
      * @see edu.jas.structure.RingElem#negate()
      */
@@ -298,8 +321,9 @@ public class RealAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * RealAlgebraicNumber signum. <b>Note: </b> Modifies ring.root eventually.
-     * @see edu.jas.structure.RingElem#signum()
+     *
      * @return real signum(this).
+     * @see edu.jas.structure.RingElem#signum()
      */
     public int signum() {
         Interval<C> v = ring.engine.invariantSignInterval(ring.root, ring.algebraic.modul, number.val);
@@ -320,11 +344,12 @@ public class RealAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * RealAlgebraicNumber magnitude.
+     *
      * @return |this|.
      */
     public BigRational magnitude() {
         Interval<C> v = ring.engine.invariantMagnitudeInterval(ring.root, ring.algebraic.modul, number.val,
-                        ring.getEps());
+                ring.getEps());
         //System.out.println("old v = " + ring.root + ", new v = " + v);
         ring.setRoot(v);
         C ev = ring.engine.realIntervalMagnitude(v, ring.algebraic.modul, number.val); //, ring.eps);
@@ -338,6 +363,7 @@ public class RealAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * RealAlgebraicNumber magnitude.
+     *
      * @return |this| as big decimal.
      */
     public BigDecimal decimalMagnitude() {
@@ -347,6 +373,7 @@ public class RealAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * RealAlgebraicNumber subtraction.
+     *
      * @param S RealAlgebraicNumber.
      * @return this-S.
      */
@@ -357,6 +384,7 @@ public class RealAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * RealAlgebraicNumber division.
+     *
      * @param S RealAlgebraicNumber.
      * @return this/S.
      */
@@ -367,9 +395,10 @@ public class RealAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * RealAlgebraicNumber inverse.
-     * @see edu.jas.structure.RingElem#inverse()
-     * @throws NotInvertibleException if the element is not invertible.
+     *
      * @return S with S = 1/this if defined.
+     * @throws NotInvertibleException if the element is not invertible.
+     * @see edu.jas.structure.RingElem#inverse()
      */
     public RealAlgebraicNumber<C> inverse() {
         return new RealAlgebraicNumber<C>(ring, number.inverse());
@@ -378,6 +407,7 @@ public class RealAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * RealAlgebraicNumber remainder.
+     *
      * @param S RealAlgebraicNumber.
      * @return this - (this/S)*S.
      */
@@ -388,16 +418,18 @@ public class RealAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * Quotient and remainder by division of this by S.
+     *
      * @param S a RealAlgebraicNumber
      * @return [this/S, this - (this/S)*S].
      */
     public RealAlgebraicNumber<C>[] quotientRemainder(RealAlgebraicNumber<C> S) {
-        return new RealAlgebraicNumber[] { divide(S), remainder(S) };
+        return new RealAlgebraicNumber[]{divide(S), remainder(S)};
     }
 
 
     /**
      * RealAlgebraicNumber multiplication.
+     *
      * @param S RealAlgebraicNumber.
      * @return this*S.
      */
@@ -408,6 +440,7 @@ public class RealAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * RealAlgebraicNumber multiplication.
+     *
      * @param c coefficient.
      * @return this*c.
      */
@@ -418,6 +451,7 @@ public class RealAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * RealAlgebraicNumber multiplication.
+     *
      * @param c polynomial.
      * @return this*c.
      */
@@ -428,6 +462,7 @@ public class RealAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * RealAlgebraicNumber monic.
+     *
      * @return this with monic value part.
      */
     public RealAlgebraicNumber<C> monic() {
@@ -437,8 +472,9 @@ public class RealAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * RealAlgebraicNumber greatest common divisor.
+     *
      * @param S RealAlgebraicNumber.
-     * @return gcd(this,S).
+     * @return gcd(this, S).
      */
     public RealAlgebraicNumber<C> gcd(RealAlgebraicNumber<C> S) {
         return new RealAlgebraicNumber<C>(ring, number.gcd(S.number));
@@ -447,6 +483,7 @@ public class RealAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * RealAlgebraicNumber extended greatest common divisor.
+     *
      * @param S RealAlgebraicNumber.
      * @return [ gcd(this,S), a, b ] with a*this + b*S = gcd(this,S).
      */

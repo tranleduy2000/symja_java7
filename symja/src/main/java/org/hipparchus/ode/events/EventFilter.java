@@ -17,13 +17,14 @@
 
 package org.hipparchus.ode.events;
 
-import java.util.Arrays;
-
 import org.hipparchus.ode.ODEState;
 import org.hipparchus.ode.ODEStateAndDerivative;
 
-/** Wrapper used to detect only increasing or decreasing events.
- *
+import java.util.Arrays;
+
+/**
+ * Wrapper used to detect only increasing or decreasing events.
+ * <p>
  * <p>General {@link ODEEventHandler events} are defined implicitly
  * by a {@link ODEEventHandler#g(ODEStateAndDerivative) g function} crossing
  * zero. This function needs to be continuous in the event neighborhood,
@@ -33,12 +34,12 @@ import org.hipparchus.ode.ODEStateAndDerivative;
  * and events for which the function decreases from positive to
  * negative values.
  * </p>
- *
+ * <p>
  * <p>Sometimes, users are only interested in one type of event (say
  * increasing events for example) and not in the other type. In these
  * cases, looking precisely for all events location and triggering
  * events that will later be ignored is a waste of computing time.</p>
- *
+ * <p>
  * <p>Users can wrap a regular {@link ODEEventHandler event handler} in
  * an instance of this class and provide this wrapping instance to
  * the {@link org.hipparchus.ode.ODEIntegrator ODE solver}
@@ -51,44 +52,61 @@ import org.hipparchus.ode.ODEStateAndDerivative;
  * the interesting events, i.e. either only {@code increasing} events or
  * {@code decreasing} events. the number of calls to the {@link
  * ODEEventHandler#g(ODEStateAndDerivative) g function} will also be reduced.</p>
- *
  */
 
 public class EventFilter implements ODEEventHandler {
 
-    /** Number of past transformers updates stored. */
+    /**
+     * Number of past transformers updates stored.
+     */
     private static final int HISTORY_SIZE = 100;
 
-    /** Wrapped event handler. */
+    /**
+     * Wrapped event handler.
+     */
     private final ODEEventHandler rawHandler;
 
-    /** Filter to use. */
+    /**
+     * Filter to use.
+     */
     private final FilterType filter;
 
-    /** Transformers of the g function. */
+    /**
+     * Transformers of the g function.
+     */
     private final Transformer[] transformers;
 
-    /** Update time of the transformers. */
+    /**
+     * Update time of the transformers.
+     */
     private final double[] updates;
 
-    /** Indicator for forward integration. */
+    /**
+     * Indicator for forward integration.
+     */
     private boolean forward;
 
-    /** Extreme time encountered so far. */
+    /**
+     * Extreme time encountered so far.
+     */
     private double extremeT;
 
-    /** Wrap an {@link ODEEventHandler event handler}.
+    /**
+     * Wrap an {@link ODEEventHandler event handler}.
+     *
      * @param rawHandler event handler to wrap
-     * @param filter filter to use
+     * @param filter     filter to use
      */
     public EventFilter(final ODEEventHandler rawHandler, final FilterType filter) {
-        this.rawHandler   = rawHandler;
-        this.filter       = filter;
+        this.rawHandler = rawHandler;
+        this.filter = filter;
         this.transformers = new Transformer[HISTORY_SIZE];
-        this.updates      = new double[HISTORY_SIZE];
+        this.updates = new double[HISTORY_SIZE];
     }
 
-    /**  {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void init(final ODEStateAndDerivative initialState, double finalTime) {
 
@@ -96,14 +114,16 @@ public class EventFilter implements ODEEventHandler {
         rawHandler.init(initialState, finalTime);
 
         // initialize events triggering logic
-        forward  = finalTime >= initialState.getTime();
+        forward = finalTime >= initialState.getTime();
         extremeT = forward ? Double.NEGATIVE_INFINITY : Double.POSITIVE_INFINITY;
         Arrays.fill(transformers, Transformer.UNINITIALIZED);
         Arrays.fill(updates, extremeT);
 
     }
 
-    /**  {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double g(final ODEStateAndDerivative state) {
 
@@ -117,7 +137,7 @@ public class EventFilter implements ODEEventHandler {
 
                 // check if a new rough root has been crossed
                 final Transformer previous = transformers[last];
-                final Transformer next     = filter.selectTransformer(previous, rawG, forward);
+                final Transformer next = filter.selectTransformer(previous, rawG, forward);
                 if (next != previous) {
                     // there is a root somewhere between extremeT and t.
                     // the new transformer is valid for t (this is how we have just computed
@@ -125,9 +145,9 @@ public class EventFilter implements ODEEventHandler {
                     // it was already valid before t and even up to previous time. We store
                     // the switch at extremeT for safety, to ensure the previous transformer
                     // is not applied too close of the root
-                    System.arraycopy(updates,      1, updates,      0, last);
+                    System.arraycopy(updates, 1, updates, 0, last);
                     System.arraycopy(transformers, 1, transformers, 0, last);
-                    updates[last]      = extremeT;
+                    updates[last] = extremeT;
                     transformers[last] = next;
                 }
 
@@ -156,7 +176,7 @@ public class EventFilter implements ODEEventHandler {
 
                 // check if a new rough root has been crossed
                 final Transformer previous = transformers[0];
-                final Transformer next     = filter.selectTransformer(previous, rawG, forward);
+                final Transformer next = filter.selectTransformer(previous, rawG, forward);
                 if (next != previous) {
                     // there is a root somewhere between extremeT and t.
                     // the new transformer is valid for t (this is how we have just computed
@@ -164,9 +184,9 @@ public class EventFilter implements ODEEventHandler {
                     // it was already valid before t and even up to previous time. We store
                     // the switch at extremeT for safety, to ensure the previous transformer
                     // is not applied too close of the root
-                    System.arraycopy(updates,      0, updates,      1, updates.length - 1);
+                    System.arraycopy(updates, 0, updates, 1, updates.length - 1);
                     System.arraycopy(transformers, 0, transformers, 1, transformers.length - 1);
-                    updates[0]      = extremeT;
+                    updates[0] = extremeT;
                     transformers[0] = next;
                 }
 
@@ -189,18 +209,22 @@ public class EventFilter implements ODEEventHandler {
                 return transformers[updates.length - 1].transformed(rawG);
 
             }
-       }
+        }
 
     }
 
-    /**  {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Action eventOccurred(final ODEStateAndDerivative state, final boolean increasing) {
         // delegate to raw handler, fixing increasing status on the fly
         return rawHandler.eventOccurred(state, filter.getTriggeredIncreasing());
     }
 
-    /**  {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ODEState resetState(final ODEStateAndDerivative state) {
         // delegate to raw handler

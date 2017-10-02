@@ -17,23 +17,26 @@
 
 package org.hipparchus.analysis.function;
 
-import java.util.Arrays;
-
 import org.hipparchus.analysis.UnivariateFunction;
 import org.hipparchus.exception.LocalizedCoreFormats;
 import org.hipparchus.exception.MathIllegalArgumentException;
 import org.hipparchus.exception.NullArgumentException;
 import org.hipparchus.util.MathArrays;
 
+import java.util.Arrays;
+
 /**
  * <a href="http://en.wikipedia.org/wiki/Step_function">
- *  Step function</a>.
- *
+ * Step function</a>.
  */
 public class StepFunction implements UnivariateFunction {
-    /** Abscissae. */
+    /**
+     * Abscissae.
+     */
     private final double[] abscissa;
-    /** Ordinates. */
+    /**
+     * Ordinates.
+     */
     private final double[] ordinate;
 
     /**
@@ -49,22 +52,21 @@ public class StepFunction implements UnivariateFunction {
      *
      * @param x Domain values where the function changes value.
      * @param y Values of the function.
-     * @throws MathIllegalArgumentException
-     * if the {@code x} array is not sorted in strictly increasing order.
-     * @throws NullArgumentException if {@code x} or {@code y} are {@code null}.
+     * @throws MathIllegalArgumentException if the {@code x} array is not sorted in strictly increasing order.
+     * @throws NullArgumentException        if {@code x} or {@code y} are {@code null}.
      * @throws MathIllegalArgumentException if {@code x} or {@code y} are zero-length.
      * @throws MathIllegalArgumentException if {@code x} and {@code y} do not
-     * have the same length.
+     *                                      have the same length.
      */
     public StepFunction(double[] x,
                         double[] y)
-        throws MathIllegalArgumentException, NullArgumentException {
+            throws MathIllegalArgumentException, NullArgumentException {
         if (x == null ||
-            y == null) {
+                y == null) {
             throw new NullArgumentException();
         }
         if (x.length == 0 ||
-            y.length == 0) {
+                y.length == 0) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.NO_DATA);
         }
         MathArrays.checkEqualLength(y, x);
@@ -74,7 +76,9 @@ public class StepFunction implements UnivariateFunction {
         ordinate = y.clone();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double value(double x) {
         int index = Arrays.binarySearch(abscissa, x);
@@ -82,7 +86,7 @@ public class StepFunction implements UnivariateFunction {
 
         if (index < -1) {
             // "x" is between "abscissa[-index-2]" and "abscissa[-index-1]".
-            fx = ordinate[-index-2];
+            fx = ordinate[-index - 2];
         } else if (index >= 0) {
             // "x" is exactly "abscissa[index]".
             fx = ordinate[index];

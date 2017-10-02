@@ -5,10 +5,10 @@
 package edu.jas.fd;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.gb.SolvableGroebnerBaseAbstract;
 import edu.jas.gb.SolvableGroebnerBaseSeq;
@@ -22,6 +22,7 @@ import edu.jas.structure.RingFactory;
  * (Non-unique) factorization domain greatest common divisor common algorithms
  * with syzygy computation. The implementation uses solvable syzygy gcd
  * computation.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
@@ -37,6 +38,7 @@ public class GreatestCommonDivisorSyzygy<C extends GcdRingElem<C>> extends Great
 
     /**
      * Constructor.
+     *
      * @param cf coefficient ring.
      */
     public GreatestCommonDivisorSyzygy(RingFactory<C> cf) {
@@ -46,9 +48,10 @@ public class GreatestCommonDivisorSyzygy<C extends GcdRingElem<C>> extends Great
 
     /**
      * Left univariate GenSolvablePolynomial greatest common divisor.
+     *
      * @param P univariate GenSolvablePolynomial.
      * @param S univariate GenSolvablePolynomial.
-     * @return gcd(P,S) with P = P'*gcd(P,S) and S = S'*gcd(P,S).
+     * @return gcd(P, S) with P = P'*gcd(P,S) and S = S'*gcd(P,S).
      */
     @Override
     public GenSolvablePolynomial<C> leftBaseGcd(GenSolvablePolynomial<C> P, GenSolvablePolynomial<C> S) {
@@ -58,9 +61,10 @@ public class GreatestCommonDivisorSyzygy<C extends GcdRingElem<C>> extends Great
 
     /**
      * Right univariate GenSolvablePolynomial greatest common divisor.
+     *
      * @param P univariate GenSolvablePolynomial.
      * @param S univariate GenSolvablePolynomial.
-     * @return gcd(P,S) with P = P'*gcd(P,S) and S = S'*gcd(P,S).
+     * @return gcd(P, S) with P = P'*gcd(P,S) and S = S'*gcd(P,S).
      */
     @Override
     public GenSolvablePolynomial<C> rightBaseGcd(GenSolvablePolynomial<C> P, GenSolvablePolynomial<C> S) {
@@ -70,9 +74,10 @@ public class GreatestCommonDivisorSyzygy<C extends GcdRingElem<C>> extends Great
 
     /**
      * Left GenSolvablePolynomial greatest common divisor.
+     *
      * @param P GenSolvablePolynomial.
      * @param S GenSolvablePolynomial.
-     * @return gcd(P,S) with P = P'*gcd(P,S) and S = S'*gcd(P,S).
+     * @return gcd(P, S) with P = P'*gcd(P,S) and S = S'*gcd(P,S).
      */
     @Override
     public GenSolvablePolynomial<C> leftGcd(GenSolvablePolynomial<C> P, GenSolvablePolynomial<C> S) {
@@ -107,9 +112,10 @@ public class GreatestCommonDivisorSyzygy<C extends GcdRingElem<C>> extends Great
 
     /**
      * Right GenSolvablePolynomial right greatest common divisor.
+     *
      * @param P GenSolvablePolynomial.
      * @param S GenSolvablePolynomial.
-     * @return gcd(P,S) with P = gcd(P,S)*P' and S = gcd(P,S)*S'.
+     * @return gcd(P, S) with P = gcd(P,S)*P' and S = gcd(P,S)*S'.
      */
     @Override
     public GenSolvablePolynomial<C> rightGcd(GenSolvablePolynomial<C> P, GenSolvablePolynomial<C> S) {
@@ -144,14 +150,15 @@ public class GreatestCommonDivisorSyzygy<C extends GcdRingElem<C>> extends Great
 
     /**
      * Univariate GenSolvablePolynomial left recursive greatest common divisor.
+     *
      * @param P univariate recursive GenSolvablePolynomial.
      * @param S univariate recursive GenSolvablePolynomial.
-     * @return gcd(P,S) with P = P'*gcd(P,S)*p and S = S'*gcd(P,S)*s, where
-     *         deg_main(p) = deg_main(s) == 0.
+     * @return gcd(P, S) with P = P'*gcd(P,S)*p and S = S'*gcd(P,S)*s, where
+     * deg_main(p) = deg_main(s) == 0.
      */
     @Override
     public GenSolvablePolynomial<GenPolynomial<C>> leftRecursiveUnivariateGcd(
-                    GenSolvablePolynomial<GenPolynomial<C>> P, GenSolvablePolynomial<GenPolynomial<C>> S) {
+            GenSolvablePolynomial<GenPolynomial<C>> P, GenSolvablePolynomial<GenPolynomial<C>> S) {
         if (S == null || S.isZERO()) {
             return P;
         }
@@ -168,7 +175,7 @@ public class GreatestCommonDivisorSyzygy<C extends GcdRingElem<C>> extends Great
             return P.ring.getONE();
         }
         List<GenSolvablePolynomial<GenPolynomial<C>>> A = new ArrayList<GenSolvablePolynomial<GenPolynomial<C>>>(
-                        2);
+                2);
         A.add(P);
         A.add(S);
         SolvableGroebnerBaseAbstract<GenPolynomial<C>> sbb = new SolvableGroebnerBaseSeq<GenPolynomial<C>>();
@@ -188,14 +195,15 @@ public class GreatestCommonDivisorSyzygy<C extends GcdRingElem<C>> extends Great
 
     /**
      * Univariate GenSolvablePolynomial right recursive greatest common divisor.
+     *
      * @param P univariate recursive GenSolvablePolynomial.
      * @param S univariate recursive GenSolvablePolynomial.
-     * @return gcd(P,S) with P = p*gcd(P,S)*P' and S = s*gcd(P,S)*S', where
-     *         deg_main(p) = deg_main(s) == 0.
+     * @return gcd(P, S) with P = p*gcd(P,S)*P' and S = s*gcd(P,S)*S', where
+     * deg_main(p) = deg_main(s) == 0.
      */
     @Override
     public GenSolvablePolynomial<GenPolynomial<C>> rightRecursiveUnivariateGcd(
-                    GenSolvablePolynomial<GenPolynomial<C>> P, GenSolvablePolynomial<GenPolynomial<C>> S) {
+            GenSolvablePolynomial<GenPolynomial<C>> P, GenSolvablePolynomial<GenPolynomial<C>> S) {
         if (S == null || S.isZERO()) {
             return P;
         }
@@ -212,7 +220,7 @@ public class GreatestCommonDivisorSyzygy<C extends GcdRingElem<C>> extends Great
             return P.ring.getONE();
         }
         List<GenSolvablePolynomial<GenPolynomial<C>>> A = new ArrayList<GenSolvablePolynomial<GenPolynomial<C>>>(
-                        2);
+                2);
         A.add(P);
         A.add(S);
         SolvableGroebnerBaseAbstract<GenPolynomial<C>> sbb = new SolvableGroebnerBaseSeq<GenPolynomial<C>>();

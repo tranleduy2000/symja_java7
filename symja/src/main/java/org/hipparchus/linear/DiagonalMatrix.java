@@ -16,8 +16,6 @@
  */
 package org.hipparchus.linear;
 
-import java.io.Serializable;
-
 import org.hipparchus.exception.LocalizedCoreFormats;
 import org.hipparchus.exception.MathIllegalArgumentException;
 import org.hipparchus.exception.NullArgumentException;
@@ -25,15 +23,20 @@ import org.hipparchus.util.FastMath;
 import org.hipparchus.util.MathUtils;
 import org.hipparchus.util.Precision;
 
+import java.io.Serializable;
+
 /**
  * Implementation of a diagonal matrix.
- *
  */
 public class DiagonalMatrix extends AbstractRealMatrix
-    implements Serializable {
-    /** Serializable version identifier. */
+        implements Serializable {
+    /**
+     * Serializable version identifier.
+     */
     private static final long serialVersionUID = 20121229L;
-    /** Entries of the diagonal. */
+    /**
+     * Entries of the diagonal.
+     */
     private final double[] data;
 
     /**
@@ -41,10 +44,10 @@ public class DiagonalMatrix extends AbstractRealMatrix
      *
      * @param dimension Number of rows and columns in the new matrix.
      * @throws MathIllegalArgumentException if the dimension is
-     * not positive.
+     *                                      not positive.
      */
     public DiagonalMatrix(final int dimension)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         super(dimension, dimension);
         data = new double[dimension];
     }
@@ -69,13 +72,13 @@ public class DiagonalMatrix extends AbstractRealMatrix
      * This will prevent the copying and improve performance as no new
      * array will be built and no data will be copied.
      *
-     * @param d Data for new matrix.
+     * @param d         Data for new matrix.
      * @param copyArray if {@code true}, the input array will be copied,
-     * otherwise it will be referenced.
-     * @exception NullArgumentException if d is null
+     *                  otherwise it will be referenced.
+     * @throws NullArgumentException if d is null
      */
     public DiagonalMatrix(final double[] d, final boolean copyArray)
-        throws NullArgumentException {
+            throws NullArgumentException {
         MathUtils.checkNotNull(d);
         data = copyArray ? d.clone() : d;
     }
@@ -88,16 +91,18 @@ public class DiagonalMatrix extends AbstractRealMatrix
     @Override
     public RealMatrix createMatrix(final int rowDimension,
                                    final int columnDimension)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         if (rowDimension != columnDimension) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.DIMENSIONS_MISMATCH,
-                                                   rowDimension, columnDimension);
+                    rowDimension, columnDimension);
         }
 
         return new DiagonalMatrix(rowDimension);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RealMatrix copy() {
         return new DiagonalMatrix(data);
@@ -109,10 +114,10 @@ public class DiagonalMatrix extends AbstractRealMatrix
      * @param m Matrix to be added.
      * @return {@code this + m}.
      * @throws MathIllegalArgumentException if {@code m} is not the same
-     * size as {@code this}.
+     *                                      size as {@code this}.
      */
     public DiagonalMatrix add(final DiagonalMatrix m)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         // Safety check.
         MatrixUtils.checkAdditionCompatible(this, m);
 
@@ -131,10 +136,10 @@ public class DiagonalMatrix extends AbstractRealMatrix
      * @param m Matrix to be subtracted.
      * @return {@code this - m}
      * @throws MathIllegalArgumentException if {@code m} is not the same
-     * size as {@code this}.
+     *                                      size as {@code this}.
      */
     public DiagonalMatrix subtract(final DiagonalMatrix m)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         MatrixUtils.checkSubtractionCompatible(this, m);
 
         final int dim = getRowDimension();
@@ -152,10 +157,10 @@ public class DiagonalMatrix extends AbstractRealMatrix
      * @param m matrix to postmultiply by
      * @return {@code this * m}
      * @throws MathIllegalArgumentException if
-     * {@code columnDimension(this) != rowDimension(m)}
+     *                                      {@code columnDimension(this) != rowDimension(m)}
      */
     public DiagonalMatrix multiply(final DiagonalMatrix m)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         MatrixUtils.checkMultiplicationCompatible(this, m);
 
         final int dim = getRowDimension();
@@ -173,11 +178,11 @@ public class DiagonalMatrix extends AbstractRealMatrix
      * @param m matrix to postmultiply by
      * @return {@code this * m}
      * @throws MathIllegalArgumentException if
-     * {@code columnDimension(this) != rowDimension(m)}
+     *                                      {@code columnDimension(this) != rowDimension(m)}
      */
     @Override
     public RealMatrix multiply(final RealMatrix m)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         if (m instanceof DiagonalMatrix) {
             return multiply((DiagonalMatrix) m);
         } else {
@@ -194,7 +199,9 @@ public class DiagonalMatrix extends AbstractRealMatrix
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double[][] getData() {
         final int dim = getRowDimension();
@@ -216,20 +223,24 @@ public class DiagonalMatrix extends AbstractRealMatrix
         return data;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getEntry(final int row, final int column)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         MatrixUtils.checkMatrixIndex(this, row, column);
         return row == column ? data[row] : 0;
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
+     *
      * @throws MathIllegalArgumentException if {@code row != column} and value is non-zero.
      */
     @Override
     public void setEntry(final int row, final int column, final double value)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         if (row == column) {
             MatrixUtils.checkRowIndex(this, row);
             data[row] = value;
@@ -238,14 +249,16 @@ public class DiagonalMatrix extends AbstractRealMatrix
         }
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
+     *
      * @throws MathIllegalArgumentException if {@code row != column} and increment is non-zero.
      */
     @Override
     public void addToEntry(final int row,
                            final int column,
                            final double increment)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         if (row == column) {
             MatrixUtils.checkRowIndex(this, row);
             data[row] += increment;
@@ -254,12 +267,14 @@ public class DiagonalMatrix extends AbstractRealMatrix
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void multiplyEntry(final int row,
                               final int column,
                               final double factor)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         // we don't care about non-diagonal elements for multiplication
         if (row == column) {
             MatrixUtils.checkRowIndex(this, row);
@@ -267,33 +282,43 @@ public class DiagonalMatrix extends AbstractRealMatrix
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getRowDimension() {
         return data.length;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getColumnDimension() {
         return data.length;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double[] operate(final double[] v)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         return multiply(new DiagonalMatrix(v, false)).getDataRef();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double[] preMultiply(final double[] v)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         return operate(v);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RealVector preMultiply(final RealVector v) throws MathIllegalArgumentException {
         final double[] vectorData;
@@ -305,14 +330,16 @@ public class DiagonalMatrix extends AbstractRealMatrix
         return MatrixUtils.createRealVector(preMultiply(vectorData));
     }
 
-    /** Ensure a value is zero.
+    /**
+     * Ensure a value is zero.
+     *
      * @param value value to check
-     * @exception MathIllegalArgumentException if value is not zero
+     * @throws MathIllegalArgumentException if value is not zero
      */
     private void ensureZero(final double value) throws MathIllegalArgumentException {
         if (!Precision.equals(0.0, value, 1)) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.NUMBER_TOO_LARGE,
-                                                   FastMath.abs(value), 0);
+                    FastMath.abs(value), 0);
         }
     }
 
@@ -348,7 +375,8 @@ public class DiagonalMatrix extends AbstractRealMatrix
         return new DiagonalMatrix(result, false);
     }
 
-    /** Returns whether this diagonal matrix is singular, i.e. any diagonal entry
+    /**
+     * Returns whether this diagonal matrix is singular, i.e. any diagonal entry
      * is equal to {@code 0} within the given threshold.
      *
      * @param threshold Singularity threshold.

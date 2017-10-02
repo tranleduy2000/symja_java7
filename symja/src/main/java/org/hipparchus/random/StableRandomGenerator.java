@@ -25,38 +25,45 @@ import org.hipparchus.util.MathUtils;
 /**
  * <p>This class provides a stable normalized random generator. It samples from a stable
  * distribution with location parameter 0 and scale 1.</p>
- *
+ * <p>
  * <p>The implementation uses the Chambers-Mallows-Stuck method as described in
  * <i>Handbook of computational statistics: concepts and methods</i> by
  * James E. Gentle, Wolfgang H&auml;rdle, Yuichi Mori.</p>
- *
  */
 public class StableRandomGenerator implements NormalizedRandomGenerator {
-    /** Underlying generator. */
+    /**
+     * Underlying generator.
+     */
     private final RandomGenerator generator;
 
-    /** stability parameter */
+    /**
+     * stability parameter
+     */
     private final double alpha;
 
-    /** skewness parameter */
+    /**
+     * skewness parameter
+     */
     private final double beta;
 
-    /** cache of expression value used in generation */
+    /**
+     * cache of expression value used in generation
+     */
     private final double zeta;
 
     /**
      * Create a new generator.
      *
      * @param generator underlying random generator to use
-     * @param alpha Stability parameter. Must be in range (0, 2]
-     * @param beta Skewness parameter. Must be in range [-1, 1]
-     * @throws NullArgumentException if generator is null
+     * @param alpha     Stability parameter. Must be in range (0, 2]
+     * @param beta      Skewness parameter. Must be in range [-1, 1]
+     * @throws NullArgumentException        if generator is null
      * @throws MathIllegalArgumentException if {@code alpha <= 0} or {@code alpha > 2}
-     * or {@code beta < -1} or {@code beta > 1}
+     *                                      or {@code beta < -1} or {@code beta > 1}
      */
     public StableRandomGenerator(final RandomGenerator generator,
                                  final double alpha, final double beta)
-        throws MathIllegalArgumentException, NullArgumentException {
+            throws MathIllegalArgumentException, NullArgumentException {
         if (generator == null) {
             throw new NullArgumentException();
         }
@@ -103,9 +110,9 @@ public class StableRandomGenerator implements NormalizedRandomGenerator {
                 x = FastMath.tan(phi);
             } else {
                 x = FastMath.pow(omega * FastMath.cos((1 - alpha) * phi),
-                    1d / alpha - 1d) *
-                    FastMath.sin(alpha * phi) /
-                    FastMath.pow(FastMath.cos(phi), 1d / alpha);
+                        1d / alpha - 1d) *
+                        FastMath.sin(alpha * phi) /
+                        FastMath.pow(FastMath.cos(phi), 1d / alpha);
             }
         } else {
             // Generic stable distribution
@@ -115,12 +122,12 @@ public class StableRandomGenerator implements NormalizedRandomGenerator {
                 double alphaPhi = alpha * phi;
                 double invAlphaPhi = phi - alphaPhi;
                 x = (FastMath.sin(alphaPhi) + zeta * FastMath.cos(alphaPhi)) / cosPhi *
-                    (FastMath.cos(invAlphaPhi) + zeta * FastMath.sin(invAlphaPhi)) /
-                     FastMath.pow(omega * cosPhi, (1 - alpha) / alpha);
+                        (FastMath.cos(invAlphaPhi) + zeta * FastMath.sin(invAlphaPhi)) /
+                        FastMath.pow(omega * cosPhi, (1 - alpha) / alpha);
             } else {
                 double betaPhi = FastMath.PI / 2 + beta * phi;
                 x = 2d / FastMath.PI * (betaPhi * FastMath.tan(phi) - beta *
-                    FastMath.log(FastMath.PI / 2d * omega * cosPhi / betaPhi));
+                        FastMath.log(FastMath.PI / 2d * omega * cosPhi / betaPhi));
 
                 if (alpha != 1d) {
                     x += beta * FastMath.tan(FastMath.PI * alpha / 2);

@@ -22,26 +22,25 @@ import org.hipparchus.exception.MathIllegalArgumentException;
 /**
  * Interface representing a bivariate real interpolating function where the
  * sample points must be specified on a regular grid.
- *
  */
 public interface BivariateGridInterpolator {
     /**
      * Compute an interpolating function for the dataset.
      *
      * @param xval All the x-coordinates of the interpolation points, sorted
-     * in increasing order.
+     *             in increasing order.
      * @param yval All the y-coordinates of the interpolation points, sorted
-     * in increasing order.
+     *             in increasing order.
      * @param fval The values of the interpolation points on all the grid knots:
-     * {@code fval[i][j] = f(xval[i], yval[j])}.
+     *             {@code fval[i][j] = f(xval[i], yval[j])}.
      * @return a function which interpolates the dataset.
      * @throws MathIllegalArgumentException if any of the arrays has zero length.
      * @throws MathIllegalArgumentException if the array lengths are inconsistent.
      * @throws MathIllegalArgumentException if the array is not sorted.
      * @throws MathIllegalArgumentException if the number of points is too small for
-     * the order of the interpolation
+     *                                      the order of the interpolation
      */
     BivariateFunction interpolate(double[] xval, double[] yval,
                                   double[][] fval)
-        throws MathIllegalArgumentException;
+            throws MathIllegalArgumentException;
 }

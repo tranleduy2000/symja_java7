@@ -556,7 +556,7 @@ public class ComplexNum extends ComplexNumImpl implements IComplexNum {
         if (that instanceof Num) {
             return add(ComplexNum.valueOf(((Num) that).getRealPart()));
         }
-        return  super.plus(that);
+        return super.plus(that);
     }
 
     @Override
@@ -614,7 +614,7 @@ public class ComplexNum extends ComplexNumImpl implements IComplexNum {
         if (that instanceof Num) {
             return multiply(ComplexNum.valueOf(((Num) that).getRealPart()));
         }
-        return  super.times(that);
+        return super.times(that);
     }
 
     @Override

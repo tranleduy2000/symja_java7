@@ -5,10 +5,10 @@
 package edu.jas.gb;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.List;
 import java.util.Map;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.poly.ExpVector;
 import edu.jas.poly.GenSolvablePolynomial;
@@ -17,6 +17,7 @@ import edu.jas.structure.RingElem;
 
 /**
  * Solvable polynomial Reduction algorithm. Implements left, right normalform.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
@@ -36,13 +37,14 @@ public class SolvableReductionSeq<C extends RingElem<C>> extends SolvableReducti
 
     /**
      * Left Normalform.
+     *
      * @param Ap solvable polynomial.
      * @param Pp solvable polynomial list.
      * @return left-nf(Ap) with respect to Pp.
      */
     @SuppressWarnings("unchecked")
     public GenSolvablePolynomial<C> leftNormalform(List<GenSolvablePolynomial<C>> Pp,
-                    GenSolvablePolynomial<C> Ap) {
+                                                   GenSolvablePolynomial<C> Ap) {
         if (Pp == null || Pp.isEmpty()) {
             return Ap;
         }
@@ -132,14 +134,15 @@ public class SolvableReductionSeq<C extends RingElem<C>> extends SolvableReducti
 
     /**
      * LeftNormalform with recording.
+     *
      * @param row recording matrix, is modified.
-     * @param Pp a polynomial list for reduction.
-     * @param Ap a polynomial.
-     * @return nf(Pp,Ap), the left normal form of Ap wrt. Pp.
+     * @param Pp  a polynomial list for reduction.
+     * @param Ap  a polynomial.
+     * @return nf(Pp, Ap), the left normal form of Ap wrt. Pp.
      */
-    @SuppressWarnings({ "cast", "unchecked" })
+    @SuppressWarnings({"cast", "unchecked"})
     public GenSolvablePolynomial<C> leftNormalform(List<GenSolvablePolynomial<C>> row,
-                    List<GenSolvablePolynomial<C>> Pp, GenSolvablePolynomial<C> Ap) {
+                                                   List<GenSolvablePolynomial<C>> Pp, GenSolvablePolynomial<C> Ap) {
         if (Pp == null || Pp.isEmpty()) {
             return Ap;
         }
@@ -207,7 +210,7 @@ public class SolvableReductionSeq<C extends RingElem<C>> extends SolvableReducti
                 ExpVector g2 = S.leadingExpVector();
                 if (g1.equals(g2)) {
                     throw new RuntimeException("g1.equals(g2): " + g1 + ", a = " + a + ", lc(S) = "
-                                    + S.leadingBaseCoefficient());
+                            + S.leadingBaseCoefficient());
                 }
                 fac = row.get(i);
                 if (fac == null) {
@@ -224,13 +227,14 @@ public class SolvableReductionSeq<C extends RingElem<C>> extends SolvableReducti
 
     /**
      * Right Normalform.
+     *
      * @param Ap solvable polynomial.
      * @param Pp solvable polynomial list.
      * @return right-nf(Ap) with respect to Pp.
      */
-    @SuppressWarnings({ "cast", "unchecked" })
+    @SuppressWarnings({"cast", "unchecked"})
     public GenSolvablePolynomial<C> rightNormalform(List<GenSolvablePolynomial<C>> Pp,
-                    GenSolvablePolynomial<C> Ap) {
+                                                    GenSolvablePolynomial<C> Ap) {
         if (Pp == null || Pp.isEmpty()) {
             return Ap;
         }
@@ -302,7 +306,7 @@ public class SolvableReductionSeq<C extends RingElem<C>> extends SolvableReducti
                 ExpVector g2 = S.leadingExpVector();
                 if (g1.equals(g2)) {
                     throw new RuntimeException("g1.equals(g2): " + g1 + ", a = " + a + ", lc(S) = "
-                                    + S.leadingBaseCoefficient());
+                            + S.leadingBaseCoefficient());
                 }
             }
         }
@@ -312,14 +316,15 @@ public class SolvableReductionSeq<C extends RingElem<C>> extends SolvableReducti
 
     /**
      * RightNormalform with recording.
+     *
      * @param row recording matrix, is modified.
-     * @param Pp a polynomial list for reduction.
-     * @param Ap a polynomial.
-     * @return nf(Pp,Ap), the right normal form of Ap wrt. Pp.
+     * @param Pp  a polynomial list for reduction.
+     * @param Ap  a polynomial.
+     * @return nf(Pp, Ap), the right normal form of Ap wrt. Pp.
      */
-    @SuppressWarnings({ "cast", "unchecked" })
+    @SuppressWarnings({"cast", "unchecked"})
     public GenSolvablePolynomial<C> rightNormalform(List<GenSolvablePolynomial<C>> row,
-                    List<GenSolvablePolynomial<C>> Pp, GenSolvablePolynomial<C> Ap) {
+                                                    List<GenSolvablePolynomial<C>> Pp, GenSolvablePolynomial<C> Ap) {
         if (Pp == null || Pp.isEmpty()) {
             return Ap;
         }
@@ -390,7 +395,7 @@ public class SolvableReductionSeq<C extends RingElem<C>> extends SolvableReducti
                 ExpVector g2 = S.leadingExpVector();
                 if (g1.equals(g2)) {
                     throw new RuntimeException("g1.equals(g2): " + g1 + ", a = " + a + ", lc(S) = "
-                                    + S.leadingBaseCoefficient());
+                            + S.leadingBaseCoefficient());
                 }
                 fac = row.get(i);
                 if (fac == null) {

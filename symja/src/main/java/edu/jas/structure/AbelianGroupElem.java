@@ -7,6 +7,7 @@ package edu.jas.structure;
 
 /**
  * Abelian group element interface. Defines the additive methods.
+ *
  * @param <C> element type
  * @author Heinz Kredel
  */
@@ -16,6 +17,7 @@ public interface AbelianGroupElem<C extends AbelianGroupElem<C>> extends Element
 
     /**
      * Test if this is zero.
+     *
      * @return true if this is 0, else false.
      */
     public boolean isZERO();
@@ -23,6 +25,7 @@ public interface AbelianGroupElem<C extends AbelianGroupElem<C>> extends Element
 
     /**
      * Signum.
+     *
      * @return the sign of this.
      */
     public int signum();
@@ -30,6 +33,7 @@ public interface AbelianGroupElem<C extends AbelianGroupElem<C>> extends Element
 
     /**
      * Sum of this and S.
+     *
      * @param S
      * @return this + S.
      */
@@ -41,6 +45,7 @@ public interface AbelianGroupElem<C extends AbelianGroupElem<C>> extends Element
 
     /**
      * Subtract S from this.
+     *
      * @param S
      * @return this - S.
      */
@@ -49,6 +54,7 @@ public interface AbelianGroupElem<C extends AbelianGroupElem<C>> extends Element
 
     /**
      * Negate this.
+     *
      * @return - this.
      */
     public C negate();
@@ -56,6 +62,7 @@ public interface AbelianGroupElem<C extends AbelianGroupElem<C>> extends Element
 
     /**
      * Absolute value of this.
+     *
      * @return |this|.
      */
     public C abs();

@@ -5,13 +5,13 @@
 package edu.jas.gb;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.concurrent.Semaphore;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.poly.ExpVector;
 import edu.jas.poly.GenPolynomial;
@@ -25,9 +25,9 @@ import edu.jas.util.ThreadPool;
 /**
  * Groebner Base parallel algortihm. Implements a shared memory parallel version
  * of Groebner bases.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
- * 
  * @see edu.jas.application.GBAlgorithmBuilder
  * @see edu.jas.gbufd.GBFactory
  */
@@ -60,6 +60,7 @@ public class GroebnerBaseParallel<C extends RingElem<C>> extends GroebnerBaseAbs
 
     /**
      * Constructor.
+     *
      * @param threads number of threads to use.
      */
     public GroebnerBaseParallel(int threads) {
@@ -69,8 +70,9 @@ public class GroebnerBaseParallel<C extends RingElem<C>> extends GroebnerBaseAbs
 
     /**
      * Constructor.
+     *
      * @param threads number of threads to use.
-     * @param red parallelism aware reduction engine
+     * @param red     parallelism aware reduction engine
      */
     public GroebnerBaseParallel(int threads, Reduction<C> red) {
         this(threads, new ThreadPool(threads), red);
@@ -79,8 +81,9 @@ public class GroebnerBaseParallel<C extends RingElem<C>> extends GroebnerBaseAbs
 
     /**
      * Constructor.
+     *
      * @param threads number of threads to use.
-     * @param pl pair selection strategy
+     * @param pl      pair selection strategy
      */
     public GroebnerBaseParallel(int threads, PairList<C> pl) {
         this(threads, new ThreadPool(threads), new ReductionPar<C>(), pl);
@@ -89,8 +92,9 @@ public class GroebnerBaseParallel<C extends RingElem<C>> extends GroebnerBaseAbs
 
     /**
      * Constructor.
+     *
      * @param threads number of threads to use.
-     * @param pool ThreadPool to use.
+     * @param pool    ThreadPool to use.
      */
     public GroebnerBaseParallel(int threads, ThreadPool pool) {
         this(threads, pool, new ReductionPar<C>());
@@ -99,8 +103,9 @@ public class GroebnerBaseParallel<C extends RingElem<C>> extends GroebnerBaseAbs
 
     /**
      * Constructor.
+     *
      * @param pool ThreadPool to use.
-     * @param red Reduction engine
+     * @param red  Reduction engine
      */
     public GroebnerBaseParallel(int threads, ThreadPool pool, Reduction<C> red) {
         this(threads, pool, red, new OrderedPairlist<C>());
@@ -109,8 +114,9 @@ public class GroebnerBaseParallel<C extends RingElem<C>> extends GroebnerBaseAbs
 
     /**
      * Constructor.
+     *
      * @param red Reduction engine
-     * @param pl pair selection strategy
+     * @param pl  pair selection strategy
      */
     public GroebnerBaseParallel(int threads, Reduction<C> red, PairList<C> pl) {
         this(threads, new ThreadPool(threads), red, pl);
@@ -119,10 +125,11 @@ public class GroebnerBaseParallel<C extends RingElem<C>> extends GroebnerBaseAbs
 
     /**
      * Constructor.
+     *
      * @param threads number of threads to use.
-     * @param pool ThreadPool to use.
-     * @param red parallelism aware reduction engine
-     * @param pl pair selection strategy
+     * @param pool    ThreadPool to use.
+     * @param red     parallelism aware reduction engine
+     * @param pl      pair selection strategy
      */
     public GroebnerBaseParallel(int threads, ThreadPool pool, Reduction<C> red, PairList<C> pl) {
         super(red, pl);
@@ -164,13 +171,14 @@ public class GroebnerBaseParallel<C extends RingElem<C>> extends GroebnerBaseAbs
 
     /**
      * Parallel Groebner base using pairlist class.
+     *
      * @param modv number of module variables.
-     * @param F polynomial list.
+     * @param F    polynomial list.
      * @return GB(F) a Groebner base of F.
      */
     public List<GenPolynomial<C>> GB(int modv, List<GenPolynomial<C>> F) {
         List<GenPolynomial<C>> G = normalizeZerosOnes(F);
-        G = PolyUtil.<C> monic(G);
+        G = PolyUtil.<C>monic(G);
         if (G.size() <= 1) {
             return G;
         }
@@ -201,6 +209,7 @@ public class GroebnerBaseParallel<C extends RingElem<C>> extends GroebnerBaseAbs
 
     /**
      * Minimal ordered groebner basis, parallel.
+     *
      * @param Fp a Groebner base.
      * @return minimalGB(F) a minimal Groebner base of Fp.
      */
@@ -289,19 +298,11 @@ public class GroebnerBaseParallel<C extends RingElem<C>> extends GroebnerBaseAbs
 class Reducer<C extends RingElem<C>> implements Runnable {
 
 
-    private final List<GenPolynomial<C>> G;
-
-
-    private final PairList<C> pairlist;
-
-
-    private final Terminator fin;
-
-
-    private final ReductionPar<C> red;
-
-
     private static final Logger logger = Logger.getLogger(Reducer.class);
+    private final List<GenPolynomial<C>> G;
+    private final PairList<C> pairlist;
+    private final Terminator fin;
+    private final ReductionPar<C> red;
 
 
     Reducer(Terminator fin, List<GenPolynomial<C>> G, PairList<C> L) {
@@ -436,19 +437,13 @@ class Reducer<C extends RingElem<C>> implements Runnable {
 class MiReducer<C extends RingElem<C>> implements Runnable {
 
 
+    private static final Logger logger = Logger.getLogger(MiReducer.class);
     private final List<GenPolynomial<C>> G;
-
-
-    private GenPolynomial<C> H;
-
-
     private final ReductionPar<C> red;
 
 
     private final Semaphore done = new Semaphore(0);
-
-
-    private static final Logger logger = Logger.getLogger(MiReducer.class);
+    private GenPolynomial<C> H;
 
 
     MiReducer(List<GenPolynomial<C>> G, GenPolynomial<C> p) {
@@ -469,6 +464,7 @@ class MiReducer<C extends RingElem<C>> implements Runnable {
 
     /**
      * getNF. Blocks until the normal form is computed.
+     *
      * @return the computed normal form.
      */
     public GenPolynomial<C> getNF() {

@@ -5,25 +5,27 @@
 package edu.jas.application;
 
 
+import org.apache.log4j.Logger;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-
 import edu.jas.gbufd.MultiplicativeSet;
 import edu.jas.gbufd.MultiplicativeSetSquarefree;
-//import edu.jas.gbufd.MultiplicativeSetFactors;
 import edu.jas.poly.ExpVector;
 import edu.jas.poly.GenPolynomial;
 import edu.jas.poly.GenPolynomialRing;
 import edu.jas.structure.GcdRingElem;
 
+//import edu.jas.gbufd.MultiplicativeSetFactors;
+
 
 /**
  * Condition. Container for an ideal of polynomials considered to be zero and a
  * multiplicative set of polynomials considered to be non-zero.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
@@ -34,22 +36,12 @@ public class Condition<C extends GcdRingElem<C>> implements Serializable {
 
 
     //private static final boolean debug = logger.isDebugEnabled();
-
-
-    /**
-     * Colors.
-     */
-    public static enum Color {
-        GREEN, RED, WHITE
-    };
-
-
     /**
      * Data structure for condition zero.
      */
     public final Ideal<C> zero;
 
-
+    ;
     /**
      * Data structure for condition non-zero.
      */
@@ -59,6 +51,7 @@ public class Condition<C extends GcdRingElem<C>> implements Serializable {
     /**
      * Condition constructor. Constructs an empty condition with squarefree
      * multiplicative set.
+     *
      * @param ring polynomial ring factory for coefficients.
      */
     public Condition(GenPolynomialRing<C> ring) {
@@ -73,6 +66,7 @@ public class Condition<C extends GcdRingElem<C>> implements Serializable {
     /**
      * Condition constructor. Constructs a condition with squarefree
      * multiplicative set.
+     *
      * @param z an ideal of zero polynomials.
      */
     public Condition(Ideal<C> z) {
@@ -83,6 +77,7 @@ public class Condition<C extends GcdRingElem<C>> implements Serializable {
 
     /**
      * Condition constructor.
+     *
      * @param nz a list of non-zero polynomials.
      */
     public Condition(MultiplicativeSet<C> nz) {
@@ -92,7 +87,8 @@ public class Condition<C extends GcdRingElem<C>> implements Serializable {
 
     /**
      * Condition constructor.
-     * @param z an ideal of zero polynomials.
+     *
+     * @param z  an ideal of zero polynomials.
      * @param nz a list of non-zero polynomials.
      */
     public Condition(Ideal<C> z, MultiplicativeSet<C> nz) {
@@ -103,9 +99,9 @@ public class Condition<C extends GcdRingElem<C>> implements Serializable {
         nonZero = nz;
     }
 
-
     /**
      * toString.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -113,18 +109,18 @@ public class Condition<C extends GcdRingElem<C>> implements Serializable {
         return "Condition[ 0 == " + zero.getList().toString() + ", 0 != " + nonZero.mset.toString() + " ]";
     }
 
-
     /**
      * toScript.
+     *
      * @see edu.jas.structure.Element#toScript()
      */
     public String toScript() {
         return "Condition[ 0 == " + zero.getList().toString() + ", 0 != " + nonZero.mset.toString() + " ]";
     }
 
-
     /**
      * equals.
+     *
      * @param ob an Object.
      * @return true if this is equal to o, else false.
      */
@@ -156,9 +152,9 @@ public class Condition<C extends GcdRingElem<C>> implements Serializable {
         return true;
     }
 
-
     /**
      * Hash code for this condition.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -172,18 +168,18 @@ public class Condition<C extends GcdRingElem<C>> implements Serializable {
         return h;
     }
 
-
     /**
      * Is empty condition.
+     *
      * @return true if this is the empty condition, else false.
      */
     public boolean isEmpty() {
         return (zero.isZERO() && nonZero.isEmpty());
     }
 
-
     /**
      * Is contradictory.
+     *
      * @return true if this condition is contradictory, else false.
      */
     public boolean isContradictory() {
@@ -212,14 +208,14 @@ public class Condition<C extends GcdRingElem<C>> implements Serializable {
         return false;
     }
 
-
     /**
      * Extend condition with zero polynomial.
+     *
      * @param z a polynomial to be treated as zero.
      * @return new condition.
      */
     public Condition<C> extendZero(GenPolynomial<C> z) {
-        // assert color(z) == white 
+        // assert color(z) == white
         z = z.monic();
         Ideal<C> idz = zero.sum(z);
         logger.info("added to ideal: " + z);
@@ -231,14 +227,14 @@ public class Condition<C extends GcdRingElem<C>> implements Serializable {
         //return nc;
     }
 
-
     /**
      * Extend condition with non-zero polynomial.
+     *
      * @param nz a polynomial to be treated as non-zero.
      * @return new condition.
      */
     public Condition<C> extendNonZero(GenPolynomial<C> nz) {
-        // assert color(nz) == white 
+        // assert color(nz) == white
         GenPolynomial<C> n = zero.normalform(nz).monic();
         if (n == null || n.isZERO()) {
             return this;
@@ -253,9 +249,9 @@ public class Condition<C extends GcdRingElem<C>> implements Serializable {
         //return nc;
     }
 
-
     /**
      * Simplify zero and non-zero polynomial conditions.
+     *
      * @return new simplified condition.
      */
     public Condition<C> simplify() {
@@ -302,9 +298,9 @@ public class Condition<C extends GcdRingElem<C>> implements Serializable {
         return nc.simplify();
     }
 
-
     /**
      * Determine color of polynomial.
+     *
      * @param c polynomial to be colored.
      * @return color of c.
      */
@@ -327,10 +323,10 @@ public class Condition<C extends GcdRingElem<C>> implements Serializable {
         return Color.WHITE;
     }
 
-
     /**
      * Determine polynomial. If this condition does not determine the
      * polynomial, then a run-time exception is thrown.
+     *
      * @param A polynomial.
      * @return new determined colored polynomial.
      */
@@ -356,38 +352,38 @@ public class Condition<C extends GcdRingElem<C>> implements Serializable {
             Bp = Ap.reductum();
             // System.out.println( "color(" + c + ") = " + color(c) );
             switch (color(c)) {
-            case GREEN:
-                green = green.sum(c, e);
-                Ap = Bp;
-                continue;
-            case RED:
-                red = red.sum(c, e);
-                white = Bp;
-                return new ColorPolynomial<C>(green, red, white);
-                // since break is not possible
-            case WHITE:
-            default:
-                logger.info("recheck undetermined coeff c = " + c + ", cond = " + this);
-                if (extendZero(c) == null) { // contradiction if colored green
-                    logger.info("recheck assume red");
-                    red = red.sum(c, e); // assume red
-                    white = Bp;
-                    return new ColorPolynomial<C>(green, red, white);
-                }
-                if (extendNonZero(c) == null) { // contradiction if colored red
-                    logger.info("recheck assume green");
-                    green = green.sum(c, e); // assume green
+                case GREEN:
+                    green = green.sum(c, e);
                     Ap = Bp;
                     continue;
-                }
-                System.out.println("undetermined cond       = " + this);
-                System.out.println("undetermined poly     A = " + A);
-                System.out.println("undetermined poly green = " + green);
-                System.out.println("undetermined poly   red = " + red);
-                System.out.println("undetermined poly    Bp = " + Bp);
-                System.out.println("undetermined coeff    c = " + c);
-                throw new RuntimeException("undetermined, c is white = " + c);
-                // is catched in minimalGB
+                case RED:
+                    red = red.sum(c, e);
+                    white = Bp;
+                    return new ColorPolynomial<C>(green, red, white);
+                // since break is not possible
+                case WHITE:
+                default:
+                    logger.info("recheck undetermined coeff c = " + c + ", cond = " + this);
+                    if (extendZero(c) == null) { // contradiction if colored green
+                        logger.info("recheck assume red");
+                        red = red.sum(c, e); // assume red
+                        white = Bp;
+                        return new ColorPolynomial<C>(green, red, white);
+                    }
+                    if (extendNonZero(c) == null) { // contradiction if colored red
+                        logger.info("recheck assume green");
+                        green = green.sum(c, e); // assume green
+                        Ap = Bp;
+                        continue;
+                    }
+                    System.out.println("undetermined cond       = " + this);
+                    System.out.println("undetermined poly     A = " + A);
+                    System.out.println("undetermined poly green = " + green);
+                    System.out.println("undetermined poly   red = " + red);
+                    System.out.println("undetermined poly    Bp = " + Bp);
+                    System.out.println("undetermined coeff    c = " + c);
+                    throw new RuntimeException("undetermined, c is white = " + c);
+                    // is catched in minimalGB
             }
         }
         cp = new ColorPolynomial<C>(green, red, white);
@@ -395,11 +391,11 @@ public class Condition<C extends GcdRingElem<C>> implements Serializable {
         return cp;
     }
 
-
     /**
      * Determine list of polynomials. If this condition does not determine all
      * polynomials, then a run-time exception is thrown. The returned list does
      * not contain polynomials with all green terms.
+     *
      * @param L list of polynomial.
      * @return new determined list of colored polynomials.
      */
@@ -418,9 +414,9 @@ public class Condition<C extends GcdRingElem<C>> implements Serializable {
         return cl;
     }
 
-
     /**
      * Re determine colored polynomial.
+     *
      * @param s colored polynomial.
      * @return determined colored polynomial wrt. this.conditions.
      */
@@ -432,9 +428,9 @@ public class Condition<C extends GcdRingElem<C>> implements Serializable {
         return p;
     }
 
-
     /**
      * Re determine list of colored polynomials.
+     *
      * @param S list of colored polynomials.
      * @return list of determined colored polynomials wrt. this.conditions.
      */
@@ -450,12 +446,12 @@ public class Condition<C extends GcdRingElem<C>> implements Serializable {
         return P;
     }
 
-
     /**
      * Is determined colored polynomial.
+     *
      * @param s colored polynomial.
      * @return true if the colored polynomial is correctly determined wrt.
-     *         this.condition.
+     * this.condition.
      */
     public boolean isDetermined(ColorPolynomial<C> s) {
         ColorPolynomial<C> p = determine(s.getPolynomial());
@@ -468,12 +464,12 @@ public class Condition<C extends GcdRingElem<C>> implements Serializable {
         return t;
     }
 
-
     /**
      * Is determined list of colored polynomial.
+     *
      * @param S list of colored polynomials.
      * @return true if the colored polynomials in S are correctly determined
-     *         wrt. this.condition.
+     * wrt. this.condition.
      */
     public boolean isDetermined(List<ColorPolynomial<C>> S) {
         if (S == null) {
@@ -485,6 +481,14 @@ public class Condition<C extends GcdRingElem<C>> implements Serializable {
             }
         }
         return true;
+    }
+
+
+    /**
+     * Colors.
+     */
+    public static enum Color {
+        GREEN, RED, WHITE
     }
 
 }

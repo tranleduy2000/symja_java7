@@ -15,6 +15,7 @@ import edu.jas.structure.RingElem;
 /**
  * Non-commutative Groebner Bases interface for GenWordPolynomials. Defines
  * methods for Groebner bases and GB test.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
@@ -24,6 +25,7 @@ public interface WordGroebnerBase<C extends RingElem<C>> extends Serializable {
 
     /**
      * Groebner base test.
+     *
      * @param F word polynomial list.
      * @return true, if F is a Groebner base, else false.
      */
@@ -32,6 +34,7 @@ public interface WordGroebnerBase<C extends RingElem<C>> extends Serializable {
 
     /**
      * Groebner base using pairlist class.
+     *
      * @param F word polynomial list.
      * @return GB(F) a non-commutative Groebner base of F.
      */
@@ -40,6 +43,7 @@ public interface WordGroebnerBase<C extends RingElem<C>> extends Serializable {
 
     /**
      * Minimal ordered groebner basis.
+     *
      * @param Gp a Word Groebner base.
      * @return a reduced Word Groebner base of Gp.
      */

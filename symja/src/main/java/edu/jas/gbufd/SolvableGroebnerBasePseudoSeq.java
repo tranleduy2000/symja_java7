@@ -5,11 +5,11 @@
 package edu.jas.gbufd;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.gb.OrderedPairlist;
 import edu.jas.gb.Pair;
@@ -18,7 +18,6 @@ import edu.jas.gb.SolvableExtendedGB;
 import edu.jas.gb.SolvableGroebnerBaseAbstract;
 import edu.jas.poly.GenSolvablePolynomial;
 import edu.jas.poly.GenSolvablePolynomialRing;
-// import edu.jas.poly.GenPolynomialRing;
 import edu.jas.poly.PolynomialList;
 import edu.jas.structure.GcdRingElem;
 import edu.jas.structure.RingFactory;
@@ -26,14 +25,16 @@ import edu.jas.ufd.GCDFactory;
 import edu.jas.ufd.GreatestCommonDivisorAbstract;
 import edu.jas.ufd.GreatestCommonDivisorFake;
 
+// import edu.jas.poly.GenPolynomialRing;
+
 
 /**
  * Solvable Groebner Base with pseudo reduction sequential algorithm. Implements
  * coefficient fraction free Groebner bases. Coefficients can for example be
  * integers or (commutative) univariate polynomials.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
- * 
  * @see edu.jas.application.GBAlgorithmBuilder
  * @see edu.jas.gbufd.GBFactory
  */
@@ -68,6 +69,7 @@ public class SolvableGroebnerBasePseudoSeq<C extends GcdRingElem<C>> extends Sol
 
     /**
      * Constructor.
+     *
      * @param rf coefficient ring factory.
      */
     public SolvableGroebnerBasePseudoSeq(RingFactory<C> rf) {
@@ -77,6 +79,7 @@ public class SolvableGroebnerBasePseudoSeq<C extends GcdRingElem<C>> extends Sol
 
     /**
      * Constructor.
+     *
      * @param rf coefficient ring factory.
      * @param pl pair selection strategy
      */
@@ -87,10 +90,11 @@ public class SolvableGroebnerBasePseudoSeq<C extends GcdRingElem<C>> extends Sol
 
     /**
      * Constructor.
+     *
      * @param red pseudo reduction engine. <b>Note:</b> red must be an instance
      *            of PseudoReductionSeq.
-     * @param rf coefficient ring factory.
-     * @param pl pair selection strategy
+     * @param rf  coefficient ring factory.
+     * @param pl  pair selection strategy
      */
     public SolvableGroebnerBasePseudoSeq(SolvablePseudoReduction<C> red, RingFactory<C> rf, PairList<C> pl) {
         super(red, pl);
@@ -105,21 +109,22 @@ public class SolvableGroebnerBasePseudoSeq<C extends GcdRingElem<C>> extends Sol
             //e.printStackTrace();
         } else {
             //engine = GCDFactory.<C> getImplementation(rf);
-            engine = GCDFactory.<C> getProxy(rf);
+            engine = GCDFactory.<C>getProxy(rf);
         }
     }
 
 
     /**
      * Left Groebner base using pairlist class.
+     *
      * @param modv module variable number.
-     * @param F polynomial list.
+     * @param F    polynomial list.
      * @return GB(F) a Groebner base of F.
      */
     @Override
     public List<GenSolvablePolynomial<C>> leftGB(int modv, List<GenSolvablePolynomial<C>> F) {
         List<GenSolvablePolynomial<C>> G = normalizeZerosOnes(F);
-        G = PolynomialList.<C> castToSolvableList(engine.basePrimitivePart(PolynomialList.<C> castToList(G)));
+        G = PolynomialList.<C>castToSolvableList(engine.basePrimitivePart(PolynomialList.<C>castToList(G)));
         if (G.size() <= 1) {
             return G;
         }
@@ -128,7 +133,7 @@ public class SolvableGroebnerBasePseudoSeq<C extends GcdRingElem<C>> extends Sol
             throw new IllegalArgumentException("coefficients from a field");
         }
         PairList<C> pairlist = strategy.create(modv, ring);
-        pairlist.put(PolynomialList.<C> castToList(G));
+        pairlist.put(PolynomialList.<C>castToList(G));
 
         Pair<C> pair;
         GenSolvablePolynomial<C> pi, pj, S, H;
@@ -185,6 +190,7 @@ public class SolvableGroebnerBasePseudoSeq<C extends GcdRingElem<C>> extends Sol
 
     /**
      * Minimal ordered Solvable Groebner basis.
+     *
      * @param Gp a Solvable Groebner base.
      * @return a reduced Solvable Groebner base of Gp.
      */
@@ -239,14 +245,15 @@ public class SolvableGroebnerBasePseudoSeq<C extends GcdRingElem<C>> extends Sol
 
     /**
      * Twosided Solvable Groebner base using pairlist class.
+     *
      * @param modv number of module variables.
-     * @param Fp solvable polynomial list.
+     * @param Fp   solvable polynomial list.
      * @return tsGB(Fp) a twosided Groebner base of Fp.
      */
     @Override
     public List<GenSolvablePolynomial<C>> twosidedGB(int modv, List<GenSolvablePolynomial<C>> Fp) {
         List<GenSolvablePolynomial<C>> G = normalizeZerosOnes(Fp);
-        G = PolynomialList.<C> castToSolvableList(engine.basePrimitivePart(PolynomialList.<C> castToList(G)));
+        G = PolynomialList.<C>castToSolvableList(engine.basePrimitivePart(PolynomialList.<C>castToList(G)));
         if (G.size() < 1) { // two-sided!
             return G;
         }
@@ -257,7 +264,7 @@ public class SolvableGroebnerBasePseudoSeq<C extends GcdRingElem<C>> extends Sol
         }
         // add also coefficient generators
         List<GenSolvablePolynomial<C>> X;
-        X = PolynomialList.castToSolvableList(ring.generators(modv)); 
+        X = PolynomialList.castToSolvableList(ring.generators(modv));
         logger.info("right multipliers = " + X);
         List<GenSolvablePolynomial<C>> F = new ArrayList<GenSolvablePolynomial<C>>(G.size() * (1 + X.size()));
         F.addAll(G);
@@ -281,7 +288,7 @@ public class SolvableGroebnerBasePseudoSeq<C extends GcdRingElem<C>> extends Sol
         G = F;
         //System.out.println("G generated = " + G);
         PairList<C> pairlist = strategy.create(modv, ring);
-        pairlist.put(PolynomialList.<C> castToList(G));
+        pairlist.put(PolynomialList.<C>castToList(G));
 
         Pair<C> pair;
         GenSolvablePolynomial<C> pi, pj, S, H;
@@ -356,10 +363,11 @@ public class SolvableGroebnerBasePseudoSeq<C extends GcdRingElem<C>> extends Sol
 
     /**
      * Solvable Extended Groebner base using critical pair class.
+     *
      * @param modv module variable number.
-     * @param F solvable polynomial list.
+     * @param F    solvable polynomial list.
      * @return a container for an extended left Groebner base of F. <b>Note:
-     *         </b> not implemented;
+     * </b> not implemented;
      */
     //@SuppressWarnings("unchecked")
     @Override

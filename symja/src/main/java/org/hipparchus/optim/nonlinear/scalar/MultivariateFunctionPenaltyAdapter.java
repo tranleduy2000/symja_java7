@@ -25,7 +25,7 @@ import org.hipparchus.util.MathUtils;
 /**
  * <p>Adapter extending bounded {@link MultivariateFunction} to an unbouded
  * domain using a penalty function.</p>
- *
+ * <p>
  * <p>
  * This adapter can be used to wrap functions subject to simple bounds on
  * parameters so they can be used by optimizers that do <em>not</em> directly
@@ -61,19 +61,28 @@ import org.hipparchus.util.MathUtils;
  * </p>
  *
  * @see MultivariateFunctionMappingAdapter
- *
  */
 public class MultivariateFunctionPenaltyAdapter
-    implements MultivariateFunction {
-    /** Underlying bounded function. */
+        implements MultivariateFunction {
+    /**
+     * Underlying bounded function.
+     */
     private final MultivariateFunction bounded;
-    /** Lower bounds. */
+    /**
+     * Lower bounds.
+     */
     private final double[] lower;
-    /** Upper bounds. */
+    /**
+     * Upper bounds.
+     */
     private final double[] upper;
-    /** Penalty offset. */
+    /**
+     * Penalty offset.
+     */
     private final double offset;
-    /** Penalty scales. */
+    /**
+     * Penalty scales.
+     */
     private final double[] scale;
 
     /**
@@ -105,18 +114,19 @@ public class MultivariateFunctionPenaltyAdapter
      * boundaries violation than for small violations, so the optimizer has an hint
      * about the direction in which it should search for acceptable points.
      * </p>
+     *
      * @param bounded bounded function
-     * @param lower lower bounds for each element of the input parameters array
-     * (some elements may be set to {@code Double.NEGATIVE_INFINITY} for
-     * unbounded values)
-     * @param upper upper bounds for each element of the input parameters array
-     * (some elements may be set to {@code Double.POSITIVE_INFINITY} for
-     * unbounded values)
-     * @param offset base offset of the penalty function
-     * @param scale scale of the penalty function
-     * @exception MathIllegalArgumentException if lower bounds, upper bounds and
-     * scales are not consistent, either according to dimension or to bounadary
-     * values
+     * @param lower   lower bounds for each element of the input parameters array
+     *                (some elements may be set to {@code Double.NEGATIVE_INFINITY} for
+     *                unbounded values)
+     * @param upper   upper bounds for each element of the input parameters array
+     *                (some elements may be set to {@code Double.POSITIVE_INFINITY} for
+     *                unbounded values)
+     * @param offset  base offset of the penalty function
+     * @param scale   scale of the penalty function
+     * @throws MathIllegalArgumentException if lower bounds, upper bounds and
+     *                                      scales are not consistent, either according to dimension or to bounadary
+     *                                      values
      */
     public MultivariateFunctionPenaltyAdapter(final MultivariateFunction bounded,
                                               final double[] lower, final double[] upper,
@@ -128,25 +138,25 @@ public class MultivariateFunctionPenaltyAdapter
         MathUtils.checkNotNull(scale);
         if (lower.length != upper.length) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.DIMENSIONS_MISMATCH,
-                                                   lower.length, upper.length);
+                    lower.length, upper.length);
         }
         if (lower.length != scale.length) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.DIMENSIONS_MISMATCH,
-                                                   lower.length, scale.length);
+                    lower.length, scale.length);
         }
         for (int i = 0; i < lower.length; ++i) {
             // note the following test is written in such a way it also fails for NaN
             if (!(upper[i] >= lower[i])) {
                 throw new MathIllegalArgumentException(LocalizedCoreFormats.NUMBER_TOO_SMALL,
-                                                       upper[i], lower[i]);
+                        upper[i], lower[i]);
             }
         }
 
         this.bounded = bounded;
-        this.lower   = lower.clone();
-        this.upper   = upper.clone();
-        this.offset  = offset;
-        this.scale   = scale.clone();
+        this.lower = lower.clone();
+        this.upper = upper.clone();
+        this.offset = offset;
+        this.scale = scale.clone();
     }
 
     /**
@@ -157,6 +167,7 @@ public class MultivariateFunctionPenaltyAdapter
      * a replacement value using the offset and scale if bounds are
      * violated, without calling the function at all.
      * </p>
+     *
      * @param point unbounded point
      * @return either underlying function value or penalty function value
      */

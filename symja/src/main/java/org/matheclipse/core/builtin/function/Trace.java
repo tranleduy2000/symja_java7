@@ -13,14 +13,14 @@ import org.matheclipse.core.patternmatching.IPatternMatcher;
  * <pre>
  * Trace(expr)
  * </pre>
- * 
+ * <p>
  * <blockquote>
  * <p>
  * return the evaluation steps which are used to get the result.
  * </p>
  * </blockquote>
  * <h3>Examples</h3>
- * 
+ * <p>
  * <pre>
  * &gt;&gt; Trace(D(Sin(x),x))
  * {{Cos(#1)&amp;[x],Cos(x)},D(x,x)*Cos(x),{D(x,x),1},1*Cos(x),Cos(x)}
@@ -28,30 +28,29 @@ import org.matheclipse.core.patternmatching.IPatternMatcher;
  */
 public class Trace extends AbstractCoreFunctionEvaluator {
 
-	public Trace() {
-	}
+    public Trace() {
+    }
 
-	/**
-	 * Trace the evaluation steps for a given expression. The resulting trace
-	 * expression list is wrapped by Hold (i.e. <code>Hold[{...}]</code>.
-	 * 
-	 */
-	@Override
-	public IExpr evaluate(final IAST ast, EvalEngine engine) {
-		Validate.checkRange(ast, 2, 3);
+    /**
+     * Trace the evaluation steps for a given expression. The resulting trace
+     * expression list is wrapped by Hold (i.e. <code>Hold[{...}]</code>.
+     */
+    @Override
+    public IExpr evaluate(final IAST ast, EvalEngine engine) {
+        Validate.checkRange(ast, 2, 3);
 
-		final IExpr temp = ast.arg1();
-		IPatternMatcher matcher = null;
-		if (ast.isAST2()) {
-			matcher = engine.evalPatternMatcher(ast.arg2());
-		}
+        final IExpr temp = ast.arg1();
+        IPatternMatcher matcher = null;
+        if (ast.isAST2()) {
+            matcher = engine.evalPatternMatcher(ast.arg2());
+        }
 
-		return engine.evalTrace(temp, matcher, F.List());
-	}
+        return engine.evalTrace(temp, matcher, F.List());
+    }
 
-	@Override
-	public void setUp(final ISymbol newSymbol) {
-		newSymbol.setAttributes(ISymbol.HOLDALL);
-	}
+    @Override
+    public void setUp(final ISymbol newSymbol) {
+        newSymbol.setAttributes(ISymbol.HOLDALL);
+    }
 
 }

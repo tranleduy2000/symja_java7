@@ -16,9 +16,6 @@
  */
 package org.hipparchus.stat.inference;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import org.hipparchus.distribution.continuous.FDistribution;
 import org.hipparchus.exception.LocalizedCoreFormats;
 import org.hipparchus.exception.MathIllegalArgumentException;
@@ -27,9 +24,12 @@ import org.hipparchus.exception.NullArgumentException;
 import org.hipparchus.stat.descriptive.StreamingStatistics;
 import org.hipparchus.util.MathUtils;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 /**
  * Implements one-way ANOVA (analysis of variance) statistics.
- *
+ * <p>
  * <p> Tests for differences between two or more categories of univariate data
  * (for example, the body mass index of accountants, lawyers, doctors and
  * computer programmers).  When two categories are given, this is equivalent to
@@ -44,7 +44,6 @@ import org.hipparchus.util.MathUtils;
  *                wg = within groups,
  *                ss = sum squared deviations
  * </pre>
- *
  */
 public class OneWayAnova {
 
@@ -57,7 +56,7 @@ public class OneWayAnova {
     /**
      * Computes the ANOVA F-value for a collection of <code>double[]</code>
      * arrays.
-     *
+     * <p>
      * <p><strong>Preconditions</strong>: <ul>
      * <li>The categoryData <code>Collection</code> must contain
      * <code>double[]</code> arrays.</li>
@@ -74,15 +73,15 @@ public class OneWayAnova {
      * here</a></p>
      *
      * @param categoryData <code>Collection</code> of <code>double[]</code>
-     * arrays each containing data for one category
+     *                     arrays each containing data for one category
      * @return Fvalue
-     * @throws NullArgumentException if <code>categoryData</code> is <code>null</code>
+     * @throws NullArgumentException        if <code>categoryData</code> is <code>null</code>
      * @throws MathIllegalArgumentException if the length of the <code>categoryData</code>
-     * array is less than 2 or a contained <code>double[]</code> array does not have
-     * at least two values
+     *                                      array is less than 2 or a contained <code>double[]</code> array does not have
+     *                                      at least two values
      */
     public double anovaFValue(final Collection<double[]> categoryData)
-        throws MathIllegalArgumentException, NullArgumentException {
+            throws MathIllegalArgumentException, NullArgumentException {
 
         AnovaStats a = anovaStats(categoryData);
         return a.F;
@@ -92,7 +91,7 @@ public class OneWayAnova {
     /**
      * Computes the ANOVA P-value for a collection of <code>double[]</code>
      * arrays.
-     *
+     * <p>
      * <p><strong>Preconditions</strong>: <ul>
      * <li>The categoryData <code>Collection</code> must contain
      * <code>double[]</code> arrays.</li>
@@ -108,18 +107,18 @@ public class OneWayAnova {
      * is the Hipparchus implementation of the F distribution.</p>
      *
      * @param categoryData <code>Collection</code> of <code>double[]</code>
-     * arrays each containing data for one category
+     *                     arrays each containing data for one category
      * @return Pvalue
-     * @throws NullArgumentException if <code>categoryData</code> is <code>null</code>
+     * @throws NullArgumentException        if <code>categoryData</code> is <code>null</code>
      * @throws MathIllegalArgumentException if the length of the <code>categoryData</code>
-     * array is less than 2 or a contained <code>double[]</code> array does not have
-     * at least two values
-     * @throws MathIllegalStateException if the p-value can not be computed due to a convergence error
-     * @throws MathIllegalStateException if the maximum number of iterations is exceeded
+     *                                      array is less than 2 or a contained <code>double[]</code> array does not have
+     *                                      at least two values
+     * @throws MathIllegalStateException    if the p-value can not be computed due to a convergence error
+     * @throws MathIllegalStateException    if the maximum number of iterations is exceeded
      */
     public double anovaPValue(final Collection<double[]> categoryData)
-        throws MathIllegalArgumentException, NullArgumentException,
-        MathIllegalStateException {
+            throws MathIllegalArgumentException, NullArgumentException,
+            MathIllegalStateException {
 
         final AnovaStats a = anovaStats(categoryData);
         // No try-catch or advertised exception because args are valid
@@ -130,7 +129,7 @@ public class OneWayAnova {
 
     /**
      * Computes the ANOVA P-value for a collection of {@link StreamingStatistics}.
-     *
+     * <p>
      * <p><strong>Preconditions</strong>: <ul>
      * <li>The categoryData <code>Collection</code> must contain
      * {@link StreamingStatistics}.</li>
@@ -145,22 +144,22 @@ public class OneWayAnova {
      * where <code>F</code> is the F value and <code>cumulativeProbability</code>
      * is the Hipparchus implementation of the F distribution.</p>
      *
-     * @param categoryData <code>Collection</code> of {@link StreamingStatistics}
-     * each containing data for one category
+     * @param categoryData        <code>Collection</code> of {@link StreamingStatistics}
+     *                            each containing data for one category
      * @param allowOneElementData if true, allow computation for one catagory
-     * only or for one data element per category
+     *                            only or for one data element per category
      * @return Pvalue
-     * @throws NullArgumentException if <code>categoryData</code> is <code>null</code>
+     * @throws NullArgumentException        if <code>categoryData</code> is <code>null</code>
      * @throws MathIllegalArgumentException if the length of the <code>categoryData</code>
-     * array is less than 2 or a contained {@link StreamingStatistics} does not have
-     * at least two values
-     * @throws MathIllegalStateException if the p-value can not be computed due to a convergence error
-     * @throws MathIllegalStateException if the maximum number of iterations is exceeded
+     *                                      array is less than 2 or a contained {@link StreamingStatistics} does not have
+     *                                      at least two values
+     * @throws MathIllegalStateException    if the p-value can not be computed due to a convergence error
+     * @throws MathIllegalStateException    if the maximum number of iterations is exceeded
      */
     public double anovaPValue(final Collection<StreamingStatistics> categoryData,
                               final boolean allowOneElementData)
-        throws MathIllegalArgumentException, NullArgumentException,
-        MathIllegalStateException {
+            throws MathIllegalArgumentException, NullArgumentException,
+            MathIllegalStateException {
 
         final AnovaStats a = anovaStats(categoryData, allowOneElementData);
         final FDistribution fdist = new FDistribution(a.dfbg, a.dfwg);
@@ -172,19 +171,16 @@ public class OneWayAnova {
      * This method calls the method that actually does the calculations (except
      * P-value).
      *
-     * @param categoryData
-     *            <code>Collection</code> of <code>double[]</code> arrays each
-     *            containing data for one category
+     * @param categoryData <code>Collection</code> of <code>double[]</code> arrays each
+     *                     containing data for one category
      * @return computed AnovaStats
-     * @throws NullArgumentException
-     *             if <code>categoryData</code> is <code>null</code>
-     * @throws MathIllegalArgumentException
-     *             if the length of the <code>categoryData</code> array is less
-     *             than 2 or a contained <code>double[]</code> array does not
-     *             contain at least two values
+     * @throws NullArgumentException        if <code>categoryData</code> is <code>null</code>
+     * @throws MathIllegalArgumentException if the length of the <code>categoryData</code> array is less
+     *                                      than 2 or a contained <code>double[]</code> array does not
+     *                                      contain at least two values
      */
     private AnovaStats anovaStats(final Collection<double[]> categoryData)
-        throws MathIllegalArgumentException, NullArgumentException {
+            throws MathIllegalArgumentException, NullArgumentException {
 
         MathUtils.checkNotNull(categoryData);
 
@@ -207,7 +203,7 @@ public class OneWayAnova {
     /**
      * Performs an ANOVA test, evaluating the null hypothesis that there
      * is no difference among the means of the data categories.
-     *
+     * <p>
      * <p><strong>Preconditions</strong>: <ul>
      * <li>The categoryData <code>Collection</code> must contain
      * <code>double[]</code> arrays.</li>
@@ -226,21 +222,21 @@ public class OneWayAnova {
      * <p>True is returned iff the estimated p-value is less than alpha.</p>
      *
      * @param categoryData <code>Collection</code> of <code>double[]</code>
-     * arrays each containing data for one category
-     * @param alpha significance level of the test
+     *                     arrays each containing data for one category
+     * @param alpha        significance level of the test
      * @return true if the null hypothesis can be rejected with
      * confidence 1 - alpha
-     * @throws NullArgumentException if <code>categoryData</code> is <code>null</code>
+     * @throws NullArgumentException        if <code>categoryData</code> is <code>null</code>
      * @throws MathIllegalArgumentException if the length of the <code>categoryData</code>
-     * array is less than 2 or a contained <code>double[]</code> array does not have
-     * at least two values
+     *                                      array is less than 2 or a contained <code>double[]</code> array does not have
+     *                                      at least two values
      * @throws MathIllegalArgumentException if <code>alpha</code> is not in the range (0, 0.5]
-     * @throws MathIllegalStateException if the p-value can not be computed due to a convergence error
-     * @throws MathIllegalStateException if the maximum number of iterations is exceeded
+     * @throws MathIllegalStateException    if the p-value can not be computed due to a convergence error
+     * @throws MathIllegalStateException    if the maximum number of iterations is exceeded
      */
     public boolean anovaTest(final Collection<double[]> categoryData,
                              final double alpha)
-        throws MathIllegalArgumentException, NullArgumentException, MathIllegalStateException {
+            throws MathIllegalArgumentException, NullArgumentException, MathIllegalStateException {
 
         if ((alpha <= 0) || (alpha > 0.5)) {
             throw new MathIllegalArgumentException(
@@ -253,19 +249,19 @@ public class OneWayAnova {
     /**
      * This method actually does the calculations (except P-value).
      *
-     * @param categoryData <code>Collection</code> of <code>double[]</code>
-     * arrays each containing data for one category
+     * @param categoryData        <code>Collection</code> of <code>double[]</code>
+     *                            arrays each containing data for one category
      * @param allowOneElementData if true, allow computation for one category
-     * only or for one data element per category
+     *                            only or for one data element per category
      * @return computed AnovaStats
-     * @throws NullArgumentException if <code>categoryData</code> is <code>null</code>
+     * @throws NullArgumentException        if <code>categoryData</code> is <code>null</code>
      * @throws MathIllegalArgumentException if <code>allowOneElementData</code> is false and the number of
-     * categories is less than 2 or a contained SummaryStatistics does not contain
-     * at least two values
+     *                                      categories is less than 2 or a contained SummaryStatistics does not contain
+     *                                      at least two values
      */
     private AnovaStats anovaStats(final Collection<StreamingStatistics> categoryData,
                                   final boolean allowOneElementData)
-        throws MathIllegalArgumentException, NullArgumentException {
+            throws MathIllegalArgumentException, NullArgumentException {
 
         MathUtils.checkNotNull(categoryData);
 
@@ -273,14 +269,14 @@ public class OneWayAnova {
             // check if we have enough categories
             if (categoryData.size() < 2) {
                 throw new MathIllegalArgumentException(LocalizedCoreFormats.TWO_OR_MORE_CATEGORIES_REQUIRED,
-                                                       categoryData.size(), 2);
+                        categoryData.size(), 2);
             }
 
             // check if each category has enough data
             for (final StreamingStatistics array : categoryData) {
                 if (array.getN() <= 1) {
                     throw new MathIllegalArgumentException(LocalizedCoreFormats.TWO_OR_MORE_VALUES_IN_CATEGORY_REQUIRED,
-                                                           (int) array.getN(), 2);
+                            (int) array.getN(), 2);
                 }
             }
         }
@@ -322,20 +318,27 @@ public class OneWayAnova {
      */
     private static class AnovaStats {
 
-        /** Degrees of freedom in numerator (between groups). */
+        /**
+         * Degrees of freedom in numerator (between groups).
+         */
         private final int dfbg;
 
-        /** Degrees of freedom in denominator (within groups). */
+        /**
+         * Degrees of freedom in denominator (within groups).
+         */
         private final int dfwg;
 
-        /** Statistic. */
+        /**
+         * Statistic.
+         */
         private final double F;
 
         /**
          * Constructor
+         *
          * @param dfbg degrees of freedom in numerator (between groups)
          * @param dfwg degrees of freedom in denominator (within groups)
-         * @param F statistic
+         * @param F    statistic
          */
         private AnovaStats(int dfbg, int dfwg, double F) {
             this.dfbg = dfbg;

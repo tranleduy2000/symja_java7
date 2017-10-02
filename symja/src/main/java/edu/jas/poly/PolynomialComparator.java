@@ -13,11 +13,12 @@ import edu.jas.structure.RingElem;
 
 /**
  * Comparator for polynomials.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
 public class PolynomialComparator<C extends RingElem<C>> implements Serializable,
-                Comparator<GenPolynomial<C>> {
+        Comparator<GenPolynomial<C>> {
 
 
     public final TermOrder tord;
@@ -28,7 +29,8 @@ public class PolynomialComparator<C extends RingElem<C>> implements Serializable
 
     /**
      * Constructor.
-     * @param t TermOrder.
+     *
+     * @param t       TermOrder.
      * @param reverse flag if reverse ordering is requested.
      */
     public PolynomialComparator(TermOrder t, boolean reverse) {
@@ -39,6 +41,7 @@ public class PolynomialComparator<C extends RingElem<C>> implements Serializable
 
     /**
      * Compare polynomials.
+     *
      * @param p1 first polynomial.
      * @param p2 second polynomial.
      * @return 0 if ( p1 == p2 ), -1 if ( p1 < p2 ) and +1 if ( p1 > p2 ).
@@ -56,6 +59,7 @@ public class PolynomialComparator<C extends RingElem<C>> implements Serializable
 
     /**
      * Equals test of comparator.
+     *
      * @param o other object.
      * @return true if this = o, else false.
      */
@@ -76,6 +80,7 @@ public class PolynomialComparator<C extends RingElem<C>> implements Serializable
 
     /**
      * Hash code for this PolynomialComparator.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override

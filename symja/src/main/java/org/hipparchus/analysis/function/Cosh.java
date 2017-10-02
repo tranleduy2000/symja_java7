@@ -23,16 +23,18 @@ import org.hipparchus.util.FastMath;
 
 /**
  * Hyperbolic cosine function.
- *
  */
 public class Cosh implements UnivariateDifferentiableFunction {
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double value(double x) {
         return FastMath.cosh(x);
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     @Override
     public DerivativeStructure value(final DerivativeStructure t) {

@@ -23,7 +23,6 @@ import org.hipparchus.exception.NullArgumentException;
 
 /**
  * Interface for univariate real integration algorithms.
- *
  */
 public interface UnivariateIntegrator {
 
@@ -59,21 +58,21 @@ public interface UnivariateIntegrator {
      * Integrate the function in the given interval.
      *
      * @param maxEval Maximum number of evaluations.
-     * @param f the integrand function
-     * @param min the lower bound for the interval
-     * @param max the upper bound for the interval
+     * @param f       the integrand function
+     * @param min     the lower bound for the interval
+     * @param max     the upper bound for the interval
      * @return the value of integral
-     * @throws MathIllegalStateException if the maximum number of function
-     * evaluations is exceeded
-     * @throws MathIllegalStateException if the maximum iteration count is exceeded
-     * or the integrator detects convergence problems otherwise
+     * @throws MathIllegalStateException    if the maximum number of function
+     *                                      evaluations is exceeded
+     * @throws MathIllegalStateException    if the maximum iteration count is exceeded
+     *                                      or the integrator detects convergence problems otherwise
      * @throws MathIllegalArgumentException if {@code min > max} or the endpoints do not
-     * satisfy the requirements specified by the integrator
-     * @throws NullArgumentException if {@code f} is {@code null}.
+     *                                      satisfy the requirements specified by the integrator
+     * @throws NullArgumentException        if {@code f} is {@code null}.
      */
     double integrate(int maxEval, UnivariateFunction f, double min,
                      double max)
-        throws MathIllegalArgumentException, MathIllegalStateException, NullArgumentException;
+            throws MathIllegalArgumentException, MathIllegalStateException, NullArgumentException;
 
     /**
      * Get the number of function evaluations of the last run of the integrator.

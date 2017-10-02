@@ -5,10 +5,10 @@
 package edu.jas.gbufd;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.List;
 import java.util.Map;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.gb.SolvableReductionAbstract;
 import edu.jas.poly.ExpVector;
@@ -24,12 +24,13 @@ import edu.jas.structure.GcdRingElem;
  * Polynomial pseudo reduction sequential use algorithm. Coefficients of
  * polynomials must not be from a field, i.e. the fraction free reduction is
  * implemented. Implements normalform.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
 
 public class SolvablePseudoReductionSeq<C extends GcdRingElem<C>> extends SolvableReductionAbstract<C>
-                implements SolvablePseudoReduction<C> {
+        implements SolvablePseudoReduction<C> {
 
 
     private static final Logger logger = Logger.getLogger(SolvablePseudoReductionSeq.class);
@@ -47,13 +48,14 @@ public class SolvablePseudoReductionSeq<C extends GcdRingElem<C>> extends Solvab
 
     /**
      * Left normalform.
+     *
      * @param Ap polynomial.
      * @param Pp polynomial list.
      * @return nf(Ap) with respect to Pp.
      */
     @SuppressWarnings("unchecked")
     public GenSolvablePolynomial<C> leftNormalform(List<GenSolvablePolynomial<C>> Pp,
-                    GenSolvablePolynomial<C> Ap) {
+                                                   GenSolvablePolynomial<C> Ap) {
         if (Pp == null || Pp.isEmpty()) {
             return Ap;
         }
@@ -134,14 +136,15 @@ public class SolvablePseudoReductionSeq<C extends GcdRingElem<C>> extends Solvab
 
     /**
      * Left normalform recursive.
+     *
      * @param Ap recursive polynomial.
      * @param Pp recursive polynomial list.
      * @return nf(Ap) with respect to Pp.
      */
-    @SuppressWarnings({ "unchecked" })
+    @SuppressWarnings({"unchecked"})
     public GenSolvablePolynomial<GenPolynomial<C>> leftNormalformRecursive(
-                    List<GenSolvablePolynomial<GenPolynomial<C>>> Pp,
-                    GenSolvablePolynomial<GenPolynomial<C>> Ap) {
+            List<GenSolvablePolynomial<GenPolynomial<C>>> Pp,
+            GenSolvablePolynomial<GenPolynomial<C>> Ap) {
         if (Pp == null || Pp.isEmpty()) {
             return Ap;
         }
@@ -216,9 +219,9 @@ public class SolvablePseudoReductionSeq<C extends GcdRingElem<C>> extends Solvab
                 GenPolynomial<C> ap = a;
                 if (commCoeff) {
                     GenPolynomial<C> c = Q.leadingBaseCoefficient();
-                    if (!c.isConstant() && PolyUtil.<C> baseSparsePseudoRemainder(a, c).isZERO()) {
+                    if (!c.isConstant() && PolyUtil.<C>baseSparsePseudoRemainder(a, c).isZERO()) {
                         //a = a.divide(c);
-                        b = PolyUtil.<C> basePseudoDivide(a, c);
+                        b = PolyUtil.<C>basePseudoDivide(a, c);
                         if (a.equals(b.multiply(c))) {
                             S = S.subtractMultiple(b, Q);
                         } else {
@@ -255,14 +258,15 @@ public class SolvablePseudoReductionSeq<C extends GcdRingElem<C>> extends Solvab
      * divisions are exact. Compute first the multiplication factor
      * <code>m</code> with <code>normalform(Pp,Ap,m)</code>, then call this
      * method with <code>normalform(row,Pp,m*Ap)</code>.
+     *
      * @param row recording matrix, is modified.
-     * @param Pp a polynomial list for reduction.
-     * @param Ap a polynomial.
-     * @return nf(Pp,Ap), the normal form of Ap wrt. Pp.
+     * @param Pp  a polynomial list for reduction.
+     * @param Ap  a polynomial.
+     * @return nf(Pp, Ap), the normal form of Ap wrt. Pp.
      */
     @SuppressWarnings("unchecked")
     public GenSolvablePolynomial<C> leftNormalform(List<GenSolvablePolynomial<C>> row,
-                    List<GenSolvablePolynomial<C>> Pp, GenSolvablePolynomial<C> Ap) {
+                                                   List<GenSolvablePolynomial<C>> Pp, GenSolvablePolynomial<C> Ap) {
         if (Pp == null || Pp.isEmpty()) {
             return Ap;
         }
@@ -355,14 +359,15 @@ public class SolvablePseudoReductionSeq<C extends GcdRingElem<C>> extends Solvab
 
     /**
      * Left normalform with factor.
+     *
      * @param Pp polynomial list.
      * @param Ap polynomial.
-     * @return ( nf(Ap), mf ) with respect to Pp and mf as multiplication factor
-     *         for Ap.
+     * @return (nf(Ap), mf ) with respect to Pp and mf as multiplication factor
+     * for Ap.
      */
     @SuppressWarnings("unchecked")
     public PseudoReductionEntry<C> leftNormalformFactor(List<GenSolvablePolynomial<C>> Pp,
-                    GenSolvablePolynomial<C> Ap) {
+                                                        GenSolvablePolynomial<C> Ap) {
         if (Ap == null) {
             return null;
         }
@@ -453,13 +458,14 @@ public class SolvablePseudoReductionSeq<C extends GcdRingElem<C>> extends Solvab
 
     /**
      * Right normalform.
+     *
      * @param Ap polynomial.
      * @param Pp polynomial list.
-     * @return nf(Ap) with respect to Pp. 
+     * @return nf(Ap) with respect to Pp.
      */
-    @SuppressWarnings({ "unchecked" })
+    @SuppressWarnings({"unchecked"})
     public GenSolvablePolynomial<C> rightNormalform(List<GenSolvablePolynomial<C>> Pp,
-                    GenSolvablePolynomial<C> Ap) {
+                                                    GenSolvablePolynomial<C> Ap) {
         //throw new UnsupportedOperationException();
         if (Pp == null || Pp.isEmpty()) {
             return Ap;
@@ -547,13 +553,14 @@ public class SolvablePseudoReductionSeq<C extends GcdRingElem<C>> extends Solvab
 
     /**
      * Right normalform recursive.
+     *
      * @param Ap recursive polynomial.
      * @param Pp recursive polynomial list.
      * @return nf(Ap) with respect to Pp. <b>Note: </b> not implemented;
      */
     public GenSolvablePolynomial<GenPolynomial<C>> rightNormalformRecursive(
-                    List<GenSolvablePolynomial<GenPolynomial<C>>> Pp,
-                    GenSolvablePolynomial<GenPolynomial<C>> Ap) {
+            List<GenSolvablePolynomial<GenPolynomial<C>>> Pp,
+            GenSolvablePolynomial<GenPolynomial<C>> Ap) {
         if (Pp == null || Ap == null) {
             throw new IllegalArgumentException("Pp or Ap == null not supported");
         }
@@ -566,14 +573,15 @@ public class SolvablePseudoReductionSeq<C extends GcdRingElem<C>> extends Solvab
      * divisions are exact. Compute first the multiplication factor
      * <code>m</code> with <code>normalform(Pp,Ap,m)</code>, then call this
      * method with <code>normalform(row,Pp,m*Ap)</code>.
+     *
      * @param row recording matrix, is modified.
-     * @param Pp a polynomial list for reduction.
-     * @param Ap a polynomial.
-     * @return nf(Pp,Ap), the normal form of Ap wrt. Pp. <b>Note: </b> not
-     *         implemented;
+     * @param Pp  a polynomial list for reduction.
+     * @param Ap  a polynomial.
+     * @return nf(Pp, Ap), the normal form of Ap wrt. Pp. <b>Note: </b> not
+     * implemented;
      */
     public GenSolvablePolynomial<C> rightNormalform(List<GenSolvablePolynomial<C>> row,
-                    List<GenSolvablePolynomial<C>> Pp, GenSolvablePolynomial<C> Ap) {
+                                                    List<GenSolvablePolynomial<C>> Pp, GenSolvablePolynomial<C> Ap) {
         if (row == null || Pp == null || Ap == null) {
             throw new IllegalArgumentException("row, Pp or Ap == null not supported");
         }
@@ -583,13 +591,14 @@ public class SolvablePseudoReductionSeq<C extends GcdRingElem<C>> extends Solvab
 
     /**
      * Right normalform with multiplication factor.
+     *
      * @param Pp polynomial list.
      * @param Ap polynomial.
-     * @return ( nf(Ap), mf ) with respect to Pp and mf as multiplication factor
-     *         for Ap. <b>Note: </b> not implemented;
+     * @return (nf(Ap), mf ) with respect to Pp and mf as multiplication factor
+     * for Ap. <b>Note: </b> not implemented;
      */
     public PseudoReductionEntry<C> rightNormalformFactor(List<GenSolvablePolynomial<C>> Pp,
-                    GenSolvablePolynomial<C> Ap) {
+                                                         GenSolvablePolynomial<C> Ap) {
         if (Pp == null || Ap == null) {
             throw new IllegalArgumentException("Pp or Ap == null not supported");
         }

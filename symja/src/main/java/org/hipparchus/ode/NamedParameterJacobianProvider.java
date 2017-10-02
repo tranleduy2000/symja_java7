@@ -19,27 +19,29 @@ package org.hipparchus.ode;
 import org.hipparchus.exception.MathIllegalArgumentException;
 import org.hipparchus.exception.MathIllegalStateException;
 
-/** Interface to compute exactly Jacobian matrix for some parameter
- *  when computing {@link VariationalEquation partial derivatives equations}.
- *
+/**
+ * Interface to compute exactly Jacobian matrix for some parameter
+ * when computing {@link VariationalEquation partial derivatives equations}.
  */
 public interface NamedParameterJacobianProvider extends Parameterizable {
 
-    /** Compute the Jacobian matrix of ODE with respect to one parameter.
+    /**
+     * Compute the Jacobian matrix of ODE with respect to one parameter.
      * <p>If the parameter does not belong to the collection returned by
      * {@link #getParametersNames()}, the Jacobian will be set to 0,
      * but no errors will be triggered.</p>
-     * @param t current value of the independent <I>time</I> variable
-     * @param y array containing the current value of the main state vector
-     * @param yDot array containing the current value of the time derivative
-     * of the main state vector
+     *
+     * @param t         current value of the independent <I>time</I> variable
+     * @param y         array containing the current value of the main state vector
+     * @param yDot      array containing the current value of the time derivative
+     *                  of the main state vector
      * @param paramName name of the parameter to consider
      * @return Jacobian matrix of the ODE with respect to the parameter
-     * @exception MathIllegalStateException if the number of functions evaluations is exceeded
-     * @exception MathIllegalArgumentException if arrays dimensions do not match equations settings
-     * @exception MathIllegalArgumentException if the parameter is not supported
+     * @throws MathIllegalStateException    if the number of functions evaluations is exceeded
+     * @throws MathIllegalArgumentException if arrays dimensions do not match equations settings
+     * @throws MathIllegalArgumentException if the parameter is not supported
      */
     double[] computeParameterJacobian(double t, double[] y, double[] yDot, String paramName)
-        throws MathIllegalArgumentException, MathIllegalStateException;
+            throws MathIllegalArgumentException, MathIllegalStateException;
 
 }

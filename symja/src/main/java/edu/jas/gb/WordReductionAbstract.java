@@ -5,12 +5,12 @@
 package edu.jas.gb;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.poly.GenWordPolynomial;
 import edu.jas.poly.Overlap;
@@ -22,6 +22,7 @@ import edu.jas.structure.RingElem;
 /**
  * Polynomial word reduction abstract class. Implements common S-Polynomial,
  * normalform, module criterion and irreducible set.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
@@ -44,6 +45,7 @@ public abstract class WordReductionAbstract<C extends RingElem<C>> implements Wo
 
     /**
      * S-Polynomials of non-commutative polynomials.
+     *
      * @param Ap word polynomial.
      * @param Bp word polynomial.
      * @return list of all spol(Ap,Bp) the S-polynomials of Ap and Bp.
@@ -82,18 +84,19 @@ public abstract class WordReductionAbstract<C extends RingElem<C>> implements Wo
 
     /**
      * S-Polynomials of non-commutative polynomials.
-     * @param a leading base coefficient of B.
+     *
+     * @param a  leading base coefficient of B.
      * @param l1 word.
-     * @param A word polynomial.
+     * @param A  word polynomial.
      * @param r1 word.
-     * @param b leading base coefficient of A.
+     * @param b  leading base coefficient of A.
      * @param l2 word.
-     * @param B word polynomial.
+     * @param B  word polynomial.
      * @param r2 word.
      * @return list of all spol(Ap,Bp) the S-polynomials of Ap and Bp.
      */
     public GenWordPolynomial<C> SPolynomial(C a, Word l1, GenWordPolynomial<C> A, Word r1, C b, Word l2,
-                    GenWordPolynomial<C> B, Word r2) {
+                                            GenWordPolynomial<C> B, Word r2) {
         C one = A.ring.coFac.getONE();
         GenWordPolynomial<C> s1 = A.multiply(a, l1, one, r1);
         GenWordPolynomial<C> s2 = B.multiply(b, l2, one, r2);
@@ -104,15 +107,16 @@ public abstract class WordReductionAbstract<C extends RingElem<C>> implements Wo
 
     /**
      * S-Polynomials of non-commutative polynomials.
+     *
      * @param ol Overlap tuple.
-     * @param a leading base coefficient of B.
-     * @param A word polynomial.
-     * @param b leading base coefficient of A.
-     * @param B word polynomial.
+     * @param a  leading base coefficient of B.
+     * @param A  word polynomial.
+     * @param b  leading base coefficient of A.
+     * @param B  word polynomial.
      * @return list of all spol(Ap,Bp) the S-polynomials of Ap and Bp.
      */
     public GenWordPolynomial<C> SPolynomial(Overlap ol, C a, GenWordPolynomial<C> A, C b,
-                    GenWordPolynomial<C> B) {
+                                            GenWordPolynomial<C> B) {
         C one = A.ring.coFac.getONE();
         GenWordPolynomial<C> s1 = A.multiply(a, ol.l1, one, ol.r1);
         GenWordPolynomial<C> s2 = B.multiply(b, ol.l2, one, ol.r2);
@@ -123,6 +127,7 @@ public abstract class WordReductionAbstract<C extends RingElem<C>> implements Wo
 
     /**
      * Normalform Set.
+     *
      * @param Ap polynomial list.
      * @param Pp polynomial list.
      * @return list of nf(a) with respect to Pp for all a in Ap.
@@ -145,6 +150,7 @@ public abstract class WordReductionAbstract<C extends RingElem<C>> implements Wo
 
     /**
      * Is top reducible.
+     *
      * @param A polynomial.
      * @param P polynomial list.
      * @return true if A is top reducible with respect to P.
@@ -170,6 +176,7 @@ public abstract class WordReductionAbstract<C extends RingElem<C>> implements Wo
 
     /**
      * Is reducible.
+     *
      * @param Ap polynomial.
      * @param Pp polynomial list.
      * @return true if Ap is reducible with respect to Pp.
@@ -181,6 +188,7 @@ public abstract class WordReductionAbstract<C extends RingElem<C>> implements Wo
 
     /**
      * Is in Normalform.
+     *
      * @param Ap polynomial.
      * @param Pp polynomial list.
      * @return true if Ap is in normalform with respect to Pp.
@@ -233,6 +241,7 @@ public abstract class WordReductionAbstract<C extends RingElem<C>> implements Wo
 
     /**
      * Is in Normalform.
+     *
      * @param Pp polynomial list.
      * @return true if each Ap in Pp is in normalform with respect to Pp\{Ap}.
      */
@@ -256,9 +265,10 @@ public abstract class WordReductionAbstract<C extends RingElem<C>> implements Wo
 
     /**
      * Irreducible set.
+     *
      * @param Pp polynomial list.
      * @return a list P of monic polynomials which are in normalform wrt. P and
-     *         with ideal(Pp) = ideal(P).
+     * with ideal(Pp) = ideal(P).
      */
     public List<GenWordPolynomial<C>> irreducibleSet(List<GenWordPolynomial<C>> Pp) {
         ArrayList<GenWordPolynomial<C>> P = new ArrayList<GenWordPolynomial<C>>();
@@ -317,15 +327,16 @@ public abstract class WordReductionAbstract<C extends RingElem<C>> implements Wo
 
     /**
      * Is reduction of normal form.
+     *
      * @param lrow left recording matrix.
      * @param rrow right recording matrix.
-     * @param Pp a polynomial list for reduction.
-     * @param Ap a polynomial.
-     * @param Np nf(Pp,Ap), a normal form of Ap wrt. Pp.
+     * @param Pp   a polynomial list for reduction.
+     * @param Ap   a polynomial.
+     * @param Np   nf(Pp,Ap), a normal form of Ap wrt. Pp.
      * @return true, if Np + sum( row[i]*Pp[i] ) == Ap, else false.
      */
     public boolean isReductionNF(List<GenWordPolynomial<C>> lrow, List<GenWordPolynomial<C>> rrow,
-                    List<GenWordPolynomial<C>> Pp, GenWordPolynomial<C> Ap, GenWordPolynomial<C> Np) {
+                                 List<GenWordPolynomial<C>> Pp, GenWordPolynomial<C> Ap, GenWordPolynomial<C> Np) {
         if (lrow == null && rrow == null && Pp == null) {
             if (Ap == null) {
                 return (Np == null);

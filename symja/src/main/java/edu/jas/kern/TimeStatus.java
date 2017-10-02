@@ -10,6 +10,7 @@ import java.util.concurrent.Callable;
 
 /**
  * Run-time status, defines global status and handling for run time limits.
+ *
  * @author Heinz Kredel
  */
 
@@ -49,6 +50,7 @@ public class TimeStatus {
 
     /**
      * isActive.
+     *
      * @return true, if run-time interruption is active, else false.
      */
     public static boolean isActive() {
@@ -99,6 +101,7 @@ public class TimeStatus {
     /**
      * Check for exceeded time, test if time has exceeded and throw an exception
      * if so.
+     *
      * @param msg the message to be send with the exception.
      */
     public static void checkTime(String msg) {

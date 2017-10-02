@@ -16,14 +16,14 @@
  */
 package org.hipparchus.analysis.integration.gauss;
 
-import java.util.Arrays;
-
 import org.hipparchus.analysis.polynomials.PolynomialFunction;
 import org.hipparchus.analysis.polynomials.PolynomialsUtils;
 import org.hipparchus.linear.EigenDecomposition;
 import org.hipparchus.linear.MatrixUtils;
 import org.hipparchus.linear.RealMatrix;
 import org.hipparchus.util.Pair;
+
+import java.util.Arrays;
 
 /**
  * Factory that creates Gauss-type quadrature rule using Laguerre polynomials.
@@ -32,7 +32,9 @@ import org.hipparchus.util.Pair;
  */
 public class LaguerreRuleFactory extends BaseRuleFactory<Double> {
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Pair<Double[], Double[]> computeRule(int numberOfPoints) {
 
@@ -69,11 +71,11 @@ public class LaguerreRuleFactory extends BaseRuleFactory<Double> {
             c.setEntry(i, i, 2 * i + 1);
             if (i + 1 < degree) {
                 // subdiagonal
-                c.setEntry(i+1, i, -(i + 1));
+                c.setEntry(i + 1, i, -(i + 1));
             }
             if (i - 1 >= 0) {
                 // superdiagonal
-                c.setEntry(i-1, i, -i);
+                c.setEntry(i - 1, i, -i);
             }
         }
 

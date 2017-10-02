@@ -7,6 +7,7 @@ package edu.jas.arith;
 
 /**
  * Combinatoric algorithms. Similar to ALDES/SAC2 SACCOMB module.
+ *
  * @author Heinz Kredel
  */
 public class Combinatoric {
@@ -16,6 +17,7 @@ public class Combinatoric {
      * Integer binomial coefficient induction. n and k are integers with 0
      * less than or equal to k less than or equal to n. A is the binomial
      * coefficient n over k. B is the binomial coefficient n over k+1.
+     *
      * @param A previous induction result.
      * @param n long.
      * @param k long.
@@ -34,6 +36,7 @@ public class Combinatoric {
      * Integer binomial coefficient. n and k are integers with 0 less than
      * or equal to k less than or equal to n. A is the binomial coefficient n
      * over k.
+     *
      * @param n long.
      * @param k long.
      * @return the binomial coefficient n over k+1.
@@ -51,6 +54,7 @@ public class Combinatoric {
     /**
      * Integer binomial coefficient partial sum. n and k are integers, 0 le k le
      * n. A is the sum on i, from 0 to k, of the binomial coefficient n over i.
+     *
      * @param n long.
      * @param k long.
      * @return the binomial coefficient partial sum n over i.
@@ -69,6 +73,7 @@ public class Combinatoric {
 
     /**
      * Factorial.
+     *
      * @param n integer.
      * @return n!, with 0! = 1.
      */

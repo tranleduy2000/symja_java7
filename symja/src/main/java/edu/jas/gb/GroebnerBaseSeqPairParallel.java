@@ -5,13 +5,13 @@
 package edu.jas.gb;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.concurrent.Semaphore;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.poly.ExpVector;
 import edu.jas.poly.GenPolynomial;
@@ -25,6 +25,7 @@ import edu.jas.util.ThreadPool;
  * sequence of critical pairs as in the sequential version. However already
  * reduced pairs are not rereduced if new polynomials appear. Implements a
  * shared memory parallel version of Groebner bases. Slaves maintain pairlist.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
@@ -57,6 +58,7 @@ public class GroebnerBaseSeqPairParallel<C extends RingElem<C>> extends Groebner
 
     /**
      * Constructor.
+     *
      * @param threads number of threads to use.
      */
     public GroebnerBaseSeqPairParallel(int threads) {
@@ -66,8 +68,9 @@ public class GroebnerBaseSeqPairParallel<C extends RingElem<C>> extends Groebner
 
     /**
      * Constructor.
+     *
      * @param threads number of threads to use.
-     * @param pool ThreadPool to use.
+     * @param pool    ThreadPool to use.
      */
     public GroebnerBaseSeqPairParallel(int threads, ThreadPool pool) {
         this(threads, pool, new ReductionPar<C>());
@@ -76,8 +79,9 @@ public class GroebnerBaseSeqPairParallel<C extends RingElem<C>> extends Groebner
 
     /**
      * Constructor.
+     *
      * @param threads number of threads to use.
-     * @param red parallelism aware reduction engine
+     * @param red     parallelism aware reduction engine
      */
     public GroebnerBaseSeqPairParallel(int threads, Reduction<C> red) {
         this(threads, new ThreadPool(threads), red);
@@ -86,9 +90,10 @@ public class GroebnerBaseSeqPairParallel<C extends RingElem<C>> extends Groebner
 
     /**
      * Constructor.
+     *
      * @param threads number of threads to use.
-     * @param pool ThreadPool to use.
-     * @param red parallelism aware reduction engine
+     * @param pool    ThreadPool to use.
+     * @param red     parallelism aware reduction engine
      */
     public GroebnerBaseSeqPairParallel(int threads, ThreadPool pool, Reduction<C> red) {
         super(red);
@@ -131,8 +136,9 @@ public class GroebnerBaseSeqPairParallel<C extends RingElem<C>> extends Groebner
     /**
      * Parallel Groebner base using sequential pair order class. Slaves maintain
      * pairlist.
+     *
      * @param modv number of module variables.
-     * @param F polynomial list.
+     * @param F    polynomial list.
      * @return GB(F) a Groebner base of F.
      */
     public List<GenPolynomial<C>> GB(int modv, List<GenPolynomial<C>> F) {
@@ -187,6 +193,7 @@ public class GroebnerBaseSeqPairParallel<C extends RingElem<C>> extends Groebner
 
     /**
      * Minimal ordered groebner basis, parallel.
+     *
      * @param Fp a Groebner base.
      * @return minimalGB(F) a minimal Groebner base of Fp.
      */
@@ -275,19 +282,11 @@ public class GroebnerBaseSeqPairParallel<C extends RingElem<C>> extends Groebner
 class ReducerSeqPair<C extends RingElem<C>> implements Runnable {
 
 
-    private final List<GenPolynomial<C>> G;
-
-
-    private final CriticalPairList<C> pairlist;
-
-
-    private final Terminator fin;
-
-
-    private final ReductionPar<C> red;
-
-
     private static final Logger logger = Logger.getLogger(ReducerSeqPair.class);
+    private final List<GenPolynomial<C>> G;
+    private final CriticalPairList<C> pairlist;
+    private final Terminator fin;
+    private final ReductionPar<C> red;
 
 
     ReducerSeqPair(Terminator fin, List<GenPolynomial<C>> G, CriticalPairList<C> L) {
@@ -413,19 +412,13 @@ class ReducerSeqPair<C extends RingElem<C>> implements Runnable {
 class MiReducerSeqPair<C extends RingElem<C>> implements Runnable {
 
 
+    private static final Logger logger = Logger.getLogger(MiReducerSeqPair.class);
     private final List<GenPolynomial<C>> G;
-
-
-    private GenPolynomial<C> H;
-
-
     private final ReductionPar<C> red;
 
 
     private final Semaphore done = new Semaphore(0);
-
-
-    private static final Logger logger = Logger.getLogger(MiReducerSeqPair.class);
+    private GenPolynomial<C> H;
 
 
     MiReducerSeqPair(List<GenPolynomial<C>> G, GenPolynomial<C> p) {
@@ -446,6 +439,7 @@ class MiReducerSeqPair<C extends RingElem<C>> implements Runnable {
 
     /**
      * getNF. Blocks until the normal form is computed.
+     *
      * @return the computed normal form.
      */
     public GenPolynomial<C> getNF() {

@@ -1,5 +1,7 @@
 package org.matheclipse.core.expression;
 
+import org.matheclipse.core.interfaces.ISymbol;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
@@ -7,89 +9,84 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.matheclipse.core.interfaces.ISymbol;
-
 public class Context implements Serializable {
 
-	private static final long serialVersionUID = 8656114325955206899L;
+    /**
+     * The map for predefined (context &quot;System&quot;) symbols
+     */
+    public final static Map<String, ISymbol> PREDEFINED_SYMBOLS_MAP = new HashMap<String, ISymbol>(997);
+    public final static Context SYSTEM = new Context("System", PREDEFINED_SYMBOLS_MAP);
+    private static final long serialVersionUID = 8656114325955206899L;
+    private String contextName;
 
-	/**
-	 * The map for predefined (context &quot;System&quot;) symbols
-	 */
-	public final static Map<String, ISymbol> PREDEFINED_SYMBOLS_MAP = new HashMap<String, ISymbol>(997);
+    private Map<String, ISymbol> symbolTable;
 
-	public final static Context SYSTEM = new Context("System", PREDEFINED_SYMBOLS_MAP);
+    public Context(String contextName) {
+        this(contextName, new HashMap<String, ISymbol>());
+    }
 
-	private String contextName;
+    private Context(String contextName, Map<String, ISymbol> symbolTable) {
+        this.symbolTable = symbolTable;
+        this.contextName = contextName;
+    }
 
-	private Map<String, ISymbol> symbolTable;
+    public Set<Entry<String, ISymbol>> entrySet() {
+        return symbolTable.entrySet();
+    }
 
-	public Context(String contextName) {
-		this(contextName, new HashMap<String, ISymbol>());
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj instanceof Context) {
+            return contextName.equals(((Context) obj).contextName);
+        }
+        return false;
+    }
 
-	private Context(String contextName, Map<String, ISymbol> symbolTable) {
-		this.symbolTable = symbolTable;
-		this.contextName = contextName;
-	}
+    public ISymbol get(Object key) {
+        return symbolTable.get(key);
+    }
 
-	public Set<Entry<String, ISymbol>> entrySet() {
-		return symbolTable.entrySet();
-	}
+    public String getContextName() {
+        return contextName;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj instanceof Context) {
-			return contextName.equals(((Context) obj).contextName);
-		}
-		return false;
-	}
+    @Override
+    public int hashCode() {
+        return contextName.hashCode();
+    }
 
-	public ISymbol get(Object key) {
-		return symbolTable.get(key);
-	}
+    public ISymbol put(String key, ISymbol value) {
+        return symbolTable.put(key, value);
+    }
 
-	public String getContextName() {
-		return contextName;
-	}
+    private void readObject(java.io.ObjectInputStream stream) throws IOException, ClassNotFoundException {
+        contextName = stream.readUTF();
+        symbolTable = (Map<String, ISymbol>) stream.readObject();
+    }
 
-	@Override
-	public int hashCode() {
-		return contextName.hashCode();
-	}
+    // public Object readResolve() throws ObjectStreamException {
+    // Context context = EvalEngine.get().getContextPath().getContext(contextName);
+    // return context;
+    // }
 
-	public ISymbol put(String key, ISymbol value) {
-		return symbolTable.put(key, value);
-	}
+    public ISymbol remove(String key) {
+        return symbolTable.remove(key);
+    }
 
-	private void readObject(java.io.ObjectInputStream stream) throws IOException, ClassNotFoundException {
-		contextName = stream.readUTF();
-		symbolTable = (Map<String, ISymbol>) stream.readObject();
-	}
+    public int size() {
+        return symbolTable.size();
+    }
 
-	// public Object readResolve() throws ObjectStreamException {
-	// Context context = EvalEngine.get().getContextPath().getContext(contextName);
-	// return context;
-	// }
+    @Override
+    public String toString() {
+        return contextName;
+    }
 
-	public ISymbol remove(String key) {
-		return symbolTable.remove(key);
-	}
-
-	public int size() {
-		return symbolTable.size();
-	}
-
-	@Override
-	public String toString() {
-		return contextName;
-	}
-
-	private void writeObject(java.io.ObjectOutputStream stream) throws java.io.IOException {
-		stream.writeUTF(contextName);
-		stream.writeObject(symbolTable);
-	}
+    private void writeObject(java.io.ObjectOutputStream stream) throws java.io.IOException {
+        stream.writeUTF(contextName);
+        stream.writeObject(symbolTable);
+    }
 }

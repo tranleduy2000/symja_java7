@@ -21,7 +21,6 @@ import java.util.Locale;
 
 /**
  * Interface for localizable strings.
- *
  */
 public interface Localizable extends Serializable {
     /**

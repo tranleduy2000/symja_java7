@@ -30,58 +30,61 @@ import org.hipparchus.util.FastMath;
  * Romberg integration employs k successive refinements of the trapezoid
  * rule to remove error terms less than order O(N^(-2k)). Simpson's rule
  * is a special case of k = 2.</p>
- *
  */
 public class RombergIntegrator extends BaseAbstractUnivariateIntegrator {
 
-    /** Maximal number of iterations for Romberg. */
+    /**
+     * Maximal number of iterations for Romberg.
+     */
     public static final int ROMBERG_MAX_ITERATIONS_COUNT = 32;
 
     /**
      * Build a Romberg integrator with given accuracies and iterations counts.
-     * @param relativeAccuracy relative accuracy of the result
-     * @param absoluteAccuracy absolute accuracy of the result
+     *
+     * @param relativeAccuracy      relative accuracy of the result
+     * @param absoluteAccuracy      absolute accuracy of the result
      * @param minimalIterationCount minimum number of iterations
      * @param maximalIterationCount maximum number of iterations
-     * (must be less than or equal to {@link #ROMBERG_MAX_ITERATIONS_COUNT})
-     * @exception MathIllegalArgumentException if minimal number of iterations
-     * is not strictly positive
-     * @exception MathIllegalArgumentException if maximal number of iterations
-     * is lesser than or equal to the minimal number of iterations
-     * @exception MathIllegalArgumentException if maximal number of iterations
-     * is greater than {@link #ROMBERG_MAX_ITERATIONS_COUNT}
+     *                              (must be less than or equal to {@link #ROMBERG_MAX_ITERATIONS_COUNT})
+     * @throws MathIllegalArgumentException if minimal number of iterations
+     *                                      is not strictly positive
+     * @throws MathIllegalArgumentException if maximal number of iterations
+     *                                      is lesser than or equal to the minimal number of iterations
+     * @throws MathIllegalArgumentException if maximal number of iterations
+     *                                      is greater than {@link #ROMBERG_MAX_ITERATIONS_COUNT}
      */
     public RombergIntegrator(final double relativeAccuracy,
                              final double absoluteAccuracy,
                              final int minimalIterationCount,
                              final int maximalIterationCount)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         super(relativeAccuracy, absoluteAccuracy, minimalIterationCount, maximalIterationCount);
         if (maximalIterationCount > ROMBERG_MAX_ITERATIONS_COUNT) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.NUMBER_TOO_LARGE_BOUND_EXCLUDED,
-                                                   maximalIterationCount, ROMBERG_MAX_ITERATIONS_COUNT);
+                    maximalIterationCount, ROMBERG_MAX_ITERATIONS_COUNT);
         }
     }
 
     /**
      * Build a Romberg integrator with given iteration counts.
+     *
      * @param minimalIterationCount minimum number of iterations
      * @param maximalIterationCount maximum number of iterations
-     * (must be less than or equal to {@link #ROMBERG_MAX_ITERATIONS_COUNT})
-     * @exception MathIllegalArgumentException if minimal number of iterations
-     * is not strictly positive
-     * @exception MathIllegalArgumentException if maximal number of iterations
-     * is lesser than or equal to the minimal number of iterations
-     * @exception MathIllegalArgumentException if maximal number of iterations
-     * is greater than {@link #ROMBERG_MAX_ITERATIONS_COUNT}
+     *                              (must be less than or equal to {@link #ROMBERG_MAX_ITERATIONS_COUNT})
+     * @throws MathIllegalArgumentException if minimal number of iterations
+     *                                      is not strictly positive
+     * @throws MathIllegalArgumentException if maximal number of iterations
+     *                                      is lesser than or equal to the minimal number of iterations
+     * @throws MathIllegalArgumentException if maximal number of iterations
+     *                                      is greater than {@link #ROMBERG_MAX_ITERATIONS_COUNT}
      */
     public RombergIntegrator(final int minimalIterationCount,
                              final int maximalIterationCount)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         super(minimalIterationCount, maximalIterationCount);
         if (maximalIterationCount > ROMBERG_MAX_ITERATIONS_COUNT) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.NUMBER_TOO_LARGE_BOUND_EXCLUDED,
-                                                   maximalIterationCount, ROMBERG_MAX_ITERATIONS_COUNT);
+                    maximalIterationCount, ROMBERG_MAX_ITERATIONS_COUNT);
         }
     }
 
@@ -93,14 +96,16 @@ public class RombergIntegrator extends BaseAbstractUnivariateIntegrator {
         super(DEFAULT_MIN_ITERATIONS_COUNT, ROMBERG_MAX_ITERATIONS_COUNT);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected double doIntegrate()
-        throws MathIllegalStateException {
+            throws MathIllegalStateException {
 
         final int m = iterations.getMaximalCount() + 1;
         double previousRow[] = new double[m];
-        double currentRow[]  = new double[m];
+        double currentRow[] = new double[m];
 
         TrapezoidIntegrator qtrap = new TrapezoidIntegrator();
         currentRow[0] = qtrap.stage(this, 0);
@@ -125,7 +130,7 @@ public class RombergIntegrator extends BaseAbstractUnivariateIntegrator {
             }
             final double s = currentRow[i];
             if (i >= getMinimalIterationCount()) {
-                final double delta  = FastMath.abs(s - olds);
+                final double delta = FastMath.abs(s - olds);
                 final double rLimit = getRelativeAccuracy() * (FastMath.abs(olds) + FastMath.abs(s)) * 0.5;
                 if ((delta <= rLimit) || (delta <= getAbsoluteAccuracy())) {
                     return s;

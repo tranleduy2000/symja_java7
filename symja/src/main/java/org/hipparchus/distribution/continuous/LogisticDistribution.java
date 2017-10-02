@@ -29,26 +29,32 @@ import org.hipparchus.util.MathUtils;
  */
 public class LogisticDistribution extends AbstractRealDistribution {
 
-    /** Serializable version identifier. */
+    /**
+     * Serializable version identifier.
+     */
     private static final long serialVersionUID = 20141003L;
 
-    /** The location parameter. */
+    /**
+     * The location parameter.
+     */
     private final double mu;
-    /** The scale parameter. */
+    /**
+     * The scale parameter.
+     */
     private final double s;
 
     /**
      * Build a new instance.
      *
      * @param mu location parameter
-     * @param s scale parameter (must be positive)
+     * @param s  scale parameter (must be positive)
      * @throws MathIllegalArgumentException if {@code beta <= 0}
      */
     public LogisticDistribution(double mu, double s)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         if (s <= 0.0) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.NOT_POSITIVE_SCALE,
-                                                   s);
+                    s);
         }
 
         this.mu = mu;
@@ -73,7 +79,9 @@ public class LogisticDistribution extends AbstractRealDistribution {
         return s;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double density(double x) {
         double z = (x - mu) / s;
@@ -81,14 +89,18 @@ public class LogisticDistribution extends AbstractRealDistribution {
         return 1 / s * v / ((1.0 + v) * (1.0 + v));
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double cumulativeProbability(double x) {
         double z = 1 / s * (x - mu);
         return 1.0 / (1.0 + FastMath.exp(-z));
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double inverseCumulativeProbability(double p) throws MathIllegalArgumentException {
         MathUtils.checkRangeInclusive(p, 0, 1);
@@ -101,31 +113,41 @@ public class LogisticDistribution extends AbstractRealDistribution {
         return s * Math.log(p / (1.0 - p)) + mu;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getNumericalMean() {
         return mu;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getNumericalVariance() {
         return (MathUtils.PI_SQUARED / 3.0) * (1.0 / (s * s));
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getSupportLowerBound() {
         return Double.NEGATIVE_INFINITY;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getSupportUpperBound() {
         return Double.POSITIVE_INFINITY;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isSupportConnected() {
         return true;

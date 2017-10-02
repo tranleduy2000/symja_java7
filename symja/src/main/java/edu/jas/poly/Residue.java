@@ -15,6 +15,7 @@ import edu.jas.structure.RingElem;
 /**
  * Residue element based on RingElem residue. Objects of this class are (nearly)
  * immutable.
+ *
  * @author Heinz Kredel
  */
 public class Residue<C extends RingElem<C>> implements RingElem<Residue<C>> {
@@ -47,6 +48,7 @@ public class Residue<C extends RingElem<C>> implements RingElem<Residue<C>> {
 
     /**
      * The constructor creates a Residue object from a ring factory.
+     *
      * @param r ring factory.
      */
     public Residue(ResidueRing<C> r) {
@@ -57,6 +59,7 @@ public class Residue<C extends RingElem<C>> implements RingElem<Residue<C>> {
     /**
      * The constructor creates a Residue object from a ring factory and a ring
      * element.
+     *
      * @param r ring factory.
      * @param a ring element.
      */
@@ -68,6 +71,7 @@ public class Residue<C extends RingElem<C>> implements RingElem<Residue<C>> {
     /**
      * The constructor creates a Residue object from a ring factory, a ring
      * element and an indicator if a is a unit.
+     *
      * @param r ring factory.
      * @param a ring element.
      * @param u isunit indicator, -1, 0, 1.
@@ -98,6 +102,7 @@ public class Residue<C extends RingElem<C>> implements RingElem<Residue<C>> {
 
     /**
      * Get the corresponding element factory.
+     *
      * @return factory for this Element.
      * @see edu.jas.structure.Element#factory()
      */
@@ -108,6 +113,7 @@ public class Residue<C extends RingElem<C>> implements RingElem<Residue<C>> {
 
     /**
      * Copy this.
+     *
      * @see edu.jas.structure.Element#copy()
      */
     @Override
@@ -118,6 +124,7 @@ public class Residue<C extends RingElem<C>> implements RingElem<Residue<C>> {
 
     /**
      * Is Residue zero.
+     *
      * @return If this is 0 then true is returned, else false.
      * @see edu.jas.structure.RingElem#isZERO()
      */
@@ -128,6 +135,7 @@ public class Residue<C extends RingElem<C>> implements RingElem<Residue<C>> {
 
     /**
      * Is Residue one.
+     *
      * @return If this is 1 then true is returned, else false.
      * @see edu.jas.structure.RingElem#isONE()
      */
@@ -138,6 +146,7 @@ public class Residue<C extends RingElem<C>> implements RingElem<Residue<C>> {
 
     /**
      * Is Residue unit.
+     *
      * @return If this is a unit then true is returned, else false.
      * @see edu.jas.structure.RingElem#isUnit()
      */
@@ -173,6 +182,7 @@ public class Residue<C extends RingElem<C>> implements RingElem<Residue<C>> {
 
     /**
      * Get the String representation as RingElem.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -183,6 +193,7 @@ public class Residue<C extends RingElem<C>> implements RingElem<Residue<C>> {
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this Element.
      * @see edu.jas.structure.Element#toScript()
      */
@@ -195,6 +206,7 @@ public class Residue<C extends RingElem<C>> implements RingElem<Residue<C>> {
 
     /**
      * Get a scripting compatible string representation of the factory.
+     *
      * @return script compatible representation for this ElemFactory.
      * @see edu.jas.structure.Element#toScriptFactory()
      */
@@ -207,9 +219,10 @@ public class Residue<C extends RingElem<C>> implements RingElem<Residue<C>> {
 
     /**
      * Residue comparison.
+     *
      * @param b Residue.
      * @return sign(this-b), 0 means that this and b are equivalent in this
-     *         residue class ring.
+     * residue class ring.
      */
     @Override
     public int compareTo(Residue<C> b) {
@@ -223,9 +236,10 @@ public class Residue<C extends RingElem<C>> implements RingElem<Residue<C>> {
 
     /**
      * Comparison with any other object.
-     * @see java.lang.Object#equals(java.lang.Object)
+     *
      * @return true means that this and b are equivalent in this residue class
-     *         ring.
+     * ring.
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -243,6 +257,7 @@ public class Residue<C extends RingElem<C>> implements RingElem<Residue<C>> {
 
     /**
      * Hash code for this local.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -256,6 +271,7 @@ public class Residue<C extends RingElem<C>> implements RingElem<Residue<C>> {
 
     /**
      * Residue absolute value.
+     *
      * @return the absolute value of this.
      * @see edu.jas.structure.RingElem#abs()
      */
@@ -266,6 +282,7 @@ public class Residue<C extends RingElem<C>> implements RingElem<Residue<C>> {
 
     /**
      * Residue summation.
+     *
      * @param S Residue.
      * @return this+S.
      */
@@ -276,6 +293,7 @@ public class Residue<C extends RingElem<C>> implements RingElem<Residue<C>> {
 
     /**
      * Residue negate.
+     *
      * @return -this.
      * @see edu.jas.structure.RingElem#negate()
      */
@@ -286,8 +304,9 @@ public class Residue<C extends RingElem<C>> implements RingElem<Residue<C>> {
 
     /**
      * Residue signum.
-     * @see edu.jas.structure.RingElem#signum()
+     *
      * @return signum(this).
+     * @see edu.jas.structure.RingElem#signum()
      */
     public int signum() {
         return val.signum();
@@ -296,6 +315,7 @@ public class Residue<C extends RingElem<C>> implements RingElem<Residue<C>> {
 
     /**
      * Residue subtraction.
+     *
      * @param S Residue.
      * @return this-S.
      */
@@ -306,6 +326,7 @@ public class Residue<C extends RingElem<C>> implements RingElem<Residue<C>> {
 
     /**
      * Residue division.
+     *
      * @param S Residue.
      * @return this/S.
      */
@@ -316,8 +337,9 @@ public class Residue<C extends RingElem<C>> implements RingElem<Residue<C>> {
 
     /**
      * Residue inverse.
-     * @see edu.jas.structure.RingElem#inverse()
+     *
      * @return S with S = 1/this if defined.
+     * @see edu.jas.structure.RingElem#inverse()
      */
     @SuppressWarnings("unchecked")
     public Residue<C> inverse() {
@@ -350,6 +372,7 @@ public class Residue<C extends RingElem<C>> implements RingElem<Residue<C>> {
 
     /**
      * Residue remainder.
+     *
      * @param S Residue.
      * @return this - (this/S)*S.
      */
@@ -361,16 +384,18 @@ public class Residue<C extends RingElem<C>> implements RingElem<Residue<C>> {
 
     /**
      * Quotient and remainder by division of this by S.
+     *
      * @param S a Residue
      * @return [this/S, this - (this/S)*S].
      */
     public Residue<C>[] quotientRemainder(Residue<C> S) {
-        return new Residue[] { divide(S), remainder(S) };
+        return new Residue[]{divide(S), remainder(S)};
     }
 
 
     /**
      * Residue multiplication.
+     *
      * @param S Residue.
      * @return this*S.
      */
@@ -382,8 +407,9 @@ public class Residue<C extends RingElem<C>> implements RingElem<Residue<C>> {
     /**
      * Greatest common divisor. <b>Note: </b>Not implemented, throws
      * UnsupportedOperationException.
+     *
      * @param b other element.
-     * @return gcd(this,b).
+     * @return gcd(this, b).
      */
     public Residue<C> gcd(Residue<C> b) {
         throw new UnsupportedOperationException("gcd not implemented " + this.getClass().getName());
@@ -393,6 +419,7 @@ public class Residue<C extends RingElem<C>> implements RingElem<Residue<C>> {
     /**
      * Extended greatest common divisor. <b>Note: </b>Not implemented, throws
      * UnsupportedOperationException.
+     *
      * @param b other element.
      * @return [ gcd(this,b), c1, c2 ] with c1*this + c2*b = gcd(this,b).
      */

@@ -5,8 +5,6 @@
 package edu.jas.util;
 
 
-
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -17,6 +15,7 @@ import java.util.NoSuchElementException;
 /**
  * Cartesian product of infinite components with iterator. Works also for finite
  * iterables.
+ *
  * @author Heinz Kredel
  */
 public class CartesianProductInfinite<E> implements Iterable<List<E>> {
@@ -30,6 +29,7 @@ public class CartesianProductInfinite<E> implements Iterable<List<E>> {
 
     /**
      * CartesianProduct constructor.
+     *
      * @param comps components of the Cartesian product.
      */
     public CartesianProductInfinite(List<Iterable<E>> comps) {
@@ -42,6 +42,7 @@ public class CartesianProductInfinite<E> implements Iterable<List<E>> {
 
     /**
      * Get an iterator over subsets.
+     *
      * @return an iterator.
      */
     public Iterator<List<E>> iterator() {
@@ -63,6 +64,7 @@ public class CartesianProductInfinite<E> implements Iterable<List<E>> {
 
 /**
  * Cartesian product infinite iterator, one factor.
+ *
  * @author Heinz Kredel
  */
 class CartesianOneProductInfiniteIterator<E> implements Iterator<List<E>> {
@@ -76,6 +78,7 @@ class CartesianOneProductInfiniteIterator<E> implements Iterator<List<E>> {
 
     /**
      * CartesianProduct iterator constructor.
+     *
      * @param comps components of the cartesian product.
      */
     public CartesianOneProductInfiniteIterator(Iterable<E> comps) {
@@ -88,6 +91,7 @@ class CartesianOneProductInfiniteIterator<E> implements Iterator<List<E>> {
 
     /**
      * Test for availability of a next tuple.
+     *
      * @return true if the iteration has more tuples, else false.
      */
     public synchronized boolean hasNext() {
@@ -97,6 +101,7 @@ class CartesianOneProductInfiniteIterator<E> implements Iterator<List<E>> {
 
     /**
      * Get next tuple.
+     *
      * @return next tuple.
      */
     public synchronized List<E> next() {
@@ -118,6 +123,7 @@ class CartesianOneProductInfiniteIterator<E> implements Iterator<List<E>> {
 
 /**
  * Cartesian product infinite iterator, two factors.
+ *
  * @author Heinz Kredel
  */
 class CartesianTwoProductInfiniteIterator<E> implements Iterator<List<E>> {
@@ -155,6 +161,7 @@ class CartesianTwoProductInfiniteIterator<E> implements Iterator<List<E>> {
 
     /**
      * CartesianProduct iterator constructor.
+     *
      * @param comps components of the Cartesian product.
      */
     public CartesianTwoProductInfiniteIterator(Iterable<E> comps0, Iterable<E> comps1) {
@@ -189,6 +196,7 @@ class CartesianTwoProductInfiniteIterator<E> implements Iterator<List<E>> {
 
     /**
      * Test for availability of a next tuple.
+     *
      * @return true if the iteration has more tuples, else false.
      */
     public synchronized boolean hasNext() {
@@ -198,6 +206,7 @@ class CartesianTwoProductInfiniteIterator<E> implements Iterator<List<E>> {
 
     /**
      * Get next tuple.
+     *
      * @return next tuple.
      */
     public synchronized List<E> next() {
@@ -256,6 +265,7 @@ class CartesianTwoProductInfiniteIterator<E> implements Iterator<List<E>> {
 
 /**
  * Cartesian product infinite iterator, two factors list version.
+ *
  * @author Heinz Kredel
  */
 class CartesianTwoProductInfiniteIteratorList<E> implements Iterator<List<E>> {
@@ -293,6 +303,7 @@ class CartesianTwoProductInfiniteIteratorList<E> implements Iterator<List<E>> {
 
     /**
      * CartesianProduct iterator constructor.
+     *
      * @param comps components of the Cartesian product.
      */
     public CartesianTwoProductInfiniteIteratorList(Iterable<List<E>> comps0, Iterable<List<E>> comps1) {
@@ -327,6 +338,7 @@ class CartesianTwoProductInfiniteIteratorList<E> implements Iterator<List<E>> {
 
     /**
      * Test for availability of a next tuple.
+     *
      * @return true if the iteration has more tuples, else false.
      */
     public synchronized boolean hasNext() {
@@ -336,6 +348,7 @@ class CartesianTwoProductInfiniteIteratorList<E> implements Iterator<List<E>> {
 
     /**
      * Get next tuple.
+     *
      * @return next tuple.
      */
     public synchronized List<E> next() {

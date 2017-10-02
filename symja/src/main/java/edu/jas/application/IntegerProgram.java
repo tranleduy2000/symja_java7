@@ -5,12 +5,12 @@
 package edu.jas.application;
 
 
+import org.apache.log4j.Logger;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.Arrays;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.arith.BigInteger;
 import edu.jas.poly.ExpVector;
@@ -24,8 +24,9 @@ import edu.jas.poly.TermOrder;
 /**
  * Solution of Integer Programming problems using Groebner bases. Integer
  * Program is in standard form -&gt; minimization of given Equation plus
- * restrictions. See chapter 8 in Cox, Little, O'Shea "Using Algebraic 
+ * restrictions. See chapter 8 in Cox, Little, O'Shea "Using Algebraic
  * Geometry", 1998.
+ *
  * @author Maximilian Nohr
  */
 public class IntegerProgram implements java.io.Serializable {
@@ -35,52 +36,24 @@ public class IntegerProgram implements java.io.Serializable {
 
 
     private static boolean DEBUG = logger.isDebugEnabled(); //false;
-
-
-    private boolean negVars;
-
-
-    private boolean success;
-
-
-    /* 
-    Integer Program is in standard form -&gt; minimization of given 
+    /*
+    Integer Program is in standard form -&gt; minimization of given
     Equation + restrictions
     */
     int n; // # of variables including slack variables
-
-
     int m; // # of restrictions
-
-
     long[] C; // List of Coefficients c_1...c_n of objective function
-
-
-    long[] B; // List of  b_1...b_m, restriction right hand side  
-
-
+    long[] B; // List of  b_1...b_m, restriction right hand side
     long[][] A; // m x n Matrix of a_{11}....a_{mn}, restriction matrix
-
-
     long[] D; // Polynomial degrees 1...n
-
-
     long[][] Aa; // restriction matrix a_{11}..a_{mn} after Laurent transformation
-
-
     Ideal<BigInteger> I; //the Ideal
-
-
     Ideal<BigInteger> GB; // the Groebner base for the ideal
-
-
     TermOrder to; // the Term order for the GB
-
-
     PolynomialList<BigInteger> F; // The Polynomials that generate the Ideal
-
-
     GenPolynomial<BigInteger> S; // The Polynomial that is reduced for the Solution
+    private boolean negVars;
+    private boolean success;
 
 
     /**
@@ -93,6 +66,7 @@ public class IntegerProgram implements java.io.Serializable {
 
     /**
      * Set DEBUG flag to parameter value.
+     *
      * @param b
      */
     public void setDebug(boolean b) {
@@ -242,11 +216,12 @@ public class IntegerProgram implements java.io.Serializable {
 
     /**
      * Solve Integer Program.
+     *
      * @param A matrix of restrictions
      * @param B restrictions right hand side
      * @param C objective function
      * @return solution s, such that s*C -&gt; minimal and A*s = B, or s = null
-     *         if no solution exists
+     * if no solution exists
      */
     public long[] solve(long[][] A, long[] B, long[] C) {
         this.A = Arrays.copyOf(A, A.length);
@@ -265,9 +240,10 @@ public class IntegerProgram implements java.io.Serializable {
     /**
      * Solve Integer Program for new right hand side. Uses the GB (matrix A and
      * C) from the last calculation.
+     *
      * @param B restrictions right hand side
      * @return solution s, such that s*C -&gt; minimal and A*s = B, or s = null
-     *         if no solution exists
+     * if no solution exists
      */
     public long[] solve(long[] B) {
         long[] returnMe = new long[n];
@@ -376,7 +352,7 @@ public class IntegerProgram implements java.io.Serializable {
                 }
             }
         }
-        long[][] wv = { u1, u2 };
+        long[][] wv = {u1, u2};
         to = new TermOrder(wv);
     }
 
@@ -423,7 +399,7 @@ public class IntegerProgram implements java.io.Serializable {
                     } else if (A[i][j] != 1) {
                         sb.append(A[i][j]);
                         sb.append("*");
-                    } 
+                    }
                     sb.append(c);
                     sb.append(" + ");
                     plus = true;
@@ -431,7 +407,7 @@ public class IntegerProgram implements java.io.Serializable {
                 c++;
             }
             if (plus) {
-                sb.delete(sb.lastIndexOf("+"), sb.length()); 
+                sb.delete(sb.lastIndexOf("+"), sb.length());
             } else {
                 sb.append("0 ");
             }

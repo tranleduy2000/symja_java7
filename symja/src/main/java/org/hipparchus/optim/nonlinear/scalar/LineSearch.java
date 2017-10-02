@@ -29,7 +29,6 @@ import org.hipparchus.optim.univariate.UnivariatePointValuePair;
 /**
  * Class for finding the minimum of the objective function along a given
  * direction.
- *
  */
 public class LineSearch {
     /**
@@ -70,20 +69,20 @@ public class LineSearch {
      * arguments are thus passed to a {@link SimpleUnivariateValueChecker
      * custom checker} that will use the function values.
      *
-     * @param optimizer Optimizer on behalf of which the line search
-     * be performed.
-     * Its {@link MultivariateOptimizer#computeObjectiveValue(double[])
-     * computeObjectiveValue} method will be called by the
-     * {@link #search(double[],double[]) search} method.
-     * @param relativeTolerance Search will stop when the function relative
-     * difference between successive iterations is below this value.
-     * @param absoluteTolerance Search will stop when the function absolute
-     * difference between successive iterations is below this value.
+     * @param optimizer              Optimizer on behalf of which the line search
+     *                               be performed.
+     *                               Its {@link MultivariateOptimizer#computeObjectiveValue(double[])
+     *                               computeObjectiveValue} method will be called by the
+     *                               {@link #search(double[], double[]) search} method.
+     * @param relativeTolerance      Search will stop when the function relative
+     *                               difference between successive iterations is below this value.
+     * @param absoluteTolerance      Search will stop when the function absolute
+     *                               difference between successive iterations is below this value.
      * @param initialBracketingRange Extent of the initial interval used to
-     * find an interval that brackets the optimum.
-     * If the optimized function varies a lot in the vicinity of the optimum,
-     * it may be necessary to provide a value lower than the distance between
-     * successive local minima.
+     *                               find an interval that brackets the optimum.
+     *                               If the optimized function varies a lot in the vicinity of the optimum,
+     *                               it may be necessary to provide a value lower than the distance between
+     *                               successive local minima.
      */
     public LineSearch(MultivariateOptimizer optimizer,
                       double relativeTolerance,
@@ -91,9 +90,9 @@ public class LineSearch {
                       double initialBracketingRange) {
         mainOptimizer = optimizer;
         lineOptimizer = new BrentOptimizer(REL_TOL_UNUSED,
-                                           ABS_TOL_UNUSED,
-                                           new SimpleUnivariateValueChecker(relativeTolerance,
-                                                                            absoluteTolerance));
+                ABS_TOL_UNUSED,
+                new SimpleUnivariateValueChecker(relativeTolerance,
+                        absoluteTolerance));
         this.initialBracketingRange = initialBracketingRange;
     }
 
@@ -102,10 +101,9 @@ public class LineSearch {
      * {@code f(startPoint + alpha * direction)}.
      *
      * @param startPoint Starting point.
-     * @param direction Search direction.
+     * @param direction  Search direction.
      * @return the optimum.
-     * @throws org.hipparchus.exception.MathIllegalStateException
-     * if the number of evaluations is exceeded.
+     * @throws org.hipparchus.exception.MathIllegalStateException if the number of evaluations is exceeded.
      */
     public UnivariatePointValuePair search(final double[] startPoint,
                                            final double[] direction) {
@@ -129,10 +127,10 @@ public class LineSearch {
         // class that counts the number of evaluations (and will eventually
         // generate the exception).
         return lineOptimizer.optimize(new MaxEval(Integer.MAX_VALUE),
-                                      new UnivariateObjectiveFunction(f),
-                                      goal,
-                                      new SearchInterval(bracket.getLo(),
-                                                         bracket.getHi(),
-                                                         bracket.getMid()));
+                new UnivariateObjectiveFunction(f),
+                goal,
+                new SearchInterval(bracket.getLo(),
+                        bracket.getHi(),
+                        bracket.getMid()));
     }
 }

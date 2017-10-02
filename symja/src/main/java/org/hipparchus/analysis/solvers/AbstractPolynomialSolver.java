@@ -21,12 +21,13 @@ import org.hipparchus.analysis.polynomials.PolynomialFunction;
 
 /**
  * Base class for solvers.
- *
  */
 public abstract class AbstractPolynomialSolver
-    extends BaseAbstractUnivariateSolver<PolynomialFunction>
-    implements PolynomialSolver {
-    /** Function. */
+        extends BaseAbstractUnivariateSolver<PolynomialFunction>
+        implements PolynomialSolver {
+    /**
+     * Function.
+     */
     private PolynomialFunction polynomialFunction;
 
     /**
@@ -37,6 +38,7 @@ public abstract class AbstractPolynomialSolver
     protected AbstractPolynomialSolver(final double absoluteAccuracy) {
         super(absoluteAccuracy);
     }
+
     /**
      * Construct a solver with given accuracies.
      *
@@ -47,11 +49,12 @@ public abstract class AbstractPolynomialSolver
                                        final double absoluteAccuracy) {
         super(relativeAccuracy, absoluteAccuracy);
     }
+
     /**
      * Construct a solver with given accuracies.
      *
-     * @param relativeAccuracy Maximum relative error.
-     * @param absoluteAccuracy Maximum absolute error.
+     * @param relativeAccuracy      Maximum relative error.
+     * @param absoluteAccuracy      Maximum absolute error.
      * @param functionValueAccuracy Maximum function value error.
      */
     protected AbstractPolynomialSolver(final double relativeAccuracy,
@@ -65,7 +68,7 @@ public abstract class AbstractPolynomialSolver
      */
     @Override
     protected void setup(int maxEval, PolynomialFunction f,
-                             double min, double max, double startValue) {
+                         double min, double max, double startValue) {
         super.setup(maxEval, f, min, max, startValue);
         polynomialFunction = f;
     }

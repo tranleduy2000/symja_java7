@@ -17,6 +17,7 @@ import edu.jas.structure.RingElem;
  * Ordered list of polynomials. Mainly for storage and printing / toString and
  * conversions to other representations. Polynomials in this list are sorted
  * according to their head terms.
+ *
  * @author Heinz Kredel
  */
 
@@ -25,6 +26,7 @@ public class OrderedPolynomialList<C extends RingElem<C>> extends PolynomialList
 
     /**
      * Constructor.
+     *
      * @param r polynomial ring factory.
      * @param l list of polynomials.
      */
@@ -32,44 +34,10 @@ public class OrderedPolynomialList<C extends RingElem<C>> extends PolynomialList
         super(r, sort(r, l));
     }
 
-
-    /**
-     * Comparison with any other object.
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
-    @Override
-    @SuppressWarnings("unchecked")
-    public boolean equals(Object p) {
-        if (!super.equals(p)) {
-            return false;
-        }
-        OrderedPolynomialList<C> pl = null;
-        try {
-            pl = (OrderedPolynomialList<C>) p;
-        } catch (ClassCastException ignored) {
-        }
-        if (pl == null) {
-            return false;
-        }
-        // compare sorted lists
-        // done already in super.equals()
-        return true;
-    }
-
-
-    /**
-     * Hash code for OrderedPolynomialList.
-     * @see java.lang.Object#hashCode()
-     */
-    @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
-
-
     /**
      * Sort a list of polynomials with respect to the ascending order of the
      * leading Exponent vectors. The term order is taken from the ring.
+     *
      * @param L polynomial list.
      * @return sorted polynomial list from L.
      */
@@ -81,20 +49,20 @@ public class OrderedPolynomialList<C extends RingElem<C>> extends PolynomialList
             return L;
         }
         GenPolynomialRing<C> r = L.get(0).ring;
-        return sort(r,L);
+        return sort(r, L);
     }
-
 
     /**
      * Sort a list of polynomials with respect to the ascending order of the
      * leading Exponent vectors. The term order is taken from the ring.
+     *
      * @param r polynomial ring factory.
      * @param L polynomial list.
      * @return sorted polynomial list from L.
      */
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings({"unchecked", "cast"})
     public static <C extends RingElem<C>> List<GenPolynomial<C>> sort(GenPolynomialRing<C> r,
-                    List<GenPolynomial<C>> L) {
+                                                                      List<GenPolynomial<C>> L) {
         if (L == null) {
             return L;
         }
@@ -130,22 +98,22 @@ public class OrderedPolynomialList<C extends RingElem<C>> extends PolynomialList
             for (GenPolynomial<C> p : L) {
                 s[i++] = p;
             }
-            Arrays.<GenPolynomial<C>> sort(s, cmp);
-            return new ArrayList<GenPolynomial<C>>(Arrays.<GenPolynomial<C>> asList(s));
+            Arrays.<GenPolynomial<C>>sort(s, cmp);
+            return new ArrayList<GenPolynomial<C>>(Arrays.<GenPolynomial<C>>asList(s));
         } catch (ClassCastException ok) {
             System.out.println("Warning: polynomials not sorted");
         }
         return L; // unsorted
     }
 
-
     /**
      * Sort a list of polynomials with respect to the ascending order of the
-     * degree. 
+     * degree.
+     *
      * @param L polynomial list.
      * @return sorted polynomial list from L.
      */
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings({"unchecked", "cast"})
     public static <C extends RingElem<C>> List<GenPolynomial<C>> sortDegree(List<GenPolynomial<C>> L) {
         if (L == null) {
             return L;
@@ -173,12 +141,46 @@ public class OrderedPolynomialList<C extends RingElem<C>> extends PolynomialList
             for (GenPolynomial<C> p : L) {
                 s[i++] = p;
             }
-            Arrays.<GenPolynomial<C>> sort(s, cmp);
-            return new ArrayList<GenPolynomial<C>>(Arrays.<GenPolynomial<C>> asList(s));
+            Arrays.<GenPolynomial<C>>sort(s, cmp);
+            return new ArrayList<GenPolynomial<C>>(Arrays.<GenPolynomial<C>>asList(s));
         } catch (ClassCastException ok) {
             System.out.println("Warning: polynomials not sorted");
         }
         return L; // unsorted
+    }
+
+    /**
+     * Comparison with any other object.
+     *
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    @SuppressWarnings("unchecked")
+    public boolean equals(Object p) {
+        if (!super.equals(p)) {
+            return false;
+        }
+        OrderedPolynomialList<C> pl = null;
+        try {
+            pl = (OrderedPolynomialList<C>) p;
+        } catch (ClassCastException ignored) {
+        }
+        if (pl == null) {
+            return false;
+        }
+        // compare sorted lists
+        // done already in super.equals()
+        return true;
+    }
+
+    /**
+     * Hash code for OrderedPolynomialList.
+     *
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 
 }

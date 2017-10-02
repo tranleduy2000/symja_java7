@@ -5,11 +5,11 @@
 package edu.jas.application;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.gb.GroebnerBase;
 import edu.jas.gb.SolvableGroebnerBase;
@@ -30,12 +30,13 @@ import edu.jas.ufd.SquarefreeFactory;
 /**
  * Comprehensive Groebner Base sequential algorithm. Implements faithful
  * comprehensive Groebner bases via Groebner systems and CGB test.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
 
 public class ComprehensiveGroebnerBaseSeq<C extends GcdRingElem<C>>
-/* extends GroebnerBaseAbstract<GenPolynomial<C>> */{
+/* extends GroebnerBaseAbstract<GenPolynomial<C>> */ {
 
 
     private static final Logger logger = Logger.getLogger(ComprehensiveGroebnerBaseSeq.class);
@@ -70,6 +71,7 @@ public class ComprehensiveGroebnerBaseSeq<C extends GcdRingElem<C>>
 
     /**
      * Constructor.
+     *
      * @param rf base coefficient ring factory.
      */
     public ComprehensiveGroebnerBaseSeq(RingFactory<C> rf) {
@@ -79,8 +81,9 @@ public class ComprehensiveGroebnerBaseSeq<C extends GcdRingElem<C>>
 
     /**
      * Constructor.
+     *
      * @param red C-pseudo-Reduction engine
-     * @param rf base coefficient ring factory.
+     * @param rf  base coefficient ring factory.
      */
     @SuppressWarnings("unchecked")
     public ComprehensiveGroebnerBaseSeq(CReductionSeq<C> red, RingFactory<C> rf) {
@@ -89,12 +92,13 @@ public class ComprehensiveGroebnerBaseSeq<C extends GcdRingElem<C>>
         cofac = rf;
         // selection for C but used for R:
         //engine e = GCDFactory.<C> getImplementation(cofac);
-        engine = SquarefreeFactory.<C> getImplementation(rf);
+        engine = SquarefreeFactory.<C>getImplementation(rf);
     }
 
 
     /**
      * Comprehensive-Groebner base test.
+     *
      * @param F polynomial list.
      * @return true, if F is a Comprehensive-Groebner base, else false.
      */
@@ -106,8 +110,9 @@ public class ComprehensiveGroebnerBaseSeq<C extends GcdRingElem<C>>
 
     /**
      * Comprehensive-Groebner base test.
+     *
      * @param modv module variable number.
-     * @param F polynomial list.
+     * @param F    polynomial list.
      * @return true, if F is a Comprehensive-Groebner base, else false.
      */
     // @Override
@@ -119,6 +124,7 @@ public class ComprehensiveGroebnerBaseSeq<C extends GcdRingElem<C>>
 
     /**
      * Comprehensive-Groebner base test using colored systems.
+     *
      * @param F polynomial list.
      * @return true, if F is a Comprehensive-Groebner base, else false.
      */
@@ -130,8 +136,9 @@ public class ComprehensiveGroebnerBaseSeq<C extends GcdRingElem<C>>
 
     /**
      * Comprehensive-Groebner base test using colored systems.
+     *
      * @param modv module variable number.
-     * @param F polynomial list.
+     * @param F    polynomial list.
      * @return true, if F is a Comprehensive-Groebner base, else false.
      */
     // @Override
@@ -146,6 +153,7 @@ public class ComprehensiveGroebnerBaseSeq<C extends GcdRingElem<C>>
 
     /**
      * Comprehensive-Groebner system test.
+     *
      * @param CS list of colored systems.
      * @return true, if CS is a Comprehensive-Groebner system, else false.
      */
@@ -157,8 +165,9 @@ public class ComprehensiveGroebnerBaseSeq<C extends GcdRingElem<C>>
 
     /**
      * Comprehensive-Groebner system test.
+     *
      * @param modv module variable number, unused.
-     * @param CS list of colored systems.
+     * @param CS   list of colored systems.
      * @return true, if CS is a Comprehensive-Groebner system, else false.
      */
     // @Override
@@ -219,6 +228,7 @@ public class ComprehensiveGroebnerBaseSeq<C extends GcdRingElem<C>>
 
     /**
      * Comprehensive-Groebner base test using substitution.
+     *
      * @param F polynomial list.
      * @return true, if F is a Comprehensive-Groebner base, else false.
      */
@@ -230,8 +240,9 @@ public class ComprehensiveGroebnerBaseSeq<C extends GcdRingElem<C>>
 
     /**
      * Comprehensive-Groebner base test using substitution.
+     *
      * @param modv module variable number, unused.
-     * @param F polynomial list.
+     * @param F    polynomial list.
      * @return true, if F is a Comprehensive-Groebner base, else false.
      */
     // @Override
@@ -259,18 +270,18 @@ public class ComprehensiveGroebnerBaseSeq<C extends GcdRingElem<C>>
             if (cf instanceof GenSolvablePolynomialRing) {
                 GenSolvablePolynomialRing<Residue<C>> rf = new GenSolvablePolynomialRing<Residue<C>>(r, cf);
                 List<GenSolvablePolynomial<GenPolynomial<C>>> rel = ((GenSolvablePolynomialRing<GenPolynomial<C>>) cf).table
-                                .relationList();
-                List<GenPolynomial<Residue<C>>> relres = PolyUtilApp.<C> toResidue(rf,
-                                PolynomialList.<GenPolynomial<C>> castToList(rel));
+                        .relationList();
+                List<GenPolynomial<Residue<C>>> relres = PolyUtilApp.<C>toResidue(rf,
+                        PolynomialList.<GenPolynomial<C>>castToList(rel));
                 rf.addRelations(relres);
                 //System.out.println("rf = " + rf.toScript());
-                list = PolyUtilApp.<C> toResidue(rf, F);
+                list = PolyUtilApp.<C>toResidue(rf, F);
                 SolvableGroebnerBase<Residue<C>> bb = SGBFactory.getImplementation(r);
-                t = bb.isLeftGB(PolynomialList.<Residue<C>> castToSolvableList(list));
+                t = bb.isLeftGB(PolynomialList.<Residue<C>>castToSolvableList(list));
             } else {
                 GenPolynomialRing<Residue<C>> rf = new GenPolynomialRing<Residue<C>>(r, cf);
                 //System.out.println("rf = " + rf.toScript());
-                list = PolyUtilApp.<C> toResidue(rf, F);
+                list = PolyUtilApp.<C>toResidue(rf, F);
                 GroebnerBase<Residue<C>> bb = GBFactory.getImplementation(r);
                 t = bb.isGB(list);
             }
@@ -315,18 +326,18 @@ public class ComprehensiveGroebnerBaseSeq<C extends GcdRingElem<C>>
         if (cf instanceof GenSolvablePolynomialRing) {
             GenSolvablePolynomialRing<Residue<C>> rf = new GenSolvablePolynomialRing<Residue<C>>(r, cf);
             List<GenSolvablePolynomial<GenPolynomial<C>>> rel = ((GenSolvablePolynomialRing<GenPolynomial<C>>) cf).table
-                            .relationList();
-            List<GenPolynomial<Residue<C>>> relres = PolyUtilApp.<C> toResidue(rf,
-                            PolynomialList.<GenPolynomial<C>> castToList(rel));
+                    .relationList();
+            List<GenPolynomial<Residue<C>>> relres = PolyUtilApp.<C>toResidue(rf,
+                    PolynomialList.<GenPolynomial<C>>castToList(rel));
             rf.addRelations(relres);
             //System.out.println("rf = " + rf.toScript());
-            list = PolyUtilApp.<C> toResidue(rf, F);
+            list = PolyUtilApp.<C>toResidue(rf, F);
             SolvableGroebnerBase<Residue<C>> bb = SGBFactory.getImplementation(r);
-            t = bb.isLeftGB(PolynomialList.<Residue<C>> castToSolvableList(list));
+            t = bb.isLeftGB(PolynomialList.<Residue<C>>castToSolvableList(list));
         } else {
             GenPolynomialRing<Residue<C>> rf = new GenPolynomialRing<Residue<C>>(r, cf);
             //System.out.println("rf = " + rf.toScript());
-            list = PolyUtilApp.<C> toResidue(rf, F);
+            list = PolyUtilApp.<C>toResidue(rf, F);
             GroebnerBase<Residue<C>> bb = GBFactory.getImplementation(r);
             t = bb.isGB(list);
         }
@@ -341,6 +352,7 @@ public class ComprehensiveGroebnerBaseSeq<C extends GcdRingElem<C>>
 
     /**
      * Comprehensive-Groebner system test.
+     *
      * @param F Groebner system.
      * @return true, if F is a Comprehensive-Groebner system, else false.
      */
@@ -352,6 +364,7 @@ public class ComprehensiveGroebnerBaseSeq<C extends GcdRingElem<C>>
 
     /**
      * Comprehensive-Groebner base test.
+     *
      * @param F Groebner system.
      * @return true, if F is a Comprehensive-Groebner base, else false.
      */
@@ -363,9 +376,10 @@ public class ComprehensiveGroebnerBaseSeq<C extends GcdRingElem<C>>
 
     /**
      * Comprehensive-Groebner system and base test.
+     *
      * @param F Groebner system.
      * @return true, if F is a Comprehensive-Groebner system and base, else
-     *         false.
+     * false.
      */
     // @Override
     public boolean isGB(GroebnerSystem<C> F) {
@@ -375,6 +389,7 @@ public class ComprehensiveGroebnerBaseSeq<C extends GcdRingElem<C>>
 
     /**
      * Comprehensive Groebner base system using pairlist class.
+     *
      * @param F polynomial list.
      * @return GBsys(F) a Comprehensive Groebner system of F.
      */
@@ -531,10 +546,11 @@ public class ComprehensiveGroebnerBaseSeq<C extends GcdRingElem<C>>
     /**
      * Determine polynomial relative to a condition of a colored system and add
      * pairs.
+     *
      * @param cs a colored system.
-     * @param A color polynomial.
+     * @param A  color polynomial.
      * @return list of colored systems, the conditions extending the condition
-     *         of cs.
+     * of cs.
      */
     public List<ColoredSystem<C>> determineAddPairs(ColoredSystem<C> cs, ColorPolynomial<C> A) {
         List<ColoredSystem<C>> NCS = new ArrayList<ColoredSystem<C>>();
@@ -603,6 +619,7 @@ public class ComprehensiveGroebnerBaseSeq<C extends GcdRingElem<C>>
 
     /**
      * Comprehensive Groebner base via Groebner system.
+     *
      * @param F polynomial list.
      * @return GB(F) a Comprehensive Groebner base of F.
      */
@@ -621,6 +638,7 @@ public class ComprehensiveGroebnerBaseSeq<C extends GcdRingElem<C>>
 
     /**
      * Minimal ordered Groebner basis.
+     *
      * @param cs colored system.
      * @return a reduced Groebner base of Gp.
      */

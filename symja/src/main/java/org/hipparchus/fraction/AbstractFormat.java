@@ -17,27 +17,33 @@
 
 package org.hipparchus.fraction;
 
+import org.hipparchus.exception.LocalizedCoreFormats;
+import org.hipparchus.util.MathUtils;
+
 import java.io.Serializable;
 import java.text.FieldPosition;
 import java.text.NumberFormat;
 import java.text.ParsePosition;
 import java.util.Locale;
 
-import org.hipparchus.exception.LocalizedCoreFormats;
-import org.hipparchus.util.MathUtils;
-
 /**
  * Common part shared by both {@link FractionFormat} and {@link BigFractionFormat}.
  */
 abstract class AbstractFormat extends NumberFormat implements Serializable {
 
-    /** Serializable version identifier. */
+    /**
+     * Serializable version identifier.
+     */
     private static final long serialVersionUID = 20160323L;
 
-    /** The format used for the denominator. */
+    /**
+     * The format used for the denominator.
+     */
     private final NumberFormat denominatorFormat;
 
-    /** The format used for the numerator. */
+    /**
+     * The format used for the numerator.
+     */
     private final NumberFormat numeratorFormat;
 
     /**
@@ -51,6 +57,7 @@ abstract class AbstractFormat extends NumberFormat implements Serializable {
     /**
      * Create an improper formatting instance with a custom number format for
      * both the numerator and denominator.
+     *
      * @param format the custom format for both the numerator and denominator.
      * @throws org.hipparchus.exception.NullArgumentException if the provided format is null.
      */
@@ -61,7 +68,8 @@ abstract class AbstractFormat extends NumberFormat implements Serializable {
     /**
      * Create an improper formatting instance with a custom number format for
      * the numerator and a custom number format for the denominator.
-     * @param numeratorFormat the custom format for the numerator.
+     *
+     * @param numeratorFormat   the custom format for the numerator.
      * @param denominatorFormat the custom format for the denominator.
      * @throws org.hipparchus.exception.NullArgumentException if either provided format is null.
      */
@@ -70,7 +78,7 @@ abstract class AbstractFormat extends NumberFormat implements Serializable {
         MathUtils.checkNotNull(numeratorFormat, LocalizedCoreFormats.NUMERATOR_FORMAT);
         MathUtils.checkNotNull(denominatorFormat, LocalizedCoreFormats.DENOMINATOR_FORMAT);
 
-        this.numeratorFormat   = numeratorFormat;
+        this.numeratorFormat = numeratorFormat;
         this.denominatorFormat = denominatorFormat;
     }
 
@@ -78,6 +86,7 @@ abstract class AbstractFormat extends NumberFormat implements Serializable {
      * Create a default number format.  The default number format is based on
      * {@link NumberFormat#getNumberInstance(Locale)}. The only
      * customization is the maximum number of BigFraction digits, which is set to 0.
+     *
      * @return the default number format.
      */
     protected static NumberFormat getDefaultNumberFormat() {
@@ -88,6 +97,7 @@ abstract class AbstractFormat extends NumberFormat implements Serializable {
      * Create a default number format.  The default number format is based on
      * {@link NumberFormat#getNumberInstance(Locale)}. The only
      * customization is the maximum number of BigFraction digits, which is set to 0.
+     *
      * @param locale the specific locale used by the format.
      * @return the default number format specific to the given locale.
      */
@@ -99,26 +109,11 @@ abstract class AbstractFormat extends NumberFormat implements Serializable {
     }
 
     /**
-     * Access the denominator format.
-     * @return the denominator format.
-     */
-    public NumberFormat getDenominatorFormat() {
-        return denominatorFormat;
-    }
-
-    /**
-     * Access the numerator format.
-     * @return the numerator format.
-     */
-    public NumberFormat getNumeratorFormat() {
-        return numeratorFormat;
-    }
-
-    /**
      * Parses <code>source</code> until a non-whitespace character is found.
+     *
      * @param source the string to parse
-     * @param pos input/output parsing parameter.  On output, <code>pos</code>
-     *        holds the index of the next non-whitespace character.
+     * @param pos    input/output parsing parameter.  On output, <code>pos</code>
+     *               holds the index of the next non-whitespace character.
      */
     protected static void parseAndIgnoreWhitespace(final String source,
                                                    final ParsePosition pos) {
@@ -128,38 +123,57 @@ abstract class AbstractFormat extends NumberFormat implements Serializable {
 
     /**
      * Parses <code>source</code> until a non-whitespace character is found.
+     *
      * @param source the string to parse
-     * @param pos input/output parsing parameter.
+     * @param pos    input/output parsing parameter.
      * @return the first non-whitespace character.
      */
     protected static char parseNextCharacter(final String source,
                                              final ParsePosition pos) {
-         int index = pos.getIndex();
-         final int n = source.length();
-         char ret = 0;
+        int index = pos.getIndex();
+        final int n = source.length();
+        char ret = 0;
 
-         if (index < n) {
-             char c;
-             do {
-                 c = source.charAt(index++);
-             } while (Character.isWhitespace(c) && index < n);
-             pos.setIndex(index);
+        if (index < n) {
+            char c;
+            do {
+                c = source.charAt(index++);
+            } while (Character.isWhitespace(c) && index < n);
+            pos.setIndex(index);
 
-             if (index < n) {
-                 ret = c;
-             }
-         }
+            if (index < n) {
+                ret = c;
+            }
+        }
 
-         return ret;
+        return ret;
+    }
+
+    /**
+     * Access the denominator format.
+     *
+     * @return the denominator format.
+     */
+    public NumberFormat getDenominatorFormat() {
+        return denominatorFormat;
+    }
+
+    /**
+     * Access the numerator format.
+     *
+     * @return the numerator format.
+     */
+    public NumberFormat getNumeratorFormat() {
+        return numeratorFormat;
     }
 
     /**
      * Formats a double value as a fraction and appends the result to a StringBuffer.
      *
-     * @param value the double value to format
-     * @param buffer StringBuffer to append to
+     * @param value    the double value to format
+     * @param buffer   StringBuffer to append to
      * @param position On input: an alignment field, if desired. On output: the
-     *            offsets of the alignment field
+     *                 offsets of the alignment field
      * @return a reference to the appended buffer
      * @see #format(Object, StringBuffer, FieldPosition)
      */
@@ -173,10 +187,10 @@ abstract class AbstractFormat extends NumberFormat implements Serializable {
     /**
      * Formats a long value as a fraction and appends the result to a StringBuffer.
      *
-     * @param value the long value to format
-     * @param buffer StringBuffer to append to
+     * @param value    the long value to format
+     * @param buffer   StringBuffer to append to
      * @param position On input: an alignment field, if desired. On output: the
-     *            offsets of the alignment field
+     *                 offsets of the alignment field
      * @return a reference to the appended buffer
      * @see #format(Object, StringBuffer, FieldPosition)
      */

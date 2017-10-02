@@ -26,55 +26,63 @@ import org.hipparchus.util.MathArrays;
 /**
  * This class implements a simple Euler integrator for Ordinary
  * Differential Equations.
- *
+ * <p>
  * <p>The Euler algorithm is the simplest one that can be used to
  * integrate ordinary differential equations. It is a simple inversion
  * of the forward difference expression :
  * <code>f'=(f(t+h)-f(t))/h</code> which leads to
  * <code>f(t+h)=f(t)+hf'</code>. The interpolation scheme used for
  * dense output is the linear scheme already used for integration.</p>
- *
+ * <p>
  * <p>This algorithm looks cheap because it needs only one function
  * evaluation per step. However, as it uses linear estimates, it needs
  * very small steps to achieve high accuracy, and small steps lead to
  * numerical errors and instabilities.</p>
- *
+ * <p>
  * <p>This algorithm is almost never used and has been included in
  * this package only as a comparison reference for more useful
  * integrators.</p>
  *
+ * @param <T> the type of the field elements
  * @see MidpointFieldIntegrator
  * @see ClassicalRungeKuttaFieldIntegrator
  * @see GillFieldIntegrator
  * @see ThreeEighthesFieldIntegrator
  * @see LutherFieldIntegrator
- * @param <T> the type of the field elements
  */
 
 public class EulerFieldIntegrator<T extends RealFieldElement<T>> extends RungeKuttaFieldIntegrator<T> {
 
-    /** Simple constructor.
+    /**
+     * Simple constructor.
      * Build an Euler integrator with the given step.
+     *
      * @param field field to which the time and state vector elements belong
-     * @param step integration step
+     * @param step  integration step
      */
     public EulerFieldIntegrator(final Field<T> field, final T step) {
         super(field, "Euler", step);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public T[] getC() {
         return MathArrays.buildArray(getField(), 0);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public T[][] getA() {
         return MathArrays.buildArray(getField(), 0, 0);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public T[] getB() {
         final T[] b = MathArrays.buildArray(getField(), 1);
@@ -82,17 +90,19 @@ public class EulerFieldIntegrator<T extends RealFieldElement<T>> extends RungeKu
         return b;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected EulerFieldStateInterpolator<T>
-        createInterpolator(final boolean forward, T[][] yDotK,
-                           final FieldODEStateAndDerivative<T> globalPreviousState,
-                           final FieldODEStateAndDerivative<T> globalCurrentState,
-                           final FieldEquationsMapper<T> mapper) {
+    createInterpolator(final boolean forward, T[][] yDotK,
+                       final FieldODEStateAndDerivative<T> globalPreviousState,
+                       final FieldODEStateAndDerivative<T> globalCurrentState,
+                       final FieldEquationsMapper<T> mapper) {
         return new EulerFieldStateInterpolator<T>(getField(), forward, yDotK,
-                                                 globalPreviousState, globalCurrentState,
-                                                 globalPreviousState, globalCurrentState,
-                                                 mapper);
+                globalPreviousState, globalCurrentState,
+                globalPreviousState, globalCurrentState,
+                mapper);
     }
 
 }

@@ -28,28 +28,34 @@ import org.hipparchus.util.MathUtils;
  */
 public class LaplaceDistribution extends AbstractRealDistribution {
 
-    /** Serializable version identifier. */
+    /**
+     * Serializable version identifier.
+     */
     private static final long serialVersionUID = 20141003L;
 
-    /** The location parameter. */
+    /**
+     * The location parameter.
+     */
     private final double mu;
-    /** The scale parameter. */
+    /**
+     * The scale parameter.
+     */
     private final double beta;
 
     /**
      * Build a new instance.
      *
-     * @param mu location parameter
+     * @param mu   location parameter
      * @param beta scale parameter (must be positive)
      * @throws MathIllegalArgumentException if {@code beta <= 0}
      */
     public LaplaceDistribution(double mu, double beta)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         if (beta <= 0.0) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.NOT_POSITIVE_SCALE, beta);
         }
 
-        this.mu   = mu;
+        this.mu = mu;
         this.beta = beta;
     }
 
@@ -71,13 +77,17 @@ public class LaplaceDistribution extends AbstractRealDistribution {
         return beta;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double density(double x) {
         return FastMath.exp(-FastMath.abs(x - mu) / beta) / (2.0 * beta);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double cumulativeProbability(double x) {
         if (x <= mu) {
@@ -87,7 +97,9 @@ public class LaplaceDistribution extends AbstractRealDistribution {
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double inverseCumulativeProbability(double p) throws MathIllegalArgumentException {
         MathUtils.checkRangeInclusive(p, 0, 1);
@@ -101,31 +113,41 @@ public class LaplaceDistribution extends AbstractRealDistribution {
         return mu + beta * x;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getNumericalMean() {
         return mu;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getNumericalVariance() {
         return 2.0 * beta * beta;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getSupportLowerBound() {
         return Double.NEGATIVE_INFINITY;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getSupportUpperBound() {
         return Double.POSITIVE_INFINITY;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isSupportConnected() {
         return true;

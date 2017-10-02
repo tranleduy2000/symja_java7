@@ -11,6 +11,7 @@ import edu.jas.structure.RingElem;
 /**
  * Polynomial reduction container.
  * Used as container for the return value of normalformFactor.
+ *
  * @author Heinz Kredel
  */
 

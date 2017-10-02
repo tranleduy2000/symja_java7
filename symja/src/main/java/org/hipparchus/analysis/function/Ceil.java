@@ -22,10 +22,11 @@ import org.hipparchus.util.FastMath;
 
 /**
  * {@code ceil} function.
- *
  */
 public class Ceil implements UnivariateFunction {
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double value(double x) {
         return FastMath.ceil(x);

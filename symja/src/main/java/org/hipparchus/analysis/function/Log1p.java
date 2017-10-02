@@ -23,16 +23,18 @@ import org.hipparchus.util.FastMath;
 
 /**
  * <code>log(1 + p)</code> function.
- *
  */
 public class Log1p implements UnivariateDifferentiableFunction {
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double value(double x) {
         return FastMath.log1p(x);
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     @Override
     public DerivativeStructure value(final DerivativeStructure t) {

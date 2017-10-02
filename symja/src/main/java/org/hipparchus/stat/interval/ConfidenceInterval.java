@@ -24,10 +24,14 @@ import org.hipparchus.exception.MathIllegalArgumentException;
  */
 public class ConfidenceInterval {
 
-    /** Lower endpoint of the interval */
+    /**
+     * Lower endpoint of the interval
+     */
     private double lowerBound;
 
-    /** Upper endpoint of the interval */
+    /**
+     * Upper endpoint of the interval
+     */
     private double upperBound;
 
     /**
@@ -46,8 +50,8 @@ public class ConfidenceInterval {
      * </ul>
      * </p>
      *
-     * @param lowerBound lower endpoint of the interval
-     * @param upperBound upper endpoint of the interval
+     * @param lowerBound      lower endpoint of the interval
+     * @param upperBound      upper endpoint of the interval
      * @param confidenceLevel coverage probability
      * @throws MathIllegalArgumentException if the preconditions are not met
      */
@@ -74,7 +78,7 @@ public class ConfidenceInterval {
 
     /**
      * @return the asserted probability that the interval contains the
-     *         population parameter
+     * population parameter
      */
     public double getConfidenceLevel() {
         return confidenceLevel;
@@ -92,18 +96,18 @@ public class ConfidenceInterval {
      * Verifies that (lower, upper) is a valid non-empty interval and confidence
      * is strictly between 0 and 1.
      *
-     * @param lower lower endpoint
-     * @param upper upper endpoint
+     * @param lower      lower endpoint
+     * @param upper      upper endpoint
      * @param confidence confidence level
      */
     private void checkParameters(double lower, double upper, double confidence) {
         if (lower >= upper) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.LOWER_BOUND_NOT_BELOW_UPPER_BOUND,
-                                                   lower, upper);
+                    lower, upper);
         }
         if (confidence <= 0 || confidence >= 1) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.OUT_OF_BOUNDS_CONFIDENCE_LEVEL,
-                                                   confidence, 0, 1);
+                    confidence, 0, 1);
         }
     }
 }

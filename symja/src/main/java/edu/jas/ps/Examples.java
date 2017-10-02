@@ -21,6 +21,7 @@ import edu.jas.structure.UnaryFunctor;
 
 /**
  * Examples for univariate power series implementations.
+ *
  * @author Heinz Kredel
  */
 
@@ -39,7 +40,7 @@ public class Examples {
         example3();
         example5();
         example7();
-        if ( args.length > 0 ) {
+        if (args.length > 0) {
             example12();
         }
         example13();
@@ -62,47 +63,6 @@ public class Examples {
 
     //----------------------
 
-
-    static class Sum<C extends RingElem<C>> implements BinaryFunctor<C, C, C> {
-
-
-        public C eval(C c1, C c2) {
-            return c1.sum(c2);
-        }
-    }
-
-
-    static class Odds<C extends RingElem<C>> implements Selector<C> {
-
-
-        C two;
-
-
-        RingFactory<C> fac;
-
-
-        public Odds(RingFactory<C> fac) {
-            this.fac = fac;
-            two = this.fac.fromInteger(2);
-            //System.out.println("two = " + two);
-        }
-
-
-        public boolean select(C c) {
-            //System.out.print("c = " + c);
-            if (c.remainder(two).isONE()) {
-                //System.out.println(" odd");
-                return true;
-            }
-            //System.out.println(" even");
-            return false;
-        }
-    }
-
-
-    //----------------------
-
-
     public static void example1() {
         UnivPowerSeries<BigInteger> integers = integersFrom(0);
 
@@ -117,7 +77,6 @@ public class Examples {
         System.out.println("integers(" + e + ") = " + v);
     }
 
-
     public static void example2() {
         UnivPowerSeries<BigInteger> integers = integersFrom(0);
 
@@ -131,6 +90,8 @@ public class Examples {
         System.out.println("...");
     }
 
+
+    //----------------------
 
     public static void example3() {
         RingFactory<BigInteger> fac = new BigInteger(1);
@@ -149,12 +110,10 @@ public class Examples {
         System.out.println("rnd.isUnit()       = " + rnd.isUnit());
     }
 
-
     public static void example4() {
         UnivPowerSeries<BigInteger> integers = integersFrom(0);
         System.out.println("integers = " + integers);
     }
-
 
     public static void example6() {
         UnivPowerSeriesRing<BigInteger> pfac = new UnivPowerSeriesRing<BigInteger>(new BigInteger());
@@ -176,7 +135,6 @@ public class Examples {
         System.out.println("integers2 = " + integers);
     }
 
-
     public static void example8() {
         final BigInteger z = new BigInteger(0);
         final BigInteger one = new BigInteger(1);
@@ -193,7 +151,6 @@ public class Examples {
         System.out.println("fibs2 = " + fibs.toString(/*20*/));
     }
 
-
     public static void example9() {
         UnivPowerSeries<BigInteger> integers = integersFrom(0);
         System.out.println("      integers = " + integers);
@@ -208,7 +165,6 @@ public class Examples {
         UnivPowerSeries<BigInteger> odds = integers.select(new Odds<BigInteger>(new BigInteger()));
         System.out.println("odd   integers = " + odds);
     }
-
 
     public static void example10() {
         final BigInteger fac = new BigInteger();
@@ -264,7 +220,6 @@ public class Examples {
         System.out.println("integers rem   = " + rem);
     }
 
-
     public static void example11() {
         //final BigInteger fac = new BigInteger();
         UnivPowerSeries<BigInteger> integers = integersFrom(0);
@@ -277,7 +232,6 @@ public class Examples {
         System.out.println("integers == integers   = " + integers.equals(integers.copy()));
         System.out.println("integers.hashCode()    = " + integers.hashCode());
     }
-
 
     public static void example5() {
         //final BigInteger fac = new BigInteger();
@@ -308,7 +262,6 @@ public class Examples {
         UnivPowerSeries<BigInteger> g = ints2.gcd(integers);
         System.out.println("g               = " + g);
     }
-
 
     public static void example7() {
         final BigRational fac = new BigRational();
@@ -436,7 +389,6 @@ public class Examples {
         System.out.println("sinh+cosh == exp: " + sinhcosh.equals(exp));
     }
 
-
     public static void example12() {
         final BigComplex fac = new BigComplex();
         final BigComplex I = BigComplex.I;
@@ -472,7 +424,6 @@ public class Examples {
         System.out.println("cpis = " + cpis);
     }
 
-
     public static void example13() {
         BigRational fac = new BigRational();
         UnivPowerSeriesRing<BigRational> pfac = new UnivPowerSeriesRing<BigRational>(fac, 11, "y");
@@ -489,14 +440,13 @@ public class Examples {
         System.out.println("exp(0) = " + dexp.evaluate(dfac.getZERO()));
     }
 
-
     public static void example14() {
         BigRational cfac = new BigRational();
         UnivPowerSeriesRing<BigRational> pfac = new UnivPowerSeriesRing<BigRational>(cfac, 11, "t");
         System.out.println("pfac = " + pfac);
         System.out.println("pfac = " + pfac.toScript());
 
-        GenPolynomialRing<UnivPowerSeries<BigRational>> fac = new GenPolynomialRing<UnivPowerSeries<BigRational>>(pfac,new String[] { "x"} ); 
+        GenPolynomialRing<UnivPowerSeries<BigRational>> fac = new GenPolynomialRing<UnivPowerSeries<BigRational>>(pfac, new String[]{"x"});
         System.out.println("fac = " + fac);
         System.out.println("fac = " + fac.toScript());
         List<UnivPowerSeries<BigRational>> gens = pfac.generators();
@@ -512,6 +462,41 @@ public class Examples {
 
         GenPolynomial<UnivPowerSeries<BigRational>> r = q.gcd(s);
         System.out.println("r = " + r);
+    }
+
+    static class Sum<C extends RingElem<C>> implements BinaryFunctor<C, C, C> {
+
+
+        public C eval(C c1, C c2) {
+            return c1.sum(c2);
+        }
+    }
+
+    static class Odds<C extends RingElem<C>> implements Selector<C> {
+
+
+        C two;
+
+
+        RingFactory<C> fac;
+
+
+        public Odds(RingFactory<C> fac) {
+            this.fac = fac;
+            two = this.fac.fromInteger(2);
+            //System.out.println("two = " + two);
+        }
+
+
+        public boolean select(C c) {
+            //System.out.print("c = " + c);
+            if (c.remainder(two).isONE()) {
+                //System.out.println(" odd");
+                return true;
+            }
+            //System.out.println(" even");
+            return false;
+        }
     }
 
 }

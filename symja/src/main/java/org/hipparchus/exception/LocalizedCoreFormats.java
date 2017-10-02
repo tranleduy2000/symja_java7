@@ -239,24 +239,32 @@ public enum LocalizedCoreFormats implements Localizable {
     // CHECKSTYLE: resume MultipleVariableDeclarations
 
 
-    /** Source English format. */
+    /**
+     * Source English format.
+     */
     private final String sourceFormat;
 
-    /** Simple constructor.
+    /**
+     * Simple constructor.
+     *
      * @param sourceFormat source English format to use when no
-     * localized version is available
+     *                     localized version is available
      */
     LocalizedCoreFormats(final String sourceFormat) {
         this.sourceFormat = sourceFormat;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getSourceString() {
         return sourceFormat;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getLocalizedString(final Locale locale) {
         try {
@@ -266,8 +274,8 @@ public enum LocalizedCoreFormats implements Localizable {
             if (bundle.getLocale().getLanguage().equals(locale.getLanguage())) {
                 final String translated = bundle.getString(name());
                 if ((translated != null) &&
-                    (translated.length() > 0) &&
-                    (!translated.toLowerCase().contains("missing translation"))) {
+                        (translated.length() > 0) &&
+                        (!translated.toLowerCase().contains("missing translation"))) {
                     // the value of the resource is the translated format
                     return translated;
                 }

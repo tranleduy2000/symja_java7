@@ -5,11 +5,11 @@
 package edu.jas.ufd;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.poly.ExpVector;
 import edu.jas.poly.GenPolynomial;
@@ -17,12 +17,12 @@ import edu.jas.poly.GenPolynomialRing;
 import edu.jas.poly.Monomial;
 import edu.jas.poly.PolyUtil;
 import edu.jas.structure.GcdRingElem;
-import edu.jas.structure.Power;
 import edu.jas.structure.RingFactory;
 
 
 /**
  * Squarefree decomposition for infinite coefficient fields of characteristic p.
+ *
  * @author Heinz Kredel
  */
 
@@ -54,7 +54,7 @@ public class SquarefreeInfiniteFieldCharP<C extends GcdRingElem<C>> extends Squa
         }
         QuotientRing<C> qfac = (QuotientRing<C>) fac;
         GenPolynomialRing<C> rfac = qfac.ring;
-        qengine = (SquarefreeAbstract) SquarefreeFactory.<C> getImplementation(rfac);
+        qengine = (SquarefreeAbstract) SquarefreeFactory.<C>getImplementation(rfac);
         //qengine = new SquarefreeFiniteFieldCharP<C>(rfac.coFac);
         //qengine = new SquarefreeInfiniteRingCharP<C>( rfac.coFac );
     }
@@ -65,9 +65,10 @@ public class SquarefreeInfiniteFieldCharP<C extends GcdRingElem<C>> extends Squa
 
     /**
      * Squarefree factors of a Quotient.
+     *
      * @param P Quotient.
      * @return [p_1 -&gt; e_1,...,p_k - &gt; e_k] with P = prod_{i=1, ..., k}
-     *         p_i**e_k.
+     * p_i**e_k.
      */
     @Override
     public SortedMap<Quotient<C>, Long> squarefreeFactors(Quotient<C> P) {
@@ -117,9 +118,10 @@ public class SquarefreeInfiniteFieldCharP<C extends GcdRingElem<C>> extends Squa
 
     /**
      * Characteristics root of a Quotient.
+     *
      * @param P Quotient.
      * @return [p -&gt; k] if exists k with e=charactristic(P)*k and P = p**e,
-     *         else null.
+     * else null.
      */
     public SortedMap<Quotient<C>, Long> rootCharacteristic(Quotient<C> P) {
         if (P == null) {
@@ -189,6 +191,7 @@ public class SquarefreeInfiniteFieldCharP<C extends GcdRingElem<C>> extends Squa
 
     /**
      * GenPolynomial char-th root main variable.
+     *
      * @param P univariate GenPolynomial with Quotient coefficients.
      * @return char-th_rootOf(P), or null, if P is no char-th root.
      */
@@ -200,19 +203,19 @@ public class SquarefreeInfiniteFieldCharP<C extends GcdRingElem<C>> extends Squa
         if (pfac.nvar > 1) {
             // go to recursion
             GenPolynomialRing<GenPolynomial<Quotient<C>>> rfac = pfac.recursive(1);
-            GenPolynomial<GenPolynomial<Quotient<C>>> Pr = PolyUtil.<Quotient<C>> recursive(rfac, P);
+            GenPolynomial<GenPolynomial<Quotient<C>>> Pr = PolyUtil.<Quotient<C>>recursive(rfac, P);
             GenPolynomial<GenPolynomial<Quotient<C>>> Prc = recursiveUnivariateRootCharacteristic(Pr);
             if (Prc == null) {
                 return null;
             }
-            GenPolynomial<Quotient<C>> D = PolyUtil.<Quotient<C>> distribute(pfac, Prc);
+            GenPolynomial<Quotient<C>> D = PolyUtil.<Quotient<C>>distribute(pfac, Prc);
             return D;
         }
         RingFactory<Quotient<C>> rf = pfac.coFac;
         if (rf.characteristic().signum() != 1) {
             // basePthRoot not possible
             throw new IllegalArgumentException(P.getClass().getName() + " only for ModInteger polynomials "
-                            + rf);
+                    + rf);
         }
         long mp = rf.characteristic().longValue();
         GenPolynomial<Quotient<C>> d = pfac.getZERO().copy();
@@ -249,6 +252,7 @@ public class SquarefreeInfiniteFieldCharP<C extends GcdRingElem<C>> extends Squa
 
     /**
      * GenPolynomial char-th root univariate polynomial.
+     *
      * @param P GenPolynomial.
      * @return char-th_rootOf(P).
      */
@@ -310,12 +314,13 @@ public class SquarefreeInfiniteFieldCharP<C extends GcdRingElem<C>> extends Squa
     /**
      * GenPolynomial char-th root univariate polynomial with polynomial
      * coefficients.
+     *
      * @param P recursive univariate GenPolynomial.
      * @return char-th_rootOf(P), or null if P is no char-th root.
      */
     @Override
     public GenPolynomial<GenPolynomial<Quotient<C>>> recursiveUnivariateRootCharacteristic(
-                    GenPolynomial<GenPolynomial<Quotient<C>>> P) {
+            GenPolynomial<GenPolynomial<Quotient<C>>> P) {
         if (P == null || P.isZERO()) {
             return P;
         }
@@ -323,7 +328,7 @@ public class SquarefreeInfiniteFieldCharP<C extends GcdRingElem<C>> extends Squa
         if (pfac.nvar > 1) {
             // basePthRoot not possible by return type
             throw new IllegalArgumentException(P.getClass().getName()
-                            + " only for univariate recursive polynomials");
+                    + " only for univariate recursive polynomials");
         }
         RingFactory<GenPolynomial<Quotient<C>>> rf = pfac.coFac;
         if (rf.characteristic().signum() != 1) {

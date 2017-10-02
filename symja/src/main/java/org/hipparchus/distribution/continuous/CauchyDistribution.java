@@ -28,11 +28,17 @@ import org.hipparchus.util.MathUtils;
  * @see <a href="http://mathworld.wolfram.com/CauchyDistribution.html">Cauchy Distribution (MathWorld)</a>
  */
 public class CauchyDistribution extends AbstractRealDistribution {
-    /** Serializable version identifier */
+    /**
+     * Serializable version identifier
+     */
     private static final long serialVersionUID = 20160320L;
-    /** The median of this distribution. */
+    /**
+     * The median of this distribution.
+     */
     private final double median;
-    /** The scale of this distribution. */
+    /**
+     * The scale of this distribution.
+     */
     private final double scale;
 
     /**
@@ -48,11 +54,11 @@ public class CauchyDistribution extends AbstractRealDistribution {
      * Creates a Cauchy distribution.
      *
      * @param median Median for this distribution
-     * @param scale Scale parameter for this distribution
+     * @param scale  Scale parameter for this distribution
      * @throws MathIllegalArgumentException if {@code scale <= 0}
      */
     public CauchyDistribution(double median, double scale)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         if (scale <= 0) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.SCALE, scale);
         }
@@ -61,7 +67,9 @@ public class CauchyDistribution extends AbstractRealDistribution {
         this.median = median;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double cumulativeProbability(double x) {
         return 0.5 + (FastMath.atan((x - median) / scale) / FastMath.PI);
@@ -85,7 +93,9 @@ public class CauchyDistribution extends AbstractRealDistribution {
         return scale;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double density(double x) {
         final double dev = x - median;
@@ -94,7 +104,7 @@ public class CauchyDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * Returns {@code Double.NEGATIVE_INFINITY} when {@code p == 0}
      * and {@code Double.POSITIVE_INFINITY} when {@code p == 1}.
      */
@@ -105,7 +115,7 @@ public class CauchyDistribution extends AbstractRealDistribution {
         double ret;
         if (p == 0) {
             ret = Double.NEGATIVE_INFINITY;
-        } else  if (p == 1) {
+        } else if (p == 1) {
             ret = Double.POSITIVE_INFINITY;
         } else {
             ret = median + scale * FastMath.tan(FastMath.PI * (p - .5));
@@ -115,7 +125,7 @@ public class CauchyDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The mean is always undefined no matter the parameters.
      *
      * @return mean (always Double.NaN)
@@ -127,7 +137,7 @@ public class CauchyDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The variance is always undefined no matter the parameters.
      *
      * @return variance (always Double.NaN)
@@ -139,7 +149,7 @@ public class CauchyDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The lower bound of the support is always negative infinity no matter
      * the parameters.
      *
@@ -152,7 +162,7 @@ public class CauchyDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The upper bound of the support is always positive infinity no matter
      * the parameters.
      *
@@ -165,7 +175,7 @@ public class CauchyDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The support of this distribution is connected.
      *
      * @return {@code true}

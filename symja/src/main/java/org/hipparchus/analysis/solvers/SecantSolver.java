@@ -25,26 +25,29 @@ import org.hipparchus.util.FastMath;
  * Implements the <em>Secant</em> method for root-finding (approximating a
  * zero of a univariate real function). The solution that is maintained is
  * not bracketed, and as such convergence is not guaranteed.
- *
+ * <p>
  * <p>Implementation based on the following article: M. Dowell and P. Jarratt,
  * <em>A modified regula falsi method for computing the root of an
  * equation</em>, BIT Numerical Mathematics, volume 11, number 2,
  * pages 168-174, Springer, 1971.</p>
- *
+ * <p>
  * <p>Note that since release 3.0 this class implements the actual
  * <em>Secant</em> algorithm, and not a modified one. As such, the 3.0 version
  * is not backwards compatible with previous versions. To use an algorithm
  * similar to the pre-3.0 releases, use the
  * {@link IllinoisSolver <em>Illinois</em>} algorithm or the
  * {@link PegasusSolver <em>Pegasus</em>} algorithm.</p>
- *
  */
 public class SecantSolver extends AbstractUnivariateSolver {
 
-    /** Default absolute accuracy. */
+    /**
+     * Default absolute accuracy.
+     */
     protected static final double DEFAULT_ABSOLUTE_ACCURACY = 1e-6;
 
-    /** Construct a solver with default accuracy (1e-6). */
+    /**
+     * Construct a solver with default accuracy (1e-6).
+     */
     public SecantSolver() {
         super(DEFAULT_ABSOLUTE_ACCURACY);
     }
@@ -69,10 +72,12 @@ public class SecantSolver extends AbstractUnivariateSolver {
         super(relativeAccuracy, absoluteAccuracy);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected final double doSolve()
-        throws MathIllegalArgumentException, MathIllegalStateException {
+            throws MathIllegalArgumentException, MathIllegalStateException {
         // Get initial solution
         double x0 = getMin();
         double x1 = getMax();

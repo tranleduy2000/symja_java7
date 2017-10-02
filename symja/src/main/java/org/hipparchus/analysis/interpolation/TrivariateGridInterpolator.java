@@ -22,28 +22,27 @@ import org.hipparchus.exception.MathIllegalArgumentException;
 /**
  * Interface representing a trivariate real interpolating function where the
  * sample points must be specified on a regular grid.
- *
  */
 public interface TrivariateGridInterpolator {
     /**
      * Compute an interpolating function for the dataset.
      *
      * @param xval All the x-coordinates of the interpolation points, sorted
-     * in increasing order.
+     *             in increasing order.
      * @param yval All the y-coordinates of the interpolation points, sorted
-     * in increasing order.
+     *             in increasing order.
      * @param zval All the z-coordinates of the interpolation points, sorted
-     * in increasing order.
+     *             in increasing order.
      * @param fval the values of the interpolation points on all the grid knots:
-     * {@code fval[i][j][k] = f(xval[i], yval[j], zval[k])}.
+     *             {@code fval[i][j][k] = f(xval[i], yval[j], zval[k])}.
      * @return a function that interpolates the data set.
      * @throws MathIllegalArgumentException if any of the arrays has zero length.
      * @throws MathIllegalArgumentException if the array lengths are inconsistent.
      * @throws MathIllegalArgumentException if arrays are not sorted
      * @throws MathIllegalArgumentException if the number of points is too small for
-     * the order of the interpolation
+     *                                      the order of the interpolation
      */
     TrivariateFunction interpolate(double[] xval, double[] yval, double[] zval,
                                    double[][][] fval)
-        throws MathIllegalArgumentException;
+            throws MathIllegalArgumentException;
 }

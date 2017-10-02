@@ -33,10 +33,10 @@ import org.hipparchus.util.FastMath;
  * <ul>
  * <li><a href="http://dx.doi.org/10.1145/22721.23109">Didonato and Morris
  * (1986)</a>, <em>Computation of the Incomplete Gamma Function Ratios and
- *     their Inverse</em>, TOMS 12(4), 377-393,</li>
+ * their Inverse</em>, TOMS 12(4), 377-393,</li>
  * <li><a href="http://dx.doi.org/10.1145/131766.131776">Didonato and Morris
  * (1992)</a>, <em>Algorithm 708: Significant Digit Computation of the
- *     Incomplete Beta Function Ratios</em>, TOMS 18(3), 360-373,</li>
+ * Incomplete Beta Function Ratios</em>, TOMS 18(3), 360-373,</li>
  * </ul>
  * and implemented in the
  * <a href="http://www.dtic.mil/docs/citations/ADA476840">NSWC Library of Mathematical Functions</a>,
@@ -48,7 +48,6 @@ import org.hipparchus.util.FastMath;
  * this library are license free. Since no such notice appears in the code these
  * functions can safely be ported to Hipparchus.
  * </p>
- *
  */
 public class Gamma {
     /**
@@ -62,39 +61,51 @@ public class Gamma {
      */
     public static final double LANCZOS_G = 607.0 / 128.0;
 
-    /** Maximum allowed numerical error. */
+    /**
+     * Maximum allowed numerical error.
+     */
     private static final double DEFAULT_EPSILON = 10e-15;
 
-    /** Lanczos coefficients */
+    /**
+     * Lanczos coefficients
+     */
     private static final double[] LANCZOS = {
-        0.99999999999999709182,
-        57.156235665862923517,
-        -59.597960355475491248,
-        14.136097974741747174,
-        -0.49191381609762019978,
-        .33994649984811888699e-4,
-        .46523628927048575665e-4,
-        -.98374475304879564677e-4,
-        .15808870322491248884e-3,
-        -.21026444172410488319e-3,
-        .21743961811521264320e-3,
-        -.16431810653676389022e-3,
-        .84418223983852743293e-4,
-        -.26190838401581408670e-4,
-        .36899182659531622704e-5,
+            0.99999999999999709182,
+            57.156235665862923517,
+            -59.597960355475491248,
+            14.136097974741747174,
+            -0.49191381609762019978,
+            .33994649984811888699e-4,
+            .46523628927048575665e-4,
+            -.98374475304879564677e-4,
+            .15808870322491248884e-3,
+            -.21026444172410488319e-3,
+            .21743961811521264320e-3,
+            -.16431810653676389022e-3,
+            .84418223983852743293e-4,
+            -.26190838401581408670e-4,
+            .36899182659531622704e-5,
     };
 
-    /** Avoid repeated computation of log of 2 PI in logGamma */
+    /**
+     * Avoid repeated computation of log of 2 PI in logGamma
+     */
     private static final double HALF_LOG_2_PI = 0.5 * FastMath.log(2.0 * FastMath.PI);
 
-    /** The constant value of &radic;(2&pi;). */
+    /**
+     * The constant value of &radic;(2&pi;).
+     */
     private static final double SQRT_TWO_PI = 2.506628274631000502;
 
     // limits for switching algorithm in digamma
-    /** C limit. */
+    /**
+     * C limit.
+     */
     private static final double C_LIMIT = 49;
 
-    /** S limit. */
+    /**
+     * S limit.
+     */
     private static final double S_LIMIT = 1e-5;
 
     /*
@@ -102,118 +113,191 @@ public class Gamma {
      * Copied from DGAM1 in the NSWC library.
      */
 
-    /** The constant {@code A0} defined in {@code DGAM1}. */
+    /**
+     * The constant {@code A0} defined in {@code DGAM1}.
+     */
     private static final double INV_GAMMA1P_M1_A0 = .611609510448141581788E-08;
 
-    /** The constant {@code A1} defined in {@code DGAM1}. */
+    /**
+     * The constant {@code A1} defined in {@code DGAM1}.
+     */
     private static final double INV_GAMMA1P_M1_A1 = .624730830116465516210E-08;
 
-    /** The constant {@code B1} defined in {@code DGAM1}. */
+    /**
+     * The constant {@code B1} defined in {@code DGAM1}.
+     */
     private static final double INV_GAMMA1P_M1_B1 = .203610414066806987300E+00;
 
-    /** The constant {@code B2} defined in {@code DGAM1}. */
+    /**
+     * The constant {@code B2} defined in {@code DGAM1}.
+     */
     private static final double INV_GAMMA1P_M1_B2 = .266205348428949217746E-01;
 
-    /** The constant {@code B3} defined in {@code DGAM1}. */
+    /**
+     * The constant {@code B3} defined in {@code DGAM1}.
+     */
     private static final double INV_GAMMA1P_M1_B3 = .493944979382446875238E-03;
 
-    /** The constant {@code B4} defined in {@code DGAM1}. */
+    /**
+     * The constant {@code B4} defined in {@code DGAM1}.
+     */
     private static final double INV_GAMMA1P_M1_B4 = -.851419432440314906588E-05;
 
-    /** The constant {@code B5} defined in {@code DGAM1}. */
+    /**
+     * The constant {@code B5} defined in {@code DGAM1}.
+     */
     private static final double INV_GAMMA1P_M1_B5 = -.643045481779353022248E-05;
 
-    /** The constant {@code B6} defined in {@code DGAM1}. */
+    /**
+     * The constant {@code B6} defined in {@code DGAM1}.
+     */
     private static final double INV_GAMMA1P_M1_B6 = .992641840672773722196E-06;
 
-    /** The constant {@code B7} defined in {@code DGAM1}. */
+    /**
+     * The constant {@code B7} defined in {@code DGAM1}.
+     */
     private static final double INV_GAMMA1P_M1_B7 = -.607761895722825260739E-07;
 
-    /** The constant {@code B8} defined in {@code DGAM1}. */
+    /**
+     * The constant {@code B8} defined in {@code DGAM1}.
+     */
     private static final double INV_GAMMA1P_M1_B8 = .195755836614639731882E-09;
 
-    /** The constant {@code P0} defined in {@code DGAM1}. */
+    /**
+     * The constant {@code P0} defined in {@code DGAM1}.
+     */
     private static final double INV_GAMMA1P_M1_P0 = .6116095104481415817861E-08;
 
-    /** The constant {@code P1} defined in {@code DGAM1}. */
+    /**
+     * The constant {@code P1} defined in {@code DGAM1}.
+     */
     private static final double INV_GAMMA1P_M1_P1 = .6871674113067198736152E-08;
 
-    /** The constant {@code P2} defined in {@code DGAM1}. */
+    /**
+     * The constant {@code P2} defined in {@code DGAM1}.
+     */
     private static final double INV_GAMMA1P_M1_P2 = .6820161668496170657918E-09;
 
-    /** The constant {@code P3} defined in {@code DGAM1}. */
+    /**
+     * The constant {@code P3} defined in {@code DGAM1}.
+     */
     private static final double INV_GAMMA1P_M1_P3 = .4686843322948848031080E-10;
 
-    /** The constant {@code P4} defined in {@code DGAM1}. */
+    /**
+     * The constant {@code P4} defined in {@code DGAM1}.
+     */
     private static final double INV_GAMMA1P_M1_P4 = .1572833027710446286995E-11;
 
-    /** The constant {@code P5} defined in {@code DGAM1}. */
+    /**
+     * The constant {@code P5} defined in {@code DGAM1}.
+     */
     private static final double INV_GAMMA1P_M1_P5 = -.1249441572276366213222E-12;
 
-    /** The constant {@code P6} defined in {@code DGAM1}. */
+    /**
+     * The constant {@code P6} defined in {@code DGAM1}.
+     */
     private static final double INV_GAMMA1P_M1_P6 = .4343529937408594255178E-14;
 
-    /** The constant {@code Q1} defined in {@code DGAM1}. */
+    /**
+     * The constant {@code Q1} defined in {@code DGAM1}.
+     */
     private static final double INV_GAMMA1P_M1_Q1 = .3056961078365221025009E+00;
 
-    /** The constant {@code Q2} defined in {@code DGAM1}. */
+    /**
+     * The constant {@code Q2} defined in {@code DGAM1}.
+     */
     private static final double INV_GAMMA1P_M1_Q2 = .5464213086042296536016E-01;
 
-    /** The constant {@code Q3} defined in {@code DGAM1}. */
+    /**
+     * The constant {@code Q3} defined in {@code DGAM1}.
+     */
     private static final double INV_GAMMA1P_M1_Q3 = .4956830093825887312020E-02;
 
-    /** The constant {@code Q4} defined in {@code DGAM1}. */
+    /**
+     * The constant {@code Q4} defined in {@code DGAM1}.
+     */
     private static final double INV_GAMMA1P_M1_Q4 = .2692369466186361192876E-03;
 
-    /** The constant {@code C} defined in {@code DGAM1}. */
+    /**
+     * The constant {@code C} defined in {@code DGAM1}.
+     */
     private static final double INV_GAMMA1P_M1_C = -.422784335098467139393487909917598E+00;
 
-    /** The constant {@code C0} defined in {@code DGAM1}. */
+    /**
+     * The constant {@code C0} defined in {@code DGAM1}.
+     */
     private static final double INV_GAMMA1P_M1_C0 = .577215664901532860606512090082402E+00;
 
-    /** The constant {@code C1} defined in {@code DGAM1}. */
+    /**
+     * The constant {@code C1} defined in {@code DGAM1}.
+     */
     private static final double INV_GAMMA1P_M1_C1 = -.655878071520253881077019515145390E+00;
 
-    /** The constant {@code C2} defined in {@code DGAM1}. */
+    /**
+     * The constant {@code C2} defined in {@code DGAM1}.
+     */
     private static final double INV_GAMMA1P_M1_C2 = -.420026350340952355290039348754298E-01;
 
-    /** The constant {@code C3} defined in {@code DGAM1}. */
+    /**
+     * The constant {@code C3} defined in {@code DGAM1}.
+     */
     private static final double INV_GAMMA1P_M1_C3 = .166538611382291489501700795102105E+00;
 
-    /** The constant {@code C4} defined in {@code DGAM1}. */
+    /**
+     * The constant {@code C4} defined in {@code DGAM1}.
+     */
     private static final double INV_GAMMA1P_M1_C4 = -.421977345555443367482083012891874E-01;
 
-    /** The constant {@code C5} defined in {@code DGAM1}. */
+    /**
+     * The constant {@code C5} defined in {@code DGAM1}.
+     */
     private static final double INV_GAMMA1P_M1_C5 = -.962197152787697356211492167234820E-02;
 
-    /** The constant {@code C6} defined in {@code DGAM1}. */
+    /**
+     * The constant {@code C6} defined in {@code DGAM1}.
+     */
     private static final double INV_GAMMA1P_M1_C6 = .721894324666309954239501034044657E-02;
 
-    /** The constant {@code C7} defined in {@code DGAM1}. */
+    /**
+     * The constant {@code C7} defined in {@code DGAM1}.
+     */
     private static final double INV_GAMMA1P_M1_C7 = -.116516759185906511211397108401839E-02;
 
-    /** The constant {@code C8} defined in {@code DGAM1}. */
+    /**
+     * The constant {@code C8} defined in {@code DGAM1}.
+     */
     private static final double INV_GAMMA1P_M1_C8 = -.215241674114950972815729963053648E-03;
 
-    /** The constant {@code C9} defined in {@code DGAM1}. */
+    /**
+     * The constant {@code C9} defined in {@code DGAM1}.
+     */
     private static final double INV_GAMMA1P_M1_C9 = .128050282388116186153198626328164E-03;
 
-    /** The constant {@code C10} defined in {@code DGAM1}. */
+    /**
+     * The constant {@code C10} defined in {@code DGAM1}.
+     */
     private static final double INV_GAMMA1P_M1_C10 = -.201348547807882386556893914210218E-04;
 
-    /** The constant {@code C11} defined in {@code DGAM1}. */
+    /**
+     * The constant {@code C11} defined in {@code DGAM1}.
+     */
     private static final double INV_GAMMA1P_M1_C11 = -.125049348214267065734535947383309E-05;
 
-    /** The constant {@code C12} defined in {@code DGAM1}. */
+    /**
+     * The constant {@code C12} defined in {@code DGAM1}.
+     */
     private static final double INV_GAMMA1P_M1_C12 = .113302723198169588237412962033074E-05;
 
-    /** The constant {@code C13} defined in {@code DGAM1}. */
+    /**
+     * The constant {@code C13} defined in {@code DGAM1}.
+     */
     private static final double INV_GAMMA1P_M1_C13 = -.205633841697760710345015413002057E-06;
 
     /**
      * Default constructor.  Prohibit instantiation.
      */
-    private Gamma() {}
+    private Gamma() {
+    }
 
     /**
      * <p>
@@ -226,12 +310,12 @@ public class Gamma {
      * </p>
      * <ul>
      * <li><a href="http://mathworld.wolfram.com/GammaFunction.html">Gamma
-     *     Function</a>, equation (28).</li>
+     * Function</a>, equation (28).</li>
      * <li><a href="http://mathworld.wolfram.com/LanczosApproximation.html">
-     *     Lanczos Approximation</a>, equations (1) through (5).</li>
+     * Lanczos Approximation</a>, equations (1) through (5).</li>
      * <li><a href="http://my.fit.edu/~gabdo/gamma.txt">Paul Godfrey, A note on
-     *     the computation of the convergent Lanczos complex Gamma
-     *     approximation</a></li>
+     * the computation of the convergent Lanczos complex Gamma
+     * approximation</a></li>
      * </ul>
      *
      * @param x Argument.
@@ -258,7 +342,7 @@ public class Gamma {
             double sum = lanczos(x);
             double tmp = x + LANCZOS_G + .5;
             ret = ((x + .5) * FastMath.log(tmp)) - tmp +
-                HALF_LOG_2_PI + FastMath.log(sum / x);
+                    HALF_LOG_2_PI + FastMath.log(sum / x);
         }
 
         return ret;
@@ -278,28 +362,28 @@ public class Gamma {
 
     /**
      * Returns the regularized gamma function P(a, x).
-     *
+     * <p>
      * The implementation of this method is based on:
      * <ul>
-     *  <li>
-     *   <a href="http://mathworld.wolfram.com/RegularizedGammaFunction.html">
-     *   Regularized Gamma Function</a>, equation (1)
-     *  </li>
-     *  <li>
-     *   <a href="http://mathworld.wolfram.com/IncompleteGammaFunction.html">
-     *   Incomplete Gamma Function</a>, equation (4).
-     *  </li>
-     *  <li>
-     *   <a href="http://mathworld.wolfram.com/ConfluentHypergeometricFunctionoftheFirstKind.html">
-     *   Confluent Hypergeometric Function of the First Kind</a>, equation (1).
-     *  </li>
+     * <li>
+     * <a href="http://mathworld.wolfram.com/RegularizedGammaFunction.html">
+     * Regularized Gamma Function</a>, equation (1)
+     * </li>
+     * <li>
+     * <a href="http://mathworld.wolfram.com/IncompleteGammaFunction.html">
+     * Incomplete Gamma Function</a>, equation (4).
+     * </li>
+     * <li>
+     * <a href="http://mathworld.wolfram.com/ConfluentHypergeometricFunctionoftheFirstKind.html">
+     * Confluent Hypergeometric Function of the First Kind</a>, equation (1).
+     * </li>
      * </ul>
      *
-     * @param a the a parameter.
-     * @param x the value.
-     * @param epsilon When the absolute value of the nth item in the
-     * series is less than epsilon the approximation ceases to calculate
-     * further elements in the series.
+     * @param a             the a parameter.
+     * @param x             the value.
+     * @param epsilon       When the absolute value of the nth item in the
+     *                      series is less than epsilon the approximation ceases to calculate
+     *                      further elements in the series.
      * @param maxIterations Maximum number of "iterations" to complete.
      * @return the regularized gamma function P(a, x)
      * @throws MathIllegalStateException if the algorithm fails to converge.
@@ -323,9 +407,9 @@ public class Gamma {
             double n = 0.0; // current element index
             double an = 1.0 / a; // n-th element in the series
             double sum = an; // partial sum
-            while (FastMath.abs(an/sum) > epsilon &&
-                   n < maxIterations &&
-                   sum < Double.POSITIVE_INFINITY) {
+            while (FastMath.abs(an / sum) > epsilon &&
+                    n < maxIterations &&
+                    sum < Double.POSITIVE_INFINITY) {
                 // compute next element in the series
                 n += 1.0;
                 an *= x / (a + n);
@@ -359,25 +443,25 @@ public class Gamma {
 
     /**
      * Returns the regularized gamma function Q(a, x) = 1 - P(a, x).
-     *
+     * <p>
      * The implementation of this method is based on:
      * <ul>
-     *  <li>
-     *   <a href="http://mathworld.wolfram.com/RegularizedGammaFunction.html">
-     *   Regularized Gamma Function</a>, equation (1).
-     *  </li>
-     *  <li>
-     *   <a href="http://functions.wolfram.com/GammaBetaErf/GammaRegularized/10/0003/">
-     *   Regularized incomplete gamma function: Continued fraction representations
-     *   (formula 06.08.10.0003)</a>
-     *  </li>
+     * <li>
+     * <a href="http://mathworld.wolfram.com/RegularizedGammaFunction.html">
+     * Regularized Gamma Function</a>, equation (1).
+     * </li>
+     * <li>
+     * <a href="http://functions.wolfram.com/GammaBetaErf/GammaRegularized/10/0003/">
+     * Regularized incomplete gamma function: Continued fraction representations
+     * (formula 06.08.10.0003)</a>
+     * </li>
      * </ul>
      *
-     * @param a the a parameter.
-     * @param x the value.
-     * @param epsilon When the absolute value of the nth item in the
-     * series is less than epsilon the approximation ceases to calculate
-     * further elements in the series.
+     * @param a             the a parameter.
+     * @param x             the value.
+     * @param epsilon       When the absolute value of the nth item in the
+     *                      series is less than epsilon the approximation ceases to calculate
+     *                      further elements in the series.
      * @param maxIterations Maximum number of "iterations" to complete.
      * @return the regularized gamma function P(a, x)
      * @throws MathIllegalStateException if the algorithm fails to converge.
@@ -423,14 +507,14 @@ public class Gamma {
 
     /**
      * <p>Computes the digamma function of x.</p>
-     *
+     * <p>
      * <p>This is an independently written implementation of the algorithm described in
      * Jose Bernardo, Algorithm AS 103: Psi (Digamma) Function, Applied Statistics, 1976.</p>
-     *
+     * <p>
      * <p>Some of the constants have been changed to increase accuracy at the moderate expense
      * of run-time.  The result should be accurate to within 10^-8 absolute tolerance for
      * x >= 10^-5 and within 10^-8 relative tolerance for x > 0.</p>
-     *
+     * <p>
      * <p>Performance for large negative values of x will be quite expensive (proportional to
      * |x|).  Accuracy for negative values of x should be about 10^-8 absolute for results
      * less than 10^5 and 10^-8 relative for results larger than that.</p>
@@ -501,7 +585,7 @@ public class Gamma {
      * following equation
      * <center>
      * {@code gamma(x) = sqrt(2 * pi) / x * (x + g + 0.5) ^ (x + 0.5)
-     *                   * exp(-x - g - 0.5) * lanczos(x)},
+     * * exp(-x - g - 0.5) * lanczos(x)},
      * </center>
      * where {@code g} is the Lanczos constant.
      * </p>
@@ -536,11 +620,11 @@ public class Gamma {
 
         if (x < -0.5) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.NUMBER_TOO_SMALL,
-                                                   x, -0.5);
+                    x, -0.5);
         }
         if (x > 1.5) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.NUMBER_TOO_LARGE,
-                                                   x, 1.5);
+                    x, 1.5);
         }
 
         final double ret;
@@ -627,15 +711,15 @@ public class Gamma {
      * @throws MathIllegalArgumentException if {@code x > 1.5}.
      */
     public static double logGamma1p(final double x)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
 
         if (x < -0.5) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.NUMBER_TOO_SMALL,
-                                                   x, -0.5);
+                    x, -0.5);
         }
         if (x > 1.5) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.NUMBER_TOO_LARGE,
-                                                   x, 1.5);
+                    x, 1.5);
         }
 
         return -FastMath.log1p(invGamma1pm1(x));
@@ -694,8 +778,8 @@ public class Gamma {
         } else {
             final double y = absX + LANCZOS_G + 0.5;
             final double gammaAbs = SQRT_TWO_PI / absX *
-                                    FastMath.pow(y, absX + 0.5) *
-                                    FastMath.exp(-y) * lanczos(absX);
+                    FastMath.pow(y, absX + 0.5) *
+                    FastMath.exp(-y) * lanczos(absX);
             if (x > 0.0) {
                 ret = gammaAbs;
             } else {
@@ -708,7 +792,7 @@ public class Gamma {
                  * Gamma(x) = -pi / [x * sin(pi * x) * Gamma(-x)].
                  */
                 ret = -FastMath.PI /
-                      (x * FastMath.sin(FastMath.PI * x) * gammaAbs);
+                        (x * FastMath.sin(FastMath.PI * x) * gammaAbs);
             }
         }
         return ret;

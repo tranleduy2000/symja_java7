@@ -16,10 +16,6 @@
  */
 package org.hipparchus.stat.descriptive.rank;
 
-import java.io.Serializable;
-import java.util.Arrays;
-import java.util.BitSet;
-
 import org.hipparchus.exception.LocalizedCoreFormats;
 import org.hipparchus.exception.MathIllegalArgumentException;
 import org.hipparchus.exception.NullArgumentException;
@@ -31,6 +27,10 @@ import org.hipparchus.util.MathArrays;
 import org.hipparchus.util.MathUtils;
 import org.hipparchus.util.PivotingStrategy;
 import org.hipparchus.util.Precision;
+
+import java.io.Serializable;
+import java.util.Arrays;
+import java.util.BitSet;
 
 /**
  * Provides percentile computation.
@@ -89,22 +89,34 @@ import org.hipparchus.util.Precision;
  */
 public class Percentile extends AbstractUnivariateStatistic implements Serializable {
 
-    /** Serializable version identifier */
+    /**
+     * Serializable version identifier
+     */
     private static final long serialVersionUID = 20150412L;
 
-    /** Maximum number of partitioning pivots cached (each level double the number of pivots). */
+    /**
+     * Maximum number of partitioning pivots cached (each level double the number of pivots).
+     */
     private static final int MAX_CACHED_LEVELS = 10;
 
-    /** Maximum number of cached pivots in the pivots cached array */
+    /**
+     * Maximum number of cached pivots in the pivots cached array
+     */
     private static final int PIVOTS_HEAP_LENGTH = 0x1 << MAX_CACHED_LEVELS - 1;
 
-    /** Default KthSelector used with default pivoting strategy */
+    /**
+     * Default KthSelector used with default pivoting strategy
+     */
     private final KthSelector kthSelector;
 
-    /** Any of the {@link EstimationType}s such as {@link EstimationType#LEGACY CM} can be used. */
+    /**
+     * Any of the {@link EstimationType}s such as {@link EstimationType#LEGACY CM} can be used.
+     */
     private final EstimationType estimationType;
 
-    /** NaN Handling of the input as defined by {@link NaNStrategy} */
+    /**
+     * NaN Handling of the input as defined by {@link NaNStrategy}
+     */
     private final NaNStrategy nanStrategy;
 
     /**
@@ -113,19 +125,21 @@ public class Percentile extends AbstractUnivariateStatistic implements Serializa
      */
     private double quantile;
 
-    /** Cached pivots. */
+    /**
+     * Cached pivots.
+     */
     private int[] cachedPivots;
 
     /**
      * Constructs a Percentile with the following defaults.
      * <ul>
-     *   <li>default quantile: 50.0, can be reset with {@link #setQuantile(double)}</li>
-     *   <li>default estimation type: {@link EstimationType#LEGACY},
-     *   can be reset with {@link #withEstimationType(EstimationType)}</li>
-     *   <li>default NaN strategy: {@link NaNStrategy#REMOVED},
-     *   can be reset with {@link #withNaNStrategy(NaNStrategy)}</li>
-     *   <li>a KthSelector that makes use of {@link PivotingStrategy#MEDIAN_OF_3},
-     *   can be reset with {@link #withKthSelector(KthSelector)}</li>
+     * <li>default quantile: 50.0, can be reset with {@link #setQuantile(double)}</li>
+     * <li>default estimation type: {@link EstimationType#LEGACY},
+     * can be reset with {@link #withEstimationType(EstimationType)}</li>
+     * <li>default NaN strategy: {@link NaNStrategy#REMOVED},
+     * can be reset with {@link #withNaNStrategy(NaNStrategy)}</li>
+     * <li>a KthSelector that makes use of {@link PivotingStrategy#MEDIAN_OF_3},
+     * can be reset with {@link #withKthSelector(KthSelector)}</li>
      * </ul>
      */
     public Percentile() {
@@ -136,17 +150,18 @@ public class Percentile extends AbstractUnivariateStatistic implements Serializa
     /**
      * Constructs a Percentile with the specific quantile value and the following
      * <ul>
-     *   <li>default method type: {@link EstimationType#LEGACY}</li>
-     *   <li>default NaN strategy: {@link NaNStrategy#REMOVED}</li>
-     *   <li>a Kth Selector : {@link KthSelector}</li>
+     * <li>default method type: {@link EstimationType#LEGACY}</li>
+     * <li>default NaN strategy: {@link NaNStrategy#REMOVED}</li>
+     * <li>a Kth Selector : {@link KthSelector}</li>
      * </ul>
+     *
      * @param quantile the quantile
-     * @throws MathIllegalArgumentException  if p is not greater than 0 and less
-     * than or equal to 100
+     * @throws MathIllegalArgumentException if p is not greater than 0 and less
+     *                                      than or equal to 100
      */
     public Percentile(final double quantile) throws MathIllegalArgumentException {
         this(quantile, EstimationType.LEGACY, NaNStrategy.REMOVED,
-             new KthSelector(PivotingStrategy.MEDIAN_OF_3));
+                new KthSelector(PivotingStrategy.MEDIAN_OF_3));
     }
 
     /**
@@ -158,9 +173,9 @@ public class Percentile extends AbstractUnivariateStatistic implements Serializa
      */
     public Percentile(final Percentile original) throws NullArgumentException {
         super(original);
-        estimationType   = original.getEstimationType();
-        nanStrategy      = original.getNaNStrategy();
-        kthSelector      = original.getKthSelector();
+        estimationType = original.getEstimationType();
+        nanStrategy = original.getNaNStrategy();
+        kthSelector = original.getKthSelector();
 
         setData(original.getDataRef());
         if (original.cachedPivots != null) {
@@ -173,18 +188,18 @@ public class Percentile extends AbstractUnivariateStatistic implements Serializa
      * Constructs a Percentile with the specific quantile value,
      * {@link EstimationType}, {@link NaNStrategy} and {@link KthSelector}.
      *
-     * @param quantile the quantile to be computed
+     * @param quantile       the quantile to be computed
      * @param estimationType one of the percentile {@link EstimationType  estimation types}
-     * @param nanStrategy one of {@link NaNStrategy} to handle with NaNs
-     * @param kthSelector a {@link KthSelector} to use for pivoting during search
+     * @param nanStrategy    one of {@link NaNStrategy} to handle with NaNs
+     * @param kthSelector    a {@link KthSelector} to use for pivoting during search
      * @throws MathIllegalArgumentException if p is not within (0,100]
-     * @throws NullArgumentException if type or NaNStrategy passed is null
+     * @throws NullArgumentException        if type or NaNStrategy passed is null
      */
     protected Percentile(final double quantile,
                          final EstimationType estimationType,
                          final NaNStrategy nanStrategy,
                          final KthSelector kthSelector)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         setQuantile(quantile);
         cachedPivots = null;
         MathUtils.checkNotNull(estimationType);
@@ -195,7 +210,93 @@ public class Percentile extends AbstractUnivariateStatistic implements Serializa
         this.kthSelector = kthSelector;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Make a copy of the array for the slice defined by array part from
+     * [begin, begin+length)
+     *
+     * @param values the input array
+     * @param begin  start index of the array to include
+     * @param length number of elements to include from begin
+     * @return copy of a slice of the original array
+     */
+    private static double[] copyOf(final double[] values, final int begin, final int length) {
+        MathArrays.verifyValues(values, begin, length);
+        return Arrays.copyOfRange(values, begin, begin + length);
+    }
+
+    /**
+     * Replace every occurrence of a given value with a replacement value in a
+     * copied slice of array defined by array part from [begin, begin+length).
+     *
+     * @param values      the input array
+     * @param begin       start index of the array to include
+     * @param length      number of elements to include from begin
+     * @param original    the value to be replaced with
+     * @param replacement the value to be used for replacement
+     * @return the copy of sliced array with replaced values
+     */
+    private static double[] replaceAndSlice(final double[] values,
+                                            final int begin, final int length,
+                                            final double original,
+                                            final double replacement) {
+        final double[] temp = copyOf(values, begin, length);
+        for (int i = 0; i < length; i++) {
+            temp[i] = Precision.equalsIncludingNaN(original, temp[i]) ?
+                    replacement : temp[i];
+        }
+        return temp;
+    }
+
+    /**
+     * Remove the occurrence of a given value in a copied slice of array
+     * defined by the array part from [begin, begin+length).
+     *
+     * @param values       the input array
+     * @param begin        start index of the array to include
+     * @param length       number of elements to include from begin
+     * @param removedValue the value to be removed from the sliced array
+     * @return the copy of the sliced array after removing the removedValue
+     */
+    private static double[] removeAndSlice(final double[] values,
+                                           final int begin, final int length,
+                                           final double removedValue) {
+        MathArrays.verifyValues(values, begin, length);
+        final double[] temp;
+        //BitSet(length) to indicate where the removedValue is located
+        final BitSet bits = new BitSet(length);
+        for (int i = begin; i < begin + length; i++) {
+            if (Precision.equalsIncludingNaN(removedValue, values[i])) {
+                bits.set(i - begin);
+            }
+        }
+        //Check if empty then create a new copy
+        if (bits.isEmpty()) {
+            temp = copyOf(values, begin, length); // Nothing removed, just copy
+        } else if (bits.cardinality() == length) {
+            temp = new double[0];                 // All removed, just empty
+        } else {                                   // Some removable, so new
+            temp = new double[length - bits.cardinality()];
+            int start = begin;  //start index from source array (i.e values)
+            int dest = 0;       //dest index in destination array(i.e temp)
+            int nextOne = -1;   //nextOne is the index of bit set of next one
+            int bitSetPtr = 0;  //bitSetPtr is start index pointer of bitset
+            while ((nextOne = bits.nextSetBit(bitSetPtr)) != -1) {
+                final int lengthToCopy = nextOne - bitSetPtr;
+                System.arraycopy(values, start, temp, dest, lengthToCopy);
+                dest += lengthToCopy;
+                start = begin + (bitSetPtr = bits.nextClearBit(nextOne));
+            }
+            //Copy any residue past start index till begin+length
+            if (start < begin + length) {
+                System.arraycopy(values, start, temp, dest, begin + length - start);
+            }
+        }
+        return temp;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setData(final double[] values) {
         if (values == null) {
@@ -207,10 +308,12 @@ public class Percentile extends AbstractUnivariateStatistic implements Serializa
         super.setData(values);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setData(final double[] values, final int begin, final int length)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         MathUtils.checkNotNull(values, LocalizedCoreFormats.INPUT_ARRAY);
         cachedPivots = new int[PIVOTS_HEAP_LENGTH];
         Arrays.fill(cachedPivots, -1);
@@ -226,7 +329,7 @@ public class Percentile extends AbstractUnivariateStatistic implements Serializa
      * @param p the percentile value to compute
      * @return the value of the statistic applied to the stored data
      * @throws MathIllegalArgumentException if p is not a valid quantile value
-     * (p must be greater than 0 and less than or equal to 100)
+     *                                      (p must be greater than 0 and less than or equal to 100)
      */
     public double evaluate(final double p) throws MathIllegalArgumentException {
         return evaluate(getDataRef(), p);
@@ -249,15 +352,14 @@ public class Percentile extends AbstractUnivariateStatistic implements Serializa
      * algorithm used.
      *
      * @param values the input array
-     * @param start index of the first array element to include
+     * @param start  index of the first array element to include
      * @param length the number of elements to include
      * @return the percentile value
      * @throws MathIllegalArgumentException if the parameters are not valid
-     *
      */
     @Override
     public double evaluate(final double[] values, final int start, final int length)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         return evaluate(values, start, length, quantile);
     }
 
@@ -269,7 +371,7 @@ public class Percentile extends AbstractUnivariateStatistic implements Serializa
      * <li>Returns <code>Double.NaN</code> if <code>values</code> has length
      * <code>0</code></li>
      * <li>Returns (for any value of <code>p</code>) <code>values[0]</code>
-     *  if <code>values</code> has length <code>1</code></li>
+     * if <code>values</code> has length <code>1</code></li>
      * <li>Throws <code>MathIllegalArgumentException</code> if <code>values</code>
      * is null or p is not a valid quantile value (p must be greater than 0
      * and less than or equal to 100) </li>
@@ -279,12 +381,12 @@ public class Percentile extends AbstractUnivariateStatistic implements Serializa
      * <code>evaluate(double[], int, int, double)</code> in the natural way.
      *
      * @param values input array of values
-     * @param p the percentile value to compute
+     * @param p      the percentile value to compute
      * @return the percentile value or Double.NaN if the array is empty
      * @throws MathIllegalArgumentException if <code>values</code> is null or p is invalid
      */
     public double evaluate(final double[] values, final double p)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         MathUtils.checkNotNull(values, LocalizedCoreFormats.INPUT_ARRAY);
         return evaluate(values, 0, values.length, p);
     }
@@ -301,9 +403,9 @@ public class Percentile extends AbstractUnivariateStatistic implements Serializa
      * <ul>
      * <li>Returns <code>Double.NaN</code> if <code>length = 0</code></li>
      * <li>Returns (for any value of <code>p</code>) <code>values[begin]</code>
-     *  if <code>length = 1 </code></li>
+     * if <code>length = 1 </code></li>
      * <li>Throws <code>MathIllegalArgumentException</code> if <code>values</code>
-     *  is null , <code>begin</code> or <code>length</code> is invalid, or
+     * is null , <code>begin</code> or <code>length</code> is invalid, or
      * <code>p</code> is not a valid quantile value (p must be greater than 0
      * and less than or equal to 100)</li>
      * </ul>
@@ -312,21 +414,21 @@ public class Percentile extends AbstractUnivariateStatistic implements Serializa
      * algorithm used.
      *
      * @param values array of input values
-     * @param p  the percentile to compute
+     * @param p      the percentile to compute
      * @param begin  the first (0-based) element to include in the computation
-     * @param length  the number of array elements to include
-     * @return  the percentile value
+     * @param length the number of array elements to include
+     * @return the percentile value
      * @throws MathIllegalArgumentException if the parameters are not valid or the
-     * input array is null
+     *                                      input array is null
      */
     public double evaluate(final double[] values, final int begin,
                            final int length, final double p)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
 
         MathArrays.verifyValues(values, begin, length);
         if (p > 100 || p <= 0) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.OUT_OF_BOUNDS_QUANTILE_VALUE,
-                                                   p, 0, 100);
+                    p, 0, 100);
         }
         if (length == 0) {
             return Double.NaN;
@@ -338,7 +440,7 @@ public class Percentile extends AbstractUnivariateStatistic implements Serializa
         final double[] work = getWorkArray(values, begin, length);
         final int[] pivotsHeap = getPivots(values);
         return work.length == 0 ? Double.NaN :
-                    estimationType.evaluate(work, pivotsHeap, p, kthSelector);
+                estimationType.evaluate(work, pivotsHeap, p, kthSelector);
     }
 
     /**
@@ -356,8 +458,8 @@ public class Percentile extends AbstractUnivariateStatistic implements Serializa
      * computed when evaluate() is called with no quantile argument).
      *
      * @param p a value between 0 < p <= 100
-     * @throws MathIllegalArgumentException  if p is not greater than 0 and less
-     * than or equal to 100
+     * @throws MathIllegalArgumentException if p is not greater than 0 and less
+     *                                      than or equal to 100
      */
     public void setQuantile(final double p) throws MathIllegalArgumentException {
         if (p <= 0 || p > 100) {
@@ -367,7 +469,9 @@ public class Percentile extends AbstractUnivariateStatistic implements Serializa
         quantile = p;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Percentile copy() {
         return new Percentile(this);
@@ -381,7 +485,7 @@ public class Percentile extends AbstractUnivariateStatistic implements Serializa
      * the resultant array.
      *
      * @param values the array of numbers
-     * @param begin index to start reading the array
+     * @param begin  index to start reading the array
      * @param length the length of array to be read from the begin index
      * @return work array sliced from values in the range [begin,begin+length)
      * @throws MathIllegalArgumentException if values or indices are invalid
@@ -411,87 +515,6 @@ public class Percentile extends AbstractUnivariateStatistic implements Serializa
             }
         }
         return work;
-    }
-
-    /**
-     * Make a copy of the array for the slice defined by array part from
-     * [begin, begin+length)
-     * @param values the input array
-     * @param begin start index of the array to include
-     * @param length number of elements to include from begin
-     * @return copy of a slice of the original array
-     */
-    private static double[] copyOf(final double[] values, final int begin, final int length) {
-        MathArrays.verifyValues(values, begin, length);
-        return Arrays.copyOfRange(values, begin, begin + length);
-    }
-
-    /**
-     * Replace every occurrence of a given value with a replacement value in a
-     * copied slice of array defined by array part from [begin, begin+length).
-     * @param values the input array
-     * @param begin start index of the array to include
-     * @param length number of elements to include from begin
-     * @param original the value to be replaced with
-     * @param replacement the value to be used for replacement
-     * @return the copy of sliced array with replaced values
-     */
-    private static double[] replaceAndSlice(final double[] values,
-                                            final int begin, final int length,
-                                            final double original,
-                                            final double replacement) {
-        final double[] temp = copyOf(values, begin, length);
-        for(int i = 0; i < length; i++) {
-            temp[i] = Precision.equalsIncludingNaN(original, temp[i]) ?
-                      replacement : temp[i];
-        }
-        return temp;
-    }
-
-    /**
-     * Remove the occurrence of a given value in a copied slice of array
-     * defined by the array part from [begin, begin+length).
-     * @param values the input array
-     * @param begin start index of the array to include
-     * @param length number of elements to include from begin
-     * @param removedValue the value to be removed from the sliced array
-     * @return the copy of the sliced array after removing the removedValue
-     */
-    private static double[] removeAndSlice(final double[] values,
-                                           final int begin, final int length,
-                                           final double removedValue) {
-        MathArrays.verifyValues(values, begin, length);
-        final double[] temp;
-        //BitSet(length) to indicate where the removedValue is located
-        final BitSet bits = new BitSet(length);
-        for (int i = begin; i < begin+length; i++) {
-            if (Precision.equalsIncludingNaN(removedValue, values[i])) {
-                bits.set(i - begin);
-            }
-        }
-        //Check if empty then create a new copy
-        if (bits.isEmpty()) {
-            temp = copyOf(values, begin, length); // Nothing removed, just copy
-        } else if(bits.cardinality() == length) {
-            temp = new double[0];                 // All removed, just empty
-        }else {                                   // Some removable, so new
-            temp = new double[length - bits.cardinality()];
-            int start = begin;  //start index from source array (i.e values)
-            int dest = 0;       //dest index in destination array(i.e temp)
-            int nextOne = -1;   //nextOne is the index of bit set of next one
-            int bitSetPtr = 0;  //bitSetPtr is start index pointer of bitset
-            while ((nextOne = bits.nextSetBit(bitSetPtr)) != -1) {
-                final int lengthToCopy = nextOne - bitSetPtr;
-                System.arraycopy(values, start, temp, dest, lengthToCopy);
-                dest += lengthToCopy;
-                start = begin + (bitSetPtr = bits.nextClearBit(nextOne));
-            }
-            //Copy any residue past start index till begin+length
-            if (start < begin + length) {
-                System.arraycopy(values,start,temp,dest,begin + length - start);
-            }
-        }
-        return temp;
     }
 
     /**
@@ -546,6 +569,7 @@ public class Percentile extends AbstractUnivariateStatistic implements Serializa
 
     /**
      * Get the {@link NaNStrategy NaN Handling} strategy used for computation.
+     *
      * @return {@code NaN Handling} strategy set during construction
      */
     public NaNStrategy getNaNStrategy() {
@@ -578,6 +602,7 @@ public class Percentile extends AbstractUnivariateStatistic implements Serializa
 
     /**
      * Get the {@link KthSelector kthSelector} used for computation.
+     *
      * @return the {@code kthSelector} set
      */
     public KthSelector getKthSelector() {
@@ -586,6 +611,7 @@ public class Percentile extends AbstractUnivariateStatistic implements Serializa
 
     /**
      * Get the {@link PivotingStrategy} used in KthSelector for computation.
+     *
      * @return the pivoting strategy set
      */
     public PivotingStrategy getPivotingStrategy() {
@@ -673,8 +699,8 @@ public class Percentile extends AbstractUnivariateStatistic implements Serializa
                 final double minLimit = 0d;
                 final double maxLimit = 1d;
                 return Double.compare(p, minLimit) == 0 ? 0 :
-                       Double.compare(p, maxLimit) == 0 ?
-                               length : p * (length + 1);
+                        Double.compare(p, maxLimit) == 0 ?
+                                length : p * (length + 1);
             }
         },
         /**
@@ -686,7 +712,6 @@ public class Percentile extends AbstractUnivariateStatistic implements Serializa
          * \end{align}\)
          */
         R_1("R-1") {
-
             @Override
             protected double index(final double p, final int length) {
                 final double minLimit = 0d;
@@ -715,13 +740,12 @@ public class Percentile extends AbstractUnivariateStatistic implements Serializa
          * \end{align}\)
          */
         R_2("R-2") {
-
             @Override
             protected double index(final double p, final int length) {
                 final double minLimit = 0d;
                 final double maxLimit = 1d;
                 return Double.compare(p, maxLimit) == 0 ? length :
-                       Double.compare(p, minLimit) == 0 ? 0 : length * p + 0.5;
+                        Double.compare(p, minLimit) == 0 ? 0 : length * p + 0.5;
             }
 
             /**
@@ -735,7 +759,7 @@ public class Percentile extends AbstractUnivariateStatistic implements Serializa
                 final double low =
                         super.estimate(values, pivotsHeap, FastMath.ceil(pos - 0.5), length, selector);
                 final double high =
-                        super.estimate(values, pivotsHeap,FastMath.floor(pos + 0.5), length, selector);
+                        super.estimate(values, pivotsHeap, FastMath.floor(pos + 0.5), length, selector);
                 return (low + high) / 2;
             }
 
@@ -751,7 +775,7 @@ public class Percentile extends AbstractUnivariateStatistic implements Serializa
         R_3("R-3") {
             @Override
             protected double index(final double p, final int length) {
-                final double minLimit = 1d/2 / length;
+                final double minLimit = 1d / 2 / length;
                 return Double.compare(p, minLimit) <= 0 ?
                         0 : FastMath.rint(length * p);
             }
@@ -774,7 +798,7 @@ public class Percentile extends AbstractUnivariateStatistic implements Serializa
                 final double minLimit = 1d / length;
                 final double maxLimit = 1d;
                 return Double.compare(p, minLimit) < 0 ? 0 :
-                       Double.compare(p, maxLimit) == 0 ? length : length * p;
+                        Double.compare(p, maxLimit) == 0 ? length : length * p;
             }
 
         },
@@ -790,14 +814,13 @@ public class Percentile extends AbstractUnivariateStatistic implements Serializa
          * \end{align}\)
          */
         R_5("R-5") {
-
             @Override
             protected double index(final double p, final int length) {
-                final double minLimit = 1d/2 / length;
+                final double minLimit = 1d / 2 / length;
                 final double maxLimit = (length - 0.5) / length;
                 return Double.compare(p, minLimit) < 0 ? 0 :
-                       Double.compare(p, maxLimit) >= 0 ?
-                               length : length * p + 0.5;
+                        Double.compare(p, maxLimit) >= 0 ?
+                                length : length * p + 0.5;
             }
         },
         /**
@@ -818,14 +841,13 @@ public class Percentile extends AbstractUnivariateStatistic implements Serializa
          * While in default case; these are done with p=0 and p=1 respectively.
          */
         R_6("R-6") {
-
             @Override
             protected double index(final double p, final int length) {
                 final double minLimit = 1d / (length + 1);
                 final double maxLimit = 1d * length / (length + 1);
                 return Double.compare(p, minLimit) < 0 ? 0 :
-                       Double.compare(p, maxLimit) >= 0 ?
-                               length : (length + 1) * p;
+                        Double.compare(p, maxLimit) >= 0 ?
+                                length : (length + 1) * p;
             }
         },
 
@@ -847,8 +869,8 @@ public class Percentile extends AbstractUnivariateStatistic implements Serializa
                 final double minLimit = 0d;
                 final double maxLimit = 1d;
                 return Double.compare(p, minLimit) == 0 ? 0 :
-                       Double.compare(p, maxLimit) == 0 ?
-                               length : 1 + (length - 1) * p;
+                        Double.compare(p, maxLimit) == 0 ?
+                                length : 1 + (length - 1) * p;
             }
 
         },
@@ -858,7 +880,7 @@ public class Percentile extends AbstractUnivariateStatistic implements Serializa
          * \( \begin{align}
          * &amp;index = (N + 1/3)p + 1/3  \\
          * &amp;estimate = x_{\lfloor h \rfloor} + (h -
-           \lfloor h \rfloor) (x_{\lfloor h \rfloor + 1} - x_{\lfloor h
+         * \lfloor h \rfloor) (x_{\lfloor h \rfloor + 1} - x_{\lfloor h
          * \rfloor}) \\
          * &amp;minLimit = (2/3)/(N+1/3) \\
          * &amp;maxLimit = (N-1/3)/(N+1/3) \\
@@ -874,8 +896,8 @@ public class Percentile extends AbstractUnivariateStatistic implements Serializa
                 final double maxLimit =
                         (length - 1d / 3) / (length + 1d / 3);
                 return Double.compare(p, minLimit) < 0 ? 0 :
-                       Double.compare(p, maxLimit) >= 0 ? length :
-                           (length + 1d / 3) * p + 1d / 3;
+                        Double.compare(p, maxLimit) >= 0 ? length :
+                                (length + 1d / 3) * p + 1d / 3;
             }
         },
 
@@ -884,7 +906,7 @@ public class Percentile extends AbstractUnivariateStatistic implements Serializa
          * \( \begin{align}
          * &amp;index = (N + 1/4)p + 3/8\\
          * &amp;estimate = x_{\lfloor h \rfloor} + (h -
-           \lfloor h \rfloor) (x_{\lfloor h \rfloor + 1} - x_{\lfloor h
+         * \lfloor h \rfloor) (x_{\lfloor h \rfloor + 1} - x_{\lfloor h
          * \rfloor}) \\
          * &amp;minLimit = (5/8)/(N+1/4) \\
          * &amp;maxLimit = (N-3/8)/(N+1/4) \\
@@ -893,17 +915,18 @@ public class Percentile extends AbstractUnivariateStatistic implements Serializa
         R_9("R-9") {
             @Override
             protected double index(final double p, final int length) {
-                final double minLimit = 5d/8 / (length + 0.25);
-                final double maxLimit = (length - 3d/8) / (length + 0.25);
+                final double minLimit = 5d / 8 / (length + 0.25);
+                final double maxLimit = (length - 3d / 8) / (length + 0.25);
                 return Double.compare(p, minLimit) < 0 ? 0 :
-                       Double.compare(p, maxLimit) >= 0 ? length :
-                               (length + 0.25) * p + 3d/8;
+                        Double.compare(p, maxLimit) >= 0 ? length :
+                                (length + 0.25) * p + 3d / 8;
             }
 
-        },
-        ;
+        },;
 
-        /** Simple name such as R-1, R-2 corresponding to those in wikipedia. */
+        /**
+         * Simple name such as R-1, R-2 corresponding to those in wikipedia.
+         */
         private final String name;
 
         /**
@@ -921,7 +944,7 @@ public class Percentile extends AbstractUnivariateStatistic implements Serializa
          * percentile. The calculation of index calculation is specific to each
          * {@link EstimationType}.
          *
-         * @param p the p<sup>th</sup> quantile
+         * @param p      the p<sup>th</sup> quantile
          * @param length the total number of array elements in the work array
          * @return a computed real valued index as explained in the wikipedia
          */
@@ -931,12 +954,12 @@ public class Percentile extends AbstractUnivariateStatistic implements Serializa
          * Estimation based on K<sup>th</sup> selection. This may be overridden
          * in specific enums to compute slightly different estimations.
          *
-         * @param work array of numbers to be used for finding the percentile
-         * @param pos indicated positional index prior computed from calling
-         *            {@link #index(double, int)}
+         * @param work       array of numbers to be used for finding the percentile
+         * @param pos        indicated positional index prior computed from calling
+         *                   {@link #index(double, int)}
          * @param pivotsHeap an earlier populated cache if exists; will be used
-         * @param length size of array considered
-         * @param selector a {@link KthSelector} used for pivoting during search
+         * @param length     size of array considered
+         * @param selector   a {@link KthSelector} used for pivoting during search
          * @return estimated percentile
          */
         protected double estimate(final double[] work, final int[] pivotsHeap,
@@ -966,22 +989,22 @@ public class Percentile extends AbstractUnivariateStatistic implements Serializa
          * {@link #estimate(double[], int[], double, int, KthSelector) estimate}
          * functions to return the estimated percentile value.
          *
-         * @param work array of numbers to be used for finding the percentile
+         * @param work       array of numbers to be used for finding the percentile
          * @param pivotsHeap a prior cached heap which can speed up estimation
-         * @param p the p<sup>th</sup> quantile to be computed
-         * @param selector a {@link KthSelector} used for pivoting during search
+         * @param p          the p<sup>th</sup> quantile to be computed
+         * @param selector   a {@link KthSelector} used for pivoting during search
          * @return estimated percentile
          * @throws MathIllegalArgumentException if p is out of range
-         * @throws NullArgumentException if work array is null
+         * @throws NullArgumentException        if work array is null
          */
         protected double evaluate(final double[] work, final int[] pivotsHeap, final double p,
                                   final KthSelector selector) {
             MathUtils.checkNotNull(work);
             if (p > 100 || p <= 0) {
                 throw new MathIllegalArgumentException(LocalizedCoreFormats.OUT_OF_BOUNDS_QUANTILE_VALUE,
-                                              p, 0, 100);
+                        p, 0, 100);
             }
-            return estimate(work, pivotsHeap, index(p/100d, work.length), work.length, selector);
+            return estimate(work, pivotsHeap, index(p / 100d, work.length), work.length, selector);
         }
 
         /**
@@ -991,12 +1014,12 @@ public class Percentile extends AbstractUnivariateStatistic implements Serializa
          * functions to return the estimated percentile value. Please
          * note that this method does not make use of cached pivots.
          *
-         * @param work array of numbers to be used for finding the percentile
-         * @param p the p<sup>th</sup> quantile to be computed
-         * @return estimated percentile
+         * @param work     array of numbers to be used for finding the percentile
+         * @param p        the p<sup>th</sup> quantile to be computed
          * @param selector a {@link KthSelector} used for pivoting during search
+         * @return estimated percentile
          * @throws MathIllegalArgumentException if length or p is out of range
-         * @throws NullArgumentException if work array is null
+         * @throws NullArgumentException        if work array is null
          */
         public double evaluate(final double[] work, final double p, final KthSelector selector) {
             return this.evaluate(work, null, p, selector);

@@ -26,7 +26,7 @@ import org.hipparchus.util.MathArrays;
 /**
  * This class implements the 3/8 fourth order Runge-Kutta
  * integrator for Ordinary Differential Equations.
- *
+ * <p>
  * <p>This method is an explicit Runge-Kutta method, its Butcher-array
  * is the following one :
  * <pre>
@@ -39,27 +39,31 @@ import org.hipparchus.util.MathArrays;
  * </pre>
  * </p>
  *
+ * @param <T> the type of the field elements
  * @see EulerFieldIntegrator
  * @see ClassicalRungeKuttaFieldIntegrator
  * @see GillFieldIntegrator
  * @see MidpointFieldIntegrator
  * @see LutherFieldIntegrator
- * @param <T> the type of the field elements
  */
 
 public class ThreeEighthesFieldIntegrator<T extends RealFieldElement<T>>
-    extends RungeKuttaFieldIntegrator<T> {
+        extends RungeKuttaFieldIntegrator<T> {
 
-    /** Simple constructor.
+    /**
+     * Simple constructor.
      * Build a 3/8 integrator with the given step.
+     *
      * @param field field to which the time and state vector elements belong
-     * @param step integration step
+     * @param step  integration step
      */
     public ThreeEighthesFieldIntegrator(final Field<T> field, final T step) {
         super(field, "3/8", step);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public T[] getC() {
         final T[] c = MathArrays.buildArray(getField(), 3);
@@ -69,7 +73,9 @@ public class ThreeEighthesFieldIntegrator<T extends RealFieldElement<T>>
         return c;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public T[][] getA() {
         final T[][] a = MathArrays.buildArray(getField(), 3, -1);
@@ -85,7 +91,9 @@ public class ThreeEighthesFieldIntegrator<T extends RealFieldElement<T>>
         return a;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public T[] getB() {
         final T[] b = MathArrays.buildArray(getField(), 4);
@@ -96,17 +104,19 @@ public class ThreeEighthesFieldIntegrator<T extends RealFieldElement<T>>
         return b;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected ThreeEighthesFieldStateInterpolator<T>
-        createInterpolator(final boolean forward, T[][] yDotK,
-                           final FieldODEStateAndDerivative<T> globalPreviousState,
-                           final FieldODEStateAndDerivative<T> globalCurrentState,
-                           final FieldEquationsMapper<T> mapper) {
+    createInterpolator(final boolean forward, T[][] yDotK,
+                       final FieldODEStateAndDerivative<T> globalPreviousState,
+                       final FieldODEStateAndDerivative<T> globalCurrentState,
+                       final FieldEquationsMapper<T> mapper) {
         return new ThreeEighthesFieldStateInterpolator<T>(getField(), forward, yDotK,
-                                                         globalPreviousState, globalCurrentState,
-                                                         globalPreviousState, globalCurrentState,
-                                                         mapper);
+                globalPreviousState, globalCurrentState,
+                globalPreviousState, globalCurrentState,
+                mapper);
     }
 
 }

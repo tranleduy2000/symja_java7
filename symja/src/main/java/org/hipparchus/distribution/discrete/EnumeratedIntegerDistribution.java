@@ -16,16 +16,16 @@
  */
 package org.hipparchus.distribution.discrete;
 
+import org.hipparchus.distribution.EnumeratedDistribution;
+import org.hipparchus.exception.MathIllegalArgumentException;
+import org.hipparchus.util.MathUtils;
+import org.hipparchus.util.Pair;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import org.hipparchus.distribution.EnumeratedDistribution;
-import org.hipparchus.exception.MathIllegalArgumentException;
-import org.hipparchus.util.MathUtils;
-import org.hipparchus.util.Pair;
 
 /**
  * Implementation of an integer-valued {@link EnumeratedDistribution}.
@@ -38,7 +38,9 @@ import org.hipparchus.util.Pair;
  */
 public class EnumeratedIntegerDistribution extends AbstractIntegerDistribution {
 
-    /** Serializable UID. */
+    /**
+     * Serializable UID.
+     */
     private static final long serialVersionUID = 20130308L;
 
     /**
@@ -51,14 +53,14 @@ public class EnumeratedIntegerDistribution extends AbstractIntegerDistribution {
      * Create a discrete distribution using the given probability mass function
      * definition.
      *
-     * @param singletons array of random variable values.
+     * @param singletons    array of random variable values.
      * @param probabilities array of probabilities.
      * @throws MathIllegalArgumentException if
-     * {@code singletons.length != probabilities.length}
+     *                                      {@code singletons.length != probabilities.length}
      * @throws MathIllegalArgumentException if probabilities contains negative, infinite or NaN values or only 0's
      */
     public EnumeratedIntegerDistribution(final int[] singletons, final double[] probabilities)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         innerDistribution =
                 new EnumeratedDistribution<Integer>(createDistribution(singletons, probabilities));
     }
@@ -96,7 +98,7 @@ public class EnumeratedIntegerDistribution extends AbstractIntegerDistribution {
     /**
      * Create the list of Pairs representing the distribution from singletons and probabilities.
      *
-     * @param singletons values
+     * @param singletons    values
      * @param probabilities probabilities
      * @return list of value/probability pairs
      * @throws MathIllegalArgumentException if probabilities contains negative, infinite or NaN values or only 0's
@@ -173,7 +175,7 @@ public class EnumeratedIntegerDistribution extends AbstractIntegerDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * Returns the lowest value with non-zero probability.
      *
      * @return the lowest value with non-zero probability.
@@ -192,7 +194,7 @@ public class EnumeratedIntegerDistribution extends AbstractIntegerDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * Returns the highest value with non-zero probability.
      *
      * @return the highest value with non-zero probability.
@@ -211,7 +213,7 @@ public class EnumeratedIntegerDistribution extends AbstractIntegerDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The support of this distribution is connected.
      *
      * @return {@code true}

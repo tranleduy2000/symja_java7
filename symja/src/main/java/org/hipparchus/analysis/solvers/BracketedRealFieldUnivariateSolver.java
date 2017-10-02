@@ -23,28 +23,29 @@ import org.hipparchus.exception.MathIllegalArgumentException;
 import org.hipparchus.exception.MathIllegalStateException;
 import org.hipparchus.exception.MathRuntimeException;
 
-/** Interface for {@link UnivariateSolver (univariate real) root-finding
+/**
+ * Interface for {@link UnivariateSolver (univariate real) root-finding
  * algorithms} that maintain a bracketed solution. There are several advantages
  * to having such root-finding algorithms:
  * <ul>
- *  <li>The bracketed solution guarantees that the root is kept within the
- *      interval. As such, these algorithms generally also guarantee
- *      convergence.</li>
- *  <li>The bracketed solution means that we have the opportunity to only
- *      return roots that are greater than or equal to the actual root, or
- *      are less than or equal to the actual root. That is, we can control
- *      whether under-approximations and over-approximations are
- *      {@link AllowedSolution allowed solutions}. Other root-finding
- *      algorithms can usually only guarantee that the solution (the root that
- *      was found) is around the actual root.</li>
+ * <li>The bracketed solution guarantees that the root is kept within the
+ * interval. As such, these algorithms generally also guarantee
+ * convergence.</li>
+ * <li>The bracketed solution means that we have the opportunity to only
+ * return roots that are greater than or equal to the actual root, or
+ * are less than or equal to the actual root. That is, we can control
+ * whether under-approximations and over-approximations are
+ * {@link AllowedSolution allowed solutions}. Other root-finding
+ * algorithms can usually only guarantee that the solution (the root that
+ * was found) is around the actual root.</li>
  * </ul>
- *
+ * <p>
  * <p>For backwards compatibility, all root-finding algorithms must have
  * {@link AllowedSolution#ANY_SIDE ANY_SIDE} as default for the allowed
  * solutions.</p>
  *
- * @see AllowedSolution
  * @param <T> the type of the field elements
+ * @see AllowedSolution
  */
 public interface BracketedRealFieldUnivariateSolver<T extends RealFieldElement<T>> {
 
@@ -104,17 +105,16 @@ public interface BracketedRealFieldUnivariateSolver<T extends RealFieldElement<T
      * Solvers that do require bracketing should be able to handle the case
      * where one of the endpoints is itself a root.
      *
-     * @param maxEval Maximum number of evaluations.
-     * @param f Function to solve.
-     * @param min Lower bound for the interval.
-     * @param max Upper bound for the interval.
+     * @param maxEval         Maximum number of evaluations.
+     * @param f               Function to solve.
+     * @param min             Lower bound for the interval.
+     * @param max             Upper bound for the interval.
      * @param allowedSolution The kind of solutions that the root-finding algorithm may
-     * accept as solutions.
+     *                        accept as solutions.
      * @return A value where the function is zero.
-     * @throws org.hipparchus.exception.MathIllegalArgumentException
-     * if the arguments do not satisfy the requirements specified by the solver.
-     * @throws org.hipparchus.exception.MathIllegalStateException if
-     * the allowed number of evaluations is exceeded.
+     * @throws org.hipparchus.exception.MathIllegalArgumentException if the arguments do not satisfy the requirements specified by the solver.
+     * @throws org.hipparchus.exception.MathIllegalStateException    if
+     *                                                               the allowed number of evaluations is exceeded.
      */
     T solve(int maxEval, RealFieldUnivariateFunction<T> f, T min, T max,
             AllowedSolution allowedSolution);
@@ -125,18 +125,17 @@ public interface BracketedRealFieldUnivariateSolver<T extends RealFieldElement<T
      * Solvers that do require bracketing should be able to handle the case
      * where one of the endpoints is itself a root.
      *
-     * @param maxEval Maximum number of evaluations.
-     * @param f Function to solve.
-     * @param min Lower bound for the interval.
-     * @param max Upper bound for the interval.
-     * @param startValue Start value to use.
+     * @param maxEval         Maximum number of evaluations.
+     * @param f               Function to solve.
+     * @param min             Lower bound for the interval.
+     * @param max             Upper bound for the interval.
+     * @param startValue      Start value to use.
      * @param allowedSolution The kind of solutions that the root-finding algorithm may
-     * accept as solutions.
+     *                        accept as solutions.
      * @return A value where the function is zero.
-     * @throws org.hipparchus.exception.MathIllegalArgumentException
-     * if the arguments do not satisfy the requirements specified by the solver.
-     * @throws org.hipparchus.exception.MathIllegalStateException if
-     * the allowed number of evaluations is exceeded.
+     * @throws org.hipparchus.exception.MathIllegalArgumentException if the arguments do not satisfy the requirements specified by the solver.
+     * @throws org.hipparchus.exception.MathIllegalStateException    if
+     *                                                               the allowed number of evaluations is exceeded.
      */
     T solve(int maxEval, RealFieldUnivariateFunction<T> f, T min, T max, T startValue,
             AllowedSolution allowedSolution);
@@ -144,7 +143,7 @@ public interface BracketedRealFieldUnivariateSolver<T extends RealFieldElement<T
     /**
      * Solve for a zero in the given interval and return a tolerance interval surrounding
      * the root.
-     *
+     * <p>
      * <p> It is required that the starting interval brackets a root.
      *
      * @param maxEval Maximum number of evaluations.
@@ -175,7 +174,7 @@ public interface BracketedRealFieldUnivariateSolver<T extends RealFieldElement<T
     /**
      * Solve for a zero in the given interval and return a tolerance interval surrounding
      * the root.
-     *
+     * <p>
      * <p> It is required that the starting interval brackets a root.
      *
      * @param maxEval    Maximum number of evaluations.
@@ -207,19 +206,27 @@ public interface BracketedRealFieldUnivariateSolver<T extends RealFieldElement<T
      * <p>
      * Contains two end points and the value of the function at the two end points.
      *
+     * @param <T> the element type
      * @see #solveInterval(int, RealFieldUnivariateFunction, RealFieldElement,
      * RealFieldElement)
-     * @param <T> the element type
      */
     class Interval<T extends RealFieldElement<T>> {
 
-        /** Abscissa on the left end of the interval. */
+        /**
+         * Abscissa on the left end of the interval.
+         */
         private final T leftAbscissa;
-        /** Function value at {@link #leftAbscissa}. */
+        /**
+         * Function value at {@link #leftAbscissa}.
+         */
         private final T leftValue;
-        /** Abscissa on the right end of the interval, >= {@link #leftAbscissa}. */
+        /**
+         * Abscissa on the right end of the interval, >= {@link #leftAbscissa}.
+         */
         private final T rightAbscissa;
-        /** Function value at {@link #rightAbscissa}. */
+        /**
+         * Function value at {@link #rightAbscissa}.
+         */
         private final T rightValue;
 
         /**

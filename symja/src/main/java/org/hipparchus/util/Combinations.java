@@ -17,14 +17,13 @@
 package org.hipparchus.util;
 
 
+import org.hipparchus.exception.MathRuntimeException;
 
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-
-import org.hipparchus.exception.MathRuntimeException;
 
 /**
  * Utility to create combinations {@code (n, k)} of {@code k} elements
@@ -34,23 +33,20 @@ import org.hipparchus.exception.MathRuntimeException;
  * Combination @ Wikipedia</a>
  */
 public class Combinations implements Iterable<int[]> {
-    /** Size of the set from which combinations are drawn. */
+    /**
+     * Size of the set from which combinations are drawn.
+     */
     private final int n;
-    /** Number of elements in each combination. */
+    /**
+     * Number of elements in each combination.
+     */
     private final int k;
-    /** Iteration order. */
+    /**
+     * Iteration order.
+     */
     private final IterationOrder iterationOrder;
 
     /**
-     * Describes the type of iteration performed by the
-     * {@link #iterator() iterator}.
-     */
-    private enum IterationOrder {
-        /** Lexicographic order. */
-        LEXICOGRAPHIC
-    }
-
-   /**
      * Creates an instance whose range is the k-element subsets of
      * {0, ..., n - 1} represented as {@code int[]} arrays.
      * <p>
@@ -95,8 +91,8 @@ public class Combinations implements Iterable<int[]> {
      * If {@code k == 0} an iterator containing an empty array is returned;
      * if {@code k == n} an iterator containing [0, ..., n - 1] is returned.
      *
-     * @param n Size of the set from which subsets are selected.
-     * @param k Size of the subsets to be enumerated.
+     * @param n              Size of the set from which subsets are selected.
+     * @param k              Size of the subsets to be enumerated.
      * @param iterationOrder Specifies the {@link #iterator() iteration order}.
      * @throws org.hipparchus.exception.MathIllegalArgumentException if {@code n < 0}.
      * @throws org.hipparchus.exception.MathIllegalArgumentException if {@code k > n}.
@@ -128,19 +124,21 @@ public class Combinations implements Iterable<int[]> {
         return k;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Iterator<int[]> iterator() {
         if (k == 0 ||
-            k == n) {
+                k == n) {
             return new SingletonIterator(MathArrays.natural(k));
         }
 
         switch (iterationOrder) {
-        case LEXICOGRAPHIC:
-            return new LexicographicIterator(n, k);
-        default:
-            throw MathRuntimeException.createInternalError(); // Should never happen.
+            case LEXICOGRAPHIC:
+                return new LexicographicIterator(n, k);
+            default:
+                throw MathRuntimeException.createInternalError(); // Should never happen.
         }
     }
 
@@ -151,13 +149,25 @@ public class Combinations implements Iterable<int[]> {
      * Its {@code compare(int[],int[])} method will throw exceptions if
      * passed combinations that are inconsistent with this instance:
      * <ul>
-     *  <li>if the array lengths are not equal to {@code k},</li>
-     *  <li>if an element of the array is not within the interval [0, {@code n}).</li>
+     * <li>if the array lengths are not equal to {@code k},</li>
+     * <li>if an element of the array is not within the interval [0, {@code n}).</li>
      * </ul>
+     *
      * @return a lexicographic comparator.
      */
     public Comparator<int[]> comparator() {
         return new LexicographicComparator(n, k);
+    }
+
+    /**
+     * Describes the type of iteration performed by the
+     * {@link #iterator() iterator}.
+     */
+    private enum IterationOrder {
+        /**
+         * Lexicographic order.
+         */
+        LEXICOGRAPHIC
     }
 
     /**
@@ -172,7 +182,9 @@ public class Combinations implements Iterable<int[]> {
      * or {@code k >= n}, no exception is generated, but the iterator is empty.
      */
     private static class LexicographicIterator implements Iterator<int[]> {
-        /** Size of subsets returned by the iterator */
+        /**
+         * Size of subsets returned by the iterator
+         */
         private final int k;
 
         /**
@@ -184,10 +196,14 @@ public class Combinations implements Iterable<int[]> {
          */
         private final int[] c;
 
-        /** Return value for {@link #hasNext()} */
+        /**
+         * Return value for {@link #hasNext()}
+         */
         private boolean more = true;
 
-        /** Marker: smallest index such that c[j + 1] > j */
+        /**
+         * Marker: smallest index such that c[j + 1] > j
+         */
         private int j;
 
         /**
@@ -288,23 +304,35 @@ public class Combinations implements Iterable<int[]> {
      * empty array) for combination iterator.
      */
     private static class SingletonIterator implements Iterator<int[]> {
-        /** Singleton array */
+        /**
+         * Singleton array
+         */
         private final int[] singleton;
-        /** True on initialization, false after first call to next */
+        /**
+         * True on initialization, false after first call to next
+         */
         private boolean more = true;
+
         /**
          * Create a singleton iterator providing the given array.
+         *
          * @param singleton array returned by the iterator
          */
         SingletonIterator(final int[] singleton) {
             this.singleton = singleton;
         }
-        /** @return True until next is called the first time, then false */
+
+        /**
+         * @return True until next is called the first time, then false
+         */
         @Override
         public boolean hasNext() {
             return more;
         }
-        /** @return the singleton in first activation; throws NSEE thereafter */
+
+        /**
+         * @return the singleton in first activation; throws NSEE thereafter
+         */
         @Override
         public int[] next() {
             if (more) {
@@ -314,7 +342,10 @@ public class Combinations implements Iterable<int[]> {
                 throw new NoSuchElementException();
             }
         }
-        /** Not supported */
+
+        /**
+         * Not supported
+         */
         @Override
         public void remove() {
             throw new UnsupportedOperationException();
@@ -326,12 +357,18 @@ public class Combinations implements Iterable<int[]> {
      * the {@link #lexNorm(int[])} method.
      */
     private static class LexicographicComparator
-        implements Comparator<int[]>, Serializable {
-        /** Serializable version identifier. */
+            implements Comparator<int[]>, Serializable {
+        /**
+         * Serializable version identifier.
+         */
         private static final long serialVersionUID = 20130906L;
-        /** Size of the set from which combinations are drawn. */
+        /**
+         * Size of the set from which combinations are drawn.
+         */
         private final int n;
-        /** Number of elements in each combination. */
+        /**
+         * Number of elements in each combination.
+         */
         private final int k;
 
         /**
@@ -346,10 +383,8 @@ public class Combinations implements Iterable<int[]> {
         /**
          * {@inheritDoc}
          *
-         * @throws org.hipparchus.exception.MathIllegalArgumentException
-         * if the array lengths are not equal to {@code k}.
-         * @throws org.hipparchus.exception.MathIllegalArgumentException
-         * if an element of the array is not within the interval [0, {@code n}).
+         * @throws org.hipparchus.exception.MathIllegalArgumentException if the array lengths are not equal to {@code k}.
+         * @throws org.hipparchus.exception.MathIllegalArgumentException if an element of the array is not within the interval [0, {@code n}).
          */
         @Override
         public int compare(int[] c1, int[] c2) {
@@ -383,8 +418,7 @@ public class Combinations implements Iterable<int[]> {
          *
          * @param c Input array.
          * @return the lexicographic norm.
-         * @throws org.hipparchus.exception.MathIllegalArgumentException
-         * if an element of the array is not within the interval [0, {@code n}).
+         * @throws org.hipparchus.exception.MathIllegalArgumentException if an element of the array is not within the interval [0, {@code n}).
          */
         private long lexNorm(int[] c) {
             long ret = 0;

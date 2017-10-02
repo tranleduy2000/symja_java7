@@ -76,7 +76,7 @@ public interface INumber extends IExpr {
     public int complexSign();
 
     @Override
-	public INumber conjugate();
+    public INumber conjugate();
 
     /**
      * Get the absolute value for a given number
@@ -128,10 +128,10 @@ public interface INumber extends IExpr {
      * @return real part
      */
     @Override
-	public ISignedNumber im();
+    public ISignedNumber im();
 
     @Override
-	public INumber opposite();
+    public INumber opposite();
 
     /**
      * Returns the real part of a complex number
@@ -139,6 +139,6 @@ public interface INumber extends IExpr {
      * @return real part
      */
     @Override
-	public ISignedNumber re();
+    public ISignedNumber re();
 
 }

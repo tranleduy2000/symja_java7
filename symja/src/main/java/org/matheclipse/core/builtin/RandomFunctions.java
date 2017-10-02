@@ -1,8 +1,4 @@
-
 package org.matheclipse.core.builtin;
-
-import java.math.BigInteger;
-import java.util.Random;
 
 import org.hipparchus.util.MathArrays;
 import org.matheclipse.core.eval.EvalEngine;
@@ -13,110 +9,112 @@ import org.matheclipse.core.interfaces.IAST;
 import org.matheclipse.core.interfaces.IExpr;
 import org.matheclipse.core.interfaces.IInteger;
 
+import java.math.BigInteger;
+import java.util.Random;
+
 public final class RandomFunctions {
 
-	static {
-		F.RandomInteger.setEvaluator(new RandomInteger());
-		F.RandomChoice.setEvaluator(new RandomChoice());
-		F.RandomReal.setEvaluator(new RandomReal());
-		F.RandomSample.setEvaluator(new RandomSample());
-	}
+    final static RandomFunctions CONST = new RandomFunctions();
 
-	private static class RandomChoice extends AbstractFunctionEvaluator {
+    static {
+        F.RandomInteger.setEvaluator(new RandomInteger());
+        F.RandomChoice.setEvaluator(new RandomChoice());
+        F.RandomReal.setEvaluator(new RandomReal());
+        F.RandomSample.setEvaluator(new RandomSample());
+    }
 
-		@Override
-		public IExpr evaluate(final IAST ast, EvalEngine engine) {
-			if (ast.size() > 0 && ast.arg1().isAST()) {
-				IAST list = (IAST) ast.arg1();
-				Random random = new Random();
-				int listSize = list.size() - 1;
-				int randomIndex = random.nextInt(listSize);
-				return list.get(randomIndex + 1);
-			}
+    private RandomFunctions() {
 
-			return F.NIL;
-		}
+    }
 
-	}
+    public static RandomFunctions initialize() {
+        return CONST;
+    }
 
-	private static class RandomInteger extends AbstractFunctionEvaluator {
-		private final static Random RANDOM = new Random();
+    private static class RandomChoice extends AbstractFunctionEvaluator {
 
-		@Override
-		public IExpr evaluate(final IAST ast, EvalEngine engine) {
-			Validate.checkSize(ast, 2);
+        @Override
+        public IExpr evaluate(final IAST ast, EvalEngine engine) {
+            if (ast.size() > 0 && ast.arg1().isAST()) {
+                IAST list = (IAST) ast.arg1();
+                Random random = new Random();
+                int listSize = list.size() - 1;
+                int randomIndex = random.nextInt(listSize);
+                return list.get(randomIndex + 1);
+            }
 
-			if (ast.arg1().isInteger()) {
-				// RandomInteger(100) gives an integer between 0 and 100
-				BigInteger n = ((IInteger) ast.arg1()).toBigNumerator();
-				BigInteger r;
-				do {
-					r = new BigInteger(n.bitLength(), RANDOM);
-				} while (r.compareTo(n) >= 0);
-				return F.integer(r);
-			}
+            return F.NIL;
+        }
 
-			return F.NIL;
-		}
+    }
 
-	}
+    private static class RandomInteger extends AbstractFunctionEvaluator {
+        private final static Random RANDOM = new Random();
 
-	private static class RandomReal extends AbstractFunctionEvaluator {
+        @Override
+        public IExpr evaluate(final IAST ast, EvalEngine engine) {
+            Validate.checkSize(ast, 2);
 
-		@Override
-		public IExpr evaluate(final IAST ast, EvalEngine engine) {
-			if (ast.isAST0()) {
-				// RandomReal() gives a double value between 0.0 and 1.0
-				double r = Math.random();
-				return F.num(r);
-			}
+            if (ast.arg1().isInteger()) {
+                // RandomInteger(100) gives an integer between 0 and 100
+                BigInteger n = ((IInteger) ast.arg1()).toBigNumerator();
+                BigInteger r;
+                do {
+                    r = new BigInteger(n.bitLength(), RANDOM);
+                } while (r.compareTo(n) >= 0);
+                return F.integer(r);
+            }
 
-			return F.NIL;
-		}
+            return F.NIL;
+        }
 
-	}
+    }
 
-	/**
-	 * Create a random shuffled list.
-	 * 
-	 */
-	private static class RandomSample extends AbstractFunctionEvaluator {
+    private static class RandomReal extends AbstractFunctionEvaluator {
 
-		@Override
-		public IExpr evaluate(final IAST ast, EvalEngine engine) {
-			Validate.checkSize(ast, 2);
+        @Override
+        public IExpr evaluate(final IAST ast, EvalEngine engine) {
+            if (ast.isAST0()) {
+                // RandomReal() gives a double value between 0.0 and 1.0
+                double r = Math.random();
+                return F.num(r);
+            }
 
-			if (ast.arg1().isAST()) {
-				return shuffle((IAST) ast.arg1());
-			}
+            return F.NIL;
+        }
 
-			return F.NIL;
-		}
+    }
 
-		public static IAST shuffle(IAST list) {
-			final int len = list.size() - 1;
+    /**
+     * Create a random shuffled list.
+     */
+    private static class RandomSample extends AbstractFunctionEvaluator {
 
-			// Shuffle indices.
-			final int[] indexList = MathArrays.natural(len);
-			MathArrays.shuffle(indexList);
+        public static IAST shuffle(IAST list) {
+            final int len = list.size() - 1;
 
-			// Create shuffled list.
-			final IAST out = list.copy();
-			for (int i = 0; i < len; i++) {
-				out.set(i + 1, list.get(indexList[i] + 1));
-			}
-			return out;
-		}
-	}
+            // Shuffle indices.
+            final int[] indexList = MathArrays.natural(len);
+            MathArrays.shuffle(indexList);
 
-	final static RandomFunctions CONST = new RandomFunctions();
+            // Create shuffled list.
+            final IAST out = list.copy();
+            for (int i = 0; i < len; i++) {
+                out.set(i + 1, list.get(indexList[i] + 1));
+            }
+            return out;
+        }
 
-	public static RandomFunctions initialize() {
-		return CONST;
-	}
+        @Override
+        public IExpr evaluate(final IAST ast, EvalEngine engine) {
+            Validate.checkSize(ast, 2);
 
-	private RandomFunctions() {
+            if (ast.arg1().isAST()) {
+                return shuffle((IAST) ast.arg1());
+            }
 
-	}
+            return F.NIL;
+        }
+    }
 
 }

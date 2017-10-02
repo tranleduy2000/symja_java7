@@ -25,40 +25,42 @@ import org.hipparchus.ode.FieldODEStateAndDerivative;
 /**
  * This class implements a step interpolator for second order
  * Runge-Kutta integrator.
- *
+ * <p>
  * <p>This interpolator computes dense output inside the last
  * step computed. The interpolation equation is consistent with the
  * integration scheme :
  * <ul>
- *   <li>Using reference point at step start:<br>
- *   y(t<sub>n</sub> + &theta; h) = y (t<sub>n</sub>) + &theta; h [(1 - &theta;) y'<sub>1</sub> + &theta; y'<sub>2</sub>]
- *   </li>
- *   <li>Using reference point at step end:<br>
- *   y(t<sub>n</sub> + &theta; h) = y (t<sub>n</sub> + h) + (1-&theta;) h [&theta; y'<sub>1</sub> - (1+&theta;) y'<sub>2</sub>]
- *   </li>
+ * <li>Using reference point at step start:<br>
+ * y(t<sub>n</sub> + &theta; h) = y (t<sub>n</sub>) + &theta; h [(1 - &theta;) y'<sub>1</sub> + &theta; y'<sub>2</sub>]
+ * </li>
+ * <li>Using reference point at step end:<br>
+ * y(t<sub>n</sub> + &theta; h) = y (t<sub>n</sub> + h) + (1-&theta;) h [&theta; y'<sub>1</sub> - (1+&theta;) y'<sub>2</sub>]
+ * </li>
  * </ul>
  * </p>
- *
+ * <p>
  * where &theta; belongs to [0 ; 1] and where y'<sub>1</sub> and y'<sub>2</sub> are the two
  * evaluations of the derivatives already computed during the
  * step.</p>
  *
- * @see MidpointFieldIntegrator
  * @param <T> the type of the field elements
+ * @see MidpointFieldIntegrator
  */
 
 class MidpointFieldStateInterpolator<T extends RealFieldElement<T>>
-    extends RungeKuttaFieldStateInterpolator<T> {
+        extends RungeKuttaFieldStateInterpolator<T> {
 
-    /** Simple constructor.
-     * @param field field to which the time and state vector elements belong
-     * @param forward integration direction indicator
-     * @param yDotK slopes at the intermediate points
+    /**
+     * Simple constructor.
+     *
+     * @param field               field to which the time and state vector elements belong
+     * @param forward             integration direction indicator
+     * @param yDotK               slopes at the intermediate points
      * @param globalPreviousState start of the global step
-     * @param globalCurrentState end of the global step
-     * @param softPreviousState start of the restricted step
-     * @param softCurrentState end of the restricted step
-     * @param mapper equations mapper for the all equations
+     * @param globalCurrentState  end of the global step
+     * @param softPreviousState   start of the restricted step
+     * @param softCurrentState    end of the restricted step
+     * @param mapper              equations mapper for the all equations
      */
     MidpointFieldStateInterpolator(final Field<T> field, final boolean forward,
                                    final T[][] yDotK,
@@ -68,11 +70,13 @@ class MidpointFieldStateInterpolator<T extends RealFieldElement<T>>
                                    final FieldODEStateAndDerivative<T> softCurrentState,
                                    final FieldEquationsMapper<T> mapper) {
         super(field, forward, yDotK,
-              globalPreviousState, globalCurrentState, softPreviousState, softCurrentState,
-              mapper);
+                globalPreviousState, globalCurrentState, softPreviousState, softCurrentState,
+                mapper);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected MidpointFieldStateInterpolator<T> create(final Field<T> newField, final boolean newForward, final T[][] newYDotK,
                                                        final FieldODEStateAndDerivative<T> newGlobalPreviousState,
@@ -81,12 +85,14 @@ class MidpointFieldStateInterpolator<T extends RealFieldElement<T>>
                                                        final FieldODEStateAndDerivative<T> newSoftCurrentState,
                                                        final FieldEquationsMapper<T> newMapper) {
         return new MidpointFieldStateInterpolator<T>(newField, newForward, newYDotK,
-                                                     newGlobalPreviousState, newGlobalCurrentState,
-                                                     newSoftPreviousState, newSoftCurrentState,
-                                                     newMapper);
+                newGlobalPreviousState, newGlobalCurrentState,
+                newSoftPreviousState, newSoftCurrentState,
+                newMapper);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @SuppressWarnings("unchecked")
     @Override
     protected FieldODEStateAndDerivative<T> computeInterpolatedStateAndDerivatives(final FieldEquationsMapper<T> mapper,
@@ -101,12 +107,12 @@ class MidpointFieldStateInterpolator<T extends RealFieldElement<T>>
         if (getGlobalPreviousState() != null && theta.getReal() <= 0.5) {
             final T coeff1 = theta.multiply(oneMinusThetaH);
             final T coeff2 = theta.multiply(thetaH);
-            interpolatedState       = previousStateLinearCombination(coeff1, coeff2);
+            interpolatedState = previousStateLinearCombination(coeff1, coeff2);
             interpolatedDerivatives = derivativeLinearCombination(coeffDot1, coeffDot2);
         } else {
             final T coeff1 = oneMinusThetaH.multiply(theta);
             final T coeff2 = oneMinusThetaH.multiply(theta.add(1)).negate();
-            interpolatedState       = currentStateLinearCombination(coeff1, coeff2);
+            interpolatedState = currentStateLinearCombination(coeff1, coeff2);
             interpolatedDerivatives = derivativeLinearCombination(coeffDot1, coeffDot2);
         }
 

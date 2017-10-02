@@ -19,6 +19,7 @@ import edu.jas.structure.RingFactory;
 
 /**
  * Rectangle. For example isolating rectangle for complex roots.
+ *
  * @param <C> coefficient type.
  * @author Heinz Kredel
  */
@@ -33,6 +34,7 @@ public class Rectangle<C extends RingElem<C> & Rational> implements Serializable
 
     /**
      * Constructor.
+     *
      * @param c array of corners.
      */
     @SuppressWarnings("cast")
@@ -53,6 +55,7 @@ public class Rectangle<C extends RingElem<C> & Rational> implements Serializable
 
     /**
      * Constructor.
+     *
      * @param mid corner.
      */
     @SuppressWarnings("unchecked")
@@ -63,24 +66,25 @@ public class Rectangle<C extends RingElem<C> & Rational> implements Serializable
 
     /**
      * Constructor.
+     *
      * @param sw corner.
      * @param ne corner.
      */
     @SuppressWarnings("unchecked")
     public Rectangle(Complex<C> sw, Complex<C> ne) {
         this(new Complex<C>(sw.ring, sw.getRe(), ne.getIm()), sw,
-                        new Complex<C>(sw.ring, ne.getRe(), sw.getIm()), ne);
+                new Complex<C>(sw.ring, ne.getRe(), sw.getIm()), ne);
     }
 
 
     /**
      * Constructor.
-     * 
+     * <p>
      * <pre>
      *  nw|0 ne|3
      *  sw|1 se|2
      * </pre>
-     * 
+     *
      * @param nw corner.
      * @param sw corner.
      * @param se corner.
@@ -88,12 +92,13 @@ public class Rectangle<C extends RingElem<C> & Rational> implements Serializable
      */
     @SuppressWarnings("cast")
     public Rectangle(Complex<C> nw, Complex<C> sw, Complex<C> se, Complex<C> ne) {
-        this((Complex<C>[]) new Complex[] { nw, sw, se, ne });
+        this((Complex<C>[]) new Complex[]{nw, sw, se, ne});
     }
 
 
     /**
      * String representation of Rectangle.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -106,6 +111,7 @@ public class Rectangle<C extends RingElem<C> & Rational> implements Serializable
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this Rectangle.
      */
     public String toScript() {
@@ -117,6 +123,7 @@ public class Rectangle<C extends RingElem<C> & Rational> implements Serializable
 
     /**
      * Get north west corner.
+     *
      * @return north west corner of this rectangle.
      */
     public Complex<C> getNW() {
@@ -126,6 +133,7 @@ public class Rectangle<C extends RingElem<C> & Rational> implements Serializable
 
     /**
      * Get south west corner.
+     *
      * @return south west corner of this rectangle.
      */
     public Complex<C> getSW() {
@@ -135,6 +143,7 @@ public class Rectangle<C extends RingElem<C> & Rational> implements Serializable
 
     /**
      * Get south east corner.
+     *
      * @return south east corner of this rectangle.
      */
     public Complex<C> getSE() {
@@ -144,6 +153,7 @@ public class Rectangle<C extends RingElem<C> & Rational> implements Serializable
 
     /**
      * Get north east corner.
+     *
      * @return north east corner of this rectangle.
      */
     public Complex<C> getNE() {
@@ -153,6 +163,7 @@ public class Rectangle<C extends RingElem<C> & Rational> implements Serializable
 
     /**
      * Exchange NW corner.
+     *
      * @param c new NW corner.
      * @return rectangle with north west corner c of this rectangle.
      */
@@ -166,6 +177,7 @@ public class Rectangle<C extends RingElem<C> & Rational> implements Serializable
 
     /**
      * Exchange SW corner.
+     *
      * @param c new SW corner.
      * @return rectangle with south west corner c of this rectangle.
      */
@@ -179,6 +191,7 @@ public class Rectangle<C extends RingElem<C> & Rational> implements Serializable
 
     /**
      * Exchange SE corner.
+     *
      * @param c new SE corner.
      * @return rectangle with south east corner c of this rectangle.
      */
@@ -192,6 +205,7 @@ public class Rectangle<C extends RingElem<C> & Rational> implements Serializable
 
     /**
      * Exchange NE corner.
+     *
      * @param c new NE corner.
      * @return rectangle with north east corner c of this rectangle.
      */
@@ -205,6 +219,7 @@ public class Rectangle<C extends RingElem<C> & Rational> implements Serializable
 
     /**
      * Contains a point.
+     *
      * @param c point.
      * @return true if c is contained in this rectangle, else false.
      */
@@ -214,12 +229,13 @@ public class Rectangle<C extends RingElem<C> & Rational> implements Serializable
         C cre = c.getRe();
         C cim = c.getIm();
         return cre.compareTo(ll.getRe()) >= 0 && cim.compareTo(ll.getIm()) >= 0
-                        && cre.compareTo(ur.getRe()) <= 0 && cim.compareTo(ur.getIm()) <= 0;
+                && cre.compareTo(ur.getRe()) <= 0 && cim.compareTo(ur.getIm()) <= 0;
     }
 
 
     /**
      * Contains a rectangle.
+     *
      * @param r rectangle.
      * @return true if r is contained in this rectangle, else false.
      */
@@ -230,6 +246,7 @@ public class Rectangle<C extends RingElem<C> & Rational> implements Serializable
 
     /**
      * Random point of recatangle.
+     *
      * @return a random point contained in this rectangle.
      */
     public Complex<C> randomPoint() {
@@ -264,6 +281,7 @@ public class Rectangle<C extends RingElem<C> & Rational> implements Serializable
 
     /**
      * Copy this.
+     *
      * @return a copy of this.
      */
     public Rectangle<C> copy() {
@@ -273,6 +291,7 @@ public class Rectangle<C extends RingElem<C> & Rational> implements Serializable
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -297,6 +316,7 @@ public class Rectangle<C extends RingElem<C> & Rational> implements Serializable
 
     /**
      * Hash code for this Rectangle.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -311,6 +331,7 @@ public class Rectangle<C extends RingElem<C> & Rational> implements Serializable
 
     /**
      * Complex center.
+     *
      * @return r + i m of the center.
      */
     public Complex<C> getCenter() {
@@ -328,6 +349,7 @@ public class Rectangle<C extends RingElem<C> & Rational> implements Serializable
 
     /**
      * Complex of BigRational approximation of center.
+     *
      * @return r + i m as rational approximation of the center.
      */
     public Complex<BigRational> getRationalCenter() {
@@ -342,6 +364,7 @@ public class Rectangle<C extends RingElem<C> & Rational> implements Serializable
 
     /**
      * Complex of BigDecimal approximation of center.
+     *
      * @return r + i m as decimal approximation of the center.
      */
     public Complex<BigDecimal> getDecimalCenter() {
@@ -356,6 +379,7 @@ public class Rectangle<C extends RingElem<C> & Rational> implements Serializable
 
     /**
      * Approximation of center.
+     *
      * @return r + i m as string of decimal approximation of the center.
      */
     public String centerApprox() {
@@ -372,6 +396,7 @@ public class Rectangle<C extends RingElem<C> & Rational> implements Serializable
 
     /**
      * Length.
+     *
      * @return |ne-sw|**2;
      */
     public C length() {
@@ -382,6 +407,7 @@ public class Rectangle<C extends RingElem<C> & Rational> implements Serializable
 
     /**
      * Rational Length.
+     *
      * @return rational(|ne-sw|**2);
      */
     public BigRational rationalLength() {
@@ -392,6 +418,7 @@ public class Rectangle<C extends RingElem<C> & Rational> implements Serializable
 
     /**
      * Length real side.
+     *
      * @return |re(ne)-re(sw)|;
      */
     public C lengthReal() {
@@ -402,6 +429,7 @@ public class Rectangle<C extends RingElem<C> & Rational> implements Serializable
 
     /**
      * Length imaginary side.
+     *
      * @return |im(ne)-im(sw)|;
      */
     public C lengthImag() {

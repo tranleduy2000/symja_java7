@@ -5,6 +5,8 @@
 package edu.jas.application;
 
 
+import org.apache.log4j.BasicConfigurator;
+
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -19,8 +21,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-
-import org.apache.log4j.BasicConfigurator;
 
 import edu.jas.gb.GroebnerBaseAbstract;
 import edu.jas.gb.GroebnerBaseDistributedEC;
@@ -48,8 +48,9 @@ import edu.jas.util.ExecutableServer;
  * Method polynomialRing() is called based on declaration from "file". Method
  * build() is called automatically. For example <br>
  * build=syzygyPairlist.iterated.graded.parallel(3)
- * @see edu.jas.application.GBAlgorithmBuilder
+ *
  * @author Heinz Kredel
+ * @see edu.jas.application.GBAlgorithmBuilder
  */
 public class RunGB {
 
@@ -74,11 +75,11 @@ public class RunGB {
     @SuppressWarnings("unchecked")
     public static void main(String[] args) {
 
-        String[] allkinds = new String[] { "seq", "seq+", "par", "par+", "build=", "disthyb", "disthyb+",
-                "cli" }; // must be last
+        String[] allkinds = new String[]{"seq", "seq+", "par", "par+", "build=", "disthyb", "disthyb+",
+                "cli"}; // must be last
 
         String usage = "Usage: RunGB [ " + join(allkinds, " | ") + "[port] ] " + "<file> "
-                        + "#procs/#threadsPerNode " + "[machinefile] " + "[check] [nolog]";
+                + "#procs/#threadsPerNode " + "[machinefile] " + "[check] [nolog]";
 
         if (args.length < 1) {
             System.out.println("args: " + Arrays.toString(args));
@@ -286,7 +287,7 @@ public class RunGB {
             System.out.print("d ");
         }
         System.out.println("= " + threads + ", time = " + t1 + " milliseconds, " + (t - t1) + " start-up "
-                        + ", total = " + t);
+                + ", total = " + t);
         checkGB(S);
         System.out.println("");
     }
@@ -294,7 +295,7 @@ public class RunGB {
 
     @SuppressWarnings("unchecked")
     static void runMasterHyb(PolynomialList S, int threads, int threadsPerNode, String mfile, int port,
-                    boolean plusextra) {
+                             boolean plusextra) {
         List L = S.list;
         List G = null;
         long t, t1;
@@ -302,12 +303,12 @@ public class RunGB {
         GroebnerBaseDistributedHybridEC gbds = null;
 
         System.out.println("\nGroebner base distributed hybrid (" + threads + "/" + threadsPerNode + ", "
-                        + mfile + ", " + port + ") ...");
+                + mfile + ", " + port + ") ...");
         t = System.currentTimeMillis();
         if (plusextra) {
             // gbds = new GroebnerBaseDistributedHybridEC(mfile, threads,port);
             gbds = new GroebnerBaseDistributedHybridEC(mfile, threads, threadsPerNode,
-                            new OrderedSyzPairlist(), port);
+                    new OrderedSyzPairlist(), port);
         } else {
             gbd = new GroebnerBaseDistributedHybridEC(mfile, threads, threadsPerNode, port);
         }
@@ -333,7 +334,7 @@ public class RunGB {
             System.out.print("d ");
         }
         System.out.println("= " + threads + ", ppn = " + threadsPerNode + ", time = " + t1 + " milliseconds, "
-                        + (t - t1) + " start-up " + ", total = " + t);
+                + (t - t1) + " start-up " + ", total = " + t);
         checkGB(S);
         System.out.println("");
     }

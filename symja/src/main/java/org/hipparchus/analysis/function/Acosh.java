@@ -23,16 +23,18 @@ import org.hipparchus.util.FastMath;
 
 /**
  * Hyperbolic arc-cosine function.
- *
  */
 public class Acosh implements UnivariateDifferentiableFunction {
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double value(double x) {
         return FastMath.acosh(x);
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     @Override
     public DerivativeStructure value(final DerivativeStructure t) {

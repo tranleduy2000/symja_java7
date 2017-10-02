@@ -5,12 +5,11 @@
 package edu.jas.application;
 
 
-import java.util.Arrays;
-
 import org.apache.log4j.Logger;
 
+import java.util.Arrays;
+
 import edu.jas.fd.FDUtil;
-import edu.jas.gbufd.PolyModUtil;
 import edu.jas.kern.PrettyPrint;
 import edu.jas.poly.ExpVector;
 import edu.jas.poly.GenPolynomial;
@@ -23,10 +22,11 @@ import edu.jas.structure.QuotPair;
  * SolvableLocalResidue, that is a (left) rational function, based on pairs of
  * GenSolvablePolynomial with GcdRingElem interface. Objects of this class are
  * immutable.
+ *
  * @author Heinz Kredel
  */
 public class SolvableLocalResidue<C extends GcdRingElem<C>> implements GcdRingElem<SolvableLocalResidue<C>>,
-                QuotPair<GenPolynomial<C>> {
+        QuotPair<GenPolynomial<C>> {
 
 
     // Can not extend SolvableLocal or SolvableQuotient because of 
@@ -60,6 +60,7 @@ public class SolvableLocalResidue<C extends GcdRingElem<C>> implements GcdRingEl
     /**
      * The constructor creates a SolvableLocalResidue object from a ring
      * factory.
+     *
      * @param r ring factory.
      */
     public SolvableLocalResidue(SolvableLocalResidueRing<C> r) {
@@ -70,6 +71,7 @@ public class SolvableLocalResidue<C extends GcdRingElem<C>> implements GcdRingEl
     /**
      * The constructor creates a SolvableLocalResidue object from a ring factory
      * and a numerator polynomial. The denominator is assumed to be 1.
+     *
      * @param r ring factory.
      * @param n numerator solvable polynomial.
      */
@@ -81,12 +83,13 @@ public class SolvableLocalResidue<C extends GcdRingElem<C>> implements GcdRingEl
     /**
      * The constructor creates a SolvableLocalResidue object from a ring factory
      * and a numerator and denominator solvable polynomial.
+     *
      * @param r ring factory.
      * @param n numerator polynomial.
      * @param d denominator polynomial.
      */
     public SolvableLocalResidue(SolvableLocalResidueRing<C> r, GenSolvablePolynomial<C> n,
-                    GenSolvablePolynomial<C> d) {
+                                GenSolvablePolynomial<C> d) {
         this(r, n, d, false);
     }
 
@@ -94,13 +97,14 @@ public class SolvableLocalResidue<C extends GcdRingElem<C>> implements GcdRingEl
     /**
      * The constructor creates a SolvableLocalResidue object from a ring factory
      * and a numerator and denominator polynomial.
-     * @param r ring factory.
-     * @param n numerator polynomial.
-     * @param d denominator polynomial.
+     *
+     * @param r     ring factory.
+     * @param n     numerator polynomial.
+     * @param d     denominator polynomial.
      * @param isred <em>unused at the moment</em>.
      */
     protected SolvableLocalResidue(SolvableLocalResidueRing<C> r, GenSolvablePolynomial<C> n,
-                    GenSolvablePolynomial<C> d, boolean isred) {
+                                   GenSolvablePolynomial<C> d, boolean isred) {
         if (d == null || d.isZERO()) {
             throw new IllegalArgumentException("denominator may not be zero");
         }
@@ -156,13 +160,13 @@ public class SolvableLocalResidue<C extends GcdRingElem<C>> implements GcdRingEl
         // must reduce to lowest terms
         // not perfect, TODO
         //GenSolvablePolynomial<C>[] gcd = PolyModUtil.<C> syzGcdCofactors(r.ring, n, d);
-        GenSolvablePolynomial<C>[] gcd = FDUtil.<C> leftGcdCofactors(r.ring, n, d);
+        GenSolvablePolynomial<C>[] gcd = FDUtil.<C>leftGcdCofactors(r.ring, n, d);
         if (!gcd[0].isONE()) {
             logger.info("constructor: gcd = " + Arrays.toString(gcd)); // + ", " + n + ", " +d);
             n = gcd[1];
             d = gcd[2];
         }
-        gcd = FDUtil.<C> rightGcdCofactors(r.ring, n, d);
+        gcd = FDUtil.<C>rightGcdCofactors(r.ring, n, d);
         if (!gcd[0].isONE()) {
             logger.info("constructor: gcd = " + Arrays.toString(gcd)); // + ", " + n + ", " +d);
             n = gcd[1];
@@ -178,6 +182,7 @@ public class SolvableLocalResidue<C extends GcdRingElem<C>> implements GcdRingEl
 
     /**
      * Get the corresponding element factory.
+     *
      * @return factory for this Element.
      * @see edu.jas.structure.Element#factory()
      */
@@ -188,6 +193,7 @@ public class SolvableLocalResidue<C extends GcdRingElem<C>> implements GcdRingEl
 
     /**
      * Numerator.
+     *
      * @see edu.jas.structure.QuotPair#numerator()
      */
     public GenSolvablePolynomial<C> numerator() {
@@ -197,6 +203,7 @@ public class SolvableLocalResidue<C extends GcdRingElem<C>> implements GcdRingEl
 
     /**
      * Denominator.
+     *
      * @see edu.jas.structure.QuotPair#denominator()
      */
     public GenSolvablePolynomial<C> denominator() {
@@ -206,6 +213,7 @@ public class SolvableLocalResidue<C extends GcdRingElem<C>> implements GcdRingEl
 
     /**
      * Clone this.
+     *
      * @see java.lang.Object#clone()
      */
     @Override
@@ -216,6 +224,7 @@ public class SolvableLocalResidue<C extends GcdRingElem<C>> implements GcdRingEl
 
     /**
      * Is SolvableLocalResidue zero.
+     *
      * @return If this is 0 then true is returned, else false.
      * @see edu.jas.structure.RingElem#isZERO()
      */
@@ -226,6 +235,7 @@ public class SolvableLocalResidue<C extends GcdRingElem<C>> implements GcdRingEl
 
     /**
      * Is SolvableLocalResidue one.
+     *
      * @return If this is 1 then true is returned, else false.
      * @see edu.jas.structure.RingElem#isONE()
      */
@@ -236,6 +246,7 @@ public class SolvableLocalResidue<C extends GcdRingElem<C>> implements GcdRingEl
 
     /**
      * Is SolvableLocalResidue a unit.
+     *
      * @return If this is a unit then true is returned, else false.
      * @see edu.jas.structure.RingElem#isUnit()
      */
@@ -249,6 +260,7 @@ public class SolvableLocalResidue<C extends GcdRingElem<C>> implements GcdRingEl
 
     /**
      * Is Quotient a constant.
+     *
      * @return true, if this has constant numerator and denominator, else false.
      */
     public boolean isConstant() {
@@ -258,6 +270,7 @@ public class SolvableLocalResidue<C extends GcdRingElem<C>> implements GcdRingEl
 
     /**
      * Get the String representation as RingElem.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -275,6 +288,7 @@ public class SolvableLocalResidue<C extends GcdRingElem<C>> implements GcdRingEl
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this Element.
      * @see edu.jas.structure.Element#toScript()
      */
@@ -290,6 +304,7 @@ public class SolvableLocalResidue<C extends GcdRingElem<C>> implements GcdRingEl
 
     /**
      * Get a scripting compatible string representation of the factory.
+     *
      * @return script compatible representation for this ElemFactory.
      * @see edu.jas.structure.Element#toScriptFactory()
      */
@@ -301,6 +316,7 @@ public class SolvableLocalResidue<C extends GcdRingElem<C>> implements GcdRingEl
 
     /**
      * SolvableLocalResidue comparison.
+     *
      * @param b SolvableLocalResidue.
      * @return sign(this-b).
      */
@@ -345,6 +361,7 @@ public class SolvableLocalResidue<C extends GcdRingElem<C>> implements GcdRingEl
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @SuppressWarnings("unchecked")
@@ -370,6 +387,7 @@ public class SolvableLocalResidue<C extends GcdRingElem<C>> implements GcdRingEl
 
     /**
      * Hash code for this element.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -384,6 +402,7 @@ public class SolvableLocalResidue<C extends GcdRingElem<C>> implements GcdRingEl
 
     /**
      * SolvableLocalResidue absolute value.
+     *
      * @return the absolute value of this.
      * @see edu.jas.structure.RingElem#abs()
      */
@@ -394,6 +413,7 @@ public class SolvableLocalResidue<C extends GcdRingElem<C>> implements GcdRingEl
 
     /**
      * SolvableLocalResidue summation.
+     *
      * @param S SolvableLocalResidue.
      * @return this+S.
      */
@@ -421,7 +441,7 @@ public class SolvableLocalResidue<C extends GcdRingElem<C>> implements GcdRingEl
         GenSolvablePolynomial<C>[] oc = ring.engine.leftOreCond(den, S.den);
         if (debug) {
             logger.info("oc[0] den =sum= oc[1] S.den: (" + oc[0] + ") (" + den + ") = (" + oc[1] + ") ("
-                            + S.den + ")");
+                    + S.den + ")");
         }
         d = oc[0].multiply(den);
         n1 = oc[0].multiply(num);
@@ -434,6 +454,7 @@ public class SolvableLocalResidue<C extends GcdRingElem<C>> implements GcdRingEl
 
     /**
      * SolvableLocalResidue negate.
+     *
      * @return -this.
      * @see edu.jas.structure.RingElem#negate()
      */
@@ -444,8 +465,9 @@ public class SolvableLocalResidue<C extends GcdRingElem<C>> implements GcdRingEl
 
     /**
      * SolvableLocalResidue signum.
-     * @see edu.jas.structure.RingElem#signum()
+     *
      * @return signum(this).
+     * @see edu.jas.structure.RingElem#signum()
      */
     public int signum() {
         // assume sign(den) > 0
@@ -455,6 +477,7 @@ public class SolvableLocalResidue<C extends GcdRingElem<C>> implements GcdRingEl
 
     /**
      * SolvableLocalResidue subtraction.
+     *
      * @param S SolvableLocalResidue.
      * @return this-S.
      */
@@ -465,6 +488,7 @@ public class SolvableLocalResidue<C extends GcdRingElem<C>> implements GcdRingEl
 
     /**
      * SolvableLocalResidue division.
+     *
      * @param S SolvableLocalResidue.
      * @return this/S.
      */
@@ -475,8 +499,9 @@ public class SolvableLocalResidue<C extends GcdRingElem<C>> implements GcdRingEl
 
     /**
      * SolvableLocalResidue inverse.
-     * @see edu.jas.structure.RingElem#inverse()
+     *
      * @return S with S = 1/this.
+     * @see edu.jas.structure.RingElem#inverse()
      */
     public SolvableLocalResidue<C> inverse() {
         if (num.isZERO()) {
@@ -488,6 +513,7 @@ public class SolvableLocalResidue<C extends GcdRingElem<C>> implements GcdRingEl
 
     /**
      * SolvableLocalResidue remainder.
+     *
      * @param S SolvableLocalResidue.
      * @return this - (this/S)*S.
      */
@@ -501,6 +527,7 @@ public class SolvableLocalResidue<C extends GcdRingElem<C>> implements GcdRingEl
 
     /**
      * SolvableLocalResidue multiplication.
+     *
      * @param S SolvableLocalResidue.
      * @return this*S.
      */
@@ -530,7 +557,7 @@ public class SolvableLocalResidue<C extends GcdRingElem<C>> implements GcdRingEl
         GenSolvablePolynomial<C>[] oc = ring.engine.leftOreCond(num, S.den);
         if (debug) {
             System.out.println("oc[0] num =mult= oc[1] S.den: (" + oc[0] + ") (" + num + ") = (" + oc[1]
-                            + ") (" + S.den + ")");
+                    + ") (" + S.den + ")");
         }
         n = oc[1].multiply(S.num);
         d = oc[0].multiply(den);
@@ -540,6 +567,7 @@ public class SolvableLocalResidue<C extends GcdRingElem<C>> implements GcdRingEl
 
     /**
      * SolvableLocalResidue multiplication by GenSolvablePolynomial.
+     *
      * @param b GenSolvablePolynomial<C>.
      * @return this*b.
      */
@@ -560,6 +588,7 @@ public class SolvableLocalResidue<C extends GcdRingElem<C>> implements GcdRingEl
 
     /**
      * SolvableLocalResidue multiplication by coefficient.
+     *
      * @param b coefficient.
      * @return this*b.
      */
@@ -580,6 +609,7 @@ public class SolvableLocalResidue<C extends GcdRingElem<C>> implements GcdRingEl
 
     /**
      * SolvableLocalResidue multiplication by exponent.
+     *
      * @param e exponent vector.
      * @return this*b.
      */
@@ -597,6 +627,7 @@ public class SolvableLocalResidue<C extends GcdRingElem<C>> implements GcdRingEl
 
     /**
      * SolvableLocalResidue monic.
+     *
      * @return this with monic value part.
      */
     public SolvableLocalResidue<C> monic() {
@@ -609,8 +640,9 @@ public class SolvableLocalResidue<C extends GcdRingElem<C>> implements GcdRingEl
 
     /**
      * Greatest common divisor.
+     *
      * @param b other element.
-     * @return gcd(this,b).
+     * @return gcd(this, b).
      */
     public SolvableLocalResidue<C> gcd(SolvableLocalResidue<C> b) {
         if (b == null || b.isZERO()) {
@@ -625,6 +657,7 @@ public class SolvableLocalResidue<C extends GcdRingElem<C>> implements GcdRingEl
 
     /**
      * Extended greatest common divisor.
+     *
      * @param b other element.
      * @return [ gcd(this,b), c1, c2 ] with c1*this + c2*b = gcd(this,b).
      */

@@ -5,13 +5,13 @@
 package edu.jas.ufd;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
-import java.util.Map;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.arith.BigInteger;
 import edu.jas.arith.BigRational;
@@ -23,6 +23,7 @@ import edu.jas.poly.PolyUtil;
 /**
  * Rational number coefficients factorization algorithms. This class implements
  * factorization methods for polynomials over rational numbers.
+ *
  * @author Heinz Kredel
  */
 
@@ -52,8 +53,9 @@ public class FactorRational extends FactorAbsolute<BigRational> {
 
     /**
      * GenPolynomial base factorization of a squarefree polynomial.
+     *
      * @param P squarefree GenPolynomial.
-     * @return [p_1,...,p_k] with P = prod_{i=1, ..., k} p_i.
+     * @return [p_1, ..., p_k] with P = prod_{i=1, ..., k} p_i.
      */
     @Override
     public List<GenPolynomial<BigRational>> baseFactorsSquarefree(GenPolynomial<BigRational> P) {
@@ -112,8 +114,9 @@ public class FactorRational extends FactorAbsolute<BigRational> {
 
     /**
      * GenPolynomial factorization of a squarefree polynomial.
+     *
      * @param P squarefree GenPolynomial.
-     * @return [p_1,...,p_k] with P = prod_{i=1, ..., k} p_i.
+     * @return [p_1, ..., p_k] with P = prod_{i=1, ..., k} p_i.
      */
     @Override
     public List<GenPolynomial<BigRational>> factorsSquarefree(GenPolynomial<BigRational> P) {
@@ -172,9 +175,10 @@ public class FactorRational extends FactorAbsolute<BigRational> {
 
     /**
      * GenPolynomial factorization of a polynomial.
+     *
      * @param P GenPolynomial.
      * @return [p_1 -&gt; e_1, ..., p_k -&gt; e_k] with P = prod_{i=1,...,k}
-     *         p_i**e_i and p_i irreducible.
+     * p_i**e_i and p_i irreducible.
      */
     @Override
     public SortedMap<GenPolynomial<BigRational>, Long> factors(GenPolynomial<BigRational> P) {

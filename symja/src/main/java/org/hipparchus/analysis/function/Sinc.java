@@ -29,7 +29,6 @@ import org.hipparchus.util.FastMath;
  *   sinc(x) = 1            if x = 0,
  *             sin(x) / x   otherwise.
  * </code></pre>
- *
  */
 public class Sinc implements UnivariateDifferentiableFunction {
     /**
@@ -57,7 +56,9 @@ public class Sinc implements UnivariateDifferentiableFunction {
      * </p>
      */
     private static final double SHORTCUT = 6.0e-3;
-    /** For normalized sinc function. */
+    /**
+     * For normalized sinc function.
+     */
     private final boolean normalized;
 
     /**
@@ -71,13 +72,15 @@ public class Sinc implements UnivariateDifferentiableFunction {
      * Instantiates the sinc function.
      *
      * @param normalized If {@code true}, the function is
-     * <code> sin(&pi;x) / &pi;x</code>, otherwise {@code sin(x) / x}.
+     *                   <code> sin(&pi;x) / &pi;x</code>, otherwise {@code sin(x) / x}.
      */
     public Sinc(boolean normalized) {
         this.normalized = normalized;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double value(final double x) {
         final double scaledX = normalized ? FastMath.PI * x : x;
@@ -91,13 +94,14 @@ public class Sinc implements UnivariateDifferentiableFunction {
         }
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     @Override
     public DerivativeStructure value(final DerivativeStructure t)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
 
-        final double scaledX  = (normalized ? FastMath.PI : 1) * t.getValue();
+        final double scaledX = (normalized ? FastMath.PI : 1) * t.getValue();
         final double scaledX2 = scaledX * scaledX;
 
         double[] f = new double[t.getOrder() + 1];
@@ -109,11 +113,11 @@ public class Sinc implements UnivariateDifferentiableFunction {
                 if ((i & 0x1) == 0) {
                     // even derivation order
                     f[i] = (((k & 0x1) == 0) ? 1 : -1) *
-                           (1.0 / (i + 1) - scaledX2 * (1.0 / (2 * i + 6) - scaledX2 / (24 * i + 120)));
+                            (1.0 / (i + 1) - scaledX2 * (1.0 / (2 * i + 6) - scaledX2 / (24 * i + 120)));
                 } else {
                     // odd derivation order
                     f[i] = (((k & 0x1) == 0) ? -scaledX : scaledX) *
-                           (1.0 / (i + 2) - scaledX2 * (1.0 / (6 * i + 24) - scaledX2 / (120 * i + 720)));
+                            (1.0 / (i + 2) - scaledX2 * (1.0 / (6 * i + 24) - scaledX2 / (120 * i + 720)));
                 }
             }
 
@@ -161,19 +165,19 @@ public class Sinc implements UnivariateDifferentiableFunction {
                 for (int k = kStart; k > 1; k -= 2) {
 
                     // sine part
-                    sc[k]     = (k - n) * sc[k] - sc[k - 1];
-                    s         = s * scaledX2 + sc[k];
+                    sc[k] = (k - n) * sc[k] - sc[k - 1];
+                    s = s * scaledX2 + sc[k];
 
                     // cosine part
-                    sc[k - 1] = (k - 1 - n) * sc[k - 1] + sc[k -2];
-                    c         = c * scaledX2 + sc[k - 1];
+                    sc[k - 1] = (k - 1 - n) * sc[k - 1] + sc[k - 2];
+                    c = c * scaledX2 + sc[k - 1];
 
                 }
                 sc[0] *= -n;
-                s      = s * scaledX2 + sc[0];
+                s = s * scaledX2 + sc[0];
 
                 coeff *= inv;
-                f[n]   = coeff * (s * sin + c * scaledX * cos);
+                f[n] = coeff * (s * sin + c * scaledX * cos);
 
             }
 
@@ -182,7 +186,7 @@ public class Sinc implements UnivariateDifferentiableFunction {
         if (normalized) {
             double scale = FastMath.PI;
             for (int i = 1; i < f.length; ++i) {
-                f[i]  *= scale;
+                f[i] *= scale;
                 scale *= FastMath.PI;
             }
         }

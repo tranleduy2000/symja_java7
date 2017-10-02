@@ -42,12 +42,18 @@ import org.hipparchus.util.FastMath;
  */
 public class ParetoDistribution extends AbstractRealDistribution {
 
-    /** Serializable version identifier. */
+    /**
+     * Serializable version identifier.
+     */
     private static final long serialVersionUID = 20130424L;
 
-    /** The scale parameter of this distribution. */
+    /**
+     * The scale parameter of this distribution.
+     */
     private final double scale;
-    /** The shape parameter of this distribution. */
+    /**
+     * The shape parameter of this distribution.
+     */
     private final double shape;
 
     /**
@@ -65,22 +71,22 @@ public class ParetoDistribution extends AbstractRealDistribution {
      * @throws MathIllegalArgumentException if {@code scale <= 0} or {@code shape <= 0}.
      */
     public ParetoDistribution(double scale, double shape)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         this(scale, shape, DEFAULT_SOLVER_ABSOLUTE_ACCURACY);
     }
 
     /**
      * Creates a Pareto distribution.
      *
-     * @param scale Scale parameter of this distribution.
-     * @param shape Shape parameter of this distribution.
+     * @param scale              Scale parameter of this distribution.
+     * @param shape              Shape parameter of this distribution.
      * @param inverseCumAccuracy Inverse cumulative probability accuracy.
      * @throws MathIllegalArgumentException if {@code scale <= 0} or {@code shape <= 0}.
      */
     public ParetoDistribution(double scale,
                               double shape,
                               double inverseCumAccuracy)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         super(inverseCumAccuracy);
 
         if (scale <= 0) {
@@ -131,8 +137,9 @@ public class ParetoDistribution extends AbstractRealDistribution {
         return FastMath.pow(scale, shape) / FastMath.pow(x, shape + 1) * shape;
     }
 
-    /** {@inheritDoc}
-     *
+    /**
+     * {@inheritDoc}
+     * <p>
      * See documentation of {@link #density(double)} for computation details.
      */
     @Override
@@ -153,7 +160,7 @@ public class ParetoDistribution extends AbstractRealDistribution {
      * </ul>
      */
     @Override
-    public double cumulativeProbability(double x)  {
+    public double cumulativeProbability(double x) {
         if (x <= scale) {
             return 0;
         }

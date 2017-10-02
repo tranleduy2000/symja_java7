@@ -28,7 +28,7 @@ import org.hipparchus.stat.descriptive.moment.SecondMoment;
 /**
  * <p>Implements ordinary least squares (OLS) to estimate the parameters of a
  * multiple linear regression model.</p>
- *
+ * <p>
  * <p>The regression coefficients, <code>b</code>, satisfy the normal equations:
  * <pre><code> X<sup>T</sup> X b = X<sup>T</sup> y </code></pre></p>
  *
@@ -48,15 +48,17 @@ import org.hipparchus.stat.descriptive.moment.SecondMoment;
  * R b = Q<sup>T</sup> y </code></pre></p>
  *
  * <p>Given <code>Q</code> and <code>R</code>, the last equation is solved by back-substitution.</p>
- *
  */
 public class OLSMultipleLinearRegression extends AbstractMultipleLinearRegression {
 
-    /** Cached QR decomposition of X matrix */
-    private QRDecomposition qr = null;
-
-    /** Singularity threshold for QR decomposition */
+    /**
+     * Singularity threshold for QR decomposition
+     */
     private final double threshold;
+    /**
+     * Cached QR decomposition of X matrix
+     */
+    private QRDecomposition qr = null;
 
     /**
      * Create an empty OLSMultipleLinearRegression instance.
@@ -77,12 +79,13 @@ public class OLSMultipleLinearRegression extends AbstractMultipleLinearRegressio
 
     /**
      * Loads model x and y sample data, overriding any previous sample.
-     *
+     * <p>
      * Computes and caches QR decomposition of the X matrix.
+     *
      * @param y the [n,1] array representing the y sample
      * @param x the [n,k] array representing the x sample
      * @throws MathIllegalArgumentException if the x and y array data are not
-     *             compatible for the regression
+     *                                      compatible for the regression
      */
     public void newSampleData(double[] y, double[][] x) throws MathIllegalArgumentException {
         validateSampleData(x, y);
@@ -104,7 +107,7 @@ public class OLSMultipleLinearRegression extends AbstractMultipleLinearRegressio
      * <p>Compute the "hat" matrix.
      * </p>
      * <p>The hat matrix is defined in terms of the design matrix X
-     *  by X(X<sup>T</sup>X)<sup>-1</sup>X<sup>T</sup>
+     * by X(X<sup>T</sup>X)<sup>-1</sup>X<sup>T</sup>
      * </p>
      * <p>The implementation here uses the QR decomposition to compute the
      * hat matrix as Q I<sub>p</sub>Q<sup>T</sup> where I<sub>p</sub> is the
@@ -119,7 +122,7 @@ public class OLSMultipleLinearRegression extends AbstractMultipleLinearRegressio
      *
      * @return the hat matrix
      * @throws NullPointerException unless method {@code newSampleData} has been
-     * called beforehand.
+     *                              called beforehand.
      */
     public RealMatrix calculateHat() {
         // Create augmented identity matrix
@@ -130,7 +133,7 @@ public class OLSMultipleLinearRegression extends AbstractMultipleLinearRegressio
         Array2DRowRealMatrix augI = new Array2DRowRealMatrix(n, n);
         double[][] augIData = augI.getDataRef();
         for (int i = 0; i < n; i++) {
-            for (int j =0; j < n; j++) {
+            for (int j = 0; j < n; j++) {
                 if (i == j && i < p) {
                     augIData[i][j] = 1d;
                 } else {
@@ -146,10 +149,10 @@ public class OLSMultipleLinearRegression extends AbstractMultipleLinearRegressio
 
     /**
      * <p>Returns the sum of squared deviations of Y from its mean.</p>
-     *
+     * <p>
      * <p>If the model has no intercept term, <code>0</code> is used for the
      * mean of Y - i.e., what is returned is the sum of the squared Y values.</p>
-     *
+     * <p>
      * <p>The value returned by this method is the SSTO value used in
      * the {@link #calculateRSquared() R-squared} computation.</p>
      *
@@ -170,7 +173,7 @@ public class OLSMultipleLinearRegression extends AbstractMultipleLinearRegressio
      *
      * @return residual sum of squares
      * @throws MathIllegalArgumentException if the design matrix is singular
-     * @throws NullPointerException if the data for the model have not been loaded
+     * @throws NullPointerException         if the data for the model have not been loaded
      */
     public double calculateResidualSumOfSquares() {
         final RealVector residuals = calculateResiduals();
@@ -184,11 +187,11 @@ public class OLSMultipleLinearRegression extends AbstractMultipleLinearRegressio
      * </pre>
      * where SSR is the {@link #calculateResidualSumOfSquares() sum of squared residuals}
      * and SSTO is the {@link #calculateTotalSumOfSquares() total sum of squares}
-     *
+     * <p>
      * <p>If there is no variance in y, i.e., SSTO = 0, NaN is returned.</p>
      *
      * @return R-square statistic
-     * @throws NullPointerException if the sample has not been set
+     * @throws NullPointerException         if the sample has not been set
      * @throws MathIllegalArgumentException if the design matrix is singular
      */
     public double calculateRSquared() {
@@ -202,15 +205,15 @@ public class OLSMultipleLinearRegression extends AbstractMultipleLinearRegressio
      * where SSR is the {@link #calculateResidualSumOfSquares() sum of squared residuals},
      * SSTO is the {@link #calculateTotalSumOfSquares() total sum of squares}, n is the number
      * of observations and p is the number of parameters estimated (including the intercept).</p>
-     *
+     * <p>
      * <p>If the regression is estimated without an intercept term, what is returned is <pre>
      * <code> 1 - (1 - {@link #calculateRSquared()}) * (n / (n - p)) </code>
      * </pre></p>
-     *
+     * <p>
      * <p>If there is no variance in y, i.e., SSTO = 0, NaN is returned.</p>
      *
      * @return adjusted R-Squared statistic
-     * @throws NullPointerException if the sample has not been set
+     * @throws NullPointerException         if the sample has not been set
      * @throws MathIllegalArgumentException if the design matrix is singular
      * @see #isNoIntercept()
      */
@@ -220,7 +223,7 @@ public class OLSMultipleLinearRegression extends AbstractMultipleLinearRegressio
             return 1 - (1 - calculateRSquared()) * (n / (n - getX().getColumnDimension()));
         } else {
             return 1 - (calculateResidualSumOfSquares() * (n - 1)) /
-                (calculateTotalSumOfSquares() * (n - getX().getColumnDimension()));
+                    (calculateTotalSumOfSquares() * (n - getX().getColumnDimension()));
         }
     }
 
@@ -237,14 +240,14 @@ public class OLSMultipleLinearRegression extends AbstractMultipleLinearRegressio
 
     /**
      * Calculates the regression coefficients using OLS.
-     *
+     * <p>
      * <p>Data for the model must have been successfully loaded using one of
      * the {@code newSampleData} methods before invoking this method; otherwise
      * a {@code NullPointerException} will be thrown.</p>
      *
      * @return beta
      * @throws MathIllegalArgumentException if the design matrix is singular
-     * @throws NullPointerException if the data for the model have not been loaded
+     * @throws NullPointerException         if the data for the model have not been loaded
      */
     @Override
     protected RealVector calculateBeta() {
@@ -259,19 +262,19 @@ public class OLSMultipleLinearRegression extends AbstractMultipleLinearRegressio
      * <p>Uses QR decomposition to reduce (X<sup>T</sup>X)<sup>-1</sup>
      * to (R<sup>T</sup>R)<sup>-1</sup>, with only the top p rows of
      * R included, where p = the length of the beta vector.</p>
-     *
+     * <p>
      * <p>Data for the model must have been successfully loaded using one of
      * the {@code newSampleData} methods before invoking this method; otherwise
      * a {@code NullPointerException} will be thrown.</p>
      *
      * @return The beta variance-covariance matrix
      * @throws MathIllegalArgumentException if the design matrix is singular
-     * @throws NullPointerException if the data for the model have not been loaded
+     * @throws NullPointerException         if the data for the model have not been loaded
      */
     @Override
     protected RealMatrix calculateBetaVariance() {
         int p = getX().getColumnDimension();
-        RealMatrix Raug = qr.getR().getSubMatrix(0, p - 1 , 0, p - 1);
+        RealMatrix Raug = qr.getR().getSubMatrix(0, p - 1, 0, p - 1);
         RealMatrix Rinv = new LUDecomposition(Raug).getSolver().getInverse();
         return Rinv.multiply(Rinv.transpose());
     }

@@ -5,11 +5,11 @@
 package edu.jas.gbufd;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.gb.GroebnerBaseAbstract;
 import edu.jas.gb.GroebnerBaseSeq;
@@ -28,6 +28,7 @@ import edu.jas.structure.RingFactory;
  * subset of variables <code>vars</code> of the polynomial ring K[vars]. Methods
  * compute Groebner bases with coefficients from K[vars \ pvars] in the
  * polynomial ring K[vars \ pvars][pvars].
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
@@ -63,6 +64,7 @@ public class GroebnerBasePartial<C extends GcdRingElem<C>> extends GroebnerBaseA
 
     /**
      * Constructor.
+     *
      * @param rf coefficient ring factory.
      */
     public GroebnerBasePartial(RingFactory<GenPolynomial<C>> rf) {
@@ -72,7 +74,8 @@ public class GroebnerBasePartial<C extends GcdRingElem<C>> extends GroebnerBaseA
 
     /**
      * Constructor.
-     * @param bb Groebner base engine
+     *
+     * @param bb  Groebner base engine
      * @param rbb recursive Groebner base engine
      */
     public GroebnerBasePartial(GroebnerBaseAbstract<C> bb, GroebnerBaseAbstract<GenPolynomial<C>> rbb) {
@@ -80,69 +83,31 @@ public class GroebnerBasePartial<C extends GcdRingElem<C>> extends GroebnerBaseA
         this.bb = bb;
         this.rbb = rbb;
         //if (rbb == null) {
-            //logger.warn("no recursive GB given");
+        //logger.warn("no recursive GB given");
         //}
     }
-
-
-    /**
-     * Groebner base using pairlist class.
-     * @param modv module variable number.
-     * @param F polynomial list.
-     * @return GB(F) a Groebner base of F.
-     */
-    public List<GenPolynomial<C>> GB(int modv, List<GenPolynomial<C>> F) {
-        return bb.GB(modv, F);
-    }
-
-
-    /**
-     * Groebner base test.
-     * @param F polynomial list.
-     * @return true, if F is a partial Groebner base, else false.
-     */
-    public boolean isGBrec(List<GenPolynomial<GenPolynomial<C>>> F) {
-        return isGBrec(0, F);
-    }
-
-
-    /**
-     * Groebner base test.
-     * @param modv module variable number.
-     * @param F polynomial list.
-     * @return true, if F is a partial Groebner base, else false.
-     */
-    public boolean isGBrec(int modv, List<GenPolynomial<GenPolynomial<C>>> F) {
-        if (F == null || F.isEmpty()) {
-            return true;
-        }
-        if (true) {
-            rbb = new GroebnerBasePseudoRecSeq<C>(F.get(0).ring.coFac);
-        }
-        return rbb.isGB(modv, F);
-    }
-
 
     /**
      * Partial permuation for specific variables. Computes a permutation perm
      * for the variables vars, such that perm(vars) == pvars ... (vars \ pvars).
      * Uses internal (reversed) variable sorting.
-     * @param vars names for all variables.
+     *
+     * @param vars  names for all variables.
      * @param pvars names for main variables, pvars subseteq vars.
      * @return permutation for vars, such that perm(vars) == pvars ... (vars \
-     *         pvars).
+     * pvars).
      */
     public static List<Integer> partialPermutation(String[] vars, String[] pvars) {
         return partialPermutation(vars, pvars, null);
         //no: return getPermutation(vars,pvars);
     }
 
-
     /**
      * Permutation of variables for elimination.
+     *
      * @param aname variables for the full polynomial ring.
      * @param ename variables for the elimination ring, subseteq aname.
-     * @return perm({vars \ ename},ename)
+     * @return perm({vars \ ename}, ename)
      */
     public static List<Integer> getPermutation(String[] aname, String[] ename) {
         if (aname == null || ename == null) {
@@ -178,9 +143,9 @@ public class GroebnerBasePartial<C extends GcdRingElem<C>> extends GroebnerBaseA
         return perm;
     }
 
-
     /**
      * Index of s in A.
+     *
      * @param s search string
      * @param A string array
      * @return i if s == A[i] for some i, else -1.
@@ -194,16 +159,16 @@ public class GroebnerBasePartial<C extends GcdRingElem<C>> extends GroebnerBaseA
         return -1;
     }
 
-
     /**
      * Partial permuation for specific variables. Computes a permutation perm
      * for the variables vars, such that perm(vars) == pvars ... (vars \ pvars).
      * Uses internal (reversed) variable sorting.
-     * @param vars names for all variables.
+     *
+     * @param vars  names for all variables.
      * @param pvars names for main variables, pvars subseteq vars.
      * @param rvars names for remaining variables, rvars eq { vars \ pvars }.
      * @return permutation for vars, such that perm(vars) == (pvars, {vars \
-     *         pvars}).
+     * pvars}).
      */
     public static List<Integer> partialPermutation(String[] vars, String[] pvars, String[] rvars) {
         if (vars == null || pvars == null) {
@@ -295,21 +260,21 @@ public class GroebnerBasePartial<C extends GcdRingElem<C>> extends GroebnerBaseA
         */
     }
 
-
     /**
      * Partial permuation for specific variables. Computes a permutation perm
      * for the variables vars, such that perm(vars) == (evars, pvars, (vars \ {
      * evars, pvars }). Uses internal (reversed) variable sorting.
-     * @param vars names for all variables.
+     *
+     * @param vars  names for all variables.
      * @param evars names for elimination variables, evars subseteq vars.
      * @param pvars names for main variables, pvars subseteq vars.
      * @param rvars names for remaining variables, rvars eq {vars \ { evars,
-     *            pvars } }.
+     *              pvars } }.
      * @return permutation for vars, such that perm(vars) == (evars,pvars, {vars
-     *         \ {evars,pvars}}.
+     * \ {evars,pvars}}.
      */
     public static List<Integer> partialPermutation(String[] vars, String[] evars, String[] pvars,
-                    String[] rvars) {
+                                                   String[] rvars) {
         if (vars == null || evars == null || pvars == null) {
             throw new IllegalArgumentException("not all variable names given");
         }
@@ -330,11 +295,11 @@ public class GroebnerBasePartial<C extends GcdRingElem<C>> extends GroebnerBaseA
         return perm;
     }
 
-
     /**
      * Remaining variables vars \ pvars. Uses internal (reversed) variable
      * sorting, original order is preserved.
-     * @param vars names for all variables.
+     *
+     * @param vars  names for all variables.
      * @param pvars names for main variables, pvars subseteq vars.
      * @return remaining vars = (vars \ pvars).
      */
@@ -367,13 +332,51 @@ public class GroebnerBasePartial<C extends GcdRingElem<C>> extends GroebnerBaseA
         return rvars;
     }
 
+    /**
+     * Groebner base using pairlist class.
+     *
+     * @param modv module variable number.
+     * @param F    polynomial list.
+     * @return GB(F) a Groebner base of F.
+     */
+    public List<GenPolynomial<C>> GB(int modv, List<GenPolynomial<C>> F) {
+        return bb.GB(modv, F);
+    }
+
+    /**
+     * Groebner base test.
+     *
+     * @param F polynomial list.
+     * @return true, if F is a partial Groebner base, else false.
+     */
+    public boolean isGBrec(List<GenPolynomial<GenPolynomial<C>>> F) {
+        return isGBrec(0, F);
+    }
+
+    /**
+     * Groebner base test.
+     *
+     * @param modv module variable number.
+     * @param F    polynomial list.
+     * @return true, if F is a partial Groebner base, else false.
+     */
+    public boolean isGBrec(int modv, List<GenPolynomial<GenPolynomial<C>>> F) {
+        if (F == null || F.isEmpty()) {
+            return true;
+        }
+        if (true) {
+            rbb = new GroebnerBasePseudoRecSeq<C>(F.get(0).ring.coFac);
+        }
+        return rbb.isGB(modv, F);
+    }
 
     /**
      * Partial recursive Groebner base for specific variables. Computes Groebner
      * base in K[vars \ pvars][pvars] with coefficients from K[vars \ pvars].
-     * @param F polynomial list.
+     *
+     * @param F     polynomial list.
      * @param pvars names for main variables of partial Groebner base
-     *            computation.
+     *              computation.
      * @return a container for a partial Groebner base of F wrt pvars.
      */
     public OptimizedPolynomialList<GenPolynomial<C>> partialGBrec(List<GenPolynomial<C>> F, String[] pvars) {
@@ -391,11 +394,11 @@ public class GroebnerBasePartial<C extends GcdRingElem<C>> extends GroebnerBaseA
         // compute permutation (in reverse sorting)
         List<Integer> perm = partialPermutation(vars, pvars);
 
-        GenPolynomialRing<C> pfac = TermOrderOptimization.<C> permutation(perm, fac);
+        GenPolynomialRing<C> pfac = TermOrderOptimization.<C>permutation(perm, fac);
         if (logger.isInfoEnabled()) {
             logger.info("pfac = " + pfac);
         }
-        List<GenPolynomial<C>> ppolys = TermOrderOptimization.<C> permutation(perm, pfac, F);
+        List<GenPolynomial<C>> ppolys = TermOrderOptimization.<C>permutation(perm, pfac, F);
         //System.out.println("ppolys = " + ppolys);
 
         int cl = fac.nvar - pvars.length; // > 0
@@ -404,13 +407,13 @@ public class GroebnerBasePartial<C extends GcdRingElem<C>> extends GroebnerBaseA
         GenPolynomialRing<C> cfac = new GenPolynomialRing<C>(fac.coFac, cl, fac.tord, rvars);
         //System.out.println("cfac = " + cfac);
         GenPolynomialRing<GenPolynomial<C>> rfac = new GenPolynomialRing<GenPolynomial<C>>(cfac, pl,
-                        fac.tord, pvars);
+                fac.tord, pvars);
         if (logger.isInfoEnabled()) {
             logger.info("rfac = " + rfac);
         }
         //System.out.println("rfac = " + rfac);
 
-        List<GenPolynomial<GenPolynomial<C>>> Fr = PolyUtil.<C> recursive(rfac, ppolys);
+        List<GenPolynomial<GenPolynomial<C>>> Fr = PolyUtil.<C>recursive(rfac, ppolys);
         //System.out.println("\nFr = " + Fr);
 
         if (true) {
@@ -420,7 +423,7 @@ public class GroebnerBasePartial<C extends GcdRingElem<C>> extends GroebnerBaseA
         //System.out.println("\nGr = " + Gr);
         //perm = perm.subList(0,pl);
         OptimizedPolynomialList<GenPolynomial<C>> pgb = new OptimizedPolynomialList<GenPolynomial<C>>(perm,
-                        rfac, Gr);
+                rfac, Gr);
         return pgb;
     }
 
@@ -429,9 +432,10 @@ public class GroebnerBasePartial<C extends GcdRingElem<C>> extends GroebnerBaseA
      * Partial Groebner base for specific variables. Computes Groebner base in
      * K[vars \ pvars][pvars] with coefficients from K[vars \ pvars] but returns
      * polynomials in K[vars \ pvars, pvars].
-     * @param F polynomial list.
+     *
+     * @param F     polynomial list.
      * @param pvars names for main variables of partial Groebner base
-     *            computation.
+     *              computation.
      * @return a container for a partial Groebner base of F wrt pvars.
      */
     public OptimizedPolynomialList<C> partialGB(List<GenPolynomial<C>> F, String[] pvars) {
@@ -448,11 +452,11 @@ public class GroebnerBasePartial<C extends GcdRingElem<C>> extends GroebnerBaseA
         //System.out.println("pGB, perm   = " + perm);
         //System.out.println("pGB, perm,1 = " + getPermutation(vars, xvars));
 
-        GenPolynomialRing<C> pfac = TermOrderOptimization.<C> permutation(perm, fac);
+        GenPolynomialRing<C> pfac = TermOrderOptimization.<C>permutation(perm, fac);
         if (logger.isInfoEnabled()) {
             logger.info("pfac = " + pfac);
         }
-        List<GenPolynomial<C>> ppolys = TermOrderOptimization.<C> permutation(perm, pfac, F);
+        List<GenPolynomial<C>> ppolys = TermOrderOptimization.<C>permutation(perm, pfac, F);
         //System.out.println("ppolys = " + ppolys);
 
         int cl = fac.nvar - pvars.length;
@@ -469,13 +473,13 @@ public class GroebnerBasePartial<C extends GcdRingElem<C>> extends GroebnerBaseA
         //System.out.println("cfac = " + cfac);
 
         GenPolynomialRing<GenPolynomial<C>> rfac = new GenPolynomialRing<GenPolynomial<C>>(cfac, pl,
-                        fac.tord, pvars);
+                fac.tord, pvars);
         if (logger.isInfoEnabled()) {
             logger.info("rfac = " + rfac);
         }
         //System.out.println("rfac = " + rfac);
 
-        List<GenPolynomial<GenPolynomial<C>>> Fr = PolyUtil.<C> recursive(rfac, ppolys);
+        List<GenPolynomial<GenPolynomial<C>>> Fr = PolyUtil.<C>recursive(rfac, ppolys);
         //System.out.println("\nFr = " + Fr);
 
         if (true) {
@@ -484,7 +488,7 @@ public class GroebnerBasePartial<C extends GcdRingElem<C>> extends GroebnerBaseA
         List<GenPolynomial<GenPolynomial<C>>> Gr = rbb.GB(Fr);
         //System.out.println("\nGr = " + Gr);
 
-        List<GenPolynomial<C>> G = PolyUtil.<C> distribute(pfac, Gr);
+        List<GenPolynomial<C>> G = PolyUtil.<C>distribute(pfac, Gr);
         //System.out.println("\nG = " + G);
 
         OptimizedPolynomialList<C> pgb = new OptimizedPolynomialList<C>(perm, pfac, G);
@@ -495,11 +499,12 @@ public class GroebnerBasePartial<C extends GcdRingElem<C>> extends GroebnerBaseA
     /**
      * Partial Groebner base for specific variables. Computes Groebner base with
      * coefficients from K[pvars] but returns polynomials in K[pvars, evars].
-     * @param F polynomial list.
+     *
+     * @param F     polynomial list.
      * @param evars names for upper main variables of partial Groebner base
-     *            computation.
+     *              computation.
      * @param pvars names for lower main variables of partial Groebner base
-     *            computation.
+     *              computation.
      * @return a container for a partial Groebner base of F wrt (pvars,evars).
      */
     public OptimizedPolynomialList<C> elimPartialGB(List<GenPolynomial<C>> F, String[] evars, String[] pvars) {
@@ -515,11 +520,11 @@ public class GroebnerBasePartial<C extends GcdRingElem<C>> extends GroebnerBaseA
         List<Integer> perm = partialPermutation(vars, evars, pvars);
         //System.out.println("perm = " + perm);
 
-        GenPolynomialRing<C> pfac = TermOrderOptimization.<C> permutation(perm, fac);
+        GenPolynomialRing<C> pfac = TermOrderOptimization.<C>permutation(perm, fac);
         if (logger.isInfoEnabled()) {
             logger.info("pfac = " + pfac);
         }
-        List<GenPolynomial<C>> ppolys = TermOrderOptimization.<C> permutation(perm, pfac, F);
+        List<GenPolynomial<C>> ppolys = TermOrderOptimization.<C>permutation(perm, pfac, F);
         //System.out.println("ppolys = " + ppolys);
 
         int cl = fac.nvar - evars.length - pvars.length;
@@ -566,10 +571,10 @@ public class GroebnerBasePartial<C extends GcdRingElem<C>> extends GroebnerBaseA
         //GenPolynomialRing<C> sfac = new GenPolynomialRing<C>(pfac.coFac, pfac.nvar, split, pfac.getVars());
 
         GenPolynomialRing<GenPolynomial<C>> rfac = new GenPolynomialRing<GenPolynomial<C>>(cfac, pl, split,
-                        uvars);
+                uvars);
         //System.out.println("rfac = " + rfac);
 
-        List<GenPolynomial<GenPolynomial<C>>> Fr = PolyUtil.<C> recursive(rfac, ppolys);
+        List<GenPolynomial<GenPolynomial<C>>> Fr = PolyUtil.<C>recursive(rfac, ppolys);
         if (logger.isInfoEnabled()) {
             logger.info("rfac = " + rfac);
             logger.info("Fr   = " + Fr);
@@ -581,7 +586,7 @@ public class GroebnerBasePartial<C extends GcdRingElem<C>> extends GroebnerBaseA
         List<GenPolynomial<GenPolynomial<C>>> Gr = rbb.GB(Fr);
         //System.out.println("\nGr = " + Gr);
 
-        List<GenPolynomial<C>> G = PolyUtil.<C> distribute(pfac, Gr);
+        List<GenPolynomial<C>> G = PolyUtil.<C>distribute(pfac, Gr);
         //System.out.println("\nG = " + G);
 
         OptimizedPolynomialList<C> pgb = new OptimizedPolynomialList<C>(perm, pfac, G);

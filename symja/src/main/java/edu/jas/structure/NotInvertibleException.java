@@ -8,6 +8,7 @@ package edu.jas.structure;
 /**
  * NotInvertibleException class. Runtime Exception to be thrown for not
  * invertible monoid elements.
+ *
  * @author Heinz Kredel
  */
 

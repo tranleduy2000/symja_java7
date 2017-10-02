@@ -23,16 +23,18 @@ import org.hipparchus.util.FastMath;
 
 /**
  * Hyperbolic sine function.
- *
  */
 public class Sinh implements UnivariateDifferentiableFunction {
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double value(double x) {
         return FastMath.sinh(x);
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     @Override
     public DerivativeStructure value(final DerivativeStructure t) {

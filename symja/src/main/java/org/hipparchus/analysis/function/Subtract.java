@@ -21,10 +21,11 @@ import org.hipparchus.analysis.BivariateFunction;
 
 /**
  * Subtract the second operand from the first.
- *
  */
 public class Subtract implements BivariateFunction {
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double value(double x, double y) {
         return x - y;

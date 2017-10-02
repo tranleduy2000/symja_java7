@@ -16,48 +16,58 @@
  */
 package org.hipparchus.ode;
 
+import org.hipparchus.exception.MathIllegalArgumentException;
+import org.hipparchus.exception.MathIllegalStateException;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hipparchus.exception.MathIllegalArgumentException;
-import org.hipparchus.exception.MathIllegalStateException;
-
-/** Wrapper class to compute Jacobian matrices by finite differences for ODE
- *  which do not compute them by themselves.
- *
+/**
+ * Wrapper class to compute Jacobian matrices by finite differences for ODE
+ * which do not compute them by themselves.
  */
 class ParameterJacobianWrapper implements ODEJacobiansProvider {
 
-    /** ode base ordinary differential equation for which Jacobians
-     * matrices are requested. */
+    /**
+     * ode base ordinary differential equation for which Jacobians
+     * matrices are requested.
+     */
     private final OrdinaryDifferentialEquation ode;
 
-    /** Steps for finite difference computation of the jacobian df/dy w.r.t. state. */
+    /**
+     * Steps for finite difference computation of the jacobian df/dy w.r.t. state.
+     */
     private final double[] hY;
 
-    /** Controller to change parameters. */
+    /**
+     * Controller to change parameters.
+     */
     private final ParametersController controller;
 
-    /** Steps for finite difference computation of the Jacobian df/dp w.r.t. parameters. */
+    /**
+     * Steps for finite difference computation of the Jacobian df/dp w.r.t. parameters.
+     */
     private final Map<String, Double> hParam;
 
-    /** Wrap a {@link ParametersController} into a {@link NamedParameterJacobianProvider}.
-     * @param ode ode base ordinary differential equation for which Jacobians
-     * matrices are requested
-     * @param hY step used for finite difference computation with respect to state vector
-     * @param controller controller to change parameters
+    /**
+     * Wrap a {@link ParametersController} into a {@link NamedParameterJacobianProvider}.
+     *
+     * @param ode            ode base ordinary differential equation for which Jacobians
+     *                       matrices are requested
+     * @param hY             step used for finite difference computation with respect to state vector
+     * @param controller     controller to change parameters
      * @param paramsAndSteps parameters and steps to compute the Jacobians df/dp
      * @see ParametersController#setParameterStep(String, double)
      */
     ParameterJacobianWrapper(final OrdinaryDifferentialEquation ode, final double[] hY,
                              final ParametersController controller,
                              final ParameterConfiguration[] paramsAndSteps) {
-        this.ode        = ode;
-        this.hY         = hY.clone();
+        this.ode = ode;
+        this.hY = hY.clone();
         this.controller = controller;
-        this.hParam     = new HashMap<String, Double>();
+        this.hParam = new HashMap<String, Double>();
 
         // set up parameters for jacobian computation
         for (final ParameterConfiguration param : paramsAndSteps) {
@@ -68,30 +78,38 @@ class ParameterJacobianWrapper implements ODEJacobiansProvider {
         }
     }
 
-    /** Get the underlying ode.
+    /**
+     * Get the underlying ode.
+     *
      * @return underlying ode
      */
     public OrdinaryDifferentialEquation getODE() {
         return ode;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getDimension() {
         return ode.getDimension();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double[] computeDerivatives(double t, double[] y)
-        throws MathIllegalArgumentException, MathIllegalStateException {
+            throws MathIllegalArgumentException, MathIllegalStateException {
         return ode.computeDerivatives(t, y);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double[][] computeMainStateJacobian(double t, double[] y, double[] yDot)
-        throws MathIllegalArgumentException, MathIllegalStateException {
+            throws MathIllegalArgumentException, MathIllegalStateException {
 
         final int n = ode.getDimension();
         final double[][] dFdY = new double[n][n];
@@ -107,30 +125,36 @@ class ParameterJacobianWrapper implements ODEJacobiansProvider {
         return dFdY;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<String> getParametersNames() {
         return controller.getParametersNames();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isSupported(String name) {
         return controller.isSupported(name);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double[] computeParameterJacobian(final double t, final double[] y,
                                              final double[] yDot, final String paramName)
-        throws MathIllegalArgumentException, MathIllegalStateException {
+            throws MathIllegalArgumentException, MathIllegalStateException {
 
         final int n = ode.getDimension();
         final double[] dFdP = new double[n];
         if (controller.isSupported(paramName)) {
 
             // compute the jacobian df/dp w.r.t. parameter
-            final double p  = controller.getParameter(paramName);
+            final double p = controller.getParameter(paramName);
             final double hP = hParam.get(paramName);
             controller.setParameter(paramName, p + hP);
             final double[] tmpDot = ode.computeDerivatives(t, y);

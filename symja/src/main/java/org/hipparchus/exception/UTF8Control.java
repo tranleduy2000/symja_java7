@@ -25,7 +25,8 @@ import java.util.Locale;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
-/** Control class loading properties in UTF-8 encoding.
+/**
+ * Control class loading properties in UTF-8 encoding.
  * <p>
  * This class has been very slightly adapted from BalusC answer to question: <a
  * href="http://stackoverflow.com/questions/4659929/how-to-use-utf-8-in-resource-properties-with-resourcebundle">
@@ -34,11 +35,13 @@ import java.util.ResourceBundle;
  */
 public class UTF8Control extends ResourceBundle.Control {
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceBundle newBundle(final String baseName, final Locale locale, final String format,
                                     final ClassLoader loader, final boolean reload)
-        throws IllegalAccessException, InstantiationException, IOException {
+            throws IllegalAccessException, InstantiationException, IOException {
         // The below is a copy of the default implementation.
         final String bundleName = toBundleName(baseName, locale);
         final String resourceName = toResourceName(bundleName, "utf8");

@@ -28,11 +28,17 @@ import org.hipparchus.util.FastMath;
  * @see <a href="http://mathworld.wolfram.com/GammaDistribution.html">Gamma distribution (MathWorld)</a>
  */
 public class GammaDistribution extends AbstractRealDistribution {
-    /** Serializable version identifier. */
+    /**
+     * Serializable version identifier.
+     */
     private static final long serialVersionUID = 20120524L;
-    /** The shape parameter. */
+    /**
+     * The shape parameter.
+     */
     private final double shape;
-    /** The scale parameter. */
+    /**
+     * The scale parameter.
+     */
     private final double scale;
     /**
      * The constant value of {@code shape + g + 0.5}, where {@code g} is the
@@ -95,7 +101,7 @@ public class GammaDistribution extends AbstractRealDistribution {
      * @param shape the shape parameter
      * @param scale the scale parameter
      * @throws MathIllegalArgumentException if {@code shape <= 0} or
-     * {@code scale <= 0}.
+     *                                      {@code scale <= 0}.
      */
     public GammaDistribution(double shape, double scale) throws MathIllegalArgumentException {
         this(shape, scale, DEFAULT_SOLVER_ABSOLUTE_ACCURACY);
@@ -105,18 +111,18 @@ public class GammaDistribution extends AbstractRealDistribution {
     /**
      * Creates a Gamma distribution.
      *
-     * @param shape the shape parameter
-     * @param scale the scale parameter
+     * @param shape              the shape parameter
+     * @param scale              the scale parameter
      * @param inverseCumAccuracy the maximum absolute error in inverse
-     * cumulative probability estimates (defaults to
-     * {@link #DEFAULT_SOLVER_ABSOLUTE_ACCURACY}).
+     *                           cumulative probability estimates (defaults to
+     *                           {@link #DEFAULT_SOLVER_ABSOLUTE_ACCURACY}).
      * @throws MathIllegalArgumentException if {@code shape <= 0} or
-     * {@code scale <= 0}.
+     *                                      {@code scale <= 0}.
      */
     public GammaDistribution(final double shape,
                              final double scale,
                              final double inverseCumAccuracy)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         super(inverseCumAccuracy);
 
         if (shape <= 0) {
@@ -132,7 +138,7 @@ public class GammaDistribution extends AbstractRealDistribution {
         final double aux = FastMath.E / (2.0 * FastMath.PI * shiftedShape);
         this.densityPrefactor2 = shape * FastMath.sqrt(aux) / Gamma.lanczos(shape);
         this.logDensityPrefactor2 = FastMath.log(shape) + 0.5 * FastMath.log(aux) -
-                                    FastMath.log(Gamma.lanczos(shape));
+                FastMath.log(Gamma.lanczos(shape));
         this.densityPrefactor1 = this.densityPrefactor2 / scale *
                 FastMath.pow(shiftedShape, -shape) *
                 FastMath.exp(shape + Gamma.LANCZOS_G);
@@ -161,7 +167,9 @@ public class GammaDistribution extends AbstractRealDistribution {
         return scale;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double density(double x) {
        /* The present method must return the value of
@@ -222,7 +230,9 @@ public class GammaDistribution extends AbstractRealDistribution {
         return densityPrefactor1 * FastMath.exp(-y) * FastMath.pow(y, shape - 1);
     }
 
-    /** {@inheritDoc} **/
+    /**
+     * {@inheritDoc}
+     **/
     @Override
     public double logDensity(double x) {
         /*
@@ -250,16 +260,16 @@ public class GammaDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The implementation of this method is based on:
      * <ul>
-     *  <li>
-     *   <a href="http://mathworld.wolfram.com/Chi-SquaredDistribution.html">
-     *    Chi-Squared Distribution</a>, equation (9).
-     *  </li>
-     *  <li>Casella, G., & Berger, R. (1990). <i>Statistical Inference</i>.
-     *    Belmont, CA: Duxbury Press.
-     *  </li>
+     * <li>
+     * <a href="http://mathworld.wolfram.com/Chi-SquaredDistribution.html">
+     * Chi-Squared Distribution</a>, equation (9).
+     * </li>
+     * <li>Casella, G., & Berger, R. (1990). <i>Statistical Inference</i>.
+     * Belmont, CA: Duxbury Press.
+     * </li>
      * </ul>
      */
     @Override
@@ -277,7 +287,7 @@ public class GammaDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * For shape parameter {@code alpha} and scale parameter {@code beta}, the
      * mean is {@code alpha * beta}.
      */
@@ -288,7 +298,7 @@ public class GammaDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * For shape parameter {@code alpha} and scale parameter {@code beta}, the
      * variance is {@code alpha * beta^2}.
      *
@@ -301,7 +311,7 @@ public class GammaDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The lower bound of the support is always 0 no matter the parameters.
      *
      * @return lower bound of the support (always 0)
@@ -313,7 +323,7 @@ public class GammaDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The upper bound of the support is always positive infinity
      * no matter the parameters.
      *
@@ -326,7 +336,7 @@ public class GammaDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The support of this distribution is connected.
      *
      * @return {@code true}

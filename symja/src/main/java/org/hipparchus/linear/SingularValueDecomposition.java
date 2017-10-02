@@ -35,48 +35,71 @@ import org.hipparchus.util.Precision;
  * <a href="http://math.nist.gov/javanumerics/jama/">JAMA</a> library, with the
  * following changes:</p>
  * <ul>
- *   <li>the {@code norm2} method which has been renamed as {@link #getNorm()
- *   getNorm},</li>
- *   <li>the {@code cond} method which has been renamed as {@link
- *   #getConditionNumber() getConditionNumber},</li>
- *   <li>the {@code rank} method which has been renamed as {@link #getRank()
- *   getRank},</li>
- *   <li>a {@link #getUT() getUT} method has been added,</li>
- *   <li>a {@link #getVT() getVT} method has been added,</li>
- *   <li>a {@link #getSolver() getSolver} method has been added,</li>
- *   <li>a {@link #getCovariance(double) getCovariance} method has been added.</li>
+ * <li>the {@code norm2} method which has been renamed as {@link #getNorm()
+ * getNorm},</li>
+ * <li>the {@code cond} method which has been renamed as {@link
+ * #getConditionNumber() getConditionNumber},</li>
+ * <li>the {@code rank} method which has been renamed as {@link #getRank()
+ * getRank},</li>
+ * <li>a {@link #getUT() getUT} method has been added,</li>
+ * <li>a {@link #getVT() getVT} method has been added,</li>
+ * <li>a {@link #getSolver() getSolver} method has been added,</li>
+ * <li>a {@link #getCovariance(double) getCovariance} method has been added.</li>
  * </ul>
+ *
  * @see <a href="http://mathworld.wolfram.com/SingularValueDecomposition.html">MathWorld</a>
  * @see <a href="http://en.wikipedia.org/wiki/Singular_value_decomposition">Wikipedia</a>
  */
 public class SingularValueDecomposition {
-    /** Relative threshold for small singular values. */
+    /**
+     * Relative threshold for small singular values.
+     */
     private static final double EPS = 0x1.0p-52;
-    /** Absolute threshold for small singular values. */
+    /**
+     * Absolute threshold for small singular values.
+     */
     private static final double TINY = 0x1.0p-966;
-    /** Computed singular values. */
+    /**
+     * Computed singular values.
+     */
     private final double[] singularValues;
-    /** max(row dimension, column dimension). */
+    /**
+     * max(row dimension, column dimension).
+     */
     private final int m;
-    /** min(row dimension, column dimension). */
+    /**
+     * min(row dimension, column dimension).
+     */
     private final int n;
-    /** Indicator for transposed matrix. */
+    /**
+     * Indicator for transposed matrix.
+     */
     private final boolean transposed;
-    /** Cached value of U matrix. */
+    /**
+     * Cached value of U matrix.
+     */
     private final RealMatrix cachedU;
-    /** Cached value of transposed U matrix. */
-    private RealMatrix cachedUt;
-    /** Cached value of S (diagonal) matrix. */
-    private RealMatrix cachedS;
-    /** Cached value of V matrix. */
+    /**
+     * Cached value of V matrix.
+     */
     private final RealMatrix cachedV;
-    /** Cached value of transposed V matrix. */
-    private RealMatrix cachedVt;
     /**
      * Tolerance value for small singular values, calculated once we have
      * populated "singularValues".
      **/
     private final double tol;
+    /**
+     * Cached value of transposed U matrix.
+     */
+    private RealMatrix cachedUt;
+    /**
+     * Cached value of S (diagonal) matrix.
+     */
+    private RealMatrix cachedS;
+    /**
+     * Cached value of transposed V matrix.
+     */
+    private RealMatrix cachedVt;
 
     /**
      * Calculates the compact Singular Value Decomposition of the given matrix.
@@ -86,7 +109,7 @@ public class SingularValueDecomposition {
     public SingularValueDecomposition(final RealMatrix matrix) {
         final double[][] A;
 
-         // "m" is always the largest dimension.
+        // "m" is always the largest dimension.
         if (matrix.getRowDimension() < matrix.getColumnDimension()) {
             transposed = true;
             A = matrix.transpose().getData();
@@ -130,7 +153,7 @@ public class SingularValueDecomposition {
             }
             for (int j = k + 1; j < n; j++) {
                 if (k < nct &&
-                    singularValues[k] != 0) {
+                        singularValues[k] != 0) {
                     // Apply the transformation.
                     double t = 0;
                     for (int i = k; i < m; i++) {
@@ -171,7 +194,7 @@ public class SingularValueDecomposition {
                 }
                 e[k] = -e[k];
                 if (k + 1 < m &&
-                    e[k] != 0) {
+                        e[k] != 0) {
                     // Apply the transformation.
                     for (int i = k + 1; i < m; i++) {
                         work[i] = 0;
@@ -246,7 +269,7 @@ public class SingularValueDecomposition {
         // Generate V.
         for (int k = n - 1; k >= 0; k--) {
             if (k < nrt &&
-                e[k] != 0) {
+                    e[k] != 0) {
                 for (int j = k + 1; j < n; j++) {
                     double t = 0;
                     for (int i = k + 1; i < n; i++) {
@@ -280,8 +303,8 @@ public class SingularValueDecomposition {
             // kase = 4     if e(p-1) is negligible (convergence).
             for (k = p - 2; k >= 0; k--) {
                 final double threshold
-                    = TINY + EPS * (FastMath.abs(singularValues[k]) +
-                                    FastMath.abs(singularValues[k + 1]));
+                        = TINY + EPS * (FastMath.abs(singularValues[k]) +
+                        FastMath.abs(singularValues[k + 1]));
 
                 // the following condition is written this way in order
                 // to break out of the loop when NaN occurs, writing it
@@ -305,7 +328,7 @@ public class SingularValueDecomposition {
                         break;
                     }
                     final double t = (ks != p ? FastMath.abs(e[ks]) : 0) +
-                        (ks != k + 1 ? FastMath.abs(e[ks - 1]) : 0);
+                            (ks != k + 1 ? FastMath.abs(e[ks - 1]) : 0);
                     if (FastMath.abs(singularValues[ks]) <= TINY + EPS * t) {
                         singularValues[ks] = 0;
                         break;
@@ -369,11 +392,11 @@ public class SingularValueDecomposition {
                 case 3: {
                     // Calculate the shift.
                     final double maxPm1Pm2 = FastMath.max(FastMath.abs(singularValues[p - 1]),
-                                                          FastMath.abs(singularValues[p - 2]));
+                            FastMath.abs(singularValues[p - 2]));
                     final double scale = FastMath.max(FastMath.max(FastMath.max(maxPm1Pm2,
-                                                                                FastMath.abs(e[p - 2])),
-                                                                   FastMath.abs(singularValues[k])),
-                                                      FastMath.abs(e[k]));
+                            FastMath.abs(e[p - 2])),
+                            FastMath.abs(singularValues[k])),
+                            FastMath.abs(e[k]));
                     final double sp = singularValues[p - 1] / scale;
                     final double spm1 = singularValues[p - 2] / scale;
                     final double epm1 = e[p - 2] / scale;
@@ -383,7 +406,7 @@ public class SingularValueDecomposition {
                     final double c = (sp * epm1) * (sp * epm1);
                     double shift = 0;
                     if (b != 0 ||
-                        c != 0) {
+                            c != 0) {
                         shift = FastMath.sqrt(b * b + c);
                         if (b < 0) {
                             shift = -shift;
@@ -471,7 +494,7 @@ public class SingularValueDecomposition {
 
         // Set the small value tolerance used to calculate rank and pseudo-inverse
         tol = FastMath.max(m * singularValues[0] * EPS,
-                           FastMath.sqrt(Precision.SAFE_MIN));
+                FastMath.sqrt(Precision.SAFE_MIN));
 
         if (!transposed) {
             cachedU = MatrixUtils.createRealMatrix(U);
@@ -485,6 +508,7 @@ public class SingularValueDecomposition {
     /**
      * Returns the matrix U of the decomposition.
      * <p>U is an orthogonal matrix, i.e. its transpose is also its inverse.</p>
+     *
      * @return the U matrix
      * @see #getUT()
      */
@@ -497,6 +521,7 @@ public class SingularValueDecomposition {
     /**
      * Returns the transpose of the matrix U of the decomposition.
      * <p>U is an orthogonal matrix, i.e. its transpose is also its inverse.</p>
+     *
      * @return the U matrix (or null if decomposed matrix is singular)
      * @see #getU()
      */
@@ -512,6 +537,7 @@ public class SingularValueDecomposition {
      * Returns the diagonal matrix &Sigma; of the decomposition.
      * <p>&Sigma; is a diagonal matrix. The singular values are provided in
      * non-increasing order, for compatibility with Jama.</p>
+     *
      * @return the &Sigma; matrix
      */
     public RealMatrix getS() {
@@ -526,6 +552,7 @@ public class SingularValueDecomposition {
      * Returns the diagonal elements of the matrix &Sigma; of the decomposition.
      * <p>The singular values are provided in non-increasing order, for
      * compatibility with Jama.</p>
+     *
      * @return the diagonal elements of the &Sigma; matrix
      */
     public double[] getSingularValues() {
@@ -535,6 +562,7 @@ public class SingularValueDecomposition {
     /**
      * Returns the matrix V of the decomposition.
      * <p>V is an orthogonal matrix, i.e. its transpose is also its inverse.</p>
+     *
      * @return the V matrix (or null if decomposed matrix is singular)
      * @see #getVT()
      */
@@ -546,6 +574,7 @@ public class SingularValueDecomposition {
     /**
      * Returns the transpose of the matrix V of the decomposition.
      * <p>V is an orthogonal matrix, i.e. its transpose is also its inverse.</p>
+     *
      * @return the V matrix (or null if decomposed matrix is singular)
      * @see #getV()
      */
@@ -562,24 +591,25 @@ public class SingularValueDecomposition {
      * <p>The covariance matrix is V &times; J &times; V<sup>T</sup>
      * where J is the diagonal matrix of the inverse of the squares of
      * the singular values.</p>
+     *
      * @param minSingularValue value below which singular values are ignored
-     * (a 0 or negative value implies all singular value will be used)
+     *                         (a 0 or negative value implies all singular value will be used)
      * @return covariance matrix
-     * @exception IllegalArgumentException if minSingularValue is larger than
-     * the largest singular value, meaning all singular values are ignored
+     * @throws IllegalArgumentException if minSingularValue is larger than
+     *                                  the largest singular value, meaning all singular values are ignored
      */
     public RealMatrix getCovariance(final double minSingularValue) {
         // get the number of singular values to consider
         final int p = singularValues.length;
         int dimension = 0;
         while (dimension < p &&
-               singularValues[dimension] >= minSingularValue) {
+                singularValues[dimension] >= minSingularValue) {
             ++dimension;
         }
 
         if (dimension == 0) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.TOO_LARGE_CUTOFF_SINGULAR_VALUE,
-                                                minSingularValue, singularValues[0], true);
+                    minSingularValue, singularValues[0], true);
         }
 
         final double[][] data = new double[dimension][p];
@@ -587,7 +617,7 @@ public class SingularValueDecomposition {
             /** {@inheritDoc} */
             @Override
             public void visit(final int row, final int column,
-                    final double value) {
+                              final double value) {
                 data[row][column] = value / singularValues[row];
             }
         }, 0, dimension - 1, 0, p - 1);
@@ -601,6 +631,7 @@ public class SingularValueDecomposition {
      * <p>The L<sub>2</sub> norm is max(|A &times; u|<sub>2</sub> /
      * |u|<sub>2</sub>), where |.|<sub>2</sub> denotes the vectorial 2-norm
      * (i.e. the traditional euclidian norm).</p>
+     *
      * @return norm
      */
     public double getNorm() {
@@ -609,6 +640,7 @@ public class SingularValueDecomposition {
 
     /**
      * Return the condition number of the matrix.
+     *
      * @return condition number of the matrix
      */
     public double getConditionNumber() {
@@ -632,6 +664,7 @@ public class SingularValueDecomposition {
      * singular values. The threshold used to identify non-negligible
      * terms is max(m,n) &times; ulp(s<sub>1</sub>) where ulp(s<sub>1</sub>)
      * is the least significant bit of the largest singular value.</p>
+     *
      * @return effective numerical matrix rank
      */
     public int getRank() {
@@ -646,27 +679,34 @@ public class SingularValueDecomposition {
 
     /**
      * Get a solver for finding the A &times; X = B solution in least square sense.
+     *
      * @return a solver
      */
     public DecompositionSolver getSolver() {
         return new Solver(singularValues, getUT(), getV(), getRank() == m, tol);
     }
 
-    /** Specialized solver. */
+    /**
+     * Specialized solver.
+     */
     private static class Solver implements DecompositionSolver {
-        /** Pseudo-inverse of the initial matrix. */
+        /**
+         * Pseudo-inverse of the initial matrix.
+         */
         private final RealMatrix pseudoInverse;
-        /** Singularity indicator. */
+        /**
+         * Singularity indicator.
+         */
         private final boolean nonSingular;
 
         /**
          * Build a solver from decomposed matrix.
          *
          * @param singularValues Singular values.
-         * @param uT U<sup>T</sup> matrix of the decomposition.
-         * @param v V matrix of the decomposition.
-         * @param nonSingular Singularity indicator.
-         * @param tol tolerance for singular values
+         * @param uT             U<sup>T</sup> matrix of the decomposition.
+         * @param v              V matrix of the decomposition.
+         * @param nonSingular    Singularity indicator.
+         * @param tol            tolerance for singular values
          */
         private Solver(final double[] singularValues, final RealMatrix uT,
                        final RealMatrix v, final boolean nonSingular, final double tol) {
@@ -693,10 +733,10 @@ public class SingularValueDecomposition {
          * The m&times;n matrix A may not be square, the solution X is such that
          * ||A &times; X - B|| is minimal.
          * </p>
+         *
          * @param b Right-hand side of the equation A &times; X = B
          * @return a vector X that minimizes the two norm of A &times; X - B
-         * @throws MathIllegalArgumentException
-         * if the matrices dimensions do not match.
+         * @throws MathIllegalArgumentException if the matrices dimensions do not match.
          */
         @Override
         public RealVector solve(final RealVector b) {
@@ -712,8 +752,7 @@ public class SingularValueDecomposition {
          *
          * @param b Right-hand side of the equation A &times; X = B
          * @return a matrix X that minimizes the two norm of A &times; X - B
-         * @throws MathIllegalArgumentException
-         * if the matrices dimensions do not match.
+         * @throws MathIllegalArgumentException if the matrices dimensions do not match.
          */
         @Override
         public RealMatrix solve(final RealMatrix b) {

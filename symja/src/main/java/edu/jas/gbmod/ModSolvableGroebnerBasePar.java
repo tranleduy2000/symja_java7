@@ -6,6 +6,7 @@ package edu.jas.gbmod;
 
 
 // import org.apache.log4j.Logger;
+
 import edu.jas.gb.SolvableGroebnerBaseAbstract;
 import edu.jas.gbufd.SGBFactory;
 import edu.jas.structure.GcdRingElem;
@@ -15,6 +16,7 @@ import edu.jas.structure.RingFactory;
 /**
  * Module solvable Groebner Bases parallel class. Implements module solvable
  * Groebner bases and GB test.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  * @deprecated use respective methods from SolvableGroebnerBaseParallel
@@ -31,6 +33,7 @@ public class ModSolvableGroebnerBasePar<C extends GcdRingElem<C>> extends ModSol
 
     /**
      * Constructor.
+     *
      * @param cf coefficient ring.
      */
     public ModSolvableGroebnerBasePar(RingFactory<C> cf) {
@@ -40,6 +43,7 @@ public class ModSolvableGroebnerBasePar<C extends GcdRingElem<C>> extends ModSol
 
     /**
      * Constructor.
+     *
      * @param sbb parallel solvable Groebner base algorithm.
      */
     public ModSolvableGroebnerBasePar(SolvableGroebnerBaseAbstract<C> sbb) {

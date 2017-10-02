@@ -16,12 +16,12 @@
  */
 package org.hipparchus.random;
 
-import java.io.Serializable;
-import java.util.Random;
-
 import org.hipparchus.exception.LocalizedCoreFormats;
 import org.hipparchus.exception.MathIllegalArgumentException;
 import org.hipparchus.util.MathUtils;
+
+import java.io.Serializable;
+import java.util.Random;
 
 /**
  * A {@link RandomGenerator} adapter that delegates the random number
@@ -29,10 +29,14 @@ import org.hipparchus.util.MathUtils;
  */
 public class JDKRandomGenerator extends IntRandomGenerator implements Serializable {
 
-    /** Serializable version identifier. */
+    /**
+     * Serializable version identifier.
+     */
     private static final long serialVersionUID = 20151227L;
 
-    /** JDK's RNG. */
+    /**
+     * JDK's RNG.
+     */
     private final Random delegate;
 
     /**
@@ -55,83 +59,12 @@ public class JDKRandomGenerator extends IntRandomGenerator implements Serializab
      * Creates an instance that wraps the given {@link Random} instance.
      *
      * @param random JDK {@link Random} instance that will generate the
-     * the random data.
+     *               the random data.
      * @throws MathIllegalArgumentException if random is null
      */
     public JDKRandomGenerator(Random random) {
         MathUtils.checkNotNull(random);
         delegate = random;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void setSeed(int seed) {
-        delegate.setSeed(seed);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void setSeed(long seed) {
-        delegate.setSeed(seed);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void setSeed(int[] seed) {
-        delegate.setSeed(convertToLong(seed));
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void nextBytes(byte[] bytes) {
-        delegate.nextBytes(bytes);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public int nextInt() {
-        return delegate.nextInt();
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public long nextLong() {
-        return delegate.nextLong();
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public boolean nextBoolean() {
-        return delegate.nextBoolean();
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public float nextFloat() {
-        return delegate.nextFloat();
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public double nextDouble() {
-        return delegate.nextDouble();
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public double nextGaussian() {
-        return delegate.nextGaussian();
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public int nextInt(int n) {
-        try {
-            return delegate.nextInt(n);
-        } catch (IllegalArgumentException e) {
-            throw new MathIllegalArgumentException(LocalizedCoreFormats.NUMBER_TOO_SMALL_BOUND_EXCLUDED,
-                                                   n, 0);
-        }
     }
 
     /**
@@ -151,6 +84,99 @@ public class JDKRandomGenerator extends IntRandomGenerator implements Serializab
         }
 
         return combined;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setSeed(int seed) {
+        delegate.setSeed(seed);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setSeed(long seed) {
+        delegate.setSeed(seed);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setSeed(int[] seed) {
+        delegate.setSeed(convertToLong(seed));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void nextBytes(byte[] bytes) {
+        delegate.nextBytes(bytes);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int nextInt() {
+        return delegate.nextInt();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public long nextLong() {
+        return delegate.nextLong();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean nextBoolean() {
+        return delegate.nextBoolean();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public float nextFloat() {
+        return delegate.nextFloat();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public double nextDouble() {
+        return delegate.nextDouble();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public double nextGaussian() {
+        return delegate.nextGaussian();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int nextInt(int n) {
+        try {
+            return delegate.nextInt(n);
+        } catch (IllegalArgumentException e) {
+            throw new MathIllegalArgumentException(LocalizedCoreFormats.NUMBER_TOO_SMALL_BOUND_EXCLUDED,
+                    n, 0);
+        }
     }
 
 }

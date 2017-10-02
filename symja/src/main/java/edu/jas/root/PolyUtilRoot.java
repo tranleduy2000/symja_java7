@@ -5,10 +5,10 @@
 package edu.jas.root;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.arith.Rational;
 import edu.jas.poly.AlgebraicNumber;
@@ -25,6 +25,7 @@ import edu.jas.structure.UnaryFunctor;
 
 /**
  * Polynomial utilities related to real and complex roots.
+ *
  * @author Heinz Kredel
  */
 
@@ -40,17 +41,18 @@ public class PolyUtilRoot {
     /**
      * Convert to RealAlgebraicNumber coefficients. Represent as polynomial with
      * RealAlgebraicNumber<C> coefficients, C is e.g. ModInteger or BigRational.
+     *
      * @param pfac result polynomial factory.
-     * @param A polynomial with C coefficients to be converted.
+     * @param A    polynomial with C coefficients to be converted.
      * @return polynomial with RealAlgebraicNumber&lt;C&gt; coefficients.
      */
     public static <C extends GcdRingElem<C> & Rational> GenPolynomial<RealAlgebraicNumber<C>> convertToAlgebraicCoefficients(
-                    GenPolynomialRing<RealAlgebraicNumber<C>> pfac, GenPolynomial<C> A) {
+            GenPolynomialRing<RealAlgebraicNumber<C>> pfac, GenPolynomial<C> A) {
         RealAlgebraicRing<C> afac = (RealAlgebraicRing<C>) pfac.coFac;
         if (debug) {
             logger.info("afac = " + afac);
         }
-        return PolyUtil.<C, RealAlgebraicNumber<C>> map(pfac, A, new CoeffToReAlg<C>(afac));
+        return PolyUtil.<C, RealAlgebraicNumber<C>>map(pfac, A, new CoeffToReAlg<C>(afac));
     }
 
 
@@ -58,126 +60,134 @@ public class PolyUtilRoot {
      * Convert to recursive RealAlgebraicNumber coefficients. Represent as
      * polynomial with recursive RealAlgebraicNumber<C> coefficients, C is e.g.
      * ModInteger or BigRational.
+     *
      * @param depth recursion depth of RealAlgebraicNumber coefficients.
-     * @param pfac result polynomial factory.
-     * @param A polynomial with C coefficients to be converted.
+     * @param pfac  result polynomial factory.
+     * @param A     polynomial with C coefficients to be converted.
      * @return polynomial with RealAlgebraicNumber&lt;C&gt; coefficients.
      */
     public static <C extends GcdRingElem<C> & Rational> GenPolynomial<RealAlgebraicNumber<C>> convertToRecAlgebraicCoefficients(
-                    int depth, GenPolynomialRing<RealAlgebraicNumber<C>> pfac, GenPolynomial<C> A) {
+            int depth, GenPolynomialRing<RealAlgebraicNumber<C>> pfac, GenPolynomial<C> A) {
         RealAlgebraicRing<C> afac = (RealAlgebraicRing<C>) pfac.coFac;
-        return PolyUtil.<C, RealAlgebraicNumber<C>> map(pfac, A, new CoeffToRecReAlg<C>(depth, afac));
+        return PolyUtil.<C, RealAlgebraicNumber<C>>map(pfac, A, new CoeffToRecReAlg<C>(depth, afac));
     }
 
 
     /**
      * Convert to RealAlgebraicNumber coefficients. Represent as polynomial with
      * RealAlgebraicNumber<C> coefficients, C is e.g. ModInteger or BigRational.
+     *
      * @param pfac result polynomial factory.
-     * @param A recursive polynomial with GenPolynomial&lt;BigInteger&gt;
-     *            coefficients to be converted.
+     * @param A    recursive polynomial with GenPolynomial&lt;BigInteger&gt;
+     *             coefficients to be converted.
      * @return polynomial with RealAlgebraicNumber&lt;C&gt; coefficients.
      */
     public static <C extends GcdRingElem<C> & Rational> GenPolynomial<RealAlgebraicNumber<C>> convertRecursiveToAlgebraicCoefficients(
-                    GenPolynomialRing<RealAlgebraicNumber<C>> pfac, GenPolynomial<GenPolynomial<C>> A) {
+            GenPolynomialRing<RealAlgebraicNumber<C>> pfac, GenPolynomial<GenPolynomial<C>> A) {
         RealAlgebraicRing<C> afac = (RealAlgebraicRing<C>) pfac.coFac;
-        return PolyUtil.<GenPolynomial<C>, RealAlgebraicNumber<C>> map(pfac, A, new PolyToReAlg<C>(afac));
+        return PolyUtil.<GenPolynomial<C>, RealAlgebraicNumber<C>>map(pfac, A, new PolyToReAlg<C>(afac));
     }
 
 
     /**
      * Convert to AlgebraicNumber coefficients. Represent as polynomial with
      * AlgebraicNumber<C> coefficients.
+     *
      * @param afac result polynomial factory.
-     * @param A polynomial with RealAlgebraicNumber&lt;C&gt; coefficients to be
-     *            converted.
+     * @param A    polynomial with RealAlgebraicNumber&lt;C&gt; coefficients to be
+     *             converted.
      * @return polynomial with AlgebraicNumber&lt;C&gt; coefficients.
      */
     public static <C extends GcdRingElem<C> & Rational> GenPolynomial<AlgebraicNumber<C>> algebraicFromRealCoefficients(
-                    GenPolynomialRing<AlgebraicNumber<C>> afac, GenPolynomial<RealAlgebraicNumber<C>> A) {
+            GenPolynomialRing<AlgebraicNumber<C>> afac, GenPolynomial<RealAlgebraicNumber<C>> A) {
         AlgebraicNumberRing<C> cfac = (AlgebraicNumberRing<C>) afac.coFac;
-        return PolyUtil.<RealAlgebraicNumber<C>, AlgebraicNumber<C>> map(afac, A,
-                        new AlgFromRealCoeff<C>(cfac));
+        return PolyUtil.<RealAlgebraicNumber<C>, AlgebraicNumber<C>>map(afac, A,
+                new AlgFromRealCoeff<C>(cfac));
     }
 
 
     /**
      * Convert to RealAlgebraicNumber coefficients. Represent as polynomial with
      * RealAlgebraicNumber<C> coefficients.
+     *
      * @param rfac result polynomial factory.
-     * @param A polynomial with AlgebraicNumber&lt;C&gt; coefficients to be
-     *            converted.
+     * @param A    polynomial with AlgebraicNumber&lt;C&gt; coefficients to be
+     *             converted.
      * @return polynomial with RealAlgebraicNumber&lt;C&gt; coefficients.
      */
     public static <C extends GcdRingElem<C> & Rational> GenPolynomial<RealAlgebraicNumber<C>> realFromAlgebraicCoefficients(
-                    GenPolynomialRing<RealAlgebraicNumber<C>> rfac, GenPolynomial<AlgebraicNumber<C>> A) {
+            GenPolynomialRing<RealAlgebraicNumber<C>> rfac, GenPolynomial<AlgebraicNumber<C>> A) {
         RealAlgebraicRing<C> cfac = (RealAlgebraicRing<C>) rfac.coFac;
-        return PolyUtil.<AlgebraicNumber<C>, RealAlgebraicNumber<C>> map(rfac, A,
-                        new RealFromAlgCoeff<C>(cfac));
+        return PolyUtil.<AlgebraicNumber<C>, RealAlgebraicNumber<C>>map(rfac, A,
+                new RealFromAlgCoeff<C>(cfac));
     }
 
 
     /**
      * Convert to RealAlgebraicNumber coefficients. Represent as polynomial with
      * RealAlgebraicNumber<C> coefficients, C is e.g. BigRational.
+     *
      * @param pfac result polynomial factory.
-     * @param A polynomial with C coefficients to be converted.
+     * @param A    polynomial with C coefficients to be converted.
      * @return polynomial with RealAlgebraicNumber&lt;C&gt; coefficients.
      */
     public static <C extends GcdRingElem<C> & Rational> GenPolynomial<RealAlgebraicNumber<C>> convertToRealCoefficients(
-                    GenPolynomialRing<RealAlgebraicNumber<C>> pfac, GenPolynomial<C> A) {
+            GenPolynomialRing<RealAlgebraicNumber<C>> pfac, GenPolynomial<C> A) {
         RealAlgebraicRing<C> afac = (RealAlgebraicRing<C>) pfac.coFac;
-        return PolyUtil.<C, RealAlgebraicNumber<C>> map(pfac, A, new CoeffToReal<C>(afac));
+        return PolyUtil.<C, RealAlgebraicNumber<C>>map(pfac, A, new CoeffToReal<C>(afac));
     }
 
 
     /**
      * Convert to ComplexAlgebraicNumber coefficients. Represent as polynomial
      * with ComplexAlgebraicNumber<C> coefficients, C is e.g. BigRational.
+     *
      * @param pfac result polynomial factory.
-     * @param A polynomial with C coefficients to be converted.
+     * @param A    polynomial with C coefficients to be converted.
      * @return polynomial with ComplexAlgebraicNumber&lt;C&gt; coefficients.
      */
     public static <C extends GcdRingElem<C> & Rational> GenPolynomial<ComplexAlgebraicNumber<C>> convertToComplexCoefficients(
-                    GenPolynomialRing<ComplexAlgebraicNumber<C>> pfac, GenPolynomial<C> A) {
+            GenPolynomialRing<ComplexAlgebraicNumber<C>> pfac, GenPolynomial<C> A) {
         ComplexAlgebraicRing<C> afac = (ComplexAlgebraicRing<C>) pfac.coFac;
-        return PolyUtil.<C, ComplexAlgebraicNumber<C>> map(pfac, A, new CoeffToComplex<C>(afac));
+        return PolyUtil.<C, ComplexAlgebraicNumber<C>>map(pfac, A, new CoeffToComplex<C>(afac));
     }
 
 
     /**
      * Convert to ComplexAlgebraicNumber coefficients. Represent as polynomial
      * with ComplexAlgebraicNumber<C> coefficients, C is e.g. BigRational.
+     *
      * @param pfac result polynomial factory.
-     * @param A polynomial with C coefficients to be converted.
+     * @param A    polynomial with C coefficients to be converted.
      * @return polynomial with ComplexAlgebraicNumber&lt;C&gt; coefficients.
      */
     public static <C extends GcdRingElem<C> & Rational> GenPolynomial<ComplexAlgebraicNumber<C>> convertToComplexCoefficientsFromComplex(
-                    GenPolynomialRing<ComplexAlgebraicNumber<C>> pfac, GenPolynomial<Complex<C>> A) {
+            GenPolynomialRing<ComplexAlgebraicNumber<C>> pfac, GenPolynomial<Complex<C>> A) {
         ComplexAlgebraicRing<C> afac = (ComplexAlgebraicRing<C>) pfac.coFac;
-        return PolyUtil.<Complex<C>, ComplexAlgebraicNumber<C>> map(pfac, A,
-                        new CoeffToComplexFromComplex<C>(afac));
+        return PolyUtil.<Complex<C>, ComplexAlgebraicNumber<C>>map(pfac, A,
+                new CoeffToComplexFromComplex<C>(afac));
     }
 
 
     /**
      * Convert to Complex coefficients. Represent as polynomial
      * with Complex&lt;C&gt; coefficients.
+     *
      * @param f univariate polynomial.
      * @return f with complex coefficients
      */
-    public static <C extends GcdRingElem<C> & Rational> 
-           GenPolynomial<Complex<C>> complexFromAny(GenPolynomial<C> f) {
+    public static <C extends GcdRingElem<C> & Rational>
+    GenPolynomial<Complex<C>> complexFromAny(GenPolynomial<C> f) {
         if (f.ring.coFac instanceof ComplexRing) {
             throw new IllegalArgumentException("f already has ComplexRing coefficients " + f.ring);
         }
         if (f.ring.coFac instanceof ComplexAlgebraicRing) {
             throw new UnsupportedOperationException(
-                            "unsupported ComplexAlgebraicRing coefficients " + f.ring);
+                    "unsupported ComplexAlgebraicRing coefficients " + f.ring);
         }
         ComplexRing<C> cr = new ComplexRing<C>(f.ring.coFac);
         GenPolynomialRing<Complex<C>> fac = new GenPolynomialRing<Complex<C>>(cr, f.ring);
-        GenPolynomial<Complex<C>> fc = PolyUtil.<C> complexFromAny(fac, f);
+        GenPolynomial<Complex<C>> fc = PolyUtil.<C>complexFromAny(fac, f);
         return fc;
     }
 }
@@ -187,7 +197,7 @@ public class PolyUtilRoot {
  * Polynomial to algebraic functor.
  */
 class PolyToReAlg<C extends GcdRingElem<C> & Rational>
-                implements UnaryFunctor<GenPolynomial<C>, RealAlgebraicNumber<C>> {
+        implements UnaryFunctor<GenPolynomial<C>, RealAlgebraicNumber<C>> {
 
 
     final protected RealAlgebraicRing<C> afac;
@@ -245,7 +255,7 @@ class CoeffToReAlg<C extends GcdRingElem<C> & Rational> implements UnaryFunctor<
  * Coefficient to recursive algebraic functor.
  */
 class CoeffToRecReAlg<C extends GcdRingElem<C> & Rational>
-                implements UnaryFunctor<C, RealAlgebraicNumber<C>> {
+        implements UnaryFunctor<C, RealAlgebraicNumber<C>> {
 
 
     final protected List<RealAlgebraicRing<C>> lfac;
@@ -254,7 +264,7 @@ class CoeffToRecReAlg<C extends GcdRingElem<C> & Rational>
     final int depth;
 
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings({"unchecked", "cast"})
     public CoeffToRecReAlg(int depth, RealAlgebraicRing<C> fac) {
         if (fac == null) {
             throw new IllegalArgumentException("fac must not be null");
@@ -298,7 +308,7 @@ class CoeffToRecReAlg<C extends GcdRingElem<C> & Rational>
  * Coefficient to algebraic from real algebraic functor.
  */
 class AlgFromRealCoeff<C extends GcdRingElem<C> & Rational>
-                implements UnaryFunctor<RealAlgebraicNumber<C>, AlgebraicNumber<C>> {
+        implements UnaryFunctor<RealAlgebraicNumber<C>, AlgebraicNumber<C>> {
 
 
     final protected AlgebraicNumberRing<C> afac;
@@ -325,7 +335,7 @@ class AlgFromRealCoeff<C extends GcdRingElem<C> & Rational>
  * Coefficient to real algebriac from algebraic functor.
  */
 class RealFromAlgCoeff<C extends GcdRingElem<C> & Rational>
-                implements UnaryFunctor<AlgebraicNumber<C>, RealAlgebraicNumber<C>> {
+        implements UnaryFunctor<AlgebraicNumber<C>, RealAlgebraicNumber<C>> {
 
 
     final protected RealAlgebraicRing<C> rfac;
@@ -383,7 +393,7 @@ class CoeffToReal<C extends GcdRingElem<C> & Rational> implements UnaryFunctor<C
  * Coefficient to complex algebraic functor.
  */
 class CoeffToComplex<C extends GcdRingElem<C> & Rational>
-                implements UnaryFunctor<C, ComplexAlgebraicNumber<C>> {
+        implements UnaryFunctor<C, ComplexAlgebraicNumber<C>> {
 
 
     final protected ComplexAlgebraicRing<C> cfac;
@@ -419,7 +429,7 @@ class CoeffToComplex<C extends GcdRingElem<C> & Rational>
  * Coefficient to complex algebraic from complex functor.
  */
 class CoeffToComplexFromComplex<C extends GcdRingElem<C> & Rational>
-                implements UnaryFunctor<Complex<C>, ComplexAlgebraicNumber<C>> {
+        implements UnaryFunctor<Complex<C>, ComplexAlgebraicNumber<C>> {
 
 
     final protected ComplexAlgebraicRing<C> cfac;

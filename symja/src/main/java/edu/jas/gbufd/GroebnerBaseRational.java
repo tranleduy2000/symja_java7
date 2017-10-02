@@ -5,10 +5,10 @@
 package edu.jas.gbufd;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.arith.BigInteger;
 import edu.jas.arith.BigRational;
@@ -22,6 +22,7 @@ import edu.jas.poly.PolyUtil;
 /**
  * Groebner Base sequential algorithm for rational coefficients, fraction free
  * computation. Implements Groebner bases.
+ *
  * @param <C> BigRational coefficient type
  * @author Heinz Kredel
  */
@@ -48,6 +49,7 @@ public class GroebnerBaseRational<C extends BigRational> extends GroebnerBaseAbs
 
     /**
      * Constructor.
+     *
      * @param threads the number of parallel threads.
      */
     public GroebnerBaseRational(int threads) {
@@ -57,6 +59,7 @@ public class GroebnerBaseRational<C extends BigRational> extends GroebnerBaseAbs
 
     /**
      * Constructor.
+     *
      * @param pl pair selection strategy
      */
     public GroebnerBaseRational(PairList<BigInteger> pl) {
@@ -66,8 +69,9 @@ public class GroebnerBaseRational<C extends BigRational> extends GroebnerBaseAbs
 
     /**
      * Constructor.
+     *
      * @param threads the number of parallel threads.
-     * @param pl pair selection strategy
+     * @param pl      pair selection strategy
      */
     public GroebnerBaseRational(int threads, PairList<BigInteger> pl) {
         this(new GroebnerBasePseudoParallel<BigInteger>(threads, new BigInteger(), pl));
@@ -76,6 +80,7 @@ public class GroebnerBaseRational<C extends BigRational> extends GroebnerBaseAbs
 
     /**
      * Constructor.
+     *
      * @param bba Groebner base algorithm for BigInteger coefficients.
      */
     public GroebnerBaseRational(GroebnerBaseAbstract<BigInteger> bba) {
@@ -86,6 +91,7 @@ public class GroebnerBaseRational<C extends BigRational> extends GroebnerBaseAbs
 
     /**
      * Get the String representation with GB engines.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -96,8 +102,9 @@ public class GroebnerBaseRational<C extends BigRational> extends GroebnerBaseAbs
 
     /**
      * Groebner base using fraction free computation.
+     *
      * @param modv module variable number.
-     * @param F polynomial list.
+     * @param F    polynomial list.
      * @return GB(F) a Groebner base of F.
      */
     @Override
@@ -117,14 +124,15 @@ public class GroebnerBaseRational<C extends BigRational> extends GroebnerBaseAbs
         //System.out.println("Gi = " + Gi);
         logger.info("#Gi = " + Gi.size());
 
-        G = PolyUtil.<BigRational> fromIntegerCoefficients(rring, Gi);
-        G = PolyUtil.<BigRational> monic(G);
+        G = PolyUtil.<BigRational>fromIntegerCoefficients(rring, Gi);
+        G = PolyUtil.<BigRational>monic(G);
         return G;
     }
 
 
     /**
      * Minimal ordered Groebner basis.
+     *
      * @param Gp a Groebner base.
      * @return a reduced Groebner base of Gp.
      */
@@ -181,8 +189,8 @@ public class GroebnerBaseRational<C extends BigRational> extends GroebnerBaseAbs
         List<GenPolynomial<BigInteger>> Gi = bba.minimalGB(Fi);
         logger.info("#Gi = " + Gi.size());
 
-        G = PolyUtil.<BigRational> fromIntegerCoefficients(rring, Gi);
-        G = PolyUtil.<BigRational> monic(G);
+        G = PolyUtil.<BigRational>fromIntegerCoefficients(rring, Gi);
+        G = PolyUtil.<BigRational>monic(G);
         return G;
     }
 

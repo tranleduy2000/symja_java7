@@ -16,9 +16,9 @@
  */
 package org.hipparchus.optim;
 
-import java.io.Serializable;
-
 import org.hipparchus.util.Pair;
+
+import java.io.Serializable;
 
 /**
  * This class holds a point and the value of an objective function at
@@ -28,14 +28,16 @@ import org.hipparchus.util.Pair;
  * @see org.hipparchus.analysis.MultivariateFunction
  */
 public class PointValuePair extends Pair<double[], Double> implements Serializable {
-    /** Serializable UID. */
+    /**
+     * Serializable UID.
+     */
     private static final long serialVersionUID = 20120513L;
 
     /**
      * Builds a point/objective function value pair.
      *
      * @param point Point coordinates. This instance will store
-     * a copy of the array, not the array passed as argument.
+     *              a copy of the array, not the array passed as argument.
      * @param value Value of the objective function at the point.
      */
     public PointValuePair(final double[] point,
@@ -46,18 +48,18 @@ public class PointValuePair extends Pair<double[], Double> implements Serializab
     /**
      * Builds a point/objective function value pair.
      *
-     * @param point Point coordinates.
-     * @param value Value of the objective function at the point.
+     * @param point     Point coordinates.
+     * @param value     Value of the objective function at the point.
      * @param copyArray if {@code true}, the input array will be copied,
-     * otherwise it will be referenced.
+     *                  otherwise it will be referenced.
      */
     public PointValuePair(final double[] point,
                           final double value,
                           final boolean copyArray) {
         super(copyArray ? ((point == null) ? null :
-                           point.clone()) :
-              point,
-              value);
+                        point.clone()) :
+                        point,
+                value);
     }
 
     /**
@@ -81,28 +83,37 @@ public class PointValuePair extends Pair<double[], Double> implements Serializab
 
     /**
      * Replace the instance with a data transfer object for serialization.
+     *
      * @return data transfer object that will be serialized
      */
     private Object writeReplace() {
         return new DataTransferObject(getKey(), getValue());
     }
 
-    /** Internal class used only for serialization. */
+    /**
+     * Internal class used only for serialization.
+     */
     private static class DataTransferObject implements Serializable {
-        /** Serializable UID. */
+        /**
+         * Serializable UID.
+         */
         private static final long serialVersionUID = 20120513L;
         /**
          * Point coordinates.
+         *
          * @Serial
          */
         private final double[] point;
         /**
          * Value of the objective function at the point.
+         *
          * @Serial
          */
         private final double value;
 
-        /** Simple constructor.
+        /**
+         * Simple constructor.
+         *
          * @param point Point coordinates.
          * @param value Value of the objective function at the point.
          */
@@ -111,7 +122,9 @@ public class PointValuePair extends Pair<double[], Double> implements Serializab
             this.value = value;
         }
 
-        /** Replace the deserialized data transfer object with a {@link PointValuePair}.
+        /**
+         * Replace the deserialized data transfer object with a {@link PointValuePair}.
+         *
          * @return replacement {@link PointValuePair}
          */
         private Object readResolve() {

@@ -12,6 +12,7 @@ import edu.jas.structure.NotInvertibleException;
 /**
  * ModInteger class with GcdRingElem interface. Objects of this class are
  * immutable. The SAC2 static methods are also provided.
+ *
  * @author Heinz Kredel
  * @see java.math.BigInteger
  */
@@ -34,6 +35,7 @@ public final class ModInteger implements GcdRingElem<ModInteger>, Modular {
     /**
      * The constructor creates a ModInteger object from a ModIntegerRing and a
      * value part.
+     *
      * @param m ModIntegerRing.
      * @param a math.BigInteger.
      */
@@ -46,6 +48,7 @@ public final class ModInteger implements GcdRingElem<ModInteger>, Modular {
     /**
      * The constructor creates a ModInteger object from a ModIntegerRing and a
      * long value part.
+     *
      * @param m ModIntegerRing.
      * @param a long.
      */
@@ -57,6 +60,7 @@ public final class ModInteger implements GcdRingElem<ModInteger>, Modular {
     /**
      * The constructor creates a ModInteger object from a ModIntegerRing and a
      * String value part.
+     *
      * @param m ModIntegerRing.
      * @param s String.
      */
@@ -68,33 +72,161 @@ public final class ModInteger implements GcdRingElem<ModInteger>, Modular {
     /**
      * The constructor creates a 0 ModInteger object from a given
      * ModIntegerRing.
+     *
      * @param m ModIntegerRing.
      */
     public ModInteger(ModIntegerRing m) {
         this(m, java.math.BigInteger.ZERO);
     }
 
+    /**
+     * ModInteger comparison.
+     *
+     * @param A ModInteger.
+     * @param B ModInteger.
+     * @return sign(this-b).
+     */
+    public static int MICOMP(ModInteger A, ModInteger B) {
+        if (A == null)
+            return -B.signum();
+        return A.compareTo(B);
+    }
+
+    /**
+     * ModInteger absolute value.
+     *
+     * @param A ModInteger.
+     * @return the absolute value of A.
+     */
+    public static ModInteger MIABS(ModInteger A) {
+        if (A == null)
+            return null;
+        return A.abs();
+    }
+
+    /**
+     * ModInteger negative.
+     *
+     * @param A ModInteger.
+     * @return -A.
+     */
+    public static ModInteger MINEG(ModInteger A) {
+        if (A == null)
+            return null;
+        return A.negate();
+    }
+
+    /**
+     * ModInteger signum.
+     *
+     * @param A ModInteger
+     * @return signum(A).
+     */
+    public static int MISIGN(ModInteger A) {
+        if (A == null)
+            return 0;
+        return A.signum();
+    }
+
+    /**
+     * ModInteger subtraction.
+     *
+     * @param A ModInteger.
+     * @param B ModInteger.
+     * @return A-B.
+     */
+    public static ModInteger MIDIF(ModInteger A, ModInteger B) {
+        if (A == null)
+            return B.negate();
+        return A.subtract(B);
+    }
+
+    /**
+     * ModInteger quotient.
+     *
+     * @param A ModInteger.
+     * @param B ModInteger.
+     * @return A/B.
+     */
+    public static ModInteger MIQ(ModInteger A, ModInteger B) {
+        if (A == null)
+            return null;
+        return A.divide(B);
+    }
+
+    /**
+     * ModInteger inverse.
+     *
+     * @param A is a non-zero integer.
+     * @return S with S=1/A if defined.
+     * @see edu.jas.structure.RingElem#inverse()
+     */
+    public static ModInteger MIINV(ModInteger A) {
+        if (A == null)
+            return null;
+        return A.inverse();
+    }
+
+    /**
+     * ModInteger remainder.
+     *
+     * @param A ModInteger.
+     * @param B ModInteger.
+     * @return A - (A/B)*B.
+     */
+    public static ModInteger MIREM(ModInteger A, ModInteger B) {
+        if (A == null)
+            return null;
+        return A.remainder(B);
+    }
+
+    /**
+     * ModInteger product.
+     *
+     * @param A ModInteger.
+     * @param B ModInteger.
+     * @return A*B.
+     */
+    public static ModInteger MIPROD(ModInteger A, ModInteger B) {
+        if (A == null)
+            return null;
+        return A.multiply(B);
+    }
+
+    /**
+     * ModInteger summation.
+     *
+     * @param A ModInteger.
+     * @param B ModInteger.
+     * @return A+B.
+     */
+    public static ModInteger MISUM(ModInteger A, ModInteger B) {
+        if (A == null)
+            return null;
+        return A.sum(B);
+    }
 
     /**
      * Get the value part.
+     *
      * @return val.
      */
     public java.math.BigInteger getVal() {
         return val;
     }
 
-
     /**
      * Get the module part.
+     *
      * @return modul.
      */
     public java.math.BigInteger getModul() {
         return ring.modul;
     }
 
-
     /**
      * Get the corresponding element factory.
+     *
      * @return factory for this Element.
      * @see edu.jas.structure.Element#factory()
      */
@@ -102,9 +234,9 @@ public final class ModInteger implements GcdRingElem<ModInteger>, Modular {
         return ring;
     }
 
-
     /**
      * Get the symmetric value part.
+     *
      * @return val with -modul/2 <= val < modul/2.
      */
     public java.math.BigInteger getSymmetricVal() {
@@ -115,18 +247,18 @@ public final class ModInteger implements GcdRingElem<ModInteger>, Modular {
         return val;
     }
 
-
     /**
      * Return a BigInteger from this Element.
+     *
      * @return a BigInteger of this.
      */
     public BigInteger getInteger() {
         return new BigInteger(val);
     }
 
-
     /**
      * Return a symmetric BigInteger from this Element.
+     *
      * @return a symmetric BigInteger of this.
      */
     public BigInteger getSymmetricInteger() {
@@ -138,9 +270,9 @@ public final class ModInteger implements GcdRingElem<ModInteger>, Modular {
         return new BigInteger(v);
     }
 
-
     /**
      * Clone this.
+     *
      * @see java.lang.Object#clone()
      */
     @Override
@@ -148,9 +280,9 @@ public final class ModInteger implements GcdRingElem<ModInteger>, Modular {
         return new ModInteger(ring, val);
     }
 
-
     /**
      * Is ModInteger number zero.
+     *
      * @return If this is 0 then true is returned, else false.
      * @see edu.jas.structure.RingElem#isZERO()
      */
@@ -158,9 +290,9 @@ public final class ModInteger implements GcdRingElem<ModInteger>, Modular {
         return val.signum() == 0;
     }
 
-
     /**
      * Is ModInteger number one.
+     *
      * @return If this is 1 then true is returned, else false.
      * @see edu.jas.structure.RingElem#isONE()
      */
@@ -168,9 +300,9 @@ public final class ModInteger implements GcdRingElem<ModInteger>, Modular {
         return val.equals(java.math.BigInteger.ONE);
     }
 
-
     /**
      * Is ModInteger number a unit.
+     *
      * @return If this is a unit then true is returned, else false.
      * @see edu.jas.structure.RingElem#isUnit()
      */
@@ -185,9 +317,9 @@ public final class ModInteger implements GcdRingElem<ModInteger>, Modular {
         return (g.equals(java.math.BigInteger.ONE));
     }
 
-
     /**
      * Get the String representation.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -195,9 +327,9 @@ public final class ModInteger implements GcdRingElem<ModInteger>, Modular {
         return val.toString();
     }
 
-
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this Element.
      * @see edu.jas.structure.Element#toScript()
      */
@@ -207,9 +339,9 @@ public final class ModInteger implements GcdRingElem<ModInteger>, Modular {
         return toString();
     }
 
-
     /**
      * Get a scripting compatible string representation of the factory.
+     *
      * @return script compatible representation for this ElemFactory.
      * @see edu.jas.structure.Element#toScriptFactory()
      */
@@ -219,9 +351,9 @@ public final class ModInteger implements GcdRingElem<ModInteger>, Modular {
         return factory().toScript();
     }
 
-
     /**
      * ModInteger comparison.
+     *
      * @param b ModInteger.
      * @return sign(this-b).
      */
@@ -234,22 +366,9 @@ public final class ModInteger implements GcdRingElem<ModInteger>, Modular {
         return val.compareTo(v);
     }
 
-
-    /**
-     * ModInteger comparison.
-     * @param A ModInteger.
-     * @param B ModInteger.
-     * @return sign(this-b).
-     */
-    public static int MICOMP(ModInteger A, ModInteger B) {
-        if (A == null)
-            return -B.signum();
-        return A.compareTo(B);
-    }
-
-
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -260,9 +379,9 @@ public final class ModInteger implements GcdRingElem<ModInteger>, Modular {
         return (0 == compareTo((ModInteger) b));
     }
 
-
     /**
      * Hash code for this ModInteger.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -271,9 +390,9 @@ public final class ModInteger implements GcdRingElem<ModInteger>, Modular {
         return val.hashCode();
     }
 
-
     /**
      * ModInteger absolute value.
+     *
      * @return the absolute value of this.
      * @see edu.jas.structure.RingElem#abs()
      */
@@ -281,65 +400,29 @@ public final class ModInteger implements GcdRingElem<ModInteger>, Modular {
         return new ModInteger(ring, val.abs());
     }
 
-
-    /**
-     * ModInteger absolute value.
-     * @param A ModInteger.
-     * @return the absolute value of A.
-     */
-    public static ModInteger MIABS(ModInteger A) {
-        if (A == null)
-            return null;
-        return A.abs();
-    }
-
-
     /**
      * ModInteger negative.
-     * @see edu.jas.structure.RingElem#negate()
+     *
      * @return -this.
+     * @see edu.jas.structure.RingElem#negate()
      */
     public ModInteger negate() {
         return new ModInteger(ring, val.negate());
     }
 
-
-    /**
-     * ModInteger negative.
-     * @param A ModInteger.
-     * @return -A.
-     */
-    public static ModInteger MINEG(ModInteger A) {
-        if (A == null)
-            return null;
-        return A.negate();
-    }
-
-
     /**
      * ModInteger signum.
-     * @see edu.jas.structure.RingElem#signum()
+     *
      * @return signum(this).
+     * @see edu.jas.structure.RingElem#signum()
      */
     public int signum() {
         return val.signum();
     }
 
-
-    /**
-     * ModInteger signum.
-     * @param A ModInteger
-     * @return signum(A).
-     */
-    public static int MISIGN(ModInteger A) {
-        if (A == null)
-            return 0;
-        return A.signum();
-    }
-
-
     /**
      * ModInteger subtraction.
+     *
      * @param S ModInteger.
      * @return this-S.
      */
@@ -347,22 +430,9 @@ public final class ModInteger implements GcdRingElem<ModInteger>, Modular {
         return new ModInteger(ring, val.subtract(S.val));
     }
 
-
-    /**
-     * ModInteger subtraction.
-     * @param A ModInteger.
-     * @param B ModInteger.
-     * @return A-B.
-     */
-    public static ModInteger MIDIF(ModInteger A, ModInteger B) {
-        if (A == null)
-            return B.negate();
-        return A.subtract(B);
-    }
-
-
     /**
      * ModInteger divide.
+     *
      * @param S ModInteger.
      * @return this/S.
      */
@@ -381,55 +451,29 @@ public final class ModInteger implements GcdRingElem<ModInteger>, Modular {
         }
     }
 
-
-    /**
-     * ModInteger quotient.
-     * @param A ModInteger.
-     * @param B ModInteger.
-     * @return A/B.
-     */
-    public static ModInteger MIQ(ModInteger A, ModInteger B) {
-        if (A == null)
-            return null;
-        return A.divide(B);
-    }
-
-
     /**
      * ModInteger inverse.
-     * @see edu.jas.structure.RingElem#inverse()
-     * @throws NotInvertibleException if the element is not invertible.
+     *
      * @return S with S=1/this if defined.
+     * @throws NotInvertibleException if the element is not invertible.
+     * @see edu.jas.structure.RingElem#inverse()
      */
-    public ModInteger inverse() /*throws NotInvertibleException*/{
+    public ModInteger inverse() /*throws NotInvertibleException*/ {
         try {
             return new ModInteger(ring, val.modInverse(ring.modul));
         } catch (ArithmeticException e) {
             java.math.BigInteger g = val.gcd(ring.modul);
             java.math.BigInteger f = ring.modul.divide(g);
             throw new ModularNotInvertibleException(e, new BigInteger(ring.modul), new BigInteger(g),
-                            new BigInteger(f));
+                    new BigInteger(f));
         }
     }
 
-
-    /**
-     * ModInteger inverse.
-     * @param A is a non-zero integer.
-     * @see edu.jas.structure.RingElem#inverse()
-     * @return S with S=1/A if defined.
-     */
-    public static ModInteger MIINV(ModInteger A) {
-        if (A == null)
-            return null;
-        return A.inverse();
-    }
-
-
     /**
      * ModInteger remainder.
+     *
      * @param S ModInteger.
-     * @return remainder(this,S).
+     * @return remainder(this, S).
      */
     public ModInteger remainder(ModInteger S) {
         if (S == null || S.isZERO()) {
@@ -444,32 +488,19 @@ public final class ModInteger implements GcdRingElem<ModInteger>, Modular {
         return new ModInteger(ring, val.remainder(S.val));
     }
 
-
-    /**
-     * ModInteger remainder.
-     * @param A ModInteger.
-     * @param B ModInteger.
-     * @return A - (A/B)*B.
-     */
-    public static ModInteger MIREM(ModInteger A, ModInteger B) {
-        if (A == null)
-            return null;
-        return A.remainder(B);
-    }
-
-
     /**
      * Quotient and remainder by division of this by S.
+     *
      * @param S a modular integer
      * @return [this/S, this - (this/S)*S].
      */
     public ModInteger[] quotientRemainder(ModInteger S) {
-        return new ModInteger[] { divide(S), remainder(S) };
+        return new ModInteger[]{divide(S), remainder(S)};
     }
-
 
     /**
      * ModInteger multiply.
+     *
      * @param S ModInteger.
      * @return this*S.
      */
@@ -477,22 +508,9 @@ public final class ModInteger implements GcdRingElem<ModInteger>, Modular {
         return new ModInteger(ring, val.multiply(S.val));
     }
 
-
-    /**
-     * ModInteger product.
-     * @param A ModInteger.
-     * @param B ModInteger.
-     * @return A*B.
-     */
-    public static ModInteger MIPROD(ModInteger A, ModInteger B) {
-        if (A == null)
-            return null;
-        return A.multiply(B);
-    }
-
-
     /**
      * ModInteger summation.
+     *
      * @param S ModInteger.
      * @return this+S.
      */
@@ -500,24 +518,11 @@ public final class ModInteger implements GcdRingElem<ModInteger>, Modular {
         return new ModInteger(ring, val.add(S.val));
     }
 
-
-    /**
-     * ModInteger summation.
-     * @param A ModInteger.
-     * @param B ModInteger.
-     * @return A+B.
-     */
-    public static ModInteger MISUM(ModInteger A, ModInteger B) {
-        if (A == null)
-            return null;
-        return A.sum(B);
-    }
-
-
     /**
      * ModInteger greatest common divisor.
+     *
      * @param S ModInteger.
-     * @return gcd(this,S).
+     * @return gcd(this, S).
      */
     public ModInteger gcd(ModInteger S) {
         if (S.isZERO()) {
@@ -535,6 +540,7 @@ public final class ModInteger implements GcdRingElem<ModInteger>, Modular {
 
     /**
      * ModInteger half extended greatest common divisor.
+     *
      * @param S ModInteger.
      * @return [ gcd(this,S), a ] with a*this + b*S = gcd(this,S) for some b.
      */
@@ -577,6 +583,7 @@ public final class ModInteger implements GcdRingElem<ModInteger>, Modular {
 
     /**
      * ModInteger extended greatest common divisor.
+     *
      * @param S ModInteger.
      * @return [ gcd(this,S), a, b ] with a*this + b*S = gcd(this,S).
      */
@@ -655,8 +662,9 @@ public final class ModInteger implements GcdRingElem<ModInteger>, Modular {
      * Returns the number of bits in the representation of this ModInteger,
      * including a sign bit. For positive ModIntegers, this is equivalent to
      * {@code val.bitLength()}.)
+     *
      * @return number of bits in the representation of this ModInteger,
-     *         including a sign bit.
+     * including a sign bit.
      */
     public long bitLength() {
         long n = val.bitLength();

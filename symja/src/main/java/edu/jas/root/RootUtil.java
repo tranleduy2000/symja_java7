@@ -5,9 +5,9 @@
 package edu.jas.root;
 
 
-import java.util.List;
-
 import org.apache.log4j.Logger;
+
+import java.util.List;
 
 import edu.jas.arith.Rational;
 import edu.jas.poly.Complex;
@@ -17,6 +17,7 @@ import edu.jas.structure.RingFactory;
 
 /**
  * Real root utilities. For example real root count.
+ *
  * @author Heinz Kredel
  */
 public class RootUtil {
@@ -30,8 +31,9 @@ public class RootUtil {
 
     /**
      * Count changes in sign.
+     *
      * @param <C> coefficient type.
-     * @param L list of coefficients.
+     * @param L   list of coefficients.
      * @return number of sign changes in L.
      */
     public static <C extends RingElem<C>> long signVar(List<C> L) {
@@ -60,6 +62,7 @@ public class RootUtil {
 
     /**
      * Parse interval for a real root from String.
+     *
      * @param s String, syntax: [left, right] or [mid].
      * @return Interval from s.
      */
@@ -100,11 +103,12 @@ public class RootUtil {
 
     /**
      * Parse rectangle for a complex root from String.
+     *
      * @param s String, syntax: [south-west, north-east] or [mid].
      * @return Interval from s.
      */
     public static <C extends RingElem<C> & Rational> Rectangle<C> parseRectangle(RingFactory<Complex<C>> fac,
-                    String s) {
+                                                                                 String s) {
         int r = s.length();
         int el = s.indexOf("[");
         if (el >= 0) {

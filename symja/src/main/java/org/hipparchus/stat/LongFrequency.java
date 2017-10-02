@@ -37,7 +37,9 @@ import java.util.Comparator;
  */
 public class LongFrequency extends Frequency<Long> {
 
-    /** Serializable version identifier */
+    /**
+     * Serializable version identifier
+     */
     private static final long serialVersionUID = 20160322L;
 
     /**
@@ -67,7 +69,7 @@ public class LongFrequency extends Frequency<Long> {
     /**
      * Increments the frequency count for v.
      *
-     * @param v the value to add.
+     * @param v         the value to add.
      * @param increment the amount by which the value should be incremented
      */
     public void incrementValue(int v, long increment) {

@@ -19,13 +19,13 @@ package org.hipparchus.linear;
 
 /**
  * Marker interface for {@link RealMatrix} implementations that require sparse backing storage
- *
  * <p>
- *  Caveat: Implementation are allowed to assume that, for any {@code x},
- *  the equality {@code x * 0d == 0d} holds. But it is is not true for
- *  {@code NaN}. Moreover, zero entries will lose their sign.
- *  Some operations (that involve {@code NaN} and/or infinities) may
- *  thus give incorrect results.
+ * <p>
+ * Caveat: Implementation are allowed to assume that, for any {@code x},
+ * the equality {@code x * 0d == 0d} holds. But it is is not true for
+ * {@code NaN}. Moreover, zero entries will lose their sign.
+ * Some operations (that involve {@code NaN} and/or infinities) may
+ * thus give incorrect results.
  * </p>
  */
 public interface SparseRealMatrix extends RealMatrix {

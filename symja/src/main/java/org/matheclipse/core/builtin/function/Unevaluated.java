@@ -11,30 +11,29 @@ import org.matheclipse.core.interfaces.ISymbol;
 
 /**
  * TODO implement &quot;Unevaluated&quot; mode
- * 
  */
 public class Unevaluated extends AbstractCoreFunctionEvaluator {
 
-	public Unevaluated() {
-	}
+    public Unevaluated() {
+    }
 
-	@Override
-	public IExpr evaluate(final IAST ast, EvalEngine engine) {
-		if (!ToggleFeature.UNEVALUATED) {
-			return F.NIL;
-		}
+    @Override
+    public IExpr evaluate(final IAST ast, EvalEngine engine) {
+        if (!ToggleFeature.UNEVALUATED) {
+            return F.NIL;
+        }
 
-		Validate.checkSize(ast, 2);
-		IExpr arg1 = engine.evaluate(ast.arg1());
+        Validate.checkSize(ast, 2);
+        IExpr arg1 = engine.evaluate(ast.arg1());
 
-		return arg1;
-	}
+        return arg1;
+    }
 
-	@Override
-	public void setUp(ISymbol newSymbol) {
-		if (!ToggleFeature.UNEVALUATED) {
-			return;
-		}
-		newSymbol.setAttributes(ISymbol.HOLDALL);
-	}
+    @Override
+    public void setUp(ISymbol newSymbol) {
+        if (!ToggleFeature.UNEVALUATED) {
+            return;
+        }
+        newSymbol.setAttributes(ISymbol.HOLDALL);
+    }
 }

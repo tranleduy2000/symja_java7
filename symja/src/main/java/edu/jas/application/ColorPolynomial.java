@@ -5,14 +5,14 @@
 package edu.jas.application;
 
 
+import org.apache.log4j.Logger;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.poly.ExpVector;
 import edu.jas.poly.GenPolynomial;
@@ -23,6 +23,7 @@ import edu.jas.structure.RingElem;
 /**
  * Colored Polynomials with green, red and white coefficients. Not implementing
  * RingElem. <b>Note:</b> not general purpose, use only in comprehensive GB.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
@@ -54,12 +55,13 @@ public class ColorPolynomial<C extends RingElem<C>> implements Serializable
 
     /**
      * The constructor creates a colored polynomial from the colored parts.
+     *
      * @param g green colored terms and coefficients.
      * @param r red colored terms and coefficients.
      * @param w white colored terms and coefficients.
      */
     public ColorPolynomial(GenPolynomial<GenPolynomial<C>> g,
-            GenPolynomial<GenPolynomial<C>> r, GenPolynomial<GenPolynomial<C>> w) {
+                           GenPolynomial<GenPolynomial<C>> r, GenPolynomial<GenPolynomial<C>> w) {
         if (g == null || r == null || w == null) {
             throw new IllegalArgumentException("g,r,w may not be null");
         }
@@ -71,6 +73,7 @@ public class ColorPolynomial<C extends RingElem<C>> implements Serializable
 
     /**
      * String representation of ColorPolynomial.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -88,6 +91,7 @@ public class ColorPolynomial<C extends RingElem<C>> implements Serializable
 
     /**
      * Script representation of ColorPolynomial.
+     *
      * @see edu.jas.structure.Element#toScript()
      */
     public String toScript() {
@@ -104,6 +108,7 @@ public class ColorPolynomial<C extends RingElem<C>> implements Serializable
 
     /**
      * Is this polynomial ZERO.
+     *
      * @return true, if there are only green terms, else false.
      */
     public boolean isZERO() {
@@ -113,6 +118,7 @@ public class ColorPolynomial<C extends RingElem<C>> implements Serializable
 
     /**
      * Is this polynomial ONE.
+     *
      * @return true, if the only non green term is 1, else false.
      */
     public boolean isONE() {
@@ -122,6 +128,7 @@ public class ColorPolynomial<C extends RingElem<C>> implements Serializable
 
     /**
      * Is this polynomial equal to other.
+     *
      * @param p other polynomial.
      * @return true, if this is equal to other, else false.
      */
@@ -143,6 +150,7 @@ public class ColorPolynomial<C extends RingElem<C>> implements Serializable
 
     /**
      * Hash code for this colored polynomial.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -159,6 +167,7 @@ public class ColorPolynomial<C extends RingElem<C>> implements Serializable
 
     /**
      * Is this polynomial determined.
+     *
      * @return true, if there are nonzero red terms or if this == 0, else false.
      */
     public boolean isDetermined() {
@@ -168,6 +177,7 @@ public class ColorPolynomial<C extends RingElem<C>> implements Serializable
 
     /**
      * Check ordering invariants. TT(green) > LT(red) and TT(red) > LT(white).
+     *
      * @return true, if all ordering invariants are met, else false.
      */
     public boolean checkInvariant() {
@@ -212,6 +222,7 @@ public class ColorPolynomial<C extends RingElem<C>> implements Serializable
 
     /**
      * Get zero condition on coefficients.
+     *
      * @return green coefficients.
      */
     public List<GenPolynomial<C>> getGreenCoefficients() {
@@ -222,6 +233,7 @@ public class ColorPolynomial<C extends RingElem<C>> implements Serializable
 
     /**
      * Get non zero condition on coefficients.
+     *
      * @return red coefficients.
      */
     public List<GenPolynomial<C>> getRedCoefficients() {
@@ -232,6 +244,7 @@ public class ColorPolynomial<C extends RingElem<C>> implements Serializable
 
     /**
      * Get full polynomial.
+     *
      * @return sum of all parts.
      */
     public GenPolynomial<GenPolynomial<C>> getPolynomial() {
@@ -247,6 +260,7 @@ public class ColorPolynomial<C extends RingElem<C>> implements Serializable
 
     /**
      * Get essential polynomial.
+     *
      * @return sum of red and white parts.
      */
     public GenPolynomial<GenPolynomial<C>> getEssentialPolynomial() {
@@ -264,6 +278,7 @@ public class ColorPolynomial<C extends RingElem<C>> implements Serializable
 
     /**
      * Length of red and white parts.
+     *
      * @return length of essential parts.
      */
     public int length() {
@@ -274,6 +289,7 @@ public class ColorPolynomial<C extends RingElem<C>> implements Serializable
 
     /**
      * Get leading exponent vector.
+     *
      * @return LT of red or white parts.
      */
     public ExpVector leadingExpVector() {
@@ -286,6 +302,7 @@ public class ColorPolynomial<C extends RingElem<C>> implements Serializable
 
     /**
      * Get leading monomial.
+     *
      * @return LM of red or white parts.
      */
     public Map.Entry<ExpVector, GenPolynomial<C>> leadingMonomial() {
@@ -298,6 +315,7 @@ public class ColorPolynomial<C extends RingElem<C>> implements Serializable
 
     /**
      * ColorPolynomial absolute value.
+     *
      * @return abs(this).
      */
     public ColorPolynomial<C> abs() {
@@ -342,6 +360,7 @@ public class ColorPolynomial<C extends RingElem<C>> implements Serializable
     /**
      * ColorPolynomial summation. <b>Note:</b> green coefficients stay green,
      * all others become white.
+     *
      * @param S ColorPolynomial.
      * @return this+S.
      */
@@ -356,6 +375,7 @@ public class ColorPolynomial<C extends RingElem<C>> implements Serializable
 
     /**
      * ColorPolynomial summation.
+     *
      * @param s GenPolynomial.
      * @param e exponent vector.
      * @return this+(c e).
@@ -379,6 +399,7 @@ public class ColorPolynomial<C extends RingElem<C>> implements Serializable
     /**
      * ColorPolynomial subtraction. <b>Note:</b> green coefficients stay green,
      * all others become white.
+     *
      * @param S ColorPolynomial.
      * @return this-S.
      */
@@ -393,6 +414,7 @@ public class ColorPolynomial<C extends RingElem<C>> implements Serializable
 
     /**
      * ColorPolynomial subtract.
+     *
      * @param s GenPolynomial.
      * @param e exponent vector.
      * @return this-(c e).
@@ -415,6 +437,7 @@ public class ColorPolynomial<C extends RingElem<C>> implements Serializable
 
     /**
      * ColorPolynomial multiplication by monomial.
+     *
      * @param s Coefficient.
      * @param e Expvector.
      * @return this * (c t).
@@ -441,6 +464,7 @@ public class ColorPolynomial<C extends RingElem<C>> implements Serializable
 
     /**
      * ColorPolynomial multiplication by coefficient.
+     *
      * @param s Coefficient.
      * @return this * (s).
      */
@@ -456,6 +480,7 @@ public class ColorPolynomial<C extends RingElem<C>> implements Serializable
 
     /**
      * ColorPolynomial division by coefficient.
+     *
      * @param s Coefficient.
      * @return this / (s).
      */

@@ -25,17 +25,19 @@ import org.hipparchus.exception.MathIllegalStateException;
 /**
  * Provide a default implementation for several functions useful to generic
  * solvers.
- *
  */
 public abstract class AbstractUnivariateDifferentiableSolver
-    extends BaseAbstractUnivariateSolver<UnivariateDifferentiableFunction>
-    implements UnivariateDifferentiableSolver {
+        extends BaseAbstractUnivariateSolver<UnivariateDifferentiableFunction>
+        implements UnivariateDifferentiableSolver {
 
-    /** Function to solve. */
-    private UnivariateDifferentiableFunction function;
-
-    /** Factory for DerivativeStructure instances. */
+    /**
+     * Factory for DerivativeStructure instances.
+     */
     private final DSFactory factory;
+    /**
+     * Function to solve.
+     */
+    private UnivariateDifferentiableFunction function;
 
     /**
      * Construct a solver with given absolute accuracy.
@@ -50,8 +52,8 @@ public abstract class AbstractUnivariateDifferentiableSolver
     /**
      * Construct a solver with given accuracies.
      *
-     * @param relativeAccuracy Maximum relative error.
-     * @param absoluteAccuracy Maximum absolute error.
+     * @param relativeAccuracy      Maximum relative error.
+     * @param absoluteAccuracy      Maximum absolute error.
      * @param functionValueAccuracy Maximum function value error.
      */
     protected AbstractUnivariateDifferentiableSolver(final double relativeAccuracy,
@@ -66,11 +68,10 @@ public abstract class AbstractUnivariateDifferentiableSolver
      *
      * @param point Point at which the objective function must be evaluated.
      * @return the objective function value and derivative at specified point.
-     * @throws MathIllegalStateException
-     * if the maximal number of evaluations is exceeded.
+     * @throws MathIllegalStateException if the maximal number of evaluations is exceeded.
      */
     protected DerivativeStructure computeObjectiveValueAndDerivative(double point)
-        throws MathIllegalStateException {
+            throws MathIllegalStateException {
         incrementEvaluationCount();
         return function.value(factory.variable(0, point));
     }

@@ -5,10 +5,10 @@
 package edu.jas.gbmod;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.poly.GenSolvablePolynomial;
 import edu.jas.poly.GenSolvablePolynomialRing;
@@ -21,13 +21,14 @@ import edu.jas.structure.RingElem;
 /**
  * Module solvable Groebner Bases abstract class. Implements module solvable
  * Groebner bases and GB test.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  * @deprecated use respective methods from SolvableGroebnerBaseAbstract
  */
 @Deprecated
 public abstract class ModSolvableGroebnerBaseAbstract<C extends RingElem<C>> implements
-                ModSolvableGroebnerBase<C> {
+        ModSolvableGroebnerBase<C> {
 
 
     private static final Logger logger = Logger.getLogger(ModSolvableGroebnerBaseAbstract.class);
@@ -38,6 +39,7 @@ public abstract class ModSolvableGroebnerBaseAbstract<C extends RingElem<C>> imp
 
     /**
      * Module left Groebner base test.
+     *
      * @param M a module basis.
      * @return true, if M is a left Groebner base, else false.
      */
@@ -56,6 +58,7 @@ public abstract class ModSolvableGroebnerBaseAbstract<C extends RingElem<C>> imp
 
     /**
      * Left Groebner base using pairlist class.
+     *
      * @param M a module basis.
      * @return leftGB(M) a left Groebner base for M.
      */
@@ -86,6 +89,7 @@ public abstract class ModSolvableGroebnerBaseAbstract<C extends RingElem<C>> imp
 
     /**
      * Module twosided Groebner base test.
+     *
      * @param M a module basis.
      * @return true, if M is a twosided Groebner base, else false.
      */
@@ -104,6 +108,7 @@ public abstract class ModSolvableGroebnerBaseAbstract<C extends RingElem<C>> imp
 
     /**
      * Twosided Groebner base using pairlist class.
+     *
      * @param M a module basis.
      * @return tsGB(M) a twosided Groebner base for M.
      */
@@ -128,6 +133,7 @@ public abstract class ModSolvableGroebnerBaseAbstract<C extends RingElem<C>> imp
 
     /**
      * Module right Groebner base test.
+     *
      * @param M a module basis.
      * @return true, if M is a right Groebner base, else false.
      */
@@ -147,6 +153,7 @@ public abstract class ModSolvableGroebnerBaseAbstract<C extends RingElem<C>> imp
 
     /**
      * Right Groebner base using pairlist class.
+     *
      * @param M a module basis.
      * @return rightGB(M) a right Groebner base for M.
      */

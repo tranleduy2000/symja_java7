@@ -4,10 +4,10 @@
 
 package edu.jas.gb;
 
+import org.apache.log4j.Logger;
+
 import java.util.List;
 import java.util.concurrent.Semaphore;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.poly.GenPolynomial;
 import edu.jas.structure.RingElem;
@@ -20,19 +20,13 @@ import edu.jas.structure.RingElem;
 class MiReducerServer<C extends RingElem<C>> implements Runnable {
 
 
+    private static final Logger logger = Logger.getLogger(MiReducerServer.class);
     private final List<GenPolynomial<C>> G;
-
-
-    private GenPolynomial<C> H;
-
-
     private final Semaphore done = new Semaphore(0);
 
 
     private final Reduction<C> red;
-
-
-    private static final Logger logger = Logger.getLogger(MiReducerServer.class);
+    private GenPolynomial<C> H;
 
 
     MiReducerServer(List<GenPolynomial<C>> G, GenPolynomial<C> p) {
@@ -44,6 +38,7 @@ class MiReducerServer<C extends RingElem<C>> implements Runnable {
 
     /**
      * getNF. Blocks until the normal form is computed.
+     *
      * @return the computed normal form.
      */
     public GenPolynomial<C> getNF() {
@@ -77,19 +72,13 @@ class MiReducerServer<C extends RingElem<C>> implements Runnable {
 class MiReducerClient<C extends RingElem<C>> implements Runnable {
 
 
+    private static final Logger logger = Logger.getLogger(MiReducerClient.class);
     private final List<GenPolynomial<C>> G;
-
-
-    private GenPolynomial<C> H;
-
-
     private final Reduction<C> red;
 
 
     private final Semaphore done = new Semaphore(0);
-
-
-    private static final Logger logger = Logger.getLogger(MiReducerClient.class);
+    private GenPolynomial<C> H;
 
 
     MiReducerClient(List<GenPolynomial<C>> G, GenPolynomial<C> p) {
@@ -101,6 +90,7 @@ class MiReducerClient<C extends RingElem<C>> implements Runnable {
 
     /**
      * getNF. Blocks until the normal form is computed.
+     *
      * @return the computed normal form.
      */
     public GenPolynomial<C> getNF() {

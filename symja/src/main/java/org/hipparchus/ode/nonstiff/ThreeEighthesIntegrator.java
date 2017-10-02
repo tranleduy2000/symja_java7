@@ -23,7 +23,7 @@ import org.hipparchus.ode.ODEStateAndDerivative;
 /**
  * This class implements the 3/8 fourth order Runge-Kutta
  * integrator for Ordinary Differential Equations.
- *
+ * <p>
  * <p>This method is an explicit Runge-Kutta method, its Butcher-array
  * is the following one :
  * <pre>
@@ -45,41 +45,51 @@ import org.hipparchus.ode.ODEStateAndDerivative;
 
 public class ThreeEighthesIntegrator extends RungeKuttaIntegrator {
 
-    /** Simple constructor.
+    /**
+     * Simple constructor.
      * Build a 3/8 integrator with the given step.
+     *
      * @param step integration step
      */
     public ThreeEighthesIntegrator(final double step) {
         super("3/8", step);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double[] getC() {
-        return new double[] {
-            1.0 / 3.0, 2.0 / 3.0, 1.0
+        return new double[]{
+                1.0 / 3.0, 2.0 / 3.0, 1.0
         };
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double[][] getA() {
-        return new double[][] {
-            {  1.0 / 3.0 },
-            { -1.0 / 3.0, 1.0 },
-            {  1.0, -1.0, 1.0 }
+        return new double[][]{
+                {1.0 / 3.0},
+                {-1.0 / 3.0, 1.0},
+                {1.0, -1.0, 1.0}
         };
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double[] getB() {
-        return new double[] {
-            1.0 / 8.0, 3.0 / 8.0, 3.0 / 8.0, 1.0 / 8.0
+        return new double[]{
+                1.0 / 8.0, 3.0 / 8.0, 3.0 / 8.0, 1.0 / 8.0
         };
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected ThreeEighthesStateInterpolator
     createInterpolator(final boolean forward, double[][] yDotK,
@@ -87,9 +97,9 @@ public class ThreeEighthesIntegrator extends RungeKuttaIntegrator {
                        final ODEStateAndDerivative globalCurrentState,
                        final EquationsMapper mapper) {
         return new ThreeEighthesStateInterpolator(forward, yDotK,
-                                                 globalPreviousState, globalCurrentState,
-                                                 globalPreviousState, globalCurrentState,
-                                                 mapper);
+                globalPreviousState, globalCurrentState,
+                globalPreviousState, globalCurrentState,
+                mapper);
     }
 
 }

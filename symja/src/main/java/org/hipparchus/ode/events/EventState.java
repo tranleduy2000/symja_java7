@@ -28,139 +28,167 @@ import org.hipparchus.ode.ODEStateAndDerivative;
 import org.hipparchus.ode.sampling.ODEStateInterpolator;
 import org.hipparchus.util.FastMath;
 
-/** This class handles the state for one {@link ODEEventHandler
+/**
+ * This class handles the state for one {@link ODEEventHandler
  * event handler} during integration steps.
- *
+ * <p>
  * <p>Each time the integrator proposes a step, the event handler
  * switching function should be checked. This class handles the state
  * of one handler during one integration step, with references to the
  * state at the end of the preceding step. This information is used to
  * decide if the handler should trigger an event or not during the
  * proposed step.</p>
- *
  */
 public class EventState {
 
-    /** Event handler. */
+    /**
+     * Event handler.
+     */
     private final ODEEventHandler handler;
 
-    /** Maximal time interval between events handler checks. */
+    /**
+     * Maximal time interval between events handler checks.
+     */
     private final double maxCheckInterval;
 
-    /** Convergence threshold for event localization. */
+    /**
+     * Convergence threshold for event localization.
+     */
     private final double convergence;
 
-    /** Upper limit in the iteration count for event localization. */
+    /**
+     * Upper limit in the iteration count for event localization.
+     */
     private final int maxIterationCount;
-
-    /** Time at the beginning of the step. */
+    /**
+     * Root-finding algorithm to use to detect state events.
+     */
+    private final BracketedUnivariateSolver<UnivariateFunction> solver;
+    /**
+     * Time at the beginning of the step.
+     */
     private double t0;
-
-    /** Value of the events handler at the beginning of the step. */
+    /**
+     * Value of the events handler at the beginning of the step.
+     */
     private double g0;
-
-    /** Sign of g0. */
+    /**
+     * Sign of g0.
+     */
     private boolean g0Positive;
-
-    /** Indicator of event expected during the step. */
+    /**
+     * Indicator of event expected during the step.
+     */
     private boolean pendingEvent;
-
-    /** Occurrence time of the pending event. */
+    /**
+     * Occurrence time of the pending event.
+     */
     private double pendingEventTime;
-
     /**
      * Time to stop propagation if the event is a stop event. Used to enable stopping at
      * an event and then restarting after that event.
      */
     private double stopTime;
-
-    /** Time after the current event. */
+    /**
+     * Time after the current event.
+     */
     private double afterEvent;
-
-    /** Value of the g function after the current event. */
+    /**
+     * Value of the g function after the current event.
+     */
     private double afterG;
-
-    /** The earliest time considered for events. */
+    /**
+     * The earliest time considered for events.
+     */
     private double earliestTimeConsidered;
-
-    /** Integration direction. */
+    /**
+     * Integration direction.
+     */
     private boolean forward;
-
     /**
      * Direction of g(t) in the propagation direction for the pending event, or if there
      * is no pending event the direction of the previous event.
      */
     private boolean increasing;
 
-    /** Root-finding algorithm to use to detect state events. */
-    private final BracketedUnivariateSolver<UnivariateFunction> solver;
-
-    /** Simple constructor.
-     * @param handler event handler
-     * @param maxCheckInterval maximal time interval between switching
-     * function checks (this interval prevents missing sign changes in
-     * case the integration steps becomes very large)
-     * @param convergence convergence threshold in the event time search
+    /**
+     * Simple constructor.
+     *
+     * @param handler           event handler
+     * @param maxCheckInterval  maximal time interval between switching
+     *                          function checks (this interval prevents missing sign changes in
+     *                          case the integration steps becomes very large)
+     * @param convergence       convergence threshold in the event time search
      * @param maxIterationCount upper limit of the iteration count in
-     * the event time search
-     * @param solver Root-finding algorithm to use to detect state events
+     *                          the event time search
+     * @param solver            Root-finding algorithm to use to detect state events
      */
     public EventState(final ODEEventHandler handler, final double maxCheckInterval,
                       final double convergence, final int maxIterationCount,
                       final BracketedUnivariateSolver<UnivariateFunction> solver) {
-        this.handler           = handler;
-        this.maxCheckInterval  = maxCheckInterval;
-        this.convergence       = FastMath.abs(convergence);
+        this.handler = handler;
+        this.maxCheckInterval = maxCheckInterval;
+        this.convergence = FastMath.abs(convergence);
         this.maxIterationCount = maxIterationCount;
-        this.solver            = solver;
+        this.solver = solver;
 
         // some dummy values ...
-        t0                = Double.NaN;
-        g0                = Double.NaN;
-        g0Positive        = true;
-        pendingEvent      = false;
-        pendingEventTime  = Double.NaN;
-        increasing        = true;
+        t0 = Double.NaN;
+        g0 = Double.NaN;
+        g0Positive = true;
+        pendingEvent = false;
+        pendingEventTime = Double.NaN;
+        increasing = true;
         earliestTimeConsidered = Double.NaN;
         afterEvent = Double.NaN;
         afterG = Double.NaN;
     }
 
-    /** Get the underlying event handler.
+    /**
+     * Get the underlying event handler.
+     *
      * @return underlying event handler
      */
     public ODEEventHandler getEventHandler() {
         return handler;
     }
 
-    /** Get the maximal time interval between events handler checks.
+    /**
+     * Get the maximal time interval between events handler checks.
+     *
      * @return maximal time interval between events handler checks
      */
     public double getMaxCheckInterval() {
         return maxCheckInterval;
     }
 
-    /** Get the convergence threshold for event localization.
+    /**
+     * Get the convergence threshold for event localization.
+     *
      * @return convergence threshold for event localization
      */
     public double getConvergence() {
         return convergence;
     }
 
-    /** Get the upper limit in the iteration count for event localization.
+    /**
+     * Get the upper limit in the iteration count for event localization.
+     *
      * @return upper limit in the iteration count for event localization
      */
     public int getMaxIterationCount() {
         return maxIterationCount;
     }
 
-    /** Reinitialize the beginning of the step.
+    /**
+     * Reinitialize the beginning of the step.
+     *
      * @param interpolator valid for the current step
-     * @exception MathIllegalStateException if the interpolator throws one because
-     * the number of functions evaluations is exceeded
+     * @throws MathIllegalStateException if the interpolator throws one because
+     *                                   the number of functions evaluations is exceeded
      */
     public void reinitializeBegin(final ODEStateInterpolator interpolator)
-        throws MathIllegalStateException {
+            throws MathIllegalStateException {
 
         forward = interpolator.isForward();
         final ODEStateAndDerivative s0 = interpolator.getPreviousState();
@@ -182,7 +210,7 @@ public class EventState {
             // extremely rare case: there is a zero EXACTLY at interval start
             // we will use the sign slightly after step beginning to force ignoring this zero
             final double epsilon = FastMath.max(solver.getAbsoluteAccuracy(),
-                                                FastMath.abs(solver.getRelativeAccuracy() * t0));
+                    FastMath.abs(solver.getRelativeAccuracy() * t0));
             double tStart = t0 + (forward ? 0.5 : -0.5) * epsilon;
             // check for case where tolerance is too small to make a difference
             if (tStart == t0) {
@@ -246,7 +274,7 @@ public class EventState {
         }
 
         // no event during the whole step
-        pendingEvent     = false;
+        pendingEvent = false;
         pendingEventTime = Double.NaN;
         return false;
 
@@ -254,7 +282,7 @@ public class EventState {
 
     /**
      * Find a root in a bracketing interval.
-     *
+     * <p>
      * <p> When calling this method one of the following must be true. Either ga == 0, gb
      * == 0, (ga < 0  and gb > 0), or (ga > 0 and gb < 0).
      *
@@ -316,7 +344,7 @@ public class EventState {
         double loopT = ta;
         double loopG = ga;
         while ((afterRootG == 0.0 || afterRootG > 0.0 == g0Positive) &&
-               strictlyAfter(afterRootT, tb)) {
+                strictlyAfter(afterRootT, tb)) {
             if (loopG == 0.0) {
                 // ga == 0.0 and gb may or may not be 0.0
                 // handle the root at ta first
@@ -399,13 +427,13 @@ public class EventState {
      */
     public double getEventTime() {
         return pendingEvent ?
-               pendingEventTime :
-               (forward ? Double.POSITIVE_INFINITY : Double.NEGATIVE_INFINITY);
+                pendingEventTime :
+                (forward ? Double.POSITIVE_INFINITY : Double.NEGATIVE_INFINITY);
     }
 
     /**
      * Try to accept the current history up to the given time.
-     *
+     * <p>
      * <p> It is not necessary to call this method before calling {@link
      * #doEvent(ODEStateAndDerivative)} with the same state. It is necessary to call this
      * method before you call {@link #doEvent(ODEStateAndDerivative)} on some other event
@@ -549,11 +577,17 @@ public class EventState {
      */
     public static class EventOccurrence {
 
-        /** User requested action. */
+        /**
+         * User requested action.
+         */
         private final Action action;
-        /** New state for a reset action. */
+        /**
+         * New state for a reset action.
+         */
         private final ODEState newState;
-        /** The time to stop propagation if the action is a stop event. */
+        /**
+         * The time to stop propagation if the action is a stop event.
+         */
         private final double stopTime;
 
         /**

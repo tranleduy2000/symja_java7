@@ -5,12 +5,12 @@
 package edu.jas.fd;
 
 
+import org.apache.log4j.Logger;
+
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.gbufd.SolvableSyzygyAbstract;
 import edu.jas.gbufd.SolvableSyzygySeq;
@@ -27,10 +27,11 @@ import edu.jas.structure.RingFactory;
 /**
  * SolvableQuotient ring factory based on GenPolynomial with RingElem interface.
  * Objects of this class are immutable.
+ *
  * @author Heinz Kredel
  */
 public class SolvableQuotientRing<C extends GcdRingElem<C>> implements RingFactory<SolvableQuotient<C>>,
-                QuotPairFactory<GenPolynomial<C>, SolvableQuotient<C>> {
+        QuotPairFactory<GenPolynomial<C>, SolvableQuotient<C>> {
     // should be QuotPairFactory<GenSolvablePolynomial<C>
 
 
@@ -55,6 +56,7 @@ public class SolvableQuotientRing<C extends GcdRingElem<C>> implements RingFacto
     /**
      * The constructor creates a SolvableQuotientRing object from a
      * GenSolvablePolynomialRing.
+     *
      * @param r solvable polynomial ring.
      */
     public SolvableQuotientRing(GenSolvablePolynomialRing<C> r) {
@@ -92,6 +94,7 @@ public class SolvableQuotientRing<C extends GcdRingElem<C>> implements RingFacto
 
     /**
      * Is this structure finite or infinite.
+     *
      * @return true if this structure is finite, else false.
      */
     public boolean isFinite() {
@@ -101,6 +104,7 @@ public class SolvableQuotientRing<C extends GcdRingElem<C>> implements RingFacto
 
     /**
      * Copy SolvableQuotient element c.
+     *
      * @param c
      * @return a copy of c.
      */
@@ -111,6 +115,7 @@ public class SolvableQuotientRing<C extends GcdRingElem<C>> implements RingFacto
 
     /**
      * Get the zero element.
+     *
      * @return 0 as SolvableQuotient.
      */
     public SolvableQuotient<C> getZERO() {
@@ -120,6 +125,7 @@ public class SolvableQuotientRing<C extends GcdRingElem<C>> implements RingFacto
 
     /**
      * Get the one element.
+     *
      * @return 1 as SolvableQuotient.
      */
     public SolvableQuotient<C> getONE() {
@@ -129,10 +135,11 @@ public class SolvableQuotientRing<C extends GcdRingElem<C>> implements RingFacto
 
     /**
      * Get a list of the generating elements.
+     *
      * @return list of generators for the algebraic structure.
      */
     public List<SolvableQuotient<C>> generators() {
-        List<GenSolvablePolynomial<C>> pgens = PolynomialList.<C> castToSolvableList(ring.generators());
+        List<GenSolvablePolynomial<C>> pgens = PolynomialList.<C>castToSolvableList(ring.generators());
         List<SolvableQuotient<C>> gens = new ArrayList<SolvableQuotient<C>>(pgens.size() * 2 - 1);
         GenSolvablePolynomial<C> one = ring.getONE();
         for (GenSolvablePolynomial<C> p : pgens) {
@@ -149,6 +156,7 @@ public class SolvableQuotientRing<C extends GcdRingElem<C>> implements RingFacto
 
     /**
      * Query if this ring is commutative.
+     *
      * @return true if this ring is commutative, else false.
      */
     public boolean isCommutative() {
@@ -158,6 +166,7 @@ public class SolvableQuotientRing<C extends GcdRingElem<C>> implements RingFacto
 
     /**
      * Query if this ring is associative.
+     *
      * @return true if this ring is associative, else false.
      */
     public boolean isAssociative() {
@@ -192,6 +201,7 @@ public class SolvableQuotientRing<C extends GcdRingElem<C>> implements RingFacto
 
     /**
      * Query if this ring is a field.
+     *
      * @return true.
      */
     public boolean isField() {
@@ -201,6 +211,7 @@ public class SolvableQuotientRing<C extends GcdRingElem<C>> implements RingFacto
 
     /**
      * Characteristic of this ring.
+     *
      * @return characteristic of this ring.
      */
     public java.math.BigInteger characteristic() {
@@ -210,6 +221,7 @@ public class SolvableQuotientRing<C extends GcdRingElem<C>> implements RingFacto
 
     /**
      * Get a SolvableQuotient element from a BigInteger value.
+     *
      * @param a BigInteger.
      * @return a SolvableQuotient.
      */
@@ -220,6 +232,7 @@ public class SolvableQuotientRing<C extends GcdRingElem<C>> implements RingFacto
 
     /**
      * Get a SolvableQuotient element from a long value.
+     *
      * @param a long.
      * @return a SolvableQuotient.
      */
@@ -245,6 +258,7 @@ public class SolvableQuotientRing<C extends GcdRingElem<C>> implements RingFacto
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this ElemFactory.
      */
     @Override
@@ -284,6 +298,7 @@ public class SolvableQuotientRing<C extends GcdRingElem<C>> implements RingFacto
 
     /**
      * SolvableQuotient random.
+     *
      * @param n such that 0 &le; v &le; (2<sup>n</sup>-1).
      * @return a random quotient element.
      */
@@ -299,6 +314,7 @@ public class SolvableQuotientRing<C extends GcdRingElem<C>> implements RingFacto
 
     /**
      * Generate a random quotient.
+     *
      * @param k bitsize of random coefficients.
      * @param l number of terms.
      * @param d maximal degree in each variable.
@@ -317,7 +333,8 @@ public class SolvableQuotientRing<C extends GcdRingElem<C>> implements RingFacto
 
     /**
      * SolvableQuotient random.
-     * @param n such that 0 &le; v &le; (2<sup>n</sup>-1).
+     *
+     * @param n   such that 0 &le; v &le; (2<sup>n</sup>-1).
      * @param rnd is a source for random bits.
      * @return a random quotient element.
      */
@@ -334,6 +351,7 @@ public class SolvableQuotientRing<C extends GcdRingElem<C>> implements RingFacto
     /**
      * Parse SolvableQuotient from String. Syntax: "{ polynomial | polynomial }"
      * or "{ polynomial }" or " polynomial | polynomial " or " polynomial "
+     *
      * @param s String.
      * @return SolvableQuotient from s.
      */
@@ -361,6 +379,7 @@ public class SolvableQuotientRing<C extends GcdRingElem<C>> implements RingFacto
 
     /**
      * Parse SolvableQuotient from Reader.
+     *
      * @param r Reader.
      * @return next SolvableQuotient from r.
      */

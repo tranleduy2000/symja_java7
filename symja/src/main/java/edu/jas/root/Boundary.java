@@ -21,7 +21,7 @@ import edu.jas.ufd.GreatestCommonDivisor;
 
 /**
  * Boundary determined by a rectangle and a polynomial.
- * 
+ * <p>
  * For a given complex polynomial A a closed path throught the corners of the
  * given rectangle is constructed. The path is represented by four polynomials,
  * one for each side of the rectangle. For a real t in [0,1] the i-th polynomial
@@ -29,6 +29,7 @@ import edu.jas.ufd.GreatestCommonDivisor;
  * polys[i](0) = A(corner[i]) and polys[i](1) = A(corner[i+1]), with corner[4] =
  * corner[0]. If A would be zero on a point of the path, an
  * InvalidBoundaryException is thrown.
+ *
  * @param <C> coefficient type.
  * @author Heinz Kredel
  */
@@ -61,6 +62,7 @@ public class Boundary<C extends RingElem<C> & Rational> implements Serializable 
 
     /**
      * Constructor.
+     *
      * @param r rectangle of of corners.
      * @param p non constant polynomial.
      */
@@ -71,7 +73,7 @@ public class Boundary<C extends RingElem<C> & Rational> implements Serializable 
         }
         rect = r;
         A = p;
-        GreatestCommonDivisor<Complex<C>> ufd = GCDFactory.<Complex<C>> getImplementation(A.ring.coFac);
+        GreatestCommonDivisor<Complex<C>> ufd = GCDFactory.<Complex<C>>getImplementation(A.ring.coFac);
         polys = (GenPolynomial<Complex<C>>[]) new GenPolynomial[5];
 
         Complex<C>[] corner = rect.corners;
@@ -79,8 +81,8 @@ public class Boundary<C extends RingElem<C> & Rational> implements Serializable 
             Complex<C> t = corner[i + 1].subtract(corner[i]);
             GenPolynomial<Complex<C>> tp = A.ring.univariate(0, 1L).multiply(t);
             //System.out.println("t = " + t);
-            GenPolynomial<Complex<C>> pc = PolyUtil.<Complex<C>> seriesOfTaylor(A, corner[i]);
-            pc = PolyUtil.<Complex<C>> substituteUnivariate(pc, tp);
+            GenPolynomial<Complex<C>> pc = PolyUtil.<Complex<C>>seriesOfTaylor(A, corner[i]);
+            pc = PolyUtil.<Complex<C>>substituteUnivariate(pc, tp);
             GenPolynomial<Complex<C>> gcd = ufd.gcd(A, pc);
             if (!gcd.isONE()) {
                 //System.out.println("A = " + A);
@@ -101,6 +103,7 @@ public class Boundary<C extends RingElem<C> & Rational> implements Serializable 
 
     /**
      * Constructor.
+     *
      * @param r rectangle of of corners.
      * @param p polynomial.
      * @param b boundary polynomials.
@@ -118,6 +121,7 @@ public class Boundary<C extends RingElem<C> & Rational> implements Serializable 
 
     /**
      * String representation of Boundary.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -128,6 +132,7 @@ public class Boundary<C extends RingElem<C> & Rational> implements Serializable 
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this Boundary.
      */
     public String toScript() {
@@ -138,28 +143,31 @@ public class Boundary<C extends RingElem<C> & Rational> implements Serializable 
 
     /**
      * Get real part for polynomial i.
+     *
      * @param i index of polynomial.
      * @return real part for polynomial i.
      */
     public GenPolynomial<C> getRealPart(int i) {
-        GenPolynomial<C> f = PolyUtil.<C> realPartFromComplex(rfac, polys[i]);
+        GenPolynomial<C> f = PolyUtil.<C>realPartFromComplex(rfac, polys[i]);
         return f;
     }
 
 
     /**
      * Get imaginary part for polynomial i.
+     *
      * @param i index of polynomial.
      * @return imaginary part for polynomial i.
      */
     public GenPolynomial<C> getImagPart(int i) {
-        GenPolynomial<C> g = PolyUtil.<C> imaginaryPartFromComplex(rfac, polys[i]);
+        GenPolynomial<C> g = PolyUtil.<C>imaginaryPartFromComplex(rfac, polys[i]);
         return g;
     }
 
 
     /**
      * Copy this.
+     *
      * @return a copy of this.
      */
     public Boundary<C> copy() {
@@ -169,6 +177,7 @@ public class Boundary<C extends RingElem<C> & Rational> implements Serializable 
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -188,6 +197,7 @@ public class Boundary<C extends RingElem<C> & Rational> implements Serializable 
 
     /**
      * Hash code for this Rectangle.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override

@@ -5,19 +5,13 @@
 package edu.jas.application;
 
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.StringReader;
-import java.io.IOException;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.BufferedReader;
-import java.nio.charset.Charset;
-import java.util.List;
-import java.util.Arrays;
-
 import org.apache.log4j.BasicConfigurator;
+
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
+import java.util.Arrays;
+import java.util.List;
 
 import edu.jas.gb.SolvableGroebnerBase;
 import edu.jas.gb.SolvableGroebnerBaseAbstract;
@@ -38,6 +32,7 @@ import edu.jas.util.CatReader;
 /**
  * Simple setup to run a solvable GB example. <br> Usage: RunSGB
  * [seq|par|par+] [irr|left|right|two] &lt;file&gt; #procs
+ *
  * @author Heinz Kredel
  */
 public class RunSGB {
@@ -61,24 +56,24 @@ public class RunSGB {
     @SuppressWarnings("unchecked")
     public static void main(String[] args) {
 
-        String[] allkinds = new String[] { "seq", "seq+", 
-                                           "par", "par+", 
-                                           //"dist", "dist+", ,
-                                           //"disthyb", "disthyb+", 
-                                           //"cli" 
-                                         }; // must be last
-        String[] allmeth = new String[] { "irr", "left", "right", "two" };
+        String[] allkinds = new String[]{"seq", "seq+",
+                "par", "par+",
+                //"dist", "dist+", ,
+                //"disthyb", "disthyb+",
+                //"cli"
+        }; // must be last
+        String[] allmeth = new String[]{"irr", "left", "right", "two"};
 
         String usage = "Usage: RunGB [ "
-                        + join(allkinds, " | ") 
-                        //+ "[port] ] " 
-                        + " ] ["
-                        + join(allmeth, " | ") 
-                        + "] <file> " 
-                        + "#threads " 
-                        //+ "#procs/#threadsPerNode " 
-                        //+ "[machinefile] ";
-                        + "[check] [nolog]";
+                + join(allkinds, " | ")
+                //+ "[port] ] "
+                + " ] ["
+                + join(allmeth, " | ")
+                + "] <file> "
+                + "#threads "
+                //+ "#procs/#threadsPerNode "
+                //+ "[machinefile] ";
+                + "[check] [nolog]";
 
         if (args.length < 3) {
             System.out.println("args: " + Arrays.toString(args));
@@ -167,12 +162,12 @@ public class RunSGB {
             e.printStackTrace();
             return;
         }
-        Reader polyreader = new CatReader(new StringReader("("),problem); // ( has gone
+        Reader polyreader = new CatReader(new StringReader("("), problem); // ( has gone
         //Reader polyreader = problem; 
-        GenPolynomialTokenizer tok = new GenPolynomialTokenizer(spfac,polyreader);
+        GenPolynomialTokenizer tok = new GenPolynomialTokenizer(spfac, polyreader);
         PolynomialList S = null;
         try {
-            S = new PolynomialList(spfac,tok.nextSolvablePolynomialList());
+            S = new PolynomialList(spfac, tok.nextSolvablePolynomialList());
         } catch (IOException e) {
             e.printStackTrace();
             return;
@@ -194,7 +189,8 @@ public class RunSGB {
 
     /**
      * run Sequential.
-     * @param S polynomial list.
+     *
+     * @param S      polynomial list.
      * @param action what to to.
      */
     @SuppressWarnings("unchecked")
@@ -246,7 +242,8 @@ public class RunSGB {
 
     /**
      * run Parallel.
-     * @param S polynomial list.
+     *
+     * @param S      polynomial list.
      * @param action what to to.
      */
     @SuppressWarnings("unchecked")
@@ -324,7 +321,7 @@ public class RunSGB {
         }
         SolvableGroebnerBaseAbstract sbb = new SolvableGroebnerBaseSeq();
         long t = System.currentTimeMillis();
-        boolean chk = sbb.isLeftGB(S.list,false);
+        boolean chk = sbb.isLeftGB(S.list, false);
         t = System.currentTimeMillis() - t;
         System.out.println("check isGB = " + chk + " in " + t + " milliseconds");
     }

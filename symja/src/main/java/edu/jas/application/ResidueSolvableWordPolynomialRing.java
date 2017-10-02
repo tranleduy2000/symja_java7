@@ -6,6 +6,8 @@
 package edu.jas.application;
 
 
+import org.apache.log4j.Logger;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
@@ -14,8 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.kern.PrettyPrint;
 import edu.jas.kern.Scripting;
@@ -44,12 +44,13 @@ import edu.jas.structure.RingFactory;
  * and the non-commutative multiplication relations between the coefficients and
  * the main variables are maintained in a coefficient relation table. Almost
  * immutable object, except variable names and relation table contents.
+ *
  * @param <C> base coefficient type.
  * @author Heinz Kredel
  */
 
 public class ResidueSolvableWordPolynomialRing<C extends GcdRingElem<C>> extends
-                GenSolvablePolynomialRing<WordResidue<C>> {
+        GenSolvablePolynomialRing<WordResidue<C>> {
 
 
     /*
@@ -58,35 +59,28 @@ public class ResidueSolvableWordPolynomialRing<C extends GcdRingElem<C>> extends
     //public final RelationTable<WordResidue<C>> coeffTable;
 
 
+    private static final Logger logger = Logger.getLogger(ResidueSolvableWordPolynomialRing.class);
+    private static final boolean debug = logger.isDebugEnabled();
     /**
      * Recursive solvable polynomial ring with polynomial coefficients.
      */
     public final RecSolvableWordPolynomialRing<C> polCoeff;
-
-
     /**
      * The constant polynomial 0 for this ring. Hides super ZERO.
      */
     public final ResidueSolvableWordPolynomial<C> ZERO;
-
-
     /**
      * The constant polynomial 1 for this ring. Hides super ONE.
      */
     public final ResidueSolvableWordPolynomial<C> ONE;
 
 
-    private static final Logger logger = Logger.getLogger(ResidueSolvableWordPolynomialRing.class);
-
-
-    private static final boolean debug = logger.isDebugEnabled();
-
-
     /**
      * The constructor creates a solvable polynomial factory object with the
      * default term order and commutative relations.
+     *
      * @param cf factory for coefficients of type C.
-     * @param n number of variables.
+     * @param n  number of variables.
      */
     public ResidueSolvableWordPolynomialRing(RingFactory<WordResidue<C>> cf, int n) {
         this(cf, n, new TermOrder(), null, null);
@@ -96,12 +90,13 @@ public class ResidueSolvableWordPolynomialRing<C extends GcdRingElem<C>> extends
     /**
      * The constructor creates a solvable polynomial factory object with the
      * default term order.
+     *
      * @param cf factory for coefficients of type C.
-     * @param n number of variables.
+     * @param n  number of variables.
      * @param rt solvable multiplication relations.
      */
     public ResidueSolvableWordPolynomialRing(RingFactory<WordResidue<C>> cf, int n,
-                    RelationTable<WordResidue<C>> rt) {
+                                             RelationTable<WordResidue<C>> rt) {
         this(cf, n, new TermOrder(), null, rt);
     }
 
@@ -109,9 +104,10 @@ public class ResidueSolvableWordPolynomialRing<C extends GcdRingElem<C>> extends
     /**
      * The constructor creates a solvable polynomial factory object with the
      * given term order and commutative relations.
+     *
      * @param cf factory for coefficients of type C.
-     * @param n number of variables.
-     * @param t a term order.
+     * @param n  number of variables.
+     * @param t  a term order.
      */
     public ResidueSolvableWordPolynomialRing(RingFactory<WordResidue<C>> cf, int n, TermOrder t) {
         this(cf, n, t, null, null);
@@ -121,13 +117,14 @@ public class ResidueSolvableWordPolynomialRing<C extends GcdRingElem<C>> extends
     /**
      * The constructor creates a solvable polynomial factory object with the
      * given term order.
+     *
      * @param cf factory for coefficients of type C.
-     * @param n number of variables.
-     * @param t a term order.
+     * @param n  number of variables.
+     * @param t  a term order.
      * @param rt solvable multiplication relations.
      */
     public ResidueSolvableWordPolynomialRing(RingFactory<WordResidue<C>> cf, int n, TermOrder t,
-                    RelationTable<WordResidue<C>> rt) {
+                                             RelationTable<WordResidue<C>> rt) {
         this(cf, n, t, null, rt);
     }
 
@@ -135,10 +132,11 @@ public class ResidueSolvableWordPolynomialRing<C extends GcdRingElem<C>> extends
     /**
      * The constructor creates a solvable polynomial factory object with the
      * given term order and commutative relations.
+     *
      * @param cf factory for coefficients of type C.
-     * @param n number of variables.
-     * @param t a term order.
-     * @param v names for the variables.
+     * @param n  number of variables.
+     * @param t  a term order.
+     * @param v  names for the variables.
      */
     public ResidueSolvableWordPolynomialRing(RingFactory<WordResidue<C>> cf, int n, TermOrder t, String[] v) {
         this(cf, n, t, v, null);
@@ -148,9 +146,10 @@ public class ResidueSolvableWordPolynomialRing<C extends GcdRingElem<C>> extends
     /**
      * The constructor creates a solvable polynomial factory object with the
      * given term order and commutative relations.
+     *
      * @param cf factory for coefficients of type C.
-     * @param t a term order.
-     * @param v names for the variables.
+     * @param t  a term order.
+     * @param v  names for the variables.
      */
     public ResidueSolvableWordPolynomialRing(RingFactory<WordResidue<C>> cf, TermOrder t, String[] v) {
         this(cf, v.length, t, v, null);
@@ -160,8 +159,9 @@ public class ResidueSolvableWordPolynomialRing<C extends GcdRingElem<C>> extends
     /**
      * The constructor creates a solvable polynomial factory object with the
      * default term order.
+     *
      * @param cf factory for coefficients of type C.
-     * @param v names for the variables.
+     * @param v  names for the variables.
      */
     public ResidueSolvableWordPolynomialRing(RingFactory<WordResidue<C>> cf, String[] v) {
         this(cf, v.length, new TermOrder(), v, null);
@@ -171,14 +171,15 @@ public class ResidueSolvableWordPolynomialRing<C extends GcdRingElem<C>> extends
     /**
      * The constructor creates a solvable polynomial factory object with the
      * given term order.
+     *
      * @param cf factory for coefficients of type C.
-     * @param n number of variables.
-     * @param t a term order.
-     * @param v names for the variables.
+     * @param n  number of variables.
+     * @param t  a term order.
+     * @param v  names for the variables.
      * @param rt solvable multiplication relations.
      */
     public ResidueSolvableWordPolynomialRing(RingFactory<WordResidue<C>> cf, int n, TermOrder t, String[] v,
-                    RelationTable<WordResidue<C>> rt) {
+                                             RelationTable<WordResidue<C>> rt) {
         super(cf, n, t, v, rt);
         //if (rt == null) { // handled in super }
         WordResidueRing<C> cfring = (WordResidueRing<C>) cf; // == coFac
@@ -202,17 +203,19 @@ public class ResidueSolvableWordPolynomialRing<C extends GcdRingElem<C>> extends
      * same term order, number of variables and variable names as the given
      * polynomial factory, only the coefficient factories differ and the
      * solvable multiplication relations are <b>empty</b>.
+     *
      * @param cf factory for coefficients of type C.
-     * @param o other solvable polynomial ring.
+     * @param o  other solvable polynomial ring.
      */
     public ResidueSolvableWordPolynomialRing(RingFactory<WordResidue<C>> cf,
-                    ResidueSolvableWordPolynomialRing o) {
+                                             ResidueSolvableWordPolynomialRing o) {
         this(cf, o.nvar, o.tord, o.getVars(), null);
     }
 
 
     /**
      * Get the String representation.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -230,6 +233,7 @@ public class ResidueSolvableWordPolynomialRing<C extends GcdRingElem<C>> extends
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this Element.
      * @see edu.jas.structure.Element#toScript()
      */
@@ -237,12 +241,12 @@ public class ResidueSolvableWordPolynomialRing<C extends GcdRingElem<C>> extends
     public String toScript() {
         StringBuffer s = new StringBuffer();
         switch (Scripting.getLang()) {
-        case Ruby:
-            s.append("SolvPolyRing.new(");
-            break;
-        case Python:
-        default:
-            s.append("SolvPolyRing(");
+            case Ruby:
+                s.append("SolvPolyRing.new(");
+                break;
+            case Python:
+            default:
+                s.append("SolvPolyRing(");
         }
         if (coFac instanceof RingElem) {
             s.append(((RingElem<WordResidue<C>>) coFac).toScriptFactory());
@@ -269,6 +273,7 @@ public class ResidueSolvableWordPolynomialRing<C extends GcdRingElem<C>> extends
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -295,6 +300,7 @@ public class ResidueSolvableWordPolynomialRing<C extends GcdRingElem<C>> extends
 
     /**
      * Hash code for this polynomial ring.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -309,6 +315,7 @@ public class ResidueSolvableWordPolynomialRing<C extends GcdRingElem<C>> extends
 
     /**
      * Get the zero element.
+     *
      * @return 0 as ResidueSolvableWordPolynomial<C>.
      */
     @Override
@@ -319,6 +326,7 @@ public class ResidueSolvableWordPolynomialRing<C extends GcdRingElem<C>> extends
 
     /**
      * Get the one element.
+     *
      * @return 1 as ResidueSolvableWordPolynomial<C>.
      */
     @Override
@@ -329,6 +337,7 @@ public class ResidueSolvableWordPolynomialRing<C extends GcdRingElem<C>> extends
 
     /**
      * Query if this ring is commutative.
+     *
      * @return true if this ring is commutative, else false.
      */
     @Override
@@ -344,6 +353,7 @@ public class ResidueSolvableWordPolynomialRing<C extends GcdRingElem<C>> extends
      * Query if this ring is associative. Test if the relations between the mian
      * variables and the coefficient generators define an associative solvable
      * ring.
+     *
      * @return true, if this ring is associative, else false.
      */
     @SuppressWarnings("unused")
@@ -390,6 +400,7 @@ public class ResidueSolvableWordPolynomialRing<C extends GcdRingElem<C>> extends
     /**
      * Get a (constant) ResidueSolvableWordPolynomial&lt;C&gt; element from a
      * coefficient value.
+     *
      * @param a coefficient.
      * @return a ResidueSolvableWordPolynomial&lt;C&gt;.
      */
@@ -401,6 +412,7 @@ public class ResidueSolvableWordPolynomialRing<C extends GcdRingElem<C>> extends
 
     /**
      * Get a ResidueSolvableWordPolynomial&lt;C&gt; element from an ExpVector.
+     *
      * @param e exponent vector.
      * @return a ResidueSolvableWordPolynomial&lt;C&gt;.
      */
@@ -413,6 +425,7 @@ public class ResidueSolvableWordPolynomialRing<C extends GcdRingElem<C>> extends
     /**
      * Get a ResidueSolvableWordPolynomial&lt;C&gt; element from a coeffcient
      * and an ExpVector.
+     *
      * @param a coefficient.
      * @param e exponent vector.
      * @return a ResidueSolvableWordPolynomial&lt;C&gt;.
@@ -426,6 +439,7 @@ public class ResidueSolvableWordPolynomialRing<C extends GcdRingElem<C>> extends
     /**
      * Get a (constant) ResidueSolvableWordPolynomial&lt;C&gt; element from a
      * long value.
+     *
      * @param a long.
      * @return a ResidueSolvableWordPolynomial&lt;C&gt;.
      */
@@ -438,6 +452,7 @@ public class ResidueSolvableWordPolynomialRing<C extends GcdRingElem<C>> extends
     /**
      * Get a (constant) ResidueSolvableWordPolynomial&lt;C&gt; element from a
      * BigInteger value.
+     *
      * @param a BigInteger.
      * @return a ResidueSolvableWordPolynomial&lt;C&gt;.
      */
@@ -450,6 +465,7 @@ public class ResidueSolvableWordPolynomialRing<C extends GcdRingElem<C>> extends
     /**
      * Random solvable polynomial. Generates a random solvable polynomial with k
      * = 5, l = n, d = (nvar == 1) ? n : 3, q = (nvar == 1) ? 0.7 : 0.3.
+     *
      * @param n number of terms.
      * @return a random solvable polynomial.
      */
@@ -462,7 +478,8 @@ public class ResidueSolvableWordPolynomialRing<C extends GcdRingElem<C>> extends
     /**
      * Random solvable polynomial. Generates a random solvable polynomial with k
      * = 5, l = n, d = (nvar == 1) ? n : 3, q = (nvar == 1) ? 0.7 : 0.3.
-     * @param n number of terms.
+     *
+     * @param n   number of terms.
      * @param rnd is a source for random bits.
      * @return a random solvable polynomial.
      */
@@ -477,6 +494,7 @@ public class ResidueSolvableWordPolynomialRing<C extends GcdRingElem<C>> extends
 
     /**
      * Generate a random solvable polynomial.
+     *
      * @param k bitsize of random coefficients.
      * @param l number of terms.
      * @param d maximal degree in each variable.
@@ -491,10 +509,11 @@ public class ResidueSolvableWordPolynomialRing<C extends GcdRingElem<C>> extends
 
     /**
      * Random solvable polynomial.
-     * @param k size of random coefficients.
-     * @param l number of terms.
-     * @param d maximal degree in each variable.
-     * @param q density of nozero exponents.
+     *
+     * @param k   size of random coefficients.
+     * @param l   number of terms.
+     * @param d   maximal degree in each variable.
+     * @param q   density of nozero exponents.
      * @param rnd is a source for random bits.
      * @return a random solvable polynomial.
      */
@@ -516,6 +535,7 @@ public class ResidueSolvableWordPolynomialRing<C extends GcdRingElem<C>> extends
 
     /**
      * Copy polynomial c.
+     *
      * @param c
      * @return a copy of c.
      */
@@ -526,6 +546,7 @@ public class ResidueSolvableWordPolynomialRing<C extends GcdRingElem<C>> extends
 
     /**
      * Parse a solvable polynomial with the use of GenPolynomialTokenizer
+     *
      * @param s String.
      * @return ResidueSolvableWordPolynomial from s.
      */
@@ -537,6 +558,7 @@ public class ResidueSolvableWordPolynomialRing<C extends GcdRingElem<C>> extends
 
     /**
      * Parse a solvable polynomial with the use of GenPolynomialTokenizer
+     *
      * @param r Reader.
      * @return next ResidueSolvableWordPolynomial from r.
      */
@@ -558,6 +580,7 @@ public class ResidueSolvableWordPolynomialRing<C extends GcdRingElem<C>> extends
 
     /**
      * Generate univariate solvable polynomial in a given variable.
+     *
      * @param i the index of the variable.
      * @return X_i as solvable univariate polynomial.
      */
@@ -570,6 +593,7 @@ public class ResidueSolvableWordPolynomialRing<C extends GcdRingElem<C>> extends
     /**
      * Generate univariate solvable polynomial in a given variable with given
      * exponent.
+     *
      * @param i the index of the variable.
      * @param e the exponent of the variable.
      * @return X_i^e as solvable univariate polynomial.
@@ -583,9 +607,10 @@ public class ResidueSolvableWordPolynomialRing<C extends GcdRingElem<C>> extends
     /**
      * Generate univariate solvable polynomial in a given variable with given
      * exponent.
+     *
      * @param modv number of module variables.
-     * @param i the index of the variable.
-     * @param e the exponent of the variable.
+     * @param i    the index of the variable.
+     * @param e    the exponent of the variable.
      * @return X_i^e as solvable univariate polynomial.
      */
     @Override
@@ -596,7 +621,8 @@ public class ResidueSolvableWordPolynomialRing<C extends GcdRingElem<C>> extends
 
     /**
      * Generate list of univariate polynomials in all variables.
-     * @return List(X_1,...,X_n) a list of univariate polynomials.
+     *
+     * @return List(X_1, ..., X_n) a list of univariate polynomials.
      */
     //todo Override
     @SuppressWarnings("unchecked")
@@ -608,8 +634,9 @@ public class ResidueSolvableWordPolynomialRing<C extends GcdRingElem<C>> extends
 
     /**
      * Generate list of univariate polynomials in all variables.
+     *
      * @param modv number of module variables.
-     * @return List(X_1,...,X_n) a list of univariate polynomials.
+     * @return List(X_1, ..., X_n) a list of univariate polynomials.
      */
     //todo Override
     @SuppressWarnings("unchecked")
@@ -621,9 +648,10 @@ public class ResidueSolvableWordPolynomialRing<C extends GcdRingElem<C>> extends
     /**
      * Generate list of univariate polynomials in all variables with given
      * exponent.
+     *
      * @param modv number of module variables.
-     * @param e the exponent of the variables.
-     * @return List(X_1^e,...,X_n^e) a list of univariate polynomials.
+     * @param e    the exponent of the variables.
+     * @return List(X_1^e, ..., X_n^e) a list of univariate polynomials.
      */
     //todo Override
     public List<ResidueSolvableWordPolynomial<C>> recUnivariateList(int modv, long e) {
@@ -664,6 +692,7 @@ public class ResidueSolvableWordPolynomialRing<C extends GcdRingElem<C>> extends
     /**
      * Extend variables. Used e.g. in module embedding. Extend number of
      * variables by i.
+     *
      * @param i number of variables to extend.
      * @return extended solvable polynomial ring factory.
      */
@@ -671,8 +700,8 @@ public class ResidueSolvableWordPolynomialRing<C extends GcdRingElem<C>> extends
     public ResidueSolvableWordPolynomialRing<C> extend(int i) {
         GenSolvablePolynomialRing<WordResidue<C>> pfac = super.extend(i);
         ResidueSolvableWordPolynomialRing<C> spfac = new ResidueSolvableWordPolynomialRing<C>(pfac.coFac,
-                        pfac.nvar, pfac.tord, pfac.getVars());
-        spfac.table.extend(this.table); 
+                pfac.nvar, pfac.tord, pfac.getVars());
+        spfac.table.extend(this.table);
         spfac.polCoeff.coeffTable.extend(this.polCoeff.coeffTable);
         return spfac;
     }
@@ -682,6 +711,7 @@ public class ResidueSolvableWordPolynomialRing<C extends GcdRingElem<C>> extends
      * Extend variables. Used e.g. in module embedding. Extend number of
      * variables by length(vn). New variables commute with the exiting
      * variables.
+     *
      * @param vs names for extended variables.
      * @return extended polynomial ring factory.
      */
@@ -689,8 +719,8 @@ public class ResidueSolvableWordPolynomialRing<C extends GcdRingElem<C>> extends
     public ResidueSolvableWordPolynomialRing<C> extend(String[] vs) {
         GenSolvablePolynomialRing<WordResidue<C>> pfac = super.extend(vs);
         ResidueSolvableWordPolynomialRing<C> spfac = new ResidueSolvableWordPolynomialRing<C>(pfac.coFac,
-                        pfac.nvar, pfac.tord, pfac.getVars());
-        spfac.table.extend(this.table); 
+                pfac.nvar, pfac.tord, pfac.getVars());
+        spfac.table.extend(this.table);
         spfac.polCoeff.coeffTable.extend(this.polCoeff.coeffTable);
         return spfac;
     }
@@ -699,6 +729,7 @@ public class ResidueSolvableWordPolynomialRing<C extends GcdRingElem<C>> extends
     /**
      * Contract variables. Used e.g. in module embedding. Contract number of
      * variables by i.
+     *
      * @param i number of variables to remove.
      * @return contracted solvable polynomial ring factory.
      */
@@ -706,7 +737,7 @@ public class ResidueSolvableWordPolynomialRing<C extends GcdRingElem<C>> extends
     public ResidueSolvableWordPolynomialRing<C> contract(int i) {
         GenPolynomialRing<WordResidue<C>> pfac = super.contract(i);
         ResidueSolvableWordPolynomialRing<C> spfac = new ResidueSolvableWordPolynomialRing<C>(pfac.coFac,
-                        pfac.nvar, pfac.tord, pfac.getVars()); 
+                pfac.nvar, pfac.tord, pfac.getVars());
         spfac.table.contract(this.table);
         spfac.polCoeff.coeffTable.contract(this.polCoeff.coeffTable);
         return spfac;
@@ -715,6 +746,7 @@ public class ResidueSolvableWordPolynomialRing<C extends GcdRingElem<C>> extends
 
     /**
      * Reverse variables. Used e.g. in opposite rings.
+     *
      * @return solvable polynomial ring factory with reversed variables.
      */
     @Override
@@ -725,6 +757,7 @@ public class ResidueSolvableWordPolynomialRing<C extends GcdRingElem<C>> extends
 
     /**
      * Reverse variables. Used e.g. in opposite rings.
+     *
      * @param partial true for partialy reversed term orders.
      * @return solvable polynomial ring factory with reversed variables.
      */
@@ -732,7 +765,7 @@ public class ResidueSolvableWordPolynomialRing<C extends GcdRingElem<C>> extends
     public ResidueSolvableWordPolynomialRing<C> reverse(boolean partial) {
         GenPolynomialRing<WordResidue<C>> pfac = super.reverse(partial);
         ResidueSolvableWordPolynomialRing<C> spfac = new ResidueSolvableWordPolynomialRing<C>(pfac.coFac,
-                        pfac.nvar, pfac.tord, pfac.getVars()); //, pfac.table);
+                pfac.nvar, pfac.tord, pfac.getVars()); //, pfac.table);
         spfac.partial = partial;
         spfac.table.reverse(this.table);
         spfac.polCoeff.coeffTable.reverse(this.polCoeff.coeffTable);
@@ -752,6 +785,7 @@ public class ResidueSolvableWordPolynomialRing<C extends GcdRingElem<C>> extends
 
     /**
      * Permutation of polynomial ring variables.
+     *
      * @param P permutation.
      * @return P(this).
      */
@@ -761,7 +795,7 @@ public class ResidueSolvableWordPolynomialRing<C extends GcdRingElem<C>> extends
             throw new UnsupportedOperationException("permutation with coeff relations: " + this);
         }
         GenSolvablePolynomialRing<WordResidue<C>> pfac = (GenSolvablePolynomialRing<WordResidue<C>>) super
-                        .permutation(P);
+                .permutation(P);
         return pfac;
     }
 
@@ -769,8 +803,9 @@ public class ResidueSolvableWordPolynomialRing<C extends GcdRingElem<C>> extends
     /**
      * Word residue coefficients from integral word polynomial coefficients.
      * Represent as polynomial with type WordResidue<C> coefficients.
+     *
      * @param A polynomial with integral word polynomial coefficients to be
-     *            converted.
+     *          converted.
      * @return polynomial with type WordResidue<C> coefficients.
      */
     public ResidueSolvableWordPolynomial<C> fromPolyCoefficients(GenSolvablePolynomial<GenWordPolynomial<C>> A) {
@@ -796,6 +831,7 @@ public class ResidueSolvableWordPolynomialRing<C extends GcdRingElem<C>> extends
     /**
      * Integral word function from word residue coefficients. Represent as
      * polynomial with type GenWordPolynomial<C> coefficients.
+     *
      * @param A polynomial with word residue coefficients to be converted.
      * @return polynomial with type GenWordPolynomial<C> coefficients.
      */
@@ -820,6 +856,7 @@ public class ResidueSolvableWordPolynomialRing<C extends GcdRingElem<C>> extends
     /**
      * Integral word function from word residue coefficients. Represent as
      * polynomial with type GenWordPolynomial<C> coefficients.
+     *
      * @param A polynomial with word residue coefficients to be converted.
      * @return polynomial with type GenWordPolynomial<C> coefficients.
      */

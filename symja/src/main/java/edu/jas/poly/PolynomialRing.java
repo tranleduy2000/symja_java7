@@ -8,7 +8,6 @@ package edu.jas.poly;
 import java.util.List;
 import java.util.Random;
 
-
 import edu.jas.structure.RingElem;
 import edu.jas.structure.RingFactory;
 
@@ -16,21 +15,25 @@ import edu.jas.structure.RingFactory;
 /**
  * Polynomial factory interface.
  * Defines polynomial specific factory methods.
+ *
  * @author Heinz Kredel
  */
 
-public interface PolynomialRing<C extends RingElem<C>> 
-                 extends RingFactory< Polynomial<C> > {
+public interface PolynomialRing<C extends RingElem<C>>
+        extends RingFactory<Polynomial<C>> {
 
 
     /**
      * Number of variables.
+     *
      * @return the number of variables.
      */
     public int numberOfVariables();
 
 
-    /** Get the variable names. 
+    /**
+     * Get the variable names.
+     *
      * @return vars.
      */
     public String[] getVars();
@@ -38,6 +41,7 @@ public interface PolynomialRing<C extends RingElem<C>>
 
     /**
      * Generate a random polynomial.
+     *
      * @param k bitsize of random coefficients.
      * @param l number of terms.
      * @param d maximal degree in each variable.
@@ -49,10 +53,11 @@ public interface PolynomialRing<C extends RingElem<C>>
 
     /**
      * Generate a random polynomial.
-     * @param k bitsize of random coefficients.
-     * @param l number of terms.
-     * @param d maximal degree in each variable.
-     * @param q density of nozero exponents.
+     *
+     * @param k   bitsize of random coefficients.
+     * @param l   number of terms.
+     * @param d   maximal degree in each variable.
+     * @param q   density of nozero exponents.
      * @param rnd is a source for random bits.
      * @return a random polynomial.
      */
@@ -61,6 +66,7 @@ public interface PolynomialRing<C extends RingElem<C>>
 
     /**
      * Generate univariate polynomial in a given variable.
+     *
      * @param i the index of the variable.
      * @return X_i as univariate polynomial.
      */
@@ -69,6 +75,7 @@ public interface PolynomialRing<C extends RingElem<C>>
 
     /**
      * Generate univariate polynomial in a given variable with given exponent.
+     *
      * @param i the index of the variable.
      * @param e the exponent of the variable.
      * @return X_i^e as univariate polynomial.
@@ -78,7 +85,8 @@ public interface PolynomialRing<C extends RingElem<C>>
 
     /**
      * Generate list of univariate polynomials in all variables.
-     * @return List(X_1,...,X_n) a list of univariate polynomials.
+     *
+     * @return List(X_1, ..., X_n) a list of univariate polynomials.
      */
     public List<? extends Polynomial<C>> univariateList();
 
@@ -86,6 +94,7 @@ public interface PolynomialRing<C extends RingElem<C>>
     /**
      * Extend variables. Used e.g. in module embedding.
      * Extend number of variables by i.
+     *
      * @param i number of variables to extend.
      * @return extended polynomial ring factory.
      */
@@ -95,6 +104,7 @@ public interface PolynomialRing<C extends RingElem<C>>
     /**
      * Contract variables. Used e.g. in module embedding.
      * Contract number of variables by i.
+     *
      * @param i number of variables to remove.
      * @return contracted polynomial ring factory.
      */
@@ -103,6 +113,7 @@ public interface PolynomialRing<C extends RingElem<C>>
 
     /**
      * Reverse variables. Used e.g. in opposite rings.
+     *
      * @return polynomial ring factory with reversed variables.
      */
     public PolynomialRing<C> reverse();

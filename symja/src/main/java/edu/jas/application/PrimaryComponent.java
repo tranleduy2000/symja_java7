@@ -12,6 +12,7 @@ import edu.jas.structure.GcdRingElem;
 
 /**
  * Container for primary components of ideals.
+ *
  * @author Heinz Kredel
  */
 public class PrimaryComponent<C extends GcdRingElem<C>> implements Serializable {
@@ -45,6 +46,7 @@ public class PrimaryComponent<C extends GcdRingElem<C>> implements Serializable 
 
     /**
      * Constructor.
+     *
      * @param q the primary ideal
      * @param p the prime ideal.
      */
@@ -55,6 +57,7 @@ public class PrimaryComponent<C extends GcdRingElem<C>> implements Serializable 
 
     /**
      * Constructor.
+     *
      * @param q the primary ideal
      * @param p the prime ideal.
      * @param e the exponent of p for q.
@@ -68,6 +71,7 @@ public class PrimaryComponent<C extends GcdRingElem<C>> implements Serializable 
 
     /**
      * Get exponent.
+     *
      * @return exponent.
      */
     public int getExponent() {
@@ -77,6 +81,7 @@ public class PrimaryComponent<C extends GcdRingElem<C>> implements Serializable 
 
     /**
      * Set exponent.
+     *
      * @param e the exponent.
      */
     public void setExponent(int e) {
@@ -86,6 +91,7 @@ public class PrimaryComponent<C extends GcdRingElem<C>> implements Serializable 
 
     /**
      * String representation of the ideal.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -100,6 +106,7 @@ public class PrimaryComponent<C extends GcdRingElem<C>> implements Serializable 
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this Element.
      * @see edu.jas.structure.Element#toScript()
      */

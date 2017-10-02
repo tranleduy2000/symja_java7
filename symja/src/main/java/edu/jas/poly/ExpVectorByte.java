@@ -13,14 +13,23 @@ import java.util.List;
  * ExpVectorByte implements exponent vectors for polynomials using arrays of
  * byte as storage unit. This class is used by ExpVector internally, there is no
  * need to use this class directly.
- * @see ExpVector
+ *
  * @author Heinz Kredel
+ * @see ExpVector
  */
 
 public final class ExpVectorByte extends ExpVector
-/*implements AbelianGroupElem<ExpVectorByte>*/{
+/*implements AbelianGroupElem<ExpVectorByte>*/ {
 
 
+    /**
+     * Largest byte.
+     */
+    public static final long maxByte = (long) Byte.MAX_VALUE / 2;
+    /**
+     * Smallest byte.
+     */
+    public static final long minByte = (long) Byte.MIN_VALUE / 2;
     /**
      * The data structure is an array of longs.
      */
@@ -28,19 +37,8 @@ public final class ExpVectorByte extends ExpVector
 
 
     /**
-     * Largest byte.
-     */
-    public static final long maxByte = (long) Byte.MAX_VALUE / 2;
-
-
-    /**
-     * Smallest byte.
-     */
-    public static final long minByte = (long) Byte.MIN_VALUE / 2;
-
-
-    /**
      * Constructor for ExpVector.
+     *
      * @param n length of exponent vector.
      */
     public ExpVectorByte(int n) {
@@ -50,6 +48,7 @@ public final class ExpVectorByte extends ExpVector
 
     /**
      * Constructor for ExpVector. Sets exponent i to e.
+     *
      * @param n length of exponent vector.
      * @param i index of exponent to be set.
      * @param e exponent to be set.
@@ -62,6 +61,7 @@ public final class ExpVectorByte extends ExpVector
 
     /**
      * Constructor for ExpVector. Sets exponent i to e.
+     *
      * @param n length of exponent vector.
      * @param i index of exponent to be set.
      * @param e exponent to be set.
@@ -77,6 +77,7 @@ public final class ExpVectorByte extends ExpVector
 
     /**
      * Internal constructor for ExpVector. Sets val.
+     *
      * @param v internal representation array.
      */
     protected ExpVectorByte(byte[] v) {
@@ -87,6 +88,7 @@ public final class ExpVectorByte extends ExpVector
 
     /**
      * Constructor for ExpVector. Sets val, converts from long array.
+     *
      * @param v long representation array.
      */
     public ExpVectorByte(long[] v) {
@@ -103,6 +105,7 @@ public final class ExpVectorByte extends ExpVector
     /**
      * Constructor for ExpVector. Converts a String representation to an
      * ExpVector. Accepted format = (1,2,3,4,5,6,7).
+     *
      * @param s String representation.
      */
     public ExpVectorByte(String s) throws NumberFormatException {
@@ -145,6 +148,7 @@ public final class ExpVectorByte extends ExpVector
 
     /**
      * Clone this.
+     *
      * @see java.lang.Object#clone()
      */
     @Override
@@ -157,6 +161,7 @@ public final class ExpVectorByte extends ExpVector
 
     /**
      * Get the exponent vector.
+     *
      * @return val as long.
      */
     @Override
@@ -171,6 +176,7 @@ public final class ExpVectorByte extends ExpVector
 
     /**
      * Get the exponent at position i.
+     *
      * @param i position.
      * @return val[i].
      */
@@ -182,6 +188,7 @@ public final class ExpVectorByte extends ExpVector
 
     /**
      * Set the exponent at position i to e.
+     *
      * @param i
      * @param e
      * @return old val[i].
@@ -200,6 +207,7 @@ public final class ExpVectorByte extends ExpVector
 
     /**
      * Set the exponent at position i to e.
+     *
      * @param i
      * @param e
      * @return old val[i].
@@ -214,6 +222,7 @@ public final class ExpVectorByte extends ExpVector
 
     /**
      * Get the length of this exponent vector.
+     *
      * @return val.length.
      */
     @Override
@@ -225,6 +234,7 @@ public final class ExpVectorByte extends ExpVector
     /**
      * Extend variables. Used e.g. in module embedding. Extend this by i
      * elements and set val[j] to e.
+     *
      * @param i number of elements to extend.
      * @param j index of element to be set.
      * @param e new exponent for val[j].
@@ -248,6 +258,7 @@ public final class ExpVectorByte extends ExpVector
     /**
      * Extend lower variables. Extend this by i lower elements and set val[j] to
      * e.
+     *
      * @param i number of elements to extend.
      * @param j index of element to be set.
      * @param e new exponent for val[j].
@@ -268,7 +279,8 @@ public final class ExpVectorByte extends ExpVector
     /**
      * Contract variables. Used e.g. in module embedding. Contract this to len
      * elements.
-     * @param i position of first element to be copied.
+     *
+     * @param i   position of first element to be copied.
      * @param len new length.
      * @return contracted exponent vector.
      */
@@ -285,6 +297,7 @@ public final class ExpVectorByte extends ExpVector
 
     /**
      * Reverse variables. Used e.g. in opposite rings.
+     *
      * @return reversed exponent vector.
      */
     @Override
@@ -300,6 +313,7 @@ public final class ExpVectorByte extends ExpVector
     /**
      * Reverse lower j variables. Used e.g. in opposite rings. Reverses the
      * first j-1 variables, the rest is unchanged.
+     *
      * @param j index of first variable reversed.
      * @return reversed exponent vector.
      */
@@ -321,6 +335,7 @@ public final class ExpVectorByte extends ExpVector
 
     /**
      * Combine with ExpVector. Combine this with the other ExpVector V.
+     *
      * @param V the other exponent vector.
      * @return combined exponent vector.
      */
@@ -342,6 +357,7 @@ public final class ExpVectorByte extends ExpVector
 
     /**
      * Permutation of exponent vector.
+     *
      * @param P permutation.
      * @return P(e).
      */
@@ -358,6 +374,7 @@ public final class ExpVectorByte extends ExpVector
 
     /**
      * Get the string representation.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -368,6 +385,7 @@ public final class ExpVectorByte extends ExpVector
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -384,6 +402,7 @@ public final class ExpVectorByte extends ExpVector
 
     /**
      * hashCode for this exponent vector.
+     *
      * @see java.lang.Object#hashCode() Only for findbugs.
      */
     @Override
@@ -394,6 +413,7 @@ public final class ExpVectorByte extends ExpVector
 
     /**
      * ExpVector absolute value.
+     *
      * @return abs(this).
      */
     @Override
@@ -414,6 +434,7 @@ public final class ExpVectorByte extends ExpVector
 
     /**
      * ExpVector negate.
+     *
      * @return -this.
      */
     @Override
@@ -430,6 +451,7 @@ public final class ExpVectorByte extends ExpVector
 
     /**
      * ExpVector summation.
+     *
      * @param V
      * @return this+V.
      */
@@ -448,6 +470,7 @@ public final class ExpVectorByte extends ExpVector
 
     /**
      * ExpVector subtract. Result may have negative entries.
+     *
      * @param V
      * @return this-V.
      */
@@ -466,6 +489,7 @@ public final class ExpVectorByte extends ExpVector
 
     /**
      * ExpVector multiply by scalar.
+     *
      * @param s scalar
      * @return s*this.
      */
@@ -486,6 +510,7 @@ public final class ExpVectorByte extends ExpVector
 
     /**
      * ExpVector substitution. Clone and set exponent to d at position i.
+     *
      * @param i position.
      * @param d new exponent.
      * @return substituted ExpVector.
@@ -501,6 +526,7 @@ public final class ExpVectorByte extends ExpVector
 
     /**
      * ExpVector substitution. Clone and set exponent to d at position i.
+     *
      * @param i position.
      * @param d new exponent.
      * @return substituted ExpVector.
@@ -517,8 +543,9 @@ public final class ExpVectorByte extends ExpVector
 
     /**
      * ExpVector signum.
+     *
      * @return 0 if this is zero, -1 if some entry is negative, 1 if no entry is
-     *         negative and at least one entry is positive.
+     * negative and at least one entry is positive.
      */
     @Override
     public int signum() {
@@ -539,6 +566,7 @@ public final class ExpVectorByte extends ExpVector
 
     /**
      * ExpVector total degree.
+     *
      * @return sum of all exponents.
      */
     @Override
@@ -555,6 +583,7 @@ public final class ExpVectorByte extends ExpVector
 
     /**
      * ExpVector maximal degree.
+     *
      * @return maximal exponent.
      */
     @Override
@@ -573,6 +602,7 @@ public final class ExpVectorByte extends ExpVector
 
     /**
      * ExpVector weighted degree.
+     *
      * @param w weights.
      * @return weighted sum of all exponents.
      */
@@ -595,6 +625,7 @@ public final class ExpVectorByte extends ExpVector
 
     /**
      * ExpVector weighted degree.
+     *
      * @param w weights.
      * @return weighted sum of all exponents.
      */
@@ -606,7 +637,7 @@ public final class ExpVectorByte extends ExpVector
         long t = 0;
         byte[] u = val;
         for (int i = 0; i < w.length; i++) {
-             t += w[i] * u[i];
+            t += w[i] * u[i];
         }
         return t;
     }
@@ -614,6 +645,7 @@ public final class ExpVectorByte extends ExpVector
 
     /**
      * ExpVector least common multiple.
+     *
      * @param V
      * @return component wise maximum of this and V.
      */
@@ -632,6 +664,7 @@ public final class ExpVectorByte extends ExpVector
 
     /**
      * ExpVector greatest common divisor.
+     *
      * @param V
      * @return component wise minimum of this and V.
      */
@@ -650,6 +683,7 @@ public final class ExpVectorByte extends ExpVector
 
     /**
      * ExpVector dependent variables.
+     *
      * @return number of indices where val has positive exponents.
      */
     public int dependentVariables() {
@@ -665,6 +699,7 @@ public final class ExpVectorByte extends ExpVector
 
     /**
      * ExpVector dependency on variables.
+     *
      * @return array of indices where val has positive exponents.
      */
     @Override
@@ -689,6 +724,7 @@ public final class ExpVectorByte extends ExpVector
     /**
      * ExpVector multiple test. Test if this is component wise greater or equal
      * to V.
+     *
      * @param V
      * @return true if this is a multiple of V, else false.
      */
@@ -709,6 +745,7 @@ public final class ExpVectorByte extends ExpVector
 
     /**
      * ExpVector compareTo.
+     *
      * @param V
      * @return 0 if U == V, -1 if U &lt; V, 1 if U &gt; V.
      */
@@ -720,6 +757,7 @@ public final class ExpVectorByte extends ExpVector
 
     /**
      * ExpVector inverse lexicographical compareTo.
+     *
      * @param V
      * @return 0 if U == V, -1 if U &lt; V, 1 if U &gt; V.
      */
@@ -741,6 +779,7 @@ public final class ExpVectorByte extends ExpVector
 
     /**
      * ExpVector inverse lexicographical compareTo.
+     *
      * @param V
      * @param begin
      * @param end
@@ -751,7 +790,8 @@ public final class ExpVectorByte extends ExpVector
         byte[] u = val;
         byte[] v = ((ExpVectorByte) V).val;
         if (begin < 0) {
-            begin = 0;;
+            begin = 0;
+            ;
         }
         if (end >= val.length) {
             end = val.length;
@@ -770,6 +810,7 @@ public final class ExpVectorByte extends ExpVector
 
     /**
      * ExpVector inverse graded lexicographical compareTo.
+     *
      * @param V
      * @return 0 if U == V, -1 if U &lt; V, 1 if U &gt; V.
      */
@@ -812,6 +853,7 @@ public final class ExpVectorByte extends ExpVector
 
     /**
      * ExpVector inverse graded lexicographical compareTo.
+     *
      * @param V
      * @param begin
      * @param end
@@ -822,7 +864,8 @@ public final class ExpVectorByte extends ExpVector
         byte[] u = val;
         byte[] v = ((ExpVectorByte) V).val;
         if (begin < 0) {
-            begin = 0;;
+            begin = 0;
+            ;
         }
         if (end >= val.length) {
             end = val.length;
@@ -862,6 +905,7 @@ public final class ExpVectorByte extends ExpVector
 
     /**
      * ExpVector reverse inverse lexicographical compareTo.
+     *
      * @param V
      * @return 0 if U == V, -1 if U &lt; V, 1 if U &gt; V.
      */
@@ -883,6 +927,7 @@ public final class ExpVectorByte extends ExpVector
 
     /**
      * ExpVector reverse inverse lexicographical compareTo.
+     *
      * @param V
      * @param begin
      * @param end
@@ -893,7 +938,8 @@ public final class ExpVectorByte extends ExpVector
         byte[] u = val;
         byte[] v = ((ExpVectorByte) V).val;
         if (begin < 0) {
-            begin = 0;;
+            begin = 0;
+            ;
         }
         if (end >= val.length) {
             end = val.length;
@@ -912,6 +958,7 @@ public final class ExpVectorByte extends ExpVector
 
     /**
      * ExpVector reverse inverse graded compareTo.
+     *
      * @param V
      * @return 0 if U == V, -1 if U &lt; V, 1 if U &gt; V.
      */
@@ -954,6 +1001,7 @@ public final class ExpVectorByte extends ExpVector
 
     /**
      * ExpVector reverse inverse graded compareTo.
+     *
      * @param V
      * @param begin
      * @param end
@@ -964,7 +1012,8 @@ public final class ExpVectorByte extends ExpVector
         byte[] u = val;
         byte[] v = ((ExpVectorByte) V).val;
         if (begin < 0) {
-            begin = 0;;
+            begin = 0;
+            ;
         }
         if (end >= val.length) {
             end = val.length;
@@ -1004,6 +1053,7 @@ public final class ExpVectorByte extends ExpVector
 
     /**
      * ExpVector inverse total degree lexicographical compareTo.
+     *
      * @param V
      * @return 0 if U == V, -1 if U &lt; V, 1 if U &gt; V.
      */
@@ -1015,6 +1065,7 @@ public final class ExpVectorByte extends ExpVector
 
     /**
      * ExpVector reverse lexicographical inverse total degree compareTo.
+     *
      * @param V
      * @return 0 if U == V, -1 if U &lt; V, 1 if U &gt; V.
      */
@@ -1026,6 +1077,7 @@ public final class ExpVectorByte extends ExpVector
 
     /**
      * ExpVector inverse weighted lexicographical compareTo.
+     *
      * @param w weight array.
      * @param V
      * @return 0 if U == V, -1 if U &lt; V, 1 if U &gt; V.
@@ -1070,7 +1122,8 @@ public final class ExpVectorByte extends ExpVector
 
     /**
      * ExpVector inverse weighted lexicographical compareTo.
-     * @param w weight array.
+     *
+     * @param w     weight array.
      * @param V
      * @param begin
      * @param end
@@ -1081,7 +1134,8 @@ public final class ExpVectorByte extends ExpVector
         byte[] u = val;
         byte[] v = ((ExpVectorByte) V).val;
         if (begin < 0) {
-            begin = 0;;
+            begin = 0;
+            ;
         }
         if (end >= val.length) {
             end = val.length;

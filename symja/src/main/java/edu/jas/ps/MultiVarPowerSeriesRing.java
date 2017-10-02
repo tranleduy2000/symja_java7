@@ -28,6 +28,7 @@ import edu.jas.util.ListUtil;
 /**
  * Multivariate power series ring implementation. Uses lazy evaluated generating
  * function for coefficients.
+ *
  * @param <C> ring element type
  * @author Heinz Kredel
  */
@@ -36,57 +37,41 @@ public class MultiVarPowerSeriesRing<C extends RingElem<C>> implements RingFacto
 
 
     /**
-     * A default random sequence generator.
-     */
-    protected final static Random random = new Random();
-
-
-    /**
      * Default truncate.
      */
     public final static int DEFAULT_TRUNCATE = 7;
-
-
     /**
-     * Truncate.
+     * A default random sequence generator.
      */
-    int truncate;
-
-
+    protected final static Random random = new Random();
     /**
      * Zero ExpVector.
      */
     public final ExpVector EVZERO;
-
-
     /**
      * Coefficient ring factory.
      */
     public final RingFactory<C> coFac;
-
-
     /**
      * The number of variables.
      */
     public final int nvar;
-
-
-    /**
-     * The names of the variables. This value can be modified.
-     */
-    protected String[] vars;
-
-
     /**
      * The constant power series 1 for this ring.
      */
     public final MultiVarPowerSeries<C> ONE;
-
-
     /**
      * The constant power series 0 for this ring.
      */
     public final MultiVarPowerSeries<C> ZERO;
+    /**
+     * The names of the variables. This value can be modified.
+     */
+    protected String[] vars;
+    /**
+     * Truncate.
+     */
+    int truncate;
 
 
     /**
@@ -100,6 +85,7 @@ public class MultiVarPowerSeriesRing<C extends RingElem<C>> implements RingFacto
 
     /**
      * Constructor.
+     *
      * @param fac polynomial ring factory.
      */
     public MultiVarPowerSeriesRing(GenPolynomialRing<C> fac) {
@@ -109,6 +95,7 @@ public class MultiVarPowerSeriesRing<C extends RingElem<C>> implements RingFacto
 
     /**
      * Constructor.
+     *
      * @param coFac coefficient ring factory.
      */
     public MultiVarPowerSeriesRing(RingFactory<C> coFac, int nv) {
@@ -118,7 +105,8 @@ public class MultiVarPowerSeriesRing<C extends RingElem<C>> implements RingFacto
 
     /**
      * Constructor.
-     * @param coFac coefficient ring factory.
+     *
+     * @param coFac    coefficient ring factory.
      * @param truncate index of truncation.
      */
     public MultiVarPowerSeriesRing(RingFactory<C> coFac, int nv, int truncate) {
@@ -128,6 +116,7 @@ public class MultiVarPowerSeriesRing<C extends RingElem<C>> implements RingFacto
 
     /**
      * Constructor.
+     *
      * @param coFac coefficient ring factory.
      * @param names of the variables.
      */
@@ -138,8 +127,9 @@ public class MultiVarPowerSeriesRing<C extends RingElem<C>> implements RingFacto
 
     /**
      * Constructor.
+     *
      * @param cofac coefficient ring factory.
-     * @param nv number of variables.
+     * @param nv    number of variables.
      * @param names of the variables.
      */
     public MultiVarPowerSeriesRing(RingFactory<C> cofac, int nv, String[] names) {
@@ -149,9 +139,10 @@ public class MultiVarPowerSeriesRing<C extends RingElem<C>> implements RingFacto
 
     /**
      * Constructor.
-     * @param cofac coefficient ring factory.
+     *
+     * @param cofac    coefficient ring factory.
      * @param truncate index of truncation.
-     * @param names of the variables.
+     * @param names    of the variables.
      */
     public MultiVarPowerSeriesRing(RingFactory<C> cofac, int nv, int truncate, String[] names) {
         this.coFac = cofac;
@@ -197,6 +188,7 @@ public class MultiVarPowerSeriesRing<C extends RingElem<C>> implements RingFacto
 
     /**
      * Fixed point construction.
+     *
      * @param map a mapping of power series.
      * @return fix point wrt map.
      */
@@ -211,6 +203,7 @@ public class MultiVarPowerSeriesRing<C extends RingElem<C>> implements RingFacto
 
     /**
      * To String.
+     *
      * @return string representation of this.
      */
     @Override
@@ -224,6 +217,7 @@ public class MultiVarPowerSeriesRing<C extends RingElem<C>> implements RingFacto
 
     /**
      * Get a String representation of the variable names.
+     *
      * @return names separated by commas.
      */
     public String varsToString() {
@@ -237,6 +231,7 @@ public class MultiVarPowerSeriesRing<C extends RingElem<C>> implements RingFacto
 
     /**
      * Get the variable names.
+     *
      * @return names.
      */
     public String[] getVars() {
@@ -246,6 +241,7 @@ public class MultiVarPowerSeriesRing<C extends RingElem<C>> implements RingFacto
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this ElemFactory.
      * @see edu.jas.structure.ElemFactory#toScript()
      */
@@ -266,6 +262,7 @@ public class MultiVarPowerSeriesRing<C extends RingElem<C>> implements RingFacto
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -291,6 +288,7 @@ public class MultiVarPowerSeriesRing<C extends RingElem<C>> implements RingFacto
 
     /**
      * Hash code for this .
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -305,6 +303,7 @@ public class MultiVarPowerSeriesRing<C extends RingElem<C>> implements RingFacto
 
     /**
      * Get the zero element.
+     *
      * @return 0 as MultiVarPowerSeries<C>.
      */
     public MultiVarPowerSeries<C> getZERO() {
@@ -314,6 +313,7 @@ public class MultiVarPowerSeriesRing<C extends RingElem<C>> implements RingFacto
 
     /**
      * Get the one element.
+     *
      * @return 1 as MultiVarPowerSeries<C>.
      */
     public MultiVarPowerSeries<C> getONE() {
@@ -323,6 +323,7 @@ public class MultiVarPowerSeriesRing<C extends RingElem<C>> implements RingFacto
 
     /**
      * Get a list of the generating elements.
+     *
      * @return list of generators for the algebraic structure.
      * @see edu.jas.structure.ElemFactory#generators()
      */
@@ -352,6 +353,7 @@ public class MultiVarPowerSeriesRing<C extends RingElem<C>> implements RingFacto
 
     /**
      * Is this structure finite or infinite.
+     *
      * @return true if this structure is finite, else false.
      * @see edu.jas.structure.ElemFactory#isFinite()
      */
@@ -362,6 +364,7 @@ public class MultiVarPowerSeriesRing<C extends RingElem<C>> implements RingFacto
 
     /**
      * Truncate.
+     *
      * @return truncate index of power series.
      */
     public int truncate() {
@@ -371,6 +374,7 @@ public class MultiVarPowerSeriesRing<C extends RingElem<C>> implements RingFacto
 
     /**
      * Set truncate.
+     *
      * @param t new truncate index.
      * @return old truncate index of power series.
      */
@@ -388,6 +392,7 @@ public class MultiVarPowerSeriesRing<C extends RingElem<C>> implements RingFacto
 
     /**
      * Get the power series of the exponential function.
+     *
      * @param r variable for the direction.
      * @return exp(x_r) as MultiVarPowerSeries<C>.
      */
@@ -404,6 +409,7 @@ public class MultiVarPowerSeriesRing<C extends RingElem<C>> implements RingFacto
 
     /**
      * Get the power series of the sinus function.
+     *
      * @param r variable for the direction.
      * @return sin(x_r) as MultiVarPowerSeries<C>.
      */
@@ -420,6 +426,7 @@ public class MultiVarPowerSeriesRing<C extends RingElem<C>> implements RingFacto
 
     /**
      * Get the power series of the cosinus function.
+     *
      * @param r variable for the direction.
      * @return cos(x_r) as MultiVarPowerSeries<C>.
      */
@@ -436,6 +443,7 @@ public class MultiVarPowerSeriesRing<C extends RingElem<C>> implements RingFacto
 
     /**
      * Get the power series of the tangens function.
+     *
      * @param r variable for the direction.
      * @return tan(x_r) as MultiVarPowerSeries<C>.
      */
@@ -452,6 +460,7 @@ public class MultiVarPowerSeriesRing<C extends RingElem<C>> implements RingFacto
 
     /**
      * Solve an partial differential equation. y_r' = f(y_r) with y_r(0) = c.
+     *
      * @param f a MultiVarPowerSeries<C>.
      * @param c integration constant.
      * @param r variable for the direction.
@@ -464,6 +473,7 @@ public class MultiVarPowerSeriesRing<C extends RingElem<C>> implements RingFacto
 
     /**
      * Query if this ring is commuative.
+     *
      * @return true, if this ring is commutative, else false.
      */
     public boolean isCommutative() {
@@ -473,6 +483,7 @@ public class MultiVarPowerSeriesRing<C extends RingElem<C>> implements RingFacto
 
     /**
      * Query if this ring is associative.
+     *
      * @return true if this ring is associative, else false.
      */
     public boolean isAssociative() {
@@ -482,6 +493,7 @@ public class MultiVarPowerSeriesRing<C extends RingElem<C>> implements RingFacto
 
     /**
      * Query if this ring is a field.
+     *
      * @return false.
      */
     public boolean isField() {
@@ -491,6 +503,7 @@ public class MultiVarPowerSeriesRing<C extends RingElem<C>> implements RingFacto
 
     /**
      * Characteristic of this ring.
+     *
      * @return characteristic of this ring.
      */
     public java.math.BigInteger characteristic() {
@@ -500,6 +513,7 @@ public class MultiVarPowerSeriesRing<C extends RingElem<C>> implements RingFacto
 
     /**
      * Get a (constant) MultiVarPowerSeries&lt;C&gt; from a long value.
+     *
      * @param a long.
      * @return a MultiVarPowerSeries&lt;C&gt;.
      */
@@ -521,6 +535,7 @@ public class MultiVarPowerSeriesRing<C extends RingElem<C>> implements RingFacto
     /**
      * Get a (constant) MultiVarPowerSeries&lt;C&gt; from a
      * java.math.BigInteger.
+     *
      * @param a BigInteger.
      * @return a MultiVarPowerSeries&lt;C&gt;.
      */
@@ -541,6 +556,7 @@ public class MultiVarPowerSeriesRing<C extends RingElem<C>> implements RingFacto
 
     /**
      * Get the corresponding GenPolynomialRing&lt;C&gt;.
+     *
      * @return GenPolynomialRing&lt;C&gt;.
      */
     public GenPolynomialRing<C> polyRing() {
@@ -550,6 +566,7 @@ public class MultiVarPowerSeriesRing<C extends RingElem<C>> implements RingFacto
 
     /**
      * Get a MultiVarPowerSeries&lt;C&gt; from a GenPolynomial&lt;C&gt;.
+     *
      * @param a GenPolynomial&lt;C&gt;.
      * @return a MultiVarPowerSeries&lt;C&gt;.
      */
@@ -603,25 +620,27 @@ public class MultiVarPowerSeriesRing<C extends RingElem<C>> implements RingFacto
     /**
      * Get a list of MultiVarPowerSeries&lt;C&gt; from a list of
      * GenPolynomial&lt;C&gt;.
+     *
      * @param A list of GenPolynomial&lt;C&gt;.
      * @return a list of MultiVarPowerSeries&lt;C&gt;.
      */
     public List<MultiVarPowerSeries<C>> fromPolynomial(List<GenPolynomial<C>> A) {
-        return ListUtil.<GenPolynomial<C>, MultiVarPowerSeries<C>> map(A,
-                        new UnaryFunctor<GenPolynomial<C>, MultiVarPowerSeries<C>>() {
+        return ListUtil.<GenPolynomial<C>, MultiVarPowerSeries<C>>map(A,
+                new UnaryFunctor<GenPolynomial<C>, MultiVarPowerSeries<C>>() {
 
 
-                            public MultiVarPowerSeries<C> eval(GenPolynomial<C> c) {
-                                return fromPolynomial(c);
-                            }
-                        });
+                    public MultiVarPowerSeries<C> eval(GenPolynomial<C> c) {
+                        return fromPolynomial(c);
+                    }
+                });
     }
 
 
     /**
      * Get a MultiVarPowerSeries&lt;C&gt; from a univariate power series.
+     *
      * @param ps UnivPowerSeries&lt;C&gt;.
-     * @param r variable for the direction.
+     * @param r  variable for the direction.
      * @return a MultiVarPowerSeries&lt;C&gt;.
      */
     public MultiVarPowerSeries<C> fromPowerSeries(final UnivPowerSeries<C> ps, final int r) {
@@ -655,6 +674,7 @@ public class MultiVarPowerSeriesRing<C extends RingElem<C>> implements RingFacto
 
     /**
      * Generate a random power series with k = 5, d = 0.7.
+     *
      * @return a random power series.
      */
     public MultiVarPowerSeries<C> random() {
@@ -664,6 +684,7 @@ public class MultiVarPowerSeriesRing<C extends RingElem<C>> implements RingFacto
 
     /**
      * Generate a random power series with d = 0.7.
+     *
      * @param k bit-size of random coefficients.
      * @return a random power series.
      */
@@ -674,7 +695,8 @@ public class MultiVarPowerSeriesRing<C extends RingElem<C>> implements RingFacto
 
     /**
      * Generate a random power series with d = 0.7.
-     * @param k bit-size of random coefficients.
+     *
+     * @param k   bit-size of random coefficients.
      * @param rnd is a source for random bits.
      * @return a random power series.
      */
@@ -685,6 +707,7 @@ public class MultiVarPowerSeriesRing<C extends RingElem<C>> implements RingFacto
 
     /**
      * Generate a random power series.
+     *
      * @param k bit-size of random coefficients.
      * @param d density of non-zero coefficients.
      * @return a random power series.
@@ -696,8 +719,9 @@ public class MultiVarPowerSeriesRing<C extends RingElem<C>> implements RingFacto
 
     /**
      * Generate a random power series.
-     * @param k bit-size of random coefficients.
-     * @param d density of non-zero coefficients.
+     *
+     * @param k   bit-size of random coefficients.
+     * @param d   density of non-zero coefficients.
      * @param rnd is a source for random bits.
      * @return a random power series.
      */
@@ -723,6 +747,7 @@ public class MultiVarPowerSeriesRing<C extends RingElem<C>> implements RingFacto
 
     /**
      * Generate a power series via lambda expression.
+     *
      * @param gener lambda expression.
      * @return a generated power series.
      */
@@ -742,6 +767,7 @@ public class MultiVarPowerSeriesRing<C extends RingElem<C>> implements RingFacto
 
     /**
      * Copy power series.
+     *
      * @param c a power series.
      * @return a copy of c.
      */
@@ -752,6 +778,7 @@ public class MultiVarPowerSeriesRing<C extends RingElem<C>> implements RingFacto
 
     /**
      * Parse a power series. <b>Note:</b> not implemented.
+     *
      * @param s String.
      * @return power series from s.
      */
@@ -762,6 +789,7 @@ public class MultiVarPowerSeriesRing<C extends RingElem<C>> implements RingFacto
 
     /**
      * Parse a power series. <b>Note:</b> not implemented.
+     *
      * @param r Reader.
      * @return next power series from r.
      */
@@ -772,6 +800,7 @@ public class MultiVarPowerSeriesRing<C extends RingElem<C>> implements RingFacto
 
     /**
      * Taylor power series.
+     *
      * @param f function.
      * @param a expansion point.
      * @return Taylor series of f.
@@ -780,12 +809,9 @@ public class MultiVarPowerSeriesRing<C extends RingElem<C>> implements RingFacto
         return new MultiVarPowerSeries<C>(this, new MultiVarCoefficients<C>(this) {
 
 
-            TaylorFunction<C> der = f;
-
-
             // Map<ExpVextor,TaylorFunction<C>> pderCache = ...
             final List<C> v = a;
-
+            TaylorFunction<C> der = f;
 
             @Override
             public C generate(ExpVector i) {

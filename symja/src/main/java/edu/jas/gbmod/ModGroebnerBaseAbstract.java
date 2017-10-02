@@ -5,9 +5,9 @@
 package edu.jas.gbmod;
 
 
-import java.util.List;
-
 import org.apache.log4j.Logger;
+
+import java.util.List;
 
 import edu.jas.poly.GenPolynomial;
 import edu.jas.poly.ModuleList;
@@ -17,6 +17,7 @@ import edu.jas.structure.GcdRingElem;
 
 /**
  * Module Groebner Bases abstract class. Implements Groebner bases and GB test.
+ *
  * @author Heinz Kredel
  * @deprecated use respective methods from GroebnerBaseAbstract
  */
@@ -29,6 +30,7 @@ public abstract class ModGroebnerBaseAbstract<C extends GcdRingElem<C>> implemen
 
     /**
      * isGB.
+     *
      * @param M a module basis.
      * @return true, if M is a Groebner base, else false.
      */
@@ -47,6 +49,7 @@ public abstract class ModGroebnerBaseAbstract<C extends GcdRingElem<C>> implemen
 
     /**
      * GB.
+     *
      * @param M a module basis.
      * @return GB(M), a Groebner base of M.
      */

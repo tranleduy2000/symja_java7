@@ -22,10 +22,11 @@ import org.hipparchus.util.FastMath;
 
 /**
  * {@code ulp} function.
- *
  */
 public class Ulp implements UnivariateFunction {
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double value(double x) {
         return FastMath.ulp(x);

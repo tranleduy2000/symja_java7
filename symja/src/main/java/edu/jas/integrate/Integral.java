@@ -17,8 +17,9 @@ import edu.jas.structure.GcdRingElem;
  * Container for a rational function integral, polynomial version.
  * integral(num/den) = pol + sum_rat( rat_i/rat_{i+1} ) + sum_log( a_i log ( d_i
  * ) )
- * @author Heinz Kredel
+ *
  * @param <C> coefficient type
+ * @author Heinz Kredel
  */
 
 public class Integral<C extends GcdRingElem<C>> implements Serializable {
@@ -56,6 +57,7 @@ public class Integral<C extends GcdRingElem<C>> implements Serializable {
 
     /**
      * Constructor.
+     *
      * @param n numerator GenPolynomial over C.
      * @param d denominator GenPolynomial over C.
      * @param p integral of polynomial part. n/d =
@@ -67,9 +69,10 @@ public class Integral<C extends GcdRingElem<C>> implements Serializable {
 
     /**
      * Constructor.
-     * @param n numerator GenPolynomial over C.
-     * @param d denominator GenPolynomial over C.
-     * @param p integral of polynomial part.
+     *
+     * @param n   numerator GenPolynomial over C.
+     * @param d   denominator GenPolynomial over C.
+     * @param p   integral of polynomial part.
      * @param rat list of rational integrals. n/d =
      */
     public Integral(GenPolynomial<C> n, GenPolynomial<C> d, GenPolynomial<C> p, List<GenPolynomial<C>> rat) {
@@ -79,14 +82,15 @@ public class Integral<C extends GcdRingElem<C>> implements Serializable {
 
     /**
      * Constructor.
-     * @param n numerator GenPolynomial over C.
-     * @param d denominator GenPolynomial over C.
-     * @param p integral of polynomial part.
+     *
+     * @param n   numerator GenPolynomial over C.
+     * @param d   denominator GenPolynomial over C.
+     * @param p   integral of polynomial part.
      * @param rat list of rational integrals.
      * @param log list of logarithmic part. n/d =
      */
     public Integral(GenPolynomial<C> n, GenPolynomial<C> d, GenPolynomial<C> p, List<GenPolynomial<C>> rat,
-            List<LogIntegral<C>> log) {
+                    List<LogIntegral<C>> log) {
         num = n;
         den = d;
         pol = p;
@@ -97,6 +101,7 @@ public class Integral<C extends GcdRingElem<C>> implements Serializable {
 
     /**
      * Get the String representation.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -145,6 +150,7 @@ public class Integral<C extends GcdRingElem<C>> implements Serializable {
 
     /**
      * Hash code for Integral.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -160,6 +166,7 @@ public class Integral<C extends GcdRingElem<C>> implements Serializable {
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -173,11 +180,11 @@ public class Integral<C extends GcdRingElem<C>> implements Serializable {
         if (b == null) {
             return false;
         }
-        return num.equals(b.num) && 
-               den.equals(b.den) && 
-               pol.equals(b.pol) && 
-               rational.equals(b.rational) && 
-               logarithm.equals(b.logarithm);
+        return num.equals(b.num) &&
+                den.equals(b.den) &&
+                pol.equals(b.pol) &&
+                rational.equals(b.rational) &&
+                logarithm.equals(b.logarithm);
     }
 
 }

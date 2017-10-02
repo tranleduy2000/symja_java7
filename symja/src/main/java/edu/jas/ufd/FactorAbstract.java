@@ -5,6 +5,8 @@
 package edu.jas.ufd;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -13,10 +15,8 @@ import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import org.apache.log4j.Logger;
-
-import edu.jas.kern.TimeStatus;
 import edu.jas.kern.StringUtil;
+import edu.jas.kern.TimeStatus;
 import edu.jas.poly.ExpVector;
 import edu.jas.poly.GenPolynomial;
 import edu.jas.poly.GenPolynomialRing;
@@ -34,6 +34,7 @@ import edu.jas.util.KsubSet;
  * for factorization of a squarefree polynomial. The methods to obtain
  * squarefree polynomials delegate the computation to the
  * <code>GreatestCommonDivisor</code> classes and are included for convenience.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  * @see edu.jas.ufd.FactorFactory
@@ -70,17 +71,36 @@ public abstract class FactorAbstract<C extends GcdRingElem<C>> implements Factor
 
     /**
      * Constructor.
+     *
      * @param cfac coefficient ring factory.
      */
     public FactorAbstract(RingFactory<C> cfac) {
-        engine = GCDFactory.<C> getProxy(cfac);
+        engine = GCDFactory.<C>getProxy(cfac);
         //engine = GCDFactory.<C> getImplementation(cfac);
-        sengine = SquarefreeFactory.<C> getImplementation(cfac);
+        sengine = SquarefreeFactory.<C>getImplementation(cfac);
     }
 
+    /**
+     * Remove one occurrence of elements.
+     *
+     * @param a list of objects.
+     * @param b list of objects.
+     * @return remove every element of b from a, but only one occurrence.
+     * <b>Note:</b> not available in java.util.
+     */
+    static <T> List<T> removeOnce(List<T> a, List<T> b) {
+        List<T> res = new ArrayList<T>();
+        res.addAll(a);
+        for (T e : b) {
+            @SuppressWarnings("unused")
+            boolean t = res.remove(e);
+        }
+        return res;
+    }
 
     /**
      * Get the String representation.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -88,9 +108,9 @@ public abstract class FactorAbstract<C extends GcdRingElem<C>> implements Factor
         return getClass().getName();
     }
 
-
     /**
      * GenPolynomial test if is irreducible.
+     *
      * @param P GenPolynomial.
      * @return true if P is irreducible, else false.
      */
@@ -114,9 +134,9 @@ public abstract class FactorAbstract<C extends GcdRingElem<C>> implements Factor
         }
     }
 
-
     /**
      * GenPolynomial test if a non trivial factorization exsists.
+     *
      * @param P GenPolynomial.
      * @return true if P is reducible, else false.
      */
@@ -124,9 +144,9 @@ public abstract class FactorAbstract<C extends GcdRingElem<C>> implements Factor
         return !isIrreducible(P);
     }
 
-
     /**
      * GenPolynomial test if is squarefree.
+     *
      * @param P GenPolynomial.
      * @return true if P is squarefree, else false.
      */
@@ -134,13 +154,13 @@ public abstract class FactorAbstract<C extends GcdRingElem<C>> implements Factor
         return sengine.isSquarefree(P);
     }
 
-
     /**
      * GenPolynomial factorization of a multivariate squarefree polynomial,
      * using Kronecker substitution and variable order optimization.
+     *
      * @param P squarefree and primitive! (respectively monic) multivariate
-     *            GenPolynomial over the ring C.
-     * @return [p_1,...,p_k] with P = prod_{i=1,...,r} p_i.
+     *          GenPolynomial over the ring C.
+     * @return [p_1, ..., p_k] with P = prod_{i=1,...,r} p_i.
      */
     public List<GenPolynomial<C>> factorsSquarefreeOptimize(GenPolynomial<C> P) {
         GenPolynomialRing<C> pfac = P.ring;
@@ -149,7 +169,7 @@ public abstract class FactorAbstract<C extends GcdRingElem<C>> implements Factor
         }
         List<GenPolynomial<C>> topt = new ArrayList<GenPolynomial<C>>(1);
         topt.add(P);
-        OptimizedPolynomialList<C> opt = TermOrderOptimization.<C> optimizeTermOrder(pfac, topt);
+        OptimizedPolynomialList<C> opt = TermOrderOptimization.<C>optimizeTermOrder(pfac, topt);
         P = opt.list.get(0);
         logger.info("optimized polynomial: " + P);
         List<Integer> iperm = TermOrderOptimization.inversePermutation(opt.perm);
@@ -162,7 +182,7 @@ public abstract class FactorAbstract<C extends GcdRingElem<C>> implements Factor
             logger.info("do.full factorsSquarefreeKronecker: " + P);
             facs = factorsSquarefreeKronecker(P);
         } else { // not all variables appear, remove unused variables
-            GenPolynomial<C> pu = PolyUtil.<C> removeUnusedUpperVariables(P);
+            GenPolynomial<C> pu = PolyUtil.<C>removeUnusedUpperVariables(P);
             //GenPolynomial<C> pl = PolyUtil.<C> removeUnusedLowerVariables(pu); // not useful after optimize
             logger.info("do.sparse factorsSquarefreeKronecker: " + pu);
             facs = factorsSquarefreeKronecker(pu); // pl
@@ -177,18 +197,18 @@ public abstract class FactorAbstract<C extends GcdRingElem<C>> implements Factor
             //System.out.println("fs = " + fs);
             facs = fs;
         }
-        List<GenPolynomial<C>> iopt = TermOrderOptimization.<C> permutation(iperm, pfac, facs);
+        List<GenPolynomial<C>> iopt = TermOrderOptimization.<C>permutation(iperm, pfac, facs);
         logger.info("de-optimized polynomials: " + iopt);
         facs = normalizeFactorization(iopt);
         return facs;
     }
 
-
     /**
      * GenPolynomial factorization of a squarefree polynomial, using Kronecker
      * substitution.
+     *
      * @param P squarefree and primitive! (respectively monic) GenPolynomial.
-     * @return [p_1,...,p_k] with P = prod_{i=1,...,r} p_i.
+     * @return [p_1, ..., p_k] with P = prod_{i=1,...,r} p_i.
      */
     @Override
     public List<GenPolynomial<C>> factorsSquarefree(GenPolynomial<C> P) {
@@ -199,12 +219,12 @@ public abstract class FactorAbstract<C extends GcdRingElem<C>> implements Factor
         //return factorsSquarefreeOptimize(P);
     }
 
-
     /**
      * GenPolynomial factorization of a squarefree polynomial, using Kronecker
      * substitution.
+     *
      * @param P squarefree and primitive! (respectively monic) GenPolynomial.
-     * @return [p_1,...,p_k] with P = prod_{i=1,...,r} p_i.
+     * @return [p_1, ..., p_k] with P = prod_{i=1,...,r} p_i.
      */
     public List<GenPolynomial<C>> factorsSquarefreeKronecker(GenPolynomial<C> P) {
         if (P == null) {
@@ -223,9 +243,9 @@ public abstract class FactorAbstract<C extends GcdRingElem<C>> implements Factor
             return factors;
         }
         long d = P.degree() + 1L;
-        GenPolynomial<C> kr = PolyUfdUtil.<C> substituteKronecker(P, d);
+        GenPolynomial<C> kr = PolyUfdUtil.<C>substituteKronecker(P, d);
         GenPolynomialRing<C> ufac = kr.ring;
-        ufac.setVars(ufac.newVars("zz")); // side effects 
+        ufac.setVars(ufac.newVars("zz")); // side effects
         logger.info("deg(subs(P,d=" + d + ")) = " + kr.degree(0) + ", original degrees: " + P.degreeVector());
         if (debug) {
             logger.info("subs(P,d=" + d + ") = " + kr);
@@ -280,7 +300,7 @@ public abstract class FactorAbstract<C extends GcdRingElem<C>> implements Factor
                 for (int k = 0; k < flist.size(); k++) {
                     utrial = utrial.multiply(flist.get(k));
                 }
-                GenPolynomial<C> trial = PolyUfdUtil.<C> backSubstituteKronecker(pfac, utrial, d);
+                GenPolynomial<C> trial = PolyUfdUtil.<C>backSubstituteKronecker(pfac, utrial, d);
                 ti++;
                 if (ti % 2000 == 0) {
                     System.out.print("ti(" + ti + ") ");
@@ -303,13 +323,13 @@ public abstract class FactorAbstract<C extends GcdRingElem<C>> implements Factor
                     System.out.println("u     = " + u);
                     System.out.println("trial = " + trial);
                 }
-                GenPolynomial<C> rem = PolyUtil.<C> baseSparsePseudoRemainder(u, trial);
+                GenPolynomial<C> rem = PolyUtil.<C>baseSparsePseudoRemainder(u, trial);
                 //System.out.println(" rem = " + rem);
                 if (rem.isZERO()) {
                     logger.info("trial = " + trial);
                     //System.out.println("trial = " + trial);
                     factors.add(trial);
-                    u = PolyUtil.<C> basePseudoDivide(u, trial); //u = u.divide( trial );
+                    u = PolyUtil.<C>basePseudoDivide(u, trial); //u = u.divide( trial );
                     evl = u.leadingExpVector();
                     evt = u.trailingExpVector();
                     if (u.isConstant()) {
@@ -336,30 +356,12 @@ public abstract class FactorAbstract<C extends GcdRingElem<C>> implements Factor
         return normalizeFactorization(factors);
     }
 
-
-    /**
-     * Remove one occurrence of elements.
-     * @param a list of objects.
-     * @param b list of objects.
-     * @return remove every element of b from a, but only one occurrence.
-     *         <b>Note:</b> not available in java.util.
-     */
-    static <T> List<T> removeOnce(List<T> a, List<T> b) {
-        List<T> res = new ArrayList<T>();
-        res.addAll(a);
-        for (T e : b) {
-            @SuppressWarnings("unused")
-            boolean t = res.remove(e);
-        }
-        return res;
-    }
-
-
     /**
      * Univariate GenPolynomial factorization ignoring multiplicities.
+     *
      * @param P GenPolynomial in one variable.
      * @return [p_1, ..., p_k] with P = prod_{i=1,...,k} p_i**{e_i} for some
-     *         e_i.
+     * e_i.
      */
     public List<GenPolynomial<C>> baseFactorsRadical(GenPolynomial<C> P) {
         return new ArrayList<GenPolynomial<C>>(baseFactors(P).keySet());
@@ -368,9 +370,10 @@ public abstract class FactorAbstract<C extends GcdRingElem<C>> implements Factor
 
     /**
      * Univariate GenPolynomial factorization.
+     *
      * @param P GenPolynomial in one variable.
      * @return [p_1 -&gt; e_1, ..., p_k -&gt; e_k] with P = prod_{i=1,...,k}
-     *         p_i**e_i.
+     * p_i**e_i.
      */
     public SortedMap<GenPolynomial<C>, Long> baseFactors(GenPolynomial<C> P) {
         if (P == null) {
@@ -414,7 +417,7 @@ public abstract class FactorAbstract<C extends GcdRingElem<C>> implements Factor
             facs.put(P, 1L);
         }
         if (logger.isInfoEnabled()
-                        && (facs.size() > 1 || (facs.size() == 1 && facs.get(facs.firstKey()) > 1))) {
+                && (facs.size() > 1 || (facs.size() == 1 && facs.get(facs.firstKey()) > 1))) {
             logger.info("squarefree facs   = " + facs);
             //System.out.println("sfacs   = " + facs);
             //boolean tt = isFactorization(P,facs);
@@ -456,6 +459,7 @@ public abstract class FactorAbstract<C extends GcdRingElem<C>> implements Factor
 
     /**
      * Univariate GenPolynomial factorization of a squarefree polynomial.
+     *
      * @param P squarefree and primitive! GenPolynomial in one variable.
      * @return [p_1, ..., p_k] with P = prod_{i=1,...,k} p_i.
      */
@@ -464,9 +468,10 @@ public abstract class FactorAbstract<C extends GcdRingElem<C>> implements Factor
 
     /**
      * GenPolynomial factorization ignoring multiplicities.
+     *
      * @param P GenPolynomial.
      * @return [p_1, ..., p_k] with P = prod_{i=1,...,k} p_i**{e_i} for some
-     *         e_i.
+     * e_i.
      */
     public List<GenPolynomial<C>> factorsRadical(GenPolynomial<C> P) {
         return new ArrayList<GenPolynomial<C>>(factors(P).keySet());
@@ -475,9 +480,10 @@ public abstract class FactorAbstract<C extends GcdRingElem<C>> implements Factor
 
     /**
      * GenPolynomial list factorization ignoring multiplicities.
+     *
      * @param L list of GenPolynomials.
      * @return [p_1, ..., p_k] with p = prod_{i=1,...,k} p_i**{e_i} for some e_i
-     *         for all p in L.
+     * for all p in L.
      */
     public List<GenPolynomial<C>> factorsRadical(List<GenPolynomial<C>> L) {
         SortedSet<GenPolynomial<C>> facs = new TreeSet<GenPolynomial<C>>();
@@ -491,9 +497,10 @@ public abstract class FactorAbstract<C extends GcdRingElem<C>> implements Factor
 
     /**
      * GenPolynomial factorization.
+     *
      * @param P GenPolynomial.
      * @return [p_1 -&gt; e_1, ..., p_k -&gt; e_k] with P = prod_{i=1,...,k}
-     *         p_i**e_i.
+     * p_i**e_i.
      */
     public SortedMap<GenPolynomial<C>, Long> factors(GenPolynomial<C> P) {
         if (P == null) {
@@ -573,6 +580,7 @@ public abstract class FactorAbstract<C extends GcdRingElem<C>> implements Factor
     /**
      * GenPolynomial greatest squarefree divisor. Delegates computation to a
      * GreatestCommonDivisor class.
+     *
      * @param P GenPolynomial.
      * @return squarefree(P).
      */
@@ -584,6 +592,7 @@ public abstract class FactorAbstract<C extends GcdRingElem<C>> implements Factor
     /**
      * GenPolynomial primitive part. Delegates computation to a
      * GreatestCommonDivisor class.
+     *
      * @param P GenPolynomial.
      * @return primitivePart(P).
      */
@@ -595,6 +604,7 @@ public abstract class FactorAbstract<C extends GcdRingElem<C>> implements Factor
     /**
      * GenPolynomial base primitive part. Delegates computation to a
      * GreatestCommonDivisor class.
+     *
      * @param P GenPolynomial.
      * @return basePrimitivePart(P).
      */
@@ -606,9 +616,10 @@ public abstract class FactorAbstract<C extends GcdRingElem<C>> implements Factor
     /**
      * GenPolynomial squarefree factorization. Delegates computation to a
      * GreatestCommonDivisor class.
+     *
      * @param P GenPolynomial.
      * @return [p_1 -&gt; e_1, ..., p_k -&gt; e_k] with P = prod_{i=1,...,k}
-     *         p_i**e_i.
+     * p_i**e_i.
      */
     public SortedMap<GenPolynomial<C>, Long> squarefreeFactors(GenPolynomial<C> P) {
         return sengine.squarefreeFactors(P);
@@ -617,6 +628,7 @@ public abstract class FactorAbstract<C extends GcdRingElem<C>> implements Factor
 
     /**
      * GenPolynomial is factorization.
+     *
      * @param P GenPolynomial.
      * @param F = [p_1,...,p_k].
      * @return true if P = prod_{i=1,...,r} p_i, else false.
@@ -629,6 +641,7 @@ public abstract class FactorAbstract<C extends GcdRingElem<C>> implements Factor
 
     /**
      * GenPolynomial is factorization.
+     *
      * @param P GenPolynomial.
      * @param F = [p_1 -&gt; e_1, ..., p_k -&gt; e_k].
      * @return true if P = prod_{i=1,...,k} p_i**e_i , else false.
@@ -641,6 +654,7 @@ public abstract class FactorAbstract<C extends GcdRingElem<C>> implements Factor
 
     /**
      * Degree of a factorization.
+     *
      * @param F a factors map [p_1 -&gt; e_1, ..., p_k -&gt; e_k].
      * @return sum_{i=1,...,k} degree(p_i)*e_i.
      */
@@ -657,12 +671,13 @@ public abstract class FactorAbstract<C extends GcdRingElem<C>> implements Factor
 
     /**
      * GenPolynomial is factorization.
+     *
      * @param P GenPolynomial.
      * @param F = [p_1 -&gt; e_1, ..., p_k -&gt; e_k].
      * @return true if P = prod_{i=1,...,k} p_i**e_i , else false.
      */
     public boolean isRecursiveFactorization(GenPolynomial<GenPolynomial<C>> P,
-                    SortedMap<GenPolynomial<GenPolynomial<C>>, Long> F) {
+                                            SortedMap<GenPolynomial<GenPolynomial<C>>, Long> F) {
         return sengine.isRecursiveFactorization(P, F);
         // test irreducible
     }
@@ -670,8 +685,9 @@ public abstract class FactorAbstract<C extends GcdRingElem<C>> implements Factor
 
     /**
      * Recursive GenPolynomial factorization of a squarefree polynomial.
+     *
      * @param P squarefree recursive GenPolynomial.
-     * @return [p_1,...,p_k] with P = prod_{i=1, ..., k} p_i.
+     * @return [p_1, ..., p_k] with P = prod_{i=1, ..., k} p_i.
      */
     public List<GenPolynomial<GenPolynomial<C>>> recursiveFactorsSquarefree(GenPolynomial<GenPolynomial<C>> P) {
         if (P == null) {
@@ -688,7 +704,7 @@ public abstract class FactorAbstract<C extends GcdRingElem<C>> implements Factor
         GenPolynomialRing<GenPolynomial<C>> pfac = P.ring;
         GenPolynomialRing<C> qi = (GenPolynomialRing<C>) pfac.coFac;
         GenPolynomialRing<C> ifac = qi.extend(pfac.getVars());
-        GenPolynomial<C> Pi = PolyUtil.<C> distribute(ifac, P);
+        GenPolynomial<C> Pi = PolyUtil.<C>distribute(ifac, P);
         //System.out.println("Pi = " + Pi);
 
         C ldcf = Pi.leadingBaseCoefficient();
@@ -712,7 +728,7 @@ public abstract class FactorAbstract<C extends GcdRingElem<C>> implements Factor
             r = r.multiply(ldcf);
             ifacts.add(0, r);
         }
-        List<GenPolynomial<GenPolynomial<C>>> rfacts = PolyUtil.<C> recursive(pfac, ifacts);
+        List<GenPolynomial<GenPolynomial<C>>> rfacts = PolyUtil.<C>recursive(pfac, ifacts);
         //System.out.println("rfacts = " + rfacts);
         if (logger.isDebugEnabled()) {
             logger.info("recfacts = " + rfacts);
@@ -724,9 +740,10 @@ public abstract class FactorAbstract<C extends GcdRingElem<C>> implements Factor
 
     /**
      * Recursive GenPolynomial factorization.
+     *
      * @param P recursive GenPolynomial.
      * @return [p_1 -&gt; e_1, ..., p_k -&gt; e_k] with P = prod_{i=1,...,k}
-     *         p_i**e_i.
+     * p_i**e_i.
      */
     public SortedMap<GenPolynomial<GenPolynomial<C>>, Long> recursiveFactors(GenPolynomial<GenPolynomial<C>> P) {
         if (P == null) {
@@ -734,7 +751,7 @@ public abstract class FactorAbstract<C extends GcdRingElem<C>> implements Factor
         }
         GenPolynomialRing<GenPolynomial<C>> pfac = P.ring;
         SortedMap<GenPolynomial<GenPolynomial<C>>, Long> factors = new TreeMap<GenPolynomial<GenPolynomial<C>>, Long>(
-                        pfac.getComparator());
+                pfac.getComparator());
         if (P.isZERO()) {
             return factors;
         }
@@ -744,7 +761,7 @@ public abstract class FactorAbstract<C extends GcdRingElem<C>> implements Factor
         }
         GenPolynomialRing<C> qi = (GenPolynomialRing<C>) pfac.coFac;
         GenPolynomialRing<C> ifac = qi.extend(pfac.getVars());
-        GenPolynomial<C> Pi = PolyUtil.<C> distribute(ifac, P);
+        GenPolynomial<C> Pi = PolyUtil.<C>distribute(ifac, P);
         //System.out.println("Pi = " + Pi);
 
         C ldcf = Pi.leadingBaseCoefficient();
@@ -767,7 +784,7 @@ public abstract class FactorAbstract<C extends GcdRingElem<C>> implements Factor
         for (Map.Entry<GenPolynomial<C>, Long> me : dfacts.entrySet()) {
             GenPolynomial<C> f = me.getKey();
             Long E = me.getValue(); //dfacts.get(f);
-            GenPolynomial<GenPolynomial<C>> rp = PolyUtil.<C> recursive(pfac, f);
+            GenPolynomial<GenPolynomial<C>> rp = PolyUtil.<C>recursive(pfac, f);
             factors.put(rp, E);
         }
         //System.out.println("rfacts = " + rfacts);
@@ -781,6 +798,7 @@ public abstract class FactorAbstract<C extends GcdRingElem<C>> implements Factor
     /**
      * Normalize factorization. p'_i &gt; 0 for i &gt; 1 and p'_1 != 1 if k &gt;
      * 1.
+     *
      * @param F = [p_1,...,p_k].
      * @return F' = [p'_1,...,p'_k].
      */

@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import edu.jas.arith.BigRational;
 import edu.jas.arith.BigDecimal;
+import edu.jas.arith.BigRational;
 import edu.jas.arith.Rational;
 import edu.jas.poly.AlgebraicNumber;
 import edu.jas.poly.AlgebraicNumberRing;
@@ -24,49 +24,43 @@ import edu.jas.structure.RingFactory;
  * Real algebraic number factory class based on AlgebraicNumberRing with
  * RingFactory interface. Objects of this class are immutable with the exception
  * of the isolating intervals.
+ *
  * @author Heinz Kredel
  */
 
 public class RealAlgebraicRing<C extends GcdRingElem<C> & Rational>
                 /*extends AlgebraicNumberRing<C>*/
-                implements RingFactory<RealAlgebraicNumber<C>> {
-
-
-    /**
-     * Representing AlgebraicNumberRing.
-     */
-    public final AlgebraicNumberRing<C> algebraic;
-
-
-    /**
-     * Isolating interval for a real root. <b>Note: </b> interval may shrink
-     * eventually.
-     */
-    /*package*/Interval<C> root;
+        implements RingFactory<RealAlgebraicNumber<C>> {
 
 
     /**
      * Precision of the isolating rectangle for a complex root.
      */
-    public static final int PRECISION = BigDecimal.DEFAULT_PRECISION; 
-
-
+    public static final int PRECISION = BigDecimal.DEFAULT_PRECISION;
     /**
-     * Precision of the isolating interval for a real root.
+     * Representing AlgebraicNumberRing.
      */
-    protected BigRational eps;
-
-
+    public final AlgebraicNumberRing<C> algebraic;
     /**
      * Real root computation engine.
      */
     public final RealRootsSturm<C> engine;
+    /**
+     * Precision of the isolating interval for a real root.
+     */
+    protected BigRational eps;
+    /**
+     * Isolating interval for a real root. <b>Note: </b> interval may shrink
+     * eventually.
+     */
+    /*package*/ Interval<C> root;
 
 
     /**
      * The constructor creates a RealAlgebraicNumber factory object from a
      * GenPolynomial objects module.
-     * @param m module GenPolynomial<C>.
+     *
+     * @param m    module GenPolynomial<C>.
      * @param root isolating interval for a real root.
      */
     public RealAlgebraicRing(GenPolynomial<C> m, Interval<C> root) {
@@ -77,7 +71,7 @@ public class RealAlgebraicRing<C extends GcdRingElem<C> & Rational>
             throw new RuntimeException("characteristic not zero");
         }
         BigRational e = new BigRational(10L); //m.ring.coFac.fromInteger(10L);
-        e = e.power( - PRECISION/2); // better not too much for speed
+        e = e.power(-PRECISION / 2); // better not too much for speed
         eps = e; //BigRational.ONE; // initially
     }
 
@@ -85,8 +79,9 @@ public class RealAlgebraicRing<C extends GcdRingElem<C> & Rational>
     /**
      * The constructor creates a RealAlgebraicNumber factory object from a
      * GenPolynomial objects module.
-     * @param m module GenPolynomial.
-     * @param root isolating interval for a real root.
+     *
+     * @param m       module GenPolynomial.
+     * @param root    isolating interval for a real root.
      * @param isField indicator if m is prime.
      */
     public RealAlgebraicRing(GenPolynomial<C> m, Interval<C> root, boolean isField) {
@@ -98,6 +93,7 @@ public class RealAlgebraicRing<C extends GcdRingElem<C> & Rational>
     /**
      * Get the interval for the real root. <b>Note:</b> interval may shrink
      * later.
+     *
      * @return real root isolating interval
      */
     public synchronized Interval<C> getRoot() {
@@ -108,6 +104,7 @@ public class RealAlgebraicRing<C extends GcdRingElem<C> & Rational>
     /**
      * Set a refined interval for the real root. <b>Note: </b> interval may
      * shrink eventually.
+     *
      * @param v interval.
      */
     public synchronized void setRoot(Interval<C> v) {
@@ -118,30 +115,30 @@ public class RealAlgebraicRing<C extends GcdRingElem<C> & Rational>
 
     /**
      * Get the epsilon.
+     *
      * @return eps.
      */
     public synchronized BigRational getEps() {
         return this.eps;
     }
 
-
     /**
      * Set a new epsilon.
-     * @param e epsilon.
-     */
-    public synchronized void setEps(C e) {
-        setEps(e.getRational());
-    }
-
-
-    /**
-     * Set a new epsilon.
+     *
      * @param e epsilon.
      */
     public synchronized void setEps(BigRational e) {
         this.eps = e; //algebraic.ring.coFac.parse(e.toString());
     }
 
+    /**
+     * Set a new epsilon.
+     *
+     * @param e epsilon.
+     */
+    public synchronized void setEps(C e) {
+        setEps(e.getRational());
+    }
 
     /**
      * Refine root.
@@ -153,11 +150,12 @@ public class RealAlgebraicRing<C extends GcdRingElem<C> & Rational>
 
     /**
      * Refine root.
+     *
      * @param e epsilon.
      */
     public synchronized void refineRoot(BigRational e) {
         root = engine.refineInterval(root, algebraic.modul, e);
-        eps = e; 
+        eps = e;
     }
 
 
@@ -173,6 +171,7 @@ public class RealAlgebraicRing<C extends GcdRingElem<C> & Rational>
 
     /**
      * Is this structure finite or infinite.
+     *
      * @return true if this structure is finite, else false.
      * @see edu.jas.structure.ElemFactory#isFinite()
      */
@@ -183,6 +182,7 @@ public class RealAlgebraicRing<C extends GcdRingElem<C> & Rational>
 
     /**
      * Copy RealAlgebraicNumber element c.
+     *
      * @param c
      * @return a copy of c.
      */
@@ -193,18 +193,20 @@ public class RealAlgebraicRing<C extends GcdRingElem<C> & Rational>
 
     /**
      * Copy this RealAlgebraicRing.
+     *
      * @return a copy of this.
      */
     public RealAlgebraicRing<C> copy() {
         if (algebraic.isField()) {
             return new RealAlgebraicRing<C>(algebraic.modul, root, algebraic.isField());
-        } 
+        }
         return new RealAlgebraicRing<C>(algebraic.modul, root);
     }
 
 
     /**
      * Get the zero element.
+     *
      * @return 0 as RealAlgebraicNumber.
      */
     public RealAlgebraicNumber<C> getZERO() {
@@ -214,6 +216,7 @@ public class RealAlgebraicRing<C extends GcdRingElem<C> & Rational>
 
     /**
      * Get the one element.
+     *
      * @return 1 as RealAlgebraicNumber.
      */
     public RealAlgebraicNumber<C> getONE() {
@@ -223,6 +226,7 @@ public class RealAlgebraicRing<C extends GcdRingElem<C> & Rational>
 
     /**
      * Get the generating element.
+     *
      * @return alpha as RealAlgebraicNumber.
      */
     public RealAlgebraicNumber<C> getGenerator() {
@@ -232,6 +236,7 @@ public class RealAlgebraicRing<C extends GcdRingElem<C> & Rational>
 
     /**
      * Get a list of the generating elements.
+     *
      * @return list of generators for the algebraic structure.
      * @see edu.jas.structure.ElemFactory#generators()
      */
@@ -247,6 +252,7 @@ public class RealAlgebraicRing<C extends GcdRingElem<C> & Rational>
 
     /**
      * Query if this ring is commutative.
+     *
      * @return true if this ring is commutative, else false.
      */
     public boolean isCommutative() {
@@ -256,6 +262,7 @@ public class RealAlgebraicRing<C extends GcdRingElem<C> & Rational>
 
     /**
      * Query if this ring is associative.
+     *
      * @return true if this ring is associative, else false.
      */
     public boolean isAssociative() {
@@ -265,6 +272,7 @@ public class RealAlgebraicRing<C extends GcdRingElem<C> & Rational>
 
     /**
      * Query if this ring is a field.
+     *
      * @return true if algebraic is prime, else false.
      */
     public boolean isField() {
@@ -274,6 +282,7 @@ public class RealAlgebraicRing<C extends GcdRingElem<C> & Rational>
 
     /**
      * Assert that this ring is a field.
+     *
      * @param isField true if this ring is a field, else false.
      */
     public void setField(boolean isField) {
@@ -283,6 +292,7 @@ public class RealAlgebraicRing<C extends GcdRingElem<C> & Rational>
 
     /**
      * Characteristic of this ring.
+     *
      * @return characteristic of this ring.
      */
     public java.math.BigInteger characteristic() {
@@ -292,6 +302,7 @@ public class RealAlgebraicRing<C extends GcdRingElem<C> & Rational>
 
     /**
      * Get a RealAlgebraicNumber element from a BigInteger value.
+     *
      * @param a BigInteger.
      * @return a RealAlgebraicNumber.
      */
@@ -302,6 +313,7 @@ public class RealAlgebraicRing<C extends GcdRingElem<C> & Rational>
 
     /**
      * Get a RealAlgebraicNumber element from a long value.
+     *
      * @param a long.
      * @return a RealAlgebraicNumber.
      */
@@ -312,17 +324,19 @@ public class RealAlgebraicRing<C extends GcdRingElem<C> & Rational>
 
     /**
      * Get the String representation as RingFactory.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
         return "RealAlgebraicRing[ " + algebraic.modul.toString() + " in " + root + " | isField="
-                        + algebraic.isField() + " :: " + algebraic.ring.toString() + " ]";
+                + algebraic.isField() + " :: " + algebraic.ring.toString() + " ]";
     }
 
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this ElemFactory.
      * @see edu.jas.structure.ElemFactory#toScript()
      */
@@ -330,14 +344,15 @@ public class RealAlgebraicRing<C extends GcdRingElem<C> & Rational>
     public String toScript() {
         // Python case
         return "RealN( " + algebraic.modul.toScript() + ", " + root.toScript()
-        //+ ", " + algebraic.isField() 
-        //+ ", " + algebraic.ring.toScript() 
-                        + " )";
+                //+ ", " + algebraic.isField()
+                //+ ", " + algebraic.ring.toScript()
+                + " )";
     }
 
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -356,6 +371,7 @@ public class RealAlgebraicRing<C extends GcdRingElem<C> & Rational>
 
     /**
      * Hash code for this RealAlgebraicNumber.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -366,6 +382,7 @@ public class RealAlgebraicRing<C extends GcdRingElem<C> & Rational>
 
     /**
      * RealAlgebraicNumber random.
+     *
      * @param n such that 0 &le; v &le; (2<sup>n</sup>-1).
      * @return a random integer mod modul.
      */
@@ -376,7 +393,8 @@ public class RealAlgebraicRing<C extends GcdRingElem<C> & Rational>
 
     /**
      * RealAlgebraicNumber random.
-     * @param n such that 0 &le; v &le; (2<sup>n</sup>-1).
+     *
+     * @param n   such that 0 &le; v &le; (2<sup>n</sup>-1).
      * @param rnd is a source for random bits.
      * @return a random integer mod modul.
      */
@@ -387,6 +405,7 @@ public class RealAlgebraicRing<C extends GcdRingElem<C> & Rational>
 
     /**
      * Parse RealAlgebraicNumber from String.
+     *
      * @param s String.
      * @return RealAlgebraicNumber from s.
      */
@@ -397,6 +416,7 @@ public class RealAlgebraicRing<C extends GcdRingElem<C> & Rational>
 
     /**
      * Parse RealAlgebraicNumber from Reader.
+     *
      * @param r Reader.
      * @return next RealAlgebraicNumber from r.
      */

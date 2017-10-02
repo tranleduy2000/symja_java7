@@ -5,6 +5,8 @@
 package edu.jas.application;
 
 
+import org.apache.log4j.Logger;
+
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,56 +14,45 @@ import java.util.Random;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import org.apache.log4j.Logger;
-
 import edu.jas.gb.SolvableGroebnerBaseAbstract;
 import edu.jas.gb.SolvableGroebnerBaseSeq;
 import edu.jas.poly.GenPolynomial;
 import edu.jas.poly.GenSolvablePolynomial;
 import edu.jas.poly.GenSolvablePolynomialRing;
 import edu.jas.structure.GcdRingElem;
-import edu.jas.structure.RingFactory;
-import edu.jas.structure.QuotPair;
 import edu.jas.structure.QuotPairFactory;
-import edu.jas.structure.Value;
+import edu.jas.structure.RingFactory;
 import edu.jas.structure.ValueFactory;
 
 
 /**
  * SolvableResidue ring factory based on GenSolvablePolynomialRing with
  * GcdRingFactory interface. Objects of this class are immutable.
+ *
  * @author Heinz Kredel
  */
-public class SolvableResidueRing<C extends GcdRingElem<C>> 
-    implements RingFactory<SolvableResidue<C>>, 
-               QuotPairFactory<GenPolynomial<C>, SolvableResidue<C>>,
-               ValueFactory<GenPolynomial<C>, SolvableResidue<C>> {
+public class SolvableResidueRing<C extends GcdRingElem<C>>
+        implements RingFactory<SolvableResidue<C>>,
+        QuotPairFactory<GenPolynomial<C>, SolvableResidue<C>>,
+        ValueFactory<GenPolynomial<C>, SolvableResidue<C>> {
 
 
     private static final Logger logger = Logger.getLogger(SolvableResidueRing.class);
 
 
     //private static final boolean debug = logger.isDebugEnabled();
-
-
-    /**
-     * Groebner base engine.
-     */
-    protected final SolvableGroebnerBaseAbstract<C> bb;
-
-
     /**
      * Solvable polynomial ideal for the reduction.
      */
     public final SolvableIdeal<C> ideal;
-
-
     /**
      * Polynomial ring of the factory. Shortcut to ideal.list.ring.
      */
     public final GenSolvablePolynomialRing<C> ring;
-
-
+    /**
+     * Groebner base engine.
+     */
+    protected final SolvableGroebnerBaseAbstract<C> bb;
     /**
      * Indicator if this ring is a field.
      */
@@ -70,6 +61,7 @@ public class SolvableResidueRing<C extends GcdRingElem<C>>
 
     /**
      * The constructor creates a SolvableResidueRing object from an Ideal.
+     *
      * @param i polynomial ideal.
      */
     public SolvableResidueRing(SolvableIdeal<C> i) {
@@ -80,7 +72,8 @@ public class SolvableResidueRing<C extends GcdRingElem<C>>
     /**
      * The constructor creates a SolvableResidueRing object from an
      * SolvableIdeal.
-     * @param i solvable polynomial ideal.
+     *
+     * @param i         solvable polynomial ideal.
      * @param isMaximal true, if ideal is maxmal.
      */
     public SolvableResidueRing(SolvableIdeal<C> i, boolean isMaximal) {
@@ -98,7 +91,7 @@ public class SolvableResidueRing<C extends GcdRingElem<C>>
         //System.out.println("rr cofac  = " + ring.coFac.getClass().getName());
     }
 
- 
+
     /**
      * Factory for base elements.
      */
@@ -138,6 +131,7 @@ public class SolvableResidueRing<C extends GcdRingElem<C>>
 
     /**
      * Is this structure finite or infinite.
+     *
      * @return true if this structure is finite, else false.
      * @see edu.jas.structure.ElemFactory#isFinite()
      */
@@ -148,6 +142,7 @@ public class SolvableResidueRing<C extends GcdRingElem<C>>
 
     /**
      * Copy SolvableResidue element c.
+     *
      * @param c
      * @return a copy of c.
      */
@@ -165,6 +160,7 @@ public class SolvableResidueRing<C extends GcdRingElem<C>>
 
     /**
      * Get the zero element.
+     *
      * @return 0 as SolvableResidue.
      */
     public SolvableResidue<C> getZERO() {
@@ -174,6 +170,7 @@ public class SolvableResidueRing<C extends GcdRingElem<C>>
 
     /**
      * Get the one element.
+     *
      * @return 1 as SolvableResidue.
      */
     public SolvableResidue<C> getONE() {
@@ -187,6 +184,7 @@ public class SolvableResidueRing<C extends GcdRingElem<C>>
 
     /**
      * Get a list of the generating elements.
+     *
      * @return list of generators for the algebraic structure.
      * @see edu.jas.structure.ElemFactory#generators()
      */
@@ -235,6 +233,7 @@ public class SolvableResidueRing<C extends GcdRingElem<C>>
 
     /**
      * Query if this ring is commutative.
+     *
      * @return true if this ring is commutative, else false.
      */
     public boolean isCommutative() {
@@ -244,6 +243,7 @@ public class SolvableResidueRing<C extends GcdRingElem<C>>
 
     /**
      * Query if this ring is associative.
+     *
      * @return true if this ring is associative, else false.
      */
     public boolean isAssociative() {
@@ -253,6 +253,7 @@ public class SolvableResidueRing<C extends GcdRingElem<C>>
 
     /**
      * Query if this ring is a field.
+     *
      * @return false.
      */
     public boolean isField() {
@@ -272,6 +273,7 @@ public class SolvableResidueRing<C extends GcdRingElem<C>>
 
     /**
      * Characteristic of this ring.
+     *
      * @return characteristic of this ring.
      */
     public java.math.BigInteger characteristic() {
@@ -281,6 +283,7 @@ public class SolvableResidueRing<C extends GcdRingElem<C>>
 
     /**
      * Get a SolvableResidue element from a BigInteger value.
+     *
      * @param a BigInteger.
      * @return a SolvableResidue.
      */
@@ -291,6 +294,7 @@ public class SolvableResidueRing<C extends GcdRingElem<C>>
 
     /**
      * Get a SolvableResidue element from a long value.
+     *
      * @param a long.
      * @return a SolvableResidue.
      */
@@ -301,6 +305,7 @@ public class SolvableResidueRing<C extends GcdRingElem<C>>
 
     /**
      * Get the String representation as RingFactory.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -311,6 +316,7 @@ public class SolvableResidueRing<C extends GcdRingElem<C>>
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this ElemFactory.
      * @see edu.jas.structure.ElemFactory#toScript()
      */
@@ -324,6 +330,7 @@ public class SolvableResidueRing<C extends GcdRingElem<C>>
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -349,6 +356,7 @@ public class SolvableResidueRing<C extends GcdRingElem<C>>
 
     /**
      * Hash code for this residue ring.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -361,6 +369,7 @@ public class SolvableResidueRing<C extends GcdRingElem<C>>
 
     /**
      * SolvableResidue random.
+     *
      * @param n such that 0 &le; v &le; (2<sup>n</sup>-1).
      * @return a random residue element.
      */
@@ -372,6 +381,7 @@ public class SolvableResidueRing<C extends GcdRingElem<C>>
 
     /**
      * Generate a random residum polynomial.
+     *
      * @param k bitsize of random coefficients.
      * @param l number of terms.
      * @param d maximal degree in each variable.
@@ -386,7 +396,8 @@ public class SolvableResidueRing<C extends GcdRingElem<C>>
 
     /**
      * SolvableResidue random.
-     * @param n such that 0 &le; v &le; (2<sup>n</sup>-1).
+     *
+     * @param n   such that 0 &le; v &le; (2<sup>n</sup>-1).
      * @param rnd is a source for random bits.
      * @return a random residue element.
      */
@@ -398,6 +409,7 @@ public class SolvableResidueRing<C extends GcdRingElem<C>>
 
     /**
      * Parse SolvableResidue from String.
+     *
      * @param s String.
      * @return SolvableResidue from s.
      */
@@ -409,6 +421,7 @@ public class SolvableResidueRing<C extends GcdRingElem<C>>
 
     /**
      * Parse SolvableResidue from Reader.
+     *
      * @param r Reader.
      * @return next SolvableResidue from r.
      */

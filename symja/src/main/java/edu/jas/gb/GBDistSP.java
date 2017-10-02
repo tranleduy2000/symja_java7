@@ -16,31 +16,26 @@ import edu.jas.util.RemoteExecutable;
 
 /**
  * Setup to run a distributed GB example.
+ *
  * @author Heinz Kredel
- * TODO: to deprecate
+ *         TODO: to deprecate
  */
 
 public class GBDistSP<C extends RingElem<C>> {
 
 
     /**
-     * machine file to use.
-     */
-    private final String mfile;
-
-
-    /**
      * Number of threads to use.
      */
     protected final int threads;
-
-
     /**
      * Server port to use.
      */
     protected final int port;
-
-
+    /**
+     * machine file to use.
+     */
+    private final String mfile;
     /**
      * GB algorithm to use.
      */
@@ -55,9 +50,10 @@ public class GBDistSP<C extends RingElem<C>> {
 
     /**
      * Constructor.
+     *
      * @param threads number of threads respectivly processes.
-     * @param mfile name of the machine file.
-     * @param port for GB server.
+     * @param mfile   name of the machine file.
+     * @param port    for GB server.
      */
     public GBDistSP(int threads, String mfile, int port) {
         this.threads = threads;
@@ -74,6 +70,7 @@ public class GBDistSP<C extends RingElem<C>> {
 
     /**
      * Execute a distributed GB example. Distribute clients and start master.
+     *
      * @param F list of polynomials
      * @return GB(F) a Groebner base for F.
      */
@@ -93,8 +90,9 @@ public class GBDistSP<C extends RingElem<C>> {
 
     /**
      * Terminates the distributed thread pools.
+     *
      * @param shutDown true, if shut-down of the remote executable servers is
-     *            requested, false, if remote executable servers stay alive.
+     *                 requested, false, if remote executable servers stay alive.
      */
     public void terminate(boolean shutDown) {
         bbd.terminate();
@@ -119,6 +117,7 @@ class GBClientSP<C extends RingElem<C>> implements RemoteExecutable {
 
     /**
      * GBClient.
+     *
      * @param host
      * @param port
      */

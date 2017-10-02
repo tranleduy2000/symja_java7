@@ -5,11 +5,11 @@
 package edu.jas.gb;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.poly.GenPolynomial;
 import edu.jas.poly.GenPolynomialRing;
@@ -19,6 +19,7 @@ import edu.jas.structure.RingElem;
 /**
  * Groebner Base sequential algorithm. Implements Groebner bases and GB test.
  * Uses sequential pair list class.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
@@ -42,6 +43,7 @@ public class GroebnerBaseSeqPairSeq<C extends RingElem<C>> extends GroebnerBaseA
 
     /**
      * Constructor.
+     *
      * @param red Reduction engine
      */
     public GroebnerBaseSeqPairSeq(Reduction<C> red) {
@@ -51,8 +53,9 @@ public class GroebnerBaseSeqPairSeq<C extends RingElem<C>> extends GroebnerBaseA
 
     /**
      * Groebner base using pairlist class.
+     *
      * @param modv module variable number.
-     * @param F polynomial list.
+     * @param F    polynomial list.
      * @return GB(F) a Groebner base of F.
      */
     public List<GenPolynomial<C>> GB(int modv, List<GenPolynomial<C>> F) {
@@ -146,13 +149,14 @@ public class GroebnerBaseSeqPairSeq<C extends RingElem<C>> extends GroebnerBaseA
 
     /**
      * Extended Groebner base using critical pair class.
+     *
      * @param modv module variable number.
-     * @param F polynomial list.
+     * @param F    polynomial list.
      * @return a container for an extended Groebner base of F.
      */
     @Override
     public ExtendedGB<C> extGB(int modv, List<GenPolynomial<C>> F) {
-        if ( F == null || F.isEmpty() ) {
+        if (F == null || F.isEmpty()) {
             throw new IllegalArgumentException("null or empty F not allowed");
         }
         List<GenPolynomial<C>> G = new ArrayList<GenPolynomial<C>>();
@@ -351,7 +355,7 @@ public class GroebnerBaseSeqPairSeq<C extends RingElem<C>> extends GroebnerBaseA
         G = exgb.G;
         G2F = exgb.G2F;
         logger.debug("#sequential list = " + G.size());
-        logger.info("" + pairlist); 
+        logger.info("" + pairlist);
         // setup matrices F and F2G
         for (GenPolynomial<C> f : F) {
             row = new ArrayList<GenPolynomial<C>>(G.size());

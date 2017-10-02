@@ -16,19 +16,20 @@
  */
 package org.hipparchus.optim.linear;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
+import org.hipparchus.optim.OptimizationData;
+
 import java.util.Collection;
 import java.util.Collections;
-
-import org.hipparchus.optim.OptimizationData;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * Class that represents a set of {@link LinearConstraint linear constraints}.
- *
  */
 public class LinearConstraintSet implements OptimizationData {
-    /** Set of constraints. */
+    /**
+     * Set of constraints.
+     */
     private final Set<LinearConstraint> linearConstraints = new LinkedHashSet<LinearConstraint>();
 
     /**

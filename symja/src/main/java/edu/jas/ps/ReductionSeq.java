@@ -5,11 +5,11 @@
 package edu.jas.ps;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.poly.ExpVector;
 import edu.jas.poly.GenPolynomial;
@@ -20,12 +20,13 @@ import edu.jas.structure.RingElem;
 /**
  * Multivariate power series reduction sequential use algorithm. Implements Mora
  * normal-form algorithm.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
 
 public class ReductionSeq<C extends RingElem<C>> // should be FieldElem<C>>
-/*todo: extends ReductionAbstract<C>*/{
+/*todo: extends ReductionAbstract<C>*/ {
 
 
     private static final Logger logger = Logger.getLogger(ReductionSeq.class);
@@ -43,9 +44,10 @@ public class ReductionSeq<C extends RingElem<C>> // should be FieldElem<C>>
 
     /**
      * Module criterium.
+     *
      * @param modv number of module variables.
-     * @param A power series.
-     * @param B power series.
+     * @param A    power series.
+     * @param B    power series.
      * @return true if the module S-power-series(i,j) is required.
      */
     public boolean moduleCriterion(int modv, MultiVarPowerSeries<C> A, MultiVarPowerSeries<C> B) {
@@ -60,9 +62,10 @@ public class ReductionSeq<C extends RingElem<C>> // should be FieldElem<C>>
 
     /**
      * Module criterion.
+     *
      * @param modv number of module variables.
-     * @param ei ExpVector.
-     * @param ej ExpVector.
+     * @param ei   ExpVector.
+     * @param ej   ExpVector.
      * @return true if the module S-power-series(i,j) is required.
      */
     public boolean moduleCriterion(int modv, ExpVector ei, ExpVector ej) {
@@ -78,6 +81,7 @@ public class ReductionSeq<C extends RingElem<C>> // should be FieldElem<C>>
 
     /**
      * GB criterion 4. Use only for commutative power series rings.
+     *
      * @param A power series.
      * @param B power series.
      * @param e = lcm(ht(A),ht(B))
@@ -105,9 +109,10 @@ public class ReductionSeq<C extends RingElem<C>> // should be FieldElem<C>>
 
     /**
      * S-Power-series, S-polynomial.
+     *
      * @param A power series.
      * @param B power series.
-     * @return spol(A,B) the S-power-series of A and B.
+     * @return spol(A, B) the S-power-series of A and B.
      */
     public MultiVarPowerSeries<C> SPolynomial(MultiVarPowerSeries<C> A, MultiVarPowerSeries<C> B) {
         if (B == null || B.isZERO()) {
@@ -146,6 +151,7 @@ public class ReductionSeq<C extends RingElem<C>> // should be FieldElem<C>>
 
     /**
      * Top normal-form with Mora's algorithm.
+     *
      * @param Ap power series.
      * @param Pp power series list.
      * @return top-nf(Ap) with respect to Pp.
@@ -249,6 +255,7 @@ public class ReductionSeq<C extends RingElem<C>> // should be FieldElem<C>>
 
     /**
      * Total reduced normal-form with Mora's algorithm.
+     *
      * @param A power series.
      * @param P power series list.
      * @return total-nf(A) with respect to P.
@@ -299,6 +306,7 @@ public class ReductionSeq<C extends RingElem<C>> // should be FieldElem<C>>
 
     /**
      * Total reduced normalform with Mora's algorithm.
+     *
      * @param P power series list.
      * @return total-nf(p) for p with respect to P\{p}.
      */
@@ -335,6 +343,7 @@ public class ReductionSeq<C extends RingElem<C>> // should be FieldElem<C>>
 
     /**
      * Is top reducible.
+     *
      * @param A power series.
      * @param P power series list.
      * @return true if A is top reducible with respect to P.
@@ -365,6 +374,7 @@ public class ReductionSeq<C extends RingElem<C>> // should be FieldElem<C>>
 
     /**
      * Ideal containment. Test if each b in B is contained in ideal S.
+     *
      * @param S standard base.
      * @param B list of power series
      * @return true, if each b in B is contained in ideal(S), else false

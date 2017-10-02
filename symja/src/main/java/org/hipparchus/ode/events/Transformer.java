@@ -21,13 +21,16 @@ import org.hipparchus.util.FastMath;
 import org.hipparchus.util.Precision;
 
 
-/** Transformer for {@link ODEEventHandler#g(org.hipparchus.ode.ODEStateAndDerivative) g functions}.
+/**
+ * Transformer for {@link ODEEventHandler#g(org.hipparchus.ode.ODEStateAndDerivative) g functions}.
+ *
  * @see EventFilter
  * @see FilterType
  */
 enum Transformer {
 
-    /** Transformer computing transformed = 0.
+    /**
+     * Transformer computing transformed = 0.
      * <p>
      * This transformer is used when we initialize the filter, until we get at
      * least one non-zero value to select the proper transformer.
@@ -41,7 +44,8 @@ enum Transformer {
         }
     },
 
-    /** Transformer computing transformed = g.
+    /**
+     * Transformer computing transformed = g.
      * <p>
      * When this transformer is applied, the roots of the original function
      * are preserved, with the same {@code increasing/decreasing} status.
@@ -55,7 +59,8 @@ enum Transformer {
         }
     },
 
-    /** Transformer computing transformed = -g.
+    /**
+     * Transformer computing transformed = -g.
      * <p>
      * When this transformer is applied, the roots of the original function
      * are preserved, with reversed {@code increasing/decreasing} status.
@@ -69,7 +74,8 @@ enum Transformer {
         }
     },
 
-    /** Transformer computing transformed = min(-{@link Precision#SAFE_MIN}, -g, +g).
+    /**
+     * Transformer computing transformed = min(-{@link Precision#SAFE_MIN}, -g, +g).
      * <p>
      * When this transformer is applied, the transformed function is
      * guaranteed to be always strictly negative (i.e. there are no roots).
@@ -83,7 +89,8 @@ enum Transformer {
         }
     },
 
-    /** Transformer computing transformed = max(+{@link Precision#SAFE_MIN}, -g, +g).
+    /**
+     * Transformer computing transformed = max(+{@link Precision#SAFE_MIN}, -g, +g).
      * <p>
      * When this transformer is applied, the transformed function is
      * guaranteed to be always strictly positive (i.e. there are no roots).
@@ -97,7 +104,9 @@ enum Transformer {
         }
     };
 
-    /** Transform value of function g.
+    /**
+     * Transform value of function g.
+     *
      * @param g raw value of function g
      * @return transformed value of function g
      */

@@ -17,9 +17,6 @@
 
 package org.hipparchus.linear;
 
-import java.util.Iterator;
-import java.util.NoSuchElementException;
-
 import org.hipparchus.analysis.FunctionUtils;
 import org.hipparchus.analysis.UnivariateFunction;
 import org.hipparchus.analysis.function.Add;
@@ -29,6 +26,9 @@ import org.hipparchus.exception.LocalizedCoreFormats;
 import org.hipparchus.exception.MathIllegalArgumentException;
 import org.hipparchus.exception.MathRuntimeException;
 import org.hipparchus.util.FastMath;
+
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * Class defining a real-valued vector with basic algebraic operations.
@@ -49,9 +49,445 @@ import org.hipparchus.util.FastMath;
  * <pre>
  *   RealVector result = v.mapAddToSelf(3.4).mapToSelf(new Tan()).mapToSelf(new Power(2.3));
  * </pre>
- *
  */
 public abstract class RealVector {
+    /**
+     * Returns an unmodifiable view of the specified vector.
+     * The returned vector has read-only access. An attempt to modify it will
+     * result in a {@link MathRuntimeException}. However, the
+     * returned vector is <em>not</em> immutable, since any modification of
+     * {@code v} will also change the returned view.
+     * For example, in the following piece of code
+     * <pre>
+     *     RealVector v = new ArrayRealVector(2);
+     *     RealVector w = RealVector.unmodifiableRealVector(v);
+     *     v.setEntry(0, 1.2);
+     *     v.setEntry(1, -3.4);
+     * </pre>
+     * the changes will be seen in the {@code w} view of {@code v}.
+     *
+     * @param v Vector for which an unmodifiable view is to be returned.
+     * @return an unmodifiable view of {@code v}.
+     */
+    public static RealVector unmodifiableRealVector(final RealVector v) {
+        /**
+         * This anonymous class is an implementation of {@link RealVector}
+         * with read-only access.
+         * It wraps any {@link RealVector}, and exposes all methods which
+         * do not modify it. Invoking methods which should normally result
+         * in the modification of the calling {@link RealVector} results in
+         * a {@link MathRuntimeException}. It should be noted
+         * that {@link UnmodifiableVector} is <em>not</em> immutable.
+         */
+        return new RealVector() {
+            /**
+             * {@inheritDoc}
+             *
+             * @throws MathRuntimeException in all circumstances.
+             */
+            @Override
+            public RealVector mapToSelf(UnivariateFunction function)
+                    throws MathRuntimeException {
+                throw new MathRuntimeException(LocalizedCoreFormats.UNSUPPORTED_OPERATION);
+            }
+
+            /** {@inheritDoc} */
+            @Override
+            public RealVector map(UnivariateFunction function) {
+                return v.map(function);
+            }
+
+            /** {@inheritDoc} */
+            @Override
+            public Iterator<Entry> iterator() {
+                final Iterator<Entry> i = v.iterator();
+                return new Iterator<Entry>() {
+                    /** The current entry. */
+                    private final UnmodifiableEntry e = new UnmodifiableEntry();
+
+                    /** {@inheritDoc} */
+                    @Override
+                    public boolean hasNext() {
+                        return i.hasNext();
+                    }
+
+                    /** {@inheritDoc} */
+                    @Override
+                    public Entry next() {
+                        e.setIndex(i.next().getIndex());
+                        return e;
+                    }
+
+                    /**
+                     * {@inheritDoc}
+                     *
+                     * @throws MathRuntimeException in all
+                     * circumstances.
+                     */
+                    @Override
+                    public void remove() throws MathRuntimeException {
+                        throw new MathRuntimeException(LocalizedCoreFormats.UNSUPPORTED_OPERATION);
+                    }
+                };
+            }
+
+            /** {@inheritDoc} */
+            @Override
+            public Iterator<Entry> sparseIterator() {
+                final Iterator<Entry> i = v.sparseIterator();
+
+                return new Iterator<Entry>() {
+                    /** The current entry. */
+                    private final UnmodifiableEntry e = new UnmodifiableEntry();
+
+                    /** {@inheritDoc} */
+                    @Override
+                    public boolean hasNext() {
+                        return i.hasNext();
+                    }
+
+                    /** {@inheritDoc} */
+                    @Override
+                    public Entry next() {
+                        e.setIndex(i.next().getIndex());
+                        return e;
+                    }
+
+                    /**
+                     * {@inheritDoc}
+                     *
+                     * @throws MathRuntimeException in all
+                     * circumstances.
+                     */
+                    @Override
+                    public void remove()
+                            throws MathRuntimeException {
+                        throw new MathRuntimeException(LocalizedCoreFormats.UNSUPPORTED_OPERATION);
+                    }
+                };
+            }
+
+            /** {@inheritDoc} */
+            @Override
+            public RealVector copy() {
+                return v.copy();
+            }
+
+            /** {@inheritDoc} */
+            @Override
+            public RealVector add(RealVector w)
+                    throws MathIllegalArgumentException {
+                return v.add(w);
+            }
+
+            /** {@inheritDoc} */
+            @Override
+            public RealVector subtract(RealVector w)
+                    throws MathIllegalArgumentException {
+                return v.subtract(w);
+            }
+
+            /** {@inheritDoc} */
+            @Override
+            public RealVector mapAdd(double d) {
+                return v.mapAdd(d);
+            }
+
+            /**
+             * {@inheritDoc}
+             *
+             * @throws MathRuntimeException in all
+             * circumstances.
+             */
+            @Override
+            public RealVector mapAddToSelf(double d)
+                    throws MathRuntimeException {
+                throw new MathRuntimeException(LocalizedCoreFormats.UNSUPPORTED_OPERATION);
+            }
+
+            /** {@inheritDoc} */
+            @Override
+            public RealVector mapSubtract(double d) {
+                return v.mapSubtract(d);
+            }
+
+            /**
+             * {@inheritDoc}
+             *
+             * @throws MathRuntimeException in all
+             * circumstances.
+             */
+            @Override
+            public RealVector mapSubtractToSelf(double d)
+                    throws MathRuntimeException {
+                throw new MathRuntimeException(LocalizedCoreFormats.UNSUPPORTED_OPERATION);
+            }
+
+            /** {@inheritDoc} */
+            @Override
+            public RealVector mapMultiply(double d) {
+                return v.mapMultiply(d);
+            }
+
+            /**
+             * {@inheritDoc}
+             *
+             * @throws MathRuntimeException in all
+             * circumstances.
+             */
+            @Override
+            public RealVector mapMultiplyToSelf(double d)
+                    throws MathRuntimeException {
+                throw new MathRuntimeException(LocalizedCoreFormats.UNSUPPORTED_OPERATION);
+            }
+
+            /** {@inheritDoc} */
+            @Override
+            public RealVector mapDivide(double d) {
+                return v.mapDivide(d);
+            }
+
+            /**
+             * {@inheritDoc}
+             *
+             * @throws MathRuntimeException in all
+             * circumstances.
+             */
+            @Override
+            public RealVector mapDivideToSelf(double d)
+                    throws MathRuntimeException {
+                throw new MathRuntimeException(LocalizedCoreFormats.UNSUPPORTED_OPERATION);
+            }
+
+            /** {@inheritDoc} */
+            @Override
+            public RealVector ebeMultiply(RealVector w)
+                    throws MathIllegalArgumentException {
+                return v.ebeMultiply(w);
+            }
+
+            /** {@inheritDoc} */
+            @Override
+            public RealVector ebeDivide(RealVector w)
+                    throws MathIllegalArgumentException {
+                return v.ebeDivide(w);
+            }
+
+            /** {@inheritDoc} */
+            @Override
+            public double dotProduct(RealVector w)
+                    throws MathIllegalArgumentException {
+                return v.dotProduct(w);
+            }
+
+            /** {@inheritDoc} */
+            @Override
+            public double cosine(RealVector w)
+                    throws MathIllegalArgumentException, MathRuntimeException {
+                return v.cosine(w);
+            }
+
+            /** {@inheritDoc} */
+            @Override
+            public double getNorm() {
+                return v.getNorm();
+            }
+
+            /** {@inheritDoc} */
+            @Override
+            public double getL1Norm() {
+                return v.getL1Norm();
+            }
+
+            /** {@inheritDoc} */
+            @Override
+            public double getLInfNorm() {
+                return v.getLInfNorm();
+            }
+
+            /** {@inheritDoc} */
+            @Override
+            public double getDistance(RealVector w)
+                    throws MathIllegalArgumentException {
+                return v.getDistance(w);
+            }
+
+            /** {@inheritDoc} */
+            @Override
+            public double getL1Distance(RealVector w)
+                    throws MathIllegalArgumentException {
+                return v.getL1Distance(w);
+            }
+
+            /** {@inheritDoc} */
+            @Override
+            public double getLInfDistance(RealVector w)
+                    throws MathIllegalArgumentException {
+                return v.getLInfDistance(w);
+            }
+
+            /** {@inheritDoc} */
+            @Override
+            public RealVector unitVector() throws MathRuntimeException {
+                return v.unitVector();
+            }
+
+            /**
+             * {@inheritDoc}
+             *
+             * @throws MathRuntimeException in all
+             * circumstances.
+             */
+            @Override
+            public void unitize() throws MathRuntimeException {
+                throw new MathRuntimeException(LocalizedCoreFormats.UNSUPPORTED_OPERATION);
+            }
+
+            /** {@inheritDoc} */
+            @Override
+            public RealMatrix outerProduct(RealVector w) {
+                return v.outerProduct(w);
+            }
+
+            /** {@inheritDoc} */
+            @Override
+            public double getEntry(int index) throws MathIllegalArgumentException {
+                return v.getEntry(index);
+            }
+
+            /**
+             * {@inheritDoc}
+             *
+             * @throws MathRuntimeException in all
+             * circumstances.
+             */
+            @Override
+            public void setEntry(int index, double value)
+                    throws MathRuntimeException {
+                throw new MathRuntimeException(LocalizedCoreFormats.UNSUPPORTED_OPERATION);
+            }
+
+            /**
+             * {@inheritDoc}
+             *
+             * @throws MathRuntimeException in all
+             * circumstances.
+             */
+            @Override
+            public void addToEntry(int index, double value)
+                    throws MathRuntimeException {
+                throw new MathRuntimeException(LocalizedCoreFormats.UNSUPPORTED_OPERATION);
+            }
+
+            /** {@inheritDoc} */
+            @Override
+            public int getDimension() {
+                return v.getDimension();
+            }
+
+            /** {@inheritDoc} */
+            @Override
+            public RealVector append(RealVector w) {
+                return v.append(w);
+            }
+
+            /** {@inheritDoc} */
+            @Override
+            public RealVector append(double d) {
+                return v.append(d);
+            }
+
+            /** {@inheritDoc} */
+            @Override
+            public RealVector getSubVector(int index, int n)
+                    throws MathIllegalArgumentException {
+                return v.getSubVector(index, n);
+            }
+
+            /**
+             * {@inheritDoc}
+             *
+             * @throws MathRuntimeException in all
+             * circumstances.
+             */
+            @Override
+            public void setSubVector(int index, RealVector w)
+                    throws MathRuntimeException {
+                throw new MathRuntimeException(LocalizedCoreFormats.UNSUPPORTED_OPERATION);
+            }
+
+            /**
+             * {@inheritDoc}
+             *
+             * @throws MathRuntimeException in all
+             * circumstances.
+             */
+            @Override
+            public void set(double value)
+                    throws MathRuntimeException {
+                throw new MathRuntimeException(LocalizedCoreFormats.UNSUPPORTED_OPERATION);
+            }
+
+            /** {@inheritDoc} */
+            @Override
+            public double[] toArray() {
+                return v.toArray();
+            }
+
+            /** {@inheritDoc} */
+            @Override
+            public boolean isNaN() {
+                return v.isNaN();
+            }
+
+            /** {@inheritDoc} */
+            @Override
+            public boolean isInfinite() {
+                return v.isInfinite();
+            }
+
+            /** {@inheritDoc} */
+            @Override
+            public RealVector combine(double a, double b, RealVector y)
+                    throws MathIllegalArgumentException {
+                return v.combine(a, b, y);
+            }
+
+            /**
+             * {@inheritDoc}
+             *
+             * @throws MathRuntimeException in all
+             * circumstances.
+             */
+            @Override
+            public RealVector combineToSelf(double a, double b, RealVector y)
+                    throws MathRuntimeException {
+                throw new MathRuntimeException(LocalizedCoreFormats.UNSUPPORTED_OPERATION);
+            }
+
+            /** An entry in the vector. */
+            class UnmodifiableEntry extends Entry {
+                /** {@inheritDoc} */
+                @Override
+                public double getValue() {
+                    return v.getEntry(getIndex());
+                }
+
+                /**
+                 * {@inheritDoc}
+                 *
+                 * @throws MathRuntimeException in all
+                 * circumstances.
+                 */
+                @Override
+                public void setValue(double value)
+                        throws MathRuntimeException {
+                    throw new MathRuntimeException(LocalizedCoreFormats.UNSUPPORTED_OPERATION);
+                }
+            }
+        };
+    }
+
     /**
      * Returns the size of the vector.
      *
@@ -78,17 +514,17 @@ public abstract class RealVector {
      * @see #getEntry(int)
      */
     public abstract void setEntry(int index, double value)
-        throws MathIllegalArgumentException;
+            throws MathIllegalArgumentException;
 
     /**
      * Change an entry at the specified index.
      *
-     * @param index Index location of entry to be set.
+     * @param index     Index location of entry to be set.
      * @param increment Value to add to the vector entry.
      * @throws MathIllegalArgumentException if the index is not valid.
      */
     public void addToEntry(int index, double increment)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         setEntry(index, getEntry(index) + increment);
     }
 
@@ -112,23 +548,23 @@ public abstract class RealVector {
      * Get a subvector from consecutive elements.
      *
      * @param index index of first element.
-     * @param n number of elements to be retrieved.
+     * @param n     number of elements to be retrieved.
      * @return a vector containing n elements.
      * @throws MathIllegalArgumentException if the index is not valid.
      * @throws MathIllegalArgumentException if the number of elements is not positive.
      */
     public abstract RealVector getSubVector(int index, int n)
-        throws MathIllegalArgumentException;
+            throws MathIllegalArgumentException;
 
     /**
      * Set a sequence of consecutive elements.
      *
      * @param index index of first element to be set.
-     * @param v vector containing the values to set.
+     * @param v     vector containing the values to set.
      * @throws MathIllegalArgumentException if the index is not valid.
      */
     public abstract void setSubVector(int index, RealVector v)
-        throws MathIllegalArgumentException;
+            throws MathIllegalArgumentException;
 
     /**
      * Check whether any coordinate of this vector is {@code NaN}.
@@ -151,10 +587,10 @@ public abstract class RealVector {
      *
      * @param v Vector to compare instance with.
      * @throws MathIllegalArgumentException if the vectors do not
-     * have the same dimension.
+     *                                      have the same dimension.
      */
     protected void checkVectorDimensions(RealVector v)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         checkVectorDimensions(v.getDimension());
     }
 
@@ -163,14 +599,14 @@ public abstract class RealVector {
      *
      * @param n Expected dimension.
      * @throws MathIllegalArgumentException if the dimension is
-     * inconsistent with the vector size.
+     *                                      inconsistent with the vector size.
      */
     protected void checkVectorDimensions(int n)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         int d = getDimension();
         if (d != n) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.DIMENSIONS_MISMATCH,
-                                                   d, n);
+                    d, n);
         }
     }
 
@@ -178,13 +614,13 @@ public abstract class RealVector {
      * Check if an index is valid.
      *
      * @param index Index to check.
-     * @exception MathIllegalArgumentException if {@code index} is not valid.
+     * @throws MathIllegalArgumentException if {@code index} is not valid.
      */
     protected void checkIndex(final int index) throws MathIllegalArgumentException {
         if (index < 0 ||
-            index >= getDimension()) {
+                index >= getDimension()) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.INDEX,
-                                          index, 0, getDimension() - 1);
+                    index, 0, getDimension() - 1);
         }
     }
 
@@ -192,25 +628,25 @@ public abstract class RealVector {
      * Checks that the indices of a subvector are valid.
      *
      * @param start the index of the first entry of the subvector
-     * @param end the index of the last entry of the subvector (inclusive)
+     * @param end   the index of the last entry of the subvector (inclusive)
      * @throws MathIllegalArgumentException if {@code start} of {@code end} are not valid
      * @throws MathIllegalArgumentException if {@code end < start}
      */
     protected void checkIndices(final int start, final int end)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         final int dim = getDimension();
         if ((start < 0) || (start >= dim)) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.INDEX, start, 0,
-                                          dim - 1);
+                    dim - 1);
         }
         if ((end < 0) || (end >= dim)) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.INDEX, end, 0,
-                                          dim - 1);
+                    dim - 1);
         }
         if (end < start) {
             // TODO Use more specific error message
             throw new MathIllegalArgumentException(LocalizedCoreFormats.INITIAL_ROW_AFTER_FINAL_ROW,
-                                                end, start, false);
+                    end, start, false);
         }
     }
 
@@ -221,7 +657,7 @@ public abstract class RealVector {
      * @param v Vector to be added.
      * @return {@code this} + {@code v}.
      * @throws MathIllegalArgumentException if {@code v} is not the same size as
-     * {@code this} vector.
+     *                                      {@code this} vector.
      */
     public RealVector add(RealVector v) throws MathIllegalArgumentException {
         checkVectorDimensions(v);
@@ -242,7 +678,7 @@ public abstract class RealVector {
      * @param v Vector to be subtracted.
      * @return {@code this} - {@code v}.
      * @throws MathIllegalArgumentException if {@code v} is not the same size as
-     * {@code this} vector.
+     *                                      {@code this} vector.
      */
     public RealVector subtract(RealVector v) throws MathIllegalArgumentException {
         checkVectorDimensions(v);
@@ -294,7 +730,7 @@ public abstract class RealVector {
      * @param v Vector with which dot product should be computed
      * @return the scalar dot product between this instance and {@code v}.
      * @throws MathIllegalArgumentException if {@code v} is not the same size as
-     * {@code this} vector.
+     *                                      {@code this} vector.
      */
     public double dotProduct(RealVector v) throws MathIllegalArgumentException {
         checkVectorDimensions(v);
@@ -312,18 +748,18 @@ public abstract class RealVector {
      *
      * @param v Vector.
      * @return the cosine of the angle between this vector and {@code v}.
-     * @throws MathRuntimeException if {@code this} or {@code v} is the null
-     * vector
+     * @throws MathRuntimeException         if {@code this} or {@code v} is the null
+     *                                      vector
      * @throws MathIllegalArgumentException if the dimensions of {@code this} and
-     * {@code v} do not match
+     *                                      {@code v} do not match
      */
     public double cosine(RealVector v) throws MathIllegalArgumentException,
-        MathRuntimeException {
+            MathRuntimeException {
         final double norm = getNorm();
         final double vNorm = v.getNorm();
 
         if (norm == 0 ||
-            vNorm == 0) {
+                vNorm == 0) {
             throw new MathRuntimeException(LocalizedCoreFormats.ZERO_NORM);
         }
         return dotProduct(v) / (norm * vNorm);
@@ -335,10 +771,10 @@ public abstract class RealVector {
      * @param v Vector by which instance elements must be divided.
      * @return a vector containing this[i] / v[i] for all i.
      * @throws MathIllegalArgumentException if {@code v} is not the same size as
-     * {@code this} vector.
+     *                                      {@code this} vector.
      */
     public abstract RealVector ebeDivide(RealVector v)
-        throws MathIllegalArgumentException;
+            throws MathIllegalArgumentException;
 
     /**
      * Element-by-element multiplication.
@@ -346,10 +782,10 @@ public abstract class RealVector {
      * @param v Vector by which instance elements must be multiplied
      * @return a vector containing this[i] * v[i] for all i.
      * @throws MathIllegalArgumentException if {@code v} is not the same size as
-     * {@code this} vector.
+     *                                      {@code this} vector.
      */
     public abstract RealVector ebeMultiply(RealVector v)
-        throws MathIllegalArgumentException;
+            throws MathIllegalArgumentException;
 
     /**
      * Distance between two vectors.
@@ -360,7 +796,7 @@ public abstract class RealVector {
      * @param v Vector to which distance is requested.
      * @return the distance between two vectors.
      * @throws MathIllegalArgumentException if {@code v} is not the same size as
-     * {@code this} vector.
+     *                                      {@code this} vector.
      * @see #getL1Distance(RealVector)
      * @see #getLInfDistance(RealVector)
      * @see #getNorm()
@@ -447,10 +883,10 @@ public abstract class RealVector {
      * @param v Vector to which distance is requested.
      * @return the distance between two vectors.
      * @throws MathIllegalArgumentException if {@code v} is not the same size as
-     * {@code this} vector.
+     *                                      {@code this} vector.
      */
     public double getL1Distance(RealVector v)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         checkVectorDimensions(v);
         double d = 0;
         Iterator<Entry> it = iterator();
@@ -470,13 +906,13 @@ public abstract class RealVector {
      * @param v Vector to which distance is requested.
      * @return the distance between two vectors.
      * @throws MathIllegalArgumentException if {@code v} is not the same size as
-     * {@code this} vector.
+     *                                      {@code this} vector.
      * @see #getDistance(RealVector)
      * @see #getL1Distance(RealVector)
      * @see #getLInfNorm()
      */
     public double getLInfDistance(RealVector v)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         checkVectorDimensions(v);
         double d = 0;
         Iterator<Entry> it = iterator();
@@ -494,7 +930,7 @@ public abstract class RealVector {
      * or all entries are {@code NaN}.
      */
     public int getMinIndex() {
-        int minIndex    = -1;
+        int minIndex = -1;
         double minValue = Double.POSITIVE_INFINITY;
         Iterator<Entry> iterator = iterator();
         while (iterator.hasNext()) {
@@ -525,7 +961,7 @@ public abstract class RealVector {
      * or all entries are {@code NaN}
      */
     public int getMaxIndex() {
-        int maxIndex    = -1;
+        int maxIndex = -1;
         double maxValue = Double.NEGATIVE_INFINITY;
         Iterator<Entry> iterator = iterator();
         while (iterator.hasNext()) {
@@ -549,7 +985,6 @@ public abstract class RealVector {
         return maxIndex < 0 ? Double.NaN : getEntry(maxIndex);
     }
 
-
     /**
      * Multiply each entry by the argument. Returns a new vector.
      * Does not change instance data.
@@ -568,7 +1003,7 @@ public abstract class RealVector {
      * @param d Multiplication factor.
      * @return {@code this}.
      */
-    public RealVector mapMultiplyToSelf(double d){
+    public RealVector mapMultiplyToSelf(double d) {
         return mapToSelf(FunctionUtils.fix2ndArgument(new Multiply(), d));
     }
 
@@ -590,7 +1025,7 @@ public abstract class RealVector {
      * @param d Value to be subtracted.
      * @return {@code this}.
      */
-    public RealVector mapSubtractToSelf(double d){
+    public RealVector mapSubtractToSelf(double d) {
         return mapAddToSelf(-d);
     }
 
@@ -612,7 +1047,7 @@ public abstract class RealVector {
      * @param d Value to divide by.
      * @return {@code this}.
      */
-    public RealVector mapDivideToSelf(double d){
+    public RealVector mapDivideToSelf(double d) {
         return mapToSelf(FunctionUtils.fix2ndArgument(new Divide(), d));
     }
 
@@ -645,12 +1080,12 @@ public abstract class RealVector {
      * @param v vector onto which instance must be projected.
      * @return projection of the instance onto {@code v}.
      * @throws MathIllegalArgumentException if {@code v} is not the same size as
-     * {@code this} vector.
-     * @throws MathRuntimeException if {@code this} or {@code v} is the null
-     * vector
+     *                                      {@code this} vector.
+     * @throws MathRuntimeException         if {@code this} or {@code v} is the null
+     *                                      vector
      */
     public RealVector projection(final RealVector v)
-        throws MathIllegalArgumentException, MathRuntimeException {
+            throws MathIllegalArgumentException, MathRuntimeException {
         final double norm2 = v.dotProduct(v);
         if (norm2 == 0.0) {
             throw new MathRuntimeException(LocalizedCoreFormats.ZERO_NORM);
@@ -721,7 +1156,7 @@ public abstract class RealVector {
      * The ommitted entries are either exact zeroes (for dense implementations)
      * or are the entries which are not stored (for real sparse vectors).
      * No guarantees are made about order of iteration.
-     *
+     * <p>
      * <p>Note: derived classes are required to return an {@link Iterator} that
      * returns non-null {@link Entry} objects as long as {@link Iterator#hasNext()}
      * returns {@code true}.</p>
@@ -735,7 +1170,7 @@ public abstract class RealVector {
     /**
      * Generic dense iterator. Iteration is in increasing order
      * of the vector index.
-     *
+     * <p>
      * <p>Note: derived classes are required to return an {@link Iterator} that
      * returns non-null {@link Entry} objects as long as {@link Iterator#hasNext()}
      * returns {@code true}.</p>
@@ -828,10 +1263,10 @@ public abstract class RealVector {
      * @return a vector containing {@code a * this[i] + b * y[i]} for all
      * {@code i}.
      * @throws MathIllegalArgumentException if {@code y} is not the same size as
-     * {@code this} vector.
+     *                                      {@code this} vector.
      */
     public RealVector combine(double a, double b, RealVector y)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         return copy().combineToSelf(a, b, y);
     }
 
@@ -845,10 +1280,10 @@ public abstract class RealVector {
      * @return {@code this}, with components equal to
      * {@code a * this[i] + b * y[i]} for all {@code i}.
      * @throws MathIllegalArgumentException if {@code y} is not the same size as
-     * {@code this} vector.
+     *                                      {@code this} vector.
      */
     public RealVector combineToSelf(double a, double b, RealVector y)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         checkVectorDimensions(y);
         for (int i = 0; i < getDimension(); i++) {
             final double xi = getEntry(i);
@@ -863,7 +1298,7 @@ public abstract class RealVector {
      * (increasing index).
      *
      * @param visitor the visitor to be used to process the entries of this
-     * vector
+     *                vector
      * @return the value returned by {@link RealVectorPreservingVisitor#end()}
      * at the end of the walk
      */
@@ -881,8 +1316,8 @@ public abstract class RealVector {
      * (increasing index).
      *
      * @param visitor visitor to be used to process the entries of this vector
-     * @param start the index of the first entry to be visited
-     * @param end the index of the last entry to be visited (inclusive)
+     * @param start   the index of the first entry to be visited
+     * @param end     the index of the last entry to be visited (inclusive)
      * @return the value returned by {@link RealVectorPreservingVisitor#end()}
      * at the end of the walk
      * @throws MathIllegalArgumentException if {@code end < start}.
@@ -890,7 +1325,7 @@ public abstract class RealVector {
      */
     public double walkInDefaultOrder(final RealVectorPreservingVisitor visitor,
                                      final int start, final int end)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         checkIndices(start, end);
         visitor.start(getDimension(), start, end);
         for (int i = start; i <= end; i++) {
@@ -906,7 +1341,7 @@ public abstract class RealVector {
      * concrete implementation of this abstract class.
      *
      * @param visitor the visitor to be used to process the entries of this
-     * vector
+     *                vector
      * @return the value returned by {@link RealVectorPreservingVisitor#end()}
      * at the end of the walk
      */
@@ -921,8 +1356,8 @@ public abstract class RealVector {
      * concrete implementation of this abstract class.
      *
      * @param visitor visitor to be used to process the entries of this vector
-     * @param start the index of the first entry to be visited
-     * @param end the index of the last entry to be visited (inclusive)
+     * @param start   the index of the first entry to be visited
+     * @param end     the index of the last entry to be visited (inclusive)
      * @return the value returned by {@link RealVectorPreservingVisitor#end()}
      * at the end of the walk
      * @throws MathIllegalArgumentException if {@code end < start}.
@@ -930,7 +1365,7 @@ public abstract class RealVector {
      */
     public double walkInOptimizedOrder(final RealVectorPreservingVisitor visitor,
                                        final int start, final int end)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         return walkInDefaultOrder(visitor, start, end);
     }
 
@@ -939,7 +1374,7 @@ public abstract class RealVector {
      * (increasing index).
      *
      * @param visitor the visitor to be used to process and modify the entries
-     * of this vector
+     *                of this vector
      * @return the value returned by {@link RealVectorChangingVisitor#end()}
      * at the end of the walk
      */
@@ -957,16 +1392,16 @@ public abstract class RealVector {
      * (increasing index).
      *
      * @param visitor visitor to be used to process the entries of this vector
-     * @param start the index of the first entry to be visited
-     * @param end the index of the last entry to be visited (inclusive)
+     * @param start   the index of the first entry to be visited
+     * @param end     the index of the last entry to be visited (inclusive)
      * @return the value returned by {@link RealVectorChangingVisitor#end()}
      * at the end of the walk
      * @throws MathIllegalArgumentException if {@code end < start}.
      * @throws MathIllegalArgumentException if the indices are not valid.
      */
     public double walkInDefaultOrder(final RealVectorChangingVisitor visitor,
-                              final int start, final int end)
-        throws MathIllegalArgumentException {
+                                     final int start, final int end)
+            throws MathIllegalArgumentException {
         checkIndices(start, end);
         visitor.start(getDimension(), start, end);
         for (int i = start; i <= end; i++) {
@@ -982,7 +1417,7 @@ public abstract class RealVector {
      * concrete implementation of this abstract class.
      *
      * @param visitor the visitor to be used to process the entries of this
-     * vector
+     *                vector
      * @return the value returned by {@link RealVectorChangingVisitor#end()}
      * at the end of the walk
      */
@@ -997,8 +1432,8 @@ public abstract class RealVector {
      * concrete implementation of this abstract class.
      *
      * @param visitor visitor to be used to process the entries of this vector
-     * @param start the index of the first entry to be visited
-     * @param end the index of the last entry to be visited (inclusive)
+     * @param start   the index of the first entry to be visited
+     * @param end     the index of the last entry to be visited (inclusive)
      * @return the value returned by {@link RealVectorChangingVisitor#end()}
      * at the end of the walk
      * @throws MathIllegalArgumentException if {@code end < start}.
@@ -1006,16 +1441,63 @@ public abstract class RealVector {
      */
     public double walkInOptimizedOrder(final RealVectorChangingVisitor visitor,
                                        final int start, final int end)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         return walkInDefaultOrder(visitor, start, end);
     }
 
-    /** An entry in the vector. */
+    /**
+     * <p>
+     * Test for the equality of two real vectors. If all coordinates of two real
+     * vectors are exactly the same, and none are {@code NaN}, the two real
+     * vectors are considered to be equal. {@code NaN} coordinates are
+     * considered to affect globally the vector and be equals to each other -
+     * i.e, if either (or all) coordinates of the real vector are equal to
+     * {@code NaN}, the real vector is equal to a vector with all {@code NaN}
+     * coordinates.
+     * </p>
+     * <p>
+     * This method <em>must</em> be overriden by concrete subclasses of
+     * {@link RealVector} (the current implementation throws an exception).
+     * </p>
+     *
+     * @param other Object to test for equality.
+     * @return {@code true} if two vector objects are equal, {@code false} if
+     * {@code other} is null, not an instance of {@code RealVector}, or
+     * not equal to this {@code RealVector} instance.
+     * @throws MathRuntimeException if this method is not
+     *                              overridden.
+     */
+    @Override
+    public boolean equals(Object other)
+            throws MathRuntimeException {
+        throw new MathRuntimeException(LocalizedCoreFormats.UNSUPPORTED_OPERATION);
+    }
+
+    /**
+     * {@inheritDoc}. This method <em>must</em> be overriden by concrete
+     * subclasses of {@link RealVector} (current implementation throws an
+     * exception).
+     *
+     * @throws MathRuntimeException if this method is not
+     *                              overridden.
+     */
+    @Override
+    public int hashCode() throws MathRuntimeException {
+        throw new MathRuntimeException(LocalizedCoreFormats.UNSUPPORTED_OPERATION);
+    }
+
+    /**
+     * An entry in the vector.
+     */
     public class Entry {
-        /** Index of this entry. */
+        /**
+         * Index of this entry.
+         */
         private int index;
 
-        /** Simple constructor. */
+        /**
+         * Simple constructor.
+         */
         public Entry() {
             setIndex(0);
         }
@@ -1058,69 +1540,35 @@ public abstract class RealVector {
     }
 
     /**
-     * <p>
-     * Test for the equality of two real vectors. If all coordinates of two real
-     * vectors are exactly the same, and none are {@code NaN}, the two real
-     * vectors are considered to be equal. {@code NaN} coordinates are
-     * considered to affect globally the vector and be equals to each other -
-     * i.e, if either (or all) coordinates of the real vector are equal to
-     * {@code NaN}, the real vector is equal to a vector with all {@code NaN}
-     * coordinates.
-     * </p>
-     * <p>
-     * This method <em>must</em> be overriden by concrete subclasses of
-     * {@link RealVector} (the current implementation throws an exception).
-     * </p>
-     *
-     * @param other Object to test for equality.
-     * @return {@code true} if two vector objects are equal, {@code false} if
-     * {@code other} is null, not an instance of {@code RealVector}, or
-     * not equal to this {@code RealVector} instance.
-     * @throws MathRuntimeException if this method is not
-     * overridden.
-     */
-    @Override
-    public boolean equals(Object other)
-        throws MathRuntimeException {
-        throw new MathRuntimeException(LocalizedCoreFormats.UNSUPPORTED_OPERATION);
-    }
-
-    /**
-     * {@inheritDoc}. This method <em>must</em> be overriden by concrete
-     * subclasses of {@link RealVector} (current implementation throws an
-     * exception).
-     *
-     * @throws MathRuntimeException if this method is not
-     * overridden.
-     */
-    @Override
-    public int hashCode() throws MathRuntimeException {
-        throw new MathRuntimeException(LocalizedCoreFormats.UNSUPPORTED_OPERATION);
-    }
-
-    /**
      * This class should rarely be used, but is here to provide
      * a default implementation of sparseIterator(), which is implemented
      * by walking over the entries, skipping those that are zero.
-     *
+     * <p>
      * Concrete subclasses which are SparseVector implementations should
      * make their own sparse iterator, rather than using this one.
-     *
+     * <p>
      * This implementation might be useful for ArrayRealVector, when expensive
      * operations which preserve the default value are to be done on the entries,
      * and the fraction of non-default values is small (i.e. someone took a
      * SparseVector, and passed it into the copy-constructor of ArrayRealVector)
-
      */
     protected class SparseEntryIterator implements Iterator<Entry> {
-        /** Dimension of the vector. */
+        /**
+         * Dimension of the vector.
+         */
         private final int dim;
-        /** Last entry returned by {@link #next()}. */
+        /**
+         * Last entry returned by {@link #next()}.
+         */
         private Entry current;
-        /** Next entry for {@link #next()} to return. */
+        /**
+         * Next entry for {@link #next()} to return.
+         */
         private Entry next;
 
-        /** Simple constructor. */
+        /**
+         * Simple constructor.
+         */
         protected SparseEntryIterator() {
             dim = getDimension();
             current = new Entry();
@@ -1147,13 +1595,17 @@ public abstract class RealVector {
             }
         }
 
-        /** {@inheritDoc} */
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public boolean hasNext() {
             return next.getIndex() >= 0;
         }
 
-        /** {@inheritDoc} */
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public Entry next() {
             int index = next.getIndex();
@@ -1174,442 +1626,5 @@ public abstract class RealVector {
         public void remove() throws MathRuntimeException {
             throw new MathRuntimeException(LocalizedCoreFormats.UNSUPPORTED_OPERATION);
         }
-    }
-
-    /**
-     * Returns an unmodifiable view of the specified vector.
-     * The returned vector has read-only access. An attempt to modify it will
-     * result in a {@link MathRuntimeException}. However, the
-     * returned vector is <em>not</em> immutable, since any modification of
-     * {@code v} will also change the returned view.
-     * For example, in the following piece of code
-     * <pre>
-     *     RealVector v = new ArrayRealVector(2);
-     *     RealVector w = RealVector.unmodifiableRealVector(v);
-     *     v.setEntry(0, 1.2);
-     *     v.setEntry(1, -3.4);
-     * </pre>
-     * the changes will be seen in the {@code w} view of {@code v}.
-     *
-     * @param v Vector for which an unmodifiable view is to be returned.
-     * @return an unmodifiable view of {@code v}.
-     */
-    public static RealVector unmodifiableRealVector(final RealVector v) {
-        /**
-         * This anonymous class is an implementation of {@link RealVector}
-         * with read-only access.
-         * It wraps any {@link RealVector}, and exposes all methods which
-         * do not modify it. Invoking methods which should normally result
-         * in the modification of the calling {@link RealVector} results in
-         * a {@link MathRuntimeException}. It should be noted
-         * that {@link UnmodifiableVector} is <em>not</em> immutable.
-         */
-        return new RealVector() {
-            /**
-             * {@inheritDoc}
-             *
-             * @throws MathRuntimeException in all circumstances.
-             */
-            @Override
-            public RealVector mapToSelf(UnivariateFunction function)
-                throws MathRuntimeException {
-                throw new MathRuntimeException(LocalizedCoreFormats.UNSUPPORTED_OPERATION);
-            }
-
-            /** {@inheritDoc} */
-            @Override
-            public RealVector map(UnivariateFunction function) {
-                return v.map(function);
-            }
-
-            /** {@inheritDoc} */
-            @Override
-            public Iterator<Entry> iterator() {
-                final Iterator<Entry> i = v.iterator();
-                return new Iterator<Entry>() {
-                    /** The current entry. */
-                    private final UnmodifiableEntry e = new UnmodifiableEntry();
-
-                    /** {@inheritDoc} */
-                    @Override
-                    public boolean hasNext() {
-                        return i.hasNext();
-                    }
-
-                    /** {@inheritDoc} */
-                    @Override
-                    public Entry next() {
-                        e.setIndex(i.next().getIndex());
-                        return e;
-                    }
-
-                    /**
-                     * {@inheritDoc}
-                     *
-                     * @throws MathRuntimeException in all
-                     * circumstances.
-                     */
-                    @Override
-                    public void remove() throws MathRuntimeException {
-                        throw new MathRuntimeException(LocalizedCoreFormats.UNSUPPORTED_OPERATION);
-                    }
-                };
-            }
-
-            /** {@inheritDoc} */
-            @Override
-            public Iterator<Entry> sparseIterator() {
-                final Iterator<Entry> i = v.sparseIterator();
-
-                return new Iterator<Entry>() {
-                    /** The current entry. */
-                    private final UnmodifiableEntry e = new UnmodifiableEntry();
-
-                    /** {@inheritDoc} */
-                    @Override
-                    public boolean hasNext() {
-                        return i.hasNext();
-                    }
-
-                    /** {@inheritDoc} */
-                    @Override
-                    public Entry next() {
-                        e.setIndex(i.next().getIndex());
-                        return e;
-                    }
-
-                    /**
-                     * {@inheritDoc}
-                     *
-                     * @throws MathRuntimeException in all
-                     * circumstances.
-                     */
-                    @Override
-                    public void remove()
-                        throws MathRuntimeException {
-                        throw new MathRuntimeException(LocalizedCoreFormats.UNSUPPORTED_OPERATION);
-                    }
-                };
-            }
-
-            /** {@inheritDoc} */
-            @Override
-            public RealVector copy() {
-                return v.copy();
-            }
-
-            /** {@inheritDoc} */
-            @Override
-            public RealVector add(RealVector w)
-                throws MathIllegalArgumentException {
-                return v.add(w);
-            }
-
-            /** {@inheritDoc} */
-            @Override
-            public RealVector subtract(RealVector w)
-                throws MathIllegalArgumentException {
-                return v.subtract(w);
-            }
-
-            /** {@inheritDoc} */
-            @Override
-            public RealVector mapAdd(double d) {
-                return v.mapAdd(d);
-            }
-
-            /**
-             * {@inheritDoc}
-             *
-             * @throws MathRuntimeException in all
-             * circumstances.
-             */
-            @Override
-            public RealVector mapAddToSelf(double d)
-                throws MathRuntimeException {
-                throw new MathRuntimeException(LocalizedCoreFormats.UNSUPPORTED_OPERATION);
-            }
-
-            /** {@inheritDoc} */
-            @Override
-            public RealVector mapSubtract(double d) {
-                return v.mapSubtract(d);
-            }
-
-            /**
-             * {@inheritDoc}
-             *
-             * @throws MathRuntimeException in all
-             * circumstances.
-             */
-            @Override
-            public RealVector mapSubtractToSelf(double d)
-                throws MathRuntimeException {
-                throw new MathRuntimeException(LocalizedCoreFormats.UNSUPPORTED_OPERATION);
-            }
-
-            /** {@inheritDoc} */
-            @Override
-            public RealVector mapMultiply(double d) {
-                return v.mapMultiply(d);
-            }
-
-            /**
-             * {@inheritDoc}
-             *
-             * @throws MathRuntimeException in all
-             * circumstances.
-             */
-            @Override
-            public RealVector mapMultiplyToSelf(double d)
-                throws MathRuntimeException {
-                throw new MathRuntimeException(LocalizedCoreFormats.UNSUPPORTED_OPERATION);
-            }
-
-            /** {@inheritDoc} */
-            @Override
-            public RealVector mapDivide(double d) {
-                return v.mapDivide(d);
-            }
-
-            /**
-             * {@inheritDoc}
-             *
-             * @throws MathRuntimeException in all
-             * circumstances.
-             */
-            @Override
-            public RealVector mapDivideToSelf(double d)
-                throws MathRuntimeException {
-                throw new MathRuntimeException(LocalizedCoreFormats.UNSUPPORTED_OPERATION);
-            }
-
-            /** {@inheritDoc} */
-            @Override
-            public RealVector ebeMultiply(RealVector w)
-                throws MathIllegalArgumentException {
-                return v.ebeMultiply(w);
-            }
-
-            /** {@inheritDoc} */
-            @Override
-            public RealVector ebeDivide(RealVector w)
-                throws MathIllegalArgumentException {
-                return v.ebeDivide(w);
-            }
-
-            /** {@inheritDoc} */
-            @Override
-            public double dotProduct(RealVector w)
-                throws MathIllegalArgumentException {
-                return v.dotProduct(w);
-            }
-
-            /** {@inheritDoc} */
-            @Override
-            public double cosine(RealVector w)
-                throws MathIllegalArgumentException, MathRuntimeException {
-                return v.cosine(w);
-            }
-
-            /** {@inheritDoc} */
-            @Override
-            public double getNorm() {
-                return v.getNorm();
-            }
-
-            /** {@inheritDoc} */
-            @Override
-            public double getL1Norm() {
-                return v.getL1Norm();
-            }
-
-            /** {@inheritDoc} */
-            @Override
-            public double getLInfNorm() {
-                return v.getLInfNorm();
-            }
-
-            /** {@inheritDoc} */
-            @Override
-            public double getDistance(RealVector w)
-                throws MathIllegalArgumentException {
-                return v.getDistance(w);
-            }
-
-            /** {@inheritDoc} */
-            @Override
-            public double getL1Distance(RealVector w)
-                throws MathIllegalArgumentException {
-                return v.getL1Distance(w);
-            }
-
-            /** {@inheritDoc} */
-            @Override
-            public double getLInfDistance(RealVector w)
-                throws MathIllegalArgumentException {
-                return v.getLInfDistance(w);
-            }
-
-            /** {@inheritDoc} */
-            @Override
-            public RealVector unitVector() throws MathRuntimeException {
-                return v.unitVector();
-            }
-
-            /**
-             * {@inheritDoc}
-             *
-             * @throws MathRuntimeException in all
-             * circumstances.
-             */
-            @Override
-            public void unitize() throws MathRuntimeException {
-                throw new MathRuntimeException(LocalizedCoreFormats.UNSUPPORTED_OPERATION);
-            }
-
-            /** {@inheritDoc} */
-            @Override
-            public RealMatrix outerProduct(RealVector w) {
-                return v.outerProduct(w);
-            }
-
-            /** {@inheritDoc} */
-            @Override
-            public double getEntry(int index) throws MathIllegalArgumentException {
-                return v.getEntry(index);
-            }
-
-            /**
-             * {@inheritDoc}
-             *
-             * @throws MathRuntimeException in all
-             * circumstances.
-             */
-            @Override
-            public void setEntry(int index, double value)
-                throws MathRuntimeException {
-                throw new MathRuntimeException(LocalizedCoreFormats.UNSUPPORTED_OPERATION);
-            }
-
-            /**
-             * {@inheritDoc}
-             *
-             * @throws MathRuntimeException in all
-             * circumstances.
-             */
-            @Override
-            public void addToEntry(int index, double value)
-                throws MathRuntimeException {
-                throw new MathRuntimeException(LocalizedCoreFormats.UNSUPPORTED_OPERATION);
-            }
-
-            /** {@inheritDoc} */
-            @Override
-            public int getDimension() {
-                return v.getDimension();
-            }
-
-            /** {@inheritDoc} */
-            @Override
-            public RealVector append(RealVector w) {
-                return v.append(w);
-            }
-
-            /** {@inheritDoc} */
-            @Override
-            public RealVector append(double d) {
-                return v.append(d);
-            }
-
-            /** {@inheritDoc} */
-            @Override
-            public RealVector getSubVector(int index, int n)
-                throws MathIllegalArgumentException {
-                return v.getSubVector(index, n);
-            }
-
-            /**
-             * {@inheritDoc}
-             *
-             * @throws MathRuntimeException in all
-             * circumstances.
-             */
-            @Override
-            public void setSubVector(int index, RealVector w)
-                throws MathRuntimeException {
-                throw new MathRuntimeException(LocalizedCoreFormats.UNSUPPORTED_OPERATION);
-            }
-
-            /**
-             * {@inheritDoc}
-             *
-             * @throws MathRuntimeException in all
-             * circumstances.
-             */
-            @Override
-            public void set(double value)
-                throws MathRuntimeException {
-                throw new MathRuntimeException(LocalizedCoreFormats.UNSUPPORTED_OPERATION);
-            }
-
-            /** {@inheritDoc} */
-            @Override
-            public double[] toArray() {
-                return v.toArray();
-            }
-
-            /** {@inheritDoc} */
-            @Override
-            public boolean isNaN() {
-                return v.isNaN();
-            }
-
-            /** {@inheritDoc} */
-            @Override
-            public boolean isInfinite() {
-                return v.isInfinite();
-            }
-
-            /** {@inheritDoc} */
-            @Override
-            public RealVector combine(double a, double b, RealVector y)
-                throws MathIllegalArgumentException {
-                return v.combine(a, b, y);
-            }
-
-            /**
-             * {@inheritDoc}
-             *
-             * @throws MathRuntimeException in all
-             * circumstances.
-             */
-            @Override
-            public RealVector combineToSelf(double a, double b, RealVector y)
-                throws MathRuntimeException {
-                throw new MathRuntimeException(LocalizedCoreFormats.UNSUPPORTED_OPERATION);
-            }
-
-            /** An entry in the vector. */
-            class UnmodifiableEntry extends Entry {
-                /** {@inheritDoc} */
-                @Override
-                public double getValue() {
-                    return v.getEntry(getIndex());
-                }
-
-                /**
-                 * {@inheritDoc}
-                 *
-                 * @throws MathRuntimeException in all
-                 * circumstances.
-                 */
-                @Override
-                public void setValue(double value)
-                    throws MathRuntimeException {
-                    throw new MathRuntimeException(LocalizedCoreFormats.UNSUPPORTED_OPERATION);
-                }
-            }
-        };
     }
 }

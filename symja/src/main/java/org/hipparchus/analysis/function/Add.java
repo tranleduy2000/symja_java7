@@ -21,10 +21,11 @@ import org.hipparchus.analysis.BivariateFunction;
 
 /**
  * Add the two operands.
- *
  */
 public class Add implements BivariateFunction {
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double value(double x, double y) {
         return x + y;

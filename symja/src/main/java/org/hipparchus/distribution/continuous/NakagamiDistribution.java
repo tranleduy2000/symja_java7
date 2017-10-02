@@ -28,46 +28,52 @@ import org.hipparchus.util.FastMath;
  */
 public class NakagamiDistribution extends AbstractRealDistribution {
 
-    /** Serializable version identifier. */
+    /**
+     * Serializable version identifier.
+     */
     private static final long serialVersionUID = 20141003;
 
-    /** The shape parameter. */
+    /**
+     * The shape parameter.
+     */
     private final double mu;
-    /** The scale parameter. */
+    /**
+     * The scale parameter.
+     */
     private final double omega;
 
     /**
      * Build a new instance.
      *
-     * @param mu shape parameter
+     * @param mu    shape parameter
      * @param omega scale parameter (must be positive)
      * @throws MathIllegalArgumentException if {@code mu < 0.5}
      * @throws MathIllegalArgumentException if {@code omega <= 0}
      */
     public NakagamiDistribution(double mu, double omega)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         this(mu, omega, DEFAULT_SOLVER_ABSOLUTE_ACCURACY);
     }
 
     /**
      * Build a new instance.
      *
-     * @param mu shape parameter
-     * @param omega scale parameter (must be positive)
+     * @param mu                      shape parameter
+     * @param omega                   scale parameter (must be positive)
      * @param inverseAbsoluteAccuracy the maximum absolute error in inverse
-     * cumulative probability estimates (defaults to {@link #DEFAULT_SOLVER_ABSOLUTE_ACCURACY}).
+     *                                cumulative probability estimates (defaults to {@link #DEFAULT_SOLVER_ABSOLUTE_ACCURACY}).
      * @throws MathIllegalArgumentException if {@code mu < 0.5}
      * @throws MathIllegalArgumentException if {@code omega <= 0}
      */
     public NakagamiDistribution(double mu,
                                 double omega,
                                 double inverseAbsoluteAccuracy)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         super(inverseAbsoluteAccuracy);
 
         if (mu < 0.5) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.NUMBER_TOO_SMALL,
-                                                   mu, 0.5);
+                    mu, 0.5);
         }
         if (omega <= 0) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.NOT_POSITIVE_SCALE, omega);
@@ -95,48 +101,62 @@ public class NakagamiDistribution extends AbstractRealDistribution {
         return omega;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double density(double x) {
         if (x <= 0) {
             return 0.0;
         }
         return 2.0 * FastMath.pow(mu, mu) / (Gamma.gamma(mu) * FastMath.pow(omega, mu)) *
-                     FastMath.pow(x, 2 * mu - 1) * FastMath.exp(-mu * x * x / omega);
+                FastMath.pow(x, 2 * mu - 1) * FastMath.exp(-mu * x * x / omega);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double cumulativeProbability(double x) {
         return Gamma.regularizedGammaP(mu, mu * x * x / omega);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getNumericalMean() {
         return Gamma.gamma(mu + 0.5) / Gamma.gamma(mu) * FastMath.sqrt(omega / mu);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getNumericalVariance() {
         double v = Gamma.gamma(mu + 0.5) / Gamma.gamma(mu);
         return omega * (1 - 1 / mu * v * v);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getSupportLowerBound() {
         return 0;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getSupportUpperBound() {
         return Double.POSITIVE_INFINITY;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isSupportConnected() {
         return true;

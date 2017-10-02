@@ -15,8 +15,9 @@ import edu.jas.structure.GcdRingElem;
 
 /**
  * Container for the factors of a squarefree factorization.
- * @author Heinz Kredel
+ *
  * @param <C> coefficient type
+ * @author Heinz Kredel
  */
 
 public class FactorsList<C extends GcdRingElem<C>> implements Serializable {
@@ -42,7 +43,8 @@ public class FactorsList<C extends GcdRingElem<C>> implements Serializable {
 
     /**
      * Constructor.
-     * @param p given GenPolynomial over C.
+     *
+     * @param p    given GenPolynomial over C.
      * @param list irreducible factors of p with coefficients from C.
      */
     public FactorsList(GenPolynomial<C> p, List<GenPolynomial<C>> list) {
@@ -52,10 +54,11 @@ public class FactorsList<C extends GcdRingElem<C>> implements Serializable {
 
     /**
      * Constructor.
-     * @param p given GenPolynomial over C.
-     * @param list irreducible factors of p with coefficients from C.
+     *
+     * @param p     given GenPolynomial over C.
+     * @param list  irreducible factors of p with coefficients from C.
      * @param alist irreducible factors of p with coefficients from an algebraic
-     *            number field.
+     *              number field.
      */
     public FactorsList(GenPolynomial<C> p, List<GenPolynomial<C>> list, List<Factors<C>> alist) {
         poly = p;
@@ -66,6 +69,7 @@ public class FactorsList<C extends GcdRingElem<C>> implements Serializable {
 
     /**
      * Get the String representation.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -99,6 +103,7 @@ public class FactorsList<C extends GcdRingElem<C>> implements Serializable {
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this container.
      * @see edu.jas.structure.ElemFactory#toScript()
      */
@@ -133,6 +138,7 @@ public class FactorsList<C extends GcdRingElem<C>> implements Serializable {
 
     /**
      * Find largest extension field.
+     *
      * @return largest extension field or null if no extension field
      */
     public AlgebraicNumberRing<C> findExtensionField() {

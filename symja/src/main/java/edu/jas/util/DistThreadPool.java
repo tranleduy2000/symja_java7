@@ -5,64 +5,53 @@
 package edu.jas.util;
 
 
+import org.apache.log4j.Logger;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.LinkedList;
-
-import org.apache.log4j.Logger;
 
 
 /**
  * Distributed thread pool. Using stack / list work-pile and Executable Channels
  * and Servers.
+ *
  * @author Heinz Kredel
  */
 
-public class DistThreadPool /*extends ThreadPool*/{
-
-
-    /**
-     * machine file to use.
-     */
-    private final String mfile;
-
-
-    /**
-     * default machine file for test.
-     */
-    private final static String DEFAULT_MFILE = ExecutableChannels.DEFAULT_MFILE;
-
-
-    /**
-     * Number of threads to use.
-     */
-    protected final int threads;
+public class DistThreadPool /*extends ThreadPool*/ {
 
 
     /**
      * Default number of threads to use.
      */
     static final int DEFAULT_SIZE = 3;
-
-
+    /**
+     * default machine file for test.
+     */
+    private final static String DEFAULT_MFILE = ExecutableChannels.DEFAULT_MFILE;
+    private static final Logger logger = Logger.getLogger(DistThreadPool.class);
+    private static final boolean debug = true; //logger.isDebugEnabled();
+    /**
+     * Number of threads to use.
+     */
+    protected final int threads;
     /**
      * Channels to remote executable servers.
      */
     final ExecutableChannels ec;
-
-
+    /**
+     * machine file to use.
+     */
+    private final String mfile;
     /**
      * Array of workers.
      */
     protected DistPoolThread[] workers;
-
-
     /**
      * Number of idle workers.
      */
     protected int idleworkers = 0;
-
-
     /**
      * Work queue / stack.
      */
@@ -70,15 +59,7 @@ public class DistThreadPool /*extends ThreadPool*/{
     // List or Collection is not appropriate
     // LIFO strategy for recursion
     protected LinkedList<Runnable> jobstack; // FIFO strategy for GB
-
-
     protected StrategyEnumeration strategy = StrategyEnumeration.LIFO;
-
-
-    private static final Logger logger = Logger.getLogger(DistThreadPool.class);
-
-
-    private static final boolean debug = true; //logger.isDebugEnabled();
 
 
     /**
@@ -92,6 +73,7 @@ public class DistThreadPool /*extends ThreadPool*/{
 
     /**
      * Constructs a new DistThreadPool with size DEFAULT_SIZE.
+     *
      * @param strategy for job processing.
      */
     public DistThreadPool(StrategyEnumeration strategy) {
@@ -101,6 +83,7 @@ public class DistThreadPool /*extends ThreadPool*/{
 
     /**
      * Constructs a new DistThreadPool with strategy StrategyEnumeration.FIFO.
+     *
      * @param size of the pool.
      */
     public DistThreadPool(int size) {
@@ -110,7 +93,8 @@ public class DistThreadPool /*extends ThreadPool*/{
 
     /**
      * Constructs a new DistThreadPool with strategy StrategyEnumeration.FIFO.
-     * @param size of the pool.
+     *
+     * @param size  of the pool.
      * @param mfile machine file.
      */
     public DistThreadPool(int size, String mfile) {
@@ -120,9 +104,10 @@ public class DistThreadPool /*extends ThreadPool*/{
 
     /**
      * Constructs a new DistThreadPool.
+     *
      * @param strategy for job processing.
-     * @param size of the pool.
-     * @param mfile machine file.
+     * @param size     of the pool.
+     * @param mfile    machine file.
      */
     public DistThreadPool(StrategyEnumeration strategy, int size, String mfile) {
         this.strategy = strategy;
@@ -165,10 +150,10 @@ public class DistThreadPool /*extends ThreadPool*/{
     @Override
     public String toString() {
         StringBuffer s = new StringBuffer("DistThreadPool(");
-        s.append("threads="+threads);
-        s.append(", strategy="+strategy);
-        s.append(", exchan="+ec);
-        s.append(", workers="+workers.length);
+        s.append("threads=" + threads);
+        s.append(", strategy=" + strategy);
+        s.append(", exchan=" + ec);
+        s.append(", workers=" + workers.length);
         s.append(")");
         return s.toString();
     }
@@ -218,8 +203,9 @@ public class DistThreadPool /*extends ThreadPool*/{
 
     /**
      * Terminates the threads.
+     *
      * @param shutDown true, if shut-down of the remote executable servers is
-     *            requested, false, if remote executable servers stay alive.
+     *                 requested, false, if remote executable servers stay alive.
      */
     public void terminate(boolean shutDown) {
         if (shutDown) {
@@ -276,6 +262,7 @@ public class DistThreadPool /*extends ThreadPool*/{
 
     /**
      * adds a job to the workpile.
+     *
      * @param job
      */
     public synchronized void addJob(Runnable job) {
@@ -327,6 +314,7 @@ public class DistThreadPool /*extends ThreadPool*/{
 
     /**
      * check if there are more than n jobs for processing.
+     *
      * @param n Integer
      * @return true, if there are possibly more than n jobs.
      */
@@ -368,6 +356,7 @@ class ShutdownRequest implements Runnable {
 
     /**
      * toString.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -384,21 +373,11 @@ class ShutdownRequest implements Runnable {
 class DistPoolThread extends Thread {
 
 
-    final DistThreadPool pool;
-
-
-    final ExecutableChannels ec;
-
-
-    final int myId;
-
-
     private static final Logger logger = Logger.getLogger(DistPoolThread.class);
-
-
     private static final boolean debug = logger.isDebugEnabled();
-
-
+    final DistThreadPool pool;
+    final ExecutableChannels ec;
+    final int myId;
     boolean working = false;
 
 
@@ -468,7 +447,7 @@ class DistPoolThread extends Thread {
                 } finally {
                     if (debug) {
                         logger.info("receive finally " + myId + " at " + ec + " send job " + job + " received "
-                                    + o + " running " + running);
+                                + o + " running " + running);
                     }
                 }
                 working = false;

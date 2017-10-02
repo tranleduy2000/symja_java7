@@ -33,13 +33,19 @@ import org.hipparchus.util.MathUtils;
 public abstract class AbstractMultipleLinearRegression implements
         MultipleLinearRegression {
 
-    /** X sample data. */
+    /**
+     * X sample data.
+     */
     private RealMatrix xMatrix;
 
-    /** Y sample data. */
+    /**
+     * Y sample data.
+     */
     private RealVector yVector;
 
-    /** Whether or not the regression model includes an intercept.  True means no intercept. */
+    /**
+     * Whether or not the regression model includes an intercept.  True means no intercept.
+     */
     private boolean noIntercept = false;
 
     /**
@@ -96,24 +102,24 @@ public abstract class AbstractMultipleLinearRegression implements
      * <li><code>nobs > nvars</code></li></ul>
      * </p>
      *
-     * @param data input data array
-     * @param nobs number of observations (rows)
+     * @param data  input data array
+     * @param nobs  number of observations (rows)
      * @param nvars number of independent variables (columns, not counting y)
-     * @throws NullArgumentException if the data array is null
+     * @throws NullArgumentException        if the data array is null
      * @throws MathIllegalArgumentException if the length of the data array is not equal
-     * to <code>nobs * (nvars + 1)</code>
+     *                                      to <code>nobs * (nvars + 1)</code>
      * @throws MathIllegalArgumentException if <code>nobs</code> is less than
-     * <code>nvars + 1</code>
+     *                                      <code>nvars + 1</code>
      */
     public void newSampleData(double[] data, int nobs, int nvars) {
         MathUtils.checkNotNull(data, LocalizedCoreFormats.INPUT_ARRAY);
         MathUtils.checkDimension(data.length, nobs * (nvars + 1));
         if (nobs <= nvars) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.INSUFFICIENT_OBSERVED_POINTS_IN_SAMPLE,
-                                                   nobs, nvars + 1);
+                    nobs, nvars + 1);
         }
         double[] y = new double[nobs];
-        final int cols = noIntercept ? nvars: nvars + 1;
+        final int cols = noIntercept ? nvars : nvars + 1;
         double[][] x = new double[nobs][cols];
         int pointer = 0;
         for (int i = 0; i < nobs; i++) {
@@ -133,7 +139,7 @@ public abstract class AbstractMultipleLinearRegression implements
      * Loads new y sample data, overriding any previous data.
      *
      * @param y the array representing the y sample
-     * @throws NullArgumentException if y is null
+     * @throws NullArgumentException        if y is null
      * @throws MathIllegalArgumentException if y is empty
      */
     protected void newYSampleData(double[] y) {
@@ -166,8 +172,9 @@ public abstract class AbstractMultipleLinearRegression implements
      * <p>Note that there is no need to add an initial unitary column (column of 1's) when
      * specifying a model including an intercept term.
      * </p>
+     *
      * @param x the rectangular array representing the x sample
-     * @throws NullArgumentException if x is null
+     * @throws NullArgumentException        if x is null
      * @throws MathIllegalArgumentException if x is empty
      * @throws MathIllegalArgumentException if x is not rectangular
      */
@@ -203,13 +210,13 @@ public abstract class AbstractMultipleLinearRegression implements
      *
      * @param x the [n,k] array representing the x data
      * @param y the [n,1] array representing the y data
-     * @throws NullArgumentException if {@code x} or {@code y} is null
+     * @throws NullArgumentException        if {@code x} or {@code y} is null
      * @throws MathIllegalArgumentException if {@code x} and {@code y} do not
-     * have the same length
+     *                                      have the same length
      * @throws MathIllegalArgumentException if {@code x} or {@code y} are zero-length
      * @throws MathIllegalArgumentException if the number of rows of {@code x}
-     * is not larger than the number of columns + 1 if the model has an intercept;
-     * or the number of columns if there is no intercept term
+     *                                      is not larger than the number of columns + 1 if the model has an intercept;
+     *                                      or the number of columns if there is no intercept term
      */
     protected void validateSampleData(double[][] x, double[] y) throws MathIllegalArgumentException {
         if ((x == null) || (y == null)) {
@@ -230,17 +237,17 @@ public abstract class AbstractMultipleLinearRegression implements
      * Validates that the x data and covariance matrix have the same
      * number of rows and that the covariance matrix is square.
      *
-     * @param x the [n,k] array representing the x sample
+     * @param x          the [n,k] array representing the x sample
      * @param covariance the [n,n] array representing the covariance matrix
      * @throws MathIllegalArgumentException if the number of rows in x is not equal
-     * to the number of rows in covariance
+     *                                      to the number of rows in covariance
      * @throws MathIllegalArgumentException if the covariance matrix is not square
      */
     protected void validateCovarianceData(double[][] x, double[][] covariance) {
         MathUtils.checkDimension(x.length, covariance.length);
         if (covariance.length > 0 && covariance.length != covariance[0].length) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.NON_SQUARE_MATRIX,
-                                                   covariance.length, covariance[0].length);
+                    covariance.length, covariance[0].length);
         }
     }
 
@@ -351,13 +358,13 @@ public abstract class AbstractMultipleLinearRegression implements
     protected double calculateErrorVariance() {
         RealVector residuals = calculateResiduals();
         return residuals.dotProduct(residuals) /
-               (xMatrix.getRowDimension() - xMatrix.getColumnDimension());
+                (xMatrix.getRowDimension() - xMatrix.getColumnDimension());
     }
 
     /**
      * Calculates the residuals of multiple linear regression in matrix
      * notation.
-     *
+     * <p>
      * <pre>
      * u = y - X * b
      * </pre>

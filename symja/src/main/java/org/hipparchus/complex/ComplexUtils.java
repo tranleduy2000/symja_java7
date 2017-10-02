@@ -29,7 +29,8 @@ public class ComplexUtils {
     /**
      * Default constructor.
      */
-    private ComplexUtils() {}
+    private ComplexUtils() {
+    }
 
     /**
      * Creates a complex number from the given polar representation.
@@ -50,15 +51,15 @@ public class ComplexUtils {
      * polar2Complex(INFINITY, -&pi;/4) = INFINITY - INFINITY i
      * polar2Complex(INFINITY, 5&pi;/4) = -INFINITY - INFINITY i </code></pre></p>
      *
-     * @param r the modulus of the complex number to create
-     * @param theta  the argument of the complex number to create
+     * @param r     the modulus of the complex number to create
+     * @param theta the argument of the complex number to create
      * @return <code>r&middot;e<sup>i&middot;theta</sup></code>
      * @throws MathIllegalArgumentException if {@code r} is negative.
      */
     public static Complex polar2Complex(double r, double theta) throws MathIllegalArgumentException {
         if (r < 0) {
             throw new MathIllegalArgumentException(
-                  LocalizedCoreFormats.NEGATIVE_COMPLEX_MODULE, r);
+                    LocalizedCoreFormats.NEGATIVE_COMPLEX_MODULE, r);
         }
         return new Complex(r * FastMath.cos(theta), r * FastMath.sin(theta));
     }

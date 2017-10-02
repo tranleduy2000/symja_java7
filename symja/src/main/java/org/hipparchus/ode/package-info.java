@@ -15,11 +15,10 @@
  * limitations under the License.
  */
 /**
- *
  * <p>
  * This package provides classes to solve Ordinary Differential Equations problems.
  * </p>
- *
+ * <p>
  * <p>
  * This package solves Initial Value Problems of the form
  * <code>y'=f(t,y)</code> with <code>t<sub>0</sub></code> and
@@ -30,7 +29,7 @@
  * <code>dy(t)/dy(t<sub>0</sub>)</code> or the derivatives with
  * respect to some ODE parameters <code>dy(t)/dp</code>.
  * </p>
- *
+ * <p>
  * <p>
  * All integrators provide dense output. This means that besides
  * computing the state vector at discrete times, they also provide a
@@ -40,7 +39,7 @@
  * abstract class, which are made available to the user at the end of
  * each step.
  * </p>
- *
+ * <p>
  * <p>
  * All integrators handle multiple discrete events detection based on switching
  * functions. This means that the integrator can be driven by user specified
@@ -53,7 +52,7 @@
  * accurate dense output even close to the discontinuity. See
  * {@link org.hipparchus.ode.events} for more on how events are handled.
  * </p>
- *
+ * <p>
  * <p>
  * The user should describe his problem in his own classes
  * (<code>UserProblem</code> in the diagram below) which should implement
@@ -63,7 +62,7 @@
  * {@link org.hipparchus.ode.ODEIntegrator
  * ODEIntegrator} interface.
  * </p>
- *
+ * <p>
  * <p>
  * The solution of the integration problem is provided by two means. The
  * first one is aimed towards simple use: the state vector at the end of
@@ -82,7 +81,7 @@
  * appropriately during the integration process, allowing the user to
  * process intermediate results. The default step handler does nothing.
  * </p>
- *
+ * <p>
  * <p>
  * {@link org.hipparchus.ode.DenseOutputModel
  * DenseOutputModel} is a special-purpose step handler that is able
@@ -96,14 +95,14 @@
  * result of the integration is stored, there is no reference to the
  * integrated problem by itself.
  * </p>
- *
+ * <p>
  * <p>
  * Custom implementations can be developed for specific needs. As an example,
  * if an application is to be completely driven by the integration
  * process, then most of the application code will be run inside a step
  * handler specific to this application.
  * </p>
- *
+ * <p>
  * <p>
  * Some integrators (the simple ones) use fixed steps that are set at
  * creation time. The more efficient integrators use variable steps that
@@ -122,7 +121,7 @@
  * prefers to retain full control over the integration or if the
  * automatic guess is wrong.
  * </p>
- *
+ * <p>
  * <p>
  * <table border="1" align="center">
  * <tr BGCOLOR="#CCCCFF"><td colspan=2><font size="+2">Fixed Step Integrators</font></td></tr>
@@ -135,7 +134,7 @@
  * <tr><td>{@link org.hipparchus.ode.nonstiff.LutherIntegrator Luther}</td><td>6</td></tr>
  * </table>
  * </p>
- *
+ * <p>
  * <table border="1" align="center">
  * <tr BGCOLOR="#CCCCFF"><td colspan=3><font size="+2">Adaptive Stepsize Integrators</font></td></tr>
  * <tr BGCOLOR="#EEEEFF"><font size="+1"><td>Name</td><td>Integration Order</td><td>Error Estimation Order</td></font></tr>
@@ -147,14 +146,12 @@
  * <tr><td>{@link org.hipparchus.ode.nonstiff.AdamsMoultonIntegrator Adams-Moulton}</td><td>variable</td><td>variable</td></tr>
  * </table>
  * </p>
- *
+ * <p>
  * <p>
  * In the table above, the {@link org.hipparchus.ode.nonstiff.AdamsBashforthIntegrator
  * Adams-Bashforth} and {@link org.hipparchus.ode.nonstiff.AdamsMoultonIntegrator
  * Adams-Moulton} integrators appear as variable-step ones. This is an extension
  * to the classical algorithms using the Nordsieck vector representation.
  * </p>
- *
- *
  */
 package org.hipparchus.ode;

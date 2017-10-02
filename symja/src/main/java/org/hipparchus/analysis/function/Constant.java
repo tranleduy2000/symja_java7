@@ -22,10 +22,11 @@ import org.hipparchus.analysis.differentiation.UnivariateDifferentiableFunction;
 
 /**
  * Constant function.
- *
  */
 public class Constant implements UnivariateDifferentiableFunction {
-    /** Constant. */
+    /**
+     * Constant.
+     */
     private final double c;
 
     /**
@@ -35,13 +36,16 @@ public class Constant implements UnivariateDifferentiableFunction {
         this.c = c;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double value(double x) {
         return c;
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     @Override
     public DerivativeStructure value(final DerivativeStructure t) {

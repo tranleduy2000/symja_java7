@@ -5,10 +5,10 @@
 package edu.jas.gb;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.List;
 import java.util.Map;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.poly.ExpVector;
 import edu.jas.poly.GenPolynomial;
@@ -18,12 +18,13 @@ import edu.jas.structure.RingElem;
 
 /**
  * Polynomial reduction sequential use algorithm. Implements normalform.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
 
 public class ReductionSeq<C extends RingElem<C>> // should be FieldElem<C>>
-                extends ReductionAbstract<C> {
+        extends ReductionAbstract<C> {
 
 
     private static final Logger logger = Logger.getLogger(ReductionSeq.class);
@@ -38,6 +39,7 @@ public class ReductionSeq<C extends RingElem<C>> // should be FieldElem<C>>
 
     /**
      * Normalform.
+     *
      * @param Ap polynomial.
      * @param Pp polynomial list.
      * @return nf(Ap) with respect to Pp.
@@ -119,6 +121,7 @@ public class ReductionSeq<C extends RingElem<C>> // should be FieldElem<C>>
 
     /**
      * Normalform with respect to marked head terms.
+     *
      * @param Mp leading monomial list.
      * @param Pp polynomial list.
      * @param Ap polynomial.
@@ -127,7 +130,7 @@ public class ReductionSeq<C extends RingElem<C>> // should be FieldElem<C>>
     @Override
     @SuppressWarnings("unchecked")
     public GenPolynomial<C> normalformMarked(List<Monomial<C>> Mp, List<GenPolynomial<C>> Pp,
-                    GenPolynomial<C> Ap) {
+                                             GenPolynomial<C> Ap) {
         if (Pp == null || Pp.isEmpty()) {
             return Ap;
         }
@@ -206,7 +209,7 @@ public class ReductionSeq<C extends RingElem<C>> // should be FieldElem<C>>
                 S = S.subtractMultiple(b, f, p[i]);
                 if (e.equals(S.leadingExpVector())) {
                     throw new RuntimeException(
-                                    "something is wrong: ht not descending e = " + e + ", S = " + S);
+                            "something is wrong: ht not descending e = " + e + ", S = " + S);
                 }
                 //System.out.println("NF R = " + R.leadingExpVector() + ", S = " + S.leadingExpVector() + ", e = " + e + ", f = " + f + ", #S = " + S.length());
             }
@@ -219,14 +222,15 @@ public class ReductionSeq<C extends RingElem<C>> // should be FieldElem<C>>
 
     /**
      * Normalform with recording.
+     *
      * @param row recording matrix, is modified.
-     * @param Pp a polynomial list for reduction.
-     * @param Ap a polynomial.
-     * @return nf(Pp,Ap), the normal form of Ap wrt. Pp.
+     * @param Pp  a polynomial list for reduction.
+     * @param Ap  a polynomial.
+     * @return nf(Pp, Ap), the normal form of Ap wrt. Pp.
      */
     @SuppressWarnings("unchecked")
     public GenPolynomial<C> normalform(List<GenPolynomial<C>> row, List<GenPolynomial<C>> Pp,
-                    GenPolynomial<C> Ap) {
+                                       GenPolynomial<C> Ap) {
         if (Pp == null || Pp.isEmpty()) {
             return Ap;
         }

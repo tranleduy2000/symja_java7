@@ -5,12 +5,12 @@
 package edu.jas.ufd;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.arith.BigInteger;
 import edu.jas.arith.BigRational;
@@ -30,6 +30,7 @@ import edu.jas.util.ListUtil;
 /**
  * Polynomial ufd utilities. For example conversion between different representations
  * and Kronecker substitution.
+ *
  * @author Heinz Kredel
  */
 
@@ -46,12 +47,13 @@ public class PolyUfdUtil {
      * Integral polynomial from rational function coefficients. Represent as
      * polynomial with integral polynomial coefficients by multiplication with
      * the lcm of the numerators of the rational function coefficients.
+     *
      * @param fac result polynomial factory.
-     * @param A polynomial with rational function coefficients to be converted.
+     * @param A   polynomial with rational function coefficients to be converted.
      * @return polynomial with integral polynomial coefficients.
      */
     public static <C extends GcdRingElem<C>> GenPolynomial<GenPolynomial<C>> integralFromQuotientCoefficients(
-                    GenPolynomialRing<GenPolynomial<C>> fac, GenPolynomial<Quotient<C>> A) {
+            GenPolynomialRing<GenPolynomial<C>> fac, GenPolynomial<Quotient<C>> A) {
         GenPolynomial<GenPolynomial<C>> B = fac.getZERO().copy();
         if (A == null || A.isZERO()) {
             return B;
@@ -93,13 +95,14 @@ public class PolyUfdUtil {
      * Integral polynomial from rational function coefficients. Represent as
      * polynomial with integral polynomial coefficients by multiplication with
      * the lcm of the numerators of the rational function coefficients.
+     *
      * @param fac result polynomial factory.
-     * @param L list of polynomial with rational function coefficients to be
+     * @param L   list of polynomial with rational function coefficients to be
      *            converted.
      * @return list of polynomials with integral polynomial coefficients.
      */
     public static <C extends GcdRingElem<C>> List<GenPolynomial<GenPolynomial<C>>> integralFromQuotientCoefficients(
-                    GenPolynomialRing<GenPolynomial<C>> fac, Collection<GenPolynomial<Quotient<C>>> L) {
+            GenPolynomialRing<GenPolynomial<C>> fac, Collection<GenPolynomial<Quotient<C>>> L) {
         if (L == null) {
             return null;
         }
@@ -114,13 +117,14 @@ public class PolyUfdUtil {
     /**
      * Rational function from integral polynomial coefficients. Represent as
      * polynomial with type Quotient<C> coefficients.
+     *
      * @param fac result polynomial factory.
-     * @param A polynomial with integral polynomial coefficients to be
+     * @param A   polynomial with integral polynomial coefficients to be
      *            converted.
      * @return polynomial with type Quotient<C> coefficients.
      */
     public static <C extends GcdRingElem<C>> GenPolynomial<Quotient<C>> quotientFromIntegralCoefficients(
-                    GenPolynomialRing<Quotient<C>> fac, GenPolynomial<GenPolynomial<C>> A) {
+            GenPolynomialRing<Quotient<C>> fac, GenPolynomial<GenPolynomial<C>> A) {
         GenPolynomial<Quotient<C>> B = fac.getZERO().copy();
         if (A == null || A.isZERO()) {
             return B;
@@ -143,13 +147,14 @@ public class PolyUfdUtil {
     /**
      * Rational function from integral polynomial coefficients. Represent as
      * polynomial with type Quotient<C> coefficients.
+     *
      * @param fac result polynomial factory.
-     * @param L list of polynomials with integral polynomial coefficients to be
+     * @param L   list of polynomials with integral polynomial coefficients to be
      *            converted.
      * @return list of polynomials with type Quotient<C> coefficients.
      */
     public static <C extends GcdRingElem<C>> List<GenPolynomial<Quotient<C>>> quotientFromIntegralCoefficients(
-                    GenPolynomialRing<Quotient<C>> fac, Collection<GenPolynomial<GenPolynomial<C>>> L) {
+            GenPolynomialRing<Quotient<C>> fac, Collection<GenPolynomial<GenPolynomial<C>>> L) {
         if (L == null) {
             return null;
         }
@@ -164,13 +169,14 @@ public class PolyUfdUtil {
     /**
      * From BigInteger coefficients. Represent as polynomial with type
      * GenPolynomial&lt;C&gt; coefficients, e.g. ModInteger or BigRational.
+     *
      * @param fac result polynomial factory.
-     * @param A polynomial with GenPolynomial&lt;BigInteger&gt; coefficients to
+     * @param A   polynomial with GenPolynomial&lt;BigInteger&gt; coefficients to
      *            be converted.
      * @return polynomial with type GenPolynomial&lt;C&gt; coefficients.
      */
     public static <C extends RingElem<C>> GenPolynomial<GenPolynomial<C>> fromIntegerCoefficients(
-                    GenPolynomialRing<GenPolynomial<C>> fac, GenPolynomial<GenPolynomial<BigInteger>> A) {
+            GenPolynomialRing<GenPolynomial<C>> fac, GenPolynomial<GenPolynomial<BigInteger>> A) {
         GenPolynomial<GenPolynomial<C>> B = fac.getZERO().copy();
         if (A == null || A.isZERO()) {
             return B;
@@ -180,7 +186,7 @@ public class PolyUfdUtil {
         for (Map.Entry<ExpVector, GenPolynomial<BigInteger>> y : A.getMap().entrySet()) {
             ExpVector e = y.getKey();
             GenPolynomial<BigInteger> a = y.getValue();
-            GenPolynomial<C> p = PolyUtil.<C> fromIntegerCoefficients(rfac, a);
+            GenPolynomial<C> p = PolyUtil.<C>fromIntegerCoefficients(rfac, a);
             if (!p.isZERO()) {
                 //B = B.sum( p, e ); // inefficient
                 B.doPutToMap(e, p);
@@ -193,14 +199,15 @@ public class PolyUfdUtil {
     /**
      * From BigInteger coefficients. Represent as polynomial with type
      * GenPolynomial&lt;C&gt; coefficients, e.g. ModInteger or BigRational.
+     *
      * @param fac result polynomial factory.
-     * @param L polynomial list with GenPolynomial&lt;BigInteger&gt;
+     * @param L   polynomial list with GenPolynomial&lt;BigInteger&gt;
      *            coefficients to be converted.
      * @return polynomial list with polynomials with type GenPolynomial&lt;C&gt;
-     *         coefficients.
+     * coefficients.
      */
     public static <C extends RingElem<C>> List<GenPolynomial<GenPolynomial<C>>> fromIntegerCoefficients(
-                    GenPolynomialRing<GenPolynomial<C>> fac, List<GenPolynomial<GenPolynomial<BigInteger>>> L) {
+            GenPolynomialRing<GenPolynomial<C>> fac, List<GenPolynomial<GenPolynomial<BigInteger>>> L) {
         List<GenPolynomial<GenPolynomial<C>>> K = null;
         if (L == null) {
             return K;
@@ -221,13 +228,14 @@ public class PolyUfdUtil {
     /**
      * BigInteger from BigRational coefficients. Represent as polynomial with type
      * GenPolynomial&lt;BigInteger&gt; coefficients.
+     *
      * @param fac result polynomial factory.
-     * @param A polynomial with GenPolynomial&lt;BigRational&gt; coefficients to
+     * @param A   polynomial with GenPolynomial&lt;BigRational&gt; coefficients to
      *            be converted.
      * @return polynomial with type GenPolynomial&lt;BigInteger&gt; coefficients.
      */
     public static GenPolynomial<GenPolynomial<BigInteger>> integerFromRationalCoefficients(
-                    GenPolynomialRing<GenPolynomial<BigInteger>> fac, GenPolynomial<GenPolynomial<BigRational>> A) {
+            GenPolynomialRing<GenPolynomial<BigInteger>> fac, GenPolynomial<GenPolynomial<BigRational>> A) {
         GenPolynomial<GenPolynomial<BigInteger>> B = fac.getZERO().copy();
         if (A == null || A.isZERO()) {
             return B;
@@ -251,14 +259,15 @@ public class PolyUfdUtil {
     /**
      * BigInteger from BigRational coefficients. Represent as polynomial with type
      * GenPolynomial&lt;BigInteger&gt; coefficients.
+     *
      * @param fac result polynomial factory.
-     * @param L polynomial list with GenPolynomial&lt;BigRational&gt;
+     * @param L   polynomial list with GenPolynomial&lt;BigRational&gt;
      *            coefficients to be converted.
      * @return polynomial list with polynomials with type GenPolynomial&lt;BigInteger&gt;
-     *         coefficients.
+     * coefficients.
      */
     public static List<GenPolynomial<GenPolynomial<BigInteger>>> integerFromRationalCoefficients(
-                      GenPolynomialRing<GenPolynomial<BigInteger>> fac, List<GenPolynomial<GenPolynomial<BigRational>>> L) {
+            GenPolynomialRing<GenPolynomial<BigInteger>> fac, List<GenPolynomial<GenPolynomial<BigRational>>> L) {
         List<GenPolynomial<GenPolynomial<BigInteger>>> K = null;
         if (L == null) {
             return K;
@@ -278,12 +287,13 @@ public class PolyUfdUtil {
     /**
      * Introduce lower variable. Represent as polynomial with type
      * GenPolynomial&lt;C&gt; coefficients.
+     *
      * @param rfac result polynomial factory.
-     * @param A polynomial to be extended.
+     * @param A    polynomial to be extended.
      * @return polynomial with type GenPolynomial&lt;C&gt; coefficients.
      */
     public static <C extends GcdRingElem<C>> GenPolynomial<GenPolynomial<C>> introduceLowerVariable(
-                    GenPolynomialRing<GenPolynomial<C>> rfac, GenPolynomial<C> A) {
+            GenPolynomialRing<GenPolynomial<C>> rfac, GenPolynomial<C> A) {
         if (A == null || rfac == null) {
             return null;
         }
@@ -291,7 +301,7 @@ public class PolyUfdUtil {
         if (Pc.isZERO()) {
             return Pc;
         }
-        Pc = PolyUtil.<C> switchVariables(Pc);
+        Pc = PolyUtil.<C>switchVariables(Pc);
         return Pc;
     }
 
@@ -299,13 +309,14 @@ public class PolyUfdUtil {
     /**
      * From AlgebraicNumber coefficients. Represent as polynomial with type
      * GenPolynomial&lt;C&gt; coefficients, e.g. ModInteger or BigRational.
+     *
      * @param rfac result polynomial factory.
-     * @param A polynomial with AlgebraicNumber coefficients to be converted.
-     * @param k for (y-k x) substitution.
+     * @param A    polynomial with AlgebraicNumber coefficients to be converted.
+     * @param k    for (y-k x) substitution.
      * @return polynomial with type GenPolynomial&lt;C&gt; coefficients.
      */
     public static <C extends GcdRingElem<C>> GenPolynomial<GenPolynomial<C>> substituteFromAlgebraicCoefficients(
-                    GenPolynomialRing<GenPolynomial<C>> rfac, GenPolynomial<AlgebraicNumber<C>> A, long k) {
+            GenPolynomialRing<GenPolynomial<C>> rfac, GenPolynomial<AlgebraicNumber<C>> A, long k) {
         if (A == null || rfac == null) {
             return null;
         }
@@ -323,9 +334,9 @@ public class PolyUfdUtil {
             logger.info("x - k alpha: " + s);
         }
         // substitute, convert and switch
-        GenPolynomial<AlgebraicNumber<C>> B = PolyUtil.<AlgebraicNumber<C>> substituteMain(A, s);
-        GenPolynomial<GenPolynomial<C>> Pc = PolyUtil.<C> fromAlgebraicCoefficients(rfac, B); // Q[alpha][x]
-        Pc = PolyUtil.<C> switchVariables(Pc); // Q[x][alpha]
+        GenPolynomial<AlgebraicNumber<C>> B = PolyUtil.<AlgebraicNumber<C>>substituteMain(A, s);
+        GenPolynomial<GenPolynomial<C>> Pc = PolyUtil.<C>fromAlgebraicCoefficients(rfac, B); // Q[alpha][x]
+        Pc = PolyUtil.<C>switchVariables(Pc); // Q[x][alpha]
         return Pc;
     }
 
@@ -333,14 +344,15 @@ public class PolyUfdUtil {
     /**
      * Convert to AlgebraicNumber coefficients. Represent as polynomial with
      * AlgebraicNumber<C> coefficients, C is e.g. ModInteger or BigRational.
+     *
      * @param pfac result polynomial factory.
-     * @param A polynomial with GenPolynomial&lt;BigInteger&gt; coefficients to
-     *            be converted.
-     * @param k for (y-k x) substitution.
+     * @param A    polynomial with GenPolynomial&lt;BigInteger&gt; coefficients to
+     *             be converted.
+     * @param k    for (y-k x) substitution.
      * @return polynomial with AlgebraicNumber&lt;C&gt; coefficients.
      */
     public static <C extends GcdRingElem<C>> GenPolynomial<AlgebraicNumber<C>> substituteConvertToAlgebraicCoefficients(
-                    GenPolynomialRing<AlgebraicNumber<C>> pfac, GenPolynomial<C> A, long k) {
+            GenPolynomialRing<AlgebraicNumber<C>> pfac, GenPolynomial<C> A, long k) {
         if (A == null || pfac == null) {
             return null;
         }
@@ -348,7 +360,7 @@ public class PolyUfdUtil {
             return pfac.getZERO();
         }
         // convert to Q(alpha)[x]
-        GenPolynomial<AlgebraicNumber<C>> B = PolyUtil.<C> convertToAlgebraicCoefficients(pfac, A);
+        GenPolynomial<AlgebraicNumber<C>> B = PolyUtil.<C>convertToAlgebraicCoefficients(pfac, A);
         // setup x .+. k alpha for back substitution
         GenPolynomial<AlgebraicNumber<C>> x = pfac.univariate(0);
         AlgebraicNumberRing<C> afac = (AlgebraicNumberRing<C>) pfac.coFac;
@@ -356,13 +368,14 @@ public class PolyUfdUtil {
         AlgebraicNumber<C> ka = afac.fromInteger(k);
         GenPolynomial<AlgebraicNumber<C>> s = x.sum(ka.multiply(alpha)); // x + k alpha
         // substitute
-        GenPolynomial<AlgebraicNumber<C>> N = PolyUtil.<AlgebraicNumber<C>> substituteMain(B, s);
+        GenPolynomial<AlgebraicNumber<C>> N = PolyUtil.<AlgebraicNumber<C>>substituteMain(B, s);
         return N;
     }
 
 
     /**
      * Norm of a polynomial with AlgebraicNumber coefficients.
+     *
      * @param A polynomial from GenPolynomial&lt;AlgebraicNumber&lt;C&gt;&gt;.
      * @param k for (y - k x) substitution.
      * @return norm(A) = res_x(A(x,y),m(x)) in GenPolynomialRing&lt;C&gt;.
@@ -388,13 +401,13 @@ public class PolyUfdUtil {
         GenPolynomialRing<GenPolynomial<C>> rfac = new GenPolynomialRing<GenPolynomial<C>>(cfac, pfac);
 
         // transform minimal polynomial to bi-variate polynomial
-        GenPolynomial<GenPolynomial<C>> Ac = PolyUfdUtil.<C> introduceLowerVariable(rfac, agen);
+        GenPolynomial<GenPolynomial<C>> Ac = PolyUfdUtil.<C>introduceLowerVariable(rfac, agen);
         //System.out.println("Ac = " + Ac.toScript());
 
         // transform to bi-variate polynomial, 
         // switching varaible sequence from Q[alpha][x] to Q[X][alpha]
-        GenPolynomial<GenPolynomial<C>> Pc = PolyUfdUtil.<C> substituteFromAlgebraicCoefficients(rfac, A, k);
-        Pc = PolyUtil.<C> monic(Pc);
+        GenPolynomial<GenPolynomial<C>> Pc = PolyUfdUtil.<C>substituteFromAlgebraicCoefficients(rfac, A, k);
+        Pc = PolyUtil.<C>monic(Pc);
         //System.out.println("Pc = " + Pc.toScript());
 
         GreatestCommonDivisorSubres<C> engine = new GreatestCommonDivisorSubres<C>( /*cfac.coFac*/);
@@ -410,6 +423,7 @@ public class PolyUfdUtil {
 
     /**
      * Norm of a polynomial with AlgebraicNumber coefficients.
+     *
      * @param A polynomial from GenPolynomial&lt;AlgebraicNumber&lt;C&gt;&gt;.
      * @return norm(A) = resultant_x( A(x,y), m(x) ) in K[y].
      */
@@ -421,6 +435,7 @@ public class PolyUfdUtil {
     /**
      * Ensure that the field property is determined. Checks if modul is
      * irreducible and modifies the algebraic number ring.
+     *
      * @param afac algebraic number ring.
      */
     public static <C extends GcdRingElem<C>> void ensureFieldProperty(AlgebraicNumberRing<C> afac) {
@@ -431,7 +446,7 @@ public class PolyUfdUtil {
             afac.setField(false);
             return;
         }
-        Factorization<C> mf = FactorFactory.<C> getImplementation(afac.ring);
+        Factorization<C> mf = FactorFactory.<C>getImplementation(afac.ring);
         if (mf.isIrreducible(afac.modul)) {
             afac.setField(true);
         } else {
@@ -443,6 +458,7 @@ public class PolyUfdUtil {
     /**
      * Kronecker substitution. Substitute x_i by x**d**(i-1) to construct a
      * univariate polynomial.
+     *
      * @param A polynomial to be converted.
      * @return a univariate polynomial.
      */
@@ -458,6 +474,7 @@ public class PolyUfdUtil {
     /**
      * Kronecker substitution. Substitute x_i by x**d**(i-1) to construct a
      * univariate polynomial.
+     *
      * @param A polynomial to be converted.
      * @return a univariate polynomial.
      */
@@ -489,29 +506,31 @@ public class PolyUfdUtil {
 
 
     /**
-     * Kronecker substitution. Substitute x_i by x**d**(i-1) to construct 
+     * Kronecker substitution. Substitute x_i by x**d**(i-1) to construct
      * univariate polynomials.
+     *
      * @param A list of polynomials to be converted.
      * @return a list of univariate polynomials.
      */
     public static <C extends GcdRingElem<C>> List<GenPolynomial<C>> substituteKronecker(
-                    List<GenPolynomial<C>> A, int d) {
+            List<GenPolynomial<C>> A, int d) {
         if (A == null || A.get(0) == null) {
             return null;
         }
-        return ListUtil.<GenPolynomial<C>, GenPolynomial<C>> map(A, new SubstKronecker<C>(d));
+        return ListUtil.<GenPolynomial<C>, GenPolynomial<C>>map(A, new SubstKronecker<C>(d));
     }
 
 
     /**
      * Kronecker back substitution. Substitute x**d**(i-1) to x_i to construct a
      * multivariate polynomial.
-     * @param A polynomial to be converted.
+     *
+     * @param A   polynomial to be converted.
      * @param fac result polynomial factory.
      * @return a multivariate polynomial.
      */
     public static <C extends GcdRingElem<C>> GenPolynomial<C> backSubstituteKronecker(
-                    GenPolynomialRing<C> fac, GenPolynomial<C> A, long d) {
+            GenPolynomialRing<C> fac, GenPolynomial<C> A, long d) {
         if (A == null) {
             return A;
         }
@@ -540,15 +559,16 @@ public class PolyUfdUtil {
 
 
     /**
-     * Kronecker back substitution. Substitute x**d**(i-1) to x_i to construct 
+     * Kronecker back substitution. Substitute x**d**(i-1) to x_i to construct
      * multivariate polynomials.
-     * @param A list of polynomials to be converted.
+     *
+     * @param A   list of polynomials to be converted.
      * @param fac result polynomial factory.
      * @return a list of multivariate polynomials.
      */
     public static <C extends GcdRingElem<C>> List<GenPolynomial<C>> backSubstituteKronecker(
-                    GenPolynomialRing<C> fac, List<GenPolynomial<C>> A, long d) {
-        return ListUtil.<GenPolynomial<C>, GenPolynomial<C>> map(A, new BackSubstKronecker<C>(fac, d));
+            GenPolynomialRing<C> fac, List<GenPolynomial<C>> A, long d) {
+        return ListUtil.<GenPolynomial<C>, GenPolynomial<C>>map(A, new BackSubstKronecker<C>(fac, d));
     }
 
 }
@@ -572,7 +592,7 @@ class SubstKronecker<C extends GcdRingElem<C>> implements UnaryFunctor<GenPolyno
         if (c == null) {
             return null;
         }
-        return PolyUfdUtil.<C> substituteKronecker(c, d);
+        return PolyUfdUtil.<C>substituteKronecker(c, d);
     }
 }
 
@@ -581,7 +601,7 @@ class SubstKronecker<C extends GcdRingElem<C>> implements UnaryFunctor<GenPolyno
  * Kronecker back substitutuion functor.
  */
 class BackSubstKronecker<C extends GcdRingElem<C>> implements
-                UnaryFunctor<GenPolynomial<C>, GenPolynomial<C>> {
+        UnaryFunctor<GenPolynomial<C>, GenPolynomial<C>> {
 
 
     final long d;
@@ -600,6 +620,6 @@ class BackSubstKronecker<C extends GcdRingElem<C>> implements
         if (c == null) {
             return null;
         }
-        return PolyUfdUtil.<C> backSubstituteKronecker(fac, c, d);
+        return PolyUfdUtil.<C>backSubstituteKronecker(fac, c, d);
     }
 }

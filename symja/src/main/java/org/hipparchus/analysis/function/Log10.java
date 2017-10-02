@@ -23,17 +23,19 @@ import org.hipparchus.util.FastMath;
 
 /**
  * Base 10 logarithm function.
- *
  */
 public class Log10 implements UnivariateDifferentiableFunction {
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double value(double x) {
         return FastMath.log10(x);
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     @Override
     public DerivativeStructure value(final DerivativeStructure t) {

@@ -5,9 +5,9 @@
 package edu.jas.gbufd;
 
 
-import java.util.List;
-
 import org.apache.log4j.Logger;
+
+import java.util.List;
 
 import edu.jas.poly.GenPolynomial;
 import edu.jas.poly.GenPolynomialRing;
@@ -20,6 +20,7 @@ import edu.jas.ufd.GreatestCommonDivisorAbstract;
 /**
  * Multiplicative set of co-prime polynomials. a, b in M implies a*b in M, 1 in
  * M.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
@@ -40,6 +41,7 @@ public class MultiplicativeSetCoPrime<C extends GcdRingElem<C>> extends Multipli
 
     /**
      * MultiplicativeSet constructor. Constructs an empty multiplicative set.
+     *
      * @param ring polynomial ring factory for coefficients.
      */
     public MultiplicativeSetCoPrime(GenPolynomialRing<C> ring) {
@@ -50,12 +52,13 @@ public class MultiplicativeSetCoPrime<C extends GcdRingElem<C>> extends Multipli
 
     /**
      * MultiplicativeSet constructor.
+     *
      * @param ring polynomial ring factory for coefficients.
-     * @param ms a list of non-zero polynomials.
-     * @param eng gcd computation engine.
+     * @param ms   a list of non-zero polynomials.
+     * @param eng  gcd computation engine.
      */
     protected MultiplicativeSetCoPrime(GenPolynomialRing<C> ring, List<GenPolynomial<C>> ms,
-                    GreatestCommonDivisorAbstract<C> eng) {
+                                       GreatestCommonDivisorAbstract<C> eng) {
         super(ring, ms);
         engine = eng;
     }
@@ -63,6 +66,7 @@ public class MultiplicativeSetCoPrime<C extends GcdRingElem<C>> extends Multipli
 
     /**
      * toString.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -73,6 +77,7 @@ public class MultiplicativeSetCoPrime<C extends GcdRingElem<C>> extends Multipli
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -86,6 +91,7 @@ public class MultiplicativeSetCoPrime<C extends GcdRingElem<C>> extends Multipli
 
     /**
      * Add polynomial to mset.
+     *
      * @param cc polynomial to be added to mset.
      * @return new multiplicative set.
      */
@@ -101,7 +107,7 @@ public class MultiplicativeSetCoPrime<C extends GcdRingElem<C>> extends Multipli
         if (mset.size() == 0) {
             list = engine.coPrime(cc, mset);
             if (ring.coFac.isField()) {
-                list = PolyUtil.<C> monic(list);
+                list = PolyUtil.<C>monic(list);
             }
             return new MultiplicativeSetCoPrime<C>(ring, list, engine);
         }
@@ -113,7 +119,7 @@ public class MultiplicativeSetCoPrime<C extends GcdRingElem<C>> extends Multipli
         logger.info("added to co-prime mset = " + c);
         list = engine.coPrime(c, mset);
         if (ring.coFac.isField()) {
-            list = PolyUtil.<C> monic(list);
+            list = PolyUtil.<C>monic(list);
         }
         return new MultiplicativeSetCoPrime<C>(ring, list, engine);
     }
@@ -121,6 +127,7 @@ public class MultiplicativeSetCoPrime<C extends GcdRingElem<C>> extends Multipli
 
     /**
      * Replace polynomial list of mset.
+     *
      * @param L polynomial list to replace mset.
      * @return new multiplicative set.
      */

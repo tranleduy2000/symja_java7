@@ -5,11 +5,11 @@
 package edu.jas.poly;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.structure.RingElem;
 
@@ -20,28 +20,26 @@ import edu.jas.structure.RingElem;
  * polynomial coefficients. Objects of this class are intended to be immutable.
  * The implementation is based on TreeMap respectively SortedMap from exponents
  * to coefficients by extension of GenPolynomial.
+ *
  * @param <C> base coefficient type
  * @author Heinz Kredel
  */
 
 public class RecSolvableWordPolynomial<C extends RingElem<C>> extends
-                GenSolvablePolynomial<GenWordPolynomial<C>> {
+        GenSolvablePolynomial<GenWordPolynomial<C>> {
 
 
+    private static final Logger logger = Logger.getLogger(RecSolvableWordPolynomial.class);
+    private static final boolean debug = logger.isDebugEnabled();
     /**
      * The factory for the recursive solvable polynomial ring. Hides super.ring.
      */
     public final RecSolvableWordPolynomialRing<C> ring;
 
 
-    private static final Logger logger = Logger.getLogger(RecSolvableWordPolynomial.class);
-
-
-    private static final boolean debug = logger.isDebugEnabled();
-
-
     /**
      * Constructor for zero RecSolvableWordPolynomial.
+     *
      * @param r solvable polynomial ring factory.
      */
     public RecSolvableWordPolynomial(RecSolvableWordPolynomialRing<C> r) {
@@ -52,6 +50,7 @@ public class RecSolvableWordPolynomial<C extends RingElem<C>> extends
 
     /**
      * Constructor for RecSolvableWordPolynomial.
+     *
      * @param r solvable polynomial ring factory.
      * @param e exponent.
      */
@@ -63,6 +62,7 @@ public class RecSolvableWordPolynomial<C extends RingElem<C>> extends
 
     /**
      * Constructor for RecSolvableWordPolynomial.
+     *
      * @param r solvable polynomial ring factory.
      * @param c coefficient polynomial.
      * @param e exponent.
@@ -77,6 +77,7 @@ public class RecSolvableWordPolynomial<C extends RingElem<C>> extends
 
     /**
      * Constructor for RecSolvableWordPolynomial.
+     *
      * @param r solvable polynomial ring factory.
      * @param c coefficient polynomial.
      */
@@ -87,22 +88,24 @@ public class RecSolvableWordPolynomial<C extends RingElem<C>> extends
 
     /**
      * Constructor for RecSolvableWordPolynomial.
+     *
      * @param r solvable polynomial ring factory.
      * @param S solvable polynomial.
      */
     public RecSolvableWordPolynomial(RecSolvableWordPolynomialRing<C> r,
-                    GenSolvablePolynomial<GenWordPolynomial<C>> S) {
+                                     GenSolvablePolynomial<GenWordPolynomial<C>> S) {
         this(r, S.val);
     }
 
 
     /**
      * Constructor for RecSolvableWordPolynomial.
+     *
      * @param r solvable polynomial ring factory.
      * @param v the SortedMap of some other (solvable) polynomial.
      */
     protected RecSolvableWordPolynomial(RecSolvableWordPolynomialRing<C> r,
-                    SortedMap<ExpVector, GenWordPolynomial<C>> v) {
+                                        SortedMap<ExpVector, GenWordPolynomial<C>> v) {
         this(r);
         val.putAll(v); // assume no zero coefficients
     }
@@ -110,6 +113,7 @@ public class RecSolvableWordPolynomial<C extends RingElem<C>> extends
 
     /**
      * Get the corresponding element factory.
+     *
      * @return factory for this Element.
      * @see edu.jas.structure.Element#factory()
      */
@@ -121,6 +125,7 @@ public class RecSolvableWordPolynomial<C extends RingElem<C>> extends
 
     /**
      * Clone this RecSolvableWordPolynomial.
+     *
      * @see java.lang.Object#clone()
      */
     @Override
@@ -131,6 +136,7 @@ public class RecSolvableWordPolynomial<C extends RingElem<C>> extends
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -144,6 +150,7 @@ public class RecSolvableWordPolynomial<C extends RingElem<C>> extends
 
     /**
      * RecSolvableWordPolynomial multiplication.
+     *
      * @param Bp RecSolvableWordPolynomial.
      * @return this*Bp, where * denotes solvable multiplication.
      */
@@ -379,13 +386,14 @@ public class RecSolvableWordPolynomial<C extends RingElem<C>> extends
     /**
      * RecSolvableWordPolynomial left and right multiplication. Product with two
      * polynomials.
+     *
      * @param S RecSolvableWordPolynomial.
      * @param T RecSolvableWordPolynomial.
      * @return S*this*T.
      */
     // cannot @Override, @NoOverride
     public RecSolvableWordPolynomial<C> multiply(RecSolvableWordPolynomial<C> S,
-                    RecSolvableWordPolynomial<C> T) {
+                                                 RecSolvableWordPolynomial<C> T) {
         if (S.isZERO() || T.isZERO() || this.isZERO()) {
             return ring.getZERO();
         }
@@ -402,6 +410,7 @@ public class RecSolvableWordPolynomial<C extends RingElem<C>> extends
     /**
      * RecSolvableWordPolynomial multiplication. Product with coefficient ring
      * element.
+     *
      * @param b coefficient polynomial.
      * @return this*b, where * is coefficient multiplication.
      */
@@ -421,6 +430,7 @@ public class RecSolvableWordPolynomial<C extends RingElem<C>> extends
     /**
      * RecSolvableWordPolynomial left and right multiplication. Product with
      * coefficient ring element.
+     *
      * @param b coefficient polynomial.
      * @param c coefficient polynomial.
      * @return b*this*c, where * is coefficient multiplication.
@@ -452,6 +462,7 @@ public class RecSolvableWordPolynomial<C extends RingElem<C>> extends
 
     /**
      * RecSolvableWordPolynomial multiplication. Product with exponent vector.
+     *
      * @param e exponent.
      * @return this * x<sup>e</sup>, where * denotes solvable multiplication.
      */
@@ -468,10 +479,11 @@ public class RecSolvableWordPolynomial<C extends RingElem<C>> extends
     /**
      * RecSolvableWordPolynomial left and right multiplication. Product with
      * exponent vector.
+     *
      * @param e exponent.
      * @param f exponent.
      * @return x<sup>e</sup> * this * x<sup>f</sup>, where * denotes solvable
-     *         multiplication.
+     * multiplication.
      */
     @Override
     public RecSolvableWordPolynomial<C> multiply(ExpVector e, ExpVector f) {
@@ -489,6 +501,7 @@ public class RecSolvableWordPolynomial<C extends RingElem<C>> extends
     /**
      * RecSolvableWordPolynomial multiplication. Product with ring element and
      * exponent vector.
+     *
      * @param b coefficient polynomial.
      * @param e exponent.
      * @return this * b x<sup>e</sup>, where * denotes solvable multiplication.
@@ -506,16 +519,17 @@ public class RecSolvableWordPolynomial<C extends RingElem<C>> extends
     /**
      * RecSolvableWordPolynomial left and right multiplication. Product with
      * ring element and exponent vector.
+     *
      * @param b coefficient polynomial.
      * @param e exponent.
      * @param c coefficient polynomial.
      * @param f exponent.
      * @return b x<sup>e</sup> * this * c x<sup>f</sup>, where * denotes
-     *         solvable multiplication.
+     * solvable multiplication.
      */
     @Override
     public RecSolvableWordPolynomial<C> multiply(GenWordPolynomial<C> b, ExpVector e, GenWordPolynomial<C> c,
-                    ExpVector f) {
+                                                 ExpVector f) {
         if (b == null || b.isZERO()) {
             return ring.getZERO();
         }
@@ -531,6 +545,7 @@ public class RecSolvableWordPolynomial<C extends RingElem<C>> extends
     /**
      * RecSolvableWordPolynomial multiplication. Left product with ring element
      * and exponent vector.
+     *
      * @param b coefficient polynomial.
      * @param e exponent.
      * @return b x<sup>e</sup> * this, where * denotes solvable multiplication.
@@ -548,6 +563,7 @@ public class RecSolvableWordPolynomial<C extends RingElem<C>> extends
     /**
      * RecSolvableWordPolynomial multiplication. Left product with exponent
      * vector.
+     *
      * @param e exponent.
      * @return x<sup>e</sup> * this, where * denotes solvable multiplication.
      */
@@ -565,6 +581,7 @@ public class RecSolvableWordPolynomial<C extends RingElem<C>> extends
     /**
      * RecSolvableWordPolynomial multiplication. Left product with coefficient
      * ring element.
+     *
      * @param b coefficient polynomial.
      * @return b*this, where * is coefficient multiplication.
      */
@@ -591,6 +608,7 @@ public class RecSolvableWordPolynomial<C extends RingElem<C>> extends
 
     /**
      * RecSolvableWordPolynomial multiplication. Left product with 'monomial'.
+     *
      * @param m 'monomial'.
      * @return m * this, where * denotes solvable multiplication.
      */
@@ -605,6 +623,7 @@ public class RecSolvableWordPolynomial<C extends RingElem<C>> extends
 
     /**
      * RecSolvableWordPolynomial multiplication. Product with 'monomial'.
+     *
      * @param m 'monomial'.
      * @return this * m, where * denotes solvable multiplication.
      */
@@ -620,6 +639,7 @@ public class RecSolvableWordPolynomial<C extends RingElem<C>> extends
     /**
      * RecSolvableWordPolynomial multiplication. Commutative product with
      * exponent vector.
+     *
      * @param f exponent vector.
      * @return B*f, where * is commutative multiplication.
      */

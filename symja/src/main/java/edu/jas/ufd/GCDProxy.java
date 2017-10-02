@@ -5,13 +5,13 @@
 package edu.jas.ufd;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.kern.ComputerThreads;
 import edu.jas.kern.PreemptingException;
@@ -20,9 +20,10 @@ import edu.jas.structure.GcdRingElem;
 
 
 /**
- * Greatest common divisor parallel proxy.  
- * Executes methods from two implementations in parallel and 
+ * Greatest common divisor parallel proxy.
+ * Executes methods from two implementations in parallel and
  * returns the result from the fastest run.
+ *
  * @author Heinz Kredel
  */
 
@@ -65,6 +66,7 @@ public class GCDProxy<C extends GcdRingElem<C>> extends GreatestCommonDivisorAbs
 
     /**
      * Get the String representation with gcd engines.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -74,15 +76,16 @@ public class GCDProxy<C extends GcdRingElem<C>> extends GreatestCommonDivisorAbs
 
 
     /**
-     * Univariate GenPolynomial greatest common divisor. 
+     * Univariate GenPolynomial greatest common divisor.
+     *
      * @param P univariate GenPolynomial.
      * @param S univariate GenPolynomial.
-     * @return gcd(P,S).
+     * @return gcd(P, S).
      */
     @Override
     public GenPolynomial<C> baseGcd(final GenPolynomial<C> P, final GenPolynomial<C> S) {
-        if ( debug ) {
-            if ( ComputerThreads.NO_THREADS ) {
+        if (debug) {
+            if (ComputerThreads.NO_THREADS) {
                 throw new RuntimeException("this should not happen");
             }
         }
@@ -160,15 +163,16 @@ public class GCDProxy<C extends GcdRingElem<C>> extends GreatestCommonDivisorAbs
 
     /**
      * Univariate GenPolynomial recursive greatest common divisor.
+     *
      * @param P univariate recursive GenPolynomial.
      * @param S univariate recursive GenPolynomial.
-     * @return gcd(P,S).
+     * @return gcd(P, S).
      */
     @Override
     public GenPolynomial<GenPolynomial<C>> recursiveUnivariateGcd(final GenPolynomial<GenPolynomial<C>> P,
-            final GenPolynomial<GenPolynomial<C>> S) {
-        if ( debug ) {
-            if ( ComputerThreads.NO_THREADS ) {
+                                                                  final GenPolynomial<GenPolynomial<C>> S) {
+        if (debug) {
+            if (ComputerThreads.NO_THREADS) {
                 throw new RuntimeException("this should not happen");
             }
         }
@@ -244,15 +248,16 @@ public class GCDProxy<C extends GcdRingElem<C>> extends GreatestCommonDivisorAbs
 
 
     /**
-     * GenPolynomial greatest common divisor. 
+     * GenPolynomial greatest common divisor.
+     *
      * @param P GenPolynomial.
      * @param S GenPolynomial.
-     * @return gcd(P,S).
+     * @return gcd(P, S).
      */
     @Override
     public GenPolynomial<C> gcd(final GenPolynomial<C> P, final GenPolynomial<C> S) {
-        if ( debug ) {
-            if ( ComputerThreads.NO_THREADS ) {
+        if (debug) {
+            if (ComputerThreads.NO_THREADS) {
                 throw new RuntimeException("this should not happen");
             }
         }
@@ -329,15 +334,16 @@ public class GCDProxy<C extends GcdRingElem<C>> extends GreatestCommonDivisorAbs
 
 
     /**
-     * Univariate GenPolynomial resultant. 
+     * Univariate GenPolynomial resultant.
+     *
      * @param P univariate GenPolynomial.
      * @param S univariate GenPolynomial.
-     * @return res(P,S).
+     * @return res(P, S).
      */
     @Override
     public GenPolynomial<C> baseResultant(final GenPolynomial<C> P, final GenPolynomial<C> S) {
-        if ( debug ) {
-            if ( ComputerThreads.NO_THREADS ) {
+        if (debug) {
+            if (ComputerThreads.NO_THREADS) {
                 throw new RuntimeException("this should not happen");
             }
         }
@@ -414,16 +420,17 @@ public class GCDProxy<C extends GcdRingElem<C>> extends GreatestCommonDivisorAbs
 
 
     /**
-     * Univariate GenPolynomial resultant. 
+     * Univariate GenPolynomial resultant.
+     *
      * @param P univariate recursive GenPolynomial.
      * @param S univariate recursive GenPolynomial.
-     * @return res(P,S).
+     * @return res(P, S).
      */
     @Override
     public GenPolynomial<GenPolynomial<C>> recursiveUnivariateResultant(final GenPolynomial<GenPolynomial<C>> P,
-            final GenPolynomial<GenPolynomial<C>> S) {
-        if ( debug ) {
-            if ( ComputerThreads.NO_THREADS ) {
+                                                                        final GenPolynomial<GenPolynomial<C>> S) {
+        if (debug) {
+            if (ComputerThreads.NO_THREADS) {
                 throw new RuntimeException("this should not happen");
             }
         }
@@ -500,14 +507,15 @@ public class GCDProxy<C extends GcdRingElem<C>> extends GreatestCommonDivisorAbs
 
     /**
      * GenPolynomial resultant. Main entry driver method.
+     *
      * @param P GenPolynomial.
      * @param S GenPolynomial.
-     * @return res(P,S).
+     * @return res(P, S).
      */
     @Override
     public GenPolynomial<C> resultant(final GenPolynomial<C> P, final GenPolynomial<C> S) {
-        if ( debug ) {
-            if ( ComputerThreads.NO_THREADS ) {
+        if (debug) {
+            if (ComputerThreads.NO_THREADS) {
                 throw new RuntimeException("this should not happen");
             }
         }

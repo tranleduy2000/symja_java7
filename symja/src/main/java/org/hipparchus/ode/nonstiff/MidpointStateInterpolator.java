@@ -23,20 +23,20 @@ import org.hipparchus.ode.ODEStateAndDerivative;
 /**
  * This class implements a step interpolator for second order
  * Runge-Kutta integrator.
- *
+ * <p>
  * <p>This interpolator computes dense output inside the last
  * step computed. The interpolation equation is consistent with the
  * integration scheme :
  * <ul>
- *   <li>Using reference point at step start:<br>
- *   y(t<sub>n</sub> + &theta; h) = y (t<sub>n</sub>) + &theta; h [(1 - &theta;) y'<sub>1</sub> + &theta; y'<sub>2</sub>]
- *   </li>
- *   <li>Using reference point at step end:<br>
- *   y(t<sub>n</sub> + &theta; h) = y (t<sub>n</sub> + h) + (1-&theta;) h [&theta; y'<sub>1</sub> - (1+&theta;) y'<sub>2</sub>]
- *   </li>
+ * <li>Using reference point at step start:<br>
+ * y(t<sub>n</sub> + &theta; h) = y (t<sub>n</sub>) + &theta; h [(1 - &theta;) y'<sub>1</sub> + &theta; y'<sub>2</sub>]
+ * </li>
+ * <li>Using reference point at step end:<br>
+ * y(t<sub>n</sub> + &theta; h) = y (t<sub>n</sub> + h) + (1-&theta;) h [&theta; y'<sub>1</sub> - (1+&theta;) y'<sub>2</sub>]
+ * </li>
  * </ul>
  * </p>
- *
+ * <p>
  * where &theta; belongs to [0 ; 1] and where y'<sub>1</sub> and y'<sub>2</sub> are the two
  * evaluations of the derivatives already computed during the
  * step.</p>
@@ -45,19 +45,23 @@ import org.hipparchus.ode.ODEStateAndDerivative;
  */
 
 class MidpointStateInterpolator
-    extends RungeKuttaStateInterpolator {
+        extends RungeKuttaStateInterpolator {
 
-    /** Serializable version identifier. */
+    /**
+     * Serializable version identifier.
+     */
     private static final long serialVersionUID = 20160328L;
 
-    /** Simple constructor.
-     * @param forward integration direction indicator
-     * @param yDotK slopes at the intermediate points
+    /**
+     * Simple constructor.
+     *
+     * @param forward             integration direction indicator
+     * @param yDotK               slopes at the intermediate points
      * @param globalPreviousState start of the global step
-     * @param globalCurrentState end of the global step
-     * @param softPreviousState start of the restricted step
-     * @param softCurrentState end of the restricted step
-     * @param mapper equations mapper for the all equations
+     * @param globalCurrentState  end of the global step
+     * @param softPreviousState   start of the restricted step
+     * @param softCurrentState    end of the restricted step
+     * @param mapper              equations mapper for the all equations
      */
     MidpointStateInterpolator(final boolean forward,
                               final double[][] yDotK,
@@ -67,11 +71,13 @@ class MidpointStateInterpolator
                               final ODEStateAndDerivative softCurrentState,
                               final EquationsMapper mapper) {
         super(forward, yDotK,
-              globalPreviousState, globalCurrentState, softPreviousState, softCurrentState,
-              mapper);
+                globalPreviousState, globalCurrentState, softPreviousState, softCurrentState,
+                mapper);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected MidpointStateInterpolator create(final boolean newForward, final double[][] newYDotK,
                                                final ODEStateAndDerivative newGlobalPreviousState,
@@ -80,12 +86,14 @@ class MidpointStateInterpolator
                                                final ODEStateAndDerivative newSoftCurrentState,
                                                final EquationsMapper newMapper) {
         return new MidpointStateInterpolator(newForward, newYDotK,
-                                             newGlobalPreviousState, newGlobalCurrentState,
-                                             newSoftPreviousState, newSoftCurrentState,
-                                             newMapper);
+                newGlobalPreviousState, newGlobalCurrentState,
+                newSoftPreviousState, newSoftCurrentState,
+                newMapper);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected ODEStateAndDerivative computeInterpolatedStateAndDerivatives(final EquationsMapper mapper,
                                                                            final double time, final double theta,
@@ -97,14 +105,14 @@ class MidpointStateInterpolator
         final double[] interpolatedDerivatives;
         if (getGlobalPreviousState() != null && theta <= 0.5) {
 
-            final double coeff1     = theta * oneMinusThetaH;
-            final double coeff2     = theta * thetaH;
-            interpolatedState       = previousStateLinearCombination(coeff1, coeff2);
+            final double coeff1 = theta * oneMinusThetaH;
+            final double coeff2 = theta * thetaH;
+            interpolatedState = previousStateLinearCombination(coeff1, coeff2);
             interpolatedDerivatives = derivativeLinearCombination(coeffDot1, coeffDot2);
         } else {
-            final double coeff1     =  oneMinusThetaH * theta;
-            final double coeff2     = -oneMinusThetaH * (1.0 + theta);
-            interpolatedState       = currentStateLinearCombination(coeff1, coeff2);
+            final double coeff1 = oneMinusThetaH * theta;
+            final double coeff2 = -oneMinusThetaH * (1.0 + theta);
+            interpolatedState = currentStateLinearCombination(coeff1, coeff2);
             interpolatedDerivatives = derivativeLinearCombination(coeffDot1, coeffDot2);
         }
 

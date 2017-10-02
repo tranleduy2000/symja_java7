@@ -23,7 +23,7 @@ import org.hipparchus.ode.ODEStateAndDerivative;
 /**
  * This class implements a second order Runge-Kutta integrator for
  * Ordinary Differential Equations.
- *
+ * <p>
  * <p>This method is an explicit Runge-Kutta method, its Butcher-array
  * is the following one :
  * <pre>
@@ -39,44 +39,53 @@ import org.hipparchus.ode.ODEStateAndDerivative;
  * @see GillIntegrator
  * @see ThreeEighthesIntegrator
  * @see LutherIntegrator
- *
  */
 
 public class MidpointIntegrator extends RungeKuttaIntegrator {
 
-    /** Simple constructor.
+    /**
+     * Simple constructor.
      * Build a midpoint integrator with the given step.
+     *
      * @param step integration step
      */
     public MidpointIntegrator(final double step) {
         super("midpoint", step);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double[] getC() {
-        return new double[] {
-            1.0 / 2.0
+        return new double[]{
+                1.0 / 2.0
         };
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double[][] getA() {
-        return new double[][] {
-            { 1.0 / 2.0 }
+        return new double[][]{
+                {1.0 / 2.0}
         };
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double[] getB() {
-        return new double[] {
-            0.0, 1.0
+        return new double[]{
+                0.0, 1.0
         };
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected MidpointStateInterpolator
     createInterpolator(final boolean forward, double[][] yDotK,
@@ -84,9 +93,9 @@ public class MidpointIntegrator extends RungeKuttaIntegrator {
                        final ODEStateAndDerivative globalCurrentState,
                        final EquationsMapper mapper) {
         return new MidpointStateInterpolator(forward, yDotK,
-                                            globalPreviousState, globalCurrentState,
-                                            globalPreviousState, globalCurrentState,
-                                            mapper);
+                globalPreviousState, globalCurrentState,
+                globalPreviousState, globalCurrentState,
+                mapper);
     }
 
 }

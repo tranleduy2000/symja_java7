@@ -23,16 +23,18 @@ import org.hipparchus.util.FastMath;
 
 /**
  * Arc-sine function.
- *
  */
 public class Asin implements UnivariateDifferentiableFunction {
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double value(double x) {
         return FastMath.asin(x);
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     @Override
     public DerivativeStructure value(final DerivativeStructure t) {

@@ -9,35 +9,35 @@ import org.matheclipse.parser.client.math.MathException;
  * stack was exceeded.
  */
 public class RecursionLimitExceeded extends MathException {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 9179261773009842147L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 9179261773009842147L;
 
-	int fLimit;
+    int fLimit;
 
-	IExpr fExpr;
+    IExpr fExpr;
 
-	public RecursionLimitExceeded(final int limit, final IExpr expr) {
-		fLimit = limit;
-		fExpr = expr;
-	}
+    public RecursionLimitExceeded(final int limit, final IExpr expr) {
+        fLimit = limit;
+        fExpr = expr;
+    }
 
-	@Override
-	public String getMessage() {
-		if (fExpr == null) {
-			return "Recursion limit " + fLimit + " exceeded at: null";
-		}
-		return "Recursion limit " + fLimit + " exceeded at: " + StringFunctions.outputForm(fExpr);
-	}
+    public static void throwIt(final int limit, final IExpr expr) {
+        // HeapContext.enter();
+        // try {
+        throw new RecursionLimitExceeded(limit, expr);// .copy());
+        // } finally {
+        // HeapContext.exit();
+        // }
+    }
 
-	public static void throwIt(final int limit, final IExpr expr) {
-		// HeapContext.enter();
-		// try {
-		throw new RecursionLimitExceeded(limit, expr);// .copy());
-		// } finally {
-		// HeapContext.exit();
-		// }
-	}
+    @Override
+    public String getMessage() {
+        if (fExpr == null) {
+            return "Recursion limit " + fLimit + " exceeded at: null";
+        }
+        return "Recursion limit " + fLimit + " exceeded at: " + StringFunctions.outputForm(fExpr);
+    }
 
 }

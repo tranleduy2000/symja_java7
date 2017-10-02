@@ -5,6 +5,8 @@
 package edu.jas.gb;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Iterator;
@@ -13,8 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.poly.GenWordPolynomial;
 import edu.jas.poly.GenWordPolynomialRing;
@@ -25,37 +25,22 @@ import edu.jas.structure.RingElem;
 /**
  * Pair list management of word polynomials. Implemented using
  * GenWordPolynomial, TreeMap and BitSet.
+ *
  * @author Heinz Kredel
  */
 
 public class OrderedWordPairlist<C extends RingElem<C>> implements WordPairList<C> {
 
 
-    protected final List<GenWordPolynomial<C>> P;
-
-
-    protected final SortedMap<Word, LinkedList<WordPair<C>>> pairlist;
-
-
-    protected final List<BitSet> red;
-
-
-    protected final GenWordPolynomialRing<C> ring;
-
-
-    protected final WordReduction<C> reduction;
-
-
-    protected boolean oneInGB = false;
-
-
-    protected int putCount;
-
-
-    protected int remCount;
-
-
     private static final Logger logger = Logger.getLogger(OrderedWordPairlist.class);
+    protected final List<GenWordPolynomial<C>> P;
+    protected final SortedMap<Word, LinkedList<WordPair<C>>> pairlist;
+    protected final List<BitSet> red;
+    protected final GenWordPolynomialRing<C> ring;
+    protected final WordReduction<C> reduction;
+    protected boolean oneInGB = false;
+    protected int putCount;
+    protected int remCount;
 
 
     /**
@@ -74,6 +59,7 @@ public class OrderedWordPairlist<C extends RingElem<C>> implements WordPairList<
 
     /**
      * Constructor.
+     *
      * @param r word polynomial factory.
      */
     public OrderedWordPairlist(GenWordPolynomialRing<C> r) {
@@ -89,6 +75,7 @@ public class OrderedWordPairlist<C extends RingElem<C>> implements WordPairList<
 
     /**
      * Create a new WordPairList.
+     *
      * @param r word polynomial ring.
      */
     public WordPairList<C> create(GenWordPolynomialRing<C> r) {
@@ -118,6 +105,7 @@ public class OrderedWordPairlist<C extends RingElem<C>> implements WordPairList<
 
     /**
      * Put one Polynomial to the pairlist and reduction matrix.
+     *
      * @param p polynomial.
      * @return the index of the added polynomial.
      */
@@ -183,6 +171,7 @@ public class OrderedWordPairlist<C extends RingElem<C>> implements WordPairList<
 
     /**
      * Put all word polynomials in F to the pairlist and reduction matrix.
+     *
      * @param F word polynomial list.
      * @return the index of the last added word polynomial.
      */
@@ -199,6 +188,7 @@ public class OrderedWordPairlist<C extends RingElem<C>> implements WordPairList<
     /**
      * Remove the next required pair from the pairlist and reduction matrix.
      * Appy the criterion 3 to see if the S-polynomial is required.
+     *
      * @return the next pair if one exists, otherwise null.
      */
     public synchronized WordPair<C> removeNext() {
@@ -248,6 +238,7 @@ public class OrderedWordPairlist<C extends RingElem<C>> implements WordPairList<
 
     /**
      * Test if there is possibly a pair in the list.
+     *
      * @return true if a next pair could exist, otherwise false.
      */
     public synchronized boolean hasNext() {
@@ -257,6 +248,7 @@ public class OrderedWordPairlist<C extends RingElem<C>> implements WordPairList<
 
     /**
      * Get the list of polynomials.
+     *
      * @return the polynomial list.
      */
     public List<GenWordPolynomial<C>> getList() {
@@ -266,6 +258,7 @@ public class OrderedWordPairlist<C extends RingElem<C>> implements WordPairList<
 
     /**
      * Get the number of polynomials put to the pairlist.
+     *
      * @return the number of calls to put.
      */
     public synchronized int putCount() {
@@ -275,6 +268,7 @@ public class OrderedWordPairlist<C extends RingElem<C>> implements WordPairList<
 
     /**
      * Get the number of required pairs removed from the pairlist.
+     *
      * @return the number of non null pairs delivered.
      */
     public synchronized int remCount() {
@@ -284,6 +278,7 @@ public class OrderedWordPairlist<C extends RingElem<C>> implements WordPairList<
 
     /**
      * Put the ONE-Polynomial to the pairlist.
+     *
      * @param one polynomial. (no more required)
      * @return the index of the last polynomial.
      */
@@ -300,6 +295,7 @@ public class OrderedWordPairlist<C extends RingElem<C>> implements WordPairList<
 
     /**
      * Put the ONE-Polynomial to the pairlist.
+     *
      * @return the index of the last polynomial.
      */
     public synchronized int putOne() {
@@ -315,6 +311,7 @@ public class OrderedWordPairlist<C extends RingElem<C>> implements WordPairList<
 
     /**
      * GB criterium 3.
+     *
      * @return true if the S-polynomial(i,j) is required.
      */
     public boolean criterion3(int i, int j, Word eij) {

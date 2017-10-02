@@ -16,20 +16,19 @@
  */
 package org.hipparchus.optim.linear;
 
-import java.util.Collection;
-import java.util.Collections;
-
 import org.hipparchus.exception.MathIllegalStateException;
 import org.hipparchus.optim.OptimizationData;
 import org.hipparchus.optim.PointValuePair;
 import org.hipparchus.optim.nonlinear.scalar.MultivariateOptimizer;
 
+import java.util.Collection;
+import java.util.Collections;
+
 /**
  * Base class for implementing linear optimizers.
- *
  */
 public abstract class LinearOptimizer
-    extends MultivariateOptimizer {
+        extends MultivariateOptimizer {
     /**
      * Linear objective function.
      */
@@ -45,7 +44,6 @@ public abstract class LinearOptimizer
 
     /**
      * Simple constructor with default settings.
-     *
      */
     protected LinearOptimizer() {
         super(null); // No convergence checker.
@@ -76,20 +74,20 @@ public abstract class LinearOptimizer
      * {@inheritDoc}
      *
      * @param optData Optimization data. In addition to those documented in
-     * {@link MultivariateOptimizer#parseOptimizationData(OptimizationData[])
-     * MultivariateOptimizer}, this method will register the following data:
-     * <ul>
-     *  <li>{@link LinearObjectiveFunction}</li>
-     *  <li>{@link LinearConstraintSet}</li>
-     *  <li>{@link NonNegativeConstraint}</li>
-     * </ul>
+     *                {@link MultivariateOptimizer#parseOptimizationData(OptimizationData[])
+     *                MultivariateOptimizer}, this method will register the following data:
+     *                <ul>
+     *                <li>{@link LinearObjectiveFunction}</li>
+     *                <li>{@link LinearConstraintSet}</li>
+     *                <li>{@link NonNegativeConstraint}</li>
+     *                </ul>
      * @return {@inheritDoc}
      * @throws MathIllegalStateException if the maximal number of
-     * iterations is exceeded.
+     *                                   iterations is exceeded.
      */
     @Override
     public PointValuePair optimize(OptimizationData... optData)
-        throws MathIllegalStateException {
+            throws MathIllegalStateException {
         // Set up base class and perform computation.
         return super.optimize(optData);
     }
@@ -99,12 +97,12 @@ public abstract class LinearOptimizer
      * characterize the problem.
      *
      * @param optData Optimization data.
-     * The following data will be looked for:
-     * <ul>
-     *  <li>{@link LinearObjectiveFunction}</li>
-     *  <li>{@link LinearConstraintSet}</li>
-     *  <li>{@link NonNegativeConstraint}</li>
-     * </ul>
+     *                The following data will be looked for:
+     *                <ul>
+     *                <li>{@link LinearObjectiveFunction}</li>
+     *                <li>{@link LinearConstraintSet}</li>
+     *                <li>{@link NonNegativeConstraint}</li>
+     *                </ul>
      */
     @Override
     protected void parseOptimizationData(OptimizationData... optData) {
@@ -122,7 +120,7 @@ public abstract class LinearOptimizer
                 linearConstraints = ((LinearConstraintSet) data).getConstraints();
                 continue;
             }
-            if  (data instanceof NonNegativeConstraint) {
+            if (data instanceof NonNegativeConstraint) {
                 nonNegative = ((NonNegativeConstraint) data).isRestrictedToNonNegative();
                 continue;
             }

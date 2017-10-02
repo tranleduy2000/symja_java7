@@ -5,12 +5,12 @@
 package edu.jas.gb;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.poly.ExpVector;
 import edu.jas.poly.GenSolvablePolynomial;
@@ -20,6 +20,7 @@ import edu.jas.structure.RingElem;
 /**
  * Solvable polynomial Reduction abstract class. Implements common left, right
  * S-Polynomial, left normalform and left irreducible set.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
@@ -42,6 +43,7 @@ public abstract class SolvableReductionAbstract<C extends RingElem<C>> implement
 
     /**
      * Left S-Polynomial.
+     *
      * @param Ap solvable polynomial.
      * @param Bp solvable polynomial.
      * @return left-spol(Ap,Bp) the left S-polynomial of Ap and Bp.
@@ -83,15 +85,16 @@ public abstract class SolvableReductionAbstract<C extends RingElem<C>> implement
 
     /**
      * S-Polynomial with recording.
-     * @param S recording matrix, is modified.
-     * @param i index of Ap in basis list.
+     *
+     * @param S  recording matrix, is modified.
+     * @param i  index of Ap in basis list.
      * @param Ap a polynomial.
-     * @param j index of Bp in basis list.
+     * @param j  index of Bp in basis list.
      * @param Bp a polynomial.
      * @return leftSpol(Ap, Bp), the left S-Polynomial for Ap and Bp.
      */
     public GenSolvablePolynomial<C> leftSPolynomial(List<GenSolvablePolynomial<C>> S, int i,
-                    GenSolvablePolynomial<C> Ap, int j, GenSolvablePolynomial<C> Bp) {
+                                                    GenSolvablePolynomial<C> Ap, int j, GenSolvablePolynomial<C> Bp) {
         if (debug /*logger.isInfoEnabled()*/) {
             if (Bp == null || Bp.isZERO()) {
                 throw new ArithmeticException("Spol B is zero");
@@ -131,12 +134,13 @@ public abstract class SolvableReductionAbstract<C extends RingElem<C>> implement
 
     /**
      * Left Normalform Set.
+     *
      * @param Ap solvable polynomial list.
      * @param Pp solvable polynomial list.
      * @return list of left-nf(a) with respect to Pp for all a in Ap.
      */
     public List<GenSolvablePolynomial<C>> leftNormalform(List<GenSolvablePolynomial<C>> Pp,
-                    List<GenSolvablePolynomial<C>> Ap) {
+                                                         List<GenSolvablePolynomial<C>> Ap) {
         if (Pp == null || Pp.isEmpty()) {
             return Ap;
         }
@@ -154,6 +158,7 @@ public abstract class SolvableReductionAbstract<C extends RingElem<C>> implement
 
     /**
      * Left irreducible set.
+     *
      * @param Pp solvable polynomial list.
      * @return a list P of solvable polynomials which are in normalform wrt. P.
      */
@@ -210,15 +215,16 @@ public abstract class SolvableReductionAbstract<C extends RingElem<C>> implement
 
     /**
      * Is reduction of normal form.
+     *
      * @param row recording matrix.
-     * @param Pp a solvable polynomial list for reduction.
-     * @param Ap a solvable polynomial.
-     * @param Np nf(Pp,Ap), a left normal form of Ap wrt. Pp.
+     * @param Pp  a solvable polynomial list for reduction.
+     * @param Ap  a solvable polynomial.
+     * @param Np  nf(Pp,Ap), a left normal form of Ap wrt. Pp.
      * @return true, if Np + sum( row[i]*Pp[i] ) == Ap, else false.
      */
     @SuppressWarnings("unchecked")
     public boolean isLeftReductionNF(List<GenSolvablePolynomial<C>> row, List<GenSolvablePolynomial<C>> Pp,
-                    GenSolvablePolynomial<C> Ap, GenSolvablePolynomial<C> Np) {
+                                     GenSolvablePolynomial<C> Ap, GenSolvablePolynomial<C> Np) {
         if (row == null && Pp == null) {
             if (Ap == null) {
                 return Np == null;
@@ -264,6 +270,7 @@ public abstract class SolvableReductionAbstract<C extends RingElem<C>> implement
 
     /**
      * Right S-Polynomial.
+     *
      * @param Ap solvable polynomial.
      * @param Bp solvable polynomial.
      * @return right-spol(Ap,Bp) the right S-polynomial of Ap and Bp.
@@ -306,6 +313,7 @@ public abstract class SolvableReductionAbstract<C extends RingElem<C>> implement
 
     /**
      * Is top reducible. Is left right symmetric.
+     *
      * @param A solvable polynomial.
      * @param P solvable polynomial list.
      * @return true if A is top reducible with respect to P.
@@ -331,6 +339,7 @@ public abstract class SolvableReductionAbstract<C extends RingElem<C>> implement
 
     /**
      * Is reducible. Is left right symmetric.
+     *
      * @param Ap solvable polynomial.
      * @param Pp solvable polynomial list.
      * @return true if Ap is reducible with respect to Pp.
@@ -342,6 +351,7 @@ public abstract class SolvableReductionAbstract<C extends RingElem<C>> implement
 
     /**
      * Is in Normalform. Is left right symmetric.
+     *
      * @param Ap polynomial.
      * @param Pp polynomial list.
      * @return true if Ap is in normalform with respect to Pp.
@@ -389,12 +399,13 @@ public abstract class SolvableReductionAbstract<C extends RingElem<C>> implement
 
     /**
      * Two-sided Normalform.
+     *
      * @param Ap solvable polynomial.
      * @param Pp solvable polynomial list.
      * @return two-sided-nf(Ap) with respect to Pp.
      */
     public GenSolvablePolynomial<C> normalform(List<GenSolvablePolynomial<C>> Pp,
-                    GenSolvablePolynomial<C> Ap) {
+                                               GenSolvablePolynomial<C> Ap) {
         throw new UnsupportedOperationException("two-sided normalform not implemented");
     }
 

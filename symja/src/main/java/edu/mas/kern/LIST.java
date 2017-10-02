@@ -13,6 +13,7 @@ import java.util.List;
 
 /**
  * MAS and SAC2/Aldes LIST emulation and adaptor class.
+ *
  * @author Heinz Kredel
  * @deprecated will be removed
  */
@@ -45,6 +46,7 @@ public class LIST<C> {
 
     /**
      * internal LIST constructor.
+     *
      * @param l
      */
     protected LIST(LinkedList<C> l) {
@@ -55,6 +57,7 @@ public class LIST<C> {
 
     /**
      * LIST constructor.
+     *
      * @param l any Java List
      */
     public LIST(List<C> l) {
@@ -128,7 +131,8 @@ public class LIST<C> {
         if (L.iter == null) {
             LP = new LIST<C>(L.list);
             LP.iter = LP.list.iterator();
-            /*C x =*/LP.iter.next();
+            /*C x =*/
+            LP.iter.next();
             //System.out.println("x = " + x);
         } // else noop
         return LP;
@@ -174,19 +178,6 @@ public class LIST<C> {
         return LP;
     }
 
-
-    /**
-     * To string.
-     */
-    @Override
-    public String toString() {
-        if (isNull(this)) {
-            return "[]";
-        }
-        return list.toString();
-    }
-
-
     /**
      * Reductum. A is a list. i is a non-negative beta-integer not less than
      * LENGTH(A). B=A, if i=0. Otherwise, B is the i-th reductum of A.
@@ -199,7 +190,6 @@ public class LIST<C> {
         return LP;
     }
 
-
     /**
      * Reductum 2. L is a list of length 2 or more. LP=RED(RED(L)).
      */
@@ -210,7 +200,6 @@ public class LIST<C> {
         }
         return LP;
     }
-
 
     /**
      * Reductum 3. L is a list of length 3 or more. M is the third reductum of
@@ -224,7 +213,6 @@ public class LIST<C> {
         return LP;
     }
 
-
     /**
      * Reductum 4. L is a list of length 4 or more. M is the fourth reductum of
      * L.
@@ -237,7 +225,6 @@ public class LIST<C> {
         return LP;
     }
 
-
     /**
      * Clock. Returns the current CPU clock reading in milliseconds. Intervalls
      * are system dependent.
@@ -245,7 +232,6 @@ public class LIST<C> {
     public static long CLOCK() {
         return java.lang.System.currentTimeMillis();
     }
-
 
     /**
      * List element. A is a list. 1 le i le LENGTH(A). a is the i-th element of
@@ -259,7 +245,6 @@ public class LIST<C> {
         return x;
     }
 
-
     /**
      * Second. L is a list of length 2 or more. a is the second element of L.
      */
@@ -270,7 +255,6 @@ public class LIST<C> {
         }
         return x;
     }
-
 
     /**
      * Third. L is a list of length 3 or more. a is the third element of L.
@@ -283,7 +267,6 @@ public class LIST<C> {
         return x;
     }
 
-
     /**
      * Fourth. L is a list of length 4 or more. a is the fourth element of L.
      */
@@ -294,7 +277,6 @@ public class LIST<C> {
         }
         return x;
     }
-
 
     /**
      * Constructive concatenation. L1 and L2 are lists. L is the concatenation
@@ -312,7 +294,6 @@ public class LIST<C> {
         return new LIST<C>(list);
     }
 
-
     /**
      * Constructive inverse. L is a list. M=INV(L). M is constructed using COMP.
      */
@@ -324,7 +305,6 @@ public class LIST<C> {
         Collections.reverse(list);
         return new LIST<C>(list);
     }
-
 
     /**
      * Inverse. L is a list. The inverse of L is returned. The list L is
@@ -338,7 +318,6 @@ public class LIST<C> {
         return L;
     }
 
-
     /**
      * Composition 2. a and b are objects. L is a list. M=COMP(a,COMP(b,L)).
      */
@@ -351,7 +330,6 @@ public class LIST<C> {
         LP.list.addFirst(a);
         return LP;
     }
-
 
     /**
      * Composition 3. a1, a2 and a3 are objects. L is a list.
@@ -367,7 +345,6 @@ public class LIST<C> {
         LP.list.addFirst(a);
         return LP;
     }
-
 
     /**
      * Composition 4. a1, a2, a3 and a4 are objects. L is a list.
@@ -385,7 +362,6 @@ public class LIST<C> {
         return LP;
     }
 
-
     /**
      * Concatenation. L1 and L2 are lists. L=CONC(L1,L2). The list L1 is
      * modified.
@@ -401,7 +377,6 @@ public class LIST<C> {
         return L1;
     }
 
-
     /**
      * Equal. a and b are objects. t=true if a and b are equal and otherwise
      * t=false.
@@ -415,7 +390,6 @@ public class LIST<C> {
         }
         return L1.list.equals(L2.list);
     }
-
 
     /**
      * Extent. L is a list. n the number of cells of L.
@@ -444,7 +418,6 @@ public class LIST<C> {
         return n;
     }
 
-
     /**
      * List, 1 element. a in an object. L is the list (a).
      */
@@ -453,7 +426,6 @@ public class LIST<C> {
         L.list.addFirst(a);
         return L;
     }
-
 
     /**
      * List, 10 elements. a1, a2, a3, a4, a5, a6, a7, a8, a9 and a10 are
@@ -474,7 +446,6 @@ public class LIST<C> {
         return L;
     }
 
-
     /**
      * List, 2 elements. a and b are objects. L is the list (a,b).
      */
@@ -484,7 +455,6 @@ public class LIST<C> {
         L.list.addFirst(a);
         return L;
     }
-
 
     /**
      * List, 3 elements. a1, a2 and a3 are objects. L=(a1,a2,a3).
@@ -496,7 +466,6 @@ public class LIST<C> {
         L.list.addFirst(a);
         return L;
     }
-
 
     /**
      * List, 4 elements. a1, a2, a3 and a4 are objects. L is the list
@@ -511,7 +480,6 @@ public class LIST<C> {
         return L;
     }
 
-
     /**
      * List, 5 elements. a1,a2,a3,a4 and a5 are objects. L is the list
      * (a1,a2,a3,a4,a5).
@@ -525,7 +493,6 @@ public class LIST<C> {
         L.list.addFirst(a);
         return L;
     }
-
 
     /**
      * Order. L is a list. maximal depth of L.
@@ -551,6 +518,17 @@ public class LIST<C> {
             }
         }
         return n + 1;
+    }
+
+    /**
+     * To string.
+     */
+    @Override
+    public String toString() {
+        if (isNull(this)) {
+            return "[]";
+        }
+        return list.toString();
     }
 
 

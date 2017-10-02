@@ -16,10 +16,11 @@ import edu.jas.structure.QuotPair;
 /**
  * Quotient, that is a rational function, based on GenPolynomial with RingElem
  * interface. Objects of this class are immutable.
+ *
  * @author Heinz Kredel
  */
 public class Quotient<C extends GcdRingElem<C>> implements GcdRingElem<Quotient<C>>,
-                QuotPair<GenPolynomial<C>> {
+        QuotPair<GenPolynomial<C>> {
 
 
     private static final Logger logger = Logger.getLogger(Quotient.class);
@@ -48,6 +49,7 @@ public class Quotient<C extends GcdRingElem<C>> implements GcdRingElem<Quotient<
 
     /**
      * The constructor creates a Quotient object from a ring factory.
+     *
      * @param r ring factory.
      */
     public Quotient(QuotientRing<C> r) {
@@ -58,6 +60,7 @@ public class Quotient<C extends GcdRingElem<C>> implements GcdRingElem<Quotient<
     /**
      * The constructor creates a Quotient object from a ring factory and a
      * numerator polynomial. The denominator is assumed to be 1.
+     *
      * @param r ring factory.
      * @param n numerator polynomial.
      */
@@ -69,6 +72,7 @@ public class Quotient<C extends GcdRingElem<C>> implements GcdRingElem<Quotient<
     /**
      * The constructor creates a Quotient object from a ring factory and a
      * numerator and denominator polynomial.
+     *
      * @param r ring factory.
      * @param n numerator polynomial.
      * @param d denominator polynomial.
@@ -81,9 +85,10 @@ public class Quotient<C extends GcdRingElem<C>> implements GcdRingElem<Quotient<
     /**
      * The constructor creates a Quotient object from a ring factory and a
      * numerator and denominator polynomial.
-     * @param r ring factory.
-     * @param n numerator polynomial.
-     * @param d denominator polynomial.
+     *
+     * @param r     ring factory.
+     * @param n     numerator polynomial.
+     * @param d     denominator polynomial.
      * @param isred true if gcd(n,d) == 1, else false.
      */
     protected Quotient(QuotientRing<C> r, GenPolynomial<C> n, GenPolynomial<C> d, boolean isred) {
@@ -121,6 +126,7 @@ public class Quotient<C extends GcdRingElem<C>> implements GcdRingElem<Quotient<
 
     /**
      * Get the corresponding element factory.
+     *
      * @return factory for this Element.
      * @see edu.jas.structure.Element#factory()
      */
@@ -131,6 +137,7 @@ public class Quotient<C extends GcdRingElem<C>> implements GcdRingElem<Quotient<
 
     /**
      * Numerator.
+     *
      * @see edu.jas.structure.QuotPair#numerator()
      */
     public GenPolynomial<C> numerator() {
@@ -140,6 +147,7 @@ public class Quotient<C extends GcdRingElem<C>> implements GcdRingElem<Quotient<
 
     /**
      * Denominator.
+     *
      * @see edu.jas.structure.QuotPair#denominator()
      */
     public GenPolynomial<C> denominator() {
@@ -149,6 +157,7 @@ public class Quotient<C extends GcdRingElem<C>> implements GcdRingElem<Quotient<
 
     /**
      * Clone this.
+     *
      * @see java.lang.Object#clone()
      */
     @Override
@@ -159,6 +168,7 @@ public class Quotient<C extends GcdRingElem<C>> implements GcdRingElem<Quotient<
 
     /**
      * Is Quotient zero.
+     *
      * @return If this is 0 then true is returned, else false.
      * @see edu.jas.structure.RingElem#isZERO()
      */
@@ -169,6 +179,7 @@ public class Quotient<C extends GcdRingElem<C>> implements GcdRingElem<Quotient<
 
     /**
      * Is Quotient one.
+     *
      * @return If this is 1 then true is returned, else false.
      * @see edu.jas.structure.RingElem#isONE()
      */
@@ -179,6 +190,7 @@ public class Quotient<C extends GcdRingElem<C>> implements GcdRingElem<Quotient<
 
     /**
      * Is Quotient a unit.
+     *
      * @return If this is a unit then true is returned, else false.
      * @see edu.jas.structure.RingElem#isUnit()
      */
@@ -192,6 +204,7 @@ public class Quotient<C extends GcdRingElem<C>> implements GcdRingElem<Quotient<
 
     /**
      * Is Qoutient a constant.
+     *
      * @return true, if this has constant numerator and denominator, else false.
      */
     public boolean isConstant() {
@@ -201,6 +214,7 @@ public class Quotient<C extends GcdRingElem<C>> implements GcdRingElem<Quotient<
 
     /**
      * Get the String representation as RingElem.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -218,6 +232,7 @@ public class Quotient<C extends GcdRingElem<C>> implements GcdRingElem<Quotient<
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this Element.
      * @see edu.jas.structure.Element#toScript()
      */
@@ -236,6 +251,7 @@ public class Quotient<C extends GcdRingElem<C>> implements GcdRingElem<Quotient<
 
     /**
      * Get a scripting compatible string representation of the factory.
+     *
      * @return script compatible representation for this ElemFactory.
      * @see edu.jas.structure.Element#toScriptFactory()
      */
@@ -248,6 +264,7 @@ public class Quotient<C extends GcdRingElem<C>> implements GcdRingElem<Quotient<
 
     /**
      * Quotient comparison.
+     *
      * @param b Quotient.
      * @return sign(this-b).
      */
@@ -277,6 +294,7 @@ public class Quotient<C extends GcdRingElem<C>> implements GcdRingElem<Quotient<
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @SuppressWarnings("unchecked")
@@ -296,6 +314,7 @@ public class Quotient<C extends GcdRingElem<C>> implements GcdRingElem<Quotient<
 
     /**
      * Hash code for this quotient.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -310,6 +329,7 @@ public class Quotient<C extends GcdRingElem<C>> implements GcdRingElem<Quotient<
 
     /**
      * Quotient absolute value.
+     *
      * @return the absolute value of this.
      * @see edu.jas.structure.RingElem#abs()
      */
@@ -320,6 +340,7 @@ public class Quotient<C extends GcdRingElem<C>> implements GcdRingElem<Quotient<
 
     /**
      * Quotient summation.
+     *
      * @param S Quotient.
      * @return this+S.
      */
@@ -382,6 +403,7 @@ public class Quotient<C extends GcdRingElem<C>> implements GcdRingElem<Quotient<
 
     /**
      * Quotient negate.
+     *
      * @return -this.
      * @see edu.jas.structure.RingElem#negate()
      */
@@ -392,8 +414,9 @@ public class Quotient<C extends GcdRingElem<C>> implements GcdRingElem<Quotient<
 
     /**
      * Quotient signum.
-     * @see edu.jas.structure.RingElem#signum()
+     *
      * @return signum(this).
+     * @see edu.jas.structure.RingElem#signum()
      */
     public int signum() {
         // assume sign(den) > 0
@@ -403,6 +426,7 @@ public class Quotient<C extends GcdRingElem<C>> implements GcdRingElem<Quotient<
 
     /**
      * Quotient subtraction.
+     *
      * @param S Quotient.
      * @return this-S.
      */
@@ -413,6 +437,7 @@ public class Quotient<C extends GcdRingElem<C>> implements GcdRingElem<Quotient<
 
     /**
      * Quotient division.
+     *
      * @param S Quotient.
      * @return this/S.
      */
@@ -423,8 +448,9 @@ public class Quotient<C extends GcdRingElem<C>> implements GcdRingElem<Quotient<
 
     /**
      * Quotient inverse.
-     * @see edu.jas.structure.RingElem#inverse()
+     *
      * @return S with S = 1/this.
+     * @see edu.jas.structure.RingElem#inverse()
      */
     public Quotient<C> inverse() {
         if (num.isZERO()) {
@@ -436,6 +462,7 @@ public class Quotient<C extends GcdRingElem<C>> implements GcdRingElem<Quotient<
 
     /**
      * Quotient remainder.
+     *
      * @param S Quotient.
      * @return this - (this/S)*S.
      */
@@ -449,16 +476,18 @@ public class Quotient<C extends GcdRingElem<C>> implements GcdRingElem<Quotient<
 
     /**
      * Quotient and remainder by division of this by S.
+     *
      * @param S a Quotient
      * @return [this/S, this - (this/S)*S].
      */
     public Quotient<C>[] quotientRemainder(Quotient<C> S) {
-        return new Quotient[] { divide(S), remainder(S) };
+        return new Quotient[]{divide(S), remainder(S)};
     }
 
 
     /**
      * Quotient multiplication.
+     *
      * @param S Quotient.
      * @return this*S.
      */
@@ -518,6 +547,7 @@ public class Quotient<C extends GcdRingElem<C>> implements GcdRingElem<Quotient<
 
     /**
      * Quotient multiplication by GenPolynomial.
+     *
      * @param b GenPolynomial<C>.
      * @return this*b.
      */
@@ -547,6 +577,7 @@ public class Quotient<C extends GcdRingElem<C>> implements GcdRingElem<Quotient<
 
     /**
      * Quotient multiplication by coefficient.
+     *
      * @param b coefficient.
      * @return this*b.
      */
@@ -567,6 +598,7 @@ public class Quotient<C extends GcdRingElem<C>> implements GcdRingElem<Quotient<
 
     /**
      * Quotient monic.
+     *
      * @return this with monic value part.
      */
     public Quotient<C> monic() {
@@ -587,8 +619,9 @@ public class Quotient<C extends GcdRingElem<C>> implements GcdRingElem<Quotient<
 
     /**
      * Greatest common divisor.
+     *
      * @param b other element.
-     * @return gcd(this,b).
+     * @return gcd(this, b).
      */
     public Quotient<C> gcd(Quotient<C> b) {
         if (b == null || b.isZERO()) {
@@ -606,6 +639,7 @@ public class Quotient<C extends GcdRingElem<C>> implements GcdRingElem<Quotient<
 
     /**
      * Extended greatest common divisor.
+     *
      * @param b other element.
      * @return [ gcd(this,b), c1, c2 ] with c1*this + c2*b = gcd(this,b).
      */

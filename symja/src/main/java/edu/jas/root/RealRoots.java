@@ -16,6 +16,7 @@ import edu.jas.structure.RingElem;
 
 /**
  * Real roots interface.
+ *
  * @param <C> coefficient type.
  * @author Heinz Kredel
  */
@@ -24,6 +25,7 @@ public interface RealRoots<C extends RingElem<C> & Rational> extends Serializabl
 
     /**
      * Real root bound. With f(M) * f(-M) != 0.
+     *
      * @param f univariate polynomial.
      * @return M such that -M &lt; root(f) &gt; M.
      */
@@ -32,6 +34,7 @@ public interface RealRoots<C extends RingElem<C> & Rational> extends Serializabl
 
     /**
      * Isolating intervals for the real roots.
+     *
      * @param f univariate polynomial.
      * @return a list of isolating intervalls for the real roots of f.
      */
@@ -40,7 +43,8 @@ public interface RealRoots<C extends RingElem<C> & Rational> extends Serializabl
 
     /**
      * Isolating intervals for the real roots.
-     * @param f univariate polynomial.
+     *
+     * @param f   univariate polynomial.
      * @param eps requested intervals length.
      * @return a list of isolating intervals v such that |v| &lt; eps.
      */
@@ -49,7 +53,8 @@ public interface RealRoots<C extends RingElem<C> & Rational> extends Serializabl
 
     /**
      * Isolating intervals for the real roots.
-     * @param f univariate polynomial.
+     *
+     * @param f   univariate polynomial.
      * @param eps requested intervals length.
      * @return a list of isolating intervals v such that |v| &lt; eps.
      */
@@ -58,8 +63,9 @@ public interface RealRoots<C extends RingElem<C> & Rational> extends Serializabl
 
     /**
      * Sign changes on interval bounds.
+     *
      * @param iv root isolating interval with f(left) * f(right) != 0.
-     * @param f univariate polynomial.
+     * @param f  univariate polynomial.
      * @return true if f(left) * f(right) &lt; 0, else false
      */
     public boolean signChange(Interval<C> iv, GenPolynomial<C> f);
@@ -67,8 +73,9 @@ public interface RealRoots<C extends RingElem<C> & Rational> extends Serializabl
 
     /**
      * Number of real roots in interval.
+     *
      * @param iv interval with f(left) * f(right) != 0.
-     * @param f univariate polynomial.
+     * @param f  univariate polynomial.
      * @return number of real roots of f in I.
      */
     public long realRootCount(Interval<C> iv, GenPolynomial<C> f);
@@ -76,8 +83,9 @@ public interface RealRoots<C extends RingElem<C> & Rational> extends Serializabl
 
     /**
      * Refine interval.
-     * @param iv root isolating interval with f(left) * f(right) &lt; 0.
-     * @param f univariate polynomial, non-zero.
+     *
+     * @param iv  root isolating interval with f(left) * f(right) &lt; 0.
+     * @param f   univariate polynomial, non-zero.
      * @param eps requested interval length.
      * @return a new interval v such that |v| &lt; eps.
      */
@@ -86,8 +94,9 @@ public interface RealRoots<C extends RingElem<C> & Rational> extends Serializabl
 
     /**
      * Refine intervals.
-     * @param V list of isolating intervals with f(left) * f(right) &lt; 0.
-     * @param f univariate polynomial, non-zero.
+     *
+     * @param V   list of isolating intervals with f(left) * f(right) &lt; 0.
+     * @param f   univariate polynomial, non-zero.
      * @param eps requested intervals length.
      * @return a list of new intervals v such that |v| &lt; eps.
      */
@@ -96,20 +105,22 @@ public interface RealRoots<C extends RingElem<C> & Rational> extends Serializabl
 
     /**
      * Real algebraic number sign.
+     *
      * @param iv root isolating interval for f, with f(left) * f(right) &lt; 0.
-     * @param f univariate polynomial, non-zero.
-     * @param g univariate polynomial, gcd(f,g) == 1.
+     * @param f  univariate polynomial, non-zero.
+     * @param g  univariate polynomial, gcd(f,g) == 1.
      * @return sign(g(v)), with v a new interval contained in iv such that g(v)
-     *         != 0.
+     * != 0.
      */
     public int realSign(Interval<C> iv, GenPolynomial<C> f, GenPolynomial<C> g);
 
 
     /**
      * Real algebraic number magnitude.
-     * @param iv root isolating interval for f, with f(left) * f(right) &lt; 0.
-     * @param f univariate polynomial, non-zero.
-     * @param g univariate polynomial, gcd(f,g) == 1.
+     *
+     * @param iv  root isolating interval for f, with f(left) * f(right) &lt; 0.
+     * @param f   univariate polynomial, non-zero.
+     * @param g   univariate polynomial, gcd(f,g) == 1.
      * @param eps length limit for interval length.
      * @return g(iv).
      */

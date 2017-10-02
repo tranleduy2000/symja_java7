@@ -5,13 +5,13 @@
 package edu.jas.application;
 
 
+import org.apache.log4j.BasicConfigurator;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.log4j.BasicConfigurator;
 
 import edu.jas.arith.BigDecimal;
 import edu.jas.arith.BigInteger;
@@ -41,6 +41,7 @@ import edu.jas.ufd.QuotientRing;
 
 /**
  * Examples for application usage.
+ *
  * @author Christoph Zengler
  * @author Heinz Kredel
  */
@@ -122,7 +123,7 @@ public class Examples {
         ProductRing<Residue<BigRational>> pr = null;
         pr = new ProductRing<Residue<BigRational>>(rr, 3);
 
-        String[] vars = new String[] { "a", "b" };
+        String[] vars = new String[]{"a", "b"};
         GenPolynomialRing<Product<Residue<BigRational>>> fac;
         fac = new GenPolynomialRing<Product<Residue<BigRational>>>(pr, 2, vars);
 
@@ -140,7 +141,7 @@ public class Examples {
         //System.out.println("Lp = " + Lp);
 
         GroebnerBase<Product<Residue<BigRational>>> bb = new RGroebnerBasePseudoSeq<Product<Residue<BigRational>>>(
-                        pr);
+                pr);
 
         System.out.println("isGB(L) = " + bb.isGB(L));
 
@@ -185,7 +186,7 @@ public class Examples {
         ResidueRing<BigRational> rr = new ResidueRing<BigRational>(id);
         System.out.println("rr = " + rr);
 
-        String[] vars = new String[] { "a", "b" };
+        String[] vars = new String[]{"a", "b"};
         GenPolynomialRing<Residue<BigRational>> fac;
         fac = new GenPolynomialRing<Residue<BigRational>>(rr, 2, vars);
 
@@ -231,9 +232,9 @@ public class Examples {
         GenPolynomial<GenPolynomial<BigRational>> a, b, c;
 
         BigRational coeff = new BigRational(kl);
-        String[] cv = { "a", "b" };
+        String[] cv = {"a", "b"};
         cfac = new GenPolynomialRing<BigRational>(coeff, 2, cv);
-        String[] v = { "x", "y" };
+        String[] v = {"x", "y"};
         fac = new GenPolynomialRing<GenPolynomial<BigRational>>(cfac, 2, v);
         bb = new ComprehensiveGroebnerBaseSeq<BigRational>(coeff);
 
@@ -288,9 +289,9 @@ public class Examples {
         GenPolynomial<GenPolynomial<BigRational>> c;
 
         BigRational coeff = new BigRational(kl);
-        String[] cv = { "a", "b" };
+        String[] cv = {"a", "b"};
         cfac = new GenPolynomialRing<BigRational>(coeff, 2, cv);
-        String[] v = { "x", "y" };
+        String[] v = {"x", "y"};
         fac = new GenPolynomialRing<GenPolynomial<BigRational>>(cfac, 2, v);
         bb = new ComprehensiveGroebnerBaseSeq<BigRational>(coeff);
 
@@ -316,14 +317,14 @@ public class Examples {
         List<GenPolynomial<Product<Residue<BigRational>>>> Lr, bLr;
         RReductionSeq<Product<Residue<BigRational>>> res = new RReductionSeq<Product<Residue<BigRational>>>();
 
-        Lr = PolyUtilApp.<BigRational> toProductRes(sys.list);
+        Lr = PolyUtilApp.<BigRational>toProductRes(sys.list);
         bLr = res.booleanClosure(Lr);
 
         System.out.println("booleanClosed(Lr)   = " + bLr);
 
         if (bLr.size() > 0) {
             GroebnerBase<Product<Residue<BigRational>>> rbb = new RGroebnerBasePseudoSeq<Product<Residue<BigRational>>>(
-                            bLr.get(0).ring.coFac);
+                    bLr.get(0).ring.coFac);
             System.out.println("isRegularGB(Lr) = " + rbb.isGB(bLr));
         }
     }
@@ -360,7 +361,7 @@ public class Examples {
 
         // compute real roots of the ideal
         Ideal<BigRational> I = new Ideal<BigRational>(Gp);
-        List<IdealWithRealAlgebraicRoots<BigRational>> Ir = PolyUtilApp.<BigRational> realAlgebraicRoots(I);
+        List<IdealWithRealAlgebraicRoots<BigRational>> Ir = PolyUtilApp.<BigRational>realAlgebraicRoots(I);
         for (IdealWithRealAlgebraicRoots<BigRational> R : Ir) {
             R.doDecimalApproximation();
             for (List<BigDecimal> Dr : R.decimalApproximation()) {
@@ -375,11 +376,11 @@ public class Examples {
      * example7. Coefficients in Boolean residue class ring.
      */
     public static void example7() {
-        String[] vars = { "v3", "v2", "v1" };
+        String[] vars = {"v3", "v2", "v1"};
 
         ModIntegerRing z2 = new ModIntegerRing(2);
         GenPolynomialRing<ModInteger> z2p = new GenPolynomialRing<ModInteger>(z2, vars.length, new TermOrder(
-                        TermOrder.INVLEX), vars);
+                TermOrder.INVLEX), vars);
         List<GenPolynomial<ModInteger>> fieldPolynomials = new ArrayList<GenPolynomial<ModInteger>>();
 
         //add v1^2 + v1, v2^2 + v2, v3^2 + v3 to fieldPolynomials
@@ -391,9 +392,9 @@ public class Examples {
 
         Ideal<ModInteger> fieldPolys = new Ideal<ModInteger>(z2p, fieldPolynomials);
         ResidueRing<ModInteger> ring = new ResidueRing<ModInteger>(fieldPolys);
-        String[] mvars = { "mv3", "mv2", "mv1" };
+        String[] mvars = {"mv3", "mv2", "mv1"};
         GenPolynomialRing<Residue<ModInteger>> ringp = new GenPolynomialRing<Residue<ModInteger>>(ring,
-                        mvars.length, mvars);
+                mvars.length, mvars);
 
         List<GenPolynomial<Residue<ModInteger>>> polynomials = new ArrayList<GenPolynomial<Residue<ModInteger>>>();
 
@@ -430,11 +431,11 @@ public class Examples {
      * variables.
      */
     public static void example8() {
-        String[] vars = { "v3", "v2", "v1" };
+        String[] vars = {"v3", "v2", "v1"};
 
         ModIntegerRing z2 = new ModIntegerRing(2);
         GenPolynomialRing<ModInteger> z2p = new GenPolynomialRing<ModInteger>(z2, vars.length, new TermOrder(
-                        TermOrder.INVLEX), vars);
+                TermOrder.INVLEX), vars);
         List<GenPolynomial<ModInteger>> fieldPolynomials = new ArrayList<GenPolynomial<ModInteger>>();
 
         //add v1^2 + v1, v2^2 + v2, v3^2 + v3 to fieldPolynomials
@@ -446,9 +447,9 @@ public class Examples {
 
         Ideal<ModInteger> fieldPolys = new Ideal<ModInteger>(z2p, fieldPolynomials);
         ResidueRing<ModInteger> ring = new ResidueRing<ModInteger>(fieldPolys);
-        String[] mvars = { "mv3", "mv2", "mv1" };
+        String[] mvars = {"mv3", "mv2", "mv1"};
         GenPolynomialRing<Residue<ModInteger>> ringp = new GenPolynomialRing<Residue<ModInteger>>(ring,
-                        mvars.length, mvars);
+                mvars.length, mvars);
 
         List<GenPolynomial<Residue<ModInteger>>> polynomials = new ArrayList<GenPolynomial<Residue<ModInteger>>>();
 
@@ -499,8 +500,8 @@ public class Examples {
      * example9. Groebner base and dimension.
      */
     public static void example9() {
-        String[] vars = { "d1", "d2", "d3", "p1a", "p1b", "p1c", "p2a", "p2b", "p2c", "p3a", "p3b", "p3c",
-                "p4a", "p4b", "p4c", "A", "B", "C", "D" };
+        String[] vars = {"d1", "d2", "d3", "p1a", "p1b", "p1c", "p2a", "p2b", "p2c", "p3a", "p3b", "p3c",
+                "p4a", "p4b", "p4c", "A", "B", "C", "D"};
 
         BigRational br = new BigRational();
         GenPolynomialRing<BigRational> pring = new GenPolynomialRing<BigRational>(br, vars);
@@ -554,7 +555,7 @@ public class Examples {
         Scripting.setLang(Scripting.Lang.Ruby);
         BigRational bfac = new BigRational(1);
         GenPolynomialRing<BigRational> pfac;
-        pfac = new GenPolynomialRing<BigRational>(bfac, new String[] { "w2" });
+        pfac = new GenPolynomialRing<BigRational>(bfac, new String[]{"w2"});
         System.out.println("pfac = " + pfac.toScript());
 
         // p = w2^2 - 2
@@ -566,7 +567,7 @@ public class Examples {
         System.out.println("afac = " + afac.toScript());
 
         GenPolynomialRing<AlgebraicNumber<BigRational>> pafac;
-        pafac = new GenPolynomialRing<AlgebraicNumber<BigRational>>(afac, new String[] { "x" });
+        pafac = new GenPolynomialRing<AlgebraicNumber<BigRational>>(afac, new String[]{"x"});
         System.out.println("pafac = " + pafac.toScript());
 
         QuotientRing<AlgebraicNumber<BigRational>> qafac;
@@ -574,7 +575,7 @@ public class Examples {
         System.out.println("qafac = " + qafac.toScript());
 
         GenPolynomialRing<Quotient<AlgebraicNumber<BigRational>>> pqafac;
-        pqafac = new GenPolynomialRing<Quotient<AlgebraicNumber<BigRational>>>(qafac, new String[] { "wx" });
+        pqafac = new GenPolynomialRing<Quotient<AlgebraicNumber<BigRational>>>(qafac, new String[]{"wx"});
         System.out.println("pqafac = " + pqafac.toScript());
         List<GenPolynomial<Quotient<AlgebraicNumber<BigRational>>>> qgen = pqafac.generators();
         System.out.println("qgen = " + qgen);
@@ -590,7 +591,7 @@ public class Examples {
 
         GenPolynomialRing<AlgebraicNumber<Quotient<AlgebraicNumber<BigRational>>>> paqafac;
         paqafac = new GenPolynomialRing<AlgebraicNumber<Quotient<AlgebraicNumber<BigRational>>>>(aqafac,
-                        new String[] { "y", "z" });
+                new String[]{"y", "z"});
         System.out.println("paqafac = " + paqafac.toScript());
 
         List<GenPolynomial<AlgebraicNumber<Quotient<AlgebraicNumber<BigRational>>>>> L;
@@ -642,7 +643,7 @@ public class Examples {
         Scripting.setLang(Scripting.Lang.Ruby);
         BigRational bfac = new BigRational(1);
         GenPolynomialRing<BigRational> pfac;
-        String[] vars = new String[] { "w2", "xi", "x", "wx", "y", "z" };
+        String[] vars = new String[]{"w2", "xi", "x", "wx", "y", "z"};
         TermOrder to = new TermOrder(TermOrder.INVLEX);
         pfac = new GenPolynomialRing<BigRational>(bfac, vars, to);
         System.out.println("pfac = " + pfac.toScript());
@@ -691,7 +692,7 @@ public class Examples {
         Scripting.setLang(Scripting.Lang.Ruby);
         BigRational bfac = new BigRational(1);
         GenPolynomialRing<BigRational> cfac;
-        String[] cvars = new String[] { "x" };
+        String[] cvars = new String[]{"x"};
         TermOrder to = new TermOrder(TermOrder.INVLEX);
         cfac = new GenPolynomialRing<BigRational>(bfac, cvars, to);
         System.out.println("cfac = " + cfac.toScript());
@@ -700,7 +701,7 @@ public class Examples {
         qfac = new QuotientRing<BigRational>(cfac);
         System.out.println("qfac = " + qfac.toScript());
 
-        String[] vars = new String[] { "w2", "wx", "y", "z" };
+        String[] vars = new String[]{"w2", "wx", "y", "z"};
         GenPolynomialRing<Quotient<BigRational>> pfac;
         pfac = new GenPolynomialRing<Quotient<BigRational>>(qfac, vars, to);
         System.out.println("pfac = " + pfac.toScript());

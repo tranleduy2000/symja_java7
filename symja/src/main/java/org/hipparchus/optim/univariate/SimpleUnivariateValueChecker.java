@@ -25,36 +25,36 @@ import org.hipparchus.util.FastMath;
  * Simple implementation of the
  * {@link org.hipparchus.optim.ConvergenceChecker} interface
  * that uses only objective function values.
- *
+ * <p>
  * Convergence is considered to have been reached if either the relative
  * difference between the objective function values is smaller than a
  * threshold or if either the absolute difference between the objective
  * function values is smaller than another threshold.
  * <br/>
- * The {@link #converged(int,UnivariatePointValuePair,UnivariatePointValuePair)
+ * The {@link #converged(int, UnivariatePointValuePair, UnivariatePointValuePair)
  * converged} method will also return {@code true} if the number of iterations
- * has been set (see {@link #SimpleUnivariateValueChecker(double,double,int)
+ * has been set (see {@link #SimpleUnivariateValueChecker(double, double, int)
  * this constructor}).
- *
  */
 public class SimpleUnivariateValueChecker
-    extends AbstractConvergenceChecker<UnivariatePointValuePair> {
+        extends AbstractConvergenceChecker<UnivariatePointValuePair> {
     /**
      * If {@link #maxIterationCount} is set to this value, the number of
      * iterations will never cause
-     * {@link #converged(int,UnivariatePointValuePair,UnivariatePointValuePair)}
+     * {@link #converged(int, UnivariatePointValuePair, UnivariatePointValuePair)}
      * to return {@code true}.
      */
     private static final int ITERATION_CHECK_DISABLED = -1;
     /**
      * Number of iterations after which the
-     * {@link #converged(int,UnivariatePointValuePair,UnivariatePointValuePair)}
+     * {@link #converged(int, UnivariatePointValuePair, UnivariatePointValuePair)}
      * method will return true (unless the check is disabled).
      */
     private final int maxIterationCount;
 
-    /** Build an instance with specified thresholds.
-     *
+    /**
+     * Build an instance with specified thresholds.
+     * <p>
      * In order to perform only relative checks, the absolute tolerance
      * must be set to a negative value. In order to perform only absolute
      * checks, the relative tolerance must be set to a negative value.
@@ -70,16 +70,15 @@ public class SimpleUnivariateValueChecker
 
     /**
      * Builds an instance with specified thresholds.
-     *
+     * <p>
      * In order to perform only relative checks, the absolute tolerance
      * must be set to a negative value. In order to perform only absolute
      * checks, the relative tolerance must be set to a negative value.
      *
      * @param relativeThreshold relative tolerance threshold
      * @param absoluteThreshold absolute tolerance threshold
-     * @param maxIter Maximum iteration count.
+     * @param maxIter           Maximum iteration count.
      * @throws MathIllegalArgumentException if {@code maxIter <= 0}.
-     *
      */
     public SimpleUnivariateValueChecker(final double relativeThreshold,
                                         final double absoluteThreshold,
@@ -88,7 +87,7 @@ public class SimpleUnivariateValueChecker
 
         if (maxIter <= 0) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.NUMBER_TOO_SMALL_BOUND_EXCLUDED,
-                                                   maxIter, 0);
+                    maxIter, 0);
         }
         maxIterationCount = maxIter;
     }
@@ -105,8 +104,8 @@ public class SimpleUnivariateValueChecker
      * not only for the best or worst ones.
      *
      * @param iteration Index of current iteration
-     * @param previous Best point in the previous iteration.
-     * @param current Best point in the current iteration.
+     * @param previous  Best point in the previous iteration.
+     * @param current   Best point in the current iteration.
      * @return {@code true} if the algorithm has converged.
      */
     @Override
@@ -122,6 +121,6 @@ public class SimpleUnivariateValueChecker
         final double difference = FastMath.abs(p - c);
         final double size = FastMath.max(FastMath.abs(p), FastMath.abs(c));
         return difference <= size * getRelativeThreshold() ||
-            difference <= getAbsoluteThreshold();
+                difference <= getAbsoluteThreshold();
     }
 }

@@ -5,17 +5,16 @@
 package edu.jas.gb;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.poly.ExpVector;
 import edu.jas.poly.GenPolynomial;
 import edu.jas.poly.GenSolvablePolynomial;
 import edu.jas.poly.GenSolvablePolynomialRing;
-import edu.jas.poly.QLRSolvablePolynomialRing;
 import edu.jas.poly.PolyUtil;
 import edu.jas.poly.PolynomialList;
 import edu.jas.structure.RingElem;
@@ -24,6 +23,7 @@ import edu.jas.structure.RingElem;
 /**
  * Solvable Groebner bases sequential algorithms. Implements common left, right
  * and twosided Groebner bases and left, right and twosided GB tests.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
@@ -47,6 +47,7 @@ public class SolvableGroebnerBaseSeq<C extends RingElem<C>> extends SolvableGroe
 
     /**
      * Constructor.
+     *
      * @param sred Solvable reduction engine
      */
     public SolvableGroebnerBaseSeq(SolvableReduction<C> sred) {
@@ -56,6 +57,7 @@ public class SolvableGroebnerBaseSeq<C extends RingElem<C>> extends SolvableGroe
 
     /**
      * Constructor.
+     *
      * @param pl pair selection strategy
      */
     public SolvableGroebnerBaseSeq(PairList<C> pl) {
@@ -65,8 +67,9 @@ public class SolvableGroebnerBaseSeq<C extends RingElem<C>> extends SolvableGroe
 
     /**
      * Constructor.
+     *
      * @param sred Solvable reduction engine
-     * @param pl pair selection strategy
+     * @param pl   pair selection strategy
      */
     public SolvableGroebnerBaseSeq(SolvableReduction<C> sred, PairList<C> pl) {
         super(sred, pl);
@@ -75,14 +78,15 @@ public class SolvableGroebnerBaseSeq<C extends RingElem<C>> extends SolvableGroe
 
     /**
      * Left Groebner base using pairlist class.
+     *
      * @param modv number of module variables.
-     * @param F solvable polynomial list.
+     * @param F    solvable polynomial list.
      * @return leftGB(F) a left Groebner base of F.
      */
     @SuppressWarnings("unchecked")
     public List<GenSolvablePolynomial<C>> leftGB(int modv, List<GenSolvablePolynomial<C>> F) {
         List<GenSolvablePolynomial<C>> G = normalizeZerosOnes(F);
-        G = PolynomialList.castToSolvableList(PolyUtil.<C> monic(PolynomialList.castToList(G)));
+        G = PolynomialList.castToSolvableList(PolyUtil.<C>monic(PolynomialList.castToList(G)));
         if (G.size() <= 1) {
             return G;
         }
@@ -152,8 +156,9 @@ public class SolvableGroebnerBaseSeq<C extends RingElem<C>> extends SolvableGroe
 
     /**
      * Solvable Extended Groebner base using critical pair class.
+     *
      * @param modv module variable number.
-     * @param F solvable polynomial list.
+     * @param F    solvable polynomial list.
      * @return a container for an extended left Groebner base of F.
      */
     @Override
@@ -317,7 +322,7 @@ public class SolvableGroebnerBaseSeq<C extends RingElem<C>> extends SolvableGroe
             }
             if (debug) {
                 logger.debug("is reduction 0+sum(row,G) == H : "
-                                + sred.isLeftReductionNF(row, G, H, ring.getZERO()));
+                        + sred.isLeftReductionNF(row, G, H, ring.getZERO()));
             }
             row.add(null);
 
@@ -326,8 +331,8 @@ public class SolvableGroebnerBaseSeq<C extends RingElem<C>> extends SolvableGroe
             c = c.inverse();
             H = H.multiply(c);
             // 1*c*row, leads to wrong method dispatch:
-            row = PolynomialList.<C> castToSolvableList(blas.scalarProduct(mone.multiply(c),
-                            PolynomialList.<C> castToList(row)));
+            row = PolynomialList.<C>castToSolvableList(blas.scalarProduct(mone.multiply(c),
+                    PolynomialList.<C>castToList(row)));
             row.set(G.size(), mone);
             if (H.isONE()) {
                 // pairlist.record( pair, H );
@@ -380,14 +385,15 @@ public class SolvableGroebnerBaseSeq<C extends RingElem<C>> extends SolvableGroe
 
     /**
      * Twosided Groebner base using pairlist class.
+     *
      * @param modv number of module variables.
-     * @param Fp solvable polynomial list.
+     * @param Fp   solvable polynomial list.
      * @return tsGB(Fp) a twosided Groebner base of Fp.
      */
     @SuppressWarnings("unchecked")
     public List<GenSolvablePolynomial<C>> twosidedGB(int modv, List<GenSolvablePolynomial<C>> Fp) {
         List<GenSolvablePolynomial<C>> F = normalizeZerosOnes(Fp);
-        F = PolynomialList.castToSolvableList(PolyUtil.<C> monic(PolynomialList.castToList(F)));
+        F = PolynomialList.castToSolvableList(PolyUtil.<C>monic(PolynomialList.castToList(F)));
         if (F.size() < 1) { // 0 not 1
             return F;
         }
@@ -400,7 +406,7 @@ public class SolvableGroebnerBaseSeq<C extends RingElem<C>> extends SolvableGroe
         }
         // add also coefficient generators
         List<GenSolvablePolynomial<C>> X;
-        X = PolynomialList.castToSolvableList(ring.generators(modv)); 
+        X = PolynomialList.castToSolvableList(ring.generators(modv));
         logger.info("right multipliers = " + X);
         List<GenSolvablePolynomial<C>> G = new ArrayList<GenSolvablePolynomial<C>>(F.size() * (1 + X.size()));
         G.addAll(F);
@@ -427,10 +433,10 @@ public class SolvableGroebnerBaseSeq<C extends RingElem<C>> extends SolvableGroe
                         return G; // since no threads are activated
                     }
                     if (!G.contains(q)) { // why?
-                       G.add(q);
+                        G.add(q);
                     } else {
-                       logger.info("right multipy contained: q = " + q);
-                    } 
+                        logger.info("right multipy contained: q = " + q);
+                    }
                 }
             }
         }
@@ -520,11 +526,12 @@ public class SolvableGroebnerBaseSeq<C extends RingElem<C>> extends SolvableGroe
     /**
      * Normalize M. Make all rows the same size and make certain column elements
      * zero.
+     *
      * @param M a reduction matrix.
      * @return normalized M.
      */
     public List<List<GenSolvablePolynomial<C>>> normalizeMatrix(int flen,
-                    List<List<GenSolvablePolynomial<C>>> M) {
+                                                                List<List<GenSolvablePolynomial<C>>> M) {
         if (M == null) {
             return M;
         }
@@ -565,9 +572,9 @@ public class SolvableGroebnerBaseSeq<C extends RingElem<C>> extends SolvableGroe
                     //System.out.println("k, a = " + k + ", " + a);
                     if (a != null && !a.isZERO()) { // a*row + nrow, leads to wrong method dispatch
                         List<GenPolynomial<C>> yrow = blas.scalarProduct(a,
-                                        PolynomialList.<C> castToList(row));
-                        yrow = blas.vectorAdd(yrow, PolynomialList.<C> castToList(nrow));
-                        xrow = PolynomialList.<C> castToSolvableList(yrow);
+                                PolynomialList.<C>castToList(row));
+                        yrow = blas.vectorAdd(yrow, PolynomialList.<C>castToList(nrow));
+                        xrow = PolynomialList.<C>castToSolvableList(yrow);
                         N.set(j, xrow);
                     }
                 }
@@ -592,6 +599,7 @@ public class SolvableGroebnerBaseSeq<C extends RingElem<C>> extends SolvableGroe
 
     /**
      * Test if M is a left reduction matrix.
+     *
      * @param exgb an SolvableExtendedGB container.
      * @return true, if exgb contains a left reduction matrix, else false.
      */
@@ -606,12 +614,13 @@ public class SolvableGroebnerBaseSeq<C extends RingElem<C>> extends SolvableGroe
 
     /**
      * Minimal solvable extended groebner basis.
+     *
      * @param Gp a left Groebner base.
-     * @param M a left reduction matrix, is modified.
+     * @param M  a left reduction matrix, is modified.
      * @return a (partially) reduced left Groebner base of Gp in a container.
      */
     public SolvableExtendedGB<C> minimalSolvableExtendedGB(int flen, List<GenSolvablePolynomial<C>> Gp,
-                    List<List<GenSolvablePolynomial<C>>> M) {
+                                                           List<List<GenSolvablePolynomial<C>>> M) {
         if (Gp == null) {
             return null; //new SolvableExtendedGB<C>(null,Gp,null,M);
         }
@@ -724,15 +733,16 @@ public class SolvableGroebnerBaseSeq<C extends RingElem<C>> extends SolvableGroe
     /**
      * Right Groebner base via right reduction using pairlist
      * class. Overides rightGB() via opposite ring.
+     *
      * @param modv number of module variables.
-     * @param F solvable polynomial list.
+     * @param F    solvable polynomial list.
      * @return rightGB(F) a right Groebner base of F.
      */
     @Override
     @SuppressWarnings("unchecked")
     public List<GenSolvablePolynomial<C>> rightGB(int modv, List<GenSolvablePolynomial<C>> F) {
         List<GenSolvablePolynomial<C>> G = normalizeZerosOnes(F);
-        G = PolynomialList.castToSolvableList(PolyUtil.<C> monic(PolynomialList.castToList(G)));
+        G = PolynomialList.castToSolvableList(PolyUtil.<C>monic(PolynomialList.castToList(G)));
         if (G.size() <= 1) {
             return G;
         }

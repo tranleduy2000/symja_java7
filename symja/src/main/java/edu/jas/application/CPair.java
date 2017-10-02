@@ -12,6 +12,7 @@ import edu.jas.structure.RingElem;
 
 /**
  * Serializable subclass to hold pairs of colored polynomials.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
@@ -44,6 +45,7 @@ public class CPair<C extends RingElem<C>> implements Serializable, Comparable<CP
 
     /**
      * Pair constructor.
+     *
      * @param a polynomial i.
      * @param b polynomial j.
      * @param i first index.
@@ -72,6 +74,7 @@ public class CPair<C extends RingElem<C>> implements Serializable, Comparable<CP
 
     /**
      * Set removed pair number.
+     *
      * @param n number of this pair generated in OrderedPairlist.
      */
     public void pairNumber(int n) {
@@ -81,6 +84,7 @@ public class CPair<C extends RingElem<C>> implements Serializable, Comparable<CP
 
     /**
      * Get removed pair number.
+     *
      * @return n number of this pair generated in OrderedPairlist.
      */
     public int getPairNumber() {
@@ -98,8 +102,9 @@ public class CPair<C extends RingElem<C>> implements Serializable, Comparable<CP
 
     /**
      * Is reduced to zero.
+     *
      * @return true if the S-polynomial of this Pair was reduced to zero, else
-     *         false.
+     * false.
      */
     public boolean isZero() {
         return toZero;
@@ -108,6 +113,7 @@ public class CPair<C extends RingElem<C>> implements Serializable, Comparable<CP
 
     /**
      * equals.
+     *
      * @param ob an Object.
      * @return true if this is equal to ob, else false.
      */
@@ -117,10 +123,10 @@ public class CPair<C extends RingElem<C>> implements Serializable, Comparable<CP
         CPair<C> cp = null;
         try {
             cp = (CPair<C>) ob;
-        } catch ( ClassCastException e) {
+        } catch (ClassCastException e) {
             return false;
         }
-        if ( cp == null ) {
+        if (cp == null) {
             return false;
         }
         return 0 == compareTo(cp);
@@ -128,8 +134,9 @@ public class CPair<C extends RingElem<C>> implements Serializable, Comparable<CP
 
 
     /**
-     * compareTo used in TreeMap. 
+     * compareTo used in TreeMap.
      * Comparison is based on the number of the pairs.
+     *
      * @param p a Pair.
      * @return 1 if (this &lt; p), 0 if (this == o), -1 if (this &gt; p).
      */
@@ -147,6 +154,7 @@ public class CPair<C extends RingElem<C>> implements Serializable, Comparable<CP
 
     /**
      * Hash code for this pair.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -156,40 +164,40 @@ public class CPair<C extends RingElem<C>> implements Serializable, Comparable<CP
         return h;
     }
 
-
-    /**
-     * Set useCriterion4.
-     * @param c boolean value to set.
-     */
-    public void setUseCriterion4(boolean c) {
-        this.useCriterion4 = c;
-    }
-
-
     /**
      * Get useCriterion4.
+     *
      * @return boolean value.
      */
     public boolean getUseCriterion4() {
         return this.useCriterion4;
     }
 
-
     /**
-     * Set useCriterion3.
+     * Set useCriterion4.
+     *
      * @param c boolean value to set.
      */
-    public void setUseCriterion3(boolean c) {
-        this.useCriterion3 = c;
+    public void setUseCriterion4(boolean c) {
+        this.useCriterion4 = c;
     }
-
 
     /**
      * Get useCriterion3.
+     *
      * @return boolean value.
      */
     public boolean getUseCriterion3() {
         return this.useCriterion3;
+    }
+
+    /**
+     * Set useCriterion3.
+     *
+     * @param c boolean value to set.
+     */
+    public void setUseCriterion3(boolean c) {
+        this.useCriterion3 = c;
     }
 
 }

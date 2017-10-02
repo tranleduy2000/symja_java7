@@ -14,6 +14,7 @@ import edu.jas.structure.NotInvertibleException;
  * for not invertible modular integers. Container for the non-trivial factors
  * found by the inversion algorithm. <b>Note: </b> cannot be generic because of
  * Throwable.
+ *
  * @author Heinz Kredel
  */
 public class ModularNotInvertibleException extends NotInvertibleException {
@@ -50,7 +51,8 @@ public class ModularNotInvertibleException extends NotInvertibleException {
 
     /**
      * Constructor.
-     * @param f gcd ring element with f = f1 * f2.
+     *
+     * @param f  gcd ring element with f = f1 * f2.
      * @param f1 gcd ring element.
      * @param f2 gcd ring element.
      */
@@ -64,7 +66,8 @@ public class ModularNotInvertibleException extends NotInvertibleException {
 
     /**
      * Constructor.
-     * @param f gcd ring element with f = f1 * f2.
+     *
+     * @param f  gcd ring element with f = f1 * f2.
      * @param f1 gcd ring element.
      * @param f2 gcd ring element.
      */
@@ -78,7 +81,8 @@ public class ModularNotInvertibleException extends NotInvertibleException {
 
     /**
      * Constructor.
-     * @param f gcd ring element with f = f1 * f2.
+     *
+     * @param f  gcd ring element with f = f1 * f2.
      * @param f1 gcd ring element.
      * @param f2 gcd ring element.
      */
@@ -92,7 +96,8 @@ public class ModularNotInvertibleException extends NotInvertibleException {
 
     /**
      * Constructor.
-     * @param f gcd ring element with f = f1 * f2.
+     *
+     * @param f  gcd ring element with f = f1 * f2.
      * @param f1 gcd ring element.
      * @param f2 gcd ring element.
      */
@@ -106,6 +111,7 @@ public class ModularNotInvertibleException extends NotInvertibleException {
 
     /**
      * Get the String representation.
+     *
      * @see java.lang.Object#toString()
      */
     @Override

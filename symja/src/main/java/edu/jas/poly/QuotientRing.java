@@ -5,26 +5,28 @@
 package edu.jas.poly;
 
 
+import org.apache.log4j.Logger;
+
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.apache.log4j.Logger;
-
-// import edu.jas.structure.GcdRingElem;
 import edu.jas.structure.QuotPairFactory;
 import edu.jas.structure.RingElem;
 import edu.jas.structure.RingFactory;
+
+// import edu.jas.structure.GcdRingElem;
 
 
 /**
  * Quotient ring factory using RingElem and RingFactory. Objects of this class
  * are immutable.
+ *
  * @author Heinz Kredel
  */
 public class QuotientRing<C extends RingElem<C>> implements RingFactory<Quotient<C>>,
-                QuotPairFactory<C, Quotient<C>> {
+        QuotPairFactory<C, Quotient<C>> {
 
 
     private static final Logger logger = Logger.getLogger(QuotientRing.class);
@@ -41,6 +43,7 @@ public class QuotientRing<C extends RingElem<C>> implements RingFactory<Quotient
 
     /**
      * The constructor creates a QuotientRing object from a RingFactory.
+     *
      * @param r ring factory.
      */
     public QuotientRing(RingFactory<C> r) {
@@ -74,6 +77,7 @@ public class QuotientRing<C extends RingElem<C>> implements RingFactory<Quotient
 
     /**
      * Is this structure finite or infinite.
+     *
      * @return true if this structure is finite, else false.
      * @see edu.jas.structure.ElemFactory#isFinite()
      */
@@ -84,6 +88,7 @@ public class QuotientRing<C extends RingElem<C>> implements RingFactory<Quotient
 
     /**
      * Copy Quotient element c.
+     *
      * @param c
      * @return a copy of c.
      */
@@ -94,6 +99,7 @@ public class QuotientRing<C extends RingElem<C>> implements RingFactory<Quotient
 
     /**
      * Get the zero element.
+     *
      * @return 0 as Quotient.
      */
     public Quotient<C> getZERO() {
@@ -103,6 +109,7 @@ public class QuotientRing<C extends RingElem<C>> implements RingFactory<Quotient
 
     /**
      * Get the one element.
+     *
      * @return 1 as Quotient.
      */
     public Quotient<C> getONE() {
@@ -112,6 +119,7 @@ public class QuotientRing<C extends RingElem<C>> implements RingFactory<Quotient
 
     /**
      * Get a list of the generating elements.
+     *
      * @return list of generators for the algebraic structure.
      * @see edu.jas.structure.ElemFactory#generators()
      */
@@ -127,6 +135,7 @@ public class QuotientRing<C extends RingElem<C>> implements RingFactory<Quotient
 
     /**
      * Query if this ring is commutative.
+     *
      * @return true if this ring is commutative, else false.
      */
     public boolean isCommutative() {
@@ -136,6 +145,7 @@ public class QuotientRing<C extends RingElem<C>> implements RingFactory<Quotient
 
     /**
      * Query if this ring is associative.
+     *
      * @return true if this ring is associative, else false.
      */
     public boolean isAssociative() {
@@ -145,6 +155,7 @@ public class QuotientRing<C extends RingElem<C>> implements RingFactory<Quotient
 
     /**
      * Query if this ring is a field.
+     *
      * @return true.
      */
     public boolean isField() {
@@ -154,6 +165,7 @@ public class QuotientRing<C extends RingElem<C>> implements RingFactory<Quotient
 
     /**
      * Characteristic of this ring.
+     *
      * @return characteristic of this ring.
      */
     public java.math.BigInteger characteristic() {
@@ -163,6 +175,7 @@ public class QuotientRing<C extends RingElem<C>> implements RingFactory<Quotient
 
     /**
      * Get a Quotient element from a BigInteger value.
+     *
      * @param a BigInteger.
      * @return a Quotient.
      */
@@ -173,6 +186,7 @@ public class QuotientRing<C extends RingElem<C>> implements RingFactory<Quotient
 
     /**
      * Get a Quotient element from a long value.
+     *
      * @param a long.
      * @return a Quotient.
      */
@@ -183,6 +197,7 @@ public class QuotientRing<C extends RingElem<C>> implements RingFactory<Quotient
 
     /**
      * Get the String representation as RingFactory.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -193,6 +208,7 @@ public class QuotientRing<C extends RingElem<C>> implements RingFactory<Quotient
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this ElemFactory.
      * @see edu.jas.structure.ElemFactory#toScript()
      */
@@ -205,6 +221,7 @@ public class QuotientRing<C extends RingElem<C>> implements RingFactory<Quotient
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -223,6 +240,7 @@ public class QuotientRing<C extends RingElem<C>> implements RingFactory<Quotient
 
     /**
      * Hash code for this quotient ring.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -235,6 +253,7 @@ public class QuotientRing<C extends RingElem<C>> implements RingFactory<Quotient
 
     /**
      * Quotient random.
+     *
      * @param n such that 0 &le; v &le; (2<sup>n</sup>-1).
      * @return a random residue element.
      */
@@ -250,7 +269,8 @@ public class QuotientRing<C extends RingElem<C>> implements RingFactory<Quotient
 
     /**
      * Quotient random.
-     * @param n such that 0 &le; v &le; (2<sup>n</sup>-1).
+     *
+     * @param n   such that 0 &le; v &le; (2<sup>n</sup>-1).
      * @param rnd is a source for random bits.
      * @return a random residue element.
      */
@@ -266,6 +286,7 @@ public class QuotientRing<C extends RingElem<C>> implements RingFactory<Quotient
 
     /**
      * Parse Quotient from String.
+     *
      * @param s String.
      * @return Quotient from s.
      */
@@ -277,6 +298,7 @@ public class QuotientRing<C extends RingElem<C>> implements RingFactory<Quotient
 
     /**
      * Parse Quotient from Reader.
+     *
      * @param r Reader.
      * @return next Quotient from r.
      */

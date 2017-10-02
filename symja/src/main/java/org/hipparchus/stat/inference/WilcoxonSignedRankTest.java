@@ -32,7 +32,9 @@ import org.hipparchus.util.MathArrays;
  */
 public class WilcoxonSignedRankTest {
 
-    /** Ranking algorithm. */
+    /**
+     * Ranking algorithm.
+     */
     private NaturalRanking naturalRanking;
 
     /**
@@ -42,14 +44,14 @@ public class WilcoxonSignedRankTest {
      */
     public WilcoxonSignedRankTest() {
         naturalRanking = new NaturalRanking(NaNStrategy.FIXED,
-                                            TiesStrategy.AVERAGE);
+                TiesStrategy.AVERAGE);
     }
 
     /**
      * Create a test instance using the given strategies for NaN's and ties.
      * Only use this if you are sure of what you are doing.
      *
-     * @param nanStrategy specifies the strategy that should be used for Double.NaN's
+     * @param nanStrategy  specifies the strategy that should be used for Double.NaN's
      * @param tiesStrategy specifies the strategy that should be used for ties
      */
     public WilcoxonSignedRankTest(final NaNStrategy nanStrategy,
@@ -62,13 +64,13 @@ public class WilcoxonSignedRankTest {
      *
      * @param x first sample
      * @param y second sample
-     * @throws NullArgumentException if {@code x} or {@code y} are {@code null}.
+     * @throws NullArgumentException        if {@code x} or {@code y} are {@code null}.
      * @throws MathIllegalArgumentException if {@code x} or {@code y} are zero-length.
      * @throws MathIllegalArgumentException if {@code x} and {@code y} do not
-     * have the same length.
+     *                                      have the same length.
      */
     private void ensureDataConformance(final double[] x, final double[] y)
-        throws MathIllegalArgumentException, NullArgumentException {
+            throws MathIllegalArgumentException, NullArgumentException {
 
         if (x == null || y == null) {
             throw new NullArgumentException();
@@ -102,11 +104,11 @@ public class WilcoxonSignedRankTest {
      *
      * @param z sample
      * @return |z|
-     * @throws NullArgumentException if {@code z} is {@code null}
+     * @throws NullArgumentException        if {@code z} is {@code null}
      * @throws MathIllegalArgumentException if {@code z} is zero-length.
      */
     private double[] calculateAbsoluteDifferences(final double[] z)
-        throws MathIllegalArgumentException, NullArgumentException {
+            throws MathIllegalArgumentException, NullArgumentException {
 
         if (z == null) {
             throw new NullArgumentException();
@@ -155,13 +157,13 @@ public class WilcoxonSignedRankTest {
      * @param x the first sample
      * @param y the second sample
      * @return wilcoxonSignedRank statistic (the larger of W+ and W-)
-     * @throws NullArgumentException if {@code x} or {@code y} are {@code null}.
+     * @throws NullArgumentException        if {@code x} or {@code y} are {@code null}.
      * @throws MathIllegalArgumentException if {@code x} or {@code y} are zero-length.
      * @throws MathIllegalArgumentException if {@code x} and {@code y} do not
-     * have the same length.
+     *                                      have the same length.
      */
     public double wilcoxonSignedRank(final double[] x, final double[] y)
-        throws MathIllegalArgumentException, NullArgumentException {
+            throws MathIllegalArgumentException, NullArgumentException {
 
         ensureDataConformance(x, y);
 
@@ -193,7 +195,7 @@ public class WilcoxonSignedRankTest {
      * University of Amsterdam
      *
      * @param Wmax largest Wilcoxon signed rank value
-     * @param N number of subjects (corresponding to x.length)
+     * @param N    number of subjects (corresponding to x.length)
      * @return two-sided exact p-value
      */
     private double calculateExactPValue(final double Wmax, final int N) {
@@ -229,7 +231,7 @@ public class WilcoxonSignedRankTest {
 
     /**
      * @param Wmin smallest Wilcoxon signed rank value
-     * @param N number of subjects (corresponding to x.length)
+     * @param N    number of subjects (corresponding to x.length)
      * @return two-sided asymptotic p-value
      */
     private double calculateAsymptoticPValue(final double Wmin, final int N) {
@@ -247,7 +249,7 @@ public class WilcoxonSignedRankTest {
         // No try-catch or advertised exception because args are valid
         final NormalDistribution standardNormal = new NormalDistribution(0, 1);
 
-        return 2*standardNormal.cumulativeProbability(z);
+        return 2 * standardNormal.cumulativeProbability(z);
     }
 
     /**
@@ -274,27 +276,26 @@ public class WilcoxonSignedRankTest {
      * </ul>
      * </p>
      *
-     * @param x the first sample
-     * @param y the second sample
-     * @param exactPValue
-     *            if the exact p-value is wanted (only works for x.length <= 30,
-     *            if true and x.length > 30, this is ignored because
-     *            calculations may take too long)
+     * @param x           the first sample
+     * @param y           the second sample
+     * @param exactPValue if the exact p-value is wanted (only works for x.length <= 30,
+     *                    if true and x.length > 30, this is ignored because
+     *                    calculations may take too long)
      * @return p-value
-     * @throws NullArgumentException if {@code x} or {@code y} are {@code null}.
+     * @throws NullArgumentException        if {@code x} or {@code y} are {@code null}.
      * @throws MathIllegalArgumentException if {@code x} or {@code y} are zero-length.
      * @throws MathIllegalArgumentException if {@code x} and {@code y} do not
-     * have the same length.
+     *                                      have the same length.
      * @throws MathIllegalArgumentException if {@code exactPValue} is {@code true}
-     * and {@code x.length} > 30
-     * @throws MathIllegalStateException if the p-value can not be computed due to
-     * a convergence error
-     * @throws MathIllegalStateException if the maximum number of iterations
-     * is exceeded
+     *                                      and {@code x.length} > 30
+     * @throws MathIllegalStateException    if the p-value can not be computed due to
+     *                                      a convergence error
+     * @throws MathIllegalStateException    if the maximum number of iterations
+     *                                      is exceeded
      */
     public double wilcoxonSignedRankTest(final double[] x, final double[] y,
                                          final boolean exactPValue)
-        throws MathIllegalArgumentException, NullArgumentException, MathIllegalStateException {
+            throws MathIllegalArgumentException, NullArgumentException, MathIllegalStateException {
 
         ensureDataConformance(x, y);
 
@@ -308,7 +309,7 @@ public class WilcoxonSignedRankTest {
         if (exactPValue) {
             return calculateExactPValue(Wmax, N);
         } else {
-            final double Wmin = ( N*(N+1) / 2.0 ) - Wmax;
+            final double Wmin = (N * (N + 1) / 2.0) - Wmax;
             return calculateAsymptoticPValue(Wmin, N);
         }
     }

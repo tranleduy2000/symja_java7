@@ -14,6 +14,7 @@ import edu.jas.structure.GcdRingElem;
 /**
  * Container for the co-factors of left-right GCD computation. Invariant is left
  * * coA * right = polyA and left * coB * right = polyB.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
@@ -65,17 +66,18 @@ public class GCDcoFactors<C extends GcdRingElem<C>> implements Serializable {
 
     /**
      * Constructor.
-     * @param g GCD algorithm to use for verification.
-     * @param a polynomial A.
-     * @param b polynomial B.
+     *
+     * @param g  GCD algorithm to use for verification.
+     * @param a  polynomial A.
+     * @param b  polynomial B.
      * @param ca polynomial coA.
      * @param cb polynomial coB.
-     * @param l polynomial left GCD.
-     * @param r polynomial right GCD.
+     * @param l  polynomial left GCD.
+     * @param r  polynomial right GCD.
      */
     public GCDcoFactors(GreatestCommonDivisorAbstract<C> g, GenSolvablePolynomial<C> a,
-                    GenSolvablePolynomial<C> b, GenSolvablePolynomial<C> ca, GenSolvablePolynomial<C> cb,
-                    GenSolvablePolynomial<C> l, GenSolvablePolynomial<C> r) {
+                        GenSolvablePolynomial<C> b, GenSolvablePolynomial<C> ca, GenSolvablePolynomial<C> cb,
+                        GenSolvablePolynomial<C> l, GenSolvablePolynomial<C> r) {
         fd = g;
         polyA = a;
         polyB = b;
@@ -88,10 +90,11 @@ public class GCDcoFactors<C extends GcdRingElem<C>> implements Serializable {
 
     /**
      * Test if the invariants of this are fulfilled.
+     *
      * @return true if x * (left * coA * right) = y * (polyA), for x, y with x *
-     *         lc(left * coA * right) == y * lc(polyA) and x * (left * coB *
-     *         right) == y * (polyB), for x, y with x * lc(left * coB * right)
-     *         == y * lc(polyB).
+     * lc(left * coA * right) == y * lc(polyA) and x * (left * coB *
+     * right) == y * (polyB), for x, y with x * lc(left * coB * right)
+     * == y * lc(polyB).
      */
     public boolean isGCD() {
         GenSolvablePolynomial<C> a, ap, bp;
@@ -159,6 +162,7 @@ public class GCDcoFactors<C extends GcdRingElem<C>> implements Serializable {
 
     /**
      * Get the String representation.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -185,6 +189,7 @@ public class GCDcoFactors<C extends GcdRingElem<C>> implements Serializable {
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this container.
      * @see edu.jas.structure.ElemFactory#toScript()
      */
@@ -213,6 +218,7 @@ public class GCDcoFactors<C extends GcdRingElem<C>> implements Serializable {
 
     /**
      * Hash code for this GCDcoFactors.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -234,6 +240,7 @@ public class GCDcoFactors<C extends GcdRingElem<C>> implements Serializable {
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -252,13 +259,14 @@ public class GCDcoFactors<C extends GcdRingElem<C>> implements Serializable {
 
     /**
      * Comparison.
+     *
      * @param facs gcd co-factors container.
      * @return sign(this.polyA-facs.polyA) lexicographic &gt;
-     *         sign(this.polyB-facs.polyB) lexicographic &gt;
-     *         sign(this.coA-facs.coA) lexicographic &gt;
-     *         sign(this.coB-facs.coB) lexicographic &gt;
-     *         sign(this.left-facs.left) lexicographic &gt;
-     *         sign(this.right-facs.right).
+     * sign(this.polyB-facs.polyB) lexicographic &gt;
+     * sign(this.coA-facs.coA) lexicographic &gt;
+     * sign(this.coB-facs.coB) lexicographic &gt;
+     * sign(this.left-facs.left) lexicographic &gt;
+     * sign(this.right-facs.right).
      */
     public int compareTo(GCDcoFactors<C> facs) {
         int s = polyA.compareTo(facs.polyA);

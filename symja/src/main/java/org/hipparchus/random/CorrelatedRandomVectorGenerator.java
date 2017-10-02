@@ -59,30 +59,37 @@ import org.hipparchus.linear.RectangularCholeskyDecomposition;
  * automatically.
  */
 public class CorrelatedRandomVectorGenerator
-    implements RandomVectorGenerator {
-    /** Mean vector. */
+        implements RandomVectorGenerator {
+    /**
+     * Mean vector.
+     */
     private final double[] mean;
-    /** Underlying generator. */
+    /**
+     * Underlying generator.
+     */
     private final NormalizedRandomGenerator generator;
-    /** Storage for the normalized vector. */
+    /**
+     * Storage for the normalized vector.
+     */
     private final double[] normalized;
-    /** Root of the covariance matrix. */
+    /**
+     * Root of the covariance matrix.
+     */
     private final RealMatrix root;
 
     /**
      * Builds a correlated random vector generator from its mean
      * vector and covariance matrix.
      *
-     * @param mean Expected mean values for all components.
+     * @param mean       Expected mean values for all components.
      * @param covariance Covariance matrix.
-     * @param small Diagonal elements threshold under which  column are
-     * considered to be dependent on previous ones and are discarded
-     * @param generator underlying generator for uncorrelated normalized
-     * components.
-     * @throws MathIllegalArgumentException
-     * if the covariance matrix is not strictly positive definite.
+     * @param small      Diagonal elements threshold under which  column are
+     *                   considered to be dependent on previous ones and are discarded
+     * @param generator  underlying generator for uncorrelated normalized
+     *                   components.
+     * @throws MathIllegalArgumentException if the covariance matrix is not strictly positive definite.
      * @throws MathIllegalArgumentException if the mean and covariance
-     * arrays dimensions do not match.
+     *                                      arrays dimensions do not match.
      */
     public CorrelatedRandomVectorGenerator(double[] mean,
                                            RealMatrix covariance, double small,
@@ -90,12 +97,12 @@ public class CorrelatedRandomVectorGenerator
         int order = covariance.getRowDimension();
         if (mean.length != order) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.DIMENSIONS_MISMATCH,
-                                                   mean.length, order);
+                    mean.length, order);
         }
         this.mean = mean.clone();
 
         final RectangularCholeskyDecomposition decomposition =
-            new RectangularCholeskyDecomposition(covariance, small);
+                new RectangularCholeskyDecomposition(covariance, small);
         root = decomposition.getRootMatrix();
 
         this.generator = generator;
@@ -108,12 +115,11 @@ public class CorrelatedRandomVectorGenerator
      * covariance matrix.
      *
      * @param covariance Covariance matrix.
-     * @param small Diagonal elements threshold under which  column are
-     * considered to be dependent on previous ones and are discarded.
-     * @param generator Underlying generator for uncorrelated normalized
-     * components.
-     * @throws MathIllegalArgumentException
-     * if the covariance matrix is not strictly positive definite.
+     * @param small      Diagonal elements threshold under which  column are
+     *                   considered to be dependent on previous ones and are discarded.
+     * @param generator  Underlying generator for uncorrelated normalized
+     *                   components.
+     * @throws MathIllegalArgumentException if the covariance matrix is not strictly positive definite.
      */
     public CorrelatedRandomVectorGenerator(RealMatrix covariance, double small,
                                            NormalizedRandomGenerator generator) {
@@ -124,7 +130,7 @@ public class CorrelatedRandomVectorGenerator
         }
 
         final RectangularCholeskyDecomposition decomposition =
-            new RectangularCholeskyDecomposition(covariance, small);
+                new RectangularCholeskyDecomposition(covariance, small);
         root = decomposition.getRootMatrix();
 
         this.generator = generator;
@@ -132,16 +138,20 @@ public class CorrelatedRandomVectorGenerator
 
     }
 
-    /** Get the underlying normalized components generator.
+    /**
+     * Get the underlying normalized components generator.
+     *
      * @return underlying uncorrelated components generator
      */
     public NormalizedRandomGenerator getGenerator() {
         return generator;
     }
 
-    /** Get the rank of the covariance matrix.
+    /**
+     * Get the rank of the covariance matrix.
      * The rank is the number of independent rows in the covariance
      * matrix, it is also the number of columns of the root matrix.
+     *
      * @return rank of the square matrix.
      * @see #getRootMatrix()
      */
@@ -149,9 +159,11 @@ public class CorrelatedRandomVectorGenerator
         return normalized.length;
     }
 
-    /** Get the root of the covariance matrix.
+    /**
+     * Get the root of the covariance matrix.
      * The root is the rectangular matrix <code>B</code> such that
      * the covariance matrix is equal to <code>B.B<sup>T</sup></code>
+     *
      * @return root of the square matrix
      * @see #getRank()
      */
@@ -159,7 +171,9 @@ public class CorrelatedRandomVectorGenerator
         return root;
     }
 
-    /** Generate a correlated random vector.
+    /**
+     * Generate a correlated random vector.
+     *
      * @return a random vector as an array of double. The returned array
      * is created at each call, the caller can do what it wants with it.
      */

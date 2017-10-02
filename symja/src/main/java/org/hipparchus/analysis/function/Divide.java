@@ -21,10 +21,11 @@ import org.hipparchus.analysis.BivariateFunction;
 
 /**
  * Divide the first operand by the second.
- *
  */
 public class Divide implements BivariateFunction {
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double value(double x, double y) {
         return x / y;

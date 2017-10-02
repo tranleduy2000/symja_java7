@@ -16,8 +16,6 @@
  */
 package org.hipparchus.distribution.continuous;
 
-import java.io.Serializable;
-
 import org.hipparchus.analysis.UnivariateFunction;
 import org.hipparchus.analysis.solvers.UnivariateSolverUtils;
 import org.hipparchus.distribution.RealDistribution;
@@ -26,6 +24,8 @@ import org.hipparchus.exception.MathIllegalArgumentException;
 import org.hipparchus.util.FastMath;
 import org.hipparchus.util.MathUtils;
 
+import java.io.Serializable;
+
 /**
  * Base class for probability distributions on the reals.
  * <p>
@@ -33,19 +33,25 @@ import org.hipparchus.util.MathUtils;
  * that do not vary from distribution to distribution.
  */
 public abstract class AbstractRealDistribution
-    implements RealDistribution, Serializable {
+        implements RealDistribution, Serializable {
 
-    /** Default absolute accuracy for inverse cumulative computation. */
+    /**
+     * Default absolute accuracy for inverse cumulative computation.
+     */
     protected static final double DEFAULT_SOLVER_ABSOLUTE_ACCURACY = 1e-9;
-    /** Serializable version identifier */
+    /**
+     * Serializable version identifier
+     */
     private static final long serialVersionUID = 20160320L;
 
-    /** Inverse cumulative probability accuracy. */
+    /**
+     * Inverse cumulative probability accuracy.
+     */
     private final double solverAbsoluteAccuracy;
 
     /**
      * @param solverAbsoluteAccuracy the absolute accuracy to use when
-     * computing the inverse cumulative probability.
+     *                               computing the inverse cumulative probability.
      */
     protected AbstractRealDistribution(double solverAbsoluteAccuracy) {
         this.solverAbsoluteAccuracy = solverAbsoluteAccuracy;
@@ -68,23 +74,23 @@ public abstract class AbstractRealDistribution
      * takes a value between {@code x0} and {@code x1}, excluding the lower
      * and including the upper endpoint.
      * @throws MathIllegalArgumentException if {@code x0 > x1}.
-     *
-     * The default implementation uses the identity
-     * {@code P(x0 < X <= x1) = P(X <= x1) - P(X <= x0)}
+     *                                      <p>
+     *                                      The default implementation uses the identity
+     *                                      {@code P(x0 < X <= x1) = P(X <= x1) - P(X <= x0)}
      */
     @Override
     public double probability(double x0,
                               double x1) throws MathIllegalArgumentException {
         if (x0 > x1) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.LOWER_ENDPOINT_ABOVE_UPPER_ENDPOINT,
-                                                   x0, x1, true);
+                    x0, x1, true);
         }
         return cumulativeProbability(x1) - cumulativeProbability(x0);
     }
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The default implementation returns
      * <ul>
      * <li>{@link #getSupportLowerBound()} for {@code p = 0},</li>
@@ -138,7 +144,7 @@ public abstract class AbstractRealDistribution
         final double sig = FastMath.sqrt(getNumericalVariance());
         final boolean chebyshevApplies;
         chebyshevApplies = !(Double.isInfinite(mu) || Double.isNaN(mu) ||
-                             Double.isInfinite(sig) || Double.isNaN(sig));
+                Double.isInfinite(sig) || Double.isNaN(sig));
 
         if (lowerBound == Double.NEGATIVE_INFINITY) {
             if (chebyshevApplies) {
@@ -171,9 +177,9 @@ public abstract class AbstractRealDistribution
         };
 
         double x = UnivariateSolverUtils.solve(toSolve,
-                                               lowerBound,
-                                               upperBound,
-                                               getSolverAbsoluteAccuracy());
+                lowerBound,
+                upperBound,
+                getSolverAbsoluteAccuracy());
 
         if (!isSupportConnected()) {
             /* Test for plateau. */

@@ -5,12 +5,12 @@
 package edu.jas.application;
 
 
+import org.apache.log4j.Logger;
+
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.gb.SolvableGroebnerBaseAbstract;
 import edu.jas.gbufd.SGBFactory;
@@ -32,10 +32,11 @@ import edu.jas.structure.RingFactory;
 /**
  * SolvableLocal ring factory for SolvableLocal with GcdRingElem interface.
  * Objects of this class are immutable.
+ *
  * @author Heinz Kredel
  */
 public class SolvableLocalRing<C extends GcdRingElem<C>> implements RingFactory<SolvableLocal<C>>,
-                QuotPairFactory<GenPolynomial<C>, SolvableLocal<C>> {
+        QuotPairFactory<GenPolynomial<C>, SolvableLocal<C>> {
 
 
     // Can not extend SolvableQuotientRing 
@@ -80,6 +81,7 @@ public class SolvableLocalRing<C extends GcdRingElem<C>> implements RingFactory<
 
     /**
      * The constructor creates a SolvableLocalRing object from a SolvableIdeal.
+     *
      * @param i solvable localization polynomial ideal.
      */
     public SolvableLocalRing(SolvableIdeal<C> i) {
@@ -132,6 +134,7 @@ public class SolvableLocalRing<C extends GcdRingElem<C>> implements RingFactory<
 
     /**
      * Is this structure finite or infinite.
+     *
      * @return true if this structure is finite, else false.
      */
     public boolean isFinite() {
@@ -141,6 +144,7 @@ public class SolvableLocalRing<C extends GcdRingElem<C>> implements RingFactory<
 
     /**
      * Copy SolvableLocal element c.
+     *
      * @param c element to copy
      * @return a copy of c.
      */
@@ -151,6 +155,7 @@ public class SolvableLocalRing<C extends GcdRingElem<C>> implements RingFactory<
 
     /**
      * Get the zero element.
+     *
      * @return 0 as SolvableLocal.
      */
     public SolvableLocal<C> getZERO() {
@@ -160,6 +165,7 @@ public class SolvableLocalRing<C extends GcdRingElem<C>> implements RingFactory<
 
     /**
      * Get the one element.
+     *
      * @return 1 as SolvableLocal.
      */
     public SolvableLocal<C> getONE() {
@@ -169,10 +175,11 @@ public class SolvableLocalRing<C extends GcdRingElem<C>> implements RingFactory<
 
     /**
      * Get a list of the generating elements.
+     *
      * @return list of generators for the algebraic structure.
      */
     public List<SolvableLocal<C>> generators() {
-        List<GenSolvablePolynomial<C>> pgens = PolynomialList.<C> castToSolvableList(ring.generators());
+        List<GenSolvablePolynomial<C>> pgens = PolynomialList.<C>castToSolvableList(ring.generators());
         List<SolvableLocal<C>> gens = new ArrayList<SolvableLocal<C>>(pgens.size() * 2 - 1);
         GenSolvablePolynomial<C> one = ring.getONE();
         for (GenSolvablePolynomial<C> p : pgens) {
@@ -189,6 +196,7 @@ public class SolvableLocalRing<C extends GcdRingElem<C>> implements RingFactory<
 
     /**
      * Query if this ring is commutative.
+     *
      * @return true if this ring is commutative, else false.
      */
     public boolean isCommutative() {
@@ -198,6 +206,7 @@ public class SolvableLocalRing<C extends GcdRingElem<C>> implements RingFactory<
 
     /**
      * Query if this ring is associative.
+     *
      * @return true if this ring is associative, else false.
      */
     @SuppressWarnings("unused")
@@ -238,6 +247,7 @@ public class SolvableLocalRing<C extends GcdRingElem<C>> implements RingFactory<
 
     /**
      * Query if this ring is a field.
+     *
      * @return false.
      */
     public boolean isField() {
@@ -254,6 +264,7 @@ public class SolvableLocalRing<C extends GcdRingElem<C>> implements RingFactory<
 
     /**
      * Characteristic of this ring.
+     *
      * @return characteristic of this ring.
      */
     public java.math.BigInteger characteristic() {
@@ -263,6 +274,7 @@ public class SolvableLocalRing<C extends GcdRingElem<C>> implements RingFactory<
 
     /**
      * Get a SolvableLocal element from a BigInteger value.
+     *
      * @param a BigInteger.
      * @return a SolvableLocal.
      */
@@ -273,6 +285,7 @@ public class SolvableLocalRing<C extends GcdRingElem<C>> implements RingFactory<
 
     /**
      * Get a SolvableLocal element from a long value.
+     *
      * @param a long.
      * @return a SolvableLocal.
      */
@@ -292,6 +305,7 @@ public class SolvableLocalRing<C extends GcdRingElem<C>> implements RingFactory<
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this ElemFactory.
      */
     @Override
@@ -338,6 +352,7 @@ public class SolvableLocalRing<C extends GcdRingElem<C>> implements RingFactory<
 
     /**
      * SolvableLocal random.
+     *
      * @param n such that 0 &le; v &le; (2<sup>n</sup>-1).
      * @return a random residue element.
      */
@@ -355,6 +370,7 @@ public class SolvableLocalRing<C extends GcdRingElem<C>> implements RingFactory<
 
     /**
      * Generate a random residum polynomial.
+     *
      * @param k bitsize of random coefficients.
      * @param l number of terms.
      * @param d maximal degree in each variable.
@@ -375,7 +391,8 @@ public class SolvableLocalRing<C extends GcdRingElem<C>> implements RingFactory<
 
     /**
      * SolvableLocal random.
-     * @param n such that 0 &le; v &le; (2<sup>n</sup>-1).
+     *
+     * @param n   such that 0 &le; v &le; (2<sup>n</sup>-1).
      * @param rnd is a source for random bits.
      * @return a random residue element.
      */
@@ -393,6 +410,7 @@ public class SolvableLocalRing<C extends GcdRingElem<C>> implements RingFactory<
 
     /**
      * Parse SolvableLocal from String.
+     *
      * @param s String.
      * @return SolvableLocal from s.
      */
@@ -420,6 +438,7 @@ public class SolvableLocalRing<C extends GcdRingElem<C>> implements RingFactory<
 
     /**
      * Parse SolvableLocal from Reader.
+     *
      * @param r Reader.
      * @return next SolvableLocal from r.
      */

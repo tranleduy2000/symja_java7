@@ -5,11 +5,11 @@
 package edu.jas.gbufd;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.gb.ReductionAbstract;
 import edu.jas.poly.ExpVector;
@@ -21,12 +21,13 @@ import edu.jas.structure.RegularRingElem;
 /**
  * Polynomial Regular ring Reduction sequential use algorithm. Implements
  * normalform and boolean closure stuff.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
 
 public class RReductionSeq<C extends RegularRingElem<C>> extends ReductionAbstract<C> implements
-                RReduction<C> {
+        RReduction<C> {
 
 
     private static final Logger logger = Logger.getLogger(RReductionSeq.class);
@@ -45,6 +46,7 @@ public class RReductionSeq<C extends RegularRingElem<C>> extends ReductionAbstra
     /**
      * Is top reducible. Condition is a b != 0, for a=ldcf(A) and b=ldcf(B) and
      * lt(B) | lt(A) for some B in F.
+     *
      * @param A polynomial.
      * @param P polynomial list.
      * @return true if A is top reducible with respect to P.
@@ -81,6 +83,7 @@ public class RReductionSeq<C extends RegularRingElem<C>> extends ReductionAbstra
     /**
      * Is strong top reducible. Condition is idempotent(a) == idempotent(b), for
      * a=ldcf(A) and b=ldcf(B) and lt(B) | lt(A) for some B in F.
+     *
      * @param A polynomial.
      * @param P polynomial list.
      * @return true if A is string top reducible with respect to P.
@@ -112,6 +115,7 @@ public class RReductionSeq<C extends RegularRingElem<C>> extends ReductionAbstra
 
     /**
      * Is in Normalform.
+     *
      * @param Ap polynomial.
      * @param Pp polynomial list.
      * @return true if Ap is in normalform with respect to Pp.
@@ -179,6 +183,7 @@ public class RReductionSeq<C extends RegularRingElem<C>> extends ReductionAbstra
 
     /**
      * Normalform using r-reduction.
+     *
      * @param Ap polynomial.
      * @param Pp polynomial list.
      * @return r-nf(Ap) with respect to Pp.
@@ -277,6 +282,7 @@ public class RReductionSeq<C extends RegularRingElem<C>> extends ReductionAbstra
     /**
      * GB criterium 4. Use only for commutative polynomial rings. <b>Note:</b>
      * Experimental version for r-Groebner bases.
+     *
      * @param A polynomial.
      * @param B polynomial.
      * @param e = lcm(ht(A),ht(B))
@@ -315,6 +321,7 @@ public class RReductionSeq<C extends RegularRingElem<C>> extends ReductionAbstra
     /**
      * GB criterium 4. Use only for commutative polynomial rings. <b>Note:</b>
      * Experimental version for r-Groebner bases.
+     *
      * @param A polynomial.
      * @param B polynomial.
      * @return true if the S-polynomial(i,j) is required, else false.
@@ -348,14 +355,15 @@ public class RReductionSeq<C extends RegularRingElem<C>> extends ReductionAbstra
 
     /**
      * Normalform with recording.
+     *
      * @param row recording matrix, is modified.
-     * @param Pp a polynomial list for reduction.
-     * @param Ap a polynomial.
+     * @param Pp  a polynomial list for reduction.
+     * @param Ap  a polynomial.
      * @return Ap - row*Pp = nf(Pp,Ap) , the normal form of Ap wrt. Pp.
      */
     @SuppressWarnings("cast")
     public GenPolynomial<C> normalform(List<GenPolynomial<C>> row, List<GenPolynomial<C>> Pp,
-                    GenPolynomial<C> Ap) {
+                                       GenPolynomial<C> Ap) {
         if (Pp == null || Pp.isEmpty()) {
             return Ap;
         }
@@ -451,6 +459,7 @@ public class RReductionSeq<C extends RegularRingElem<C>> extends ReductionAbstra
 
     /**
      * Irreducible set. May not be boolean closed.
+     *
      * @param Pp polynomial list.
      * @return a list P of polynomials which are in normalform wrt. P.
      */
@@ -509,6 +518,7 @@ public class RReductionSeq<C extends RegularRingElem<C>> extends ReductionAbstra
 
     /**
      * Is boolean closed, test if A == idempotent(ldcf(A)) A.
+     *
      * @param A polynomial.
      * @return true if A is boolean closed, else false.
      */
@@ -529,6 +539,7 @@ public class RReductionSeq<C extends RegularRingElem<C>> extends ReductionAbstra
 
     /**
      * Is boolean closed, test if all A in F are boolean closed.
+     *
      * @param F polynomial list.
      * @return true if F is boolean closed, else false.
      */
@@ -552,6 +563,7 @@ public class RReductionSeq<C extends RegularRingElem<C>> extends ReductionAbstra
     /**
      * Is reduced boolean closed, test if all A in F are boolean closed or br(A)
      * reduces to zero.
+     *
      * @param F polynomial list.
      * @return true if F is boolean closed, else false.
      */
@@ -589,6 +601,7 @@ public class RReductionSeq<C extends RegularRingElem<C>> extends ReductionAbstra
 
     /**
      * Boolean closure, compute idempotent(ldcf(A)) A.
+     *
      * @param A polynomial.
      * @return bc(A).
      */
@@ -605,6 +618,7 @@ public class RReductionSeq<C extends RegularRingElem<C>> extends ReductionAbstra
 
     /**
      * Boolean remainder, compute idemComplement(ldcf(A)) A.
+     *
      * @param A polynomial.
      * @return br(A).
      */
@@ -621,6 +635,7 @@ public class RReductionSeq<C extends RegularRingElem<C>> extends ReductionAbstra
 
     /**
      * Boolean closure, compute BC(A) for all A in F.
+     *
      * @param F polynomial list.
      * @return bc(F).
      */
@@ -645,6 +660,7 @@ public class RReductionSeq<C extends RegularRingElem<C>> extends ReductionAbstra
 
     /**
      * Reduced boolean closure, compute BC(A) for all A in F.
+     *
      * @param F polynomial list.
      * @return red(bc(F)) = bc(red(F)).
      */
@@ -683,6 +699,7 @@ public class RReductionSeq<C extends RegularRingElem<C>> extends ReductionAbstra
 
     /**
      * Reduced boolean closure, compute BC(A) modulo F.
+     *
      * @param A polynomial.
      * @param F polynomial list.
      * @return red(bc(A)).

@@ -16,8 +16,9 @@ import edu.jas.structure.GcdRingElem;
 
 /**
  * Container for the approximation result from a Hensel algorithm.
- * @author Heinz Kredel
+ *
  * @param <MOD> coefficient type
+ * @author Heinz Kredel
  */
 
 public class HenselApprox<MOD extends GcdRingElem<MOD> & Modular> implements Serializable {
@@ -49,13 +50,14 @@ public class HenselApprox<MOD extends GcdRingElem<MOD> & Modular> implements Ser
 
     /**
      * Constructor.
-     * @param A approximated polynomial.
-     * @param B approximated polynomial.
+     *
+     * @param A  approximated polynomial.
+     * @param B  approximated polynomial.
      * @param Am approximated modular polynomial.
      * @param Bm approximated modular polynomial.
      */
     public HenselApprox(GenPolynomial<BigInteger> A, GenPolynomial<BigInteger> B, GenPolynomial<MOD> Am,
-            GenPolynomial<MOD> Bm) {
+                        GenPolynomial<MOD> Bm) {
         this.A = A;
         this.B = B;
         this.Am = Am;
@@ -65,6 +67,7 @@ public class HenselApprox<MOD extends GcdRingElem<MOD> & Modular> implements Ser
 
     /**
      * Get the String representation.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -83,6 +86,7 @@ public class HenselApprox<MOD extends GcdRingElem<MOD> & Modular> implements Ser
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this container.
      * @see edu.jas.structure.ElemFactory#toScript()
      */
@@ -102,6 +106,7 @@ public class HenselApprox<MOD extends GcdRingElem<MOD> & Modular> implements Ser
 
     /**
      * Hash code for this Factors.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -116,6 +121,7 @@ public class HenselApprox<MOD extends GcdRingElem<MOD> & Modular> implements Ser
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -134,6 +140,7 @@ public class HenselApprox<MOD extends GcdRingElem<MOD> & Modular> implements Ser
 
     /**
      * Get modul of modular polynomial.
+     *
      * @return coefficient modul of polynomial mpol.
      */
     public BigInteger approximationSize() {

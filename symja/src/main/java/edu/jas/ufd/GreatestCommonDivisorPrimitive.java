@@ -15,6 +15,7 @@ import edu.jas.structure.GcdRingElem;
 /**
  * Greatest common divisor algorithms with primitive polynomial remainder
  * sequence.
+ *
  * @author Heinz Kredel
  */
 
@@ -31,9 +32,10 @@ public class GreatestCommonDivisorPrimitive<C extends GcdRingElem<C>> extends
     /**
      * Univariate GenPolynomial greatest comon divisor. Uses pseudoRemainder for
      * remainder.
+     *
      * @param P univariate GenPolynomial.
      * @param S univariate GenPolynomial.
-     * @return gcd(P,S).
+     * @return gcd(P, S).
      */
     @Override
     public GenPolynomial<C> baseGcd(GenPolynomial<C> P, GenPolynomial<C> S) {
@@ -78,7 +80,7 @@ public class GreatestCommonDivisorPrimitive<C extends GcdRingElem<C>> extends
         }
         GenPolynomial<C> x;
         while (!r.isZERO()) {
-            x = PolyUtil.<C> baseSparsePseudoRemainder(q, r);
+            x = PolyUtil.<C>baseSparsePseudoRemainder(q, r);
             q = r;
             r = basePrimitivePart(x);
         }
@@ -89,13 +91,14 @@ public class GreatestCommonDivisorPrimitive<C extends GcdRingElem<C>> extends
     /**
      * Univariate GenPolynomial recursive greatest comon divisor. Uses
      * pseudoRemainder for remainder.
+     *
      * @param P univariate recursive GenPolynomial.
      * @param S univariate recursive GenPolynomial.
-     * @return gcd(P,S).
+     * @return gcd(P, S).
      */
     @Override
     public GenPolynomial<GenPolynomial<C>> recursiveUnivariateGcd(GenPolynomial<GenPolynomial<C>> P,
-            GenPolynomial<GenPolynomial<C>> S) {
+                                                                  GenPolynomial<GenPolynomial<C>> S) {
         if (S == null || S.isZERO()) {
             return P;
         }
@@ -129,8 +132,8 @@ public class GreatestCommonDivisorPrimitive<C extends GcdRingElem<C>> extends
 
         GenPolynomial<C> c = gcd(a, b); // go to recursion
         //System.out.println("rgcd c = " + c);
-        r = PolyUtil.<C> recursiveDivide(r, a);
-        q = PolyUtil.<C> recursiveDivide(q, b);
+        r = PolyUtil.<C>recursiveDivide(r, a);
+        q = PolyUtil.<C>recursiveDivide(q, b);
         if (r.isONE()) {
             return r.multiply(c);
         }
@@ -139,7 +142,7 @@ public class GreatestCommonDivisorPrimitive<C extends GcdRingElem<C>> extends
         }
         GenPolynomial<GenPolynomial<C>> x;
         while (!r.isZERO()) {
-            x = PolyUtil.<C> recursivePseudoRemainder(q, r);
+            x = PolyUtil.<C>recursivePseudoRemainder(q, r);
             if (logger.isInfoEnabled()) {
                 logger.info("recursivePseudoRemainder.bits = " + x.bitLength());
             }

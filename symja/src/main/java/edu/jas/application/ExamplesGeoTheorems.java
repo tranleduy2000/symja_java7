@@ -5,10 +5,10 @@
 package edu.jas.application;
 
 
+import org.apache.log4j.BasicConfigurator;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.log4j.BasicConfigurator;
 
 import edu.jas.arith.BigRational;
 import edu.jas.gb.GBOptimized;
@@ -25,6 +25,7 @@ import edu.jas.poly.PolynomialList;
 
 /**
  * ExamplesGeoTheorems for Groebner base usage.
+ *
  * @author GeoGebra developers
  * @author Kovács Zoltán
  * @author Heinz Kredel
@@ -53,8 +54,8 @@ public class ExamplesGeoTheorems {
      * get Pappus Example.
      */
     public static List<GenPolynomial<BigRational>> getExample() {
-        String[] vars = { "a1", "a2", "b1", "b2", "c1", "c2", "d1", "d2", "e1", "e2", "f1", "f2", "g1", "g2",
-                "h1", "h2", "i1", "i2", "j1", "j2", "z1", "z2", "z3" };
+        String[] vars = {"a1", "a2", "b1", "b2", "c1", "c2", "d1", "d2", "e1", "e2", "f1", "f2", "g1", "g2",
+                "h1", "h2", "i1", "i2", "j1", "j2", "z1", "z2", "z3"};
 
         BigRational br = new BigRational();
         GenPolynomialRing<BigRational> pring = new GenPolynomialRing<BigRational>(br, vars);
@@ -68,11 +69,11 @@ public class ExamplesGeoTheorems {
         GenPolynomial<BigRational> e7 = pring.parse("(c1*(e2 - j2) + c2*( - e1 + j1) + e1*j2 - e2*j1)");
         GenPolynomial<BigRational> e8 = pring.parse("(b1*( - f2 + j2) + b2*(f1 - j1) - f1*j2 + f2*j1)");
         GenPolynomial<BigRational> e9 = pring
-                        .parse("(a1*(b2*z2 - d2*z2) + a2*( - b1*z2 + d1*z2) + b1*d2*z2 - b2*d1*z2 - 1)");
+                .parse("(a1*(b2*z2 - d2*z2) + a2*( - b1*z2 + d1*z2) + b1*d2*z2 - b2*d1*z2 - 1)");
         GenPolynomial<BigRational> e10 = pring
-                        .parse("(a1*(b2*z3 - e2*z3) + a2*( - b1*z3 + e1*z3) + b1*e2*z3 - b2*e1*z3 - 1)");
+                .parse("(a1*(b2*z3 - e2*z3) + a2*( - b1*z3 + e1*z3) + b1*e2*z3 - b2*e1*z3 - 1)");
         GenPolynomial<BigRational> e11 = pring
-                        .parse("(h1*(i2*z1 - j2*z1) + h2*( - i1*z1 + j1*z1) + i1*j2*z1 - i2*j1*z1 - 1)");
+                .parse("(h1*(i2*z1 - j2*z1) + h2*( - i1*z1 + j1*z1) + i1*j2*z1 - i2*j1*z1 - 1)");
 
         List<GenPolynomial<BigRational>> cp = new ArrayList<GenPolynomial<BigRational>>(11);
         cp.add(e1);

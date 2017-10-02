@@ -22,6 +22,7 @@ import edu.jas.structure.UnaryFunctor;
  * <code>evaluate()</code>, or they use the <code>order()</code> method, like
  * <code>signum()</code>, <code>abs()</code>, <code>divide()</code>,
  * <code>remainder()</code> and <code>gcd()</code>.
+ *
  * @param <C> ring element type
  * @author Heinz Kredel
  */
@@ -39,7 +40,7 @@ public class UnivPowerSeries<C extends RingElem<C>> implements RingElem<UnivPowe
      * Data structure / generating function for coeffcients. Cannot be final
      * because of fixPoint, must be accessible in factory.
      */
-    /*package*/Coefficients<C> lazyCoeffs;
+    /*package*/ Coefficients<C> lazyCoeffs;
 
 
     /**
@@ -65,6 +66,7 @@ public class UnivPowerSeries<C extends RingElem<C>> implements RingElem<UnivPowe
 
     /**
      * Package constructor. Use in fixPoint only, must be accessible in factory.
+     *
      * @param ring power series ring.
      */
     /*package*/ UnivPowerSeries(UnivPowerSeriesRing<C> ring) {
@@ -75,13 +77,14 @@ public class UnivPowerSeries<C extends RingElem<C>> implements RingElem<UnivPowe
 
     /**
      * Constructor.
-     * @param ring power series ring.
+     *
+     * @param ring       power series ring.
      * @param lazyCoeffs generating function for coefficients.
      */
     public UnivPowerSeries(UnivPowerSeriesRing<C> ring, Coefficients<C> lazyCoeffs) {
         if (lazyCoeffs == null || ring == null) {
             throw new IllegalArgumentException(
-                            "null not allowed: ring = " + ring + ", lazyCoeffs = " + lazyCoeffs);
+                    "null not allowed: ring = " + ring + ", lazyCoeffs = " + lazyCoeffs);
         }
         this.ring = ring;
         this.lazyCoeffs = lazyCoeffs;
@@ -91,6 +94,7 @@ public class UnivPowerSeries<C extends RingElem<C>> implements RingElem<UnivPowe
 
     /**
      * Get the corresponding element factory.
+     *
      * @return factory for this Element.
      * @see edu.jas.structure.Element#factory()
      */
@@ -101,6 +105,7 @@ public class UnivPowerSeries<C extends RingElem<C>> implements RingElem<UnivPowe
 
     /**
      * Clone this power series.
+     *
      * @see java.lang.Object#clone()
      */
     @Override
@@ -111,6 +116,7 @@ public class UnivPowerSeries<C extends RingElem<C>> implements RingElem<UnivPowe
 
     /**
      * String representation of power series.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -121,6 +127,7 @@ public class UnivPowerSeries<C extends RingElem<C>> implements RingElem<UnivPowe
 
     /**
      * To String with given truncate.
+     *
      * @return string representation of this to given truncate.
      */
     public String toString(int truncate) {
@@ -174,6 +181,7 @@ public class UnivPowerSeries<C extends RingElem<C>> implements RingElem<UnivPowe
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this Element.
      * @see edu.jas.structure.Element#toScript()
      */
@@ -229,6 +237,7 @@ public class UnivPowerSeries<C extends RingElem<C>> implements RingElem<UnivPowe
 
     /**
      * Get a scripting compatible string representation of the factory.
+     *
      * @return script compatible representation for this ElemFactory.
      * @see edu.jas.structure.Element#toScriptFactory()
      */
@@ -241,6 +250,7 @@ public class UnivPowerSeries<C extends RingElem<C>> implements RingElem<UnivPowe
 
     /**
      * Get coefficient.
+     *
      * @param index number of requested coefficient.
      * @return coefficient at index.
      */
@@ -255,6 +265,7 @@ public class UnivPowerSeries<C extends RingElem<C>> implements RingElem<UnivPowe
 
     /**
      * Get a GenPolynomial&lt;C&gt; from this.
+     *
      * @return a GenPolynomial&lt;C&gt; from this up to truncate parts.
      */
     public GenPolynomial<C> asPolynomial() {
@@ -270,6 +281,7 @@ public class UnivPowerSeries<C extends RingElem<C>> implements RingElem<UnivPowe
 
     /**
      * Leading base coefficient.
+     *
      * @return first coefficient.
      */
     public C leadingCoefficient() {
@@ -279,6 +291,7 @@ public class UnivPowerSeries<C extends RingElem<C>> implements RingElem<UnivPowe
 
     /**
      * Reductum.
+     *
      * @return this - leading monomial.
      */
     public UnivPowerSeries<C> reductum() {
@@ -295,6 +308,7 @@ public class UnivPowerSeries<C extends RingElem<C>> implements RingElem<UnivPowe
 
     /**
      * Prepend a new leading coefficient.
+     *
      * @param h new coefficient.
      * @return new power series.
      */
@@ -315,6 +329,7 @@ public class UnivPowerSeries<C extends RingElem<C>> implements RingElem<UnivPowe
 
     /**
      * Shift coefficients.
+     *
      * @param k shift index.
      * @return new power series with coefficient(i) = old.coefficient(i-k).
      */
@@ -335,6 +350,7 @@ public class UnivPowerSeries<C extends RingElem<C>> implements RingElem<UnivPowe
 
     /**
      * Select coefficients.
+     *
      * @param sel selector functor.
      * @return new power series with selected coefficients.
      */
@@ -357,6 +373,7 @@ public class UnivPowerSeries<C extends RingElem<C>> implements RingElem<UnivPowe
     /**
      * Shift select coefficients. Not selected coefficients are removed from the
      * result series.
+     *
      * @param sel selector functor.
      * @return new power series with shifted selected coefficients.
      */
@@ -384,6 +401,7 @@ public class UnivPowerSeries<C extends RingElem<C>> implements RingElem<UnivPowe
 
     /**
      * Map a unary function to this power series.
+     *
      * @param f evaluation functor.
      * @return new power series with coefficients f(this(i)).
      */
@@ -401,12 +419,13 @@ public class UnivPowerSeries<C extends RingElem<C>> implements RingElem<UnivPowe
 
     /**
      * Map a binary function to this and another power series.
-     * @param f evaluation functor with coefficients f(this(i),other(i)).
+     *
+     * @param f  evaluation functor with coefficients f(this(i),other(i)).
      * @param ps other power series.
      * @return new power series.
      */
     public <C2 extends RingElem<C2>> UnivPowerSeries<C> zip(final BinaryFunctor<? super C, ? super C2, C> f,
-                    final UnivPowerSeries<C2> ps) {
+                                                            final UnivPowerSeries<C2> ps) {
         return new UnivPowerSeries<C>(ring, new Coefficients<C>() {
 
 
@@ -420,6 +439,7 @@ public class UnivPowerSeries<C extends RingElem<C>> implements RingElem<UnivPowe
 
     /**
      * Sum of two power series.
+     *
      * @param ps other power series.
      * @return this + ps.
      */
@@ -430,6 +450,7 @@ public class UnivPowerSeries<C extends RingElem<C>> implements RingElem<UnivPowe
 
     /**
      * Subtraction of two power series.
+     *
      * @param ps other power series.
      * @return this - ps.
      */
@@ -440,6 +461,7 @@ public class UnivPowerSeries<C extends RingElem<C>> implements RingElem<UnivPowe
 
     /**
      * Multiply by coefficient.
+     *
      * @param c coefficient.
      * @return this * c.
      */
@@ -450,6 +472,7 @@ public class UnivPowerSeries<C extends RingElem<C>> implements RingElem<UnivPowe
 
     /**
      * Monic.
+     *
      * @return 1/orderCoeff() * this.
      */
     public UnivPowerSeries<C> monic() {
@@ -475,6 +498,7 @@ public class UnivPowerSeries<C extends RingElem<C>> implements RingElem<UnivPowe
 
     /**
      * Negate.
+     *
      * @return - this.
      */
     public UnivPowerSeries<C> negate() {
@@ -484,6 +508,7 @@ public class UnivPowerSeries<C extends RingElem<C>> implements RingElem<UnivPowe
 
     /**
      * Absolute value.
+     *
      * @return abs(this).
      */
     public UnivPowerSeries<C> abs() {
@@ -496,6 +521,7 @@ public class UnivPowerSeries<C extends RingElem<C>> implements RingElem<UnivPowe
 
     /**
      * Evaluate at given point.
+     *
      * @return ps(c).
      */
     public C evaluate(C e) {
@@ -512,6 +538,7 @@ public class UnivPowerSeries<C extends RingElem<C>> implements RingElem<UnivPowe
 
     /**
      * Order.
+     *
      * @return index of first non zero coefficient.
      */
     public int order() {
@@ -530,6 +557,7 @@ public class UnivPowerSeries<C extends RingElem<C>> implements RingElem<UnivPowe
 
     /**
      * Truncate.
+     *
      * @return truncate index of power series.
      */
     public int truncate() {
@@ -539,6 +567,7 @@ public class UnivPowerSeries<C extends RingElem<C>> implements RingElem<UnivPowe
 
     /**
      * Set truncate.
+     *
      * @param t new truncate index.
      * @return old truncate index of power series.
      */
@@ -554,6 +583,7 @@ public class UnivPowerSeries<C extends RingElem<C>> implements RingElem<UnivPowe
 
     /**
      * Signum.
+     *
      * @return sign of first non zero coefficient.
      */
     public int signum() {
@@ -563,6 +593,7 @@ public class UnivPowerSeries<C extends RingElem<C>> implements RingElem<UnivPowe
 
     /**
      * Compare to. <b>Note: </b> compare only up to truncate.
+     *
      * @return sign of first non zero coefficient of this-ps.
      */
     @Override
@@ -581,6 +612,7 @@ public class UnivPowerSeries<C extends RingElem<C>> implements RingElem<UnivPowe
 
     /**
      * Is power series zero. <b>Note: </b> compare only up to truncate.
+     *
      * @return If this is 0 then true is returned, else false.
      * @see edu.jas.structure.RingElem#isZERO()
      */
@@ -591,6 +623,7 @@ public class UnivPowerSeries<C extends RingElem<C>> implements RingElem<UnivPowe
 
     /**
      * Is power series one. <b>Note: </b> compare only up to truncate.
+     *
      * @return If this is 1 then true is returned, else false.
      * @see edu.jas.structure.RingElem#isONE()
      */
@@ -602,6 +635,7 @@ public class UnivPowerSeries<C extends RingElem<C>> implements RingElem<UnivPowe
     /**
      * Comparison with any other object. <b>Note: </b> compare only up to
      * truncate.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -621,6 +655,7 @@ public class UnivPowerSeries<C extends RingElem<C>> implements RingElem<UnivPowe
 
     /**
      * Hash code for this polynomial. <b>Note: </b> only up to truncate.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -638,6 +673,7 @@ public class UnivPowerSeries<C extends RingElem<C>> implements RingElem<UnivPowe
 
     /**
      * Is unit.
+     *
      * @return true, if this power series is invertible, else false.
      */
     public boolean isUnit() {
@@ -647,6 +683,7 @@ public class UnivPowerSeries<C extends RingElem<C>> implements RingElem<UnivPowe
 
     /**
      * Multiply by another power series.
+     *
      * @return this * ps.
      */
     public UnivPowerSeries<C> multiply(final UnivPowerSeries<C> ps) {
@@ -672,6 +709,7 @@ public class UnivPowerSeries<C extends RingElem<C>> implements RingElem<UnivPowe
 
     /**
      * Inverse power series.
+     *
      * @return ps with this * ps = 1.
      */
     public UnivPowerSeries<C> inverse() {
@@ -702,6 +740,7 @@ public class UnivPowerSeries<C extends RingElem<C>> implements RingElem<UnivPowe
 
     /**
      * Divide by another power series.
+     *
      * @return this / ps.
      */
     public UnivPowerSeries<C> divide(UnivPowerSeries<C> ps) {
@@ -715,7 +754,7 @@ public class UnivPowerSeries<C extends RingElem<C>> implements RingElem<UnivPowe
         }
         if (!ps.coefficient(n).isUnit()) {
             throw new ArithmeticException(
-                            "division by non unit coefficient " + ps.coefficient(n) + ", n = " + n);
+                    "division by non unit coefficient " + ps.coefficient(n) + ", n = " + n);
         }
         // now m >= n
         UnivPowerSeries<C> st, sps, q, sq;
@@ -741,6 +780,7 @@ public class UnivPowerSeries<C extends RingElem<C>> implements RingElem<UnivPowe
 
     /**
      * Power series remainder.
+     *
      * @param ps nonzero power series with invertible leading coefficient.
      * @return remainder with this = quotient * ps + remainder.
      */
@@ -756,16 +796,18 @@ public class UnivPowerSeries<C extends RingElem<C>> implements RingElem<UnivPowe
 
     /**
      * Quotient and remainder by division of this by S.
+     *
      * @param S a UnivPowerSeries
      * @return [this/S, this - (this/S)*S].
      */
     public UnivPowerSeries<C>[] quotientRemainder(UnivPowerSeries<C> S) {
-        return new UnivPowerSeries[] { divide(S), remainder(S) };
+        return new UnivPowerSeries[]{divide(S), remainder(S)};
     }
 
 
     /**
      * Differentiate.
+     *
      * @return differentiate(this).
      */
     public UnivPowerSeries<C> differentiate() {
@@ -784,6 +826,7 @@ public class UnivPowerSeries<C extends RingElem<C>> implements RingElem<UnivPowe
 
     /**
      * Integrate with given constant.
+     *
      * @param c integration constant.
      * @return integrate(this).
      */
@@ -806,8 +849,9 @@ public class UnivPowerSeries<C extends RingElem<C>> implements RingElem<UnivPowe
 
     /**
      * Power series greatest common divisor.
+     *
      * @param ps power series.
-     * @return gcd(this,ps).
+     * @return gcd(this, ps).
      */
     public UnivPowerSeries<C> gcd(UnivPowerSeries<C> ps) {
         if (ps.isZERO()) {
@@ -826,6 +870,7 @@ public class UnivPowerSeries<C extends RingElem<C>> implements RingElem<UnivPowe
     /**
      * Power series extended greatest common divisor. <b>Note:</b> not
      * implemented.
+     *
      * @param S power series.
      * @return [ gcd(this,S), a, b ] with a*this + b*S = gcd(this,S).
      */

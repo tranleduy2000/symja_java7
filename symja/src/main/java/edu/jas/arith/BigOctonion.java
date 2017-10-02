@@ -5,13 +5,13 @@
 package edu.jas.arith;
 
 
+import org.apache.log4j.Logger;
+
 import java.io.Reader;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.kern.StringUtil;
 import edu.jas.structure.GcdRingElem;
@@ -23,36 +23,42 @@ import edu.jas.structure.StarRingElem;
  * BigOctonion class based on BigRational implementing the RingElem interface
  * and with the familiar MAS static method names. Objects of this class are
  * immutable.
+ *
  * @author Heinz Kredel
  */
 
 public final class BigOctonion
-                implements StarRingElem<BigOctonion>, GcdRingElem<BigOctonion>, RingFactory<BigOctonion> {
+        implements StarRingElem<BigOctonion>, GcdRingElem<BigOctonion>, RingFactory<BigOctonion> {
 
 
+    private final static Random random = new Random();
+    private static final Logger logger = Logger.getLogger(BigOctonion.class);
+    private static final boolean debug = logger.isDebugEnabled();
     /**
      * First part of the data structure.
      */
     public final BigQuaternion or;
-
-
     /**
      * Second part of the data structure.
      */
     public final BigQuaternion oi;
-
-
-    private final static Random random = new Random();
-
-
-    private static final Logger logger = Logger.getLogger(BigOctonion.class);
-
-
-    private static final boolean debug = logger.isDebugEnabled();
+    /**
+     * The constant 0.
+     */
+    public BigOctonion ZERO; // = new BigOctonion(or.ring);
+    /**
+     * The constant 1.
+     */
+    public BigOctonion ONE; // = new BigOctonion(or.ring.ONE);
+    /**
+     * The constant i.
+     */
+    public BigOctonion I; // = new BigOctonion(or.ring.ZERO, oi.ring.ONE);
 
 
     /**
      * Constructor for a BigOctonion from Quaternions.
+     *
      * @param r BigQuaternion.
      * @param i BigQuaternion.
      */
@@ -63,15 +69,16 @@ public final class BigOctonion
         this.or = r;
         this.oi = i;
         //if (ZERO == null) {
-            //ZERO = new BigOctonion(r.ring.ZERO, i.ring.ZERO);
-            //ONE = new BigOctonion(r.ring.ONE, i.ring.ZERO);
-            //I = new BigOctonion(r.ring.ZERO, i.ring.ONE);
+        //ZERO = new BigOctonion(r.ring.ZERO, i.ring.ZERO);
+        //ONE = new BigOctonion(r.ring.ONE, i.ring.ZERO);
+        //I = new BigOctonion(r.ring.ZERO, i.ring.ONE);
         //}
     }
 
 
     /**
      * Constructor for a BigOctonion from BigQuaternion.
+     *
      * @param r BigQuaternion.
      */
     public BigOctonion(BigQuaternion r) {
@@ -81,8 +88,9 @@ public final class BigOctonion
 
     /**
      * Constructor for a BigOctonion from BigComplex.
+     *
      * @param fac BigQuaternionRing.
-     * @param r BigComplex.
+     * @param r   BigComplex.
      */
     public BigOctonion(BigQuaternionRing fac, BigComplex r) {
         this(new BigQuaternion(fac, r));
@@ -91,8 +99,9 @@ public final class BigOctonion
 
     /**
      * Constructor for a BigOctonion from BigRational.
+     *
      * @param fac BigQuaternionRing.
-     * @param r BigRational.
+     * @param r   BigRational.
      */
     public BigOctonion(BigQuaternionRing fac, BigRational r) {
         this(new BigQuaternion(fac, r));
@@ -101,8 +110,9 @@ public final class BigOctonion
 
     /**
      * Constructor for a BigOctonion from long.
+     *
      * @param fac BigQuaternionRing.
-     * @param r long.
+     * @param r   long.
      */
     public BigOctonion(BigQuaternionRing fac, long r) {
         this(new BigQuaternion(fac, r));
@@ -111,6 +121,7 @@ public final class BigOctonion
 
     /**
      * Constructor for a BigOctonion with no arguments.
+     *
      * @param fac BigQuaternionRing.
      */
     public BigOctonion(BigQuaternionRing fac) {
@@ -122,8 +133,9 @@ public final class BigOctonion
      * The BigOctonion string constructor accepts the following formats: empty
      * string, "quaternion", or "quat o quat" with no blanks around o if used as
      * polynoial coefficient.
+     *
      * @param fac BigQuaternionRing.
-     * @param s String.
+     * @param s   String.
      * @throws NumberFormatException
      */
     public BigOctonion(BigQuaternionRing fac, String s) throws NumberFormatException {
@@ -145,9 +157,134 @@ public final class BigOctonion
         oi = new BigQuaternion(fac, so.trim());
     }
 
+    /**
+     * Is Octonion number zero.
+     *
+     * @param A BigOctonion.
+     * @return true if A is 0, else false.
+     */
+    public static boolean isOZERO(BigOctonion A) {
+        if (A == null)
+            return false;
+        return A.isZERO();
+    }
+
+    /**
+     * Is BigOctonion number one.
+     *
+     * @param A is a quaternion number.
+     * @return true if A is 1, else false.
+     */
+    public static boolean isOONE(BigOctonion A) {
+        if (A == null)
+            return false;
+        return A.isONE();
+    }
+
+    /**
+     * Octonion number sum.
+     *
+     * @param A BigOctonion.
+     * @param B BigOctonion.
+     * @return A+B.
+     */
+    public static BigOctonion OSUM(BigOctonion A, BigOctonion B) {
+        if (A == null)
+            return null;
+        return A.sum(B);
+    }
+
+    /**
+     * Octonion number difference.
+     *
+     * @param A BigOctonion.
+     * @param B BigOctonion.
+     * @return A-B.
+     */
+    public static BigOctonion ODIF(BigOctonion A, BigOctonion B) {
+        if (A == null)
+            return null;
+        return A.subtract(B);
+    }
+
+    /**
+     * Octonion number negative.
+     *
+     * @param A is a octonion number
+     * @return -A.
+     */
+    public static BigOctonion ONEG(BigOctonion A) {
+        if (A == null)
+            return null;
+        return A.negate();
+    }
+
+    /**
+     * Octonion number conjugate.
+     *
+     * @param A is a quaternion number.
+     * @return the quaternion conjugate of A.
+     */
+    public static BigOctonion OCON(BigOctonion A) {
+        if (A == null)
+            return null;
+        return A.conjugate();
+    }
+
+    /**
+     * Octonion number absolute value.
+     *
+     * @param A is a quaternion number.
+     * @return the absolute value of A, a rational number. Note: The square root
+     * is not jet implemented.
+     */
+    public static BigRational OABS(BigOctonion A) {
+        if (A == null)
+            return null;
+        return A.abs().or.re;
+    }
+
+    /**
+     * Octonion number product.
+     *
+     * @param A BigOctonion.
+     * @param B BigOctonion.
+     * @return A*B.
+     */
+    public static BigOctonion OPROD(BigOctonion A, BigOctonion B) {
+        if (A == null)
+            return null;
+        return A.multiply(B);
+    }
+
+    /**
+     * Octonion number inverse.
+     *
+     * @param A is a non-zero quaternion number.
+     * @return S with S * A = 1.
+     */
+    public static BigOctonion OINV(BigOctonion A) {
+        if (A == null)
+            return null;
+        return A.inverse();
+    }
+
+    /**
+     * Octonion number quotient.
+     *
+     * @param A BigOctonion.
+     * @param B BigOctonion.
+     * @return R/S.
+     */
+    public static BigOctonion OQ(BigOctonion A, BigOctonion B) {
+        if (A == null)
+            return null;
+        return A.divide(B);
+    }
 
     /**
      * Get the corresponding element factory.
+     *
      * @return factory for this Element.
      * @see edu.jas.structure.Element#factory()
      */
@@ -155,9 +292,9 @@ public final class BigOctonion
         return this;
     }
 
-
     /**
      * Get a list of the generating elements.
+     *
      * @return list of generators for the algebraic structure.
      * @see edu.jas.structure.ElemFactory#generators()
      */
@@ -171,9 +308,9 @@ public final class BigOctonion
         return g;
     }
 
-
     /**
      * Is this structure finite or infinite.
+     *
      * @return true if this structure is finite, else false.
      * @see edu.jas.structure.ElemFactory#isFinite()
      */
@@ -181,9 +318,9 @@ public final class BigOctonion
         return false;
     }
 
-
     /**
      * Clone this.
+     *
      * @see java.lang.Object#clone()
      */
     @Override
@@ -191,9 +328,9 @@ public final class BigOctonion
         return new BigOctonion(or, oi);
     }
 
-
     /**
      * Copy BigOctonion element c.
+     *
      * @param c BigOctonion.
      * @return a copy of c.
      */
@@ -204,9 +341,9 @@ public final class BigOctonion
         return new BigOctonion(c.or, c.oi);
     }
 
-
     /**
      * Get the zero element.
+     *
      * @return 0 as BigOctonion.
      */
     public BigOctonion getZERO() {
@@ -217,9 +354,9 @@ public final class BigOctonion
         return ZERO;
     }
 
-
     /**
      * Get the one element.
+     *
      * @return q as BigOctonion.
      */
     public BigOctonion getONE() {
@@ -229,45 +366,45 @@ public final class BigOctonion
         return ONE;
     }
 
-
     /**
      * Query if this ring is commutative.
+     *
      * @return false.
      */
     public boolean isCommutative() {
         return false;
     }
 
-
     /**
      * Query if this ring is associative.
+     *
      * @return false.
      */
     public boolean isAssociative() {
         return false;
     }
 
-
     /**
      * Query if this ring is a field.
+     *
      * @return true.
      */
     public boolean isField() {
         return true;
     }
 
-
     /**
      * Characteristic of this ring.
+     *
      * @return characteristic of this ring.
      */
     public java.math.BigInteger characteristic() {
         return java.math.BigInteger.ZERO;
     }
 
-
     /**
      * Get a BigOctonion element from a BigInteger.
+     *
      * @param a BigInteger.
      * @return a BigOctonion.
      */
@@ -275,9 +412,9 @@ public final class BigOctonion
         return new BigOctonion(or.ring.fromInteger(a));
     }
 
-
     /**
      * Get a BigOctonion element from a long.
+     *
      * @param a long.
      * @return a BigOctonion.
      */
@@ -285,45 +422,27 @@ public final class BigOctonion
         return new BigOctonion(or.ring.fromInteger(a));
     }
 
-
-    /**
-     * The constant 0.
-     */
-    public BigOctonion ZERO; // = new BigOctonion(or.ring);
-
-
-    /**
-     * The constant 1.
-     */
-    public BigOctonion ONE; // = new BigOctonion(or.ring.ONE);
-
-
-    /**
-     * The constant i.
-     */
-    public BigOctonion I; // = new BigOctonion(or.ring.ZERO, oi.ring.ONE);
-
-
     /**
      * Get the or part.
+     *
      * @return or.
      */
     public BigQuaternion getR() {
         return or;
     }
 
-
     /**
      * Get the oi part.
+     *
      * @return oi.
      */
     public BigQuaternion getI() {
         return oi;
     }
 
-
     /**
      * Get the string representation. Is compatible with the string constructor.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -340,9 +459,9 @@ public final class BigOctonion
         return s;
     }
 
-
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this Element.
      * @see edu.jas.structure.Element#toScript()
      */
@@ -371,9 +490,9 @@ public final class BigOctonion
         return s.toString();
     }
 
-
     /**
      * Get a scripting compatible string representation of the factory.
+     *
      * @return script compatible representation for this ElemFactory.
      * @see edu.jas.structure.Element#toScriptFactory()
      */
@@ -384,20 +503,12 @@ public final class BigOctonion
     }
 
 
-    /**
-     * Is Octonion number zero.
-     * @param A BigOctonion.
-     * @return true if A is 0, else false.
+    /* arithmetic operations: +, -, -
      */
-    public static boolean isOZERO(BigOctonion A) {
-        if (A == null)
-            return false;
-        return A.isZERO();
-    }
-
 
     /**
      * Is BigOctonion number zero.
+     *
      * @return true if this is 0, else false.
      * @see edu.jas.structure.RingElem#isZERO()
      */
@@ -405,40 +516,28 @@ public final class BigOctonion
         return or.isZERO() && oi.isZERO();
     }
 
-
     /**
      * Is BigOctonion number one.
-     * @param A is a quaternion number.
-     * @return true if A is 1, else false.
-     */
-    public static boolean isOONE(BigOctonion A) {
-        if (A == null)
-            return false;
-        return A.isONE();
-    }
-
-
-    /**
-     * Is BigOctonion number one.
-     * @see edu.jas.structure.RingElem#isONE()
+     *
      * @return true if this is 1, else false.
+     * @see edu.jas.structure.RingElem#isONE()
      */
     public boolean isONE() {
         return or.isONE() && oi.isZERO();
     }
 
-
     /**
      * Is BigOctonion imaginary one.
+     *
      * @return true if this is i, else false.
      */
     public boolean isIMAG() {
         return or.isZERO() && oi.isONE();
     }
 
-
     /**
      * Is BigOctonion unit element.
+     *
      * @return If this is a unit then true is returned, else false.
      * @see edu.jas.structure.RingElem#isUnit()
      */
@@ -446,9 +545,9 @@ public final class BigOctonion
         return !isZERO();
     }
 
-
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -459,9 +558,9 @@ public final class BigOctonion
         return or.equals(B.or) && oi.equals(B.oi);
     }
 
-
     /**
      * Hash code for this BigOctonion.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -471,10 +570,10 @@ public final class BigOctonion
         return h;
     }
 
-
     /**
      * Since quaternion numbers are unordered, we use lexicographical order of
      * re, im, jm and km.
+     *
      * @param b BigOctonion.
      * @return 0 if b is equal to this, 1 if this is greater b and -1 else.
      */
@@ -488,11 +587,15 @@ public final class BigOctonion
     }
 
 
+    /* arithmetic operations: conjugate, absolute value 
+     */
+
     /**
      * Since quaternion numbers are unordered, we use lexicographical order of
      * re, im, jm and km.
+     *
      * @return 0 if this is equal to 0; 1 if or > 0, or or == 0 and oi > 0; -1
-     *         if or < 0, or or == 0 and oi < 0.
+     * if or < 0, or or == 0 and oi < 0.
      * @see edu.jas.structure.RingElem#signum()
      */
     public int signum() {
@@ -503,12 +606,9 @@ public final class BigOctonion
         return oi.signum();
     }
 
-
-    /* arithmetic operations: +, -, -
-     */
-
     /**
      * BigOctonion summation.
+     *
      * @param B BigOctonion.
      * @return this+B.
      */
@@ -516,35 +616,9 @@ public final class BigOctonion
         return new BigOctonion(or.sum(B.or), oi.sum(B.oi));
     }
 
-
-    /**
-     * Octonion number sum.
-     * @param A BigOctonion.
-     * @param B BigOctonion.
-     * @return A+B.
-     */
-    public static BigOctonion OSUM(BigOctonion A, BigOctonion B) {
-        if (A == null)
-            return null;
-        return A.sum(B);
-    }
-
-
-    /**
-     * Octonion number difference.
-     * @param A BigOctonion.
-     * @param B BigOctonion.
-     * @return A-B.
-     */
-    public static BigOctonion ODIF(BigOctonion A, BigOctonion B) {
-        if (A == null)
-            return null;
-        return A.subtract(B);
-    }
-
-
     /**
      * BigOctonion subtraction.
+     *
      * @param B BigOctonion.
      * @return this-B.
      */
@@ -552,21 +626,9 @@ public final class BigOctonion
         return new BigOctonion(or.subtract(B.or), oi.subtract(B.oi));
     }
 
-
-    /**
-     * Octonion number negative.
-     * @param A is a octonion number
-     * @return -A.
-     */
-    public static BigOctonion ONEG(BigOctonion A) {
-        if (A == null)
-            return null;
-        return A.negate();
-    }
-
-
     /**
      * BigOctonion number negative.
+     *
      * @return -this.
      * @see edu.jas.structure.RingElem#negate()
      */
@@ -574,24 +636,9 @@ public final class BigOctonion
         return new BigOctonion(or.negate(), oi.negate());
     }
 
-
-    /**
-     * Octonion number conjugate.
-     * @param A is a quaternion number.
-     * @return the quaternion conjugate of A.
-     */
-    public static BigOctonion OCON(BigOctonion A) {
-        if (A == null)
-            return null;
-        return A.conjugate();
-    }
-
-
-    /* arithmetic operations: conjugate, absolute value 
-     */
-
     /**
      * BigOctonion conjugate.
+     *
      * @return conjugate(this).
      */
     public BigOctonion conjugate() {
@@ -599,10 +646,14 @@ public final class BigOctonion
     }
 
 
+    /* arithmetic operations: *, inverse, / 
+     */
+
     /**
      * Octonion number norm.
-     * @see edu.jas.structure.StarRingElem#norm()
+     *
      * @return ||this||.
+     * @see edu.jas.structure.StarRingElem#norm()
      */
     public BigOctonion norm() {
         // this.conjugate().multiply(this);
@@ -611,11 +662,11 @@ public final class BigOctonion
         return new BigOctonion(v);
     }
 
-
     /**
      * Octonion number absolute value.
-     * @see edu.jas.structure.RingElem#abs()
+     *
      * @return |this|^2. <b>Note:</b> The square root is not jet implemented.
+     * @see edu.jas.structure.RingElem#abs()
      */
     public BigOctonion abs() {
         BigOctonion n = norm();
@@ -624,38 +675,9 @@ public final class BigOctonion
         return n;
     }
 
-
-    /**
-     * Octonion number absolute value.
-     * @param A is a quaternion number.
-     * @return the absolute value of A, a rational number. Note: The square root
-     *         is not jet implemented.
-     */
-    public static BigRational OABS(BigOctonion A) {
-        if (A == null)
-            return null;
-        return A.abs().or.re;
-    }
-
-
-    /**
-     * Octonion number product.
-     * @param A BigOctonion.
-     * @param B BigOctonion.
-     * @return A*B.
-     */
-    public static BigOctonion OPROD(BigOctonion A, BigOctonion B) {
-        if (A == null)
-            return null;
-        return A.multiply(B);
-    }
-
-
-    /* arithmetic operations: *, inverse, / 
-     */
-
     /**
      * BigOctonion multiply.
+     *
      * @param B BigOctonion.
      * @return this*B.
      */
@@ -669,21 +691,9 @@ public final class BigOctonion
         return new BigOctonion(r, i);
     }
 
-
-    /**
-     * Octonion number inverse.
-     * @param A is a non-zero quaternion number.
-     * @return S with S * A = 1.
-     */
-    public static BigOctonion OINV(BigOctonion A) {
-        if (A == null)
-            return null;
-        return A.inverse();
-    }
-
-
     /**
      * BigOctonion inverse.
+     *
      * @return S with S * this = 1.
      * @see edu.jas.structure.RingElem#inverse()
      */
@@ -692,9 +702,9 @@ public final class BigOctonion
         return conjugate().divide(a);
     }
 
-
     /**
      * BigOctonion remainder.
+     *
      * @param S BigOctonion.
      * @return 0.
      */
@@ -705,22 +715,9 @@ public final class BigOctonion
         return ZERO;
     }
 
-
-    /**
-     * Octonion number quotient.
-     * @param A BigOctonion.
-     * @param B BigOctonion.
-     * @return R/S.
-     */
-    public static BigOctonion OQ(BigOctonion A, BigOctonion B) {
-        if (A == null)
-            return null;
-        return A.divide(B);
-    }
-
-
     /**
      * BigOctonion divide.
+     *
      * @param b BigOctonion.
      * @return this * b**(-1).
      */
@@ -731,6 +728,7 @@ public final class BigOctonion
 
     /**
      * BigOctonion right divide.
+     *
      * @param b BigOctonion.
      * @return this * b**(-1).
      */
@@ -741,6 +739,7 @@ public final class BigOctonion
 
     /**
      * BigOctonion left divide.
+     *
      * @param b BigOctonion.
      * @return b**(-1) * this.
      */
@@ -751,6 +750,7 @@ public final class BigOctonion
 
     /**
      * BigOctonion divide.
+     *
      * @param b BigRational.
      * @return this/b.
      */
@@ -762,11 +762,12 @@ public final class BigOctonion
 
     /**
      * Quotient and remainder by division of this by S.
+     *
      * @param S a octonion number
      * @return [this/S, this - (this/S)*S].
      */
     public BigOctonion[] quotientRemainder(BigOctonion S) {
-        return new BigOctonion[] { divide(S), ZERO };
+        return new BigOctonion[]{divide(S), ZERO};
     }
 
 
@@ -774,6 +775,7 @@ public final class BigOctonion
      * BigOctonion random. Random rational numbers A, B, C and D are generated
      * using random(n). Then R is the quaternion number with real part A and
      * imaginary parts B, C and D.
+     *
      * @param n such that 0 &le; A, B, C, D &le; (2<sup>n</sup>-1).
      * @return R, a random BigOctonion.
      */
@@ -786,7 +788,8 @@ public final class BigOctonion
      * BigOctonion random. Random rational numbers A, B, C and D are generated
      * using RNRAND(n). Then R is the quaternion number with real part A and
      * imaginary parts B, C and D.
-     * @param n such that 0 &le; A, B, C, D &le; (2<sup>n</sup>-1).
+     *
+     * @param n   such that 0 &le; A, B, C, D &le; (2<sup>n</sup>-1).
      * @param rnd is a source for random bits.
      * @return R, a random BigOctonion.
      */
@@ -810,6 +813,7 @@ public final class BigOctonion
 
     /**
      * Parse quaternion number from String.
+     *
      * @param s String.
      * @return BigOctonion from s.
      */
@@ -820,6 +824,7 @@ public final class BigOctonion
 
     /**
      * Parse quaternion number from Reader.
+     *
      * @param r Reader.
      * @return next BigOctonion from r.
      */
@@ -830,8 +835,9 @@ public final class BigOctonion
 
     /**
      * Octonion number greatest common divisor.
+     *
      * @param S BigOctonion.
-     * @return gcd(this,S).
+     * @return gcd(this, S).
      */
     public BigOctonion gcd(BigOctonion S) {
         if (S == null || S.isZERO()) {
@@ -846,6 +852,7 @@ public final class BigOctonion
 
     /**
      * BigOctonion extended greatest common divisor.
+     *
      * @param S BigOctonion.
      * @return [ gcd(this,S), a, b ] with a*this + b*S = gcd(this,S).
      */
@@ -874,8 +881,9 @@ public final class BigOctonion
      * Returns the number of bits in the representation of this BigOctonion,
      * including a sign bit. It is equivalent to
      * {@code or.bitLength() + oi.bitLength()}.)
+     *
      * @return number of bits in the representation of this BigOctonion,
-     *         including a sign bit.
+     * including a sign bit.
      */
     public long bitLength() {
         return or.bitLength() + oi.bitLength();

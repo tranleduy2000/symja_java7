@@ -5,11 +5,11 @@
 package edu.jas.poly;
 
 
+import org.apache.log4j.Logger;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.kern.Scripting;
 import edu.jas.structure.RingElem;
@@ -20,47 +20,41 @@ import edu.jas.vector.GenVectorModul;
 /**
  * List of vectors of polynomials. Mainly for storage and printing / toString
  * and conversions to other representations.
+ *
  * @author Heinz Kredel
  */
 
 public class ModuleList<C extends RingElem<C>> implements Serializable {
 
 
+    private static final Logger logger = Logger.getLogger(ModuleList.class);
     /**
      * The factory for the solvable polynomial ring.
      */
     public final GenPolynomialRing<C> ring;
-
-
     /**
      * The data structure is a List of Lists of polynomials.
      */
     public final List<List<GenPolynomial<C>>> list;
-
-
     /**
      * Number of rows in the data structure.
      */
     public final int rows; // -1 is undefined
-
-
     /**
      * Number of columns in the data structure.
      */
     public final int cols; // -1 is undefined
 
 
-    private static final Logger logger = Logger.getLogger(ModuleList.class);
-
-
     /**
      * Constructor.
+     *
      * @param r polynomial ring factory.
      * @param l list of list of polynomials.
      */
     public ModuleList(GenPolynomialRing<C> r, List<List<GenPolynomial<C>>> l) {
         ring = r;
-        list = ModuleList.<C> padCols(r, l);
+        list = ModuleList.<C>padCols(r, l);
         if (list == null) {
             rows = -1;
             cols = -1;
@@ -77,26 +71,109 @@ public class ModuleList<C extends RingElem<C>> implements Serializable {
 
     /**
      * Constructor.
+     *
      * @param r solvable polynomial ring factory.
      * @param l list of list of solvable polynomials.
      */
     public ModuleList(GenSolvablePolynomialRing<C> r, List<List<GenSolvablePolynomial<C>>> l) {
-        this(r, ModuleList.<C> castToList(l));
+        this(r, ModuleList.<C>castToList(l));
     }
 
 
     /**
      * Constructor.
+     *
      * @param r polynomial ring factory.
      * @param l list of vectors of polynomials.
      */
     public ModuleList(GenVectorModul<GenPolynomial<C>> r, List<GenVector<GenPolynomial<C>>> l) {
-        this((GenPolynomialRing<C>) r.coFac, ModuleList.<C> vecToList(l));
+        this((GenPolynomialRing<C>) r.coFac, ModuleList.<C>vecToList(l));
     }
 
+    /**
+     * Pad columns and remove zero rows. Make all rows have the same number of
+     * columns.
+     *
+     * @param ring polynomial ring factory.
+     * @param l    list of list of polynomials.
+     * @return list of list of polynomials with same number of colums.
+     */
+    public static <C extends RingElem<C>> List<List<GenPolynomial<C>>> padCols(GenPolynomialRing<C> ring,
+                                                                               List<List<GenPolynomial<C>>> l) {
+        if (l == null) {
+            return l;
+        }
+        int mcols = 0;
+        int rs = 0;
+        for (List<GenPolynomial<C>> row : l) {
+            if (row != null) {
+                rs++;
+                if (row.size() > mcols) {
+                    mcols = row.size();
+                }
+            }
+        }
+        List<List<GenPolynomial<C>>> norm = new ArrayList<List<GenPolynomial<C>>>(rs);
+        for (List<GenPolynomial<C>> row : l) {
+            if (row != null) {
+                List<GenPolynomial<C>> rn = new ArrayList<GenPolynomial<C>>(row);
+                while (rn.size() < mcols) {
+                    rn.add(ring.getZERO());
+                }
+                norm.add(rn);
+            }
+        }
+        return norm;
+    }
+
+    /**
+     * Get a solvable polynomials list as List of GenPolynomials. Required
+     * because no List casts allowed. Equivalent to cast
+     * (List&lt;List&lt;GenPolynomial&lt;C&gt;&gt;&gt;) list.
+     *
+     * @param slist list of solvable polynomial lists.
+     * @return list of polynomial lists from slist.
+     */
+    public static <C extends RingElem<C>> List<List<GenPolynomial<C>>> castToList(
+            List<List<GenSolvablePolynomial<C>>> slist) {
+        List<List<GenPolynomial<C>>> list = null;
+        if (slist == null) {
+            return list;
+        }
+        list = new ArrayList<List<GenPolynomial<C>>>(slist.size());
+        for (List<GenSolvablePolynomial<C>> srow : slist) {
+            List<GenPolynomial<C>> row = new ArrayList<GenPolynomial<C>>(srow.size());
+            for (GenSolvablePolynomial<C> s : srow) {
+                row.add(s);
+            }
+            list.add(row);
+        }
+        return list;
+    }
+
+    /**
+     * Get a list of vectors as List of list of GenPolynomials.
+     *
+     * @param vlist list of vectors of polynomials.
+     * @return list of polynomial lists from vlist.
+     */
+    public static <C extends RingElem<C>> List<List<GenPolynomial<C>>> vecToList(
+            List<GenVector<GenPolynomial<C>>> vlist) {
+        List<List<GenPolynomial<C>>> list = null;
+        if (vlist == null) {
+            return list;
+        }
+        list = new ArrayList<List<GenPolynomial<C>>>(vlist.size());
+        for (GenVector<GenPolynomial<C>> srow : vlist) {
+            List<GenPolynomial<C>> row = srow.val;
+            list.add(row);
+        }
+        return list;
+    }
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -135,9 +212,9 @@ public class ModuleList<C extends RingElem<C>> implements Serializable {
         return true;
     }
 
-
     /**
      * Hash code for this module list.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -148,13 +225,13 @@ public class ModuleList<C extends RingElem<C>> implements Serializable {
         return h;
     }
 
-
     /**
      * String representation of the module list.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
-    //@SuppressWarnings("unchecked") 
+    //@SuppressWarnings("unchecked")
     public String toString() {
         StringBuffer erg = new StringBuffer();
         String[] vars = null;
@@ -201,9 +278,9 @@ public class ModuleList<C extends RingElem<C>> implements Serializable {
         return erg.toString();
     }
 
-
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this ModuleList.
      */
     public String toScript() {
@@ -212,12 +289,12 @@ public class ModuleList<C extends RingElem<C>> implements Serializable {
             s.append("Solvable");
         }
         switch (Scripting.getLang()) {
-        case Ruby:
-            s.append("SubModule.new(");
-            break;
-        case Python:
-        default:
-            s.append("SubModule(");
+            case Ruby:
+                s.append("SubModule.new(");
+                break;
+            case Python:
+            default:
+                s.append("SubModule(");
         }
         if (ring != null) {
             s.append(ring.toScript());
@@ -227,12 +304,12 @@ public class ModuleList<C extends RingElem<C>> implements Serializable {
             return s.toString();
         }
         switch (Scripting.getLang()) {
-        case Ruby:
-            s.append(",\"\",[");
-            break;
-        case Python:
-        default:
-            s.append(",list=[");
+            case Ruby:
+                s.append(",\"\",[");
+                break;
+            case Python:
+            default:
+                s.append(",list=[");
         }
         boolean first = true;
         for (List<GenPolynomial<C>> row : list) {
@@ -263,47 +340,11 @@ public class ModuleList<C extends RingElem<C>> implements Serializable {
         return s.toString();
     }
 
-
-    /**
-     * Pad columns and remove zero rows. Make all rows have the same number of
-     * columns.
-     * @param ring polynomial ring factory.
-     * @param l list of list of polynomials.
-     * @return list of list of polynomials with same number of colums.
-     */
-    public static <C extends RingElem<C>> List<List<GenPolynomial<C>>> padCols(GenPolynomialRing<C> ring,
-                    List<List<GenPolynomial<C>>> l) {
-        if (l == null) {
-            return l;
-        }
-        int mcols = 0;
-        int rs = 0;
-        for (List<GenPolynomial<C>> row : l) {
-            if (row != null) {
-                rs++;
-                if (row.size() > mcols) {
-                    mcols = row.size();
-                }
-            }
-        }
-        List<List<GenPolynomial<C>>> norm = new ArrayList<List<GenPolynomial<C>>>(rs);
-        for (List<GenPolynomial<C>> row : l) {
-            if (row != null) {
-                List<GenPolynomial<C>> rn = new ArrayList<GenPolynomial<C>>(row);
-                while (rn.size() < mcols) {
-                    rn.add(ring.getZERO());
-                }
-                norm.add(rn);
-            }
-        }
-        return norm;
-    }
-
-
     /**
      * Get PolynomialList. Embed module in a polynomial ring.
-     * @see edu.jas.poly.PolynomialList
+     *
      * @return polynomial list corresponding to this.
+     * @see edu.jas.poly.PolynomialList
      */
     public PolynomialList<C> getPolynomialList() {
         GenPolynomialRing<C> pfac = ring.extend(cols);
@@ -335,11 +376,11 @@ public class ModuleList<C extends RingElem<C>> implements Serializable {
         return new PolynomialList<C>(pfac, pols);
     }
 
-
     /**
      * Get list as List of GenSolvablePolynomials. Required because no List
      * casts allowed. Equivalent to cast
      * (List&lt;List&lt;GenSolvablePolynomial&lt;C&gt;&gt;&gt;) list.
+     *
      * @return list of solvable polynomial lists from this.
      */
     public List<List<GenSolvablePolynomial<C>>> castToSolvableList() {
@@ -360,51 +401,6 @@ public class ModuleList<C extends RingElem<C>> implements Serializable {
             slist.add(srow);
         }
         return slist;
-    }
-
-
-    /**
-     * Get a solvable polynomials list as List of GenPolynomials. Required
-     * because no List casts allowed. Equivalent to cast
-     * (List&lt;List&lt;GenPolynomial&lt;C&gt;&gt;&gt;) list.
-     * @param slist list of solvable polynomial lists.
-     * @return list of polynomial lists from slist.
-     */
-    public static <C extends RingElem<C>> List<List<GenPolynomial<C>>> castToList(
-                    List<List<GenSolvablePolynomial<C>>> slist) {
-        List<List<GenPolynomial<C>>> list = null;
-        if (slist == null) {
-            return list;
-        }
-        list = new ArrayList<List<GenPolynomial<C>>>(slist.size());
-        for (List<GenSolvablePolynomial<C>> srow : slist) {
-            List<GenPolynomial<C>> row = new ArrayList<GenPolynomial<C>>(srow.size());
-            for (GenSolvablePolynomial<C> s : srow) {
-                row.add(s);
-            }
-            list.add(row);
-        }
-        return list;
-    }
-
-
-    /**
-     * Get a list of vectors as List of list of GenPolynomials.
-     * @param vlist list of vectors of polynomials.
-     * @return list of polynomial lists from vlist.
-     */
-    public static <C extends RingElem<C>> List<List<GenPolynomial<C>>> vecToList(
-                    List<GenVector<GenPolynomial<C>>> vlist) {
-        List<List<GenPolynomial<C>>> list = null;
-        if (vlist == null) {
-            return list;
-        }
-        list = new ArrayList<List<GenPolynomial<C>>>(vlist.size());
-        for (GenVector<GenPolynomial<C>> srow : vlist) {
-            List<GenPolynomial<C>> row = srow.val;
-            list.add(row);
-        }
-        return list;
     }
 
 }

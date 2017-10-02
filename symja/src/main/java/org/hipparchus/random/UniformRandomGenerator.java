@@ -29,13 +29,19 @@ import org.hipparchus.util.FastMath;
  */
 public class UniformRandomGenerator implements NormalizedRandomGenerator {
 
-    /** Square root of three. */
+    /**
+     * Square root of three.
+     */
     private static final double SQRT3 = FastMath.sqrt(3.0);
 
-    /** Underlying generator. */
+    /**
+     * Underlying generator.
+     */
     private final RandomGenerator generator;
 
-    /** Create a new generator.
+    /**
+     * Create a new generator.
+     *
      * @param generator underlying random generator to use
      */
     public UniformRandomGenerator(RandomGenerator generator) {

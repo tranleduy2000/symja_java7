@@ -18,12 +18,15 @@ package org.hipparchus.analysis.differentiation;
 
 import org.hipparchus.analysis.UnivariateMatrixFunction;
 
-/** Interface defining the function differentiation operation.
+/**
+ * Interface defining the function differentiation operation.
  */
 public interface UnivariateMatrixFunctionDifferentiator {
 
-    /** Create an implementation of a {@link UnivariateDifferentiableMatrixFunction
+    /**
+     * Create an implementation of a {@link UnivariateDifferentiableMatrixFunction
      * differential} from a regular {@link UnivariateMatrixFunction matrix function}.
+     *
      * @param function function to differentiate
      * @return differential function
      */

@@ -5,9 +5,9 @@
 package edu.jas.gbufd;
 
 
-import java.util.List;
-
 import org.apache.log4j.Logger;
+
+import java.util.List;
 
 import edu.jas.poly.GenPolynomial;
 import edu.jas.poly.GenPolynomialRing;
@@ -20,6 +20,7 @@ import edu.jas.ufd.SquarefreeFactory;
 /**
  * Multiplicative set of squarefree and co-prime polynomials. a, b in M implies
  * a*b in M, 1 in M.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
@@ -40,6 +41,7 @@ public class MultiplicativeSetSquarefree<C extends GcdRingElem<C>> extends Multi
 
     /**
      * MultiplicativeSet constructor. Constructs an empty multiplicative set.
+     *
      * @param ring polynomial ring factory for coefficients.
      */
     public MultiplicativeSetSquarefree(GenPolynomialRing<C> ring) {
@@ -50,12 +52,13 @@ public class MultiplicativeSetSquarefree<C extends GcdRingElem<C>> extends Multi
 
     /**
      * MultiplicativeSet constructor.
+     *
      * @param ring polynomial ring factory for coefficients.
-     * @param ms a list of non-zero polynomials.
-     * @param eng squarefree factorization engine.
+     * @param ms   a list of non-zero polynomials.
+     * @param eng  squarefree factorization engine.
      */
     protected MultiplicativeSetSquarefree(GenPolynomialRing<C> ring, List<GenPolynomial<C>> ms,
-                    SquarefreeAbstract<C> eng) {
+                                          SquarefreeAbstract<C> eng) {
         super(ring, ms);
         engine = eng;
     }
@@ -63,6 +66,7 @@ public class MultiplicativeSetSquarefree<C extends GcdRingElem<C>> extends Multi
 
     /**
      * toString.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -73,6 +77,7 @@ public class MultiplicativeSetSquarefree<C extends GcdRingElem<C>> extends Multi
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -86,6 +91,7 @@ public class MultiplicativeSetSquarefree<C extends GcdRingElem<C>> extends Multi
 
     /**
      * Add polynomial to mset.
+     *
      * @param cc polynomial to be added to mset.
      * @return new multiplicative set.
      */
@@ -101,7 +107,7 @@ public class MultiplicativeSetSquarefree<C extends GcdRingElem<C>> extends Multi
         if (mset.size() == 0) {
             list = engine.coPrimeSquarefree(cc, mset);
             if (ring.coFac.isField()) {
-                list = PolyUtil.<C> monic(list);
+                list = PolyUtil.<C>monic(list);
             }
             return new MultiplicativeSetSquarefree<C>(ring, list, engine);
         }
@@ -113,7 +119,7 @@ public class MultiplicativeSetSquarefree<C extends GcdRingElem<C>> extends Multi
         logger.info("added to squarefree mset = " + c);
         list = engine.coPrimeSquarefree(c, mset);
         if (ring.coFac.isField()) {
-            list = PolyUtil.<C> monic(list);
+            list = PolyUtil.<C>monic(list);
         }
         return new MultiplicativeSetSquarefree<C>(ring, list, engine);
     }
@@ -121,6 +127,7 @@ public class MultiplicativeSetSquarefree<C extends GcdRingElem<C>> extends Multi
 
     /**
      * Replace polynomial list of mset.
+     *
      * @param L polynomial list to replace mset.
      * @return new multiplicative set.
      */

@@ -5,14 +5,14 @@
 package edu.jas.application;
 
 
+import org.apache.log4j.Logger;
+
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.SortedSet;
 import java.util.TreeSet;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.poly.GenPolynomial;
 import edu.jas.poly.GenPolynomialRing;
@@ -25,6 +25,7 @@ import edu.jas.ufd.GreatestCommonDivisor;
 /**
  * Residue ring factory based on GenPolynomial with RingFactory interface.
  * Objects of this class are immutable.
+ *
  * @author Heinz Kredel
  */
 public class ResidueRing<C extends GcdRingElem<C>> implements RingFactory<Residue<C>> {
@@ -34,27 +35,19 @@ public class ResidueRing<C extends GcdRingElem<C>> implements RingFactory<Residu
 
 
     //private static final boolean debug = logger.isDebugEnabled(); 
-
-
+    /**
+     * Polynomial ideal for the reduction.
+     */
+    public final Ideal<C> ideal;
+    /**
+     * Polynomial ring of the factory. Shortcut to ideal.list.ring.
+     */
+    public final GenPolynomialRing<C> ring;
     /**
      * Greatest common divisor engine for coefficient content and primitive
      * parts.
      */
     protected final GreatestCommonDivisor<C> engine;
-
-
-    /**
-     * Polynomial ideal for the reduction.
-     */
-    public final Ideal<C> ideal;
-
-
-    /**
-     * Polynomial ring of the factory. Shortcut to ideal.list.ring.
-     */
-    public final GenPolynomialRing<C> ring;
-
-
     /**
      * Indicator if this ring is a field.
      */
@@ -63,6 +56,7 @@ public class ResidueRing<C extends GcdRingElem<C>> implements RingFactory<Residu
 
     /**
      * The constructor creates a ResidueRing object from an Ideal.
+     *
      * @param i polynomial ideal.
      */
     public ResidueRing(Ideal<C> i) {
@@ -72,14 +66,15 @@ public class ResidueRing<C extends GcdRingElem<C>> implements RingFactory<Residu
 
     /**
      * The constructor creates a ResidueRing object from an Ideal.
-     * @param i polynomial ideal.
+     *
+     * @param i         polynomial ideal.
      * @param isMaximal true, if ideal is maxmal.
      */
     public ResidueRing(Ideal<C> i, boolean isMaximal) {
         ideal = i.GB(); // cheap if isGB
         ring = ideal.list.ring;
         //engine = GCDFactory.<C>getImplementation( ring.coFac );
-        engine = GCDFactory.<C> getProxy(ring.coFac);
+        engine = GCDFactory.<C>getProxy(ring.coFac);
         if (isMaximal) {
             isField = 1;
             return;
@@ -95,6 +90,7 @@ public class ResidueRing<C extends GcdRingElem<C>> implements RingFactory<Residu
 
     /**
      * Is this structure finite or infinite.
+     *
      * @return true if this structure is finite, else false.
      * @see edu.jas.structure.ElemFactory#isFinite()
      */
@@ -105,6 +101,7 @@ public class ResidueRing<C extends GcdRingElem<C>> implements RingFactory<Residu
 
     /**
      * Copy Residue element c.
+     *
      * @param c
      * @return a copy of c.
      */
@@ -122,6 +119,7 @@ public class ResidueRing<C extends GcdRingElem<C>> implements RingFactory<Residu
 
     /**
      * Get the zero element.
+     *
      * @return 0 as Residue.
      */
     public Residue<C> getZERO() {
@@ -131,6 +129,7 @@ public class ResidueRing<C extends GcdRingElem<C>> implements RingFactory<Residu
 
     /**
      * Get the one element.
+     *
      * @return 1 as Residue.
      */
     public Residue<C> getONE() {
@@ -144,6 +143,7 @@ public class ResidueRing<C extends GcdRingElem<C>> implements RingFactory<Residu
 
     /**
      * Get a list of the generating elements.
+     *
      * @return list of generators for the algebraic structure.
      * @see edu.jas.structure.ElemFactory#generators()
      */
@@ -190,6 +190,7 @@ public class ResidueRing<C extends GcdRingElem<C>> implements RingFactory<Residu
 
     /**
      * Query if this ring is commutative.
+     *
      * @return true if this ring is commutative, else false.
      */
     public boolean isCommutative() {
@@ -199,6 +200,7 @@ public class ResidueRing<C extends GcdRingElem<C>> implements RingFactory<Residu
 
     /**
      * Query if this ring is associative.
+     *
      * @return true if this ring is associative, else false.
      */
     public boolean isAssociative() {
@@ -208,6 +210,7 @@ public class ResidueRing<C extends GcdRingElem<C>> implements RingFactory<Residu
 
     /**
      * Query if this ring is a field.
+     *
      * @return false.
      */
     public boolean isField() {
@@ -227,6 +230,7 @@ public class ResidueRing<C extends GcdRingElem<C>> implements RingFactory<Residu
 
     /**
      * Characteristic of this ring.
+     *
      * @return characteristic of this ring.
      */
     public java.math.BigInteger characteristic() {
@@ -236,6 +240,7 @@ public class ResidueRing<C extends GcdRingElem<C>> implements RingFactory<Residu
 
     /**
      * Get a Residue element from a BigInteger value.
+     *
      * @param a BigInteger.
      * @return a Residue.
      */
@@ -246,6 +251,7 @@ public class ResidueRing<C extends GcdRingElem<C>> implements RingFactory<Residu
 
     /**
      * Get a Residue element from a long value.
+     *
      * @param a long.
      * @return a Residue.
      */
@@ -256,6 +262,7 @@ public class ResidueRing<C extends GcdRingElem<C>> implements RingFactory<Residu
 
     /**
      * Get the String representation as RingFactory.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -266,6 +273,7 @@ public class ResidueRing<C extends GcdRingElem<C>> implements RingFactory<Residu
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this ElemFactory.
      * @see edu.jas.structure.ElemFactory#toScript()
      */
@@ -279,6 +287,7 @@ public class ResidueRing<C extends GcdRingElem<C>> implements RingFactory<Residu
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -304,6 +313,7 @@ public class ResidueRing<C extends GcdRingElem<C>> implements RingFactory<Residu
 
     /**
      * Hash code for this residue ring.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -316,6 +326,7 @@ public class ResidueRing<C extends GcdRingElem<C>> implements RingFactory<Residu
 
     /**
      * Residue random.
+     *
      * @param n such that 0 &le; v &le; (2<sup>n</sup>-1).
      * @return a random residue element.
      */
@@ -327,6 +338,7 @@ public class ResidueRing<C extends GcdRingElem<C>> implements RingFactory<Residu
 
     /**
      * Generate a random residum polynomial.
+     *
      * @param k bitsize of random coefficients.
      * @param l number of terms.
      * @param d maximal degree in each variable.
@@ -341,7 +353,8 @@ public class ResidueRing<C extends GcdRingElem<C>> implements RingFactory<Residu
 
     /**
      * Residue random.
-     * @param n such that 0 &le; v &le; (2<sup>n</sup>-1).
+     *
+     * @param n   such that 0 &le; v &le; (2<sup>n</sup>-1).
      * @param rnd is a source for random bits.
      * @return a random residue element.
      */
@@ -353,6 +366,7 @@ public class ResidueRing<C extends GcdRingElem<C>> implements RingFactory<Residu
 
     /**
      * Parse Residue from String.
+     *
      * @param s String.
      * @return Residue from s.
      */
@@ -364,6 +378,7 @@ public class ResidueRing<C extends GcdRingElem<C>> implements RingFactory<Residu
 
     /**
      * Parse Residue from Reader.
+     *
      * @param r Reader.
      * @return next Residue from r.
      */

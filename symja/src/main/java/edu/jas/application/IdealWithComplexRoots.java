@@ -5,7 +5,6 @@
 package edu.jas.application;
 
 
-import java.io.Serializable;
 import java.util.List;
 
 import edu.jas.arith.BigDecimal;
@@ -16,6 +15,7 @@ import edu.jas.structure.GcdRingElem;
 
 /**
  * Container for Ideals together with univariate polynomials and complex roots.
+ *
  * @author Heinz Kredel
  */
 class IdealWithComplexRoots<C extends GcdRingElem<C>> extends IdealWithUniv<C> {
@@ -37,6 +37,7 @@ class IdealWithComplexRoots<C extends GcdRingElem<C>> extends IdealWithUniv<C> {
 
     /**
      * Constructor.
+     *
      * @param id the ideal
      * @param up the list of univaraite polynomials
      * @param cr the list of complex roots
@@ -49,6 +50,7 @@ class IdealWithComplexRoots<C extends GcdRingElem<C>> extends IdealWithUniv<C> {
 
     /**
      * Constructor.
+     *
      * @param iu the ideal with univariate polynomials
      * @param cr the list of complex roots
      */
@@ -60,6 +62,7 @@ class IdealWithComplexRoots<C extends GcdRingElem<C>> extends IdealWithUniv<C> {
 
     /**
      * String representation of the ideal.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -70,6 +73,7 @@ class IdealWithComplexRoots<C extends GcdRingElem<C>> extends IdealWithUniv<C> {
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this Element.
      * @see edu.jas.structure.Element#toScript()
      */

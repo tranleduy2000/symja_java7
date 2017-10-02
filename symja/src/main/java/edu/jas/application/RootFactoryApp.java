@@ -5,25 +5,23 @@
 package edu.jas.application;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.arith.Rational;
+import edu.jas.poly.AlgebraicNumber;
+import edu.jas.poly.AlgebraicNumberRing;
 import edu.jas.poly.Complex;
 import edu.jas.poly.ComplexRing;
 import edu.jas.poly.GenPolynomial;
 import edu.jas.poly.GenPolynomialRing;
-import edu.jas.poly.AlgebraicNumberRing;
-import edu.jas.poly.AlgebraicNumber;
 import edu.jas.poly.PolyUtil;
 import edu.jas.poly.TermOrder;
-import edu.jas.root.Interval;
-import edu.jas.root.RealRootTuple;
 import edu.jas.root.AlgebraicRoots;
+import edu.jas.root.RealRootTuple;
 import edu.jas.structure.GcdRingElem;
 import edu.jas.structure.RingFactory;
 import edu.jas.ufd.SquarefreeAbstract;
@@ -32,6 +30,7 @@ import edu.jas.ufd.SquarefreeFactory;
 
 /**
  * Roots factory.
+ *
  * @author Heinz Kredel
  */
 public class RootFactoryApp {
@@ -45,35 +44,37 @@ public class RootFactoryApp {
 
     /**
      * Is complex algebraic number a root of a polynomial.
+     *
      * @param f univariate polynomial.
      * @param r complex algebraic number.
      * @return true, if f(r) == 0, else false;
      */
     public static <C extends GcdRingElem<C> & Rational> boolean isRootRealCoeff(GenPolynomial<C> f,
-                    Complex<RealAlgebraicNumber<C>> r) {
+                                                                                Complex<RealAlgebraicNumber<C>> r) {
         RingFactory<C> cfac = f.ring.coFac;
         ComplexRing<C> ccfac = new ComplexRing<C>(cfac);
         GenPolynomialRing<Complex<C>> facc = new GenPolynomialRing<Complex<C>>(ccfac, f.ring);
-        GenPolynomial<Complex<C>> fc = PolyUtil.<C> complexFromAny(facc, f);
+        GenPolynomial<Complex<C>> fc = PolyUtil.<C>complexFromAny(facc, f);
         return isRoot(fc, r);
     }
 
 
     /**
      * Is complex algebraic number a root of a polynomial.
+     *
      * @param f univariate polynomial.
      * @param r complex algebraic number.
      * @return true, if f(r) == 0, else false;
      */
     public static <C extends GcdRingElem<C> & Rational> boolean isRoot(GenPolynomial<Complex<C>> f,
-                    Complex<RealAlgebraicNumber<C>> r) {
+                                                                       Complex<RealAlgebraicNumber<C>> r) {
         ComplexRing<RealAlgebraicNumber<C>> cr = r.factory();
         GenPolynomialRing<Complex<RealAlgebraicNumber<C>>> cfac = new GenPolynomialRing<Complex<RealAlgebraicNumber<C>>>(
-                        cr, f.factory());
+                cr, f.factory());
         GenPolynomial<Complex<RealAlgebraicNumber<C>>> p;
-        p = PolyUtilApp.<C> convertToComplexRealCoefficients(cfac, f);
+        p = PolyUtilApp.<C>convertToComplexRealCoefficients(cfac, f);
         // test algebraic part
-        Complex<RealAlgebraicNumber<C>> a = PolyUtil.<Complex<RealAlgebraicNumber<C>>> evaluateMain(cr, p, r);
+        Complex<RealAlgebraicNumber<C>> a = PolyUtil.<Complex<RealAlgebraicNumber<C>>>evaluateMain(cr, p, r);
         boolean t = a.isZERO();
         if (!t) {
             logger.info("f(r) = " + a + ", f = " + f + ", r  = " + r);
@@ -100,12 +101,13 @@ public class RootFactoryApp {
 
     /**
      * Is complex algebraic number a root of a polynomial.
+     *
      * @param f univariate polynomial.
      * @param R list of complex algebraic numbers.
      * @return true, if f(r) == 0 for all r in R, else false;
      */
     public static <C extends GcdRingElem<C> & Rational> boolean isRoot(GenPolynomial<Complex<C>> f,
-                    List<Complex<RealAlgebraicNumber<C>>> R) {
+                                                                       List<Complex<RealAlgebraicNumber<C>>> R) {
         for (Complex<RealAlgebraicNumber<C>> r : R) {
             boolean t = isRoot(f, r);
             if (!t) {
@@ -118,27 +120,28 @@ public class RootFactoryApp {
 
     /**
      * Complex algebraic number roots.
+     *
      * @param f univariate polynomial.
      * @return a list of different complex algebraic numbers, with f(c) == 0 for
-     *         c in roots.
+     * c in roots.
      */
     public static <C extends GcdRingElem<C> & Rational> List<Complex<RealAlgebraicNumber<C>>> complexAlgebraicNumbersComplex(
-                    GenPolynomial<Complex<C>> f) {
+            GenPolynomial<Complex<C>> f) {
         GenPolynomialRing<Complex<C>> pfac = f.factory();
         if (pfac.nvar != 1) {
             throw new IllegalArgumentException("only for univariate polynomials");
         }
         ComplexRing<C> cfac = (ComplexRing<C>) pfac.coFac;
-        SquarefreeAbstract<Complex<C>> engine = SquarefreeFactory.<Complex<C>> getImplementation(cfac);
+        SquarefreeAbstract<Complex<C>> engine = SquarefreeFactory.<Complex<C>>getImplementation(cfac);
         Map<GenPolynomial<Complex<C>>, Long> F = engine.squarefreeFactors(f.monic());
         //System.out.println("S = " + F.keySet());
         List<Complex<RealAlgebraicNumber<C>>> list = new ArrayList<Complex<RealAlgebraicNumber<C>>>();
-        for (Map.Entry<GenPolynomial<Complex<C>>,Long> me : F.entrySet()) {
+        for (Map.Entry<GenPolynomial<Complex<C>>, Long> me : F.entrySet()) {
             GenPolynomial<Complex<C>> sp = me.getKey();
             if (sp.isConstant() || sp.isZERO()) {
                 continue;
             }
-            List<Complex<RealAlgebraicNumber<C>>> ls = RootFactoryApp.<C> complexAlgebraicNumbersSquarefree(sp);
+            List<Complex<RealAlgebraicNumber<C>>> ls = RootFactoryApp.<C>complexAlgebraicNumbersSquarefree(sp);
             long m = me.getValue();
             for (long i = 0L; i < m; i++) {
                 list.addAll(ls);
@@ -150,13 +153,14 @@ public class RootFactoryApp {
 
     /**
      * Complex algebraic number roots.
+     *
      * @param f univariate squarefree polynomial.
      * @return a list of different complex algebraic numbers, with f(c) == 0 for
-     *         c in roots.
+     * c in roots.
      */
-    public static <C extends GcdRingElem<C> & Rational> 
-      List<Complex<RealAlgebraicNumber<C>>> complexAlgebraicNumbersSquarefree(
-                   GenPolynomial<Complex<C>> f) {
+    public static <C extends GcdRingElem<C> & Rational>
+    List<Complex<RealAlgebraicNumber<C>>> complexAlgebraicNumbersSquarefree(
+            GenPolynomial<Complex<C>> f) {
         GenPolynomialRing<Complex<C>> pfac = f.factory();
         if (pfac.nvar != 1) {
             throw new IllegalArgumentException("only for univariate polynomials");
@@ -166,7 +170,7 @@ public class RootFactoryApp {
         GenPolynomialRing<Complex<C>> tfac = new GenPolynomialRing<Complex<C>>(cfac, 2, to); //,vars); //tord?
         //System.out.println("tfac = " + tfac);
         GenPolynomial<Complex<C>> t = tfac.univariate(1, 1L).sum(
-                        tfac.univariate(0, 1L).multiply(cfac.getIMAG()));
+                tfac.univariate(0, 1L).multiply(cfac.getIMAG()));
         //System.out.println("t = " + t); // t = x + i y
         GenPolynomialRing<C> rfac = new GenPolynomialRing<C>(cfac.ring, tfac); //tord?
         //System.out.println("rfac = " + rfac);
@@ -176,12 +180,12 @@ public class RootFactoryApp {
             return list;
         }
         // substitute t = x + i y
-        GenPolynomial<Complex<C>> su = PolyUtil.<Complex<C>> substituteUnivariate(sp, t);
+        GenPolynomial<Complex<C>> su = PolyUtil.<Complex<C>>substituteUnivariate(sp, t);
         //System.out.println("su = " + su);
         su = su.monic();
         //System.out.println("su = " + su);
-        GenPolynomial<C> re = PolyUtil.<C> realPartFromComplex(rfac, su);
-        GenPolynomial<C> im = PolyUtil.<C> imaginaryPartFromComplex(rfac, su);
+        GenPolynomial<C> re = PolyUtil.<C>realPartFromComplex(rfac, su);
+        GenPolynomial<C> im = PolyUtil.<C>imaginaryPartFromComplex(rfac, su);
         if (debug) {
             logger.debug("rfac = " + rfac.toScript());
             logger.debug("t  = " + t + ", re = " + re.toScript() + ", im = " + im.toScript());
@@ -196,7 +200,7 @@ public class RootFactoryApp {
         IdealWithRealAlgebraicRoots<C> idr;
         for (IdealWithUniv<C> idu : idul) {
             //System.out.println("---idu = " + idu);
-            idr = PolyUtilApp.<C> realAlgebraicRoots(idu);
+            idr = PolyUtilApp.<C>realAlgebraicRoots(idu);
             //System.out.println("---idr = " + idr);
             for (List<edu.jas.root.RealAlgebraicNumber<C>> crr : idr.ran) {
                 //System.out.println("crr = " + crr);
@@ -259,26 +263,28 @@ public class RootFactoryApp {
 
     /**
      * Root reduce of real and complex algebraic numbers.
+     *
      * @param a container of real and complex algebraic numbers.
      * @param b container of real and complex algebraic numbers.
-     * @return container of real and complex algebraic numbers 
-     *         of the primitive element of a and b.
+     * @return container of real and complex algebraic numbers
+     * of the primitive element of a and b.
      */
-    public static <C extends GcdRingElem<C> & Rational> 
-           AlgebraicRootsPrimElem<C> rootReduce(AlgebraicRoots<C> a, AlgebraicRoots<C> b) {
+    public static <C extends GcdRingElem<C> & Rational>
+    AlgebraicRootsPrimElem<C> rootReduce(AlgebraicRoots<C> a, AlgebraicRoots<C> b) {
         return rootReduce(a.getAlgebraicRing(), b.getAlgebraicRing());
     }
 
 
     /**
      * Root reduce of real and complex algebraic numbers.
+     *
      * @param a polynomial.
      * @param b polynomial.
-     * @return container of real and complex algebraic numbers 
-     *         of the primitive element of a and b.
+     * @return container of real and complex algebraic numbers
+     * of the primitive element of a and b.
      */
-    public static <C extends GcdRingElem<C> & Rational> 
-           AlgebraicRootsPrimElem<C> rootReduce(GenPolynomial<C> a, GenPolynomial<C> b) {
+    public static <C extends GcdRingElem<C> & Rational>
+    AlgebraicRootsPrimElem<C> rootReduce(GenPolynomial<C> a, GenPolynomial<C> b) {
         AlgebraicNumberRing<C> anr = new AlgebraicNumberRing<C>(a);
         AlgebraicNumberRing<C> bnr = new AlgebraicNumberRing<C>(b);
         return rootReduce(anr, bnr);
@@ -287,13 +293,14 @@ public class RootFactoryApp {
 
     /**
      * Root reduce of real and complex algebraic numbers.
+     *
      * @param a algebraic number ring.
      * @param b algebraic number ring.
-     * @return container of real and complex algebraic numbers 
-     *         of the primitive element of a and b.
+     * @return container of real and complex algebraic numbers
+     * of the primitive element of a and b.
      */
-    public static <C extends GcdRingElem<C> & Rational> 
-           AlgebraicRootsPrimElem<C> rootReduce(AlgebraicNumberRing<C> a, AlgebraicNumberRing<C> b) {
+    public static <C extends GcdRingElem<C> & Rational>
+    AlgebraicRootsPrimElem<C> rootReduce(AlgebraicNumberRing<C> a, AlgebraicNumberRing<C> b) {
         PrimitiveElement<C> pe = PolyUtilApp.<C>primitiveElement(a, b);
         AlgebraicRoots<C> ar = edu.jas.root.RootFactory.<C>algebraicRoots(pe.primitiveElem.modul);
         return new AlgebraicRootsPrimElem<C>(ar, pe);
@@ -302,12 +309,13 @@ public class RootFactoryApp {
 
     /**
      * Roots of unity of real and complex algebraic numbers.
+     *
      * @param ar container of real and complex algebraic numbers with primitive element.
      * @return container of real and complex algebraic numbers which are roots
-     *         of unity.
+     * of unity.
      */
-    public static <C extends GcdRingElem<C> & Rational> 
-           AlgebraicRootsPrimElem<C> rootsOfUnity(AlgebraicRootsPrimElem<C> ar) {
+    public static <C extends GcdRingElem<C> & Rational>
+    AlgebraicRootsPrimElem<C> rootsOfUnity(AlgebraicRootsPrimElem<C> ar) {
         AlgebraicRoots<C> ur = edu.jas.root.RootFactory.rootsOfUnity(ar);
         if (ar.pelem == null) {
             return new AlgebraicRootsPrimElem<C>(ur, ar.pelem);

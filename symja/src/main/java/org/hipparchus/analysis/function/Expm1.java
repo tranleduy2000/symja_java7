@@ -23,16 +23,18 @@ import org.hipparchus.util.FastMath;
 
 /**
  * <code>e<sup>x</sup>-1</code> function.
- *
  */
 public class Expm1 implements UnivariateDifferentiableFunction {
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double value(double x) {
         return FastMath.expm1(x);
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     @Override
     public DerivativeStructure value(final DerivativeStructure t) {

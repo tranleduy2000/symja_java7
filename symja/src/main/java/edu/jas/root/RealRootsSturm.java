@@ -5,10 +5,10 @@
 package edu.jas.root;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.arith.BigRational;
 import edu.jas.arith.Rational;
@@ -20,6 +20,7 @@ import edu.jas.structure.RingFactory;
 
 /**
  * Real root isolation using Sturm sequences.
+ *
  * @param <C> coefficient type.
  * @author Heinz Kredel
  */
@@ -34,6 +35,7 @@ public class RealRootsSturm<C extends RingElem<C> & Rational> extends RealRootsA
 
     /**
      * Sturm sequence.
+     *
      * @param f univariate polynomial.
      * @return a Sturm sequence for f.
      */
@@ -48,7 +50,7 @@ public class RealRootsSturm<C extends RingElem<C> & Rational> extends RealRootsA
         }
         GenPolynomial<C> F = f;
         S.add(F);
-        GenPolynomial<C> G = PolyUtil.<C> baseDeriviative(f);
+        GenPolynomial<C> G = PolyUtil.<C>baseDeriviative(f);
         while (!G.isZERO()) {
             GenPolynomial<C> r = F.remainder(G);
             F = G;
@@ -71,6 +73,7 @@ public class RealRootsSturm<C extends RingElem<C> & Rational> extends RealRootsA
 
     /**
      * Isolating intervals for the real roots.
+     *
      * @param f univariate polynomial.
      * @return a list of isolating intervals for the real roots of f.
      */
@@ -110,8 +113,9 @@ public class RealRootsSturm<C extends RingElem<C> & Rational> extends RealRootsA
 
     /**
      * Isolating intervals for the real roots.
+     *
      * @param iv interval with f(left) * f(right) != 0.
-     * @param S sturm sequence for f and I.
+     * @param S  sturm sequence for f and I.
      * @return a list of isolating intervals for the real roots of f in I.
      */
     public List<Interval<C>> realRoots(Interval<C> iv, List<GenPolynomial<C>> S) {
@@ -121,7 +125,7 @@ public class RealRootsSturm<C extends RingElem<C> & Rational> extends RealRootsA
             C z = f.leadingBaseCoefficient();
             if (!iv.contains(z)) {
                 throw new IllegalArgumentException(
-                                "root not in interval: f = " + f + ", iv = " + iv + ", z = " + z);
+                        "root not in interval: f = " + f + ", iv = " + iv + ", z = " + z);
             }
             Interval<C> iv1 = new Interval<C>(z);
             R.add(iv1);
@@ -237,8 +241,9 @@ public class RealRootsSturm<C extends RingElem<C> & Rational> extends RealRootsA
 
     /**
      * Number of real roots in interval.
+     *
      * @param iv interval with f(left) * f(right) != 0.
-     * @param S sturm sequence for f and I.
+     * @param S  sturm sequence for f and I.
      * @return number of real roots of f in I.
      */
     public long realRootCount(Interval<C> iv, List<GenPolynomial<C>> S) {
@@ -246,9 +251,9 @@ public class RealRootsSturm<C extends RingElem<C> & Rational> extends RealRootsA
         GenPolynomial<C> f = S.get(0); // squarefree part
         //System.out.println("iv = " + iv);
         RingFactory<C> cfac = f.ring.coFac;
-        List<C> l = PolyUtil.<C> evaluateMain(cfac, S, iv.left);
-        List<C> r = PolyUtil.<C> evaluateMain(cfac, S, iv.right);
-        long v = RootUtil.<C> signVar(l) - RootUtil.<C> signVar(r);
+        List<C> l = PolyUtil.<C>evaluateMain(cfac, S, iv.left);
+        List<C> r = PolyUtil.<C>evaluateMain(cfac, S, iv.right);
+        long v = RootUtil.<C>signVar(l) - RootUtil.<C>signVar(r);
         //System.out.println("v = " + v);
         if (v < 0L) {
             v = -v;
@@ -259,8 +264,9 @@ public class RealRootsSturm<C extends RingElem<C> & Rational> extends RealRootsA
 
     /**
      * Number of real roots in interval.
+     *
      * @param iv interval with f(left) * f(right) != 0.
-     * @param f univariate polynomial.
+     * @param f  univariate polynomial.
      * @return number of real roots of f in I.
      */
     @Override
@@ -282,11 +288,12 @@ public class RealRootsSturm<C extends RingElem<C> & Rational> extends RealRootsA
 
     /**
      * Invariant interval for algebraic number sign.
+     *
      * @param iv root isolating interval for f, with f(left) * f(right) &lt; 0.
-     * @param f univariate polynomial, non-zero.
-     * @param g univariate polynomial, gcd(f,g) == 1.
+     * @param f  univariate polynomial, non-zero.
+     * @param g  univariate polynomial, gcd(f,g) == 1.
      * @return v with v a new interval contained in iv such that g(w) != 0 for w
-     *         in v.
+     * in v.
      */
     @Override
     public Interval<C> invariantSignInterval(Interval<C> iv, GenPolynomial<C> f, GenPolynomial<C> g) {
@@ -310,12 +317,13 @@ public class RealRootsSturm<C extends RingElem<C> & Rational> extends RealRootsA
 
     /**
      * Invariant interval for algebraic number sign.
+     *
      * @param iv root isolating interval for f, with f(left) * f(right) &lt; 0.
-     * @param f univariate polynomial, non-zero.
+     * @param f  univariate polynomial, non-zero.
      * @param Sg Sturm sequence for g, a univariate polynomial with gcd(f,g) ==
-     *            1.
+     *           1.
      * @return v with v a new interval contained in iv such that g(w) != 0 for w
-     *         in v.
+     * in v.
      */
     public Interval<C> invariantSignInterval(Interval<C> iv, GenPolynomial<C> f, List<GenPolynomial<C>> Sg) {
         Interval<C> v = iv;
@@ -353,8 +361,9 @@ public class RealRootsSturm<C extends RingElem<C> & Rational> extends RealRootsA
 
     /**
      * Exclude zero.
+     *
      * @param iv root isolating interval with f(left) * f(right) &lt; 0.
-     * @param S sturm sequence for f and I.
+     * @param S  sturm sequence for f and I.
      * @return a new interval v such that v &lt; 0 or v &gt; 0.
      */
     public Interval<C> excludeZero(Interval<C> iv, List<GenPolynomial<C>> S) {
@@ -366,7 +375,7 @@ public class RealRootsSturm<C extends RingElem<C> & Rational> extends RealRootsA
             return iv;
         }
         Interval<C> vn = new Interval<C>(iv.left, zero);
-        if (realRootCount(vn,S) == 1) {
+        if (realRootCount(vn, S) == 1) {
             return vn;
         }
         vn = new Interval<C>(zero, iv.right);

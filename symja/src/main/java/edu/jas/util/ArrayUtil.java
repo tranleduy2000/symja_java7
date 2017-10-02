@@ -11,6 +11,7 @@ package edu.jas.util;
 /**
  * Array utilities. For example copyOf from Java 6. <b>Note:</b> unused at the
  * moment since it is not working in Java 5.
+ *
  * @author Heinz Kredel
  */
 public class ArrayUtil {
@@ -22,7 +23,8 @@ public class ArrayUtil {
 
     /**
      * Copy the specified array.
-     * @param original array.
+     *
+     * @param original  array.
      * @param newLength new array length.
      * @return copy of original.
      */
@@ -35,6 +37,7 @@ public class ArrayUtil {
 
     /**
      * Copy the specified array.
+     *
      * @param original array.
      * @return copy of original.
      */

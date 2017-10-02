@@ -8,6 +8,7 @@ package edu.jas.kern;
 /**
  * Preempting Exception class. Runtime Exception to be thrown when a thread is
  * interrupted.
+ *
  * @author Heinz Kredel
  */
 

@@ -22,10 +22,11 @@ import org.hipparchus.util.FastMath;
 
 /**
  * {@code floor} function.
- *
  */
 public class Floor implements UnivariateFunction {
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double value(double x) {
         return FastMath.floor(x);

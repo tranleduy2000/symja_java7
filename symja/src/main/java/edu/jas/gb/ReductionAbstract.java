@@ -5,12 +5,12 @@
 package edu.jas.gb;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.poly.ExpVector;
 import edu.jas.poly.GenPolynomial;
@@ -21,6 +21,7 @@ import edu.jas.structure.RingElem;
 /**
  * Polynomial Reduction abstract class. Implements common S-Polynomial,
  * normalform, criterion 4 module criterion and irreducible set.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
@@ -43,9 +44,10 @@ public abstract class ReductionAbstract<C extends RingElem<C>> implements Reduct
 
     /**
      * S-Polynomial.
+     *
      * @param A polynomial.
      * @param B polynomial.
-     * @return spol(A,B) the S-polynomial of A and B.
+     * @return spol(A, B) the S-polynomial of A and B.
      */
     public GenPolynomial<C> SPolynomial(GenPolynomial<C> A, GenPolynomial<C> B) {
         if (B == null || B.isZERO()) {
@@ -85,8 +87,9 @@ public abstract class ReductionAbstract<C extends RingElem<C>> implements Reduct
 
     /**
      * S-Polynomial with recording.
+     *
      * @param S recording matrix, is modified. <b>Note</b> the negative
-     *            S-polynomial is recorded as required by all applications.
+     *          S-polynomial is recorded as required by all applications.
      * @param i index of Ap in basis list.
      * @param A a polynomial.
      * @param j index of Bp in basis list.
@@ -94,7 +97,7 @@ public abstract class ReductionAbstract<C extends RingElem<C>> implements Reduct
      * @return Spol(A, B), the S-Polynomial for A and B.
      */
     public GenPolynomial<C> SPolynomial(List<GenPolynomial<C>> S, int i, GenPolynomial<C> A, int j,
-                    GenPolynomial<C> B) {
+                                        GenPolynomial<C> B) {
         if (debug) {
             if (B == null || B.isZERO()) {
                 throw new ArithmeticException("Spol B is zero");
@@ -135,9 +138,10 @@ public abstract class ReductionAbstract<C extends RingElem<C>> implements Reduct
 
     /**
      * Module criterium.
+     *
      * @param modv number of module variables.
-     * @param A polynomial.
-     * @param B polynomial.
+     * @param A    polynomial.
+     * @param B    polynomial.
      * @return true if the module S-polynomial(i,j) is required.
      */
     public boolean moduleCriterion(int modv, GenPolynomial<C> A, GenPolynomial<C> B) {
@@ -152,9 +156,10 @@ public abstract class ReductionAbstract<C extends RingElem<C>> implements Reduct
 
     /**
      * Module criterium.
+     *
      * @param modv number of module variables.
-     * @param ei ExpVector.
-     * @param ej ExpVector.
+     * @param ei   ExpVector.
+     * @param ej   ExpVector.
      * @return true if the module S-polynomial(i,j) is required.
      */
     public boolean moduleCriterion(int modv, ExpVector ei, ExpVector ej) {
@@ -170,6 +175,7 @@ public abstract class ReductionAbstract<C extends RingElem<C>> implements Reduct
 
     /**
      * GB criterium 4. Use only for commutative polynomial rings.
+     *
      * @param A polynomial.
      * @param B polynomial.
      * @param e = lcm(ht(A),ht(B))
@@ -193,9 +199,10 @@ public abstract class ReductionAbstract<C extends RingElem<C>> implements Reduct
 
     /**
      * GB criterium 4. Use only for commutative polynomial rings.
+     *
      * @param ei exponent vector.
      * @param ej exponent vector.
-     * @param e = lcm(ei,ej)
+     * @param e  = lcm(ei,ej)
      * @return true if the S-polynomial(i,j) is required, else false.
      */
     public boolean criterion4(ExpVector ei, ExpVector ej, ExpVector e) {
@@ -208,6 +215,7 @@ public abstract class ReductionAbstract<C extends RingElem<C>> implements Reduct
 
     /**
      * GB criterium 4.
+     *
      * @param A polynomial.
      * @param B polynomial.
      * @return true if the S-polynomial(i,j) is required, else false.
@@ -228,19 +236,21 @@ public abstract class ReductionAbstract<C extends RingElem<C>> implements Reduct
 
     /**
      * Normalform with respect to marked head terms.
+     *
      * @param Mp leading monomial list.
      * @param Pp polynomial list.
      * @param Ap polynomial.
      * @return nf(Ap) with respect to Mp+Pp.
      */
     public GenPolynomial<C> normalformMarked(List<Monomial<C>> Mp, List<GenPolynomial<C>> Pp,
-                    GenPolynomial<C> Ap) {
+                                             GenPolynomial<C> Ap) {
         throw new UnsupportedOperationException("not implemented: " + Mp + " " + Pp + " " + Ap);
     }
 
 
     /**
      * Normalform Set.
+     *
      * @param Ap polynomial list.
      * @param Pp polynomial list.
      * @return list of nf(a) with respect to Pp for all a in Ap.
@@ -263,6 +273,7 @@ public abstract class ReductionAbstract<C extends RingElem<C>> implements Reduct
 
     /**
      * Is top reducible.
+     *
      * @param A polynomial.
      * @param P polynomial list.
      * @return true if A is top reducible with respect to P.
@@ -288,6 +299,7 @@ public abstract class ReductionAbstract<C extends RingElem<C>> implements Reduct
 
     /**
      * Is reducible.
+     *
      * @param Ap polynomial.
      * @param Pp polynomial list.
      * @return true if Ap is reducible with respect to Pp.
@@ -299,6 +311,7 @@ public abstract class ReductionAbstract<C extends RingElem<C>> implements Reduct
 
     /**
      * Is in Normalform.
+     *
      * @param Ap polynomial.
      * @param Pp polynomial list.
      * @return true if Ap is in normalform with respect to Pp.
@@ -351,6 +364,7 @@ public abstract class ReductionAbstract<C extends RingElem<C>> implements Reduct
 
     /**
      * Is in Normalform.
+     *
      * @param Pp polynomial list.
      * @return true if each Ap in Pp is in normalform with respect to Pp\{Ap}.
      */
@@ -374,9 +388,10 @@ public abstract class ReductionAbstract<C extends RingElem<C>> implements Reduct
 
     /**
      * Irreducible set.
+     *
      * @param Pp polynomial list.
      * @return a list P of monic polynomials which are in normalform wrt. P and
-     *         with ideal(Pp) = ideal(P).
+     * with ideal(Pp) = ideal(P).
      */
     public List<GenPolynomial<C>> irreducibleSet(List<GenPolynomial<C>> Pp) {
         ArrayList<GenPolynomial<C>> P = new ArrayList<GenPolynomial<C>>();
@@ -435,15 +450,16 @@ public abstract class ReductionAbstract<C extends RingElem<C>> implements Reduct
 
     /**
      * Is reduction of normal form.
+     *
      * @param row recording matrix.
-     * @param Pp a polynomial list for reduction.
-     * @param Ap a polynomial.
-     * @param Np nf(Pp,Ap), a normal form of Ap wrt. Pp.
+     * @param Pp  a polynomial list for reduction.
+     * @param Ap  a polynomial.
+     * @param Np  nf(Pp,Ap), a normal form of Ap wrt. Pp.
      * @return true, if Np + sum( row[i]*Pp[i] ) == Ap, else false.
      */
 
     public boolean isReductionNF(List<GenPolynomial<C>> row, List<GenPolynomial<C>> Pp, GenPolynomial<C> Ap,
-                    GenPolynomial<C> Np) {
+                                 GenPolynomial<C> Np) {
         if (row == null && Pp == null) {
             if (Ap == null) {
                 return Np == null;

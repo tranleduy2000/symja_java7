@@ -14,12 +14,13 @@ import java.util.List;
  * ExpVectorLong implements exponent vectors for polynomials using arrays of
  * long as storage unit. This class is used by ExpVector internally, there is no
  * need to use this class directly.
- * @see ExpVector
+ *
  * @author Heinz Kredel
+ * @see ExpVector
  */
 
 public final class ExpVectorLong extends ExpVector
-/*implements AbelianGroupElem<ExpVectorLong>*/{
+/*implements AbelianGroupElem<ExpVectorLong>*/ {
 
 
     /**
@@ -30,6 +31,7 @@ public final class ExpVectorLong extends ExpVector
 
     /**
      * Constructor for ExpVector.
+     *
      * @param n length of exponent vector.
      */
     public ExpVectorLong(int n) {
@@ -39,6 +41,7 @@ public final class ExpVectorLong extends ExpVector
 
     /**
      * Constructor for ExpVector. Sets exponent i to e.
+     *
      * @param n length of exponent vector.
      * @param i index of exponent to be set.
      * @param e exponent to be set.
@@ -51,6 +54,7 @@ public final class ExpVectorLong extends ExpVector
 
     /**
      * Constructor for ExpVector. Sets val.
+     *
      * @param v representation array.
      */
     public ExpVectorLong(long[] v) {
@@ -60,9 +64,10 @@ public final class ExpVectorLong extends ExpVector
 
     /**
      * Internal constructor for ExpVector. Sets val.
-     * @param v internal representation array.
+     *
+     * @param v     internal representation array.
      * @param alloc true if internal representation array is newly
-     * allocated, else false.
+     *              allocated, else false.
      */
     protected ExpVectorLong(long[] v, boolean alloc) {
         super();
@@ -80,6 +85,7 @@ public final class ExpVectorLong extends ExpVector
     /**
      * Constructor for ExpVector. Converts a String representation to an
      * ExpVector. Accepted format = (1,2,3,4,5,6,7).
+     *
      * @param s String representation.
      */
     public ExpVectorLong(String s) throws NumberFormatException {
@@ -90,6 +96,7 @@ public final class ExpVectorLong extends ExpVector
     /**
      * parser for ExpVector. Converts a String representation to an
      * ExpVector. Accepted format = (1,2,3,4,5,6,7).
+     *
      * @param s String representation.
      * @return paresed ExpVector
      */
@@ -122,12 +129,13 @@ public final class ExpVectorLong extends ExpVector
                 v[j] = exps.get(j).longValue();
             }
         }
-        return new ExpVectorLong(v,true);
+        return new ExpVectorLong(v, true);
     }
 
 
     /**
      * Clone this.
+     *
      * @see java.lang.Object#clone()
      */
     @Override
@@ -140,6 +148,7 @@ public final class ExpVectorLong extends ExpVector
 
     /**
      * Get the exponent vector.
+     *
      * @return val.
      */
     @Override
@@ -153,6 +162,7 @@ public final class ExpVectorLong extends ExpVector
 
     /**
      * Get the exponent at position i.
+     *
      * @param i position.
      * @return val[i].
      */
@@ -164,6 +174,7 @@ public final class ExpVectorLong extends ExpVector
 
     /**
      * Set the exponent at position i to e.
+     *
      * @param i
      * @param e
      * @return old val[i].
@@ -179,6 +190,7 @@ public final class ExpVectorLong extends ExpVector
 
     /**
      * Get the length of this exponent vector.
+     *
      * @return val.length.
      */
     @Override
@@ -190,6 +202,7 @@ public final class ExpVectorLong extends ExpVector
     /**
      * Extend variables. Used e.g. in module embedding. Extend this by i
      * elements and set val[j] to e.
+     *
      * @param i number of elements to extend.
      * @param j index of element to be set.
      * @param e new exponent for val[j].
@@ -210,6 +223,7 @@ public final class ExpVectorLong extends ExpVector
     /**
      * Extend lower variables. Extend this by i lower elements and set val[j] to
      * e.
+     *
      * @param i number of elements to extend.
      * @param j index of element to be set.
      * @param e new exponent for val[j].
@@ -230,7 +244,8 @@ public final class ExpVectorLong extends ExpVector
     /**
      * Contract variables. Used e.g. in module embedding. Contract this to len
      * elements.
-     * @param i position of first element to be copied.
+     *
+     * @param i   position of first element to be copied.
      * @param len new length.
      * @return contracted exponent vector.
      */
@@ -247,6 +262,7 @@ public final class ExpVectorLong extends ExpVector
 
     /**
      * Reverse variables. Used e.g. in opposite rings.
+     *
      * @return reversed exponent vector.
      */
     @Override
@@ -262,6 +278,7 @@ public final class ExpVectorLong extends ExpVector
     /**
      * Reverse lower j variables. Used e.g. in opposite rings. Reverses the
      * first j-1 variables, the rest is unchanged.
+     *
      * @param j index of first variable reversed.
      * @return reversed exponent vector.
      */
@@ -288,6 +305,7 @@ public final class ExpVectorLong extends ExpVector
     /**
      * Reverse upper j variables. Reverses the last j-1 variables, the rest is
      * unchanged.
+     *
      * @param j index of first variable not reversed.
      * @return reversed exponent vector.
      */
@@ -309,6 +327,7 @@ public final class ExpVectorLong extends ExpVector
 
     /**
      * Combine with ExpVector. Combine this with the other ExpVector V.
+     *
      * @param V the other exponent vector.
      * @return combined exponent vector.
      */
@@ -330,6 +349,7 @@ public final class ExpVectorLong extends ExpVector
 
     /**
      * Permutation of exponent vector.
+     *
      * @param P permutation.
      * @return P(e).
      */
@@ -346,6 +366,7 @@ public final class ExpVectorLong extends ExpVector
 
     /**
      * Get the string representation.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -356,6 +377,7 @@ public final class ExpVectorLong extends ExpVector
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -372,6 +394,7 @@ public final class ExpVectorLong extends ExpVector
 
     /**
      * hashCode for this exponent vector.
+     *
      * @see java.lang.Object#hashCode() Only for findbugs.
      */
     @Override
@@ -382,6 +405,7 @@ public final class ExpVectorLong extends ExpVector
 
     /**
      * ExpVector absolute value.
+     *
      * @return abs(this).
      */
     @Override
@@ -401,6 +425,7 @@ public final class ExpVectorLong extends ExpVector
 
     /**
      * ExpVector negate.
+     *
      * @return -this.
      */
     @Override
@@ -416,6 +441,7 @@ public final class ExpVectorLong extends ExpVector
 
     /**
      * ExpVector summation.
+     *
      * @param V
      * @return this+V.
      */
@@ -433,6 +459,7 @@ public final class ExpVectorLong extends ExpVector
 
     /**
      * ExpVector subtract. Result may have negative entries.
+     *
      * @param V
      * @return this-V.
      */
@@ -450,6 +477,7 @@ public final class ExpVectorLong extends ExpVector
 
     /**
      * ExpVector multiply by scalar.
+     *
      * @param s scalar
      * @return s*this.
      */
@@ -466,6 +494,7 @@ public final class ExpVectorLong extends ExpVector
 
     /**
      * ExpVector substitution. Clone and set exponent to d at position i.
+     *
      * @param i position.
      * @param d new exponent.
      * @return substituted ExpVector.
@@ -481,8 +510,9 @@ public final class ExpVectorLong extends ExpVector
 
     /**
      * ExpVector signum.
+     *
      * @return 0 if this is zero, -1 if some entry is negative, 1 if no entry is
-     *         negative and at least one entry is positive.
+     * negative and at least one entry is positive.
      */
     @Override
     public int signum() {
@@ -502,6 +532,7 @@ public final class ExpVectorLong extends ExpVector
 
     /**
      * ExpVector total degree.
+     *
      * @return sum of all exponents.
      */
     @Override
@@ -517,6 +548,7 @@ public final class ExpVectorLong extends ExpVector
 
     /**
      * ExpVector maximal degree.
+     *
      * @return maximal exponent.
      */
     @Override
@@ -534,6 +566,7 @@ public final class ExpVectorLong extends ExpVector
 
     /**
      * ExpVector weighted degree.
+     *
      * @param w weights.
      * @return weighted sum of all exponents.
      */
@@ -556,6 +589,7 @@ public final class ExpVectorLong extends ExpVector
 
     /**
      * ExpVector weighted degree.
+     *
      * @param w weights.
      * @return weighted sum of all exponents.
      */
@@ -567,7 +601,7 @@ public final class ExpVectorLong extends ExpVector
         long t = 0;
         long[] u = val;
         for (int i = 0; i < w.length; i++) {
-             t += w[i] * u[i];
+            t += w[i] * u[i];
         }
         return t;
     }
@@ -575,6 +609,7 @@ public final class ExpVectorLong extends ExpVector
 
     /**
      * ExpVector least common multiple.
+     *
      * @param V
      * @return component wise maximum of this and V.
      */
@@ -592,6 +627,7 @@ public final class ExpVectorLong extends ExpVector
 
     /**
      * ExpVector greatest common divisor.
+     *
      * @param V
      * @return component wise minimum of this and V.
      */
@@ -609,6 +645,7 @@ public final class ExpVectorLong extends ExpVector
 
     /**
      * ExpVector dependent variables.
+     *
      * @return number of indices where val has positive exponents.
      */
     public int dependentVariables() {
@@ -624,6 +661,7 @@ public final class ExpVectorLong extends ExpVector
 
     /**
      * ExpVector dependency on variables.
+     *
      * @return array of indices where val has positive exponents.
      */
     @Override
@@ -648,6 +686,7 @@ public final class ExpVectorLong extends ExpVector
     /**
      * ExpVector multiple test. Test if this is component wise greater or equal
      * to V.
+     *
      * @param V
      * @return true if this is a multiple of V, else false.
      */
@@ -666,6 +705,7 @@ public final class ExpVectorLong extends ExpVector
 
     /**
      * ExpVector compareTo.
+     *
      * @param V
      * @return 0 if U == V, -1 if U &lt; V, 1 if U &gt; V.
      */
@@ -677,6 +717,7 @@ public final class ExpVectorLong extends ExpVector
 
     /**
      * ExpVector inverse lexicographical compareTo.
+     *
      * @param V
      * @return 0 if U == V, -1 if U &lt; V, 1 if U &gt; V.
      */
@@ -697,6 +738,7 @@ public final class ExpVectorLong extends ExpVector
 
     /**
      * ExpVector inverse lexicographical compareTo.
+     *
      * @param V
      * @param begin
      * @param end
@@ -707,7 +749,8 @@ public final class ExpVectorLong extends ExpVector
         long[] u = val;
         long[] v = ((ExpVectorLong) V).val;
         if (begin < 0) {
-            begin = 0;;
+            begin = 0;
+            ;
         }
         if (end >= val.length) {
             end = val.length;
@@ -725,6 +768,7 @@ public final class ExpVectorLong extends ExpVector
 
     /**
      * ExpVector inverse graded lexicographical compareTo.
+     *
      * @param V
      * @return 0 if U == V, -1 if U &lt; V, 1 if U &gt; V.
      */
@@ -766,6 +810,7 @@ public final class ExpVectorLong extends ExpVector
 
     /**
      * ExpVector inverse graded lexicographical compareTo.
+     *
      * @param V
      * @param begin
      * @param end
@@ -776,7 +821,8 @@ public final class ExpVectorLong extends ExpVector
         long[] u = val;
         long[] v = ((ExpVectorLong) V).val;
         if (begin < 0) {
-            begin = 0;;
+            begin = 0;
+            ;
         }
         if (end >= val.length) {
             end = val.length;
@@ -815,6 +861,7 @@ public final class ExpVectorLong extends ExpVector
 
     /**
      * ExpVector reverse inverse lexicographical compareTo.
+     *
      * @param V
      * @return 0 if U == V, -1 if U &lt; V, 1 if U &gt; V.
      */
@@ -835,6 +882,7 @@ public final class ExpVectorLong extends ExpVector
 
     /**
      * ExpVector reverse inverse lexicographical compareTo.
+     *
      * @param V
      * @param begin
      * @param end
@@ -845,7 +893,8 @@ public final class ExpVectorLong extends ExpVector
         long[] u = val;
         long[] v = ((ExpVectorLong) V).val;
         if (begin < 0) {
-            begin = 0;;
+            begin = 0;
+            ;
         }
         if (end >= val.length) {
             end = val.length;
@@ -863,6 +912,7 @@ public final class ExpVectorLong extends ExpVector
 
     /**
      * ExpVector reverse inverse graded compareTo.
+     *
      * @param V
      * @return 0 if U == V, -1 if U &lt; V, 1 if U &gt; V.
      */
@@ -904,6 +954,7 @@ public final class ExpVectorLong extends ExpVector
 
     /**
      * ExpVector reverse inverse graded compareTo.
+     *
      * @param V
      * @param begin
      * @param end
@@ -914,7 +965,8 @@ public final class ExpVectorLong extends ExpVector
         long[] u = val;
         long[] v = ((ExpVectorLong) V).val;
         if (begin < 0) {
-            begin = 0;;
+            begin = 0;
+            ;
         }
         if (end >= val.length) {
             end = val.length;
@@ -953,6 +1005,7 @@ public final class ExpVectorLong extends ExpVector
 
     /**
      * ExpVector inverse total degree lexicographical compareTo.
+     *
      * @param V
      * @return 0 if U == V, -1 if U &lt; V, 1 if U &gt; V.
      */
@@ -994,6 +1047,7 @@ public final class ExpVectorLong extends ExpVector
 
     /**
      * ExpVector reverse lexicographical inverse total degree compareTo.
+     *
      * @param V
      * @return 0 if U == V, -1 if U &lt; V, 1 if U &gt; V.
      */
@@ -1023,7 +1077,7 @@ public final class ExpVectorLong extends ExpVector
             vp += v[j];
         }
         if (up > vp) {
-            t = 1; 
+            t = 1;
         } else {
             if (up < vp) {
                 t = -1;
@@ -1035,6 +1089,7 @@ public final class ExpVectorLong extends ExpVector
 
     /**
      * ExpVector inverse weighted lexicographical compareTo.
+     *
      * @param w weight array.
      * @param V
      * @return 0 if U == V, -1 if U &lt; V, 1 if U &gt; V.
@@ -1078,7 +1133,8 @@ public final class ExpVectorLong extends ExpVector
 
     /**
      * ExpVector inverse weighted lexicographical compareTo.
-     * @param w weight array.
+     *
+     * @param w     weight array.
      * @param V
      * @param begin
      * @param end
@@ -1089,7 +1145,8 @@ public final class ExpVectorLong extends ExpVector
         long[] u = val;
         long[] v = ((ExpVectorLong) V).val;
         if (begin < 0) {
-            begin = 0;;
+            begin = 0;
+            ;
         }
         if (end >= val.length) {
             end = val.length;

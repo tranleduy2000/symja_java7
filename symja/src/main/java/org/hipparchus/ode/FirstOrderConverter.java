@@ -17,12 +17,13 @@
 
 package org.hipparchus.ode;
 
-/** This class converts second order differential equations to first
+/**
+ * This class converts second order differential equations to first
  * order ones.
- *
+ * <p>
  * <p>This class is a wrapper around a {@link SecondOrderODE} which
  * allow to use a {@link ODEIntegrator} to integrate it.</p>
- *
+ * <p>
  * <p>The transformation is done by changing the n dimension state
  * vector to a 2n dimension vector, where the first n components are
  * the initial state variables and the n last components are their
@@ -30,7 +31,7 @@ package org.hipparchus.ode;
  * vector then really contains both the first and second time
  * derivative of the initial state vector, which can be handled by the
  * underlying second order equations set.</p>
- *
+ * <p>
  * <p>One should be aware that the data is duplicated during the
  * transformation process and that for each call to {@link
  * #computeDerivatives computeDerivatives}, this wrapper does copy 4n
@@ -52,24 +53,32 @@ package org.hipparchus.ode;
 
 public class FirstOrderConverter implements OrdinaryDifferentialEquation {
 
-    /** Underlying second order equations set. */
+    /**
+     * Underlying second order equations set.
+     */
     private final SecondOrderODE equations;
 
-    /** second order problem dimension. */
+    /**
+     * second order problem dimension.
+     */
     private final int dimension;
 
-    /** Simple constructor.
+    /**
+     * Simple constructor.
      * Build a converter around a second order equations set.
+     *
      * @param equations second order equations set to convert
      */
-    public FirstOrderConverter (final SecondOrderODE equations) {
+    public FirstOrderConverter(final SecondOrderODE equations) {
         this.equations = equations;
-        dimension      = equations.getDimension();
+        dimension = equations.getDimension();
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      * <p>The dimension of the first order problem is twice the
      * dimension of the underlying second order problem.</p>
+     *
      * @return dimension of the problem
      */
     @Override
@@ -77,23 +86,25 @@ public class FirstOrderConverter implements OrdinaryDifferentialEquation {
         return 2 * dimension;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double[] computeDerivatives(final double t, final double[] y) {
 
         final double[] yDot = new double[y.length];
 
         // split the state vector in two
-        final double[] z    = new double[dimension];
+        final double[] z = new double[dimension];
         final double[] zDot = new double[dimension];
-        System.arraycopy(y, 0,         z,    0, dimension);
+        System.arraycopy(y, 0, z, 0, dimension);
         System.arraycopy(y, dimension, zDot, 0, dimension);
 
         // apply the underlying equations set
         final double[] zDDot = equations.computeSecondDerivatives(t, z, zDot);
 
         // build the result state derivative
-        System.arraycopy(zDot,  0, yDot, 0,         dimension);
+        System.arraycopy(zDot, 0, yDot, 0, dimension);
         System.arraycopy(zDDot, 0, yDot, dimension, dimension);
 
         return yDot;

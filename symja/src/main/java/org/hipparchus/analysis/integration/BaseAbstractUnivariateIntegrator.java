@@ -27,44 +27,67 @@ import org.hipparchus.util.MathUtils;
 
 /**
  * Provide a default implementation for several generic functions.
- *
  */
 public abstract class BaseAbstractUnivariateIntegrator implements UnivariateIntegrator {
 
-    /** Default absolute accuracy. */
+    /**
+     * Default absolute accuracy.
+     */
     public static final double DEFAULT_ABSOLUTE_ACCURACY = 1.0e-15;
 
-    /** Default relative accuracy. */
+    /**
+     * Default relative accuracy.
+     */
     public static final double DEFAULT_RELATIVE_ACCURACY = 1.0e-6;
 
-    /** Default minimal iteration count. */
+    /**
+     * Default minimal iteration count.
+     */
     public static final int DEFAULT_MIN_ITERATIONS_COUNT = 3;
 
-    /** Default maximal iteration count. */
+    /**
+     * Default maximal iteration count.
+     */
     public static final int DEFAULT_MAX_ITERATIONS_COUNT = Integer.MAX_VALUE;
 
-    /** The iteration count. */
+    /**
+     * The iteration count.
+     */
     protected final Incrementor iterations;
 
-    /** Maximum absolute error. */
+    /**
+     * Maximum absolute error.
+     */
     private final double absoluteAccuracy;
 
-    /** Maximum relative error. */
+    /**
+     * Maximum relative error.
+     */
     private final double relativeAccuracy;
 
-    /** minimum number of iterations */
+    /**
+     * minimum number of iterations
+     */
     private final int minimalIterationCount;
 
-    /** The functions evaluation count. */
+    /**
+     * The functions evaluation count.
+     */
     private Incrementor evaluations;
 
-    /** Function to integrate. */
+    /**
+     * Function to integrate.
+     */
     private UnivariateFunction function;
 
-    /** Lower bound for the interval. */
+    /**
+     * Lower bound for the interval.
+     */
     private double min;
 
-    /** Upper bound for the interval. */
+    /**
+     * Upper bound for the interval.
+     */
     private double max;
 
     /**
@@ -72,57 +95,57 @@ public abstract class BaseAbstractUnivariateIntegrator implements UnivariateInte
      * <p>
      * The meanings of the various parameters are:
      * <ul>
-     *   <li>relative accuracy:
-     *       this is used to stop iterations if the absolute accuracy can't be
-     *       achieved due to large values or short mantissa length. If this
-     *       should be the primary criterion for convergence rather then a
-     *       safety measure, set the absolute accuracy to a ridiculously small value,
-     *       like {@link org.hipparchus.util.Precision#SAFE_MIN Precision.SAFE_MIN}.</li>
-     *   <li>absolute accuracy:
-     *       The default is usually chosen so that results in the interval
-     *       -10..-0.1 and +0.1..+10 can be found with a reasonable accuracy. If the
-     *       expected absolute value of your results is of much smaller magnitude, set
-     *       this to a smaller value.</li>
-     *   <li>minimum number of iterations:
-     *       minimal iteration is needed to avoid false early convergence, e.g.
-     *       the sample points happen to be zeroes of the function. Users can
-     *       use the default value or choose one that they see as appropriate.</li>
-     *   <li>maximum number of iterations:
-     *       usually a high iteration count indicates convergence problems. However,
-     *       the "reasonable value" varies widely for different algorithms. Users are
-     *       advised to use the default value supplied by the algorithm.</li>
+     * <li>relative accuracy:
+     * this is used to stop iterations if the absolute accuracy can't be
+     * achieved due to large values or short mantissa length. If this
+     * should be the primary criterion for convergence rather then a
+     * safety measure, set the absolute accuracy to a ridiculously small value,
+     * like {@link org.hipparchus.util.Precision#SAFE_MIN Precision.SAFE_MIN}.</li>
+     * <li>absolute accuracy:
+     * The default is usually chosen so that results in the interval
+     * -10..-0.1 and +0.1..+10 can be found with a reasonable accuracy. If the
+     * expected absolute value of your results is of much smaller magnitude, set
+     * this to a smaller value.</li>
+     * <li>minimum number of iterations:
+     * minimal iteration is needed to avoid false early convergence, e.g.
+     * the sample points happen to be zeroes of the function. Users can
+     * use the default value or choose one that they see as appropriate.</li>
+     * <li>maximum number of iterations:
+     * usually a high iteration count indicates convergence problems. However,
+     * the "reasonable value" varies widely for different algorithms. Users are
+     * advised to use the default value supplied by the algorithm.</li>
      * </ul>
      *
-     * @param relativeAccuracy relative accuracy of the result
-     * @param absoluteAccuracy absolute accuracy of the result
+     * @param relativeAccuracy      relative accuracy of the result
+     * @param absoluteAccuracy      absolute accuracy of the result
      * @param minimalIterationCount minimum number of iterations
      * @param maximalIterationCount maximum number of iterations
-     * @exception MathIllegalArgumentException if minimal number of iterations
-     * is not strictly positive
-     * @exception MathIllegalArgumentException if maximal number of iterations
-     * is lesser than or equal to the minimal number of iterations
+     * @throws MathIllegalArgumentException if minimal number of iterations
+     *                                      is not strictly positive
+     * @throws MathIllegalArgumentException if maximal number of iterations
+     *                                      is lesser than or equal to the minimal number of iterations
      */
     protected BaseAbstractUnivariateIntegrator(final double relativeAccuracy,
                                                final double absoluteAccuracy,
                                                final int minimalIterationCount,
                                                final int maximalIterationCount)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
 
         // accuracy settings
-        this.relativeAccuracy      = relativeAccuracy;
-        this.absoluteAccuracy      = absoluteAccuracy;
+        this.relativeAccuracy = relativeAccuracy;
+        this.absoluteAccuracy = absoluteAccuracy;
 
         // iterations count settings
         if (minimalIterationCount <= 0) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.NUMBER_TOO_SMALL_BOUND_EXCLUDED,
-                                                   minimalIterationCount, 0);
+                    minimalIterationCount, 0);
         }
         if (maximalIterationCount <= minimalIterationCount) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.NUMBER_TOO_SMALL_BOUND_EXCLUDED,
-                                                   maximalIterationCount, minimalIterationCount);
+                    maximalIterationCount, minimalIterationCount);
         }
         this.minimalIterationCount = minimalIterationCount;
-        this.iterations            = new Incrementor(maximalIterationCount);
+        this.iterations = new Incrementor(maximalIterationCount);
 
         // prepare evaluations counter, but do not set it yet
         evaluations = new Incrementor();
@@ -131,62 +154,76 @@ public abstract class BaseAbstractUnivariateIntegrator implements UnivariateInte
 
     /**
      * Construct an integrator with given accuracies.
+     *
      * @param relativeAccuracy relative accuracy of the result
      * @param absoluteAccuracy absolute accuracy of the result
      */
     protected BaseAbstractUnivariateIntegrator(final double relativeAccuracy,
-                                           final double absoluteAccuracy) {
+                                               final double absoluteAccuracy) {
         this(relativeAccuracy, absoluteAccuracy,
-             DEFAULT_MIN_ITERATIONS_COUNT, DEFAULT_MAX_ITERATIONS_COUNT);
+                DEFAULT_MIN_ITERATIONS_COUNT, DEFAULT_MAX_ITERATIONS_COUNT);
     }
 
     /**
      * Construct an integrator with given iteration counts.
+     *
      * @param minimalIterationCount minimum number of iterations
      * @param maximalIterationCount maximum number of iterations
-     * @exception MathIllegalArgumentException if minimal number of iterations
-     * is not strictly positive
-     * @exception MathIllegalArgumentException if maximal number of iterations
-     * is lesser than or equal to the minimal number of iterations
+     * @throws MathIllegalArgumentException if minimal number of iterations
+     *                                      is not strictly positive
+     * @throws MathIllegalArgumentException if maximal number of iterations
+     *                                      is lesser than or equal to the minimal number of iterations
      */
     protected BaseAbstractUnivariateIntegrator(final int minimalIterationCount,
-                                           final int maximalIterationCount)
-        throws MathIllegalArgumentException {
+                                               final int maximalIterationCount)
+            throws MathIllegalArgumentException {
         this(DEFAULT_RELATIVE_ACCURACY, DEFAULT_ABSOLUTE_ACCURACY,
-             minimalIterationCount, maximalIterationCount);
+                minimalIterationCount, maximalIterationCount);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getRelativeAccuracy() {
         return relativeAccuracy;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getAbsoluteAccuracy() {
         return absoluteAccuracy;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getMinimalIterationCount() {
         return minimalIterationCount;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getMaximalIterationCount() {
         return iterations.getMaximalCount();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getEvaluations() {
         return evaluations.getCount();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getIterations() {
         return iterations.getCount();
@@ -198,6 +235,7 @@ public abstract class BaseAbstractUnivariateIntegrator implements UnivariateInte
     protected double getMin() {
         return min;
     }
+
     /**
      * @return the upper bound.
      */
@@ -211,10 +249,10 @@ public abstract class BaseAbstractUnivariateIntegrator implements UnivariateInte
      * @param point Point at which the objective function must be evaluated.
      * @return the objective function value at specified point.
      * @throws MathIllegalStateException if the maximal number of function
-     * evaluations is exceeded.
+     *                                   evaluations is exceeded.
      */
     protected double computeObjectiveValue(final double point)
-        throws MathIllegalStateException {
+            throws MathIllegalStateException {
         evaluations.increment();
         return function.value(point);
     }
@@ -225,16 +263,16 @@ public abstract class BaseAbstractUnivariateIntegrator implements UnivariateInte
      * {@code solve} methods.
      *
      * @param maxEval Maximum number of evaluations.
-     * @param f the integrand function
-     * @param lower the min bound for the interval
-     * @param upper the upper bound for the interval
-     * @throws NullArgumentException if {@code f} is {@code null}.
+     * @param f       the integrand function
+     * @param lower   the min bound for the interval
+     * @param upper   the upper bound for the interval
+     * @throws NullArgumentException        if {@code f} is {@code null}.
      * @throws MathIllegalArgumentException if {@code min >= max}.
      */
     protected void setup(final int maxEval,
                          final UnivariateFunction f,
                          final double lower, final double upper)
-        throws MathIllegalArgumentException, NullArgumentException {
+            throws MathIllegalArgumentException, NullArgumentException {
 
         // Checks.
         MathUtils.checkNotNull(f);
@@ -248,11 +286,13 @@ public abstract class BaseAbstractUnivariateIntegrator implements UnivariateInte
         iterations.reset();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double integrate(final int maxEval, final UnivariateFunction f,
                             final double lower, final double upper)
-        throws MathIllegalArgumentException, MathIllegalStateException, NullArgumentException {
+            throws MathIllegalArgumentException, MathIllegalStateException, NullArgumentException {
 
         // Initialization.
         setup(maxEval, f, lower, upper);
@@ -268,11 +308,11 @@ public abstract class BaseAbstractUnivariateIntegrator implements UnivariateInte
      *
      * @return the root.
      * @throws MathIllegalStateException if the maximal number of evaluations
-     * is exceeded.
+     *                                   is exceeded.
      * @throws MathIllegalStateException if the maximum iteration count is exceeded
-     * or the integrator detects convergence problems otherwise
+     *                                   or the integrator detects convergence problems otherwise
      */
     protected abstract double doIntegrate()
-        throws MathIllegalStateException;
+            throws MathIllegalStateException;
 
 }

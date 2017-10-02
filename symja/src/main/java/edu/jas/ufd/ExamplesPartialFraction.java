@@ -14,7 +14,7 @@ import edu.jas.poly.TermOrder;
 
 /**
  * Examples related to partial fraction decomposition.
- * 
+ *
  * @author Heinz Kredel
  */
 
@@ -23,7 +23,7 @@ public class ExamplesPartialFraction {
 
     /**
      * Main program.
-     * 
+     *
      * @param args
      */
     public static void main(String[] args) {
@@ -47,7 +47,7 @@ public class ExamplesPartialFraction {
 
         TermOrder to = new TermOrder(TermOrder.INVLEX);
         BigRational cfac = new BigRational(1);
-        String[] vars = new String[] { "x" };
+        String[] vars = new String[]{"x"};
         GenPolynomialRing<BigRational> pfac = new GenPolynomialRing<BigRational>(cfac, 1, to, vars);
 
         // 1 / ( x^2 - 2 )
@@ -69,7 +69,7 @@ public class ExamplesPartialFraction {
 
         TermOrder to = new TermOrder(TermOrder.INVLEX);
         BigRational cfac = new BigRational(1);
-        String[] vars = new String[] { "x" };
+        String[] vars = new String[]{"x"};
         GenPolynomialRing<BigRational> pfac = new GenPolynomialRing<BigRational>(cfac, 1, to, vars);
 
         // 1 / ( x^3 + x )
@@ -91,7 +91,7 @@ public class ExamplesPartialFraction {
 
         TermOrder to = new TermOrder(TermOrder.INVLEX);
         BigRational cfac = new BigRational(1);
-        String[] vars = new String[] { "x" };
+        String[] vars = new String[]{"x"};
         GenPolynomialRing<BigRational> pfac = new GenPolynomialRing<BigRational>(cfac, 1, to, vars);
 
         // 1 / ( x^6 - 5 x^4 + 5 x^2 + 4 )
@@ -113,7 +113,7 @@ public class ExamplesPartialFraction {
 
         TermOrder to = new TermOrder(TermOrder.INVLEX);
         BigRational cfac = new BigRational(1);
-        String[] vars = new String[] { "x" };
+        String[] vars = new String[]{"x"};
         GenPolynomialRing<BigRational> pfac = new GenPolynomialRing<BigRational>(cfac, 1, to, vars);
 
         // 1 / ( x^4 + 4 )
@@ -135,7 +135,7 @@ public class ExamplesPartialFraction {
 
         TermOrder to = new TermOrder(TermOrder.INVLEX);
         BigRational cfac = new BigRational(1);
-        String[] vars = new String[] { "x" };
+        String[] vars = new String[]{"x"};
         GenPolynomialRing<BigRational> pfac = new GenPolynomialRing<BigRational>(cfac, 1, to, vars);
 
         // 1 / ( x^3 - 2 )
@@ -157,7 +157,7 @@ public class ExamplesPartialFraction {
 
         TermOrder to = new TermOrder(TermOrder.INVLEX);
         BigRational cfac = new BigRational(1);
-        String[] vars = new String[] { "x" };
+        String[] vars = new String[]{"x"};
         GenPolynomialRing<BigRational> pfac = new GenPolynomialRing<BigRational>(cfac, 1, to, vars);
 
         // 1 / ( x - 1 ) ( x - 2 ) ( x - 3 ) 
@@ -179,7 +179,7 @@ public class ExamplesPartialFraction {
 
         TermOrder to = new TermOrder(TermOrder.INVLEX);
         BigRational cfac = new BigRational(1);
-        String[] vars = new String[] { "x" };
+        String[] vars = new String[]{"x"};
         GenPolynomialRing<BigRational> pfac = new GenPolynomialRing<BigRational>(cfac, 1, to, vars);
 
         // 1 / ( x^3 - 2 )

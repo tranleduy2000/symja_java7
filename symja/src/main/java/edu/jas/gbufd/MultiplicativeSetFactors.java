@@ -5,10 +5,10 @@
 package edu.jas.gbufd;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.poly.GenPolynomial;
 import edu.jas.poly.GenPolynomialRing;
@@ -21,6 +21,7 @@ import edu.jas.ufd.FactorFactory;
 /**
  * Multiplicative set of irreducible polynomials. a, b in M implies a*b in M, 1
  * in M.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
@@ -41,6 +42,7 @@ public class MultiplicativeSetFactors<C extends GcdRingElem<C>> extends Multipli
 
     /**
      * MultiplicativeSet constructor. Constructs an empty multiplicative set.
+     *
      * @param ring polynomial ring factory for coefficients.
      */
     public MultiplicativeSetFactors(GenPolynomialRing<C> ring) {
@@ -51,12 +53,13 @@ public class MultiplicativeSetFactors<C extends GcdRingElem<C>> extends Multipli
 
     /**
      * MultiplicativeSet constructor.
+     *
      * @param ring polynomial ring factory for coefficients.
-     * @param ms a list of non-zero polynomials.
-     * @param eng factorization engine.
+     * @param ms   a list of non-zero polynomials.
+     * @param eng  factorization engine.
      */
     protected MultiplicativeSetFactors(GenPolynomialRing<C> ring, List<GenPolynomial<C>> ms,
-                    FactorAbstract<C> eng) {
+                                       FactorAbstract<C> eng) {
         super(ring, ms);
         engine = eng;
     }
@@ -64,6 +67,7 @@ public class MultiplicativeSetFactors<C extends GcdRingElem<C>> extends Multipli
 
     /**
      * toString.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -74,6 +78,7 @@ public class MultiplicativeSetFactors<C extends GcdRingElem<C>> extends Multipli
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -87,6 +92,7 @@ public class MultiplicativeSetFactors<C extends GcdRingElem<C>> extends Multipli
 
     /**
      * Add polynomial to mset.
+     *
      * @param cc polynomial to be added to mset.
      * @return new multiplicative set.
      */
@@ -106,7 +112,7 @@ public class MultiplicativeSetFactors<C extends GcdRingElem<C>> extends Multipli
         List<GenPolynomial<C>> list = engine.factorsRadical(c);
         logger.info("factorsRadical = " + list);
         if (ring.coFac.isField()) {
-            list = PolyUtil.<C> monic(list);
+            list = PolyUtil.<C>monic(list);
         }
         List<GenPolynomial<C>> ms = new ArrayList<GenPolynomial<C>>(mset);
         for (GenPolynomial<C> p : list) {
@@ -123,6 +129,7 @@ public class MultiplicativeSetFactors<C extends GcdRingElem<C>> extends Multipli
 
     /**
      * Replace polynomial list of mset.
+     *
      * @param L polynomial list to replace mset.
      * @return new multiplicative set.
      */

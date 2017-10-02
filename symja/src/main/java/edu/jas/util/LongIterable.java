@@ -5,13 +5,13 @@
 package edu.jas.util;
 
 
-
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 
 /**
  * Iterable for Long.
+ *
  * @author Heinz Kredel
  */
 public class LongIterable implements Iterable<Long> {
@@ -37,24 +37,23 @@ public class LongIterable implements Iterable<Long> {
         upperBound = ub;
     }
 
-
-    /**
-     * Set the upper bound for the iterator.
-     * @param ub an upper bound for the iterator elements.
-     */
-    public void setUpperBound(long ub) {
-        upperBound = ub;
-    }
-
-
     /**
      * Get the upper bound for the iterator.
+     *
      * @return the upper bound for the iterator elements.
      */
     public long getUpperBound() {
         return upperBound;
     }
 
+    /**
+     * Set the upper bound for the iterator.
+     *
+     * @param ub an upper bound for the iterator elements.
+     */
+    public void setUpperBound(long ub) {
+        upperBound = ub;
+    }
 
     /**
      * Set the iteration algorithm to all elements.
@@ -74,6 +73,7 @@ public class LongIterable implements Iterable<Long> {
 
     /**
      * Get an iterator over Long.
+     *
      * @return an iterator.
      */
     public Iterator<Long> iterator() {
@@ -85,42 +85,19 @@ public class LongIterable implements Iterable<Long> {
 
 /**
  * Long iterator.
+ *
  * @author Heinz Kredel
  */
 class LongIterator implements Iterator<Long> {
 
 
+    final boolean nonNegative;
+    protected long upperBound;
     /**
      * data structure.
      */
     long current;
-
-
     boolean empty;
-
-
-    final boolean nonNegative;
-
-
-    protected long upperBound;
-
-
-    /**
-     * Set the upper bound for the iterator.
-     * @param ub an upper bound for the iterator elements.
-     */
-    public void setUpperBound(long ub) {
-        upperBound = ub;
-    }
-
-
-    /**
-     * Get the upper bound for the iterator.
-     * @return the upper bound for the iterator elements.
-     */
-    public long getUpperBound() {
-        return upperBound;
-    }
 
 
     /**
@@ -133,8 +110,9 @@ class LongIterator implements Iterator<Long> {
 
     /**
      * Long iterator constructor.
+     *
      * @param nn true for an iterator over non-negative longs, false for all
-     *            elements iterator.
+     *           elements iterator.
      * @param ub an upper bound for the entries.
      */
     public LongIterator(boolean nn, long ub) {
@@ -146,9 +124,27 @@ class LongIterator implements Iterator<Long> {
         //System.out.println("upperBound = " + upperBound);
     }
 
+    /**
+     * Get the upper bound for the iterator.
+     *
+     * @return the upper bound for the iterator elements.
+     */
+    public long getUpperBound() {
+        return upperBound;
+    }
+
+    /**
+     * Set the upper bound for the iterator.
+     *
+     * @param ub an upper bound for the iterator elements.
+     */
+    public void setUpperBound(long ub) {
+        upperBound = ub;
+    }
 
     /**
      * Test for availability of a next long.
+     *
      * @return true if the iteration has more Longs, else false.
      */
     public synchronized boolean hasNext() {
@@ -158,6 +154,7 @@ class LongIterator implements Iterator<Long> {
 
     /**
      * Get next Long.
+     *
      * @return next Long.
      */
     public synchronized Long next() {

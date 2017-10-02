@@ -16,11 +16,11 @@
  */
 package org.hipparchus.ode;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.hipparchus.exception.MathIllegalArgumentException;
 import org.hipparchus.exception.MathIllegalStateException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -42,44 +42,57 @@ import org.hipparchus.exception.MathIllegalStateException;
  *
  * @see OrdinaryDifferentialEquation
  * @see VariationalEquation
- *
  */
 
 public class ExpandableODE {
 
-    /** Primary differential equation. */
+    /**
+     * Primary differential equation.
+     */
     private final OrdinaryDifferentialEquation primary;
 
-    /** Components of the expandable ODE. */
+    /**
+     * Components of the expandable ODE.
+     */
     private List<SecondaryODE> components;
 
-    /** Mapper for all equations. */
+    /**
+     * Mapper for all equations.
+     */
     private EquationsMapper mapper;
 
-    /** Build an expandable set from its primary ODE set.
+    /**
+     * Build an expandable set from its primary ODE set.
+     *
      * @param primary the primary set of differential equations to be integrated.
      */
     public ExpandableODE(final OrdinaryDifferentialEquation primary) {
-        this.primary    = primary;
+        this.primary = primary;
         this.components = new ArrayList<SecondaryODE>();
-        this.mapper     = new EquationsMapper(null, primary.getDimension());
+        this.mapper = new EquationsMapper(null, primary.getDimension());
     }
 
-    /** Get the primaryset of differential equations to be integrated.
+    /**
+     * Get the primaryset of differential equations to be integrated.
+     *
      * @return primary set of differential equations to be integrated
      */
     public OrdinaryDifferentialEquation getPrimary() {
         return primary;
     }
 
-    /** Get the mapper for the set of equations.
+    /**
+     * Get the mapper for the set of equations.
+     *
      * @return mapper for the set of equations
      */
     public EquationsMapper getMapper() {
         return mapper;
     }
 
-    /** Add a set of secondary equations to be integrated along with the primary set.
+    /**
+     * Add a set of secondary equations to be integrated along with the primary set.
+     *
      * @param secondary secondary equations set
      * @return index of the secondary equation in the expanded state, to be used
      * as the parameter to {@link FieldODEState#getSecondaryState(int)} and
@@ -95,11 +108,13 @@ public class ExpandableODE {
 
     }
 
-    /** Initialize equations at the start of an ODE integration.
-     * @param s0 state at integration start
+    /**
+     * Initialize equations at the start of an ODE integration.
+     *
+     * @param s0        state at integration start
      * @param finalTime target time for the integration
-     * @exception MathIllegalStateException if the number of functions evaluations is exceeded
-     * @exception MathIllegalArgumentException if arrays dimensions do not match equations settings
+     * @throws MathIllegalStateException    if the number of functions evaluations is exceeded
+     * @throws MathIllegalArgumentException if arrays dimensions do not match equations settings
      */
     public void init(final ODEState s0, final double finalTime) {
 
@@ -118,29 +133,31 @@ public class ExpandableODE {
 
     }
 
-    /** Get the current time derivative of the complete state vector.
+    /**
+     * Get the current time derivative of the complete state vector.
+     *
      * @param t current value of the independent <I>time</I> variable
      * @param y array containing the current value of the complete state vector
      * @return time derivative of the complete state vector
-     * @exception MathIllegalStateException if the number of functions evaluations is exceeded
-     * @exception MathIllegalArgumentException if arrays dimensions do not match equations settings
+     * @throws MathIllegalStateException    if the number of functions evaluations is exceeded
+     * @throws MathIllegalArgumentException if arrays dimensions do not match equations settings
      */
     public double[] computeDerivatives(final double t, final double[] y)
-        throws MathIllegalArgumentException, MathIllegalStateException {
+            throws MathIllegalArgumentException, MathIllegalStateException {
 
         final double[] yDot = new double[mapper.getTotalDimension()];
 
         // compute derivatives of the primary equations
         int index = 0;
-        final double[] primaryState    = mapper.extractEquationData(index, y);
+        final double[] primaryState = mapper.extractEquationData(index, y);
         final double[] primaryStateDot = primary.computeDerivatives(t, primaryState);
         mapper.insertEquationData(index, primaryStateDot, yDot);
 
         // Add contribution for secondary equations
         while (++index < mapper.getNumberOfEquations()) {
-            final double[] componentState    = mapper.extractEquationData(index, y);
+            final double[] componentState = mapper.extractEquationData(index, y);
             final double[] componentStateDot = components.get(index - 1).computeDerivatives(t, primaryState, primaryStateDot,
-                                                                                            componentState);
+                    componentState);
             mapper.insertEquationData(index, componentStateDot, yDot);
         }
 

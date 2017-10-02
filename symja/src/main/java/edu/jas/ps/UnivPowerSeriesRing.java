@@ -22,6 +22,7 @@ import edu.jas.structure.RingFactory;
 /**
  * Univariate power series ring implementation. Uses lazy evaluated generating
  * function for coefficients.
+ *
  * @param <C> ring element type
  * @author Heinz Kredel
  */
@@ -30,51 +31,37 @@ public class UnivPowerSeriesRing<C extends RingElem<C>> implements RingFactory<U
 
 
     /**
-     * A default random sequence generator.
-     */
-    protected final static Random random = new Random();
-
-
-    /**
      * Default truncate.
      */
     public final static int DEFAULT_TRUNCATE = 11;
-
-
-    /**
-     * Truncate.
-     */
-    int truncate;
-
-
     /**
      * Default variable name.
      */
     public final static String DEFAULT_NAME = "x";
-
-
     /**
-     * Variable name.
+     * A default random sequence generator.
      */
-    String var;
-
-
+    protected final static Random random = new Random();
     /**
      * Coefficient ring factory.
      */
     public final RingFactory<C> coFac;
-
-
     /**
      * The constant power series 1 for this ring.
      */
     public final UnivPowerSeries<C> ONE;
-
-
     /**
      * The constant power series 0 for this ring.
      */
     public final UnivPowerSeries<C> ZERO;
+    /**
+     * Truncate.
+     */
+    int truncate;
+    /**
+     * Variable name.
+     */
+    String var;
 
 
     /**
@@ -88,6 +75,7 @@ public class UnivPowerSeriesRing<C extends RingElem<C>> implements RingFactory<U
 
     /**
      * Constructor.
+     *
      * @param coFac coefficient ring factory.
      */
     public UnivPowerSeriesRing(RingFactory<C> coFac) {
@@ -97,7 +85,8 @@ public class UnivPowerSeriesRing<C extends RingElem<C>> implements RingFactory<U
 
     /**
      * Constructor.
-     * @param coFac coefficient ring factory.
+     *
+     * @param coFac    coefficient ring factory.
      * @param truncate index of truncation.
      */
     public UnivPowerSeriesRing(RingFactory<C> coFac, int truncate) {
@@ -107,8 +96,9 @@ public class UnivPowerSeriesRing<C extends RingElem<C>> implements RingFactory<U
 
     /**
      * Constructor.
+     *
      * @param coFac coefficient ring factory.
-     * @param name of the variable.
+     * @param name  of the variable.
      */
     public UnivPowerSeriesRing(RingFactory<C> coFac, String name) {
         this(coFac, DEFAULT_TRUNCATE, name);
@@ -117,6 +107,7 @@ public class UnivPowerSeriesRing<C extends RingElem<C>> implements RingFactory<U
 
     /**
      * Constructor.
+     *
      * @param pfac polynomial ring factory.
      */
     public UnivPowerSeriesRing(GenPolynomialRing<C> pfac) {
@@ -126,9 +117,10 @@ public class UnivPowerSeriesRing<C extends RingElem<C>> implements RingFactory<U
 
     /**
      * Constructor.
-     * @param cofac coefficient ring factory.
+     *
+     * @param cofac    coefficient ring factory.
      * @param truncate index of truncation.
-     * @param name of the variable.
+     * @param name     of the variable.
      */
     public UnivPowerSeriesRing(RingFactory<C> cofac, int truncate, String name) {
         this.coFac = cofac;
@@ -158,6 +150,7 @@ public class UnivPowerSeriesRing<C extends RingElem<C>> implements RingFactory<U
 
     /**
      * Fixed point construction.
+     *
      * @param map a mapping of power series.
      * @return fix point wrt map.
      */
@@ -172,6 +165,7 @@ public class UnivPowerSeriesRing<C extends RingElem<C>> implements RingFactory<U
 
     /**
      * To String.
+     *
      * @return string representation of this.
      */
     @Override
@@ -185,6 +179,7 @@ public class UnivPowerSeriesRing<C extends RingElem<C>> implements RingFactory<U
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this ElemFactory.
      * @see edu.jas.structure.ElemFactory#toScript()
      */
@@ -205,6 +200,7 @@ public class UnivPowerSeriesRing<C extends RingElem<C>> implements RingFactory<U
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -230,6 +226,7 @@ public class UnivPowerSeriesRing<C extends RingElem<C>> implements RingFactory<U
 
     /**
      * Hash code for this .
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -243,6 +240,7 @@ public class UnivPowerSeriesRing<C extends RingElem<C>> implements RingFactory<U
 
     /**
      * Get the zero element.
+     *
      * @return 0 as UnivPowerSeries<C>.
      */
     public UnivPowerSeries<C> getZERO() {
@@ -252,6 +250,7 @@ public class UnivPowerSeriesRing<C extends RingElem<C>> implements RingFactory<U
 
     /**
      * Get the one element.
+     *
      * @return 1 as UnivPowerSeries<C>.
      */
     public UnivPowerSeries<C> getONE() {
@@ -261,6 +260,7 @@ public class UnivPowerSeriesRing<C extends RingElem<C>> implements RingFactory<U
 
     /**
      * Get a list of the generating elements.
+     *
      * @return list of generators for the algebraic structure.
      * @see edu.jas.structure.ElemFactory#generators()
      */
@@ -288,6 +288,7 @@ public class UnivPowerSeriesRing<C extends RingElem<C>> implements RingFactory<U
 
     /**
      * Is this structure finite or infinite.
+     *
      * @return true if this structure is finite, else false.
      * @see edu.jas.structure.ElemFactory#isFinite()
      */
@@ -298,6 +299,7 @@ public class UnivPowerSeriesRing<C extends RingElem<C>> implements RingFactory<U
 
     /**
      * Get the power series of the exponential function.
+     *
      * @return exp(x) as UnivPowerSeries<C>.
      */
     public UnivPowerSeries<C> getEXP() {
@@ -313,6 +315,7 @@ public class UnivPowerSeriesRing<C extends RingElem<C>> implements RingFactory<U
 
     /**
      * Get the power series of the sinus function.
+     *
      * @return sin(x) as UnivPowerSeries<C>.
      */
     public UnivPowerSeries<C> getSIN() {
@@ -328,6 +331,7 @@ public class UnivPowerSeriesRing<C extends RingElem<C>> implements RingFactory<U
 
     /**
      * Get the power series of the cosine function.
+     *
      * @return cos(x) as UnivPowerSeries<C>.
      */
     public UnivPowerSeries<C> getCOS() {
@@ -343,6 +347,7 @@ public class UnivPowerSeriesRing<C extends RingElem<C>> implements RingFactory<U
 
     /**
      * Get the power series of the tangens function.
+     *
      * @return tan(x) as UnivPowerSeries<C>.
      */
     public UnivPowerSeries<C> getTAN() {
@@ -358,6 +363,7 @@ public class UnivPowerSeriesRing<C extends RingElem<C>> implements RingFactory<U
 
     /**
      * Solve an ordinary differential equation. y' = f(y) with y(0) = c.
+     *
      * @param f a UnivPowerSeries<C>.
      * @param c integration constant.
      * @return f.integrate(c).
@@ -369,6 +375,7 @@ public class UnivPowerSeriesRing<C extends RingElem<C>> implements RingFactory<U
 
     /**
      * Is commutative.
+     *
      * @return true, if this ring is commutative, else false.
      */
     public boolean isCommutative() {
@@ -378,6 +385,7 @@ public class UnivPowerSeriesRing<C extends RingElem<C>> implements RingFactory<U
 
     /**
      * Query if this ring is associative.
+     *
      * @return true if this ring is associative, else false.
      */
     public boolean isAssociative() {
@@ -387,6 +395,7 @@ public class UnivPowerSeriesRing<C extends RingElem<C>> implements RingFactory<U
 
     /**
      * Query if this ring is a field.
+     *
      * @return false.
      */
     public boolean isField() {
@@ -396,6 +405,7 @@ public class UnivPowerSeriesRing<C extends RingElem<C>> implements RingFactory<U
 
     /**
      * Characteristic of this ring.
+     *
      * @return characteristic of this ring.
      */
     public java.math.BigInteger characteristic() {
@@ -405,6 +415,7 @@ public class UnivPowerSeriesRing<C extends RingElem<C>> implements RingFactory<U
 
     /**
      * Get a (constant) UnivPowerSeries&lt;C&gt; from a long value.
+     *
      * @param a long.
      * @return a UnivPowerSeries&lt;C&gt;.
      */
@@ -415,6 +426,7 @@ public class UnivPowerSeriesRing<C extends RingElem<C>> implements RingFactory<U
 
     /**
      * Get a (constant) UnivPowerSeries&lt;C&gt; from a java.math.BigInteger.
+     *
      * @param a BigInteger.
      * @return a UnivPowerSeries&lt;C&gt;.
      */
@@ -425,15 +437,17 @@ public class UnivPowerSeriesRing<C extends RingElem<C>> implements RingFactory<U
 
     /**
      * Get the corresponding GenPolynomialRing&lt;C&gt;.
+     *
      * @return GenPolynomialRing&lt;C&gt;.
      */
     public GenPolynomialRing<C> polyRing() {
-        return new GenPolynomialRing<C>(coFac, 1, new String[] { var });
+        return new GenPolynomialRing<C>(coFac, 1, new String[]{var});
     }
 
 
     /**
      * Get a UnivPowerSeries&lt;C&gt; from a GenPolynomial&lt;C&gt;.
+     *
      * @param a GenPolynomial&lt;C&gt;.
      * @return a UnivPowerSeries&lt;C&gt;.
      */
@@ -466,6 +480,7 @@ public class UnivPowerSeriesRing<C extends RingElem<C>> implements RingFactory<U
 
     /**
      * Generate a random power series with k = 5, d = 0.7.
+     *
      * @return a random power series.
      */
     public UnivPowerSeries<C> random() {
@@ -475,6 +490,7 @@ public class UnivPowerSeriesRing<C extends RingElem<C>> implements RingFactory<U
 
     /**
      * Generate a random power series with d = 0.7.
+     *
      * @param k bitsize of random coefficients.
      * @return a random power series.
      */
@@ -485,7 +501,8 @@ public class UnivPowerSeriesRing<C extends RingElem<C>> implements RingFactory<U
 
     /**
      * Generate a random power series with d = 0.7.
-     * @param k bit-size of random coefficients.
+     *
+     * @param k   bit-size of random coefficients.
      * @param rnd is a source for random bits.
      * @return a random power series.
      */
@@ -496,6 +513,7 @@ public class UnivPowerSeriesRing<C extends RingElem<C>> implements RingFactory<U
 
     /**
      * Generate a random power series.
+     *
      * @param k bit-size of random coefficients.
      * @param d density of non-zero coefficients.
      * @return a random power series.
@@ -507,8 +525,9 @@ public class UnivPowerSeriesRing<C extends RingElem<C>> implements RingFactory<U
 
     /**
      * Generate a random power series.
-     * @param k bit-size of random coefficients.
-     * @param d density of non-zero coefficients.
+     *
+     * @param k   bit-size of random coefficients.
+     * @param d   density of non-zero coefficients.
      * @param rnd is a source for random bits.
      * @return a random power series.
      */
@@ -534,6 +553,7 @@ public class UnivPowerSeriesRing<C extends RingElem<C>> implements RingFactory<U
 
     /**
      * Generate a power series via lambda expression.
+     *
      * @param gener lambda expression.
      * @return a generated power series.
      */
@@ -553,6 +573,7 @@ public class UnivPowerSeriesRing<C extends RingElem<C>> implements RingFactory<U
 
     /**
      * Copy power series.
+     *
      * @param c a power series.
      * @return a copy of c.
      */
@@ -563,6 +584,7 @@ public class UnivPowerSeriesRing<C extends RingElem<C>> implements RingFactory<U
 
     /**
      * Parse a power series. <b>Note:</b> not implemented.
+     *
      * @param s String.
      * @return power series from s.
      */
@@ -573,6 +595,7 @@ public class UnivPowerSeriesRing<C extends RingElem<C>> implements RingFactory<U
 
     /**
      * Parse a power series. <b>Note:</b> not implemented.
+     *
      * @param r Reader.
      * @return next power series from r.
      */
@@ -583,6 +606,7 @@ public class UnivPowerSeriesRing<C extends RingElem<C>> implements RingFactory<U
 
     /**
      * Taylor power series.
+     *
      * @param f function.
      * @param a expansion point.
      * @return Taylor series of f.

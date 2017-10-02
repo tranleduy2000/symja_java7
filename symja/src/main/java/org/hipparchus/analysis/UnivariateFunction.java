@@ -26,7 +26,7 @@ package org.hipparchus.analysis;
  * The following code excerpt shows the recommended way to do that using
  * a root solver as an example, but the same construct is applicable to
  * ODE integrators or optimizers.</p>
- *
+ * <p>
  * <pre>
  * private static class LocalException extends RuntimeException {
  *     // The x value that caused the problem.
@@ -59,10 +59,9 @@ package org.hipparchus.analysis;
  *     }
  * }
  * </pre>
- *
+ * <p>
  * As shown, the exception is local to the user's code and it is guaranteed
  * that Hipparchus will not catch it.
- *
  */
 public interface UnivariateFunction {
     /**
@@ -71,11 +70,11 @@ public interface UnivariateFunction {
      * @param x Point at which the function value should be computed.
      * @return the value of the function.
      * @throws IllegalArgumentException when the activated method itself can
-     * ascertain that a precondition, specified in the API expressed at the
-     * level of the activated method, has been violated.
-     * When Hipparchus throws an {@code IllegalArgumentException}, it is
-     * usually the consequence of checking the actual parameters passed to
-     * the method.
+     *                                  ascertain that a precondition, specified in the API expressed at the
+     *                                  level of the activated method, has been violated.
+     *                                  When Hipparchus throws an {@code IllegalArgumentException}, it is
+     *                                  usually the consequence of checking the actual parameters passed to
+     *                                  the method.
      */
     double value(double x);
 }

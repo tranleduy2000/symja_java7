@@ -5,10 +5,10 @@
 package edu.jas.gbufd;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.gb.OrderedWordPairlist;
 import edu.jas.gb.WordGroebnerBaseAbstract;
@@ -24,6 +24,7 @@ import edu.jas.structure.RingFactory;
  * Non-commutative word Groebner Base sequential algorithm. Implements Groebner
  * bases and GB test. Coefficients can for example be integers or (commutative)
  * univariate polynomials.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
@@ -45,6 +46,7 @@ public class WordGroebnerBasePseudoSeq<C extends GcdRingElem<C>> extends WordGro
 
     /**
      * Constructor.
+     *
      * @param rf coefficient ring factory.
      */
     public WordGroebnerBasePseudoSeq(RingFactory<C> rf) {
@@ -54,7 +56,8 @@ public class WordGroebnerBasePseudoSeq<C extends GcdRingElem<C>> extends WordGro
 
     /**
      * Constructor.
-     * @param rf coefficient ring factory.
+     *
+     * @param rf  coefficient ring factory.
      * @param red Reduction engine
      */
     public WordGroebnerBasePseudoSeq(RingFactory<C> rf, WordPseudoReductionSeq<C> red) {
@@ -64,9 +67,10 @@ public class WordGroebnerBasePseudoSeq<C extends GcdRingElem<C>> extends WordGro
 
     /**
      * Constructor.
-     * @param rf coefficient ring factory.
+     *
+     * @param rf  coefficient ring factory.
      * @param red Reduction engine
-     * @param pl pair selection strategy
+     * @param pl  pair selection strategy
      */
     public WordGroebnerBasePseudoSeq(RingFactory<C> rf, WordPseudoReductionSeq<C> red, WordPairList<C> pl) {
         super(red, pl);
@@ -81,6 +85,7 @@ public class WordGroebnerBasePseudoSeq<C extends GcdRingElem<C>> extends WordGro
 
     /**
      * Word Groebner base using word pairlist class.
+     *
      * @param F word polynomial list.
      * @return GB(F) a finite non-commutative Groebner base of F, if it exists.
      */
@@ -149,7 +154,7 @@ public class WordGroebnerBasePseudoSeq<C extends GcdRingElem<C>> extends WordGro
                 }
                 if (!t) {
                     logger.info("criterion3(" + pair.i + "," + pair.j + ") wrong: " + s.leadingWord()
-                                    + " --> " + H.leadingWord());
+                            + " --> " + H.leadingWord());
                 }
 
                 //H = H.monic();
@@ -184,6 +189,7 @@ public class WordGroebnerBasePseudoSeq<C extends GcdRingElem<C>> extends WordGro
 
     /**
      * GenWordPolynomial base coefficient content.
+     *
      * @param P GenWordPolynomial.
      * @return cont(P).
      */
@@ -214,6 +220,7 @@ public class WordGroebnerBasePseudoSeq<C extends GcdRingElem<C>> extends WordGro
 
     /**
      * GenWordPolynomial base coefficient primitive part.
+     *
      * @param P GenWordPolynomial.
      * @return pp(P).
      */
@@ -241,6 +248,7 @@ public class WordGroebnerBasePseudoSeq<C extends GcdRingElem<C>> extends WordGro
 
     /**
      * List of GenWordPolynomial base coefficient primitive part.
+     *
      * @param F list of GenWordPolynomials.
      * @return pp(F).
      */

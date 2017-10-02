@@ -16,9 +16,6 @@
  */
 package org.hipparchus.stat.descriptive;
 
-import java.io.Serializable;
-import java.util.function.DoubleConsumer;
-
 import org.hipparchus.exception.NullArgumentException;
 import org.hipparchus.stat.descriptive.moment.GeometricMean;
 import org.hipparchus.stat.descriptive.moment.Mean;
@@ -33,6 +30,9 @@ import org.hipparchus.stat.descriptive.summary.SumOfSquares;
 import org.hipparchus.util.FastMath;
 import org.hipparchus.util.MathUtils;
 import org.hipparchus.util.Precision;
+
+import java.io.Serializable;
+import java.util.function.DoubleConsumer;
 
 /**
  * Computes summary statistics for a stream of data values added using the
@@ -51,55 +51,88 @@ import org.hipparchus.util.Precision;
  * Note: This class is not thread-safe.
  */
 public class StreamingStatistics
-    implements StatisticalSummary, AggregatableStatistic<StreamingStatistics>,
-               DoubleConsumer, Serializable {
+        implements StatisticalSummary, AggregatableStatistic<StreamingStatistics>,
+        DoubleConsumer, Serializable {
 
-    /** Serialization UID */
+    /**
+     * Serialization UID
+     */
     private static final long serialVersionUID = 20160422L;
-
-    /** count of values that have been added */
-    private long n = 0;
-
-    /** SecondMoment is used to compute the mean and variance */
+    /**
+     * SecondMoment is used to compute the mean and variance
+     */
     private final SecondMoment secondMoment;
-    /** min of values that have been added */
+    /**
+     * min of values that have been added
+     */
     private final Min minImpl;
-    /** max of values that have been added */
+    /**
+     * max of values that have been added
+     */
     private final Max maxImpl;
-    /** sum of values that have been added */
+    /**
+     * sum of values that have been added
+     */
     private final Sum sumImpl;
-    /** sum of the square of each value that has been added */
+    /**
+     * sum of the square of each value that has been added
+     */
     private final SumOfSquares sumOfSquaresImpl;
-    /** sumLog of values that have been added */
+    /**
+     * sumLog of values that have been added
+     */
     private final SumOfLogs sumOfLogsImpl;
-    /** mean of values that have been added */
+    /**
+     * mean of values that have been added
+     */
     private final Mean meanImpl;
-    /** variance of values that have been added */
+    /**
+     * variance of values that have been added
+     */
     private final Variance varianceImpl;
-    /** geoMean of values that have been added */
+    /**
+     * geoMean of values that have been added
+     */
     private final GeometricMean geoMeanImpl;
-    /** population variance of values that have been added */
+    /**
+     * population variance of values that have been added
+     */
     private final Variance populationVariance;
-    /** source of percentiles */
+    /**
+     * source of percentiles
+     */
     private final RandomPercentile randomPercentile;
-
-    /** whether or not moment stats (sum, mean, variance) are maintained */
+    /**
+     * whether or not moment stats (sum, mean, variance) are maintained
+     */
     private final boolean computeMoments;
-    /** whether or not sum of squares and quadratic mean are maintained */
+    /**
+     * whether or not sum of squares and quadratic mean are maintained
+     */
     private final boolean computeSumOfSquares;
-    /** whether or not sum of logs and geometric mean are maintained */
+    /**
+     * whether or not sum of logs and geometric mean are maintained
+     */
     private final boolean computeSumOfLogs;
-    /** whether or not percentiles are maintained */
+    /**
+     * whether or not percentiles are maintained
+     */
     private final boolean computePercentiles;
-    /** whether or not min and max are maintained */
+    /**
+     * whether or not min and max are maintained
+     */
     private final boolean computeExtrema;
+    /**
+     * count of values that have been added
+     */
+    private long n = 0;
 
     /**
      * Construct a new StreamingStatistics instance, maintaining all statistics
      * other than percentiles.
      */
     public StreamingStatistics() {
-       this(false);
+        this(false);
     }
 
     /**
@@ -109,17 +142,17 @@ public class StreamingStatistics
      * @param computePercentiles whether or not percentiles are maintained
      */
     public StreamingStatistics(boolean computePercentiles) {
-       this(computePercentiles, true, true, true, true);
+        this(computePercentiles, true, true, true, true);
     }
 
     /**
      * Private constructor used by {@link StreamingStatisticsBuilder}.
      *
-     * @param computePercentiles whether or not percentiles are maintained
-     * @param computeMoments whether or not moment stats (mean, sum, variance) are maintained
-     * @param computeSumOfLogs whether or not sum of logs and geometric mean are maintained
+     * @param computePercentiles  whether or not percentiles are maintained
+     * @param computeMoments      whether or not moment stats (mean, sum, variance) are maintained
+     * @param computeSumOfLogs    whether or not sum of logs and geometric mean are maintained
      * @param computeSumOfSquares whether or not sum of squares and quadratic mean are maintained
-     * @param computeExtrema whether or not min and max are maintained
+     * @param computeExtrema      whether or not min and max are maintained
      */
     private StreamingStatistics(boolean computePercentiles, boolean computeMoments,
                                 boolean computeSumOfLogs, boolean computeSumOfSquares,
@@ -137,7 +170,7 @@ public class StreamingStatistics
         this.sumOfSquaresImpl = computeSumOfSquares ? new SumOfSquares() : null;
         this.sumOfLogsImpl = computeSumOfLogs ? new SumOfLogs() : null;
         this.meanImpl = computeMoments ? new Mean(this.secondMoment) : null;
-        this.varianceImpl = computeMoments ?  new Variance(this.secondMoment) : null;
+        this.varianceImpl = computeMoments ? new Variance(this.secondMoment) : null;
         this.geoMeanImpl = computeSumOfLogs ? new GeometricMean(this.sumOfLogsImpl) : null;
         this.populationVariance = computeMoments ? new Variance(false, this.secondMoment) : null;
         this.randomPercentile = computePercentiles ? new RandomPercentile() : null;
@@ -152,18 +185,18 @@ public class StreamingStatistics
     StreamingStatistics(StreamingStatistics original) throws NullArgumentException {
         MathUtils.checkNotNull(original);
 
-        this.n                = original.n;
-        this.secondMoment     = original.computeMoments ? original.secondMoment.copy() : null;
-        this.maxImpl          = original.computeExtrema ? original.maxImpl.copy() : null;
-        this.minImpl          = original.computeExtrema ? original.minImpl.copy() : null;
-        this.sumImpl          = original.computeMoments ? original.sumImpl.copy() : null;
-        this.sumOfLogsImpl    = original.computeSumOfLogs ? original.sumOfLogsImpl.copy() : null;
+        this.n = original.n;
+        this.secondMoment = original.computeMoments ? original.secondMoment.copy() : null;
+        this.maxImpl = original.computeExtrema ? original.maxImpl.copy() : null;
+        this.minImpl = original.computeExtrema ? original.minImpl.copy() : null;
+        this.sumImpl = original.computeMoments ? original.sumImpl.copy() : null;
+        this.sumOfLogsImpl = original.computeSumOfLogs ? original.sumOfLogsImpl.copy() : null;
         this.sumOfSquaresImpl = original.computeSumOfSquares ? original.sumOfSquaresImpl.copy() : null;
 
         // Keep statistics with embedded moments in synch
-        this.meanImpl     = original.computeMoments ? new Mean(this.secondMoment) : null;
+        this.meanImpl = original.computeMoments ? new Mean(this.secondMoment) : null;
         this.varianceImpl = original.computeMoments ? new Variance(this.secondMoment) : null;
-        this.geoMeanImpl  = original.computeSumOfLogs ? new GeometricMean(this.sumOfLogsImpl) : null;
+        this.geoMeanImpl = original.computeSumOfLogs ? new GeometricMean(this.sumOfLogsImpl) : null;
         this.populationVariance = original.computeMoments ? new Variance(false, this.secondMoment) : null;
         this.randomPercentile = original.computePercentiles ? original.randomPercentile.copy() : null;
 
@@ -172,6 +205,16 @@ public class StreamingStatistics
         this.computeSumOfSquares = original.computeSumOfSquares;
         this.computePercentiles = original.computePercentiles;
         this.computeExtrema = original.computeExtrema;
+    }
+
+    /**
+     * Returns a {@link StreamingStatisticsBuilder} to source configured
+     * {@code StreamingStatistics} instances.
+     *
+     * @return a StreamingStatisticsBuilder instance
+     */
+    public static StreamingStatisticsBuilder builder() {
+        return new StreamingStatisticsBuilder();
     }
 
     /**
@@ -186,15 +229,17 @@ public class StreamingStatistics
     /**
      * Return a {@link StatisticalSummaryValues} instance reporting current
      * statistics.
+     *
      * @return Current values of statistics
      */
     public StatisticalSummary getSummary() {
         return new StatisticalSummaryValues(getMean(), getVariance(), getN(),
-                                            getMax(), getMin(), getSum());
+                getMax(), getMin(), getSum());
     }
 
     /**
      * Add a value to the data
+     *
      * @param value the value to add
      */
     public void addValue(double value) {
@@ -218,7 +263,9 @@ public class StreamingStatistics
         n++;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void accept(double value) {
         addValue(value);
@@ -248,25 +295,33 @@ public class StreamingStatistics
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public long getN() {
         return n;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getMax() {
         return computeExtrema ? maxImpl.getResult() : Double.NaN;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getMin() {
         return computeExtrema ? minImpl.getResult() : Double.NaN;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getSum() {
         return computeMoments ? sumImpl.getResult() : Double.NaN;
@@ -283,13 +338,17 @@ public class StreamingStatistics
         return computeSumOfSquares ? sumOfSquaresImpl.getResult() : Double.NaN;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getMean() {
         return computeMoments ? meanImpl.getResult() : Double.NaN;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getVariance() {
         return computeMoments ? varianceImpl.getResult() : Double.NaN;
@@ -477,21 +536,22 @@ public class StreamingStatistics
         if (object instanceof StreamingStatistics == false) {
             return false;
         }
-        StreamingStatistics other = (StreamingStatistics)object;
-        return other.getN() == getN()                                                     &&
-               Precision.equalsIncludingNaN(other.getMax(),           getMax())           &&
-               Precision.equalsIncludingNaN(other.getMin(),           getMin())           &&
-               Precision.equalsIncludingNaN(other.getSum(),           getSum())           &&
-               Precision.equalsIncludingNaN(other.getGeometricMean(), getGeometricMean()) &&
-               Precision.equalsIncludingNaN(other.getMean(),          getMean())          &&
-               Precision.equalsIncludingNaN(other.getSumOfSquares(),  getSumOfSquares())  &&
-               Precision.equalsIncludingNaN(other.getSumOfLogs(),     getSumOfLogs())     &&
-               Precision.equalsIncludingNaN(other.getVariance(),      getVariance())      &&
-               Precision.equalsIncludingNaN(other.getMedian(),        getMedian());
+        StreamingStatistics other = (StreamingStatistics) object;
+        return other.getN() == getN() &&
+                Precision.equalsIncludingNaN(other.getMax(), getMax()) &&
+                Precision.equalsIncludingNaN(other.getMin(), getMin()) &&
+                Precision.equalsIncludingNaN(other.getSum(), getSum()) &&
+                Precision.equalsIncludingNaN(other.getGeometricMean(), getGeometricMean()) &&
+                Precision.equalsIncludingNaN(other.getMean(), getMean()) &&
+                Precision.equalsIncludingNaN(other.getSumOfSquares(), getSumOfSquares()) &&
+                Precision.equalsIncludingNaN(other.getSumOfLogs(), getSumOfLogs()) &&
+                Precision.equalsIncludingNaN(other.getVariance(), getVariance()) &&
+                Precision.equalsIncludingNaN(other.getMedian(), getMedian());
     }
 
     /**
      * Returns hash code based on values of statistics.
+     *
      * @return hash code
      */
     @Override
@@ -510,45 +570,46 @@ public class StreamingStatistics
     }
 
     /**
-     * Returns a {@link StreamingStatisticsBuilder} to source configured
-     * {@code StreamingStatistics} instances.
-     *
-     * @return a StreamingStatisticsBuilder instance
-     */
-    public static StreamingStatisticsBuilder builder() {
-        return new StreamingStatisticsBuilder();
-    }
-
-    /**
      * Builder for StreamingStatistics instances.
      */
     public static class StreamingStatisticsBuilder {
-        /** whether or not moment statistics are maintained by instances created by this factory */
+        /**
+         * whether or not moment statistics are maintained by instances created by this factory
+         */
         private boolean computeMoments;
-        /** whether or not sum of squares and quadratic mean are maintained by instances created by this factory */
+        /**
+         * whether or not sum of squares and quadratic mean are maintained by instances created by this factory
+         */
         private boolean computeSumOfSquares;
-        /** whether or not sum of logs and geometric mean are maintained by instances created by this factory */
+        /**
+         * whether or not sum of logs and geometric mean are maintained by instances created by this factory
+         */
         private boolean computeSumOfLogs;
-        /** whether or not percentiles are maintained by instances created by this factory */
+        /**
+         * whether or not percentiles are maintained by instances created by this factory
+         */
         private boolean computePercentiles;
-        /** whether or not min and max are maintained by instances created by this factory */
+        /**
+         * whether or not min and max are maintained by instances created by this factory
+         */
         private boolean computeExtrema;
 
-        /** Simple constructor.
+        /**
+         * Simple constructor.
          */
         public StreamingStatisticsBuilder() {
-            computeMoments      = true;
+            computeMoments = true;
             computeSumOfSquares = true;
-            computeSumOfLogs    = true;
-            computePercentiles  = false;
-            computeExtrema      = true;
+            computeSumOfLogs = true;
+            computePercentiles = false;
+            computeExtrema = true;
         }
 
         /**
          * Sets the computeMoments setting of the factory
          *
          * @param arg whether or not instances created using {@link #build()} will
-         * maintain moment statistics
+         *            maintain moment statistics
          * @return a factory with the given computeMoments property set
          */
         public StreamingStatisticsBuilder moments(boolean arg) {
@@ -560,7 +621,7 @@ public class StreamingStatistics
          * Sets the computeSumOfLogs setting of the factory
          *
          * @param arg whether or not instances created using {@link #build()} will
-         * maintain log sums
+         *            maintain log sums
          * @return a factory with the given computeSumOfLogs property set
          */
         public StreamingStatisticsBuilder sumOfLogs(boolean arg) {
@@ -572,7 +633,7 @@ public class StreamingStatistics
          * Sets the computeSumOfSquares setting of the factory.
          *
          * @param arg whether or not instances created using {@link #build()} will
-         * maintain sums of squares
+         *            maintain sums of squares
          * @return a factory with the given computeSumOfSquares property set
          */
         public StreamingStatisticsBuilder sumOfSquares(boolean arg) {
@@ -584,7 +645,7 @@ public class StreamingStatistics
          * Sets the computePercentiles setting of the factory.
          *
          * @param arg whether or not instances created using {@link #build()} will
-         * compute percentiles
+         *            compute percentiles
          * @return a factory with the given computePercentiles property set
          */
         public StreamingStatisticsBuilder percentiles(boolean arg) {
@@ -596,7 +657,7 @@ public class StreamingStatistics
          * Sets the computeExtrema setting of the factory.
          *
          * @param arg whether or not instances created using {@link #build()} will
-         * compute min and max
+         *            compute min and max
          * @return a factory with the given computeExtrema property set
          */
         public StreamingStatisticsBuilder extrema(boolean arg) {
@@ -611,8 +672,8 @@ public class StreamingStatistics
          */
         public StreamingStatistics build() {
             return new StreamingStatistics(computePercentiles, computeMoments,
-                                           computeSumOfLogs, computeSumOfSquares,
-                                           computeExtrema);
+                    computeSumOfLogs, computeSumOfSquares,
+                    computeExtrema);
         }
     }
 }

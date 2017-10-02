@@ -17,13 +17,13 @@
 
 package org.hipparchus.linear;
 
-import java.util.Arrays;
-
 import org.hipparchus.RealFieldElement;
 import org.hipparchus.exception.LocalizedCoreFormats;
 import org.hipparchus.exception.MathIllegalArgumentException;
 import org.hipparchus.util.FastMath;
 import org.hipparchus.util.MathArrays;
+
+import java.util.Arrays;
 
 
 /**
@@ -40,9 +40,12 @@ import org.hipparchus.util.MathArrays;
  * @param <T> type of the underlying field elements
  * @see <a href="http://mathworld.wolfram.com/QRDecomposition.html">MathWorld</a>
  * @see <a href="http://en.wikipedia.org/wiki/QR_decomposition">Wikipedia</a>
- *
  */
 public class FieldQRDecomposition<T extends RealFieldElement<T>> {
+    /**
+     * Singularity threshold.
+     */
+    private final T threshold;
     /**
      * A packed TRANSPOSED representation of the QR decomposition.
      * <p>The elements BELOW the diagonal are the elements of the UPPER triangular
@@ -50,25 +53,32 @@ public class FieldQRDecomposition<T extends RealFieldElement<T>> {
      * from which an explicit form of Q can be recomputed if desired.</p>
      */
     private T[][] qrt;
-    /** The diagonal elements of R. */
+    /**
+     * The diagonal elements of R.
+     */
     private T[] rDiag;
-    /** Cached value of Q. */
+    /**
+     * Cached value of Q.
+     */
     private FieldMatrix<T> cachedQ;
-    /** Cached value of QT. */
+    /**
+     * Cached value of QT.
+     */
     private FieldMatrix<T> cachedQT;
-    /** Cached value of R. */
+    /**
+     * Cached value of R.
+     */
     private FieldMatrix<T> cachedR;
-    /** Cached value of H. */
+    /**
+     * Cached value of H.
+     */
     private FieldMatrix<T> cachedH;
-    /** Singularity threshold. */
-    private final T threshold;
 
     /**
      * Calculates the QR-decomposition of the given matrix.
      * The singularity threshold defaults to zero.
      *
      * @param matrix The matrix to decompose.
-     *
      * @see #FieldQRDecomposition(FieldMatrix, RealFieldElement)
      */
     public FieldQRDecomposition(FieldMatrix<T> matrix) {
@@ -78,7 +88,7 @@ public class FieldQRDecomposition<T extends RealFieldElement<T>> {
     /**
      * Calculates the QR-decomposition of the given matrix.
      *
-     * @param matrix The matrix to decompose.
+     * @param matrix    The matrix to decompose.
      * @param threshold Singularity threshold.
      */
     public FieldQRDecomposition(FieldMatrix<T> matrix, T threshold) {
@@ -87,17 +97,19 @@ public class FieldQRDecomposition<T extends RealFieldElement<T>> {
         final int m = matrix.getRowDimension();
         final int n = matrix.getColumnDimension();
         qrt = matrix.transpose().getData();
-        rDiag = MathArrays.buildArray(threshold.getField(),FastMath.min(m, n));
-        cachedQ  = null;
+        rDiag = MathArrays.buildArray(threshold.getField(), FastMath.min(m, n));
+        cachedQ = null;
         cachedQT = null;
-        cachedR  = null;
-        cachedH  = null;
+        cachedR = null;
+        cachedH = null;
 
         decompose(qrt);
 
     }
 
-    /** Decompose matrix.
+    /**
+     * Decompose matrix.
+     *
      * @param matrix transposed matrix
      */
     protected void decompose(T[][] matrix) {
@@ -106,8 +118,10 @@ public class FieldQRDecomposition<T extends RealFieldElement<T>> {
         }
     }
 
-    /** Perform Householder reflection for a minor A(minor, minor) of A.
-     * @param minor minor index
+    /**
+     * Perform Householder reflection for a minor A(minor, minor) of A.
+     *
+     * @param minor  minor index
      * @param matrix transposed matrix
      */
     protected void performHouseholderReflection(int minor, T[][] matrix) {
@@ -153,7 +167,7 @@ public class FieldQRDecomposition<T extends RealFieldElement<T>> {
              * |v|^2 = -2a*(qr[minor][minor]), so
              * alpha = -<x,v>/(a*qr[minor][minor])
              */
-            for (int col = minor+1; col < matrix.length; col++) {
+            for (int col = minor + 1; col < matrix.length; col++) {
                 final T[] qrtCol = matrix[col];
                 T alpha = zero;
                 for (int row = minor; row < qrtCol.length; row++) {
@@ -173,6 +187,7 @@ public class FieldQRDecomposition<T extends RealFieldElement<T>> {
     /**
      * Returns the matrix R of the decomposition.
      * <p>R is an upper-triangular matrix</p>
+     *
      * @return the R matrix
      */
     public FieldMatrix<T> getR() {
@@ -200,6 +215,7 @@ public class FieldQRDecomposition<T extends RealFieldElement<T>> {
     /**
      * Returns the matrix Q of the decomposition.
      * <p>Q is an orthogonal matrix</p>
+     *
      * @return the Q matrix
      */
     public FieldMatrix<T> getQ() {
@@ -212,6 +228,7 @@ public class FieldQRDecomposition<T extends RealFieldElement<T>> {
     /**
      * Returns the transpose of the matrix Q of the decomposition.
      * <p>Q is an orthogonal matrix</p>
+     *
      * @return the transpose of the Q matrix, Q<sup>T</sup>
      */
     public FieldMatrix<T> getQT() {
@@ -231,7 +248,7 @@ public class FieldQRDecomposition<T extends RealFieldElement<T>> {
                 qta[minor][minor] = threshold.getField().getOne();
             }
 
-            for (int minor = FastMath.min(m, n)-1; minor >= 0; minor--){
+            for (int minor = FastMath.min(m, n) - 1; minor >= 0; minor--) {
                 final T[] qrtMinor = qrt[minor];
                 qta[minor][minor] = threshold.getField().getOne();
                 if (qrtMinor[minor].getReal() != 0.0) {
@@ -260,6 +277,7 @@ public class FieldQRDecomposition<T extends RealFieldElement<T>> {
      * <p>H is a lower trapezoidal matrix whose columns represent
      * each successive Householder reflector vector. This matrix is used
      * to compute Q.</p>
+     *
      * @return a matrix containing the Householder reflector vectors
      */
     public FieldMatrix<T> getH() {
@@ -290,6 +308,7 @@ public class FieldQRDecomposition<T extends RealFieldElement<T>> {
      * RealFieldElement) construction}, an error will be triggered when
      * the {@link DecompositionSolver#solve(RealVector) solve} method will be called.
      * </p>
+     *
      * @return a solver
      */
     public FieldDecompositionSolver<T> getSolver() {
@@ -298,9 +317,10 @@ public class FieldQRDecomposition<T extends RealFieldElement<T>> {
 
     /**
      * Specialized solver.
+     *
      * @param <T> type of the underlying field elements
      */
-    private static class FieldSolver<T extends RealFieldElement<T>> implements FieldDecompositionSolver<T>{
+    private static class FieldSolver<T extends RealFieldElement<T>> implements FieldDecompositionSolver<T> {
         /**
          * A packed TRANSPOSED representation of the QR decomposition.
          * <p>The elements BELOW the diagonal are the elements of the UPPER triangular
@@ -308,44 +328,52 @@ public class FieldQRDecomposition<T extends RealFieldElement<T>> {
          * from which an explicit form of Q can be recomputed if desired.</p>
          */
         private final T[][] qrt;
-        /** The diagonal elements of R. */
+        /**
+         * The diagonal elements of R.
+         */
         private final T[] rDiag;
-        /** Singularity threshold. */
+        /**
+         * Singularity threshold.
+         */
         private final T threshold;
 
         /**
          * Build a solver from decomposed matrix.
          *
-         * @param qrt Packed TRANSPOSED representation of the QR decomposition.
-         * @param rDiag Diagonal elements of R.
+         * @param qrt       Packed TRANSPOSED representation of the QR decomposition.
+         * @param rDiag     Diagonal elements of R.
          * @param threshold Singularity threshold.
          */
         private FieldSolver(final T[][] qrt,
-                       final T[] rDiag,
-                       final T threshold) {
-            this.qrt   = qrt;
+                            final T[] rDiag,
+                            final T threshold) {
+            this.qrt = qrt;
             this.rDiag = rDiag;
             this.threshold = threshold;
         }
 
-        /** {@inheritDoc} */
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public boolean isNonSingular() {
             return !checkSingular(rDiag, threshold, false);
         }
 
-        /** {@inheritDoc} */
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public FieldVector<T> solve(FieldVector<T> b) {
             final int n = qrt.length;
             final int m = qrt[0].length;
             if (b.getDimension() != m) {
                 throw new MathIllegalArgumentException(LocalizedCoreFormats.DIMENSIONS_MISMATCH,
-                                                       b.getDimension(), m);
+                        b.getDimension(), m);
             }
             checkSingular(rDiag, threshold, true);
 
-            final T[] x =MathArrays.buildArray(threshold.getField(),n);
+            final T[] x = MathArrays.buildArray(threshold.getField(), n);
             final T[] y = b.toArray();
 
             // apply Householder transforms to solve Q.y = b
@@ -356,7 +384,7 @@ public class FieldQRDecomposition<T extends RealFieldElement<T>> {
                 for (int row = minor; row < m; row++) {
                     dotProduct = dotProduct.add(y[row].multiply(qrtMinor[row]));
                 }
-                dotProduct =  dotProduct.divide(rDiag[minor].multiply(qrtMinor[minor]));
+                dotProduct = dotProduct.divide(rDiag[minor].multiply(qrtMinor[minor]));
 
                 for (int row = minor; row < m; row++) {
                     y[row] = y[row].add(dotProduct.multiply(qrtMinor[row]));
@@ -377,27 +405,29 @@ public class FieldQRDecomposition<T extends RealFieldElement<T>> {
             return new ArrayFieldVector<T>(x, false);
         }
 
-        /** {@inheritDoc} */
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public FieldMatrix<T> solve(FieldMatrix<T> b) {
             final int n = qrt.length;
             final int m = qrt[0].length;
             if (b.getRowDimension() != m) {
                 throw new MathIllegalArgumentException(LocalizedCoreFormats.DIMENSIONS_MISMATCH,
-                                                       b.getRowDimension(), m);
+                        b.getRowDimension(), m);
             }
             checkSingular(rDiag, threshold, true);
 
-            final int columns        = b.getColumnDimension();
-            final int blockSize      = BlockFieldMatrix.BLOCK_SIZE;
-            final int cBlocks        = (columns + blockSize - 1) / blockSize;
-            final T[][] xBlocks = BlockFieldMatrix.createBlocksLayout(threshold.getField(),n, columns);
-            final T[][] y       = MathArrays.buildArray(threshold.getField(), b.getRowDimension(), blockSize);
-            final T[]   alpha   = MathArrays.buildArray(threshold.getField(), blockSize);
+            final int columns = b.getColumnDimension();
+            final int blockSize = BlockFieldMatrix.BLOCK_SIZE;
+            final int cBlocks = (columns + blockSize - 1) / blockSize;
+            final T[][] xBlocks = BlockFieldMatrix.createBlocksLayout(threshold.getField(), n, columns);
+            final T[][] y = MathArrays.buildArray(threshold.getField(), b.getRowDimension(), blockSize);
+            final T[] alpha = MathArrays.buildArray(threshold.getField(), blockSize);
 
             for (int kBlock = 0; kBlock < cBlocks; ++kBlock) {
                 final int kStart = kBlock * blockSize;
-                final int kEnd   = FastMath.min(kStart + blockSize, columns);
+                final int kEnd = FastMath.min(kStart + blockSize, columns);
                 final int kWidth = kEnd - kStart;
 
                 // get the right hand side vector
@@ -406,11 +436,11 @@ public class FieldQRDecomposition<T extends RealFieldElement<T>> {
                 // apply Householder transforms to solve Q.y = b
                 for (int minor = 0; minor < FastMath.min(m, n); minor++) {
                     final T[] qrtMinor = qrt[minor];
-                    final T factor     = rDiag[minor].multiply(qrtMinor[minor]).reciprocal();
+                    final T factor = rDiag[minor].multiply(qrtMinor[minor]).reciprocal();
 
                     Arrays.fill(alpha, 0, kWidth, threshold.getField().getZero());
                     for (int row = minor; row < m; ++row) {
-                        final T   d    = qrtMinor[row];
+                        final T d = qrtMinor[row];
                         final T[] yRow = y[row];
                         for (int k = 0; k < kWidth; ++k) {
                             alpha[k] = alpha[k].add(d.multiply(yRow[k]));
@@ -422,7 +452,7 @@ public class FieldQRDecomposition<T extends RealFieldElement<T>> {
                     }
 
                     for (int row = minor; row < m; ++row) {
-                        final T   d    = qrtMinor[row];
+                        final T d = qrtMinor[row];
                         final T[] yRow = y[row];
                         for (int k = 0; k < kWidth; ++k) {
                             yRow[k] = yRow[k].add(alpha[k].multiply(d));
@@ -432,20 +462,20 @@ public class FieldQRDecomposition<T extends RealFieldElement<T>> {
 
                 // solve triangular system R.x = y
                 for (int j = rDiag.length - 1; j >= 0; --j) {
-                    final int      jBlock = j / blockSize;
-                    final int      jStart = jBlock * blockSize;
-                    final T   factor = rDiag[j].reciprocal();
-                    final T[] yJ     = y[j];
+                    final int jBlock = j / blockSize;
+                    final int jStart = jBlock * blockSize;
+                    final T factor = rDiag[j].reciprocal();
+                    final T[] yJ = y[j];
                     final T[] xBlock = xBlocks[jBlock * cBlocks + kBlock];
                     int index = (j - jStart) * kWidth;
                     for (int k = 0; k < kWidth; ++k) {
-                        yJ[k]           =yJ[k].multiply(factor);
+                        yJ[k] = yJ[k].multiply(factor);
                         xBlock[index++] = yJ[k];
                     }
 
                     final T[] qrtJ = qrt[j];
                     for (int i = 0; i < j; ++i) {
-                        final T rIJ  = qrtJ[i];
+                        final T rIJ = qrtJ[i];
                         final T[] yI = y[i];
                         for (int k = 0; k < kWidth; ++k) {
                             yI[k] = yI[k].subtract(yJ[k].multiply(rIJ));
@@ -459,6 +489,7 @@ public class FieldQRDecomposition<T extends RealFieldElement<T>> {
 
         /**
          * {@inheritDoc}
+         *
          * @throws MathIllegalArgumentException if the decomposed matrix is singular.
          */
         @Override
@@ -469,18 +500,18 @@ public class FieldQRDecomposition<T extends RealFieldElement<T>> {
         /**
          * Check singularity.
          *
-         * @param diag Diagonal elements of the R matrix.
-         * @param min Singularity threshold.
+         * @param diag  Diagonal elements of the R matrix.
+         * @param min   Singularity threshold.
          * @param raise Whether to raise a {@link MathIllegalArgumentException}
-         * if any element of the diagonal fails the check.
+         *              if any element of the diagonal fails the check.
          * @return {@code true} if any element of the diagonal is smaller
          * or equal to {@code min}.
          * @throws MathIllegalArgumentException if the matrix is singular and
-         * {@code raise} is {@code true}.
+         *                                      {@code raise} is {@code true}.
          */
         private boolean checkSingular(T[] diag,
-                                             T min,
-                                             boolean raise) {
+                                      T min,
+                                      boolean raise) {
             final int len = diag.length;
             for (int i = 0; i < len; i++) {
                 final T d = diag[i];

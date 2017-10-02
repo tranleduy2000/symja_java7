@@ -27,16 +27,21 @@ import org.hipparchus.util.Incrementor;
  * <em>It is not a "user" class.</em>
  *
  * @param <PAIR> Type of the point/value pair returned by the optimization
- * algorithm.
- *
+ *               algorithm.
  */
 public abstract class BaseOptimizer<PAIR> {
-    /** Evaluations counter. */
-    protected Incrementor evaluations;
-    /** Iterations counter. */
-    protected Incrementor iterations;
-    /** Convergence checker. */
+    /**
+     * Convergence checker.
+     */
     private final ConvergenceChecker<PAIR> checker;
+    /**
+     * Evaluations counter.
+     */
+    protected Incrementor evaluations;
+    /**
+     * Iterations counter.
+     */
+    protected Incrementor iterations;
 
     /**
      * @param checker Convergence checker.
@@ -56,7 +61,7 @@ public abstract class BaseOptimizer<PAIR> {
         this.checker = checker;
 
         evaluations = new Incrementor(maxEval);
-        iterations  = new Incrementor(maxIter);
+        iterations = new Incrementor(maxIter);
     }
 
     /**
@@ -127,19 +132,19 @@ public abstract class BaseOptimizer<PAIR> {
      * {@code super.parseOptimizationData(optData)} within that method.
      *
      * @param optData Optimization data.
-     * This method will register the following data:
-     * <ul>
-     *  <li>{@link MaxEval}</li>
-     *  <li>{@link MaxIter}</li>
-     * </ul>
+     *                This method will register the following data:
+     *                <ul>
+     *                <li>{@link MaxEval}</li>
+     *                <li>{@link MaxIter}</li>
+     *                </ul>
      * @return a point/value pair that satisfies the convergence criteria.
      * @throws MathIllegalStateException if the maximal number of
-     * evaluations is exceeded.
+     *                                   evaluations is exceeded.
      * @throws MathIllegalStateException if the maximal number of
-     * iterations is exceeded.
+     *                                   iterations is exceeded.
      */
     public PAIR optimize(OptimizationData... optData)
-        throws MathIllegalStateException {
+            throws MathIllegalStateException {
         // Parse options.
         parseOptimizationData(optData);
 
@@ -155,12 +160,12 @@ public abstract class BaseOptimizer<PAIR> {
      *
      * @return a point/value pair that satisfies the convergence criteria.
      * @throws MathIllegalStateException if the maximal number of
-     * evaluations is exceeded.
+     *                                   evaluations is exceeded.
      * @throws MathIllegalStateException if the maximal number of
-     * iterations is exceeded.
+     *                                   iterations is exceeded.
      */
     public PAIR optimize()
-        throws MathIllegalStateException {
+            throws MathIllegalStateException {
         // Reset counters.
         evaluations.reset();
         iterations.reset();
@@ -180,10 +185,10 @@ public abstract class BaseOptimizer<PAIR> {
      * Increment the evaluation count.
      *
      * @throws MathIllegalStateException if the allowed evaluations
-     * have been exhausted.
+     *                                   have been exhausted.
      */
     protected void incrementEvaluationCount()
-        throws MathIllegalStateException {
+            throws MathIllegalStateException {
         evaluations.increment();
     }
 
@@ -191,10 +196,10 @@ public abstract class BaseOptimizer<PAIR> {
      * Increment the iteration count.
      *
      * @throws MathIllegalStateException if the allowed iterations
-     * have been exhausted.
+     *                                   have been exhausted.
      */
     protected void incrementIterationCount()
-        throws MathIllegalStateException {
+            throws MathIllegalStateException {
         iterations.increment();
     }
 
@@ -203,11 +208,11 @@ public abstract class BaseOptimizer<PAIR> {
      * characterize the problem.
      *
      * @param optData Optimization data.
-     * The following data will be looked for:
-     * <ul>
-     *  <li>{@link MaxEval}</li>
-     *  <li>{@link MaxIter}</li>
-     * </ul>
+     *                The following data will be looked for:
+     *                <ul>
+     *                <li>{@link MaxEval}</li>
+     *                <li>{@link MaxIter}</li>
+     *                </ul>
      */
     protected void parseOptimizationData(OptimizationData... optData) {
         // The existing values (as set by the previous call) are reused if

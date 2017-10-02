@@ -16,10 +16,10 @@
  */
 package org.hipparchus.stat.descriptive.moment;
 
-import java.io.Serializable;
-
 import org.hipparchus.exception.NullArgumentException;
 import org.hipparchus.stat.descriptive.AggregatableStatistic;
+
+import java.io.Serializable;
 
 /**
  * Computes a statistic related to the Second Central Moment.  Specifically,
@@ -46,12 +46,16 @@ import org.hipparchus.stat.descriptive.AggregatableStatistic;
  * <code>clear()</code> method, it must be synchronized externally.
  */
 public class SecondMoment extends FirstMoment
-    implements AggregatableStatistic<SecondMoment>, Serializable {
+        implements AggregatableStatistic<SecondMoment>, Serializable {
 
-    /** Serializable version identifier */
+    /**
+     * Serializable version identifier
+     */
     private static final long serialVersionUID = 20150412L;
 
-    /** Second moment of values that have been added */
+    /**
+     * Second moment of values that have been added
+     */
     protected double m2;
 
     /**
@@ -74,7 +78,9 @@ public class SecondMoment extends FirstMoment
         this.m2 = original.m2;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void increment(final double d) {
         if (n < 1) {
@@ -84,20 +90,26 @@ public class SecondMoment extends FirstMoment
         m2 += ((double) n - 1) * dev * nDev;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void clear() {
         super.clear();
         m2 = Double.NaN;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getResult() {
         return m2;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void aggregate(SecondMoment other) {
         if (other.n > 0) {
@@ -111,7 +123,9 @@ public class SecondMoment extends FirstMoment
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SecondMoment copy() {
         return new SecondMoment(this);

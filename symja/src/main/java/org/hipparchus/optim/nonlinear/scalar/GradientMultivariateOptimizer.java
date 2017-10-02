@@ -26,10 +26,9 @@ import org.hipparchus.optim.PointValuePair;
  * Base class for implementing optimizers for multivariate scalar
  * differentiable functions.
  * It contains boiler-plate code for dealing with gradient evaluation.
- *
  */
 public abstract class GradientMultivariateOptimizer
-    extends MultivariateOptimizer {
+        extends MultivariateOptimizer {
     /**
      * Gradient of the objective function.
      */
@@ -56,18 +55,18 @@ public abstract class GradientMultivariateOptimizer
      * {@inheritDoc}
      *
      * @param optData Optimization data. In addition to those documented in
-     * {@link MultivariateOptimizer#parseOptimizationData(OptimizationData[])
-     * MultivariateOptimizer}, this method will register the following data:
-     * <ul>
-     *  <li>{@link ObjectiveFunctionGradient}</li>
-     * </ul>
+     *                {@link MultivariateOptimizer#parseOptimizationData(OptimizationData[])
+     *                MultivariateOptimizer}, this method will register the following data:
+     *                <ul>
+     *                <li>{@link ObjectiveFunctionGradient}</li>
+     *                </ul>
      * @return {@inheritDoc}
      * @throws MathIllegalStateException if the maximal number of
-     * evaluations (of the objective function) is exceeded.
+     *                                   evaluations (of the objective function) is exceeded.
      */
     @Override
     public PointValuePair optimize(OptimizationData... optData)
-        throws MathIllegalStateException {
+            throws MathIllegalStateException {
         // Set up base class and perform computation.
         return super.optimize(optData);
     }
@@ -77,10 +76,10 @@ public abstract class GradientMultivariateOptimizer
      * characterize the problem.
      *
      * @param optData Optimization data.
-     * The following data will be looked for:
-     * <ul>
-     *  <li>{@link ObjectiveFunctionGradient}</li>
-     * </ul>
+     *                The following data will be looked for:
+     *                <ul>
+     *                <li>{@link ObjectiveFunctionGradient}</li>
+     *                </ul>
      */
     @Override
     protected void parseOptimizationData(OptimizationData... optData) {
@@ -90,7 +89,7 @@ public abstract class GradientMultivariateOptimizer
         // The existing values (as set by the previous call) are reused if
         // not provided in the argument list.
         for (OptimizationData data : optData) {
-            if  (data instanceof ObjectiveFunctionGradient) {
+            if (data instanceof ObjectiveFunctionGradient) {
                 gradient = ((ObjectiveFunctionGradient) data).getObjectiveFunctionGradient();
                 // If more data must be parsed, this statement _must_ be
                 // changed to "continue".

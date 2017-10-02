@@ -5,13 +5,13 @@
 package edu.jas.gbufd;
 
 
+import org.apache.log4j.BasicConfigurator;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.log4j.BasicConfigurator;
 
 import edu.jas.arith.BigRational;
 import edu.jas.arith.ModInteger;
@@ -26,6 +26,7 @@ import edu.jas.poly.TermOrder;
 
 /**
  * Examples for Groebner base usage.
+ *
  * @author Christoph Zengler
  * @author Heinz Kredel
  */
@@ -48,7 +49,6 @@ public class Examples {
 
     /**
      * example1. Coefficients in Boolean residue class ring.
-     * 
      */
     public static void example1() {
         // moved to edu.jas.application.Examples
@@ -68,14 +68,13 @@ public class Examples {
     /**
      * example3. Coefficients in Boolean ring and additional idempotent
      * generators.
-     * 
      */
     public static void example3() {
-        String[] vars = { "v3", "v2", "v1" };
+        String[] vars = {"v3", "v2", "v1"};
 
         ModIntegerRing z2 = new ModIntegerRing(2);
         GenPolynomialRing<ModInteger> z2p = new GenPolynomialRing<ModInteger>(z2, vars.length, new TermOrder(
-                        TermOrder.INVLEX), vars);
+                TermOrder.INVLEX), vars);
         List<GenPolynomial<ModInteger>> fieldPolynomials = new ArrayList<GenPolynomial<ModInteger>>();
 
         //add v1^2 + v1, v2^2 + v2, v3^2 + v3 to fieldPolynomials
@@ -120,7 +119,6 @@ public class Examples {
 
     /**
      * Example GBase.
-     * 
      */
     @SuppressWarnings("cast")
     static public void exampleGB1() {
@@ -152,7 +150,6 @@ public class Examples {
 
     /**
      * Example GBase.
-     * 
      */
     @SuppressWarnings("cast")
     static public void exampleGB() {
@@ -184,7 +181,6 @@ public class Examples {
 
     /**
      * Example Trinks GBase.
-     * 
      */
     @SuppressWarnings("cast")
     static public void exampleGBTrinks() {
@@ -192,9 +188,9 @@ public class Examples {
         GroebnerBase<BigRational> bb = GBFactory.getImplementation(coeff);
 
         String exam = "(B,S,T,Z,P,W) L " + "( " + "( 45 P + 35 S - 165 B - 36 ), "
-                        + "( 35 P + 40 Z + 25 T - 27 S ), " + "( 15 W + 25 S P + 30 Z - 18 T - 165 B**2 ), "
-                        + "( - 9 W + 15 T P + 20 S Z ), " + "( P W + 2 T Z - 11 B**3 ), "
-                        + "( 99 W - 11 B S + 3 B**2 ), " + "( B**2 + 33/50 B + 2673/10000 ) " + ") ";
+                + "( 35 P + 40 Z + 25 T - 27 S ), " + "( 15 W + 25 S P + 30 Z - 18 T - 165 B**2 ), "
+                + "( - 9 W + 15 T P + 20 S Z ), " + "( P W + 2 T Z - 11 B**3 ), "
+                + "( 99 W - 11 B S + 3 B**2 ), " + "( B**2 + 33/50 B + 2673/10000 ) " + ") ";
         Reader source = new StringReader(exam);
         GenPolynomialTokenizer parser = new GenPolynomialTokenizer(source);
         PolynomialList<BigRational> F = null;

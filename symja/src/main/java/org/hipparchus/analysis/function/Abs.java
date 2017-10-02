@@ -22,10 +22,11 @@ import org.hipparchus.util.FastMath;
 
 /**
  * Absolute value function.
- *
  */
 public class Abs implements UnivariateFunction {
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double value(double x) {
         return FastMath.abs(x);

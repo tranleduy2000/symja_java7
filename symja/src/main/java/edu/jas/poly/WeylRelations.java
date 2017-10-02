@@ -15,19 +15,18 @@ import edu.jas.structure.RingElem;
  * the relation table of the given solvable ring factory. Relations are of the
  * form x<sub>j</sub> * x<sub>i</sub> = x<sub>i</sub> x<sub>j</sub> + 1.
  * Block form: R{x1,...,xn,y1,...,yn; yi*xi = xi yi + 1}.
+ *
  * @author Heinz Kredel
  */
 
 public class WeylRelations<C extends RingElem<C>> implements RelationGenerator<C> {
 
 
+    private static final Logger logger = Logger.getLogger(WeylRelations.class);
     /**
      * The factory for the solvable polynomial ring.
      */
     private final GenSolvablePolynomialRing<C> ring;
-
-
-    private static final Logger logger = Logger.getLogger(WeylRelations.class);
 
 
     /**
@@ -42,8 +41,9 @@ public class WeylRelations<C extends RingElem<C>> implements RelationGenerator<C
     /**
      * The constructor requires a ring factory. The relation table of this ring
      * is setup to a Weyl Algebra.
+     *
      * @param r solvable polynomial ring factory, r must have even number of
-     *            variables.
+     *          variables.
      */
     public WeylRelations(GenSolvablePolynomialRing<C> r) {
         if (r == null) {
@@ -71,8 +71,9 @@ public class WeylRelations<C extends RingElem<C>> implements RelationGenerator<C
     /**
      * Generates the relation table of this ring. Block form:
      * R{x1,...,xn,y1,...,yn; yi*xi = xi yi + 1}.
+     *
      * @param ring solvable polynomial ring factory, ring must have even number
-     *            of variables.
+     *             of variables.
      * @see edu.jas.poly.RelationGenerator#generate(edu.jas.poly.GenSolvablePolynomialRing)
      */
     @Override

@@ -22,10 +22,11 @@ import org.hipparchus.util.FastMath;
 
 /**
  * Power function.
- *
  */
 public class Pow implements BivariateFunction {
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double value(double x, double y) {
         return FastMath.pow(x, y);

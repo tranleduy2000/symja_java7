@@ -16,10 +16,10 @@
  */
 package org.hipparchus.util;
 
+import org.hipparchus.exception.MathIllegalStateException;
+
 import java.util.Collection;
 import java.util.concurrent.CopyOnWriteArrayList;
-
-import org.hipparchus.exception.MathIllegalStateException;
 
 /**
  * This abstract class provides a general framework for managing iterative
@@ -29,10 +29,14 @@ import org.hipparchus.exception.MathIllegalStateException;
  */
 public class IterationManager {
 
-    /** Keeps a count of the number of iterations. */
+    /**
+     * Keeps a count of the number of iterations.
+     */
     private final Incrementor iterations;
 
-    /** The collection of all listeners attached to this iterative algorithm. */
+    /**
+     * The collection of all listeners attached to this iterative algorithm.
+     */
     private final Collection<IterationListener> listeners;
 
     /**
@@ -42,15 +46,15 @@ public class IterationManager {
      */
     public IterationManager(final int maxIterations) {
         this.iterations = new Incrementor(maxIterations);
-        this.listeners  = new CopyOnWriteArrayList<IterationListener>();
+        this.listeners = new CopyOnWriteArrayList<IterationListener>();
     }
 
     /**
      * Creates a new instance of this class.
      *
      * @param maxIterations the maximum number of iterations
-     * @param callBack the function to be called when the maximum number of
-     * iterations has been reached
+     * @param callBack      the function to be called when the maximum number of
+     *                      iterations has been reached
      * @throws org.hipparchus.exception.NullArgumentException if {@code callBack} is {@code null}
      */
     public IterationManager(final int maxIterations,
@@ -141,10 +145,10 @@ public class IterationManager {
      * the beginning of a new iteration.
      *
      * @throws MathIllegalStateException if the maximum number of iterations is
-     * reached.
+     *                                   reached.
      */
     public void incrementIterationCount()
-        throws MathIllegalStateException {
+            throws MathIllegalStateException {
         iterations.increment();
     }
 

@@ -19,6 +19,7 @@ import edu.jas.structure.StarRingElem;
 /**
  * Generic Complex class implementing the RingElem interface. Objects of this
  * class are immutable.
+ *
  * @param <C> base type of RingElem (for complex polynomials).
  * @author Heinz Kredel
  */
@@ -52,9 +53,10 @@ public class Complex<C extends RingElem<C>> implements StarRingElem<Complex<C>>,
     /**
      * The constructor creates a Complex object from two C objects as real and
      * imaginary part.
+     *
      * @param ring factory for Complex objects.
-     * @param r real part.
-     * @param i imaginary part.
+     * @param r    real part.
+     * @param i    imaginary part.
      */
     public Complex(ComplexRing<C> ring, C r, C i) {
         this.ring = ring;
@@ -66,6 +68,7 @@ public class Complex<C extends RingElem<C>> implements StarRingElem<Complex<C>>,
     /**
      * The constructor creates a Complex object from a C object as real part,
      * the imaginary part is set to 0.
+     *
      * @param r real part.
      */
     public Complex(ComplexRing<C> ring, C r) {
@@ -76,6 +79,7 @@ public class Complex<C extends RingElem<C>> implements StarRingElem<Complex<C>>,
     /**
      * The constructor creates a Complex object from a long element as real
      * part, the imaginary part is set to 0.
+     *
      * @param r real part.
      */
     public Complex(ComplexRing<C> ring, long r) {
@@ -94,6 +98,7 @@ public class Complex<C extends RingElem<C>> implements StarRingElem<Complex<C>>,
 
     /**
      * The constructor creates a Complex object from a String representation.
+     *
      * @param s string of a Complex.
      * @throws NumberFormatException
      */
@@ -128,6 +133,7 @@ public class Complex<C extends RingElem<C>> implements StarRingElem<Complex<C>>,
 
     /**
      * Get the corresponding element factory.
+     *
      * @return factory for this Element.
      * @see edu.jas.structure.Element#factory()
      */
@@ -138,6 +144,7 @@ public class Complex<C extends RingElem<C>> implements StarRingElem<Complex<C>>,
 
     /**
      * Get the real part.
+     *
      * @return re.
      */
     public C getRe() {
@@ -147,6 +154,7 @@ public class Complex<C extends RingElem<C>> implements StarRingElem<Complex<C>>,
 
     /**
      * Get the imaginary part.
+     *
      * @return im.
      */
     public C getIm() {
@@ -156,6 +164,7 @@ public class Complex<C extends RingElem<C>> implements StarRingElem<Complex<C>>,
 
     /**
      * Copy this.
+     *
      * @see edu.jas.structure.Element#copy()
      */
     @Override
@@ -181,6 +190,7 @@ public class Complex<C extends RingElem<C>> implements StarRingElem<Complex<C>>,
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this Element.
      * @see edu.jas.structure.Element#toScript()
      */
@@ -215,6 +225,7 @@ public class Complex<C extends RingElem<C>> implements StarRingElem<Complex<C>>,
 
     /**
      * Get a scripting compatible string representation of the factory.
+     *
      * @return script compatible representation for this ElemFactory.
      * @see edu.jas.structure.Element#toScriptFactory()
      */
@@ -227,6 +238,7 @@ public class Complex<C extends RingElem<C>> implements StarRingElem<Complex<C>>,
 
     /**
      * Is Complex number zero.
+     *
      * @return If this is 0 then true is returned, else false.
      * @see edu.jas.structure.RingElem#isZERO()
      */
@@ -237,6 +249,7 @@ public class Complex<C extends RingElem<C>> implements StarRingElem<Complex<C>>,
 
     /**
      * Is Complex number one.
+     *
      * @return If this is 1 then true is returned, else false.
      * @see edu.jas.structure.RingElem#isONE()
      */
@@ -247,6 +260,7 @@ public class Complex<C extends RingElem<C>> implements StarRingElem<Complex<C>>,
 
     /**
      * Is Complex imaginary one.
+     *
      * @return If this is i then true is returned, else false.
      */
     public boolean isIMAG() {
@@ -256,6 +270,7 @@ public class Complex<C extends RingElem<C>> implements StarRingElem<Complex<C>>,
 
     /**
      * Is Complex unit element.
+     *
      * @return If this is a unit then true is returned, else false.
      * @see edu.jas.structure.RingElem#isUnit()
      */
@@ -272,6 +287,7 @@ public class Complex<C extends RingElem<C>> implements StarRingElem<Complex<C>>,
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -293,6 +309,7 @@ public class Complex<C extends RingElem<C>> implements StarRingElem<Complex<C>>,
 
     /**
      * Hash code for this Complex.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -304,8 +321,9 @@ public class Complex<C extends RingElem<C>> implements StarRingElem<Complex<C>>,
     /**
      * Since complex numbers are unordered, we use lexicographical order of re
      * and im.
+     *
      * @return 0 if this is equal to b; 1 if re > b.re, or re == b.re and im >
-     *         b.im; -1 if re < b.re, or re == b.re and im < b.im
+     * b.im; -1 if re < b.re, or re == b.re and im < b.im
      */
     @Override
     public int compareTo(Complex<C> b) {
@@ -320,8 +338,9 @@ public class Complex<C extends RingElem<C>> implements StarRingElem<Complex<C>>,
     /**
      * Since complex numbers are unordered, we use lexicographical order of re
      * and im.
+     *
      * @return 0 if this is equal to 0; 1 if re > 0, or re == 0 and im > 0; -1
-     *         if re < 0, or re == 0 and im < 0
+     * if re < 0, or re == 0 and im < 0
      * @see edu.jas.structure.RingElem#signum()
      */
     public int signum() {
@@ -338,6 +357,7 @@ public class Complex<C extends RingElem<C>> implements StarRingElem<Complex<C>>,
 
     /**
      * Complex number summation.
+     *
      * @param B a Complex<C> number.
      * @return this+B.
      */
@@ -348,6 +368,7 @@ public class Complex<C extends RingElem<C>> implements StarRingElem<Complex<C>>,
 
     /**
      * Complex number subtract.
+     *
      * @param B a Complex<C> number.
      * @return this-B.
      */
@@ -358,6 +379,7 @@ public class Complex<C extends RingElem<C>> implements StarRingElem<Complex<C>>,
 
     /**
      * Complex number negative.
+     *
      * @return -this.
      * @see edu.jas.structure.RingElem#negate()
      */
@@ -371,6 +393,7 @@ public class Complex<C extends RingElem<C>> implements StarRingElem<Complex<C>>,
 
     /**
      * Complex number conjugate.
+     *
      * @return the complex conjugate of this.
      */
     public Complex<C> conjugate() {
@@ -380,8 +403,9 @@ public class Complex<C extends RingElem<C>> implements StarRingElem<Complex<C>>,
 
     /**
      * Complex number norm.
-     * @see edu.jas.structure.StarRingElem#norm()
+     *
      * @return ||this||.
+     * @see edu.jas.structure.StarRingElem#norm()
      */
     public Complex<C> norm() {
         // this.conjugate().multiply(this);
@@ -393,8 +417,9 @@ public class Complex<C extends RingElem<C>> implements StarRingElem<Complex<C>>,
 
     /**
      * Complex number absolute value.
-     * @see edu.jas.structure.RingElem#abs()
+     *
      * @return |this|^2. <b>Note:</b> The square root is not jet implemented.
+     * @see edu.jas.structure.RingElem#abs()
      */
     public Complex<C> abs() {
         Complex<C> n = norm();
@@ -410,17 +435,19 @@ public class Complex<C extends RingElem<C>> implements StarRingElem<Complex<C>>,
 
     /**
      * Complex number product.
+     *
      * @param B is a complex number.
      * @return this*B.
      */
     public Complex<C> multiply(Complex<C> B) {
         return new Complex<C>(ring, re.multiply(B.re).subtract(im.multiply(B.im)), re.multiply(B.im).sum(
-                        im.multiply(B.re)));
+                im.multiply(B.re)));
     }
 
 
     /**
      * Complex number inverse.
+     *
      * @return S with S*this = 1, if it is defined.
      * @see edu.jas.structure.RingElem#inverse()
      */
@@ -432,6 +459,7 @@ public class Complex<C extends RingElem<C>> implements StarRingElem<Complex<C>>,
 
     /**
      * Complex number remainder.
+     *
      * @param S is a complex number.
      * @return 0.
      */
@@ -445,6 +473,7 @@ public class Complex<C extends RingElem<C>> implements StarRingElem<Complex<C>>,
 
     /**
      * Complex number divide.
+     *
      * @param B is a complex number, non-zero.
      * @return this/B.
      */
@@ -458,10 +487,11 @@ public class Complex<C extends RingElem<C>> implements StarRingElem<Complex<C>>,
 
     /**
      * Complex number quotient and remainder.
+     *
      * @param S Complex.
      * @return Complex[] { q, r } with q = this/S and r = rem(this,S).
      */
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings({"unchecked", "cast"})
     public Complex<C>[] quotientRemainder(Complex<C> S) {
         Complex<C>[] ret = new Complex[2];
         C n = S.norm().re;
@@ -528,8 +558,9 @@ public class Complex<C extends RingElem<C>> implements StarRingElem<Complex<C>>,
 
     /**
      * Complex number greatest common divisor.
+     *
      * @param S Complex<C>.
-     * @return gcd(this,S).
+     * @return gcd(this, S).
      */
     public Complex<C> gcd(Complex<C> S) {
         if (S == null || S.isZERO()) {
@@ -569,6 +600,7 @@ public class Complex<C extends RingElem<C>> implements StarRingElem<Complex<C>>,
 
     /**
      * Complex extended greatest common divisor.
+     *
      * @param S Complex<C>.
      * @return [ gcd(this,S), a, b ] with a*this + b*S = gcd(this,S).
      */

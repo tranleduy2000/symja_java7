@@ -5,11 +5,10 @@
 package edu.jas.root;
 
 
-import java.util.ArrayList;
-// import java.util.Arrays;
-import java.util.List;
-
 import org.apache.log4j.Logger;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import edu.jas.arith.BigRational;
 import edu.jas.arith.Rational;
@@ -20,10 +19,13 @@ import edu.jas.poly.PolyUtil;
 import edu.jas.structure.RingElem;
 import edu.jas.structure.RingFactory;
 
+// import java.util.Arrays;
+
 
 /**
  * Complex roots implemented by Sturm sequences. Algorithms use exact method
  * derived from Wilf's numeric Routh-Hurwitz method.
+ *
  * @param <C> coefficient type.
  * @author Heinz Kredel
  */
@@ -38,6 +40,7 @@ public class ComplexRootsSturm<C extends RingElem<C> & Rational> extends Complex
 
     /**
      * Constructor.
+     *
      * @param cf coefficient factory.
      */
     public ComplexRootsSturm(RingFactory<Complex<C>> cf) {
@@ -48,6 +51,7 @@ public class ComplexRootsSturm<C extends RingElem<C> & Rational> extends Complex
 
     /**
      * Cauchy index of rational function f/g on interval.
+     *
      * @param a interval bound for I = [a,b].
      * @param b interval bound for I = [a,b].
      * @param f univariate polynomial.
@@ -61,9 +65,9 @@ public class ComplexRootsSturm<C extends RingElem<C> & Rational> extends Complex
             logger.info("sturmSeq = " + S);
         }
         RingFactory<C> cfac = f.ring.coFac;
-        List<C> l = PolyUtil.<C> evaluateMain(cfac, S, a);
-        List<C> r = PolyUtil.<C> evaluateMain(cfac, S, b);
-        long v = RootUtil.<C> signVar(l) - RootUtil.<C> signVar(r);
+        List<C> l = PolyUtil.<C>evaluateMain(cfac, S, a);
+        List<C> r = PolyUtil.<C>evaluateMain(cfac, S, b);
+        long v = RootUtil.<C>signVar(l) - RootUtil.<C>signVar(r);
         //System.out.println("v = " + v);
         //         if (v < 0L) {
         //             v = -v;
@@ -74,6 +78,7 @@ public class ComplexRootsSturm<C extends RingElem<C> & Rational> extends Complex
 
     /**
      * Routh index of complex function f + i g on interval.
+     *
      * @param a interval bound for I = [a,b].
      * @param b interval bound for I = [a,b].
      * @param f univariate polynomial.
@@ -84,9 +89,9 @@ public class ComplexRootsSturm<C extends RingElem<C> & Rational> extends Complex
         List<GenPolynomial<C>> S = sturmSequence(f, g);
         //System.out.println("S = " + S);
         RingFactory<C> cfac = f.ring.coFac;
-        List<C> l = PolyUtil.<C> evaluateMain(cfac, S, a);
-        List<C> r = PolyUtil.<C> evaluateMain(cfac, S, b);
-        long v = RootUtil.<C> signVar(l) - RootUtil.<C> signVar(r);
+        List<C> l = PolyUtil.<C>evaluateMain(cfac, S, a);
+        List<C> r = PolyUtil.<C>evaluateMain(cfac, S, b);
+        long v = RootUtil.<C>signVar(l) - RootUtil.<C>signVar(r);
         //System.out.println("v = " + v);
 
         long d = f.degree(0);
@@ -98,12 +103,13 @@ public class ComplexRootsSturm<C extends RingElem<C> & Rational> extends Complex
         long li = (d + v) / 2;
         //System.out.println("upper = " + ui);
         //System.out.println("lower = " + li);
-        return new long[] { ui, li };
+        return new long[]{ui, li};
     }
 
 
     /**
      * Sturm sequence.
+     *
      * @param f univariate polynomial.
      * @param g univariate polynomial.
      * @return a Sturm sequence for f and g.
@@ -142,19 +148,20 @@ public class ComplexRootsSturm<C extends RingElem<C> & Rational> extends Complex
 
     /**
      * Complex root count of complex polynomial on rectangle.
+     *
      * @param rect rectangle.
-     * @param a univariate complex polynomial.
+     * @param a    univariate complex polynomial.
      * @return root count of a in rectangle.
      */
     @Override
     public long complexRootCount(Rectangle<C> rect, GenPolynomial<Complex<C>> a)
-                    throws InvalidBoundaryException {
+            throws InvalidBoundaryException {
         C rl = rect.lengthReal();
         C il = rect.lengthImag();
         //System.out.println("complexRootCount: rl = " + rl + ", il = " + il);
         // only linear polynomials have zero length intervals
         if (rl.isZERO() && il.isZERO()) {
-            Complex<C> e = PolyUtil.<Complex<C>> evaluateMain(a.ring.coFac, a, rect.getSW());
+            Complex<C> e = PolyUtil.<Complex<C>>evaluateMain(a.ring.coFac, a, rect.getSW());
             if (e.isZERO()) {
                 return 1;
             }
@@ -220,12 +227,13 @@ public class ComplexRootsSturm<C extends RingElem<C> & Rational> extends Complex
 
     /**
      * Winding number of complex function A on rectangle.
+     *
      * @param rect rectangle.
-     * @param A univariate complex polynomial.
+     * @param A    univariate complex polynomial.
      * @return winding number of A arround rect.
      */
     public long windingNumber(Rectangle<C> rect, GenPolynomial<Complex<C>> A)
-                    throws InvalidBoundaryException {
+            throws InvalidBoundaryException {
         Boundary<C> bound = new Boundary<C>(rect, A); // throws InvalidBoundaryException
         ComplexRing<C> cr = (ComplexRing<C>) A.ring.coFac;
         RingFactory<C> cf = cr.ring;
@@ -246,14 +254,15 @@ public class ComplexRootsSturm<C extends RingElem<C> & Rational> extends Complex
 
     /**
      * List of complex roots of complex polynomial a on rectangle.
+     *
      * @param rect rectangle.
-     * @param a univariate squarefree complex polynomial.
+     * @param a    univariate squarefree complex polynomial.
      * @return list of complex roots.
      */
-    @SuppressWarnings({"cast","unchecked"})
+    @SuppressWarnings({"cast", "unchecked"})
     @Override
     public List<Rectangle<C>> complexRoots(Rectangle<C> rect, GenPolynomial<Complex<C>> a)
-                    throws InvalidBoundaryException {
+            throws InvalidBoundaryException {
         ComplexRing<C> cr = (ComplexRing<C>) a.ring.coFac;
         List<Rectangle<C>> roots = new ArrayList<Rectangle<C>>();
         if (a.isConstant() || a.isZERO()) {
@@ -360,16 +369,17 @@ public class ComplexRootsSturm<C extends RingElem<C> & Rational> extends Complex
 
     /**
      * Invariant rectangle for algebraic number.
+     *
      * @param rect root isolating rectangle for f which contains exactly one
-     *            root.
-     * @param f univariate polynomial, non-zero.
-     * @param g univariate polynomial, gcd(f,g) == 1.
+     *             root.
+     * @param f    univariate polynomial, non-zero.
+     * @param g    univariate polynomial, gcd(f,g) == 1.
      * @return v a new rectangle contained in rect such that g(w) != 0 for w in
-     *         v.
+     * v.
      */
     @Override
     public Rectangle<C> invariantRectangle(Rectangle<C> rect, GenPolynomial<Complex<C>> f,
-                    GenPolynomial<Complex<C>> g) throws InvalidBoundaryException {
+                                           GenPolynomial<Complex<C>> g) throws InvalidBoundaryException {
         Rectangle<C> v = rect;
         if (g == null || g.isZERO()) {
             return v;
@@ -408,16 +418,17 @@ public class ComplexRootsSturm<C extends RingElem<C> & Rational> extends Complex
 
 
     /**
-     * Exclude zero. If an axis intersects with the rectangle, it is shrinked 
+     * Exclude zero. If an axis intersects with the rectangle, it is shrinked
      * to exclude the axis.
      * Not used.
+     *
      * @param rect root isolating rectangle for f which contains exactly one
-     *            root.
+     *             root.
      * @return a new rectangle r such that re(r) &lt; 0 or (re)r &gt; 0 and
-     *         im(r) &lt; 0 or (im)r &gt; 0.
+     * im(r) &lt; 0 or (im)r &gt; 0.
      */
     public Rectangle<C> excludeZero(Rectangle<C> rect, GenPolynomial<Complex<C>> f)
-                    throws InvalidBoundaryException {
+            throws InvalidBoundaryException {
         if (f == null || f.isZERO()) {
             return rect;
         }
@@ -461,7 +472,8 @@ public class ComplexRootsSturm<C extends RingElem<C> & Rational> extends Complex
             Rectangle<C> il = new Rectangle<C>(sw, ne1);
             System.out.println("rectangle, il = " + il + ", iu = " + iu);
             if (complexRootCount(il, f) == 1) {
-                rn = il;;
+                rn = il;
+                ;
             } else { // complexRootCount(iu,f) == 1
                 rn = iu;
             }

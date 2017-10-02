@@ -14,11 +14,12 @@ import edu.jas.structure.RingElem;
 
 /**
  * Serializable subclass to hold pairs of polynomials.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
 public class SigPair<C extends RingElem<C>> //extends AbstractSigPair<C>
-                implements Comparable<SigPair<C>> {
+        implements Comparable<SigPair<C>> {
 
 
     public final GenPolynomial<C> sigma;
@@ -35,9 +36,10 @@ public class SigPair<C extends RingElem<C>> //extends AbstractSigPair<C>
 
     /**
      * SigPair constructor.
+     *
      * @param sig signature of pair.
-     * @param a polynomial i.
-     * @param b polynomial j.
+     * @param a   polynomial i.
+     * @param b   polynomial j.
      */
     public SigPair(ExpVector sig, SigPoly<C> a, SigPoly<C> b, List<SigPoly<C>> Gs) {
         this(a.poly.ring.valueOf(sig), a, b, Gs);
@@ -46,9 +48,10 @@ public class SigPair<C extends RingElem<C>> //extends AbstractSigPair<C>
 
     /**
      * SigPair constructor.
+     *
      * @param sig signature of pair.
-     * @param a polynomial i.
-     * @param b polynomial j.
+     * @param a   polynomial i.
+     * @param b   polynomial j.
      */
     public SigPair(GenPolynomial<C> sig, SigPoly<C> a, SigPoly<C> b, List<SigPoly<C>> Gs) {
         this.sigma = sig;
@@ -85,6 +88,7 @@ public class SigPair<C extends RingElem<C>> //extends AbstractSigPair<C>
 
     /**
      * equals.
+     *
      * @param ob an Object.
      * @return true if this is equal to o, else false.
      */
@@ -102,6 +106,7 @@ public class SigPair<C extends RingElem<C>> //extends AbstractSigPair<C>
     /**
      * compareTo used in TreeMap // not used at moment. Comparison is based on
      * the number of the pairs.
+     *
      * @param p a SigPair.
      * @return 1 if (this &lt; o), 0 if (this == o), -1 if (this &gt; o).
      */
@@ -112,6 +117,7 @@ public class SigPair<C extends RingElem<C>> //extends AbstractSigPair<C>
 
     /**
      * Hash code for this SigPair.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override

@@ -11,6 +11,7 @@ import edu.jas.structure.RingElem;
 
 /**
  * Serializable subclass to hold pairs of word polynomials.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
@@ -34,6 +35,7 @@ public class WordPair<C extends RingElem<C>> implements Comparable<WordPair> {
 
     /**
      * WordPair constructor.
+     *
      * @param a word polynomial i.
      * @param b word polynomial j.
      * @param i first index.
@@ -59,6 +61,7 @@ public class WordPair<C extends RingElem<C>> implements Comparable<WordPair> {
 
     /**
      * Set removed pair number.
+     *
      * @param n number of this pair generated in OrderedPairlist.
      */
     public void pairNumber(int n) {
@@ -68,6 +71,7 @@ public class WordPair<C extends RingElem<C>> implements Comparable<WordPair> {
 
     /**
      * Get removed pair number.
+     *
      * @return n number of this pair generated in OrderedPairlist.
      */
     public int getPairNumber() {
@@ -77,6 +81,7 @@ public class WordPair<C extends RingElem<C>> implements Comparable<WordPair> {
 
     /**
      * equals.
+     *
      * @param ob an Object.
      * @return true if this is equal to o, else false.
      */
@@ -93,6 +98,7 @@ public class WordPair<C extends RingElem<C>> implements Comparable<WordPair> {
     /**
      * compareTo used in TreeMap // not used at moment. Comparison is based on
      * the number of the pairs.
+     *
      * @param p a WordPair.
      * @return 1 if (this &lt; o), 0 if (this == o), -1 if (this &gt; o).
      */
@@ -110,6 +116,7 @@ public class WordPair<C extends RingElem<C>> implements Comparable<WordPair> {
 
     /**
      * Hash code for this WordPair.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override

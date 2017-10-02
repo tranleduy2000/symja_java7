@@ -17,8 +17,9 @@
 
 package org.hipparchus.ode;
 
-/** Container for time, main and secondary state vectors as well as their derivatives.
-
+/**
+ * Container for time, main and secondary state vectors as well as their derivatives.
+ *
  * @see OrdinaryDifferentialEquation
  * @see SecondaryODE
  * @see ODEIntegrator
@@ -26,43 +27,55 @@ package org.hipparchus.ode;
 
 public class ODEStateAndDerivative extends ODEState {
 
-    /** Serializable UID. */
+    /**
+     * Serializable UID.
+     */
     private static final long serialVersionUID = 20160408L;
 
-    /** Derivative of the primary state at time. */
+    /**
+     * Derivative of the primary state at time.
+     */
     private final double[] primaryDerivative;
 
-    /** Derivative of the secondary state at time. */
+    /**
+     * Derivative of the secondary state at time.
+     */
     private final double[][] secondaryDerivative;
 
-    /** Simple constructor.
+    /**
+     * Simple constructor.
      * <p>Calling this constructor is equivalent to call {@link
      * #ODEStateAndDerivative(double, double[], double[],
      * double[][], double[][]) ODEStateAndDerivative(time, state,
      * derivative, null, null)}.</p>
-     * @param time time
-     * @param primaryState primary state at time
+     *
+     * @param time              time
+     * @param primaryState      primary state at time
      * @param primaryDerivative derivative of the primary state at time
      */
     public ODEStateAndDerivative(double time, double[] primaryState, double[] primaryDerivative) {
         this(time, primaryState, primaryDerivative, null, null);
     }
 
-    /** Simple constructor.
-     * @param time time
-     * @param primaryState primary state at time
-     * @param primaryDerivative derivative of the primary state at time
-     * @param secondaryState state at time (may be null)
+    /**
+     * Simple constructor.
+     *
+     * @param time                time
+     * @param primaryState        primary state at time
+     * @param primaryDerivative   derivative of the primary state at time
+     * @param secondaryState      state at time (may be null)
      * @param secondaryDerivative derivative of the state at time (may be null)
      */
     public ODEStateAndDerivative(double time, double[] primaryState, double[] primaryDerivative,
                                  double[][] secondaryState, double[][] secondaryDerivative) {
         super(time, primaryState, secondaryState);
-        this.primaryDerivative   = primaryDerivative.clone();
+        this.primaryDerivative = primaryDerivative.clone();
         this.secondaryDerivative = copy(secondaryDerivative);
     }
 
-    /** Get derivative of the primary state at time.
+    /**
+     * Get derivative of the primary state at time.
+     *
      * @return derivative of the primary state at time
      * @see #getSecondaryDerivative(int)
      * @see #getCompleteDerivative()
@@ -71,10 +84,12 @@ public class ODEStateAndDerivative extends ODEState {
         return primaryDerivative.clone();
     }
 
-    /** Get derivative of the secondary state at time.
+    /**
+     * Get derivative of the secondary state at time.
+     *
      * @param index index of the secondary set as returned
-     * by {@link ExpandableODE#addSecondaryEquations(SecondaryODE)}
-     * (beware index 0 corresponds to primary state, secondary states start at 1)
+     *              by {@link ExpandableODE#addSecondaryEquations(SecondaryODE)}
+     *              (beware index 0 corresponds to primary state, secondary states start at 1)
      * @return derivative of the secondary state at time
      * @see #getPrimaryDerivative()
      * @see #getCompleteDerivative()
@@ -83,7 +98,9 @@ public class ODEStateAndDerivative extends ODEState {
         return index == 0 ? primaryDerivative.clone() : secondaryDerivative[index - 1].clone();
     }
 
-    /** Get complete derivative at time.
+    /**
+     * Get complete derivative at time.
+     *
      * @return complete derivative at time, starting with
      * {@link #getPrimaryDerivative() primary derivative}, followed
      * by all {@link #getSecondaryDerivative(int) secondary derivatives} in
@@ -98,8 +115,8 @@ public class ODEStateAndDerivative extends ODEState {
         if (secondaryDerivative != null) {
             for (int index = 0; index < secondaryDerivative.length; ++index) {
                 System.arraycopy(secondaryDerivative[index], 0,
-                                 completeDerivative, offset,
-                                 secondaryDerivative[index].length);
+                        completeDerivative, offset,
+                        secondaryDerivative[index].length);
                 offset += secondaryDerivative[index].length;
             }
         }

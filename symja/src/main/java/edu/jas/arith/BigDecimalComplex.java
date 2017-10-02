@@ -5,13 +5,13 @@
 package edu.jas.arith;
 
 
+import org.apache.log4j.Logger;
+
 import java.io.Reader;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.kern.StringUtil;
 import edu.jas.structure.GcdRingElem;
@@ -22,33 +22,41 @@ import edu.jas.structure.StarRingElem;
 /**
  * BigComplex class based on BigDecimal implementing the RingElem respectively
  * the StarRingElem interface. Objects of this class are immutable.
+ *
  * @author Heinz Kredel
  */
 public final class BigDecimalComplex implements StarRingElem<BigDecimalComplex>,
-                GcdRingElem<BigDecimalComplex>, RingFactory<BigDecimalComplex> {
+        GcdRingElem<BigDecimalComplex>, RingFactory<BigDecimalComplex> {
 
 
+    /**
+     * The constant 0.
+     */
+    public static final BigDecimalComplex ZERO = new BigDecimalComplex();
+    /**
+     * The constant 1.
+     */
+    public static final BigDecimalComplex ONE = new BigDecimalComplex(BigDecimal.ONE);
+    /**
+     * The constant i.
+     */
+    public static final BigDecimalComplex I = new BigDecimalComplex(BigDecimal.ZERO, BigDecimal.ONE);
+    private final static Random random = new Random();
+    private static final Logger logger = Logger.getLogger(BigDecimalComplex.class);
     /**
      * Real part of the data structure.
      */
     public final BigDecimal re;
-
-
     /**
      * Imaginary part of the data structure.
      */
     public final BigDecimal im;
 
 
-    private final static Random random = new Random();
-
-
-    private static final Logger logger = Logger.getLogger(BigDecimalComplex.class);
-
-
     /**
      * The constructor creates a BigDecimalComplex object from two BigDecimal
      * objects real and imaginary part.
+     *
      * @param r real part.
      * @param i imaginary part.
      */
@@ -61,6 +69,7 @@ public final class BigDecimalComplex implements StarRingElem<BigDecimalComplex>,
     /**
      * The constructor creates a BigDecimalComplex object from a BigDecimal
      * object as real part, the imaginary part is set to 0.
+     *
      * @param r real part.
      */
     public BigDecimalComplex(BigDecimal r) {
@@ -71,6 +80,7 @@ public final class BigDecimalComplex implements StarRingElem<BigDecimalComplex>,
     /**
      * The constructor creates a BigDecimalComplex object from a long element as
      * real part, the imaginary part is set to 0.
+     *
      * @param r real part.
      */
     public BigDecimalComplex(long r) {
@@ -90,6 +100,7 @@ public final class BigDecimalComplex implements StarRingElem<BigDecimalComplex>,
     /**
      * The constructor creates a BigDecimalComplex object from a String
      * representation.
+     *
      * @param s string of a BigDecimalComplex.
      * @throws NumberFormatException
      */
@@ -120,9 +131,152 @@ public final class BigDecimalComplex implements StarRingElem<BigDecimalComplex>,
         im = new BigDecimal(si.trim());
     }
 
+    /**
+     * Complex number zero.
+     *
+     * @param A is a complex number.
+     * @return If A is 0 then true is returned, else false.
+     */
+    public static boolean isCZERO(BigDecimalComplex A) {
+        if (A == null) {
+            return false;
+        }
+        return A.isZERO();
+    }
+
+    /**
+     * Complex number one.
+     *
+     * @param A is a complex number.
+     * @return If A is 1 then true is returned, else false.
+     */
+    public static boolean isCONE(BigDecimalComplex A) {
+        if (A == null) {
+            return false;
+        }
+        return A.isONE();
+    }
+
+    /**
+     * Complex number sum.
+     *
+     * @param A and B are complex numbers.
+     * @return A+B.
+     */
+    public static BigDecimalComplex CSUM(BigDecimalComplex A, BigDecimalComplex B) {
+        if (A == null) {
+            return null;
+        }
+        return A.sum(B);
+    }
+
+    /**
+     * Complex number difference.
+     *
+     * @param A and B are complex numbers.
+     * @return A-B.
+     */
+    public static BigDecimalComplex CDIF(BigDecimalComplex A, BigDecimalComplex B) {
+        if (A == null) {
+            return null;
+        }
+        return A.subtract(B);
+    }
+
+    /**
+     * Complex number negative.
+     *
+     * @param A is a complex number.
+     * @return -A
+     */
+    public static BigDecimalComplex CNEG(BigDecimalComplex A) {
+        if (A == null) {
+            return null;
+        }
+        return A.negate();
+    }
+
+    /**
+     * Complex number conjugate.
+     *
+     * @param A is a complex number.
+     * @return the complex conjugate of A.
+     */
+    public static BigDecimalComplex CCON(BigDecimalComplex A) {
+        if (A == null) {
+            return null;
+        }
+        return A.conjugate();
+    }
+
+    /**
+     * Complex number absolute value.
+     *
+     * @param A is a complex number.
+     * @return the absolute value of A, a rational number. Note: The square root
+     * is not jet implemented.
+     */
+    public static BigDecimal CABS(BigDecimalComplex A) {
+        if (A == null) {
+            return null;
+        }
+        return A.abs().re;
+    }
+
+    /**
+     * Complex number product.
+     *
+     * @param A and B are complex numbers.
+     * @return A*B.
+     */
+    public static BigDecimalComplex CPROD(BigDecimalComplex A, BigDecimalComplex B) {
+        if (A == null) {
+            return null;
+        }
+        return A.multiply(B);
+    }
+
+    /**
+     * Complex number inverse.
+     *
+     * @param A is a non-zero complex number.
+     * @return S with S*A = 1.
+     */
+    public static BigDecimalComplex CINV(BigDecimalComplex A) {
+        if (A == null) {
+            return null;
+        }
+        return A.inverse();
+    }
+
+    /**
+     * Complex number quotient.
+     *
+     * @param A and B are complex numbers, B non-zero.
+     * @return A/B.
+     */
+    public static BigDecimalComplex CQ(BigDecimalComplex A, BigDecimalComplex B) {
+        if (A == null) {
+            return null;
+        }
+        return A.divide(B);
+    }
+
+    /**
+     * Complex number, random. Random rational numbers A and B are generated
+     * using random(n). Then R is the complex number with real part A and
+     * imaginary part B.
+     *
+     * @param n such that 0 &le; A, B &le; (2<sup>n</sup>-1).
+     * @return R.
+     */
+    public static BigDecimalComplex CRAND(int n) {
+        return ONE.random(n, random);
+    }
 
     /**
      * Get the corresponding element factory.
+     *
      * @return factory for this Element.
      * @see edu.jas.structure.Element#factory()
      */
@@ -130,9 +284,9 @@ public final class BigDecimalComplex implements StarRingElem<BigDecimalComplex>,
         return this;
     }
 
-
     /**
      * Get a list of the generating elements.
+     *
      * @return list of generators for the algebraic structure.
      * @see edu.jas.structure.ElemFactory#generators()
      */
@@ -143,9 +297,9 @@ public final class BigDecimalComplex implements StarRingElem<BigDecimalComplex>,
         return g;
     }
 
-
     /**
      * Is this structure finite or infinite.
+     *
      * @return true if this structure is finite, else false.
      * @see edu.jas.structure.ElemFactory#isFinite()
      */
@@ -153,9 +307,9 @@ public final class BigDecimalComplex implements StarRingElem<BigDecimalComplex>,
         return false;
     }
 
-
     /**
      * Clone this.
+     *
      * @see java.lang.Object#clone()
      */
     @Override
@@ -163,9 +317,9 @@ public final class BigDecimalComplex implements StarRingElem<BigDecimalComplex>,
         return new BigDecimalComplex(re, im);
     }
 
-
     /**
      * Copy BigDecimalComplex element c.
+     *
      * @param c BigDecimalComplex.
      * @return a copy of c.
      */
@@ -173,72 +327,72 @@ public final class BigDecimalComplex implements StarRingElem<BigDecimalComplex>,
         return new BigDecimalComplex(c.re, c.im);
     }
 
-
     /**
      * Get the zero element.
+     *
      * @return 0 as BigDecimalComplex.
      */
     public BigDecimalComplex getZERO() {
         return ZERO;
     }
 
-
     /**
      * Get the one element.
+     *
      * @return 1 as BigDecimalComplex.
      */
     public BigDecimalComplex getONE() {
         return ONE;
     }
 
-
     /**
      * Get the i element.
+     *
      * @return i as BigDecimalComplex.
      */
     public BigDecimalComplex getIMAG() {
         return I;
     }
 
-
     /**
      * Query if this ring is commutative.
+     *
      * @return true.
      */
     public boolean isCommutative() {
         return true;
     }
 
-
     /**
      * Query if this ring is associative.
+     *
      * @return true.
      */
     public boolean isAssociative() {
         return true;
     }
 
-
     /**
      * Query if this ring is a field.
+     *
      * @return true.
      */
     public boolean isField() {
         return true;
     }
 
-
     /**
      * Characteristic of this ring.
+     *
      * @return characteristic of this ring.
      */
     public java.math.BigInteger characteristic() {
         return java.math.BigInteger.ZERO;
     }
 
-
     /**
      * Get a BigDecimalComplex element from a BigInteger.
+     *
      * @param a BigInteger.
      * @return a BigDecimalComplex.
      */
@@ -246,9 +400,9 @@ public final class BigDecimalComplex implements StarRingElem<BigDecimalComplex>,
         return new BigDecimalComplex(new BigDecimal(a));
     }
 
-
     /**
      * Get a BigDecimalComplex element from a long.
+     *
      * @param a long.
      * @return a BigDecimalComplex.
      */
@@ -256,42 +410,23 @@ public final class BigDecimalComplex implements StarRingElem<BigDecimalComplex>,
         return new BigDecimalComplex(new BigDecimal(a));
     }
 
-
-    /**
-     * The constant 0.
-     */
-    public static final BigDecimalComplex ZERO = new BigDecimalComplex();
-
-
-    /**
-     * The constant 1.
-     */
-    public static final BigDecimalComplex ONE = new BigDecimalComplex(BigDecimal.ONE);
-
-
-    /**
-     * The constant i.
-     */
-    public static final BigDecimalComplex I = new BigDecimalComplex(BigDecimal.ZERO, BigDecimal.ONE);
-
-
     /**
      * Get the real part.
+     *
      * @return re.
      */
     public BigDecimal getRe() {
         return re;
     }
 
-
     /**
      * Get the imaginary part.
+     *
      * @return im.
      */
     public BigDecimal getIm() {
         return im;
     }
-
 
     /**
      * Get the String representation.
@@ -308,16 +443,16 @@ public final class BigDecimalComplex implements StarRingElem<BigDecimalComplex>,
         return s;
     }
 
-
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this Element.
      * @see edu.jas.structure.Element#toScript()
      */
     @Override
     public String toScript() {
-        // Python case: re or re+im*i 
-        // was (re,im) or (re,) 
+        // Python case: re or re+im*i
+        // was (re,im) or (re,)
         StringBuffer s = new StringBuffer();
         boolean iz = im.isZERO();
         if (iz) {
@@ -357,8 +492,12 @@ public final class BigDecimalComplex implements StarRingElem<BigDecimalComplex>,
     }
 
 
+    /* arithmetic operations: +, -, -
+     */
+
     /**
      * Get a scripting compatible string representation of the factory.
+     *
      * @return script compatible representation for this ElemFactory.
      * @see edu.jas.structure.Element#toScriptFactory()
      */
@@ -368,22 +507,9 @@ public final class BigDecimalComplex implements StarRingElem<BigDecimalComplex>,
         return "CD()";
     }
 
-
-    /**
-     * Complex number zero.
-     * @param A is a complex number.
-     * @return If A is 0 then true is returned, else false.
-     */
-    public static boolean isCZERO(BigDecimalComplex A) {
-        if (A == null) {
-            return false;
-        }
-        return A.isZERO();
-    }
-
-
     /**
      * Is Complex number zero.
+     *
      * @return If this is 0 then true is returned, else false.
      * @see edu.jas.structure.RingElem#isZERO()
      */
@@ -391,22 +517,9 @@ public final class BigDecimalComplex implements StarRingElem<BigDecimalComplex>,
         return re.isZERO() && im.isZERO();
     }
 
-
-    /**
-     * Complex number one.
-     * @param A is a complex number.
-     * @return If A is 1 then true is returned, else false.
-     */
-    public static boolean isCONE(BigDecimalComplex A) {
-        if (A == null) {
-            return false;
-        }
-        return A.isONE();
-    }
-
-
     /**
      * Is Complex number one.
+     *
      * @return If this is 1 then true is returned, else false.
      * @see edu.jas.structure.RingElem#isONE()
      */
@@ -414,18 +527,18 @@ public final class BigDecimalComplex implements StarRingElem<BigDecimalComplex>,
         return re.isONE() && im.isZERO();
     }
 
-
     /**
      * Is Complex imaginary one.
+     *
      * @return If this is i then true is returned, else false.
      */
     public boolean isIMAG() {
         return re.isZERO() && im.isONE();
     }
 
-
     /**
      * Is Complex unit element.
+     *
      * @return If this is a unit then true is returned, else false.
      * @see edu.jas.structure.RingElem#isUnit()
      */
@@ -433,9 +546,9 @@ public final class BigDecimalComplex implements StarRingElem<BigDecimalComplex>,
         return (!isZERO());
     }
 
-
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -448,9 +561,9 @@ public final class BigDecimalComplex implements StarRingElem<BigDecimalComplex>,
         return re.compareTo(bc.re) == 0 && im.compareTo(bc.im) == 0;
     }
 
-
     /**
      * Hash code for this BigDecimalComplex.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -459,11 +572,15 @@ public final class BigDecimalComplex implements StarRingElem<BigDecimalComplex>,
     }
 
 
+    /* arithmetic operations: conjugate, absolut value 
+     */
+
     /**
      * Since complex numbers are unordered, we use lexicographical order of re
      * and im.
+     *
      * @return 0 if this is equal to b; 1 if re &gt; b.re, or re == b.re and im
-     *         &gt; b.im; -1 if re &lt; b.re, or re == b.re and im &lt; b.im
+     * &gt; b.im; -1 if re &lt; b.re, or re == b.re and im &lt; b.im
      */
     @Override
     public int compareTo(BigDecimalComplex b) {
@@ -477,12 +594,12 @@ public final class BigDecimalComplex implements StarRingElem<BigDecimalComplex>,
         return s;
     }
 
-
     /**
      * Since complex numbers are unordered, we use lexicographical order of re
      * and im.
+     *
      * @return 0 if this is equal to 0; 1 if re &gt; 0, or re == 0 and im &gt;
-     *         0; -1 if re &lt; 0, or re == 0 and im &lt; 0
+     * 0; -1 if re &lt; 0, or re == 0 and im &lt; 0
      * @see edu.jas.structure.RingElem#signum()
      */
     public int signum() {
@@ -493,12 +610,9 @@ public final class BigDecimalComplex implements StarRingElem<BigDecimalComplex>,
         return im.signum();
     }
 
-
-    /* arithmetic operations: +, -, -
-     */
-
     /**
      * Complex number summation.
+     *
      * @param B a BigDecimalComplex number.
      * @return this+B.
      */
@@ -506,35 +620,9 @@ public final class BigDecimalComplex implements StarRingElem<BigDecimalComplex>,
         return new BigDecimalComplex(re.sum(B.re), im.sum(B.im));
     }
 
-
-    /**
-     * Complex number sum.
-     * @param A and B are complex numbers.
-     * @return A+B.
-     */
-    public static BigDecimalComplex CSUM(BigDecimalComplex A, BigDecimalComplex B) {
-        if (A == null) {
-            return null;
-        }
-        return A.sum(B);
-    }
-
-
-    /**
-     * Complex number difference.
-     * @param A and B are complex numbers.
-     * @return A-B.
-     */
-    public static BigDecimalComplex CDIF(BigDecimalComplex A, BigDecimalComplex B) {
-        if (A == null) {
-            return null;
-        }
-        return A.subtract(B);
-    }
-
-
     /**
      * Complex number subtract.
+     *
      * @param B a BigDecimalComplex number.
      * @return this-B.
      */
@@ -542,22 +630,9 @@ public final class BigDecimalComplex implements StarRingElem<BigDecimalComplex>,
         return new BigDecimalComplex(re.subtract(B.re), im.subtract(B.im));
     }
 
-
     /**
      * Complex number negative.
-     * @param A is a complex number.
-     * @return -A
-     */
-    public static BigDecimalComplex CNEG(BigDecimalComplex A) {
-        if (A == null) {
-            return null;
-        }
-        return A.negate();
-    }
-
-
-    /**
-     * Complex number negative.
+     *
      * @return -this.
      * @see edu.jas.structure.RingElem#negate()
      */
@@ -566,35 +641,23 @@ public final class BigDecimalComplex implements StarRingElem<BigDecimalComplex>,
     }
 
 
-    /**
-     * Complex number conjugate.
-     * @param A is a complex number.
-     * @return the complex conjugate of A.
-     */
-    public static BigDecimalComplex CCON(BigDecimalComplex A) {
-        if (A == null) {
-            return null;
-        }
-        return A.conjugate();
-    }
-
-
-    /* arithmetic operations: conjugate, absolut value 
+    /* arithmetic operations: *, inverse, / 
      */
 
     /**
      * Complex number conjugate.
+     *
      * @return the complex conjugate of this.
      */
     public BigDecimalComplex conjugate() {
         return new BigDecimalComplex(re, im.negate());
     }
 
-
     /**
      * Complex number norm.
-     * @see edu.jas.structure.StarRingElem#norm()
+     *
      * @return ||this||.
+     * @see edu.jas.structure.StarRingElem#norm()
      */
     public BigDecimalComplex norm() {
         // this.conjugate().multiply(this);
@@ -605,11 +668,11 @@ public final class BigDecimalComplex implements StarRingElem<BigDecimalComplex>,
         return new BigDecimalComplex(v);
     }
 
-
     /**
      * Complex number absolute value.
-     * @see edu.jas.structure.RingElem#abs()
+     *
      * @return |this|.
+     * @see edu.jas.structure.RingElem#abs()
      */
     public BigDecimalComplex abs() {
         if (im.isZERO()) {
@@ -623,64 +686,20 @@ public final class BigDecimalComplex implements StarRingElem<BigDecimalComplex>,
         return new BigDecimalComplex(d);
     }
 
-
-    /**
-     * Complex number absolute value.
-     * @param A is a complex number.
-     * @return the absolute value of A, a rational number. Note: The square root
-     *         is not jet implemented.
-     */
-    public static BigDecimal CABS(BigDecimalComplex A) {
-        if (A == null) {
-            return null;
-        }
-        return A.abs().re;
-    }
-
-
     /**
      * Complex number product.
-     * @param A and B are complex numbers.
-     * @return A*B.
-     */
-    public static BigDecimalComplex CPROD(BigDecimalComplex A, BigDecimalComplex B) {
-        if (A == null) {
-            return null;
-        }
-        return A.multiply(B);
-    }
-
-
-    /* arithmetic operations: *, inverse, / 
-     */
-
-
-    /**
-     * Complex number product.
+     *
      * @param B is a complex number.
      * @return this*B.
      */
     public BigDecimalComplex multiply(BigDecimalComplex B) {
         return new BigDecimalComplex(re.multiply(B.re).subtract(im.multiply(B.im)), re.multiply(B.im).sum(
-                        im.multiply(B.re)));
+                im.multiply(B.re)));
     }
-
 
     /**
      * Complex number inverse.
-     * @param A is a non-zero complex number.
-     * @return S with S*A = 1.
-     */
-    public static BigDecimalComplex CINV(BigDecimalComplex A) {
-        if (A == null) {
-            return null;
-        }
-        return A.inverse();
-    }
-
-
-    /**
-     * Complex number inverse.
+     *
      * @return S with S*this = 1.
      * @see edu.jas.structure.RingElem#inverse()
      */
@@ -689,9 +708,9 @@ public final class BigDecimalComplex implements StarRingElem<BigDecimalComplex>,
         return new BigDecimalComplex(re.multiply(a), im.multiply(a.negate()));
     }
 
-
     /**
      * Complex number inverse.
+     *
      * @param S is a complex number.
      * @return 0.
      */
@@ -702,22 +721,9 @@ public final class BigDecimalComplex implements StarRingElem<BigDecimalComplex>,
         return ZERO;
     }
 
-
-    /**
-     * Complex number quotient.
-     * @param A and B are complex numbers, B non-zero.
-     * @return A/B.
-     */
-    public static BigDecimalComplex CQ(BigDecimalComplex A, BigDecimalComplex B) {
-        if (A == null) {
-            return null;
-        }
-        return A.divide(B);
-    }
-
-
     /**
      * Complex number divide.
+     *
      * @param B is a complex number, non-zero.
      * @return this/B.
      */
@@ -725,21 +731,21 @@ public final class BigDecimalComplex implements StarRingElem<BigDecimalComplex>,
         return this.multiply(B.inverse());
     }
 
-
     /**
      * Quotient and remainder by division of this by S.
+     *
      * @param S a complex number
      * @return [this/S, this - (this/S)*S].
      */
     public BigDecimalComplex[] quotientRemainder(BigDecimalComplex S) {
-        return new BigDecimalComplex[] { divide(S), ZERO };
+        return new BigDecimalComplex[]{divide(S), ZERO};
     }
-
 
     /**
      * Complex number, random. Random rational numbers A and B are generated
      * using random(n). Then R is the complex number with real part A and
      * imaginary part B.
+     *
      * @param n such that 0 &le; A, B &le; (2<sup>n</sup>-1).
      * @return R.
      */
@@ -747,12 +753,12 @@ public final class BigDecimalComplex implements StarRingElem<BigDecimalComplex>,
         return random(n, random);
     }
 
-
     /**
      * Complex number, random. Random rational numbers A and B are generated
      * using random(n). Then R is the complex number with real part A and
      * imaginary part B.
-     * @param n such that 0 &le; A, B &le; (2<sup>n</sup>-1).
+     *
+     * @param n   such that 0 &le; A, B &le; (2<sup>n</sup>-1).
      * @param rnd is a source for random bits.
      * @return R.
      */
@@ -762,21 +768,9 @@ public final class BigDecimalComplex implements StarRingElem<BigDecimalComplex>,
         return new BigDecimalComplex(r, i);
     }
 
-
-    /**
-     * Complex number, random. Random rational numbers A and B are generated
-     * using random(n). Then R is the complex number with real part A and
-     * imaginary part B.
-     * @param n such that 0 &le; A, B &le; (2<sup>n</sup>-1).
-     * @return R.
-     */
-    public static BigDecimalComplex CRAND(int n) {
-        return ONE.random(n, random);
-    }
-
-
     /**
      * Parse complex number from string.
+     *
      * @param s String.
      * @return BigDecimalComplex from s.
      */
@@ -787,6 +781,7 @@ public final class BigDecimalComplex implements StarRingElem<BigDecimalComplex>,
 
     /**
      * Parse complex number from Reader.
+     *
      * @param r Reader.
      * @return next BigDecimalComplex from r.
      */
@@ -797,8 +792,9 @@ public final class BigDecimalComplex implements StarRingElem<BigDecimalComplex>,
 
     /**
      * Complex number greatest common divisor.
+     *
      * @param S BigDecimalComplex.
-     * @return gcd(this,S).
+     * @return gcd(this, S).
      */
     public BigDecimalComplex gcd(BigDecimalComplex S) {
         if (S == null || S.isZERO()) {
@@ -813,6 +809,7 @@ public final class BigDecimalComplex implements StarRingElem<BigDecimalComplex>,
 
     /**
      * BigDecimalComplex extended greatest common divisor.
+     *
      * @param S BigDecimalComplex.
      * @return [ gcd(this,S), a, b ] with a*this + b*S = gcd(this,S).
      */
@@ -841,8 +838,9 @@ public final class BigDecimalComplex implements StarRingElem<BigDecimalComplex>,
      * Returns the number of bits in the representation of this
      * BigDecimalComplex, including a sign bit. It is equivalent to
      * {@code re.bitLength() + im.bitLength()}.)
+     *
      * @return number of bits in the representation of this BigDecimalComplex,
-     *         including a sign bit.
+     * including a sign bit.
      */
     public long bitLength() {
         return re.bitLength() + im.bitLength();

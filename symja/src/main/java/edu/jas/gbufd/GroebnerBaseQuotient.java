@@ -5,10 +5,10 @@
 package edu.jas.gbufd;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.gb.GroebnerBaseAbstract;
 import edu.jas.gb.PairList;
@@ -24,6 +24,7 @@ import edu.jas.ufd.QuotientRing;
 /**
  * Groebner Base sequential algorithm for rational function coefficients,
  * fraction free computation. Implements Groebner bases.
+ *
  * @param <C> Quotient coefficient type
  * @author Heinz Kredel
  */
@@ -42,6 +43,7 @@ public class GroebnerBaseQuotient<C extends GcdRingElem<C>> extends GroebnerBase
 
     /**
      * Constructor.
+     *
      * @param rf quotient coefficient ring factory.
      */
     public GroebnerBaseQuotient(QuotientRing<C> rf) {
@@ -51,8 +53,9 @@ public class GroebnerBaseQuotient<C extends GcdRingElem<C>> extends GroebnerBase
 
     /**
      * Constructor.
+     *
      * @param threads the number of parallel threads.
-     * @param rf quotient coefficient ring factory.
+     * @param rf      quotient coefficient ring factory.
      */
     public GroebnerBaseQuotient(int threads, QuotientRing<C> rf) {
         this(new GroebnerBasePseudoRecParallel<C>(threads, rf.ring));
@@ -61,6 +64,7 @@ public class GroebnerBaseQuotient<C extends GcdRingElem<C>> extends GroebnerBase
 
     /**
      * Constructor.
+     *
      * @param rf quotient coefficient ring factory.
      * @param pl pair selection strategy (for fraction parts).
      */
@@ -71,9 +75,10 @@ public class GroebnerBaseQuotient<C extends GcdRingElem<C>> extends GroebnerBase
 
     /**
      * Constructor.
+     *
      * @param threads the number of parallel threads.
-     * @param rf quotient coefficient ring factory.
-     * @param pl pair selection strategy (for fraction parts).
+     * @param rf      quotient coefficient ring factory.
+     * @param pl      pair selection strategy (for fraction parts).
      */
     public GroebnerBaseQuotient(int threads, QuotientRing<C> rf, PairList<GenPolynomial<C>> pl) {
         this(new GroebnerBasePseudoRecParallel<C>(threads, rf.ring, pl));
@@ -82,6 +87,7 @@ public class GroebnerBaseQuotient<C extends GcdRingElem<C>> extends GroebnerBase
 
     /**
      * Constructor.
+     *
      * @param bba Groebner base algorithm for GenPolynomial coefficients.
      */
     public GroebnerBaseQuotient(GroebnerBaseAbstract<GenPolynomial<C>> bba) {
@@ -92,6 +98,7 @@ public class GroebnerBaseQuotient<C extends GcdRingElem<C>> extends GroebnerBase
 
     /**
      * Get the String representation with GB engines.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -102,8 +109,9 @@ public class GroebnerBaseQuotient<C extends GcdRingElem<C>> extends GroebnerBase
 
     /**
      * Groebner base using fraction free computation.
+     *
      * @param modv module variable number.
-     * @param F polynomial list.
+     * @param F    polynomial list.
      * @return GB(F) a Groebner base of F.
      */
     @Override
@@ -115,7 +123,7 @@ public class GroebnerBaseQuotient<C extends GcdRingElem<C>> extends GroebnerBase
         GenPolynomialRing<Quotient<C>> rring = F.get(0).ring;
         QuotientRing<C> cf = (QuotientRing<C>) rring.coFac;
         GenPolynomialRing<GenPolynomial<C>> iring = new GenPolynomialRing<GenPolynomial<C>>(cf.ring, rring);
-        List<GenPolynomial<GenPolynomial<C>>> Fi = PolyUfdUtil.<C> integralFromQuotientCoefficients(iring, F);
+        List<GenPolynomial<GenPolynomial<C>>> Fi = PolyUfdUtil.<C>integralFromQuotientCoefficients(iring, F);
         //System.out.println("Fi = " + Fi);
         logger.info("#Fi = " + Fi.size());
 
@@ -123,14 +131,15 @@ public class GroebnerBaseQuotient<C extends GcdRingElem<C>> extends GroebnerBase
         //System.out.println("Gi = " + Gi);
         logger.info("#Gi = " + Gi.size());
 
-        G = PolyUfdUtil.<C> quotientFromIntegralCoefficients(rring, Gi);
-        G = PolyUtil.<Quotient<C>> monic(G);
+        G = PolyUfdUtil.<C>quotientFromIntegralCoefficients(rring, Gi);
+        G = PolyUtil.<Quotient<C>>monic(G);
         return G;
     }
 
 
     /**
      * Minimal ordered Groebner basis.
+     *
      * @param Gp a Groebner base.
      * @return a reduced Groebner base of Gp.
      */
@@ -187,8 +196,8 @@ public class GroebnerBaseQuotient<C extends GcdRingElem<C>> extends GroebnerBase
         List<GenPolynomial<GenPolynomial<C>>> Gi = bba.minimalGB(Fi);
         logger.info("#Gi = " + Gi.size());
 
-        G = PolyUfdUtil.<C> quotientFromIntegralCoefficients(rring, Gi);
-        G = PolyUtil.<Quotient<C>> monic(G);
+        G = PolyUfdUtil.<C>quotientFromIntegralCoefficients(rring, Gi);
+        G = PolyUtil.<Quotient<C>>monic(G);
         return G;
     }
 

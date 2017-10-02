@@ -17,6 +17,7 @@ import edu.jas.structure.RingFactory;
 /**
  * Module Groebner Bases sequential algorithm. Implements Groebner bases and GB
  * test.
+ *
  * @author Heinz Kredel
  * @deprecated use respective methods from GroebnerBaseSeq
  */
@@ -35,6 +36,7 @@ public class ModGroebnerBaseSeq<C extends GcdRingElem<C>> extends ModGroebnerBas
 
     /**
      * Constructor.
+     *
      * @param cf coefficient ring.
      */
     public ModGroebnerBaseSeq(RingFactory<C> cf) {
@@ -44,6 +46,7 @@ public class ModGroebnerBaseSeq<C extends GcdRingElem<C>> extends ModGroebnerBas
 
     /**
      * Constructor.
+     *
      * @param bb Groebner base algorithm.
      */
     public ModGroebnerBaseSeq(GroebnerBaseAbstract<C> bb) {

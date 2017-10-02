@@ -23,10 +23,11 @@ import org.hipparchus.util.FastMath;
 
 /**
  * Power function.
- *
  */
 public class Power implements UnivariateDifferentiableFunction {
-    /** Power. */
+    /**
+     * Power.
+     */
     private final double p;
 
     /**
@@ -36,13 +37,16 @@ public class Power implements UnivariateDifferentiableFunction {
         this.p = p;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double value(double x) {
         return FastMath.pow(x, p);
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     @Override
     public DerivativeStructure value(final DerivativeStructure t) {

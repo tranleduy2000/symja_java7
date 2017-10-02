@@ -44,42 +44,56 @@ import java.util.StringTokenizer;
  * <p>
  * The generator supports two modes:
  * <ul>
- *   <li>sequential generation of points: {@link #nextVector()}</li>
- *   <li>random access to the i-th point in the sequence: {@link #skipTo(int)}</li>
+ * <li>sequential generation of points: {@link #nextVector()}</li>
+ * <li>random access to the i-th point in the sequence: {@link #skipTo(int)}</li>
  * </ul>
  *
  * @see <a href="http://en.wikipedia.org/wiki/Sobol_sequence">Sobol sequence (Wikipedia)</a>
  * @see <a href="http://web.maths.unsw.edu.au/~fkuo/sobol/">Sobol sequence direction numbers</a>
- *
  */
 public class SobolSequenceGenerator implements RandomVectorGenerator {
 
-    /** The number of bits to use. */
+    /**
+     * The number of bits to use.
+     */
     private static final int BITS = 52;
 
-    /** The scaling factor. */
+    /**
+     * The scaling factor.
+     */
     private static final double SCALE = FastMath.pow(2, BITS);
 
-    /** The maximum supported space dimension. */
+    /**
+     * The maximum supported space dimension.
+     */
     private static final int MAX_DIMENSION = 1000;
 
-    /** The resource containing the direction numbers. */
+    /**
+     * The resource containing the direction numbers.
+     */
     private static final String RESOURCE_NAME = "/assets/org/hipparchus/random/new-joe-kuo-6.1000";
 
-    /** Character set for file input. */
+    /**
+     * Character set for file input.
+     */
     private static final String FILE_CHARSET = "US-ASCII";
 
-    /** Space dimension. */
+    /**
+     * Space dimension.
+     */
     private final int dimension;
-
-    /** The current index in the sequence. */
-    private int count = 0;
-
-    /** The direction vector for each component. */
+    /**
+     * The direction vector for each component.
+     */
     private final long[][] direction;
-
-    /** The current state. */
+    /**
+     * The current state.
+     */
     private final long[] x;
+    /**
+     * The current index in the sequence.
+     */
+    private int count = 0;
 
     /**
      * Construct a new Sobol sequence generator for the given space dimension.
@@ -128,10 +142,10 @@ public class SobolSequenceGenerator implements RandomVectorGenerator {
      * The first line will be ignored as it is assumed to contain only the column headers.
      * The columns are:
      * <ul>
-     *  <li>d: the dimension</li>
-     *  <li>s: the degree of the primitive polynomial</li>
-     *  <li>a: the number representing the coefficients</li>
-     *  <li>m: the list of initial direction numbers</li>
+     * <li>d: the dimension</li>
+     * <li>s: the degree of the primitive polynomial</li>
+     * <li>a: the number representing the coefficients</li>
+     * <li>m: the list of initial direction numbers</li>
      * </ul>
      * Example:
      * <pre>
@@ -143,19 +157,19 @@ public class SobolSequenceGenerator implements RandomVectorGenerator {
      * The input stream <i>must</i> be an ASCII text containing one valid direction vector per line.
      *
      * @param dimension the space dimension
-     * @param is the stream to read the direction vectors from
+     * @param is        the stream to read the direction vectors from
      * @throws MathIllegalArgumentException if the space dimension is &lt; 1
      * @throws MathIllegalArgumentException if the space dimension is outside the range [1, max], where
-     *   max refers to the maximum dimension found in the input stream
-     * @throws MathIllegalStateException if the content in the stream could not be parsed successfully
-     * @throws IOException if an error occurs while reading from the input stream
+     *                                      max refers to the maximum dimension found in the input stream
+     * @throws MathIllegalStateException    if the content in the stream could not be parsed successfully
+     * @throws IOException                  if an error occurs while reading from the input stream
      */
     public SobolSequenceGenerator(final int dimension, final InputStream is)
             throws MathIllegalArgumentException, MathIllegalStateException, IOException {
 
         if (dimension < 1) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.NUMBER_TOO_SMALL,
-                                                   dimension, 1);
+                    dimension, 1);
         }
 
         this.dimension = dimension;
@@ -177,7 +191,7 @@ public class SobolSequenceGenerator implements RandomVectorGenerator {
      *
      * @param is the input stream to read the direction vector from
      * @return the last dimension that has been read from the input stream
-     * @throws IOException if the stream could not be read
+     * @throws IOException               if the stream could not be read
      * @throws MathIllegalStateException if the content could not be parsed successfully
      */
     private int initFromStream(final InputStream is) throws MathIllegalStateException, IOException {
@@ -198,7 +212,7 @@ public class SobolSequenceGenerator implements RandomVectorGenerator {
             int lineNumber = 2;
             int index = 1;
             String line = null;
-            while ( (line = reader.readLine()) != null) {
+            while ((line = reader.readLine()) != null) {
                 StringTokenizer st = new StringTokenizer(line, " ");
                 try {
                     dim = Integer.parseInt(st.nextToken());
@@ -215,9 +229,9 @@ public class SobolSequenceGenerator implements RandomVectorGenerator {
                     if (dim > dimension) {
                         return dim;
                     }
-                } catch (NoSuchElementException|NumberFormatException e) {
+                } catch (NoSuchElementException | NumberFormatException e) {
                     throw new MathIllegalStateException(LocalizedCoreFormats.CANNOT_PARSE,
-                                                        line, lineNumber);
+                            line, lineNumber);
                 }
                 lineNumber++;
             }
@@ -248,7 +262,9 @@ public class SobolSequenceGenerator implements RandomVectorGenerator {
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double[] nextVector() {
         final double[] v = new double[dimension];

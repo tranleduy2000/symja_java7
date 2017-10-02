@@ -27,43 +27,46 @@ import org.hipparchus.util.FastMath;
 /**
  * Base class for all bracketing <em>Secant</em>-based methods for root-finding
  * (approximating a zero of a univariate real function).
- *
+ * <p>
  * <p>Implementation of the {@link RegulaFalsiSolver <em>Regula Falsi</em>} and
  * {@link IllinoisSolver <em>Illinois</em>} methods is based on the
  * following article: M. Dowell and P. Jarratt,
  * <em>A modified regula falsi method for computing the root of an
  * equation</em>, BIT Numerical Mathematics, volume 11, number 2,
  * pages 168-174, Springer, 1971.</p>
- *
+ * <p>
  * <p>Implementation of the {@link PegasusSolver <em>Pegasus</em>} method is
  * based on the following article: M. Dowell and P. Jarratt,
  * <em>The "Pegasus" method for computing the root of an equation</em>,
  * BIT Numerical Mathematics, volume 12, number 4, pages 503-508, Springer,
  * 1972.</p>
- *
+ * <p>
  * <p>The {@link SecantSolver <em>Secant</em>} method is <em>not</em> a
  * bracketing method, so it is not implemented here. It has a separate
  * implementation.</p>
- *
  */
 public abstract class BaseSecantSolver
-    extends AbstractUnivariateSolver
-    implements BracketedUnivariateSolver<UnivariateFunction> {
+        extends AbstractUnivariateSolver
+        implements BracketedUnivariateSolver<UnivariateFunction> {
 
-    /** Default absolute accuracy. */
+    /**
+     * Default absolute accuracy.
+     */
     protected static final double DEFAULT_ABSOLUTE_ACCURACY = 1e-6;
-
-    /** The kinds of solutions that the algorithm may accept. */
-    private AllowedSolution allowed;
-
-    /** The <em>Secant</em>-based root-finding method to use. */
+    /**
+     * The <em>Secant</em>-based root-finding method to use.
+     */
     private final Method method;
+    /**
+     * The kinds of solutions that the algorithm may accept.
+     */
+    private AllowedSolution allowed;
 
     /**
      * Construct a solver.
      *
      * @param absoluteAccuracy Absolute accuracy.
-     * @param method <em>Secant</em>-based root-finding method to use.
+     * @param method           <em>Secant</em>-based root-finding method to use.
      */
     protected BaseSecantSolver(final double absoluteAccuracy, final Method method) {
         super(absoluteAccuracy);
@@ -76,7 +79,7 @@ public abstract class BaseSecantSolver
      *
      * @param relativeAccuracy Relative accuracy.
      * @param absoluteAccuracy Absolute accuracy.
-     * @param method <em>Secant</em>-based root-finding method to use.
+     * @param method           <em>Secant</em>-based root-finding method to use.
      */
     protected BaseSecantSolver(final double relativeAccuracy,
                                final double absoluteAccuracy,
@@ -89,10 +92,10 @@ public abstract class BaseSecantSolver
     /**
      * Construct a solver.
      *
-     * @param relativeAccuracy Maximum relative error.
-     * @param absoluteAccuracy Maximum absolute error.
+     * @param relativeAccuracy      Maximum relative error.
+     * @param absoluteAccuracy      Maximum absolute error.
      * @param functionValueAccuracy Maximum function value error.
-     * @param method <em>Secant</em>-based root-finding method to use
+     * @param method                <em>Secant</em>-based root-finding method to use
      */
     protected BaseSecantSolver(final double relativeAccuracy,
                                final double absoluteAccuracy,
@@ -103,7 +106,9 @@ public abstract class BaseSecantSolver
         this.method = method;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double solve(final int maxEval, final UnivariateFunction f,
                         final double min, final double max,
@@ -111,7 +116,9 @@ public abstract class BaseSecantSolver
         return solve(maxEval, f, min, max, min + 0.5 * (max - min), allowedSolution);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double solve(final int maxEval, final UnivariateFunction f,
                         final double min, final double max, final double startValue,
@@ -120,14 +127,18 @@ public abstract class BaseSecantSolver
         return super.solve(maxEval, f, min, max, startValue);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double solve(final int maxEval, final UnivariateFunction f,
                         final double min, final double max, final double startValue) {
         return solve(maxEval, f, min, max, startValue, AllowedSolution.ANY_SIDE);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Interval solveInterval(final int maxEval,
                                   final UnivariateFunction f,
@@ -143,7 +154,7 @@ public abstract class BaseSecantSolver
      * {@inheritDoc}
      *
      * @throws MathIllegalStateException if the algorithm failed due to finite
-     * precision.
+     *                                   precision.
      */
     @Override
     protected final double doSolve() throws MathIllegalStateException {
@@ -208,22 +219,22 @@ public abstract class BaseSecantSolver
                 inverted = !inverted;
             } else {
                 switch (method) {
-                case ILLINOIS:
-                    f0 *= 0.5;
-                    break;
-                case PEGASUS:
-                    f0 *= f1 / (f1 + fx);
-                    break;
-                case REGULA_FALSI:
-                    // Detect early that algorithm is stuck, instead of waiting
-                    // for the maximum number of iterations to be exceeded.
-                    if (x == x1) {
-                        throw new MathIllegalStateException(LocalizedCoreFormats.CONVERGENCE_FAILED);
-                    }
-                    break;
-                default:
-                    // Should never happen.
-                    throw MathRuntimeException.createInternalError();
+                    case ILLINOIS:
+                        f0 *= 0.5;
+                        break;
+                    case PEGASUS:
+                        f0 *= f1 / (f1 + fx);
+                        break;
+                    case REGULA_FALSI:
+                        // Detect early that algorithm is stuck, instead of waiting
+                        // for the maximum number of iterations to be exceeded.
+                        if (x == x1) {
+                            throw new MathIllegalStateException(LocalizedCoreFormats.CONVERGENCE_FAILED);
+                        }
+                        break;
+                    default:
+                        // Should never happen.
+                        throw MathRuntimeException.createInternalError();
                 }
             }
             // Update from [x0, x1] to [x0, x].
@@ -233,7 +244,7 @@ public abstract class BaseSecantSolver
             // If the current interval is within the given accuracies, we
             // are satisfied with the current approximation.
             if (FastMath.abs(x1 - x0) < FastMath.max(rtol * FastMath.abs(x1), atol) ||
-                    (FastMath.abs(f1) < ftol && (allowed == AllowedSolution.ANY_SIDE  ||
+                    (FastMath.abs(f1) < ftol && (allowed == AllowedSolution.ANY_SIDE ||
                             (inverted && allowed == AllowedSolution.LEFT_SIDE) ||
                             (!inverted && allowed == AllowedSolution.RIGHT_SIDE) ||
                             (f1 <= 0.0 && allowed == AllowedSolution.BELOW_SIDE) ||
@@ -247,7 +258,9 @@ public abstract class BaseSecantSolver
         }
     }
 
-    /** <em>Secant</em>-based root-finding methods. */
+    /**
+     * <em>Secant</em>-based root-finding methods.
+     */
     protected enum Method {
 
         /**
@@ -256,10 +269,14 @@ public abstract class BaseSecantSolver
          */
         REGULA_FALSI,
 
-        /** The {@link IllinoisSolver <em>Illinois</em>} method. */
+        /**
+         * The {@link IllinoisSolver <em>Illinois</em>} method.
+         */
         ILLINOIS,
 
-        /** The {@link PegasusSolver <em>Pegasus</em>} method. */
+        /**
+         * The {@link PegasusSolver <em>Pegasus</em>} method.
+         */
         PEGASUS;
 
     }

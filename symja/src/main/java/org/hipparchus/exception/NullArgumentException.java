@@ -29,18 +29,23 @@ import java.util.Locale;
  * <p>
  * Note: from 1.0 onwards, this class extends {@link NullPointerException} instead
  * of {@link MathIllegalArgumentException}.
- *
  */
 public class NullArgumentException extends NullPointerException
-    implements LocalizedException {
+        implements LocalizedException {
 
-    /** Serializable version Id. */
+    /**
+     * Serializable version Id.
+     */
     private static final long serialVersionUID = 20160217L;
 
-    /** Format specifier (to be translated). */
+    /**
+     * Format specifier (to be translated).
+     */
     private final Localizable specifier;
 
-    /** Parts to insert in the format (no translation). */
+    /**
+     * Parts to insert in the format (no translation).
+     */
     private final Object[] parts;
 
     /**
@@ -50,54 +55,67 @@ public class NullArgumentException extends NullPointerException
         this(LocalizedCoreFormats.NULL_NOT_ALLOWED);
     }
 
-    /** Simple constructor.
+    /**
+     * Simple constructor.
+     *
      * @param specifier format specifier (to be translated).
-     * @param parts parts to insert in the format (no translation).
+     * @param parts     parts to insert in the format (no translation).
      */
-    public NullArgumentException(final Localizable specifier, final Object ... parts) {
+    public NullArgumentException(final Localizable specifier, final Object... parts) {
         this.specifier = specifier;
-        this.parts     = (parts == null) ? new Object[0] : parts.clone();
+        this.parts = (parts == null) ? new Object[0] : parts.clone();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Builds a message string by from a pattern and its arguments.
+     *
+     * @param locale    Locale in which the message should be translated
+     * @param specifier format specifier (to be translated)
+     * @param parts     parts to insert in the format (no translation)
+     * @return a message string
+     */
+    private static String buildMessage(final Locale locale, final Localizable specifier, final Object... parts) {
+        return (specifier == null) ? "" : new MessageFormat(specifier.getLocalizedString(locale), locale).format(parts);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getMessage(final Locale locale) {
         return buildMessage(locale, specifier, parts);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getMessage() {
         return getMessage(Locale.US);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getLocalizedMessage() {
         return getMessage(Locale.getDefault());
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Localizable getSpecifier() {
         return specifier;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Object[] getParts() {
         return parts.clone();
-    }
-
-    /**
-     * Builds a message string by from a pattern and its arguments.
-     * @param locale Locale in which the message should be translated
-     * @param specifier format specifier (to be translated)
-     * @param parts parts to insert in the format (no translation)
-     * @return a message string
-     */
-    private static String buildMessage(final Locale locale, final Localizable specifier, final Object ... parts) {
-        return (specifier == null) ? "" : new MessageFormat(specifier.getLocalizedString(locale), locale).format(parts);
     }
 
 }

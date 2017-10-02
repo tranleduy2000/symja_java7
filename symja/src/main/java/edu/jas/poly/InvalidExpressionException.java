@@ -5,10 +5,10 @@
 package edu.jas.poly;
 
 
-
 /**
  * Invalid expression exception class.
  * Runtime Exception to be thrown for invalid algebraic / polynomial expressions.
+ *
  * @author Heinz Kredel
  */
 public class InvalidExpressionException extends RuntimeException {

@@ -16,14 +16,14 @@
  */
 package org.hipparchus.distribution;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.hipparchus.exception.LocalizedCoreFormats;
 import org.hipparchus.exception.MathIllegalArgumentException;
 import org.hipparchus.util.Pair;
 import org.hipparchus.util.Precision;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A generic implementation of a
@@ -48,7 +48,9 @@ import org.hipparchus.util.Precision;
  */
 public class EnumeratedDistribution<T> implements Serializable {
 
-    /** Serializable UID. */
+    /**
+     * Serializable UID.
+     */
     private static final long serialVersionUID = 20123308L;
 
     /**
@@ -73,11 +75,11 @@ public class EnumeratedDistribution<T> implements Serializable {
      * enumeration.
      *
      * @param pmf probability mass function enumerated as a list of &lt;T, probability&gt;
-     * pairs.
+     *            pairs.
      * @throws MathIllegalArgumentException of weights includes negative, NaN or infinite values or only 0's
      */
     public EnumeratedDistribution(final List<Pair<T, Double>> pmf)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
 
         singletons = new ArrayList<>(pmf.size());
         final double[] probs = new double[pmf.size()];
@@ -100,6 +102,54 @@ public class EnumeratedDistribution<T> implements Serializable {
     }
 
     /**
+     * Checks to make sure that weights is neither null nor empty and contains only non-negative, finite,
+     * non-NaN values and if necessary normalizes it to sum to 1.
+     *
+     * @param weights input array to be used as the basis for the values of a PMF
+     * @return a possibly rescaled copy of the array that sums to 1 and contains only valid probability values
+     * @throws MathIllegalArgumentException of weights is null or empty or includes negative, NaN or
+     *                                      infinite values or only 0's
+     */
+    public static double[] checkAndNormalize(double[] weights) {
+        if (weights == null || weights.length == 0) {
+            throw new MathIllegalArgumentException(LocalizedCoreFormats.ARRAY_ZERO_LENGTH_OR_NULL_NOT_ALLOWED);
+        }
+        final int len = weights.length;
+        double sumWt = 0;
+        boolean posWt = false;
+        for (int i = 0; i < len; i++) {
+            if (weights[i] < 0) {
+                throw new MathIllegalArgumentException(LocalizedCoreFormats.NUMBER_TOO_SMALL,
+                        weights[i], 0);
+            }
+            if (weights[i] > 0) {
+                posWt = true;
+            }
+            if (Double.isNaN(weights[i])) {
+                throw new MathIllegalArgumentException(LocalizedCoreFormats.NAN_ELEMENT_AT_INDEX, i);
+            }
+            if (Double.isInfinite(weights[i])) {
+                throw new MathIllegalArgumentException(LocalizedCoreFormats.INFINITE_ARRAY_ELEMENT,
+                        weights[i], i);
+            }
+            sumWt += weights[i];
+        }
+        if (!posWt) {
+            throw new MathIllegalArgumentException(LocalizedCoreFormats.WEIGHT_AT_LEAST_ONE_NON_ZERO);
+        }
+        double[] normWt = null;
+        if (Precision.equals(sumWt, 1d, 10)) { // allow small error (10 ulps)
+            normWt = weights;
+        } else {
+            normWt = new double[len];
+            for (int i = 0; i < len; i++) {
+                normWt[i] = weights[i] / sumWt;
+            }
+        }
+        return normWt;
+    }
+
+    /**
      * For a random variable {@code X} whose values are distributed according to
      * this distribution, this method returns {@code P(X = x)}. In other words,
      * this method represents the probability mass function (PMF) for the
@@ -116,7 +166,7 @@ public class EnumeratedDistribution<T> implements Serializable {
 
         for (int i = 0; i < probabilities.length; i++) {
             if ((x == null && singletons.get(i) == null) ||
-                (x != null && x.equals(singletons.get(i)))) {
+                    (x != null && x.equals(singletons.get(i)))) {
                 probability += probabilities[i];
             }
         }
@@ -142,54 +192,6 @@ public class EnumeratedDistribution<T> implements Serializable {
         }
 
         return samples;
-    }
-
-    /**
-     * Checks to make sure that weights is neither null nor empty and contains only non-negative, finite,
-     * non-NaN values and if necessary normalizes it to sum to 1.
-     *
-     * @param weights input array to be used as the basis for the values of a PMF
-     * @return a possibly rescaled copy of the array that sums to 1 and contains only valid probability values
-     * @throws MathIllegalArgumentException of weights is null or empty or includes negative, NaN or
-     *         infinite values or only 0's
-     */
-    public static double[] checkAndNormalize(double[] weights) {
-        if (weights == null || weights.length == 0) {
-            throw new MathIllegalArgumentException(LocalizedCoreFormats.ARRAY_ZERO_LENGTH_OR_NULL_NOT_ALLOWED);
-        }
-        final int len = weights.length;
-        double sumWt = 0;
-        boolean posWt = false;
-        for (int i = 0; i < len; i++) {
-            if (weights[i] < 0) {
-                throw new MathIllegalArgumentException(LocalizedCoreFormats.NUMBER_TOO_SMALL,
-                                                       weights[i], 0);
-            }
-            if (weights[i] > 0) {
-                posWt = true;
-            }
-            if (Double.isNaN(weights[i])) {
-                throw new MathIllegalArgumentException(LocalizedCoreFormats.NAN_ELEMENT_AT_INDEX, i);
-            }
-            if (Double.isInfinite(weights[i])) {
-                throw new MathIllegalArgumentException(LocalizedCoreFormats.INFINITE_ARRAY_ELEMENT,
-                                                       weights[i], i);
-            }
-            sumWt += weights[i];
-        }
-        if (!posWt) {
-            throw new MathIllegalArgumentException(LocalizedCoreFormats.WEIGHT_AT_LEAST_ONE_NON_ZERO);
-        }
-        double[] normWt = null;
-        if (Precision.equals(sumWt, 1d, 10)) { // allow small error (10 ulps)
-            normWt = weights;
-        } else {
-            normWt = new double[len];
-            for (int i = 0; i < len; i++) {
-                normWt[i] = weights[i] / sumWt;
-            }
-        }
-        return normWt;
     }
 
 }

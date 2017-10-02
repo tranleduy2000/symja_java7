@@ -19,8 +19,9 @@ import edu.jas.ufd.QuotientRing;
  * Container for a rational function integral, quotient version .
  * integral(num/den) = pol + sum_rat( rat_i/rat_{i+1} ) + sum_log( a_i log ( d_i
  * ) )
- * @author Heinz Kredel
+ *
  * @param <C> coefficient type
+ * @author Heinz Kredel
  */
 
 public class QuotIntegral<C extends GcdRingElem<C>> implements Serializable {
@@ -46,6 +47,7 @@ public class QuotIntegral<C extends GcdRingElem<C>> implements Serializable {
 
     /**
      * Constructor.
+     *
      * @param ri integral.
      */
     public QuotIntegral(Integral<C> ri) {
@@ -55,7 +57,8 @@ public class QuotIntegral<C extends GcdRingElem<C>> implements Serializable {
 
     /**
      * Constructor.
-     * @param r rational function QuotientRing over C.
+     *
+     * @param r  rational function QuotientRing over C.
      * @param ri integral.
      */
     public QuotIntegral(QuotientRing<C> r, Integral<C> ri) {
@@ -65,8 +68,9 @@ public class QuotIntegral<C extends GcdRingElem<C>> implements Serializable {
 
     /**
      * Constructor.
-     * @param r rational function Quotient over C.
-     * @param p integral of polynomial part.
+     *
+     * @param r   rational function Quotient over C.
+     * @param p   integral of polynomial part.
      * @param rat list of rational integrals.
      */
     public QuotIntegral(Quotient<C> r, GenPolynomial<C> p, List<GenPolynomial<C>> rat) {
@@ -76,13 +80,14 @@ public class QuotIntegral<C extends GcdRingElem<C>> implements Serializable {
 
     /**
      * Constructor.
-     * @param r rational function Quotient over C.
-     * @param p integral of polynomial part.
+     *
+     * @param r   rational function Quotient over C.
+     * @param p   integral of polynomial part.
      * @param rat list of rational integrals.
      * @param log list of logarithmic part.
      */
     public QuotIntegral(Quotient<C> r, GenPolynomial<C> p, List<GenPolynomial<C>> rat,
-            List<LogIntegral<C>> log) {
+                        List<LogIntegral<C>> log) {
         quot = r;
         QuotientRing<C> qr = r.ring;
         rational = new ArrayList<Quotient<C>>();
@@ -100,6 +105,7 @@ public class QuotIntegral<C extends GcdRingElem<C>> implements Serializable {
 
     /**
      * Get the String representation.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -139,6 +145,7 @@ public class QuotIntegral<C extends GcdRingElem<C>> implements Serializable {
 
     /**
      * Hash code for QuotIntegral.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -152,6 +159,7 @@ public class QuotIntegral<C extends GcdRingElem<C>> implements Serializable {
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -165,9 +173,9 @@ public class QuotIntegral<C extends GcdRingElem<C>> implements Serializable {
         if (b == null) {
             return false;
         }
-        return quot.equals(b.quot) && 
-               rational.equals(b.rational) && 
-               logarithm.equals(b.logarithm);
+        return quot.equals(b.quot) &&
+                rational.equals(b.rational) &&
+                logarithm.equals(b.logarithm);
     }
 
 }

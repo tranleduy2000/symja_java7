@@ -29,29 +29,36 @@ import org.hipparchus.util.MathUtils;
  * outside of the range can be passed to the interpolation function: They will
  * be wrapped into the initial range before being passed to the class that
  * actually computes the interpolation.
- *
  */
 public class UnivariatePeriodicInterpolator
-    implements UnivariateInterpolator {
-    /** Default number of extension points of the samples array. */
+        implements UnivariateInterpolator {
+    /**
+     * Default number of extension points of the samples array.
+     */
     public static final int DEFAULT_EXTEND = 5;
-    /** Interpolator. */
+    /**
+     * Interpolator.
+     */
     private final UnivariateInterpolator interpolator;
-    /** Period. */
+    /**
+     * Period.
+     */
     private final double period;
-    /** Number of extension points. */
+    /**
+     * Number of extension points.
+     */
     private final int extend;
 
     /**
      * Builds an interpolator.
      *
      * @param interpolator Interpolator.
-     * @param period Period.
-     * @param extend Number of points to be appended at the beginning and
-     * end of the sample arrays in order to avoid interpolation failure at
-     * the (periodic) boundaries of the orginal interval. The value is the
-     * number of sample points which the original {@code interpolator} needs
-     * on each side of the interpolated point.
+     * @param period       Period.
+     * @param extend       Number of points to be appended at the beginning and
+     *                     end of the sample arrays in order to avoid interpolation failure at
+     *                     the (periodic) boundaries of the orginal interval. The value is the
+     *                     number of sample points which the original {@code interpolator} needs
+     *                     on each side of the interpolated point.
      */
     public UnivariatePeriodicInterpolator(UnivariateInterpolator interpolator,
                                           double period,
@@ -67,7 +74,7 @@ public class UnivariatePeriodicInterpolator
      * of the original abscissae range.
      *
      * @param interpolator Interpolator.
-     * @param period Period.
+     * @param period       Period.
      */
     public UnivariatePeriodicInterpolator(UnivariateInterpolator interpolator,
                                           double period) {
@@ -78,15 +85,15 @@ public class UnivariatePeriodicInterpolator
      * {@inheritDoc}
      *
      * @throws MathIllegalArgumentException if the number of extension points
-     * is larger than the size of {@code xval}.
+     *                                      is larger than the size of {@code xval}.
      */
     @Override
     public UnivariateFunction interpolate(double[] xval,
                                           double[] yval)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         if (xval.length < extend) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.NUMBER_TOO_SMALL,
-                                                   xval.length, extend);
+                    xval.length, extend);
         }
 
         MathArrays.checkOrder(xval);

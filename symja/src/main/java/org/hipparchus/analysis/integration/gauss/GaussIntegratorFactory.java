@@ -16,24 +16,74 @@
  */
 package org.hipparchus.analysis.integration.gauss;
 
-import java.math.BigDecimal;
-
 import org.hipparchus.exception.MathIllegalArgumentException;
 import org.hipparchus.util.Pair;
+
+import java.math.BigDecimal;
 
 /**
  * Class that provides different ways to compute the nodes and weights to be
  * used by the {@link GaussIntegrator Gaussian integration rule}.
  */
 public class GaussIntegratorFactory {
-    /** Generator of Gauss-Legendre integrators. */
+    /**
+     * Generator of Gauss-Legendre integrators.
+     */
     private final BaseRuleFactory<Double> legendre = new LegendreRuleFactory();
-    /** Generator of Gauss-Legendre integrators. */
+    /**
+     * Generator of Gauss-Legendre integrators.
+     */
     private final BaseRuleFactory<BigDecimal> legendreHighPrecision = new LegendreHighPrecisionRuleFactory();
-    /** Generator of Gauss-Hermite integrators. */
+    /**
+     * Generator of Gauss-Hermite integrators.
+     */
     private final BaseRuleFactory<Double> hermite = new HermiteRuleFactory();
-    /** Generator of Gauss-Laguerre integrators. */
+    /**
+     * Generator of Gauss-Laguerre integrators.
+     */
     private final BaseRuleFactory<Double> laguerre = new LaguerreRuleFactory();
+
+    /**
+     * @param factory        Integration rule factory.
+     * @param numberOfPoints Order of the integration rule.
+     * @return the integration nodes and weights.
+     * @throws MathIllegalArgumentException if number of points is not positive
+     * @throws MathIllegalArgumentException if the elements of the rule pair do not
+     *                                      have the same length.
+     */
+    private static Pair<double[], double[]> getRule(BaseRuleFactory<? extends Number> factory,
+                                                    int numberOfPoints)
+            throws MathIllegalArgumentException {
+        return factory.getRule(numberOfPoints);
+    }
+
+    /**
+     * Performs a change of variable so that the integration can be performed
+     * on an arbitrary interval {@code [a, b]}.
+     * It is assumed that the natural interval is {@code [-1, 1]}.
+     *
+     * @param rule Original points and weights.
+     * @param a    Lower bound of the integration interval.
+     * @param b    Lower bound of the integration interval.
+     * @return the points and weights adapted to the new interval.
+     */
+    private static Pair<double[], double[]> transform(Pair<double[], double[]> rule,
+                                                      double a,
+                                                      double b) {
+        final double[] points = rule.getFirst();
+        final double[] weights = rule.getSecond();
+
+        // Scaling
+        final double scale = (b - a) / 2;
+        final double shift = a + scale;
+
+        for (int i = 0; i < points.length; i++) {
+            points[i] = points[i] * scale + shift;
+            weights[i] *= scale;
+        }
+
+        return new Pair<double[], double[]>(points, weights);
+    }
 
     /**
      * Creates a Gauss-Laguerre integrator of the given order.
@@ -74,17 +124,17 @@ public class GaussIntegratorFactory {
      * integrate} method will perform an integration on the given interval.
      *
      * @param numberOfPoints Order of the integration rule.
-     * @param lowerBound Lower bound of the integration interval.
-     * @param upperBound Upper bound of the integration interval.
+     * @param lowerBound     Lower bound of the integration interval.
+     * @param upperBound     Upper bound of the integration interval.
      * @return a Gauss-Legendre integrator.
      * @throws MathIllegalArgumentException if number of points is not positive
      */
     public GaussIntegrator legendre(int numberOfPoints,
                                     double lowerBound,
                                     double upperBound)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         return new GaussIntegrator(transform(getRule(legendre, numberOfPoints),
-                                             lowerBound, upperBound));
+                lowerBound, upperBound));
     }
 
     /**
@@ -99,7 +149,7 @@ public class GaussIntegratorFactory {
      * @throws MathIllegalArgumentException if number of points is not positive
      */
     public GaussIntegrator legendreHighPrecision(int numberOfPoints)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         return new GaussIntegrator(getRule(legendreHighPrecision, numberOfPoints));
     }
 
@@ -109,17 +159,17 @@ public class GaussIntegratorFactory {
      * integrate} method will perform an integration on the given interval.
      *
      * @param numberOfPoints Order of the integration rule.
-     * @param lowerBound Lower bound of the integration interval.
-     * @param upperBound Upper bound of the integration interval.
+     * @param lowerBound     Lower bound of the integration interval.
+     * @param upperBound     Upper bound of the integration interval.
      * @return a Gauss-Legendre integrator.
      * @throws MathIllegalArgumentException if number of points is not positive
      */
     public GaussIntegrator legendreHighPrecision(int numberOfPoints,
                                                  double lowerBound,
                                                  double upperBound)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         return new GaussIntegrator(transform(getRule(legendreHighPrecision, numberOfPoints),
-                                             lowerBound, upperBound));
+                lowerBound, upperBound));
     }
 
     /**
@@ -138,47 +188,5 @@ public class GaussIntegratorFactory {
      */
     public SymmetricGaussIntegrator hermite(int numberOfPoints) {
         return new SymmetricGaussIntegrator(getRule(hermite, numberOfPoints));
-    }
-
-    /**
-     * @param factory Integration rule factory.
-     * @param numberOfPoints Order of the integration rule.
-     * @return the integration nodes and weights.
-     * @throws MathIllegalArgumentException if number of points is not positive
-     * @throws MathIllegalArgumentException if the elements of the rule pair do not
-     * have the same length.
-     */
-    private static Pair<double[], double[]> getRule(BaseRuleFactory<? extends Number> factory,
-                                                    int numberOfPoints)
-        throws MathIllegalArgumentException {
-        return factory.getRule(numberOfPoints);
-    }
-
-    /**
-     * Performs a change of variable so that the integration can be performed
-     * on an arbitrary interval {@code [a, b]}.
-     * It is assumed that the natural interval is {@code [-1, 1]}.
-     *
-     * @param rule Original points and weights.
-     * @param a Lower bound of the integration interval.
-     * @param b Lower bound of the integration interval.
-     * @return the points and weights adapted to the new interval.
-     */
-    private static Pair<double[], double[]> transform(Pair<double[], double[]> rule,
-                                                      double a,
-                                                      double b) {
-        final double[] points = rule.getFirst();
-        final double[] weights = rule.getSecond();
-
-        // Scaling
-        final double scale = (b - a) / 2;
-        final double shift = a + scale;
-
-        for (int i = 0; i < points.length; i++) {
-            points[i] = points[i] * scale + shift;
-            weights[i] *= scale;
-        }
-
-        return new Pair<double[], double[]>(points, weights);
     }
 }

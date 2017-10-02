@@ -16,6 +16,7 @@ import edu.jas.structure.RingElem;
 /**
  * Polynomial Reduction interface. Defines S-Polynomial, normalform, criterion
  * 4, module criterion and irreducible set.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
@@ -25,31 +26,34 @@ public interface Reduction<C extends RingElem<C>> extends Serializable {
 
     /**
      * S-Polynomial.
+     *
      * @param Ap polynomial.
      * @param Bp polynomial.
-     * @return spol(Ap,Bp) the S-polynomial of Ap and Bp.
+     * @return spol(Ap, Bp) the S-polynomial of Ap and Bp.
      */
     public GenPolynomial<C> SPolynomial(GenPolynomial<C> Ap, GenPolynomial<C> Bp);
 
 
     /**
      * S-Polynomial with recording.
-     * @param S recording matrix, is modified.
-     * @param i index of Ap in basis list.
+     *
+     * @param S  recording matrix, is modified.
+     * @param i  index of Ap in basis list.
      * @param Ap a polynomial.
-     * @param j index of Bp in basis list.
+     * @param j  index of Bp in basis list.
      * @param Bp a polynomial.
      * @return Spol(Ap, Bp), the S-Polynomial for Ap and Bp.
      */
     public GenPolynomial<C> SPolynomial(List<GenPolynomial<C>> S, int i, GenPolynomial<C> Ap, int j,
-                    GenPolynomial<C> Bp);
+                                        GenPolynomial<C> Bp);
 
 
     /**
      * Module criterium.
+     *
      * @param modv number of module variables.
-     * @param A polynomial.
-     * @param B polynomial.
+     * @param A    polynomial.
+     * @param B    polynomial.
      * @return true if the module S-polynomial(i,j) is required.
      */
     public boolean moduleCriterion(int modv, GenPolynomial<C> A, GenPolynomial<C> B);
@@ -57,9 +61,10 @@ public interface Reduction<C extends RingElem<C>> extends Serializable {
 
     /**
      * Module criterium.
+     *
      * @param modv number of module variables.
-     * @param ei ExpVector.
-     * @param ej ExpVector.
+     * @param ei   ExpVector.
+     * @param ej   ExpVector.
      * @return true if the module S-polynomial(i,j) is required.
      */
     public boolean moduleCriterion(int modv, ExpVector ei, ExpVector ej);
@@ -67,6 +72,7 @@ public interface Reduction<C extends RingElem<C>> extends Serializable {
 
     /**
      * GB criterium 4. Use only for commutative polynomial rings.
+     *
      * @param A polynomial.
      * @param B polynomial.
      * @param e = lcm(ht(A),ht(B))
@@ -77,6 +83,7 @@ public interface Reduction<C extends RingElem<C>> extends Serializable {
 
     /**
      * GB criterium 4. Use only for commutative polynomial rings.
+     *
      * @param A polynomial.
      * @param B polynomial.
      * @return true if the S-polynomial(i,j) is required, else false.
@@ -86,9 +93,10 @@ public interface Reduction<C extends RingElem<C>> extends Serializable {
 
     /**
      * GB criterium 4.
+     *
      * @param ei exponent vector.
      * @param ej exponent vector.
-     * @param e = lcm(ei,ej)
+     * @param e  = lcm(ei,ej)
      * @return true if the S-polynomial(i,j) is required, else false.
      */
     public boolean criterion4(ExpVector ei, ExpVector ej, ExpVector e);
@@ -96,6 +104,7 @@ public interface Reduction<C extends RingElem<C>> extends Serializable {
 
     /**
      * Is top reducible. Condition is lt(B) | lt(A) for some B in F.
+     *
      * @param A polynomial.
      * @param P polynomial list.
      * @return true if A is top reducible with respect to P.
@@ -105,6 +114,7 @@ public interface Reduction<C extends RingElem<C>> extends Serializable {
 
     /**
      * Is reducible.
+     *
      * @param A polynomial.
      * @param P polynomial list.
      * @return true if A is reducible with respect to P.
@@ -114,6 +124,7 @@ public interface Reduction<C extends RingElem<C>> extends Serializable {
 
     /**
      * Is in Normalform.
+     *
      * @param A polynomial.
      * @param P polynomial list.
      * @return true if A is in normalform with respect to P.
@@ -123,6 +134,7 @@ public interface Reduction<C extends RingElem<C>> extends Serializable {
 
     /**
      * Is in Normalform.
+     *
      * @param Pp polynomial list.
      * @return true if each A in Pp is in normalform with respect to Pp\{A}.
      */
@@ -131,6 +143,7 @@ public interface Reduction<C extends RingElem<C>> extends Serializable {
 
     /**
      * Normalform.
+     *
      * @param A polynomial.
      * @param P polynomial list.
      * @return nf(A) with respect to P.
@@ -140,6 +153,7 @@ public interface Reduction<C extends RingElem<C>> extends Serializable {
 
     /**
      * Normalform Set.
+     *
      * @param Ap polynomial list.
      * @param Pp polynomial list.
      * @return list of nf(a) with respect to Pp for all a in Ap.
@@ -149,34 +163,37 @@ public interface Reduction<C extends RingElem<C>> extends Serializable {
 
     /**
      * Normalform with recording.
+     *
      * @param row recording matrix, is modified.
-     * @param Pp a polynomial list for reduction.
-     * @param Ap a polynomial.
-     * @return nf(Pp,Ap), the normal form of Ap wrt. Pp.
+     * @param Pp  a polynomial list for reduction.
+     * @param Ap  a polynomial.
+     * @return nf(Pp, Ap), the normal form of Ap wrt. Pp.
      */
     public GenPolynomial<C> normalform(List<GenPolynomial<C>> row, List<GenPolynomial<C>> Pp,
-                    GenPolynomial<C> Ap);
+                                       GenPolynomial<C> Ap);
 
 
     /**
      * Irreducible set.
+     *
      * @param Pp polynomial list.
      * @return a list P of polynomials which are in normalform wrt. P and with
-     *         ideal(Pp) = ideal(P).
+     * ideal(Pp) = ideal(P).
      */
     public List<GenPolynomial<C>> irreducibleSet(List<GenPolynomial<C>> Pp);
 
 
     /**
      * Is reduction of normal form.
+     *
      * @param row recording matrix, is modified.
-     * @param Pp a polynomial list for reduction.
-     * @param Ap a polynomial.
-     * @param Np nf(Pp,Ap), a normal form of Ap wrt. Pp.
+     * @param Pp  a polynomial list for reduction.
+     * @param Ap  a polynomial.
+     * @param Np  nf(Pp,Ap), a normal form of Ap wrt. Pp.
      * @return true, if Np + sum( row[i]*Pp[i] ) == Ap, else false.
      */
 
     public boolean isReductionNF(List<GenPolynomial<C>> row, List<GenPolynomial<C>> Pp, GenPolynomial<C> Ap,
-                    GenPolynomial<C> Np);
+                                 GenPolynomial<C> Np);
 
 }

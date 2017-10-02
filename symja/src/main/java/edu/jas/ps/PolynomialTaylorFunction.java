@@ -15,6 +15,7 @@ import edu.jas.structure.RingElem;
 
 /**
  * Polynomial functions capable for Taylor series expansion.
+ *
  * @param <C> ring element type
  * @author Heinz Kredel
  */
@@ -41,6 +42,7 @@ public class PolynomialTaylorFunction<C extends RingElem<C>> implements TaylorFu
 
     /**
      * To String.
+     *
      * @return string representation of this.
      */
     @Override
@@ -51,6 +53,7 @@ public class PolynomialTaylorFunction<C extends RingElem<C>> implements TaylorFu
 
     /**
      * Get the factorial coefficient.
+     *
      * @return factorial coefficient.
      */
     @Override
@@ -61,6 +64,7 @@ public class PolynomialTaylorFunction<C extends RingElem<C>> implements TaylorFu
 
     /**
      * Test if this is zero.
+     *
      * @return true if this is 0, else false.
      */
     public boolean isZERO() {
@@ -70,11 +74,12 @@ public class PolynomialTaylorFunction<C extends RingElem<C>> implements TaylorFu
 
     /**
      * Deriviative.
+     *
      * @return deriviative of this.
      */
     @Override
     public TaylorFunction<C> deriviative() {
-        return new PolynomialTaylorFunction<C>(PolyUtil.<C> baseDeriviative(pol));
+        return new PolynomialTaylorFunction<C>(PolyUtil.<C>baseDeriviative(pol));
     }
 
 
@@ -90,6 +95,7 @@ public class PolynomialTaylorFunction<C extends RingElem<C>> implements TaylorFu
 
     /**
      * Multi-partial deriviative.
+     *
      * @param i exponent vector.
      * @return partial deriviative of this with respect to all variables.
      */
@@ -106,7 +112,7 @@ public class PolynomialTaylorFunction<C extends RingElem<C>> implements TaylorFu
             }
             int jl = i.length() - 1 - j;
             for (long k = 0; k < e; k++) {
-                p = PolyUtil.<C> baseDeriviative(p, jl);
+                p = PolyUtil.<C>baseDeriviative(p, jl);
                 f *= (k + 1);
                 if (p.isZERO()) {
                     return new PolynomialTaylorFunction<C>(p, f);
@@ -120,22 +126,24 @@ public class PolynomialTaylorFunction<C extends RingElem<C>> implements TaylorFu
 
     /**
      * Evaluate.
+     *
      * @param a element.
      * @return this(a).
      */
     @Override
     public C evaluate(C a) {
-        return PolyUtil.<C> evaluateMain(pol.ring.coFac, pol, a);
+        return PolyUtil.<C>evaluateMain(pol.ring.coFac, pol, a);
     }
 
 
     /**
      * Evaluate at a tuple of elements.
+     *
      * @param a tuple of elements.
      * @return this(a).
      */
     public C evaluate(List<C> a) {
-        return PolyUtil.<C> evaluateAll(pol.ring.coFac, pol, a);
+        return PolyUtil.<C>evaluateAll(pol.ring.coFac, pol, a);
     }
 
 }

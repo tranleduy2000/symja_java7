@@ -19,12 +19,13 @@ package org.hipparchus.linear;
 /**
  * Marker class for RealVectors that require sparse backing storage
  * <p>
- *  Caveat: Implementation are allowed to assume that, for any {@code x},
- *  the equality {@code x * 0d == 0d} holds. But it is is not true for
- *  {@code NaN}. Moreover, zero entries will lose their sign.
- *  Some operations (that involve {@code NaN} and/or infinities) may
- *  thus give incorrect results, like multiplications, divisions or
- *  functions mapping.
+ * Caveat: Implementation are allowed to assume that, for any {@code x},
+ * the equality {@code x * 0d == 0d} holds. But it is is not true for
+ * {@code NaN}. Moreover, zero entries will lose their sign.
+ * Some operations (that involve {@code NaN} and/or infinities) may
+ * thus give incorrect results, like multiplications, divisions or
+ * functions mapping.
  * </p>
  */
-public abstract class SparseRealVector extends RealVector {}
+public abstract class SparseRealVector extends RealVector {
+}

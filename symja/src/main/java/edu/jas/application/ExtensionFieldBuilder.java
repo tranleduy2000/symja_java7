@@ -29,6 +29,7 @@ import edu.jas.ufd.QuotientRing;
 
 /**
  * Builder for extension field towers.
+ *
  * @author Heinz Kredel
  */
 public class ExtensionFieldBuilder implements Serializable {
@@ -50,12 +51,21 @@ public class ExtensionFieldBuilder implements Serializable {
 
     /**
      * Constructor.
+     *
      * @param base the base field.
      */
     public ExtensionFieldBuilder(RingFactory base) {
         factory = base;
     }
 
+    /**
+     * Set base field.
+     *
+     * @param base the base field for the extensions.
+     */
+    public static ExtensionFieldBuilder baseField(RingFactory base) {
+        return new ExtensionFieldBuilder(base);
+    }
 
     /**
      * Build the field tower. TODO: build at the end and optimize field tower
@@ -65,18 +75,9 @@ public class ExtensionFieldBuilder implements Serializable {
         return factory;
     }
 
-
-    /**
-     * Set base field.
-     * @param base the base field for the extensions.
-     */
-    public static ExtensionFieldBuilder baseField(RingFactory base) {
-        return new ExtensionFieldBuilder(base);
-    }
-
-
     /**
      * Transcendent field extension.
+     *
      * @param vars names for the transcendent generators.
      */
     @SuppressWarnings("cast")
@@ -91,6 +92,7 @@ public class ExtensionFieldBuilder implements Serializable {
 
     /**
      * Polynomial ring extension.
+     *
      * @param vars names for the polynomial ring generators.
      */
     @SuppressWarnings("cast")
@@ -104,9 +106,10 @@ public class ExtensionFieldBuilder implements Serializable {
 
     /**
      * Algebraic field extension.
-     * @param var name(s) for the algebraic generator(s).
+     *
+     * @param var  name(s) for the algebraic generator(s).
      * @param expr generating expresion, a univariate or multivariate polynomial
-     *            in vars.
+     *             in vars.
      */
     @SuppressWarnings("cast")
     public ExtensionFieldBuilder algebraicExtension(String var, String expr) {
@@ -149,13 +152,14 @@ public class ExtensionFieldBuilder implements Serializable {
 
     /**
      * Real algebraic field extension.
-     * @param var name for the algebraic generator.
+     *
+     * @param var  name for the algebraic generator.
      * @param expr generating expresion, a univariate polynomial in var.
      * @param root isolating interval for a real root.
      */
     @SuppressWarnings("cast")
     public ExtensionFieldBuilder realAlgebraicExtension(String var, String expr, String root) {
-        String[] variables = new String[] { var };
+        String[] variables = new String[]{var};
         RingElem one = (RingElem) factory.getONE();
         if (!(one instanceof Rational)) {
             throw new IllegalArgumentException("base field not instance of Rational");
@@ -174,13 +178,14 @@ public class ExtensionFieldBuilder implements Serializable {
 
     /**
      * Complex algebraic field extension.
-     * @param var name for the algebraic generator.
+     *
+     * @param var  name for the algebraic generator.
      * @param expr generating expresion, a univariate polynomial in var.
      * @param root isolating rectangle for a complex root.
      */
     @SuppressWarnings("cast")
     public ExtensionFieldBuilder complexAlgebraicExtension(String var, String expr, String root) {
-        String[] variables = new String[] { var };
+        String[] variables = new String[]{var};
         RingElem one = (RingElem) factory.getONE();
         if (!(one instanceof Complex)) {
             throw new IllegalArgumentException("base field not instance of Complex");
@@ -200,6 +205,7 @@ public class ExtensionFieldBuilder implements Serializable {
 
     /**
      * String representation of the ideal.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -213,6 +219,7 @@ public class ExtensionFieldBuilder implements Serializable {
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this Element.
      * @see edu.jas.structure.Element#toScript()
      */

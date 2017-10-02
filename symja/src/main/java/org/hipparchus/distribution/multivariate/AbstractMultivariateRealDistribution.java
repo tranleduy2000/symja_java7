@@ -25,15 +25,19 @@ import org.hipparchus.random.RandomGenerator;
  * Base class for multivariate probability distributions.
  */
 public abstract class AbstractMultivariateRealDistribution
-    implements MultivariateRealDistribution {
-    /** RNG instance used to generate samples from the distribution. */
+        implements MultivariateRealDistribution {
+    /**
+     * RNG instance used to generate samples from the distribution.
+     */
     protected final RandomGenerator random;
-    /** The number of dimensions or columns in the multivariate distribution. */
+    /**
+     * The number of dimensions or columns in the multivariate distribution.
+     */
     private final int dimension;
 
     /**
      * @param rng Random number generator.
-     * @param n Number of dimensions.
+     * @param n   Number of dimensions.
      */
     protected AbstractMultivariateRealDistribution(RandomGenerator rng,
                                                    int n) {
@@ -41,28 +45,36 @@ public abstract class AbstractMultivariateRealDistribution
         dimension = n;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void reseedRandomGenerator(long seed) {
         random.setSeed(seed);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getDimension() {
         return dimension;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public abstract double[] sample();
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double[][] sample(final int sampleSize) {
         if (sampleSize <= 0) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.NUMBER_OF_SAMPLES,
-                                                   sampleSize);
+                    sampleSize);
         }
         final double[][] out = new double[sampleSize][dimension];
         for (int i = 0; i < sampleSize; i++) {

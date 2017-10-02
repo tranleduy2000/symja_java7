@@ -21,10 +21,11 @@ import org.hipparchus.optim.OptimizationData;
 
 /**
  * Scalar function to be optimized.
- *
  */
 public class UnivariateObjectiveFunction implements OptimizationData {
-    /** Function to be optimized. */
+    /**
+     * Function to be optimized.
+     */
     private final UnivariateFunction function;
 
     /**

@@ -29,13 +29,21 @@ import org.hipparchus.util.MathUtils;
  * Triangular distribution (Wikipedia)</a>
  */
 public class TriangularDistribution extends AbstractRealDistribution {
-    /** Serializable version identifier. */
+    /**
+     * Serializable version identifier.
+     */
     private static final long serialVersionUID = 20120112L;
-    /** Lower limit of this distribution (inclusive). */
+    /**
+     * Lower limit of this distribution (inclusive).
+     */
     private final double a;
-    /** Upper limit of this distribution (inclusive). */
+    /**
+     * Upper limit of this distribution (inclusive).
+     */
     private final double b;
-    /** Mode of this distribution. */
+    /**
+     * Mode of this distribution.
+     */
     private final double c;
 
     /**
@@ -49,13 +57,13 @@ public class TriangularDistribution extends AbstractRealDistribution {
      * @throws MathIllegalArgumentException if {@code c < a}.
      */
     public TriangularDistribution(double a, double c, double b)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         super();
 
         if (a >= b) {
             throw new MathIllegalArgumentException(
-                            LocalizedCoreFormats.LOWER_BOUND_NOT_BELOW_UPPER_BOUND,
-                            a, b, false);
+                    LocalizedCoreFormats.LOWER_BOUND_NOT_BELOW_UPPER_BOUND,
+                    a, b, false);
         }
         if (c < a) {
             throw new MathIllegalArgumentException(
@@ -82,7 +90,7 @@ public class TriangularDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * For lower limit {@code a}, upper limit {@code b} and mode {@code c}, the
      * PDF is given by
      * <ul>
@@ -115,7 +123,7 @@ public class TriangularDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * For lower limit {@code a}, upper limit {@code b} and mode {@code c}, the
      * CDF is given by
      * <ul>
@@ -127,7 +135,7 @@ public class TriangularDistribution extends AbstractRealDistribution {
      * </ul>
      */
     @Override
-    public double cumulativeProbability(double x)  {
+    public double cumulativeProbability(double x) {
         if (x < a) {
             return 0;
         }
@@ -149,7 +157,7 @@ public class TriangularDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * For lower limit {@code a}, upper limit {@code b}, and mode {@code c},
      * the mean is {@code (a + b + c) / 3}.
      */
@@ -160,7 +168,7 @@ public class TriangularDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * For lower limit {@code a}, upper limit {@code b}, and mode {@code c},
      * the variance is {@code (a^2 + b^2 + c^2 - a * b - a * c - b * c) / 18}.
      */
@@ -171,7 +179,7 @@ public class TriangularDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The lower bound of the support is equal to the lower limit parameter
      * {@code a} of the distribution.
      *
@@ -184,7 +192,7 @@ public class TriangularDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The upper bound of the support is equal to the upper limit parameter
      * {@code b} of the distribution.
      *
@@ -197,7 +205,7 @@ public class TriangularDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The support of this distribution is connected.
      *
      * @return {@code true}
@@ -207,10 +215,12 @@ public class TriangularDistribution extends AbstractRealDistribution {
         return true;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double inverseCumulativeProbability(double p)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         MathUtils.checkRangeInclusive(p, 0, 1);
 
         if (p == 0) {

@@ -5,10 +5,10 @@
 package edu.jas.arith;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.List;
 import java.util.Random;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.structure.GcdRingElem;
 import edu.jas.structure.StarRingElem;
@@ -20,58 +20,46 @@ import edu.jas.structure.StarRingElem;
  * immutable. The integer quaternion methods are implemented after
  * https://de.wikipedia.org/wiki/Hurwitzquaternion see also
  * https://en.wikipedia.org/wiki/Hurwitz_quaternion
+ *
  * @author Heinz Kredel
  */
 
 public /*final*/ class BigQuaternion implements StarRingElem<BigQuaternion>, GcdRingElem<BigQuaternion> {
 
 
+    protected final static Random random = new Random();
+    private static final Logger logger = Logger.getLogger(BigQuaternion.class);
+    private static final boolean debug = logger.isDebugEnabled();
     /**
      * Real part of the data structure.
      */
     public final BigRational re; // real part
-
-
     /**
      * Imaginary part i of the data structure.
      */
     public final BigRational im; // i imaginary part
-
-
     /**
      * Imaginary part j of the data structure.
      */
     public final BigRational jm; // j imaginary part
-
-
     /**
      * Imaginary part k of the data structure.
      */
     public final BigRational km; // k imaginary part
-
-
     /**
      * Corresponding BigQuaternion ring.
      */
     public final BigQuaternionRing ring;
 
 
-    protected final static Random random = new Random();
-
-
-    private static final Logger logger = Logger.getLogger(BigQuaternion.class);
-
-
-    private static final boolean debug = logger.isDebugEnabled();
-
-
     /**
      * Constructor for a BigQuaternion from BigRationals.
+     *
      * @param fac BigQuaternionRing.
-     * @param r BigRational.
-     * @param i BigRational.
-     * @param j BigRational.
-     * @param k BigRational.
+     * @param r   BigRational.
+     * @param i   BigRational.
+     * @param j   BigRational.
+     * @param k   BigRational.
      */
     public BigQuaternion(BigQuaternionRing fac, BigRational r, BigRational i, BigRational j, BigRational k) {
         ring = fac;
@@ -84,10 +72,11 @@ public /*final*/ class BigQuaternion implements StarRingElem<BigQuaternion>, Gcd
 
     /**
      * Constructor for a BigQuaternion from BigRationals.
+     *
      * @param fac BigQuaternionRing.
-     * @param r BigRational.
-     * @param i BigRational.
-     * @param j BigRational.
+     * @param r   BigRational.
+     * @param i   BigRational.
+     * @param j   BigRational.
      */
     public BigQuaternion(BigQuaternionRing fac, BigRational r, BigRational i, BigRational j) {
         this(fac, r, i, j, BigRational.ZERO);
@@ -96,9 +85,10 @@ public /*final*/ class BigQuaternion implements StarRingElem<BigQuaternion>, Gcd
 
     /**
      * Constructor for a BigQuaternion from BigRationals.
+     *
      * @param fac BigQuaternionRing.
-     * @param r BigRational.
-     * @param i BigRational.
+     * @param r   BigRational.
+     * @param i   BigRational.
      */
     public BigQuaternion(BigQuaternionRing fac, BigRational r, BigRational i) {
         this(fac, r, i, BigRational.ZERO);
@@ -107,8 +97,9 @@ public /*final*/ class BigQuaternion implements StarRingElem<BigQuaternion>, Gcd
 
     /**
      * Constructor for a BigQuaternion from BigRationals.
+     *
      * @param fac BigQuaternionRing.
-     * @param r BigRational.
+     * @param r   BigRational.
      */
     public BigQuaternion(BigQuaternionRing fac, BigRational r) {
         this(fac, r, BigRational.ZERO);
@@ -117,8 +108,9 @@ public /*final*/ class BigQuaternion implements StarRingElem<BigQuaternion>, Gcd
 
     /**
      * Constructor for a BigQuaternion from BigComplex.
+     *
      * @param fac BigQuaternionRing.
-     * @param r BigComplex.
+     * @param r   BigComplex.
      */
     public BigQuaternion(BigQuaternionRing fac, BigComplex r) {
         this(fac, r.re, r.im);
@@ -127,8 +119,9 @@ public /*final*/ class BigQuaternion implements StarRingElem<BigQuaternion>, Gcd
 
     /**
      * Constructor for a BigQuaternion from long.
+     *
      * @param fac BigQuaternionRing.
-     * @param r long.
+     * @param r   long.
      */
     public BigQuaternion(BigQuaternionRing fac, long r) {
         this(fac, new BigRational(r), BigRational.ZERO);
@@ -137,6 +130,7 @@ public /*final*/ class BigQuaternion implements StarRingElem<BigQuaternion>, Gcd
 
     /**
      * Constructor for a BigQuaternion with no arguments.
+     *
      * @param fac BigQuaternionRing.
      */
     public BigQuaternion(BigQuaternionRing fac) {
@@ -148,8 +142,9 @@ public /*final*/ class BigQuaternion implements StarRingElem<BigQuaternion>, Gcd
      * The BigQuaternion string constructor accepts the following formats: empty
      * string, "rational", or "rat i rat j rat k rat" with no blanks around i, j
      * or k if used as polynoial coefficient.
+     *
      * @param fac BigQuaternionRing.
-     * @param s String.
+     * @param s   String.
      * @throws NumberFormatException
      */
     public BigQuaternion(BigQuaternionRing fac, String s) throws NumberFormatException {
@@ -212,9 +207,134 @@ public /*final*/ class BigQuaternion implements StarRingElem<BigQuaternion>, Gcd
         km = new BigRational(sk.trim());
     }
 
+    /**
+     * Is Quaternion number zero.
+     *
+     * @param A BigQuaternion.
+     * @return true if A is 0, else false.
+     */
+    public static boolean isQZERO(BigQuaternion A) {
+        if (A == null)
+            return false;
+        return A.isZERO();
+    }
+
+    /**
+     * Is BigQuaternion number one.
+     *
+     * @param A is a quaternion number.
+     * @return true if A is 1, else false.
+     */
+    public static boolean isQONE(BigQuaternion A) {
+        if (A == null)
+            return false;
+        return A.isONE();
+    }
+
+    /**
+     * Quaternion number sum.
+     *
+     * @param A BigQuaternion.
+     * @param B BigQuaternion.
+     * @return A+B.
+     */
+    public static BigQuaternion QSUM(BigQuaternion A, BigQuaternion B) {
+        if (A == null)
+            return null;
+        return A.sum(B);
+    }
+
+    /**
+     * Quaternion number difference.
+     *
+     * @param A BigQuaternion.
+     * @param B BigQuaternion.
+     * @return A-B.
+     */
+    public static BigQuaternion QDIF(BigQuaternion A, BigQuaternion B) {
+        if (A == null)
+            return null;
+        return A.subtract(B);
+    }
+
+    /**
+     * Quaternion number negative.
+     *
+     * @param A is a quaternion number
+     * @return -A.
+     */
+    public static BigQuaternion QNEG(BigQuaternion A) {
+        if (A == null)
+            return null;
+        return A.negate();
+    }
+
+    /**
+     * Quaternion number conjugate.
+     *
+     * @param A is a quaternion number.
+     * @return the quaternion conjugate of A.
+     */
+    public static BigQuaternion QCON(BigQuaternion A) {
+        if (A == null)
+            return null;
+        return A.conjugate();
+    }
+
+    /**
+     * Quaternion number absolute value.
+     *
+     * @param A is a quaternion number.
+     * @return the absolute value of A, a rational number. Note: The square root
+     * is not jet implemented.
+     */
+    public static BigRational QABS(BigQuaternion A) {
+        if (A == null)
+            return null;
+        return A.abs().re;
+    }
+
+    /**
+     * Quaternion number product.
+     *
+     * @param A BigQuaternion.
+     * @param B BigQuaternion.
+     * @return A*B.
+     */
+    public static BigQuaternion QPROD(BigQuaternion A, BigQuaternion B) {
+        if (A == null)
+            return null;
+        return A.multiply(B);
+    }
+
+    /**
+     * Quaternion number inverse.
+     *
+     * @param A is a non-zero quaternion number.
+     * @return S with S * A = A * S = 1.
+     */
+    public static BigQuaternion QINV(BigQuaternion A) {
+        if (A == null)
+            return null;
+        return A.inverse();
+    }
+
+    /**
+     * Quaternion number quotient.
+     *
+     * @param A BigQuaternion.
+     * @param B BigQuaternion.
+     * @return R/S.
+     */
+    public static BigQuaternion QQ(BigQuaternion A, BigQuaternion B) {
+        if (A == null)
+            return null;
+        return A.divide(B);
+    }
 
     /**
      * Get the corresponding element factory.
+     *
      * @return factory for this Element.
      * @see edu.jas.structure.Element#factory()
      */
@@ -222,9 +342,9 @@ public /*final*/ class BigQuaternion implements StarRingElem<BigQuaternion>, Gcd
         return ring;
     }
 
-
     /**
      * Clone this.
+     *
      * @see java.lang.Object#clone()
      */
     @Override
@@ -232,45 +352,45 @@ public /*final*/ class BigQuaternion implements StarRingElem<BigQuaternion>, Gcd
         return new BigQuaternion(ring, re, im, jm, km);
     }
 
-
     /**
      * Get the real part.
+     *
      * @return re.
      */
     public BigRational getRe() {
         return re;
     }
 
-
     /**
      * Get the imaginary part im.
+     *
      * @return im.
      */
     public BigRational getIm() {
         return im;
     }
 
-
     /**
      * Get the imaginary part jm.
+     *
      * @return jm.
      */
     public BigRational getJm() {
         return jm;
     }
 
-
     /**
      * Get the imaginary part km.
+     *
      * @return km.
      */
     public BigRational getKm() {
         return km;
     }
 
-
     /**
      * Get the string representation. Is compatible with the string constructor.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -291,13 +411,13 @@ public /*final*/ class BigQuaternion implements StarRingElem<BigQuaternion>, Gcd
         sb.append("j" + jm);
         sb.append("k" + km);
         String s = sb.toString();
-        //s = s.replaceAll("-","~"); 
+        //s = s.replaceAll("-","~");
         return s;
     }
 
-
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this Element.
      * @see edu.jas.structure.Element#toScript()
      */
@@ -354,9 +474,9 @@ public /*final*/ class BigQuaternion implements StarRingElem<BigQuaternion>, Gcd
         return s.toString();
     }
 
-
     /**
      * Get a scripting compatible string representation of the factory.
+     *
      * @return script compatible representation for this ElemFactory.
      * @see edu.jas.structure.Element#toScriptFactory()
      */
@@ -366,21 +486,9 @@ public /*final*/ class BigQuaternion implements StarRingElem<BigQuaternion>, Gcd
         return ring.toScript();
     }
 
-
-    /**
-     * Is Quaternion number zero.
-     * @param A BigQuaternion.
-     * @return true if A is 0, else false.
-     */
-    public static boolean isQZERO(BigQuaternion A) {
-        if (A == null)
-            return false;
-        return A.isZERO();
-    }
-
-
     /**
      * Is BigQuaternion number zero.
+     *
      * @return true if this is 0, else false.
      * @see edu.jas.structure.RingElem#isZERO()
      */
@@ -389,39 +497,31 @@ public /*final*/ class BigQuaternion implements StarRingElem<BigQuaternion>, Gcd
     }
 
 
-    /**
-     * Is BigQuaternion number one.
-     * @param A is a quaternion number.
-     * @return true if A is 1, else false.
+    /* arithmetic operations: +, -, -
      */
-    public static boolean isQONE(BigQuaternion A) {
-        if (A == null)
-            return false;
-        return A.isONE();
-    }
-
 
     /**
      * Is BigQuaternion number one.
-     * @see edu.jas.structure.RingElem#isONE()
+     *
      * @return true if this is 1, else false.
+     * @see edu.jas.structure.RingElem#isONE()
      */
     public boolean isONE() {
         return re.isONE() && im.isZERO() && jm.isZERO() && km.isZERO();
     }
 
-
     /**
      * Is BigQuaternion imaginary one.
+     *
      * @return true if this is i, else false.
      */
     public boolean isIMAG() {
         return re.isZERO() && im.isONE() && jm.isZERO() && km.isZERO();
     }
 
-
     /**
      * Is BigQuaternion unit element.
+     *
      * @return If this is a unit then true is returned, else false.
      * @see edu.jas.structure.RingElem#isUnit()
      */
@@ -432,11 +532,11 @@ public /*final*/ class BigQuaternion implements StarRingElem<BigQuaternion>, Gcd
         return !isZERO();
     }
 
-
     /**
      * Is BigQuaternion entier element.
+     *
      * @return If this is an integer Hurwitz element then true is returned, else
-     *         false.
+     * false.
      */
     public boolean isEntier() {
         if (re.isEntier() && im.isEntier() && jm.isEntier() && km.isEntier()) {
@@ -446,9 +546,9 @@ public /*final*/ class BigQuaternion implements StarRingElem<BigQuaternion>, Gcd
         return re.den.equals(TWO) && im.den.equals(TWO) && jm.den.equals(TWO) && km.den.equals(TWO);
     }
 
-
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -461,9 +561,9 @@ public /*final*/ class BigQuaternion implements StarRingElem<BigQuaternion>, Gcd
         return re.equals(B.re) && im.equals(B.im) && jm.equals(B.jm) && km.equals(B.km);
     }
 
-
     /**
      * Hash code for this BigQuaternion.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -475,10 +575,10 @@ public /*final*/ class BigQuaternion implements StarRingElem<BigQuaternion>, Gcd
         return h;
     }
 
-
     /**
      * Since quaternion numbers are unordered, we use lexicographical order of
      * re, im, jm and km.
+     *
      * @param b BigQuaternion.
      * @return 0 if b is equal to this, 1 if this is greater b and -1 else.
      */
@@ -500,11 +600,15 @@ public /*final*/ class BigQuaternion implements StarRingElem<BigQuaternion>, Gcd
     }
 
 
+    /* arithmetic operations: conjugate, absolute value 
+     */
+
     /**
      * Since quaternion numbers are unordered, we use lexicographical order of
      * re, im, jm and km.
+     *
      * @return 0 if this is equal to 0; 1 if re > 0, or re == 0 and im > 0, or
-     *         ...; -1 if re < 0, or re == 0 and im < 0, or ...
+     * ...; -1 if re < 0, or re == 0 and im < 0, or ...
      * @see edu.jas.structure.RingElem#signum()
      */
     public int signum() {
@@ -523,12 +627,9 @@ public /*final*/ class BigQuaternion implements StarRingElem<BigQuaternion>, Gcd
         return km.signum();
     }
 
-
-    /* arithmetic operations: +, -, -
-     */
-
     /**
      * BigQuaternion summation.
+     *
      * @param B BigQuaternion.
      * @return this+B.
      */
@@ -536,58 +637,20 @@ public /*final*/ class BigQuaternion implements StarRingElem<BigQuaternion>, Gcd
         return new BigQuaternion(ring, re.sum(B.re), im.sum(B.im), jm.sum(B.jm), km.sum(B.km));
     }
 
-
-    /**
-     * Quaternion number sum.
-     * @param A BigQuaternion.
-     * @param B BigQuaternion.
-     * @return A+B.
-     */
-    public static BigQuaternion QSUM(BigQuaternion A, BigQuaternion B) {
-        if (A == null)
-            return null;
-        return A.sum(B);
-    }
-
-
-    /**
-     * Quaternion number difference.
-     * @param A BigQuaternion.
-     * @param B BigQuaternion.
-     * @return A-B.
-     */
-    public static BigQuaternion QDIF(BigQuaternion A, BigQuaternion B) {
-        if (A == null)
-            return null;
-        return A.subtract(B);
-    }
-
-
     /**
      * BigQuaternion subtraction.
+     *
      * @param B BigQuaternion.
      * @return this-B.
      */
     public BigQuaternion subtract(BigQuaternion B) {
         return new BigQuaternion(ring, re.subtract(B.re), im.subtract(B.im), jm.subtract(B.jm),
-                        km.subtract(B.km));
+                km.subtract(B.km));
     }
-
-
-    /**
-     * Quaternion number negative.
-     * @param A is a quaternion number
-     * @return -A.
-     */
-    public static BigQuaternion QNEG(BigQuaternion A) {
-        if (A == null)
-            return null;
-        return A.negate();
-    }
-
 
     /**
      * BigQuaternion number negative.
+     *
      * @return -this.
      * @see edu.jas.structure.RingElem#negate()
      */
@@ -595,24 +658,9 @@ public /*final*/ class BigQuaternion implements StarRingElem<BigQuaternion>, Gcd
         return new BigQuaternion(ring, re.negate(), im.negate(), jm.negate(), km.negate());
     }
 
-
-    /**
-     * Quaternion number conjugate.
-     * @param A is a quaternion number.
-     * @return the quaternion conjugate of A.
-     */
-    public static BigQuaternion QCON(BigQuaternion A) {
-        if (A == null)
-            return null;
-        return A.conjugate();
-    }
-
-
-    /* arithmetic operations: conjugate, absolute value 
-     */
-
     /**
      * BigQuaternion conjugate.
+     *
      * @return conjugate(this).
      */
     public BigQuaternion conjugate() {
@@ -620,10 +668,14 @@ public /*final*/ class BigQuaternion implements StarRingElem<BigQuaternion>, Gcd
     }
 
 
+    /* arithmetic operations: *, inverse, / 
+     */
+
     /**
      * Quaternion number norm.
-     * @see edu.jas.structure.StarRingElem#norm()
+     *
      * @return ||this||.
+     * @see edu.jas.structure.StarRingElem#norm()
      */
     public BigQuaternion norm() {
         // this.conjugate().multiply(this);
@@ -634,11 +686,11 @@ public /*final*/ class BigQuaternion implements StarRingElem<BigQuaternion>, Gcd
         return new BigQuaternion(ring, v);
     }
 
-
     /**
      * Quaternion number absolute value.
-     * @see edu.jas.structure.RingElem#abs()
+     *
      * @return |this|^2. Note: The square root is not jet implemented.
+     * @see edu.jas.structure.RingElem#abs()
      */
     public BigQuaternion abs() {
         BigQuaternion n = norm();
@@ -647,38 +699,9 @@ public /*final*/ class BigQuaternion implements StarRingElem<BigQuaternion>, Gcd
         return n;
     }
 
-
-    /**
-     * Quaternion number absolute value.
-     * @param A is a quaternion number.
-     * @return the absolute value of A, a rational number. Note: The square root
-     *         is not jet implemented.
-     */
-    public static BigRational QABS(BigQuaternion A) {
-        if (A == null)
-            return null;
-        return A.abs().re;
-    }
-
-
-    /**
-     * Quaternion number product.
-     * @param A BigQuaternion.
-     * @param B BigQuaternion.
-     * @return A*B.
-     */
-    public static BigQuaternion QPROD(BigQuaternion A, BigQuaternion B) {
-        if (A == null)
-            return null;
-        return A.multiply(B);
-    }
-
-
-    /* arithmetic operations: *, inverse, / 
-     */
-
     /**
      * BigQuaternion multiply with BigRational.
+     *
      * @param b BigRational.
      * @return this*b.
      */
@@ -690,9 +713,9 @@ public /*final*/ class BigQuaternion implements StarRingElem<BigQuaternion>, Gcd
         return new BigQuaternion(ring, r, i, j, k);
     }
 
-
     /**
      * BigQuaternion multiply.
+     *
      * @param B BigQuaternion.
      * @return this*B.
      */
@@ -720,33 +743,21 @@ public /*final*/ class BigQuaternion implements StarRingElem<BigQuaternion>, Gcd
         return new BigQuaternion(ring, r, i, j, k);
     }
 
-
-    /**
-     * Quaternion number inverse.
-     * @param A is a non-zero quaternion number.
-     * @return S with S * A = A * S = 1.
-     */
-    public static BigQuaternion QINV(BigQuaternion A) {
-        if (A == null)
-            return null;
-        return A.inverse();
-    }
-
-
     /**
      * BigQuaternion inverse.
+     *
      * @return S with S * this = this * S = 1.
      * @see edu.jas.structure.RingElem#inverse()
      */
     public BigQuaternion inverse() {
         BigRational a = norm().re.inverse();
         return new BigQuaternion(ring, re.multiply(a), im.negate().multiply(a), jm.negate().multiply(a),
-                        km.negate().multiply(a));
+                km.negate().multiply(a));
     }
-
 
     /**
      * BigQuaternion remainder.
+     *
      * @param S BigQuaternion.
      * @return 0.
      */
@@ -764,22 +775,9 @@ public /*final*/ class BigQuaternion implements StarRingElem<BigQuaternion>, Gcd
         return ring.getZERO();
     }
 
-
-    /**
-     * Quaternion number quotient.
-     * @param A BigQuaternion.
-     * @param B BigQuaternion.
-     * @return R/S.
-     */
-    public static BigQuaternion QQ(BigQuaternion A, BigQuaternion B) {
-        if (A == null)
-            return null;
-        return A.divide(B);
-    }
-
-
     /**
      * BigQuaternion right divide.
+     *
      * @param b BigQuaternion.
      * @return this * b**(-1).
      */
@@ -790,6 +788,7 @@ public /*final*/ class BigQuaternion implements StarRingElem<BigQuaternion>, Gcd
 
     /**
      * BigQuaternion right divide.
+     *
      * @param b BigQuaternion.
      * @return this * b**(-1).
      */
@@ -807,6 +806,7 @@ public /*final*/ class BigQuaternion implements StarRingElem<BigQuaternion>, Gcd
 
     /**
      * BigQuaternion left divide.
+     *
      * @param b BigQuaternion.
      * @return b**(-1) * this.
      */
@@ -824,6 +824,7 @@ public /*final*/ class BigQuaternion implements StarRingElem<BigQuaternion>, Gcd
 
     /**
      * BigQuaternion divide.
+     *
      * @param b BigRational.
      * @return this/b.
      */
@@ -835,6 +836,7 @@ public /*final*/ class BigQuaternion implements StarRingElem<BigQuaternion>, Gcd
 
     /**
      * Quotient and remainder by division of this by S.
+     *
      * @param S a quaternion number
      * @return [this*S**(-1), this - (this*S**(-1))*S].
      */
@@ -846,14 +848,15 @@ public /*final*/ class BigQuaternion implements StarRingElem<BigQuaternion>, Gcd
             BigQuaternionInteger d = new BigQuaternionInteger(ring, S);
             return c.rightQuotientAndRemainder(d);
         }
-        return new BigQuaternion[] { divide(S), ring.getZERO() };
+        return new BigQuaternion[]{divide(S), ring.getZERO()};
     }
 
 
     /**
      * Quaternion number greatest common divisor.
+     *
      * @param S BigQuaternion.
-     * @return gcd(this,S).
+     * @return gcd(this, S).
      */
     public BigQuaternion gcd(BigQuaternion S) {
         return leftGcd(S);
@@ -862,8 +865,9 @@ public /*final*/ class BigQuaternion implements StarRingElem<BigQuaternion>, Gcd
 
     /**
      * Quaternion number greatest common divisor.
+     *
      * @param S BigQuaternion.
-     * @return leftCcd(this,S).
+     * @return leftCcd(this, S).
      */
     public BigQuaternion leftGcd(BigQuaternion S) {
         if (S == null || S.isZERO()) {
@@ -884,8 +888,9 @@ public /*final*/ class BigQuaternion implements StarRingElem<BigQuaternion>, Gcd
 
     /**
      * Quaternion number greatest common divisor.
+     *
      * @param S BigQuaternion.
-     * @return rightCcd(this,S).
+     * @return rightCcd(this, S).
      */
     public BigQuaternion rightGcd(BigQuaternion S) {
         if (S == null || S.isZERO()) {
@@ -906,6 +911,7 @@ public /*final*/ class BigQuaternion implements StarRingElem<BigQuaternion>, Gcd
 
     /**
      * BigQuaternion extended greatest common divisor.
+     *
      * @param S BigQuaternion.
      * @return [ gcd(this,S), a, b ] with a*this + b*S = gcd(this,S).
      */
@@ -937,8 +943,9 @@ public /*final*/ class BigQuaternion implements StarRingElem<BigQuaternion>, Gcd
      * Returns the number of bits in the representation of this BigQuaternion,
      * including a sign bit. It is equivalent to
      * {@code re.bitLength()+im.bitLength()+jm.bitLength()+km.bitLength()}.)
+     *
      * @return number of bits in the representation of this BigQuaternion,
-     *         including a sign bit.
+     * including a sign bit.
      */
     public long bitLength() {
         return re.bitLength() + im.bitLength() + jm.bitLength() + km.bitLength();
@@ -947,6 +954,7 @@ public /*final*/ class BigQuaternion implements StarRingElem<BigQuaternion>, Gcd
 
     /**
      * BigQuaternion ceiling, component wise.
+     *
      * @return ceiling of this.
      */
     public BigQuaternion ceil() {
@@ -960,6 +968,7 @@ public /*final*/ class BigQuaternion implements StarRingElem<BigQuaternion>, Gcd
 
     /**
      * BigQuaternion floor, component wise.
+     *
      * @return floor of this.
      */
     public BigQuaternion floor() {
@@ -974,6 +983,7 @@ public /*final*/ class BigQuaternion implements StarRingElem<BigQuaternion>, Gcd
     /**
      * BigQuaternion round to next Lipschitz integer. BigQuaternion with all
      * integer components.
+     *
      * @return Lipschitz integer of this.
      */
     public BigQuaternionInteger roundToLipschitzian() {
@@ -989,6 +999,7 @@ public /*final*/ class BigQuaternion implements StarRingElem<BigQuaternion>, Gcd
     /**
      * BigQuaternion round to next Hurwitz integer. BigQuaternion with all
      * integer or all 1/2 times integer components.
+     *
      * @return Hurwitz integer near this.
      */
     public BigQuaternionInteger roundToHurwitzian() {

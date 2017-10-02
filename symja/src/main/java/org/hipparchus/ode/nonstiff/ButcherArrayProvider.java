@@ -17,23 +17,31 @@
 
 package org.hipparchus.ode.nonstiff;
 
-/** This interface represents an integrator  based on Butcher arrays.
+/**
+ * This interface represents an integrator  based on Butcher arrays.
+ *
  * @see RungeKuttaIntegrator
  * @see EmbeddedRungeKuttaIntegrator
  */
 public interface ButcherArrayProvider {
 
-    /** Get the time steps from Butcher array (without the first zero).
+    /**
+     * Get the time steps from Butcher array (without the first zero).
+     *
      * @return time steps from Butcher array (without the first zero
      */
     double[] getC();
 
-    /** Get the internal weights from Butcher array (without the first empty row).
+    /**
+     * Get the internal weights from Butcher array (without the first empty row).
+     *
      * @return internal weights from Butcher array (without the first empty row)
      */
     double[][] getA();
 
-    /** Get the external weights for the high order method from Butcher array.
+    /**
+     * Get the external weights for the high order method from Butcher array.
+     *
      * @return external weights for the high order method from Butcher array
      */
     double[] getB();

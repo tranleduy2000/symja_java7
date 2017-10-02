@@ -22,10 +22,11 @@ import org.hipparchus.util.FastMath;
 
 /**
  * Maximum function.
- *
  */
 public class Max implements BivariateFunction {
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double value(double x, double y) {
         return FastMath.max(x, y);

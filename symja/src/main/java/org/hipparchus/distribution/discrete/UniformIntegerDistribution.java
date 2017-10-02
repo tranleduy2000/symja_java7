@@ -27,11 +27,17 @@ import org.hipparchus.exception.MathIllegalArgumentException;
  * Uniform distribution (discrete), at Wikipedia</a>
  */
 public class UniformIntegerDistribution extends AbstractIntegerDistribution {
-    /** Serializable version identifier. */
+    /**
+     * Serializable version identifier.
+     */
     private static final long serialVersionUID = 20120109L;
-    /** Lower bound (inclusive) of this distribution. */
+    /**
+     * Lower bound (inclusive) of this distribution.
+     */
     private final int lower;
-    /** Upper bound (inclusive) of this distribution. */
+    /**
+     * Upper bound (inclusive) of this distribution.
+     */
     private final int upper;
 
     /**
@@ -43,17 +49,19 @@ public class UniformIntegerDistribution extends AbstractIntegerDistribution {
      * @throws MathIllegalArgumentException if {@code lower >= upper}.
      */
     public UniformIntegerDistribution(int lower, int upper)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         if (lower > upper) {
             throw new MathIllegalArgumentException(
-                            LocalizedCoreFormats.LOWER_BOUND_NOT_BELOW_UPPER_BOUND,
-                            lower, upper, true);
+                    LocalizedCoreFormats.LOWER_BOUND_NOT_BELOW_UPPER_BOUND,
+                    lower, upper, true);
         }
         this.lower = lower;
         this.upper = upper;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double probability(int x) {
         if (x < lower || x > upper) {
@@ -62,7 +70,9 @@ public class UniformIntegerDistribution extends AbstractIntegerDistribution {
         return 1.0 / (upper - lower + 1);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double cumulativeProbability(int x) {
         if (x < lower) {
@@ -76,7 +86,7 @@ public class UniformIntegerDistribution extends AbstractIntegerDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * For lower bound {@code lower} and upper bound {@code upper}, the mean is
      * {@code 0.5 * (lower + upper)}.
      */
@@ -87,7 +97,7 @@ public class UniformIntegerDistribution extends AbstractIntegerDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * For lower bound {@code lower} and upper bound {@code upper}, and
      * {@code n = upper - lower + 1}, the variance is {@code (n^2 - 1) / 12}.
      */
@@ -99,7 +109,7 @@ public class UniformIntegerDistribution extends AbstractIntegerDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The lower bound of the support is equal to the lower bound parameter
      * of the distribution.
      *
@@ -112,7 +122,7 @@ public class UniformIntegerDistribution extends AbstractIntegerDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The upper bound of the support is equal to the upper bound parameter
      * of the distribution.
      *
@@ -125,7 +135,7 @@ public class UniformIntegerDistribution extends AbstractIntegerDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The support of this distribution is connected.
      *
      * @return {@code true}

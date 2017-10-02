@@ -15,6 +15,7 @@ import edu.jas.structure.RingElem;
  * Distributed GB transport message. This class and its subclasses are used for
  * transport of polynomials and pairs and as markers in distributed GB
  * algorithms.
+ *
  * @author Heinz Kredel
  */
 
@@ -74,6 +75,7 @@ final class GBTransportMessPoly<C extends RingElem<C>> extends GBTransportMess {
 
     /**
      * GBTransportMessPoly.
+     *
      * @param p polynomial to transfered.
      */
     public GBTransportMessPoly(GenPolynomial<C> p) {
@@ -103,6 +105,7 @@ final class GBTransportMessPair<C extends RingElem<C>> extends GBTransportMess {
 
     /**
      * GBTransportMessPair.
+     *
      * @param p pair for transfer.
      */
     public GBTransportMessPair(Pair<C> p) {
@@ -138,6 +141,7 @@ final class GBTransportMessPairIndex extends GBTransportMess {
 
     /**
      * GBTransportMessPairIndex.
+     *
      * @param p pair for transport.
      */
     public GBTransportMessPairIndex(Pair p) {
@@ -147,6 +151,7 @@ final class GBTransportMessPairIndex extends GBTransportMess {
 
     /**
      * GBTransportMessPairIndex.
+     *
      * @param i first index.
      * @param j second index.
      * @param s maximal index.
@@ -162,6 +167,7 @@ final class GBTransportMessPairIndex extends GBTransportMess {
 
     /**
      * GBTransportMessPairIndex.
+     *
      * @param i first index.
      * @param j second index.
      * @param s maximal index.

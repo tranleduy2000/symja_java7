@@ -16,10 +16,6 @@
  */
 package org.hipparchus.stat.descriptive;
 
-import java.io.Serializable;
-import java.util.Arrays;
-import java.util.function.DoubleConsumer;
-
 import org.hipparchus.exception.LocalizedCoreFormats;
 import org.hipparchus.exception.MathIllegalArgumentException;
 import org.hipparchus.exception.MathIllegalStateException;
@@ -36,6 +32,10 @@ import org.hipparchus.stat.descriptive.summary.SumOfSquares;
 import org.hipparchus.util.FastMath;
 import org.hipparchus.util.MathUtils;
 import org.hipparchus.util.ResizableDoubleArray;
+
+import java.io.Serializable;
+import java.util.Arrays;
+import java.util.function.DoubleConsumer;
 
 
 /**
@@ -56,7 +56,7 @@ import org.hipparchus.util.ResizableDoubleArray;
  * Note: this class is not threadsafe.
  */
 public class DescriptiveStatistics
-    implements StatisticalSummary, DoubleConsumer, Serializable {
+        implements StatisticalSummary, DoubleConsumer, Serializable {
 
     /**
      * Represents an infinite window size.  When the {@link #getWindowSize()}
@@ -65,38 +65,64 @@ public class DescriptiveStatistics
      */
     protected static final int INFINITE_WINDOW = -1;
 
-    /** Serialization UID */
+    /**
+     * Serialization UID
+     */
     private static final long serialVersionUID = 20160411L;
 
-    /** The statistic used to calculate the population variance - fixed. */
+    /**
+     * The statistic used to calculate the population variance - fixed.
+     */
     private static final UnivariateStatistic POPULATION_VARIANCE = new Variance(false);
 
-    /** Maximum statistic implementation. */
-    private final UnivariateStatistic          maxImpl;
-    /** Minimum statistic implementation. */
-    private final UnivariateStatistic          minImpl;
-    /** Sum statistic implementation. */
-    private final UnivariateStatistic          sumImpl;
-    /** Sum of squares statistic implementation. */
-    private final UnivariateStatistic          sumOfSquaresImpl;
-    /** Mean statistic implementation. */
-    private final UnivariateStatistic          meanImpl;
-    /** Variance statistic implementation. */
-    private final UnivariateStatistic          varianceImpl;
-    /** Geometric mean statistic implementation. */
-    private final UnivariateStatistic          geometricMeanImpl;
-    /** Kurtosis statistic implementation. */
-    private final UnivariateStatistic          kurtosisImpl;
-    /** Skewness statistic implementation. */
-    private final UnivariateStatistic          skewnessImpl;
-    /** Percentile statistic implementation. */
-    private final Percentile                   percentileImpl;
-
-    /** holds the window size. */
-    private int windowSize;
-
-    /** Stored data values. */
+    /**
+     * Maximum statistic implementation.
+     */
+    private final UnivariateStatistic maxImpl;
+    /**
+     * Minimum statistic implementation.
+     */
+    private final UnivariateStatistic minImpl;
+    /**
+     * Sum statistic implementation.
+     */
+    private final UnivariateStatistic sumImpl;
+    /**
+     * Sum of squares statistic implementation.
+     */
+    private final UnivariateStatistic sumOfSquaresImpl;
+    /**
+     * Mean statistic implementation.
+     */
+    private final UnivariateStatistic meanImpl;
+    /**
+     * Variance statistic implementation.
+     */
+    private final UnivariateStatistic varianceImpl;
+    /**
+     * Geometric mean statistic implementation.
+     */
+    private final UnivariateStatistic geometricMeanImpl;
+    /**
+     * Kurtosis statistic implementation.
+     */
+    private final UnivariateStatistic kurtosisImpl;
+    /**
+     * Skewness statistic implementation.
+     */
+    private final UnivariateStatistic skewnessImpl;
+    /**
+     * Percentile statistic implementation.
+     */
+    private final Percentile percentileImpl;
+    /**
+     * Stored data values.
+     */
     private final ResizableDoubleArray eDA;
+    /**
+     * holds the window size.
+     */
+    private int windowSize;
 
     /**
      * Construct a DescriptiveStatistics instance with an infinite window.
@@ -110,7 +136,7 @@ public class DescriptiveStatistics
      *
      * @param size the window size.
      * @throws MathIllegalArgumentException if window size is less than 1 but
-     * not equal to {@link #INFINITE_WINDOW}
+     *                                      not equal to {@link #INFINITE_WINDOW}
      */
     public DescriptiveStatistics(int size) throws MathIllegalArgumentException {
         this(size, false, null);
@@ -141,30 +167,30 @@ public class DescriptiveStatistics
 
         // Copy data and window size
         this.windowSize = original.windowSize;
-        this.eDA        = original.eDA.copy();
+        this.eDA = original.eDA.copy();
 
         // Copy implementations
-        this.maxImpl           = original.maxImpl.copy();
-        this.minImpl           = original.minImpl.copy();
-        this.meanImpl          = original.meanImpl.copy();
-        this.sumImpl           = original.sumImpl.copy();
-        this.sumOfSquaresImpl  = original.sumOfSquaresImpl.copy();
-        this.varianceImpl      = original.varianceImpl.copy();
+        this.maxImpl = original.maxImpl.copy();
+        this.minImpl = original.minImpl.copy();
+        this.meanImpl = original.meanImpl.copy();
+        this.sumImpl = original.sumImpl.copy();
+        this.sumOfSquaresImpl = original.sumOfSquaresImpl.copy();
+        this.varianceImpl = original.varianceImpl.copy();
         this.geometricMeanImpl = original.geometricMeanImpl.copy();
-        this.kurtosisImpl      = original.kurtosisImpl.copy();
-        this.skewnessImpl      = original.skewnessImpl.copy();
-        this.percentileImpl    = original.percentileImpl.copy();
+        this.kurtosisImpl = original.kurtosisImpl.copy();
+        this.skewnessImpl = original.skewnessImpl.copy();
+        this.percentileImpl = original.percentileImpl.copy();
     }
 
     /**
      * Construct a DescriptiveStatistics instance with the specified window.
      *
-     * @param windowSize the window size
+     * @param windowSize       the window size
      * @param hasInitialValues if initial values have been provided
-     * @param initialValues the initial values
+     * @param initialValues    the initial values
      * @throws org.hipparchus.exception.NullArgumentException if initialValues is null
-     * @throws MathIllegalArgumentException if window size is less than 1 but
-     * not equal to {@link #INFINITE_WINDOW}
+     * @throws MathIllegalArgumentException                   if window size is less than 1 but
+     *                                                        not equal to {@link #INFINITE_WINDOW}
      */
     DescriptiveStatistics(int windowSize, boolean hasInitialValues, double[] initialValues) {
         if (windowSize < 1 && windowSize != INFINITE_WINDOW) {
@@ -176,22 +202,22 @@ public class DescriptiveStatistics
             MathUtils.checkNotNull(initialValues, LocalizedCoreFormats.INPUT_ARRAY);
         }
 
-        this.windowSize     = windowSize;
+        this.windowSize = windowSize;
         int initialCapacity = this.windowSize < 0 ? 100 : this.windowSize;
-        this.eDA            = hasInitialValues ?
-            new ResizableDoubleArray(initialValues) :
-            new ResizableDoubleArray(initialCapacity);
+        this.eDA = hasInitialValues ?
+                new ResizableDoubleArray(initialValues) :
+                new ResizableDoubleArray(initialCapacity);
 
-        maxImpl           = new Max();
-        minImpl           = new Min();
-        sumImpl           = new Sum();
-        sumOfSquaresImpl  = new SumOfSquares();
-        meanImpl          = new Mean();
-        varianceImpl      = new Variance();
+        maxImpl = new Max();
+        minImpl = new Min();
+        sumImpl = new Sum();
+        sumOfSquaresImpl = new SumOfSquares();
+        meanImpl = new Mean();
+        varianceImpl = new Variance();
         geometricMeanImpl = new GeometricMean();
-        kurtosisImpl      = new Kurtosis();
-        skewnessImpl      = new Skewness();
-        percentileImpl    = new Percentile();
+        kurtosisImpl = new Kurtosis();
+        skewnessImpl = new Skewness();
+        percentileImpl = new Percentile();
     }
 
     /**
@@ -223,7 +249,9 @@ public class DescriptiveStatistics
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void accept(double v) {
         addValue(v);
@@ -263,6 +291,7 @@ public class DescriptiveStatistics
 
     /**
      * Apply the given statistic to the data associated with this set of statistics.
+     *
      * @param stat the statistic to apply
      * @return the computed value of the statistic.
      */
@@ -272,7 +301,9 @@ public class DescriptiveStatistics
         return eDA.compute(stat);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getMean() {
         return apply(meanImpl);
@@ -283,11 +314,10 @@ public class DescriptiveStatistics
      * <p>
      * See {@link GeometricMean} for details on the computing algorithm.
      *
-     * @see <a href="http://www.xycoon.com/geometric_mean.htm">
-     * Geometric mean</a>
-     *
      * @return The geometricMean, Double.NaN if no values have been added,
      * or if any negative values have been added.
+     * @see <a href="http://www.xycoon.com/geometric_mean.htm">
+     * Geometric mean</a>
      */
     public double getGeometricMean() {
         return apply(geometricMeanImpl);
@@ -295,6 +325,7 @@ public class DescriptiveStatistics
 
     /**
      * Returns the standard deviation of the available values.
+     *
      * @return The standard deviation, Double.NaN if no values have been added
      * or 0.0 for a single value set.
      */
@@ -314,18 +345,19 @@ public class DescriptiveStatistics
     /**
      * Returns the quadratic mean of the available values.
      *
-     * @see <a href="http://mathworld.wolfram.com/Root-Mean-Square.html">
-     * Root Mean Square</a>
-     *
      * @return The quadratic mean or {@code Double.NaN} if no values
      * have been added.
+     * @see <a href="http://mathworld.wolfram.com/Root-Mean-Square.html">
+     * Root Mean Square</a>
      */
     public double getQuadraticMean() {
         final long n = getN();
         return n > 0 ? FastMath.sqrt(getSumOfSquares() / n) : Double.NaN;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getVariance() {
         return apply(varianceImpl);
@@ -334,11 +366,10 @@ public class DescriptiveStatistics
     /**
      * Returns the population variance of the available values.
      *
-     * @see <a href="http://en.wikibooks.org/wiki/Statistics/Summary/Variance">
-     * Population variance</a>
-     *
      * @return The population variance, Double.NaN if no values have been added,
      * or 0.0 for a single value set.
+     * @see <a href="http://en.wikibooks.org/wiki/Statistics/Summary/Variance">
+     * Population variance</a>
      */
     public double getPopulationVariance() {
         return apply(POPULATION_VARIANCE);
@@ -364,19 +395,25 @@ public class DescriptiveStatistics
         return apply(kurtosisImpl);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getMax() {
         return apply(maxImpl);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getMin() {
         return apply(minImpl);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getSum() {
         return apply(sumImpl);
@@ -384,6 +421,7 @@ public class DescriptiveStatistics
 
     /**
      * Returns the sum of the squares of the available values.
+     *
      * @return The sum of the squares or Double.NaN if no
      * values have been added.
      */
@@ -401,7 +439,7 @@ public class DescriptiveStatistics
      * <li><code>0 &lt; p &le; 100</code> (otherwise an
      * <code>MathIllegalArgumentException</code> is thrown)</li>
      * <li>at least one value must be stored (returns <code>Double.NaN
-     *     </code> otherwise)</li>
+     * </code> otherwise)</li>
      * </ul>
      *
      * @param p the requested percentile (scaled from 0 - 100)
@@ -409,13 +447,15 @@ public class DescriptiveStatistics
      * @throws MathIllegalArgumentException if p is not a valid quantile
      */
     public double getPercentile(final double p)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
 
         percentileImpl.setQuantile(p);
         return apply(percentileImpl);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public long getN() {
         return eDA.getNumElements();
@@ -443,10 +483,10 @@ public class DescriptiveStatistics
      *
      * @param windowSize sets the size of the window.
      * @throws MathIllegalArgumentException if window size is less than 1 but
-     * not equal to {@link #INFINITE_WINDOW}
+     *                                      not equal to {@link #INFINITE_WINDOW}
      */
     public void setWindowSize(int windowSize)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
 
         if (windowSize < 1 && windowSize != INFINITE_WINDOW) {
             throw new MathIllegalArgumentException(
@@ -481,6 +521,7 @@ public class DescriptiveStatistics
      * sorted in ascending order.  The returned array is a fresh
      * copy of the underlying data -- i.e., it is not a reference to the
      * stored data.
+     *
      * @return returns the current set of
      * numbers sorted in ascending order
      */
@@ -492,6 +533,7 @@ public class DescriptiveStatistics
 
     /**
      * Returns the element at the specified index
+     *
      * @param index The Index of the element
      * @return return the element at the specified index
      */

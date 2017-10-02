@@ -20,10 +20,9 @@ package org.hipparchus.optim;
  * Base class for all convergence checker implementations.
  *
  * @param <PAIR> Type of (point, value) pair.
- *
  */
 public abstract class AbstractConvergenceChecker<PAIR>
-    implements ConvergenceChecker<PAIR> {
+        implements ConvergenceChecker<PAIR> {
     /**
      * Relative tolerance threshold.
      */

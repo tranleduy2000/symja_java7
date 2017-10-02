@@ -8,11 +8,11 @@ package edu.jas.poly;
 // todo: move to edu.jas.poly
 
 
+import org.apache.log4j.Logger;
+
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.structure.GcdRingElem;
 import edu.jas.structure.QuotPair;
@@ -25,13 +25,14 @@ import edu.jas.structure.RingFactory;
  * local and local-residue coefficients. Objects of this class are intended to
  * be immutable. The implementation is based on TreeMap respectively SortedMap
  * from exponents to coefficients by extension of GenPolynomial.
+ *
  * @param <C> polynomial coefficient type
  * @param <D> quotient coefficient type
  * @author Heinz Kredel
  */
 
 public class QLRSolvablePolynomial<C extends GcdRingElem<C> & QuotPair<GenPolynomial<D>>, D extends GcdRingElem<D>>
-                extends GenSolvablePolynomial<C> {
+        extends GenSolvablePolynomial<C> {
 
 
     private static final Logger logger = Logger.getLogger(QLRSolvablePolynomial.class);
@@ -48,6 +49,7 @@ public class QLRSolvablePolynomial<C extends GcdRingElem<C> & QuotPair<GenPolyno
 
     /**
      * Constructor for zero QLRSolvablePolynomial.
+     *
      * @param r solvable polynomial ring factory.
      */
     public QLRSolvablePolynomial(QLRSolvablePolynomialRing<C, D> r) {
@@ -58,6 +60,7 @@ public class QLRSolvablePolynomial<C extends GcdRingElem<C> & QuotPair<GenPolyno
 
     /**
      * Constructor for QLRSolvablePolynomial.
+     *
      * @param r solvable polynomial ring factory.
      * @param c coefficient polynomial.
      * @param e exponent.
@@ -72,6 +75,7 @@ public class QLRSolvablePolynomial<C extends GcdRingElem<C> & QuotPair<GenPolyno
 
     /**
      * Constructor for QLRSolvablePolynomial.
+     *
      * @param r solvable polynomial ring factory.
      * @param c coefficient polynomial.
      */
@@ -82,6 +86,7 @@ public class QLRSolvablePolynomial<C extends GcdRingElem<C> & QuotPair<GenPolyno
 
     /**
      * Constructor for QLRSolvablePolynomial.
+     *
      * @param r solvable polynomial ring factory.
      * @param S solvable polynomial.
      */
@@ -92,6 +97,7 @@ public class QLRSolvablePolynomial<C extends GcdRingElem<C> & QuotPair<GenPolyno
 
     /**
      * Constructor for QLRSolvablePolynomial.
+     *
      * @param r solvable polynomial ring factory.
      * @param v the SortedMap of some other (solvable) polynomial.
      */
@@ -103,6 +109,7 @@ public class QLRSolvablePolynomial<C extends GcdRingElem<C> & QuotPair<GenPolyno
 
     /**
      * Get the corresponding element factory.
+     *
      * @return factory for this Element.
      * @see edu.jas.structure.Element#factory()
      */
@@ -114,6 +121,7 @@ public class QLRSolvablePolynomial<C extends GcdRingElem<C> & QuotPair<GenPolyno
 
     /**
      * Clone this QLRSolvablePolynomial.
+     *
      * @see java.lang.Object#clone()
      */
     @Override
@@ -124,6 +132,7 @@ public class QLRSolvablePolynomial<C extends GcdRingElem<C> & QuotPair<GenPolyno
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -137,6 +146,7 @@ public class QLRSolvablePolynomial<C extends GcdRingElem<C> & QuotPair<GenPolyno
 
     /**
      * QLRSolvablePolynomial multiplication.
+     *
      * @param Bp QLRSolvablePolynomial.
      * @return this*Bp, where * denotes solvable multiplication.
      */
@@ -205,14 +215,14 @@ public class QLRSolvablePolynomial<C extends GcdRingElem<C> & QuotPair<GenPolyno
                         // recursive polynomial coefficient multiplication : e * b.num
                         RecSolvablePolynomial<D> rsp1 = new RecSolvablePolynomial<D>(ring.polCoeff, e);
                         RecSolvablePolynomial<D> rsp2 = new RecSolvablePolynomial<D>(ring.polCoeff,
-                                        b.numerator());
+                                b.numerator());
                         RecSolvablePolynomial<D> rsp3 = rsp1.multiply(rsp2);
                         QLRSolvablePolynomial<C, D> rsp = ring.fromPolyCoefficients(rsp3);
                         Cps = rsp;
                     } else { // b.denominator() != 1
                         if (debug)
                             logger.info("coeff-num: Cps = " + Cps + ", num = " + b.numerator() + ", den = "
-                                            + b.denominator());
+                                    + b.denominator());
                         RingFactory<C> bfq = (RingFactory<C>) b.factory();
                         Cps = new QLRSolvablePolynomial<C, D>(ring, bfq.getONE(), e);
 
@@ -335,7 +345,7 @@ public class QLRSolvablePolynomial<C extends GcdRingElem<C> & QuotPair<GenPolyno
                 Dp.doAddTo(Ds);
             } // end B loop
         } // end A loop
-          //System.out.println("this * Bp = " + Dp);
+        //System.out.println("this * Bp = " + Dp);
         return Dp;
     }
 
@@ -343,6 +353,7 @@ public class QLRSolvablePolynomial<C extends GcdRingElem<C> & QuotPair<GenPolyno
     /**
      * QLRSolvablePolynomial left and right multiplication. Product with two
      * polynomials.
+     *
      * @param S QLRSolvablePolynomial.
      * @param T QLRSolvablePolynomial.
      * @return S*this*T.
@@ -365,6 +376,7 @@ public class QLRSolvablePolynomial<C extends GcdRingElem<C> & QuotPair<GenPolyno
     /**
      * QLRSolvablePolynomial multiplication. Product with coefficient ring
      * element.
+     *
      * @param b solvable coefficient.
      * @return this*b, where * is coefficient multiplication.
      */
@@ -385,6 +397,7 @@ public class QLRSolvablePolynomial<C extends GcdRingElem<C> & QuotPair<GenPolyno
     /**
      * QLRSolvablePolynomial left and right multiplication. Product with
      * coefficient ring element.
+     *
      * @param b coefficient polynomial.
      * @param c coefficient polynomial.
      * @return b*this*c, where * is coefficient multiplication.
@@ -409,6 +422,7 @@ public class QLRSolvablePolynomial<C extends GcdRingElem<C> & QuotPair<GenPolyno
 
     /**
      * QLRSolvablePolynomial multiplication. Product with exponent vector.
+     *
      * @param e exponent.
      * @return this * x<sup>e</sup>, where * denotes solvable multiplication.
      */
@@ -425,10 +439,11 @@ public class QLRSolvablePolynomial<C extends GcdRingElem<C> & QuotPair<GenPolyno
     /**
      * QLRSolvablePolynomial left and right multiplication. Product with
      * exponent vector.
+     *
      * @param e exponent.
      * @param f exponent.
      * @return x<sup>e</sup> * this * x<sup>f</sup>, where * denotes solvable
-     *         multiplication.
+     * multiplication.
      */
     @Override
     public QLRSolvablePolynomial<C, D> multiply(ExpVector e, ExpVector f) {
@@ -446,6 +461,7 @@ public class QLRSolvablePolynomial<C extends GcdRingElem<C> & QuotPair<GenPolyno
     /**
      * QLRSolvablePolynomial multiplication. Product with ring element and
      * exponent vector.
+     *
      * @param b coefficient polynomial.
      * @param e exponent.
      * @return this * b x<sup>e</sup>, where * denotes solvable multiplication.
@@ -466,12 +482,13 @@ public class QLRSolvablePolynomial<C extends GcdRingElem<C> & QuotPair<GenPolyno
     /**
      * QLRSolvablePolynomial left and right multiplication. Product with ring
      * element and exponent vector.
+     *
      * @param b coefficient polynomial.
      * @param e exponent.
      * @param c coefficient polynomial.
      * @param f exponent.
      * @return b x<sup>e</sup> * this * c x<sup>f</sup>, where * denotes
-     *         solvable multiplication.
+     * solvable multiplication.
      */
     @Override
     public QLRSolvablePolynomial<C, D> multiply(C b, ExpVector e, C c, ExpVector f) {
@@ -493,6 +510,7 @@ public class QLRSolvablePolynomial<C extends GcdRingElem<C> & QuotPair<GenPolyno
     /**
      * QLRSolvablePolynomial multiplication. Left product with ring element and
      * exponent vector.
+     *
      * @param b coefficient polynomial.
      * @param e exponent.
      * @return b x<sup>e</sup> * this, where * denotes solvable multiplication.
@@ -509,6 +527,7 @@ public class QLRSolvablePolynomial<C extends GcdRingElem<C> & QuotPair<GenPolyno
 
     /**
      * QLRSolvablePolynomial multiplication. Left product with exponent vector.
+     *
      * @param e exponent.
      * @return x<sup>e</sup> * this, where * denotes solvable multiplication.
      */
@@ -526,6 +545,7 @@ public class QLRSolvablePolynomial<C extends GcdRingElem<C> & QuotPair<GenPolyno
     /**
      * QLRSolvablePolynomial multiplication. Left product with coefficient ring
      * element.
+     *
      * @param b coefficient polynomial.
      * @return b*this, where * is coefficient multiplication.
      */
@@ -552,6 +572,7 @@ public class QLRSolvablePolynomial<C extends GcdRingElem<C> & QuotPair<GenPolyno
 
     /**
      * QLRSolvablePolynomial multiplication. Left product with 'monomial'.
+     *
      * @param m 'monomial'.
      * @return m * this, where * denotes solvable multiplication.
      */
@@ -566,6 +587,7 @@ public class QLRSolvablePolynomial<C extends GcdRingElem<C> & QuotPair<GenPolyno
 
     /**
      * QLRSolvablePolynomial multiplication. Product with 'monomial'.
+     *
      * @param m 'monomial'.
      * @return this * m, where * denotes solvable multiplication.
      */
@@ -579,7 +601,8 @@ public class QLRSolvablePolynomial<C extends GcdRingElem<C> & QuotPair<GenPolyno
 
 
     /**
-     * QLRSolvablePolynomial multiplication with exponent vector. 
+     * QLRSolvablePolynomial multiplication with exponent vector.
+     *
      * @param f exponent vector.
      * @return B*f, where * is commutative multiplication.
      */

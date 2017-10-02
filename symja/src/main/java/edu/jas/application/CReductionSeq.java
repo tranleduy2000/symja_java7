@@ -5,14 +5,14 @@
 package edu.jas.application;
 
 
+import org.apache.log4j.Logger;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.poly.ExpVector;
 import edu.jas.poly.GenPolynomial;
@@ -26,35 +26,28 @@ import edu.jas.ufd.GreatestCommonDivisor;
 /**
  * Polynomial parametric ring reduction sequential use algorithm. Implements
  * normalform, condition construction and polynomial determination.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
 public class CReductionSeq<C extends GcdRingElem<C>> implements Serializable
 /* extends ReductionAbstract<C> */
-/* implements CReduction<C> */{
+/* implements CReduction<C> */ {
 
 
     private static final Logger logger = Logger.getLogger(CReductionSeq.class);
 
 
     //private static final boolean debug = logger.isDebugEnabled();
-
-
-    private final boolean info = logger.isInfoEnabled();
-
-
     /**
      * Greatest common divisor engine.
      */
     protected final GreatestCommonDivisor<C> engine;
-
-
     /**
      * Polynomial coefficient ring factory.
      */
     protected final RingFactory<C> cofac;
-
-
+    private final boolean info = logger.isInfoEnabled();
     /**
      * Flag if top-reduction only should be used.
      */
@@ -63,20 +56,22 @@ public class CReductionSeq<C extends GcdRingElem<C>> implements Serializable
 
     /**
      * Constructor.
+     *
      * @param rf coefficient factory.
      */
     public CReductionSeq(RingFactory<C> rf) {
         cofac = rf;
         // System.out.println("cofac = " + cofac);
-        engine = GCDFactory.<C> getImplementation(cofac);
+        engine = GCDFactory.<C>getImplementation(cofac);
     }
 
 
     /**
      * S-Polynomial.
+     *
      * @param Ap polynomial.
      * @param Bp polynomial.
-     * @return spol(Ap,Bp) the S-polynomial of Ap and Bp.
+     * @return spol(Ap, Bp) the S-polynomial of Ap and Bp.
      */
     public ColorPolynomial<C> SPolynomial(ColorPolynomial<C> Ap, ColorPolynomial<C> Bp) {
         if (Bp == null || Bp.isZERO()) {
@@ -109,13 +104,14 @@ public class CReductionSeq<C extends GcdRingElem<C>> implements Serializable
         ColorPolynomial<C> App = Ap.multiply(b, e1); // multiplyLeft in poly
         ColorPolynomial<C> Bpp = Bp.multiply(a, f1); // multiplyLeft in poly
         ColorPolynomial<C> Cp = App.subtract(Bpp);
-        assert (! g.equals(Cp.getEssentialPolynomial().leadingExpVector())) : "g == lt(Cp)";
+        assert (!g.equals(Cp.getEssentialPolynomial().leadingExpVector())) : "g == lt(Cp)";
         return Cp;
     }
 
 
     /**
      * Is top reducible.
+     *
      * @param A polynomial.
      * @param P polynomial list.
      * @return true if A is top reducible with respect to P.
@@ -151,6 +147,7 @@ public class CReductionSeq<C extends GcdRingElem<C>> implements Serializable
 
     /**
      * Is reducible.
+     *
      * @param Ap polynomial.
      * @param Pp polynomial list.
      * @return true if Ap is reducible with respect to Pp.
@@ -162,6 +159,7 @@ public class CReductionSeq<C extends GcdRingElem<C>> implements Serializable
 
     /**
      * Is in Normalform.
+     *
      * @param Ap polynomial.
      * @param Pp polynomial list.
      * @return true if Ap is in normalform with respect to Pp.
@@ -230,6 +228,7 @@ public class CReductionSeq<C extends GcdRingElem<C>> implements Serializable
 
     /**
      * Is in Normalform.
+     *
      * @param Pp polynomial list.
      * @return true if each Ap in Pp is in normalform with respect to Pp\{Ap}.
      */
@@ -253,8 +252,9 @@ public class CReductionSeq<C extends GcdRingElem<C>> implements Serializable
 
     /**
      * Normalform.
-     * @param Ap polynomial.
-     * @param Pp polynomial list.
+     *
+     * @param Ap   polynomial.
+     * @param Pp   polynomial list.
      * @param cond condition for these polynomials.
      * @return nf(Ap) with respect to Pp.
      */
@@ -324,8 +324,8 @@ public class CReductionSeq<C extends GcdRingElem<C>> implements Serializable
                 continue;
             }
             //if (col == Condition.Color.WHITE) { // refine condition
-                // System.out.println("white = " + zero.sum(a,e));
-                // return S; // return for new case distinction
+            // System.out.println("white = " + zero.sum(a,e));
+            // return S; // return for new case distinction
             //}
             // System.out.println("NF, e = " + e);
             for (i = 0; i < l; i++) {
@@ -356,7 +356,7 @@ public class CReductionSeq<C extends GcdRingElem<C>> implements Serializable
                 R = R.multiply(c);
                 Q = p[i].multiply(a, e); // multiplyLeft in poly
                 S = S.subtract(Q);
-                assert (! f.equals(S.getEssentialPolynomial().leadingExpVector()) ) : "f == lt(S)";
+                assert (!f.equals(S.getEssentialPolynomial().leadingExpVector())) : "f == lt(S)";
             }
         }
         return R;
@@ -370,6 +370,7 @@ public class CReductionSeq<C extends GcdRingElem<C>> implements Serializable
     /**
      * Case distinction conditions of parametric polynomial list. The returned
      * condition determines the polynomial list.
+     *
      * @param L list of parametric polynomials.
      * @return list of conditions as case distinction.
      */
@@ -390,10 +391,11 @@ public class CReductionSeq<C extends GcdRingElem<C>> implements Serializable
 
     /**
      * Case distinction conditions of parametric polynomial list.
+     *
      * @param cd a list of conditions.
-     * @param A a parametric polynomial.
+     * @param A  a parametric polynomial.
      * @return list of conditions as case distinction extending the conditions
-     *         in cd.
+     * in cd.
      */
     public List<Condition<C>> caseDistinction(List<Condition<C>> cd, GenPolynomial<GenPolynomial<C>> A) {
         if (A == null || A.isZERO()) {
@@ -421,42 +423,42 @@ public class CReductionSeq<C extends GcdRingElem<C>> implements Serializable
                 Bp = Ap.reductum();
                 //System.out.println("to color: " + c);
                 switch (cz.color(c)) {
-                case GREEN:
-                    // System.out.println("color green: " + c);
-                    Ap = Bp;
-                    continue;
-                case RED:
-                    // System.out.println("color red: " + c);
-                    C.add(cz);
-                    // wrong: return C;
-                    Ap = A.ring.getZERO();
-                    continue;
-                    // break;
-                case WHITE:
-                default:
-                    // System.out.println("color white: " + c);
-                    Condition<C> nc = cz.extendNonZero(c);
-                    if (nc != null) { // no contradiction
-                        if (!cz.equals(nc)) {
-                            C.add(nc);
-                        } else {
+                    case GREEN:
+                        // System.out.println("color green: " + c);
+                        Ap = Bp;
+                        continue;
+                    case RED:
+                        // System.out.println("color red: " + c);
+                        C.add(cz);
+                        // wrong: return C;
+                        Ap = A.ring.getZERO();
+                        continue;
+                        // break;
+                    case WHITE:
+                    default:
+                        // System.out.println("color white: " + c);
+                        Condition<C> nc = cz.extendNonZero(c);
+                        if (nc != null) { // no contradiction
+                            if (!cz.equals(nc)) {
+                                C.add(nc);
+                            } else {
+                                cz = null;
+                                Ap = A.ring.getZERO();
+                                continue;
+                            }
+                        } else { // contradiction rechecked in determine(c)
+                            //System.out.println("this should not be printed, c  = " + c);
+                            //System.out.println("this should not be printed, cz = " + cz);
+                        }
+                        Condition<C> ez = cz.extendZero(c);
+                        if (ez != null) {
+                            cz = ez;
+                        } else { // contradiction
                             cz = null;
                             Ap = A.ring.getZERO();
                             continue;
                         }
-                    } else { // contradiction rechecked in determine(c)
-                        //System.out.println("this should not be printed, c  = " + c);
-                        //System.out.println("this should not be printed, cz = " + cz);
-                    }
-                    Condition<C> ez = cz.extendZero(c);
-                    if (ez != null) {
-                        cz = ez;
-                    } else { // contradiction
-                        cz = null;
-                        Ap = A.ring.getZERO();
-                        continue;
-                    }
-                    Ap = Bp;
+                        Ap = Bp;
                 }
             }
             // System.out.println("cond cz: " + cz);
@@ -473,7 +475,8 @@ public class CReductionSeq<C extends GcdRingElem<C>> implements Serializable
 
     /**
      * Case distinction conditions of parametric polynomial list.
-     * @param A a parametric polynomial.
+     *
+     * @param A    a parametric polynomial.
      * @param cond a condition.
      * @return list of case distinction conditions.
      */
@@ -499,6 +502,7 @@ public class CReductionSeq<C extends GcdRingElem<C>> implements Serializable
 
     /**
      * Determine polynomial list.
+     *
      * @param H polynomial list.
      * @return new determined list of colored systems.
      */
@@ -518,7 +522,8 @@ public class CReductionSeq<C extends GcdRingElem<C>> implements Serializable
 
     /**
      * Determine polynomial list.
-     * @param H polynomial list.
+     *
+     * @param H  polynomial list.
      * @param cd case distiction, a condition list.
      * @return new determined list of colored systems.
      */

@@ -25,7 +25,7 @@ import org.hipparchus.util.FastMath;
 /**
  * This class implements the Gill fourth order Runge-Kutta
  * integrator for Ordinary Differential Equations .
-
+ * <p>
  * <p>This method is an explicit Runge-Kutta method, its Butcher-array
  * is the following one :
  * <pre>
@@ -47,41 +47,51 @@ import org.hipparchus.util.FastMath;
 
 public class GillIntegrator extends RungeKuttaIntegrator {
 
-    /** Simple constructor.
+    /**
+     * Simple constructor.
      * Build a fourth-order Gill integrator with the given step.
+     *
      * @param step integration step
      */
     public GillIntegrator(final double step) {
         super("Gill", step);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double[] getC() {
-        return new double[] {
-            1.0 / 2.0, 1.0 / 2.0, 1.0
+        return new double[]{
+                1.0 / 2.0, 1.0 / 2.0, 1.0
         };
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double[][] getA() {
-        return new double[][] {
-            { 1.0 / 2.0 },
-            { (FastMath.sqrt(2.0) - 1.0) / 2.0, (2.0 - FastMath.sqrt(2.0)) / 2.0 },
-            { 0.0, -FastMath.sqrt(2.0) / 2.0, (2.0 + FastMath.sqrt(2.0)) / 2.0 }
+        return new double[][]{
+                {1.0 / 2.0},
+                {(FastMath.sqrt(2.0) - 1.0) / 2.0, (2.0 - FastMath.sqrt(2.0)) / 2.0},
+                {0.0, -FastMath.sqrt(2.0) / 2.0, (2.0 + FastMath.sqrt(2.0)) / 2.0}
         };
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double[] getB() {
-        return new double[] {
-            1.0 / 6.0, (2.0 - FastMath.sqrt(2.0)) / 6.0, (2.0 + FastMath.sqrt(2.0)) / 6.0, 1.0 / 6.0
+        return new double[]{
+                1.0 / 6.0, (2.0 - FastMath.sqrt(2.0)) / 6.0, (2.0 + FastMath.sqrt(2.0)) / 6.0, 1.0 / 6.0
         };
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected GillStateInterpolator
     createInterpolator(final boolean forward, double[][] yDotK,
@@ -89,9 +99,9 @@ public class GillIntegrator extends RungeKuttaIntegrator {
                        final ODEStateAndDerivative globalCurrentState,
                        final EquationsMapper mapper) {
         return new GillStateInterpolator(forward, yDotK,
-                                        globalPreviousState, globalCurrentState,
-                                        globalPreviousState, globalCurrentState,
-                                        mapper);
+                globalPreviousState, globalCurrentState,
+                globalPreviousState, globalCurrentState,
+                mapper);
     }
 
 }

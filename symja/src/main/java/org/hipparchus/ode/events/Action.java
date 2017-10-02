@@ -17,18 +17,21 @@
 
 package org.hipparchus.ode.events;
 
-/** Enumerate for actions to be performed when an event occurs during ODE integration.
+/**
+ * Enumerate for actions to be performed when an event occurs during ODE integration.
  */
 public enum Action {
 
-    /** Stop indicator.
+    /**
+     * Stop indicator.
      * <p>This value should be used as the return value of the {@code
      * eventOccurred} method when the integration should be
      * stopped after the event ending the current step.</p>
      */
     STOP,
 
-    /** Reset state indicator.
+    /**
+     * Reset state indicator.
      * <p>This value should be used as the return value of the {@code
      * eventOccurred}} method when the integration should
      * go on after the event ending the current step, with a new state
@@ -37,7 +40,8 @@ public enum Action {
      */
     RESET_STATE,
 
-    /** Reset derivatives indicator.
+    /**
+     * Reset derivatives indicator.
      * <p>This value should be used as the return value of the {@code
      * eventOccurred} method when the integration should
      * go on after the event ending the current step, with a new derivatives
@@ -45,7 +49,8 @@ public enum Action {
      */
     RESET_DERIVATIVES,
 
-    /** Continue indicator.
+    /**
+     * Continue indicator.
      * <p>This value should be used as the return value of the {@code
      * eventOccurred} method when the integration should go
      * on after the event ending the current step.</p>

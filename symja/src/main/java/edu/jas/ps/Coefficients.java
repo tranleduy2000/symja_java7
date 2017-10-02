@@ -14,6 +14,7 @@ import edu.jas.structure.RingElem;
 /**
  * Abstract class for generating functions for coefficients of power series. Was
  * an interface, now this class handles the caching itself.
+ *
  * @param <C> ring element type
  * @author Heinz Kredel
  */
@@ -37,6 +38,7 @@ public abstract class Coefficients<C extends RingElem<C>> implements Serializabl
 
     /**
      * Public constructor with pre-filled cache.
+     *
      * @param cache pre-filled coefficient cache.
      */
     public Coefficients(HashMap<Integer, C> cache) {
@@ -46,6 +48,7 @@ public abstract class Coefficients<C extends RingElem<C>> implements Serializabl
 
     /**
      * Get cached coefficient or generate coefficient.
+     *
      * @param index of requested coefficient.
      * @return coefficient at index.
      */
@@ -66,6 +69,7 @@ public abstract class Coefficients<C extends RingElem<C>> implements Serializabl
 
     /**
      * Generate coefficient.
+     *
      * @param index of requested coefficient.
      * @return coefficient at index.
      */

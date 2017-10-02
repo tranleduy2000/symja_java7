@@ -17,81 +17,103 @@
 
 package org.hipparchus.fraction;
 
-import java.io.Serializable;
-
 import org.hipparchus.Field;
 import org.hipparchus.FieldElement;
+
+import java.io.Serializable;
 
 /**
  * Representation of the fractional numbers field.
  * <p>
  * This class is a singleton.
  * </p>
+ *
  * @see Fraction
  */
-public class FractionField implements Field<Fraction>, Serializable  {
+public class FractionField implements Field<Fraction>, Serializable {
 
-    /** Serializable version identifier */
+    /**
+     * Serializable version identifier
+     */
     private static final long serialVersionUID = -1257768487499119313L;
 
-    /** Private constructor for the singleton.
+    /**
+     * Private constructor for the singleton.
      */
     private FractionField() {
     }
 
-    /** Get the unique instance.
+    /**
+     * Get the unique instance.
+     *
      * @return the unique instance
      */
     public static FractionField getInstance() {
         return LazyHolder.INSTANCE;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Fraction getOne() {
         return Fraction.ONE;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Fraction getZero() {
         return Fraction.ZERO;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Class<? extends FieldElement<Fraction>> getRuntimeClass() {
         return Fraction.class;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(final Object other) {
         return this == other;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
         return 0xac885ac5;
     }
 
     // CHECKSTYLE: stop HideUtilityClassConstructor
-    /** Holder for the instance.
-     * <p>We use here the Initialization On Demand Holder Idiom.</p>
-     */
-    private static class LazyHolder {
-        /** Cached field instance. */
-        private static final FractionField INSTANCE = new FractionField();
-    }
-    // CHECKSTYLE: resume HideUtilityClassConstructor
 
-    /** Handle deserialization of the singleton.
+    /**
+     * Handle deserialization of the singleton.
+     *
      * @return the singleton instance
      */
     private Object readResolve() {
         // return the singleton instance
         return LazyHolder.INSTANCE;
+    }
+    // CHECKSTYLE: resume HideUtilityClassConstructor
+
+    /**
+     * Holder for the instance.
+     * <p>We use here the Initialization On Demand Holder Idiom.</p>
+     */
+    private static class LazyHolder {
+        /**
+         * Cached field instance.
+         */
+        private static final FractionField INSTANCE = new FractionField();
     }
 
 }

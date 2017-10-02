@@ -6,13 +6,13 @@ package edu.jas.arith;
 
 
 // import java.util.Random;
-import java.math.MathContext;
 
-import edu.jas.structure.Power;
+import java.math.MathContext;
 
 
 /**
  * Root computation algorithms. Roots for BigInteger and BigDecimals.
+ *
  * @author Heinz Kredel
  */
 public class Roots {
@@ -21,6 +21,7 @@ public class Roots {
     /**
      * Integer n-th root. Uses BigDecimal and newton iteration. R is the n-th
      * root of A.
+     *
      * @param A big integer.
      * @param n long.
      * @return the n-th root of A.
@@ -66,6 +67,7 @@ public class Roots {
     /**
      * Integer square root. Uses BigDecimal and newton iteration. R is the
      * square root of A.
+     *
      * @param A big integer.
      * @return the square root of A.
      */
@@ -101,6 +103,7 @@ public class Roots {
 
     /**
      * Integer square root. Uses BigInteger only. R is the square root of A.
+     *
      * @param A big integer.
      * @return the square root of A.
      */
@@ -152,6 +155,7 @@ public class Roots {
 
     /**
      * Square root. R is the square root of A.
+     *
      * @param A big decimal.
      * @return the square root of A.
      */
@@ -159,7 +163,7 @@ public class Roots {
         if (A == null || A.isZERO() || A.isONE()) {
             return A;
         }
-        if ( A.signum() < 0 ) {
+        if (A.signum() < 0) {
             throw new ArithmeticException("root of negative not defined: " + A);
         }
         // for small A use root of inverse
@@ -173,9 +177,9 @@ public class Roots {
         // ensure enough precision
         MathContext mc = A.context;
         BigDecimal eps = new BigDecimal("0.1"); //e-13"); // TODO
-        int p = Math.max(mc.getPrecision(),java.math.MathContext.DECIMAL64.getPrecision());
+        int p = Math.max(mc.getPrecision(), java.math.MathContext.DECIMAL64.getPrecision());
         //java.math.MathContext.UNLIMITED.getPrecision() == 0
-        eps = eps.power(p/2); //Power.positivePower(eps,p/2);
+        eps = eps.power(p / 2); //Power.positivePower(eps,p/2);
         // newton iteration
         BigDecimal Ap = new BigDecimal(A.val, mc);
         BigDecimal ninv = new BigDecimal(0.5, mc);
@@ -202,6 +206,7 @@ public class Roots {
 
     /**
      * N-th root. R is the n-th root of A.
+     *
      * @param A big decimal.
      * @param n long.
      * @return the n-th root of A.
@@ -219,7 +224,7 @@ public class Roots {
         if (A == null || A.isZERO() || A.isONE()) {
             return A;
         }
-        if ( A.signum() < 0 ) {
+        if (A.signum() < 0) {
             throw new ArithmeticException("root of negative not defined: " + A);
         }
         // for small A use root of inverse
@@ -232,9 +237,9 @@ public class Roots {
         // ensure enough precision
         MathContext mc = A.context;
         BigDecimal eps = new BigDecimal("0.1"); //e-10"); // TODO
-        int p = Math.max(mc.getPrecision(),java.math.MathContext.DECIMAL64.getPrecision());
+        int p = Math.max(mc.getPrecision(), java.math.MathContext.DECIMAL64.getPrecision());
         //java.math.MathContext.UNLIMITED.getPrecision() == 0
-        eps = eps.power((p*2)/3); //Power.positivePower(eps,(p*2)/3);
+        eps = eps.power((p * 2) / 3); //Power.positivePower(eps,(p*2)/3);
         // newton iteration
         BigDecimal Ap = A;
         BigDecimal N = new BigDecimal(n, mc);
@@ -245,7 +250,7 @@ public class Roots {
         BigDecimal d;
         int i = 0;
         while (true) {
-            P = R.power(n-1); //Power.positivePower(R, n - 1);
+            P = R.power(n - 1); //Power.positivePower(R, n - 1);
             R1 = Ap.divide(P.multiply(N));
             R1 = R.multiply(nsub).sum(R1);
             d = R.subtract(R1).abs();
@@ -265,6 +270,7 @@ public class Roots {
 
     /**
      * Complex decimal number square root.
+     *
      * @param a big decimal complex.
      * @return sqrt(a).
      */

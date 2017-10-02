@@ -22,10 +22,11 @@ import org.hipparchus.optim.PointValuePair;
 /**
  * A callback object that can be provided to a linear optimizer to keep track
  * of the best solution found.
- *
  */
 public class SolutionCallback implements OptimizationData {
-    /** The SimplexTableau used by the SimplexSolver. */
+    /**
+     * The SimplexTableau used by the SimplexSolver.
+     */
     private SimplexTableau tableau;
 
     /**
@@ -53,6 +54,7 @@ public class SolutionCallback implements OptimizationData {
 
     /**
      * Returns if the found solution is optimal.
+     *
      * @return {@code true} if the solution is optimal, {@code false} otherwise
      */
     public boolean isSolutionOptimal() {

@@ -21,10 +21,11 @@ package org.hipparchus.optim;
  * Starting point (first guess) of the optimization procedure.
  * <br/>
  * Immutable class.
- *
  */
 public class InitialGuess implements OptimizationData {
-    /** Initial guess. */
+    /**
+     * Initial guess.
+     */
     private final double[] init;
 
     /**

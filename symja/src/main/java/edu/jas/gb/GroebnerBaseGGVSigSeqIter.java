@@ -5,10 +5,10 @@
 package edu.jas.gb;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.poly.ExpVector;
 import edu.jas.poly.GenPolynomial;
@@ -18,9 +18,9 @@ import edu.jas.structure.RingElem;
 /**
  * Groebner Base GGV signature based sequential iterative algorithm. Implements
  * Groebner bases.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
- * 
  * @see edu.jas.application.GBAlgorithmBuilder
  * @see edu.jas.gbufd.GBFactory
  */
@@ -44,6 +44,7 @@ public class GroebnerBaseGGVSigSeqIter<C extends RingElem<C>> extends GroebnerBa
 
     /**
      * Constructor.
+     *
      * @param red Reduction engine
      */
     public GroebnerBaseGGVSigSeqIter(SigReductionSeq<C> red) {
@@ -53,9 +54,10 @@ public class GroebnerBaseGGVSigSeqIter<C extends RingElem<C>> extends GroebnerBa
 
     /**
      * S-Polynomial.
+     *
      * @param A polynomial.
      * @param B polynomial.
-     * @return spol(A,B) the S-polynomial of A and B.
+     * @return spol(A, B) the S-polynomial of A and B.
      */
     @Override
     GenPolynomial<C> SPolynomial(SigPoly<C> A, SigPoly<C> B) {
@@ -65,7 +67,8 @@ public class GroebnerBaseGGVSigSeqIter<C extends RingElem<C>> extends GroebnerBa
 
     /**
      * Prune total pair list P.
-     * @param P pair list.
+     *
+     * @param P   pair list.
      * @param syz list of exponent vectors representing syzygies.
      * @return updated pair list.
      */
@@ -95,10 +98,11 @@ public class GroebnerBaseGGVSigSeqIter<C extends RingElem<C>> extends GroebnerBa
 
     /**
      * Prune pair list of degree d.
-     * @param S pair list.
-     * @param syz list of exponent vectors representing syzygies.
+     *
+     * @param S    pair list.
+     * @param syz  list of exponent vectors representing syzygies.
      * @param done list of treated polynomials.
-     * @param G polynomial with signature list.
+     * @param G    polynomial with signature list.
      * @return updated pair list.
      */
     @Override
@@ -150,6 +154,7 @@ public class GroebnerBaseGGVSigSeqIter<C extends RingElem<C>> extends GroebnerBa
 
     /**
      * Initializes syzygy list.
+     *
      * @param F polynomial list.
      * @param G polynomial with signature list.
      * @return list of exponent vectors representing syzygies.
@@ -169,8 +174,9 @@ public class GroebnerBaseGGVSigSeqIter<C extends RingElem<C>> extends GroebnerBa
 
     /**
      * Update syzygy list.
+     *
      * @param syz list of exponent vectors representing syzygies.
-     * @param r polynomial. <b>Note:</b> szy is modified to represent updated
+     * @param r   polynomial. <b>Note:</b> szy is modified to represent updated
      *            list of exponent vectors.
      */
     @Override

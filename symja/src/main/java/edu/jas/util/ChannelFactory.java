@@ -6,16 +6,14 @@
 package edu.jas.util;
 
 
-import java.io.IOException;
+import org.apache.log4j.Logger;
 
+import java.io.IOException;
+import java.net.BindException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.BindException;
-
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue; //import java.util.concurrent.ArrayBlockingQueue;
-
-import org.apache.log4j.Logger;
+import java.util.concurrent.LinkedBlockingQueue;
 
 
 /**
@@ -24,6 +22,7 @@ import org.apache.log4j.Logger;
  * and accepts and stores any Socket creation requests from clients. The created
  * Sockets can the be retrieved from the store without blocking. Refactored for
  * java.util.concurrent.
+ *
  * @author Akitoshi Yoshida
  * @author Heinz Kredel
  * @see SocketChannel
@@ -31,18 +30,12 @@ import org.apache.log4j.Logger;
 public class ChannelFactory extends Thread {
 
 
-    private static final Logger logger = Logger.getLogger(ChannelFactory.class);
-
-
-    private static final boolean debug = logger.isDebugEnabled();
-
-
     /**
      * default port of socket.
      */
     public final static int DEFAULT_PORT = 4711;
-
-
+    private static final Logger logger = Logger.getLogger(ChannelFactory.class);
+    private static final boolean debug = logger.isDebugEnabled();
     /**
      * port of socket.
      */
@@ -83,6 +76,7 @@ public class ChannelFactory extends Thread {
 
     /**
      * Constructs a ChannelFactory.
+     *
      * @param p port.
      */
     public ChannelFactory(int p) {
@@ -124,7 +118,7 @@ public class ChannelFactory extends Thread {
      * thread initialization and start.
      */
     public void init() {
-        if (srv != null && ! srvstart  ) {
+        if (srv != null && !srvstart) {
             this.start();
             srvstart = true;
             logger.info("ChannelFactory at " + srv);
@@ -141,7 +135,7 @@ public class ChannelFactory extends Thread {
             if (srvrun) {
                 throw new IllegalArgumentException("dont call when no server listens");
             }
-        } else if ( ! srvstart  ) {
+        } else if (!srvstart) {
             init();
         }
         return buf.take();
@@ -150,15 +144,17 @@ public class ChannelFactory extends Thread {
 
     /**
      * Get a new socket channel to a given host.
+     *
      * @param h hostname
      */
     public SocketChannel getChannel(String h) throws IOException {
-        return getChannel(h,DEFAULT_PORT);
+        return getChannel(h, DEFAULT_PORT);
     }
 
 
     /**
      * Get a new socket channel to a given host.
+     *
      * @param h hostname
      * @param p port
      */
@@ -242,9 +238,9 @@ public class ChannelFactory extends Thread {
      * Terminate the Channel Factory
      */
     public void terminate() {
-        if ( ! srvstart ) {
+        if (!srvstart) {
             logger.debug("server not started");
-            return; 
+            return;
         }
         this.interrupt();
         try {
@@ -256,8 +252,8 @@ public class ChannelFactory extends Thread {
             while (!buf.isEmpty()) {
                 logger.debug("closing unused SocketChannel");
                 //((SocketChannel)buf.get()).close();
-                SocketChannel c  = buf.poll();
-                if ( c != null ) {
+                SocketChannel c = buf.poll();
+                if (c != null) {
                     c.close();
                 }
             }

@@ -5,19 +5,17 @@
 package edu.jas.ufd;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
-import java.util.Map;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.poly.GenPolynomial;
 import edu.jas.poly.GenPolynomialRing;
 import edu.jas.structure.GcdRingElem;
-import edu.jas.structure.RingElem;
-import edu.jas.structure.RingFactory;
 import edu.jas.structure.QuotPair;
 import edu.jas.structure.QuotPairFactory;
 
@@ -26,11 +24,12 @@ import edu.jas.structure.QuotPairFactory;
  * Fraction factorization algorithms. This class implements
  * factorization methods for fractions represended as pairs of
  * polynomials.
+ *
  * @author Heinz Kredel
  */
 
-public class FactorFraction<C extends GcdRingElem<C>, 
-                                      D extends GcdRingElem<D> & QuotPair<GenPolynomial<C>> > {
+public class FactorFraction<C extends GcdRingElem<C>,
+        D extends GcdRingElem<D> & QuotPair<GenPolynomial<C>>> {
 
 
     private static final Logger logger = Logger.getLogger(FactorFraction.class);
@@ -59,20 +58,22 @@ public class FactorFraction<C extends GcdRingElem<C>,
 
     /**
      * Constructor.
+     *
      * @param fac coefficient quotient ring factory.
      */
-    public FactorFraction(QuotPairFactory<GenPolynomial<C>,D> fac) {
-        this(fac, FactorFactory.<C> getImplementation(((GenPolynomialRing<C>) fac.pairFactory()).coFac));
+    public FactorFraction(QuotPairFactory<GenPolynomial<C>, D> fac) {
+        this(fac, FactorFactory.<C>getImplementation(((GenPolynomialRing<C>) fac.pairFactory()).coFac));
     }
 
 
     /**
      * Constructor.
-     * @param fac coefficient quotient ring factory.
+     *
+     * @param fac     coefficient quotient ring factory.
      * @param nengine factorization engine for polynomials over base
-     *            coefficients.
+     *                coefficients.
      */
-    public FactorFraction(QuotPairFactory<GenPolynomial<C>,D> fac, FactorAbstract<C> nengine) {
+    public FactorFraction(QuotPairFactory<GenPolynomial<C>, D> fac, FactorAbstract<C> nengine) {
         this.qfac = fac;
         this.nengine = nengine;
         logger.info("qfac.fac: " + qfac.pairFactory().toScript());
@@ -81,6 +82,7 @@ public class FactorFraction<C extends GcdRingElem<C>,
 
     /**
      * Get the String representation.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -91,6 +93,7 @@ public class FactorFraction<C extends GcdRingElem<C>,
 
     /**
      * Test if a quotient pair is irreducible.
+     *
      * @param P quotient pair (num,den), with gcd(num,den) == 1.
      * @return true if P is irreducible, else false.
      */
@@ -104,7 +107,7 @@ public class FactorFraction<C extends GcdRingElem<C>,
         if (F.size() <= 1) { // x/1
             return true;
         } else if (F.size() == 2) { // x/1, 1/y
-            List<D> pp = new ArrayList<D>( F.keySet() );
+            List<D> pp = new ArrayList<D>(F.keySet());
             D f = pp.get(0);
             D g = pp.get(1);
             if ((f.numerator().isONE() && g.denominator().isONE()) || (g.numerator().isONE() && f.denominator().isONE())) {
@@ -120,6 +123,7 @@ public class FactorFraction<C extends GcdRingElem<C>,
 
     /**
      * Test if a non trivial factorization exsists.
+     *
      * @param P quotient pair (num,den), with gcd(num,den) == 1.
      * @return true if P is reducible, else false.
      */
@@ -130,6 +134,7 @@ public class FactorFraction<C extends GcdRingElem<C>,
 
     /**
      * Quotient pair factorization.
+     *
      * @param P quotient pair (num,den), with gcd(num,den) == 1.
      * @return [p_1 -&gt; e_1, ..., p_k -&gt; e_k] with P = prod_{i=1,...,k} p_i**e_i.
      */
@@ -145,23 +150,23 @@ public class FactorFraction<C extends GcdRingElem<C>,
             return facs;
         }
         if (n.isONE() && d.isONE()) {
-            facs.put(P,1L);
+            facs.put(P, 1L);
             return facs;
         }
         // assert gcd(n,d) == 1
         GenPolynomial<C> one = qfac.pairFactory().getONE();
         if (!n.isONE()) {
             SortedMap<GenPolynomial<C>, Long> nfacs = nengine.factors(n);
-            for (Map.Entry<GenPolynomial<C>,Long> m : nfacs.entrySet()) {
-                 D q = qfac.create(m.getKey(), one);
-                 facs.put(q, m.getValue());
+            for (Map.Entry<GenPolynomial<C>, Long> m : nfacs.entrySet()) {
+                D q = qfac.create(m.getKey(), one);
+                facs.put(q, m.getValue());
             }
         }
         if (!d.isONE()) {
             SortedMap<GenPolynomial<C>, Long> dfacs = nengine.factors(d);
-            for (Map.Entry<GenPolynomial<C>,Long> m : dfacs.entrySet()) {
-                 D q = qfac.create(one, m.getKey());
-                 facs.put(q, m.getValue());
+            for (Map.Entry<GenPolynomial<C>, Long> m : dfacs.entrySet()) {
+                D q = qfac.create(one, m.getKey());
+                facs.put(q, m.getValue());
             }
         }
         return facs;
@@ -170,6 +175,7 @@ public class FactorFraction<C extends GcdRingElem<C>,
 
     /**
      * Test quotient pair factorization.
+     *
      * @param P quotient pair.
      * @param F = [p_1 -&gt; e_1, ..., p_k -&gt; e_k].
      * @return true if P = prod_{i=1,...,k} p_i**e_i, else false.
@@ -184,9 +190,9 @@ public class FactorFraction<C extends GcdRingElem<C>,
         D t = null; //P.ring.getONE();
         for (Map.Entry<D, Long> me : F.entrySet()) {
             D f = me.getKey();
-            Long E = me.getValue(); 
+            Long E = me.getValue();
             long e = E.longValue();
-            D g = f.power(e); 
+            D g = f.power(e);
             if (t == null) {
                 t = g;
             } else {

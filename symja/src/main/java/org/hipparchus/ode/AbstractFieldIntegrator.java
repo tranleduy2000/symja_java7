@@ -42,110 +42,143 @@ import java.util.Queue;
 
 /**
  * Base class managing common boilerplate for all integrators.
+ *
  * @param <T> the type of the field elements
  */
 public abstract class AbstractFieldIntegrator<T extends RealFieldElement<T>> implements FieldODEIntegrator<T> {
 
-    /** Default relative accuracy. */
+    /**
+     * Default relative accuracy.
+     */
     private static final double DEFAULT_RELATIVE_ACCURACY = 0;
 
-    /** Default function value accuracy. */
+    /**
+     * Default function value accuracy.
+     */
     private static final double DEFAULT_FUNCTION_VALUE_ACCURACY = 0;
-
-    /** Step handler. */
-    private Collection<FieldODEStepHandler<T>> stepHandlers;
-
-    /** Current step start. */
-    private FieldODEStateAndDerivative<T> stepStart;
-
-    /** Current stepsize. */
-    private T stepSize;
-
-    /** Indicator for last step. */
-    private boolean isLastStep;
-
-    /** Indicator that a state or derivative reset was triggered by some event. */
-    private boolean resetOccurred;
-
-    /** Field to which the time and state vector elements belong. */
+    /**
+     * Field to which the time and state vector elements belong.
+     */
     private final Field<T> field;
-
-    /** Events states. */
-    private Collection<FieldEventState<T>> eventsStates;
-
-    /** Initialization indicator of events states. */
-    private boolean statesInitialized;
-
-    /** Name of the method. */
+    /**
+     * Name of the method.
+     */
     private final String name;
-
-    /** Counter for number of evaluations. */
+    /**
+     * Step handler.
+     */
+    private Collection<FieldODEStepHandler<T>> stepHandlers;
+    /**
+     * Current step start.
+     */
+    private FieldODEStateAndDerivative<T> stepStart;
+    /**
+     * Current stepsize.
+     */
+    private T stepSize;
+    /**
+     * Indicator for last step.
+     */
+    private boolean isLastStep;
+    /**
+     * Indicator that a state or derivative reset was triggered by some event.
+     */
+    private boolean resetOccurred;
+    /**
+     * Events states.
+     */
+    private Collection<FieldEventState<T>> eventsStates;
+    /**
+     * Initialization indicator of events states.
+     */
+    private boolean statesInitialized;
+    /**
+     * Counter for number of evaluations.
+     */
     private Incrementor evaluations;
 
-    /** Differential equations to integrate. */
+    /**
+     * Differential equations to integrate.
+     */
     private transient FieldExpandableODE<T> equations;
 
-    /** Build an instance.
+    /**
+     * Build an instance.
+     *
      * @param field field to which the time and state vector elements belong
-     * @param name name of the method
+     * @param name  name of the method
      */
     protected AbstractFieldIntegrator(final Field<T> field, final String name) {
-        this.field        = field;
-        this.name         = name;
-        stepHandlers      = new ArrayList<FieldODEStepHandler<T>>();
-        stepStart         = null;
-        stepSize          = null;
-        eventsStates      = new ArrayList<FieldEventState<T>>();
+        this.field = field;
+        this.name = name;
+        stepHandlers = new ArrayList<FieldODEStepHandler<T>>();
+        stepStart = null;
+        stepSize = null;
+        eventsStates = new ArrayList<FieldEventState<T>>();
         statesInitialized = false;
-        evaluations       = new Incrementor();
+        evaluations = new Incrementor();
     }
 
-    /** Get the field to which state vector elements belong.
+    /**
+     * Get the field to which state vector elements belong.
+     *
      * @return field to which state vector elements belong
      */
     public Field<T> getField() {
         return field;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getName() {
         return name;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addStepHandler(final FieldODEStepHandler<T> handler) {
         stepHandlers.add(handler);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Collection<FieldODEStepHandler<T>> getStepHandlers() {
         return Collections.unmodifiableCollection(stepHandlers);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void clearStepHandlers() {
         stepHandlers.clear();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addEventHandler(final FieldODEEventHandler<T> handler,
                                 final double maxCheckInterval,
                                 final double convergence,
                                 final int maxIterationCount) {
         addEventHandler(handler, maxCheckInterval, convergence,
-                        maxIterationCount,
-                        new FieldBracketingNthOrderBrentSolver<T>(field.getZero().add(DEFAULT_RELATIVE_ACCURACY),
-                                                                  field.getZero().add(convergence),
-                                                                  field.getZero().add(DEFAULT_FUNCTION_VALUE_ACCURACY),
-                                                                  5));
+                maxIterationCount,
+                new FieldBracketingNthOrderBrentSolver<T>(field.getZero().add(DEFAULT_RELATIVE_ACCURACY),
+                        field.getZero().add(convergence),
+                        field.getZero().add(DEFAULT_FUNCTION_VALUE_ACCURACY),
+                        5));
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addEventHandler(final FieldODEEventHandler<T> handler,
                                 final double maxCheckInterval,
@@ -153,10 +186,12 @@ public abstract class AbstractFieldIntegrator<T extends RealFieldElement<T>> imp
                                 final int maxIterationCount,
                                 final BracketedRealFieldUnivariateSolver<T> solver) {
         eventsStates.add(new FieldEventState<T>(handler, maxCheckInterval, field.getZero().add(convergence),
-                                                maxIterationCount, solver));
+                maxIterationCount, solver));
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Collection<FieldODEEventHandler<T>> getEventHandlers() {
         final List<FieldODEEventHandler<T>> list = new ArrayList<FieldODEEventHandler<T>>(eventsStates.size());
@@ -166,59 +201,71 @@ public abstract class AbstractFieldIntegrator<T extends RealFieldElement<T>> imp
         return Collections.unmodifiableCollection(list);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void clearEventHandlers() {
         eventsStates.clear();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public T getCurrentSignedStepsize() {
         return stepSize;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public void setMaxEvaluations(int maxEvaluations) {
-        evaluations = evaluations.withMaximalCount((maxEvaluations < 0) ? Integer.MAX_VALUE : maxEvaluations);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getMaxEvaluations() {
         return evaluations.getMaximalCount();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setMaxEvaluations(int maxEvaluations) {
+        evaluations = evaluations.withMaximalCount((maxEvaluations < 0) ? Integer.MAX_VALUE : maxEvaluations);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getEvaluations() {
         return evaluations.getCount();
     }
 
-    /** Prepare the start of an integration.
+    /**
+     * Prepare the start of an integration.
+     *
      * @param eqn equations to integrate
-     * @param s0 initial state vector
-     * @param t target time for the integration
+     * @param s0  initial state vector
+     * @param t   target time for the integration
      * @return initial state with derivatives added
      */
     protected FieldODEStateAndDerivative<T> initIntegration(final FieldExpandableODE<T> eqn,
                                                             final FieldODEState<T> s0, final T t) {
 
         this.equations = eqn;
-        evaluations    = evaluations.withCount(0);
+        evaluations = evaluations.withCount(0);
 
         // initialize ODE
         eqn.init(s0, t);
 
         // set up derivatives of initial state (including primary and secondary components)
-        final T   t0    = s0.getTime();
-        final T[] y0    = s0.getCompleteState();
+        final T t0 = s0.getTime();
+        final T[] y0 = s0.getCompleteState();
         final T[] y0Dot = computeDerivatives(t0, y0);
 
         // built the state
         final FieldODEStateAndDerivative<T> s0WithDerivatives =
-                        eqn.getMapper().mapStateAndDerivative(t0, y0, y0Dot);
+                eqn.getMapper().mapStateAndDerivative(t0, y0, y0Dot);
 
         // initialize event handlers
         for (final FieldEventState<T> state : eventsStates) {
@@ -236,40 +283,48 @@ public abstract class AbstractFieldIntegrator<T extends RealFieldElement<T>> imp
 
     }
 
-    /** Get the differential equations to integrate.
+    /**
+     * Get the differential equations to integrate.
+     *
      * @return differential equations to integrate
      */
     protected FieldExpandableODE<T> getEquations() {
         return equations;
     }
 
-    /** Get the evaluations counter.
+    /**
+     * Get the evaluations counter.
+     *
      * @return evaluations counter
      */
     protected Incrementor getEvaluationsCounter() {
         return evaluations;
     }
 
-    /** Compute the derivatives and check the number of evaluations.
+    /**
+     * Compute the derivatives and check the number of evaluations.
+     *
      * @param t current value of the independent <I>time</I> variable
      * @param y array containing the current value of the state vector
      * @return state completed with derivatives
-     * @exception MathIllegalArgumentException if arrays dimensions do not match equations settings
-     * @exception MathIllegalStateException if the number of functions evaluations is exceeded
-     * @exception NullPointerException if the ODE equations have not been set (i.e. if this method
-     * is called outside of a call to {@link #integrate(FieldExpandableODE, FieldODEState,
-     * RealFieldElement) integrate}
+     * @throws MathIllegalArgumentException if arrays dimensions do not match equations settings
+     * @throws MathIllegalStateException    if the number of functions evaluations is exceeded
+     * @throws NullPointerException         if the ODE equations have not been set (i.e. if this method
+     *                                      is called outside of a call to {@link #integrate(FieldExpandableODE, FieldODEState,
+     *                                      RealFieldElement) integrate}
      */
     public T[] computeDerivatives(final T t, final T[] y)
-        throws MathIllegalArgumentException, MathIllegalStateException, NullPointerException {
+            throws MathIllegalArgumentException, MathIllegalStateException, NullPointerException {
         evaluations.increment();
         return equations.computeDerivatives(t, y);
     }
 
-    /** Set the stateInitialized flag.
+    /**
+     * Set the stateInitialized flag.
      * <p>This method must be called by integrators with the value
      * {@code false} before they start integration, so a proper lazy
      * initialization is done automatically on the first step.</p>
+     *
      * @param stateInitialized new value for the flag
      */
     protected void setStateInitialized(final boolean stateInitialized) {
@@ -422,67 +477,84 @@ public abstract class AbstractFieldIntegrator<T extends RealFieldElement<T>> imp
 
     }
 
-    /** Check the integration span.
+    /**
+     * Check the integration span.
+     *
      * @param initialState initial state
-     * @param t target time for the integration
-     * @exception MathIllegalArgumentException if integration span is too small
-     * @exception MathIllegalArgumentException if adaptive step size integrators
-     * tolerance arrays dimensions are not compatible with equations settings
+     * @param t            target time for the integration
+     * @throws MathIllegalArgumentException if integration span is too small
+     * @throws MathIllegalArgumentException if adaptive step size integrators
+     *                                      tolerance arrays dimensions are not compatible with equations settings
      */
     protected void sanityChecks(final FieldODEState<T> initialState, final T t)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
 
         final double threshold = 1000 * FastMath.ulp(FastMath.max(FastMath.abs(initialState.getTime().getReal()),
-                                                                  FastMath.abs(t.getReal())));
+                FastMath.abs(t.getReal())));
         final double dt = initialState.getTime().subtract(t).abs().getReal();
         if (dt <= threshold) {
             throw new MathIllegalArgumentException(LocalizedODEFormats.TOO_SMALL_INTEGRATION_INTERVAL,
-                                                   dt, threshold, false);
+                    dt, threshold, false);
         }
 
     }
 
-    /** Check if a reset occurred while last step was accepted.
+    /**
+     * Check if a reset occurred while last step was accepted.
+     *
      * @return true if a reset occurred while last step was accepted
      */
     protected boolean resetOccurred() {
         return resetOccurred;
     }
 
-    /** Set the current step size.
+    /**
+     * Get the current step size.
+     *
+     * @return current step size
+     */
+    protected T getStepSize() {
+        return stepSize;
+    }
+
+    /**
+     * Set the current step size.
+     *
      * @param stepSize step size to set
      */
     protected void setStepSize(final T stepSize) {
         this.stepSize = stepSize;
     }
 
-    /** Get the current step size.
-     * @return current step size
+    /**
+     * {@inheritDoc}
      */
-    protected T getStepSize() {
-        return stepSize;
+    @Override
+    public FieldODEStateAndDerivative<T> getStepStart() {
+        return stepStart;
     }
-    /** Set current step start.
+
+    /**
+     * Set current step start.
+     *
      * @param stepStart step start
      */
     protected void setStepStart(final FieldODEStateAndDerivative<T> stepStart) {
         this.stepStart = stepStart;
     }
 
-    /**  {@inheritDoc} */
-    @Override
-    public FieldODEStateAndDerivative<T> getStepStart() {
-        return stepStart;
-    }
-
-    /** Set the last state flag.
+    /**
+     * Set the last state flag.
+     *
      * @param isLastStep if true, this step is the last one
      */
     protected void setIsLastStep(final boolean isLastStep) {
         this.isLastStep = isLastStep;
     }
 
-    /** Check if this step is the last one.
+    /**
+     * Check if this step is the last one.
+     *
      * @return true if this step is the last one
      */
     protected boolean isLastStep() {

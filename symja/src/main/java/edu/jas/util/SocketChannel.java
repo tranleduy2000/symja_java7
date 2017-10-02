@@ -7,14 +7,15 @@ package edu.jas.util;
 
 
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 
 /**
  * SocketChannel provides a communication channel for Java objects using TCP/IP
  * sockets. Refactored for java.util.concurrent.
+ *
  * @author Akitoshi Yoshida
  * @author Heinz Kredel
  */
@@ -41,6 +42,7 @@ public class SocketChannel {
 
     /**
      * Constructs a socket channel on the given socket s.
+     *
      * @param s A socket object.
      */
     public SocketChannel(Socket s) throws IOException {

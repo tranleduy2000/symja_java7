@@ -16,8 +16,6 @@
  */
 package org.hipparchus.stat.descriptive.summary;
 
-import java.io.Serializable;
-
 import org.hipparchus.exception.MathIllegalArgumentException;
 import org.hipparchus.exception.NullArgumentException;
 import org.hipparchus.stat.descriptive.AbstractStorelessUnivariateStatistic;
@@ -25,6 +23,8 @@ import org.hipparchus.stat.descriptive.AggregatableStatistic;
 import org.hipparchus.util.FastMath;
 import org.hipparchus.util.MathArrays;
 import org.hipparchus.util.MathUtils;
+
+import java.io.Serializable;
 
 /**
  * Returns the sum of the natural logs for this collection of values.
@@ -47,23 +47,29 @@ import org.hipparchus.util.MathUtils;
  * <code>clear()</code> method, it must be synchronized externally.
  */
 public class SumOfLogs extends AbstractStorelessUnivariateStatistic
-    implements AggregatableStatistic<SumOfLogs>, Serializable {
+        implements AggregatableStatistic<SumOfLogs>, Serializable {
 
-    /** Serializable version identifier */
+    /**
+     * Serializable version identifier
+     */
     private static final long serialVersionUID = 20150412L;
 
-    /** Number of values that have been added */
+    /**
+     * Number of values that have been added
+     */
     private int n;
 
-    /** The currently running value */
+    /**
+     * The currently running value
+     */
     private double value;
 
     /**
      * Create a SumOfLogs instance.
      */
     public SumOfLogs() {
-       value = 0d;
-       n = 0;
+        value = 0d;
+        n = 0;
     }
 
     /**
@@ -75,42 +81,52 @@ public class SumOfLogs extends AbstractStorelessUnivariateStatistic
      */
     public SumOfLogs(SumOfLogs original) throws NullArgumentException {
         MathUtils.checkNotNull(original);
-        this.n     = original.n;
+        this.n = original.n;
         this.value = original.value;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void increment(final double d) {
         value += FastMath.log(d);
         n++;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getResult() {
         return value;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public long getN() {
         return n;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void clear() {
         value = 0d;
         n = 0;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void aggregate(SumOfLogs other) {
         MathUtils.checkNotNull(other);
         if (other.n > 0) {
-            this.n     += other.n;
+            this.n += other.n;
             this.value += other.value;
         }
     }
@@ -121,16 +137,16 @@ public class SumOfLogs extends AbstractStorelessUnivariateStatistic
      * is empty.
      *
      * @param values the input array
-     * @param begin index of the first array element to include
+     * @param begin  index of the first array element to include
      * @param length the number of elements to include
      * @return the sum of the natural logs of the values or 0 if
      * length = 0
      * @throws MathIllegalArgumentException if the array is null or the array index
-     *  parameters are not valid
+     *                                      parameters are not valid
      */
     @Override
     public double evaluate(final double[] values, final int begin, final int length)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
 
         double sumLog = Double.NaN;
         if (MathArrays.verifyValues(values, begin, length, true)) {
@@ -142,7 +158,9 @@ public class SumOfLogs extends AbstractStorelessUnivariateStatistic
         return sumLog;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SumOfLogs copy() {
         return new SumOfLogs(this);

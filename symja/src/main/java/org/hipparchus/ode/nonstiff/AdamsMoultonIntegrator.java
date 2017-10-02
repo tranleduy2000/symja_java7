@@ -17,8 +17,6 @@
 
 package org.hipparchus.ode.nonstiff;
 
-import java.util.Arrays;
-
 import org.hipparchus.exception.MathIllegalArgumentException;
 import org.hipparchus.exception.MathIllegalStateException;
 import org.hipparchus.linear.Array2DRowRealMatrix;
@@ -29,11 +27,13 @@ import org.hipparchus.ode.ODEState;
 import org.hipparchus.ode.ODEStateAndDerivative;
 import org.hipparchus.util.FastMath;
 
+import java.util.Arrays;
+
 
 /**
  * This class implements implicit Adams-Moulton integrators for Ordinary
  * Differential Equations.
- *
+ * <p>
  * <p>Adams-Moulton methods (in fact due to Adams alone) are implicit
  * multistep ODE solvers. This implementation is a variation of the classical
  * one: it uses adaptive stepsize to implement error control, whereas
@@ -46,24 +46,24 @@ import org.hipparchus.util.FastMath;
  * on the number k of previous steps one wants to use for computing the next
  * value, different formulas are available for the final estimate:</p>
  * <ul>
- *   <li>k = 1: y<sub>n+1</sub> = y<sub>n</sub> + h y'<sub>n+1</sub></li>
- *   <li>k = 2: y<sub>n+1</sub> = y<sub>n</sub> + h (y'<sub>n+1</sub>+y'<sub>n</sub>)/2</li>
- *   <li>k = 3: y<sub>n+1</sub> = y<sub>n</sub> + h (5y'<sub>n+1</sub>+8y'<sub>n</sub>-y'<sub>n-1</sub>)/12</li>
- *   <li>k = 4: y<sub>n+1</sub> = y<sub>n</sub> + h (9y'<sub>n+1</sub>+19y'<sub>n</sub>-5y'<sub>n-1</sub>+y'<sub>n-2</sub>)/24</li>
- *   <li>...</li>
+ * <li>k = 1: y<sub>n+1</sub> = y<sub>n</sub> + h y'<sub>n+1</sub></li>
+ * <li>k = 2: y<sub>n+1</sub> = y<sub>n</sub> + h (y'<sub>n+1</sub>+y'<sub>n</sub>)/2</li>
+ * <li>k = 3: y<sub>n+1</sub> = y<sub>n</sub> + h (5y'<sub>n+1</sub>+8y'<sub>n</sub>-y'<sub>n-1</sub>)/12</li>
+ * <li>k = 4: y<sub>n+1</sub> = y<sub>n</sub> + h (9y'<sub>n+1</sub>+19y'<sub>n</sub>-5y'<sub>n-1</sub>+y'<sub>n-2</sub>)/24</li>
+ * <li>...</li>
  * </ul>
- *
+ * <p>
  * <p>A k-steps Adams-Moulton method is of order k+1.</p>
- *
+ * <p>
  * <p> There must be sufficient time for the {@link #setStarterIntegrator(org.hipparchus.ode.ODEIntegrator)
  * starter integrator} to take several steps between the the last reset event, and the end
  * of integration, otherwise an exception may be thrown during integration. The user can
  * adjust the end date of integration, or the step size of the starter integrator to
  * ensure a sufficient number of steps can be completed before the end of integration.
  * </p>
- *
+ * <p>
  * <h3>Implementation details</h3>
- *
+ * <p>
  * <p>We define scaled derivatives s<sub>i</sub>(n) at step n as:
  * <pre>
  * s<sub>1</sub>(n) = h y'<sub>n</sub> for first derivative
@@ -81,13 +81,13 @@ import org.hipparchus.util.FastMath;
  * (we omit the k index in the notation for clarity). With these definitions,
  * Adams-Moulton methods can be written:
  * <ul>
- *   <li>k = 1: y<sub>n+1</sub> = y<sub>n</sub> + s<sub>1</sub>(n+1)</li>
- *   <li>k = 2: y<sub>n+1</sub> = y<sub>n</sub> + 1/2 s<sub>1</sub>(n+1) + [ 1/2 ] q<sub>n+1</sub></li>
- *   <li>k = 3: y<sub>n+1</sub> = y<sub>n</sub> + 5/12 s<sub>1</sub>(n+1) + [ 8/12 -1/12 ] q<sub>n+1</sub></li>
- *   <li>k = 4: y<sub>n+1</sub> = y<sub>n</sub> + 9/24 s<sub>1</sub>(n+1) + [ 19/24 -5/24 1/24 ] q<sub>n+1</sub></li>
- *   <li>...</li>
+ * <li>k = 1: y<sub>n+1</sub> = y<sub>n</sub> + s<sub>1</sub>(n+1)</li>
+ * <li>k = 2: y<sub>n+1</sub> = y<sub>n</sub> + 1/2 s<sub>1</sub>(n+1) + [ 1/2 ] q<sub>n+1</sub></li>
+ * <li>k = 3: y<sub>n+1</sub> = y<sub>n</sub> + 5/12 s<sub>1</sub>(n+1) + [ 8/12 -1/12 ] q<sub>n+1</sub></li>
+ * <li>k = 4: y<sub>n+1</sub> = y<sub>n</sub> + 9/24 s<sub>1</sub>(n+1) + [ 19/24 -5/24 1/24 ] q<sub>n+1</sub></li>
+ * <li>...</li>
  * </ul></p>
- *
+ * <p>
  * <p>Instead of using the classical representation with first derivatives only (y<sub>n</sub>,
  * s<sub>1</sub>(n+1) and q<sub>n+1</sub>), our implementation uses the Nordsieck vector with
  * higher degrees scaled derivatives all taken at the same step (y<sub>n</sub>, s<sub>1</sub>(n)
@@ -97,7 +97,7 @@ import org.hipparchus.util.FastMath;
  * </pre>
  * (here again we omit the k index in the notation for clarity)
  * </p>
- *
+ * <p>
  * <p>Taylor series formulas show that for any index offset i, s<sub>1</sub>(n-i) can be
  * computed from s<sub>1</sub>(n), s<sub>2</sub>(n) ... s<sub>k</sub>(n), the formula being exact
  * for degree k polynomials.
@@ -123,19 +123,19 @@ import org.hipparchus.util.FastMath;
  *
  * <p>Using the Nordsieck vector has several advantages:
  * <ul>
- *   <li>it greatly simplifies step interpolation as the interpolator mainly applies
- *   Taylor series formulas,</li>
- *   <li>it simplifies step changes that occur when discrete events that truncate
- *   the step are triggered,</li>
- *   <li>it allows to extend the methods in order to support adaptive stepsize.</li>
+ * <li>it greatly simplifies step interpolation as the interpolator mainly applies
+ * Taylor series formulas,</li>
+ * <li>it simplifies step changes that occur when discrete events that truncate
+ * the step are triggered,</li>
+ * <li>it allows to extend the methods in order to support adaptive stepsize.</li>
  * </ul></p>
  *
  * <p>The predicted Nordsieck vector at step n+1 is computed from the Nordsieck vector at step
  * n as follows:
  * <ul>
- *   <li>Y<sub>n+1</sub> = y<sub>n</sub> + s<sub>1</sub>(n) + u<sup>T</sup> r<sub>n</sub></li>
- *   <li>S<sub>1</sub>(n+1) = h f(t<sub>n+1</sub>, Y<sub>n+1</sub>)</li>
- *   <li>R<sub>n+1</sub> = (s<sub>1</sub>(n) - S<sub>1</sub>(n+1)) P<sup>-1</sup> u + P<sup>-1</sup> A P r<sub>n</sub></li>
+ * <li>Y<sub>n+1</sub> = y<sub>n</sub> + s<sub>1</sub>(n) + u<sup>T</sup> r<sub>n</sub></li>
+ * <li>S<sub>1</sub>(n+1) = h f(t<sub>n+1</sub>, Y<sub>n+1</sub>)</li>
+ * <li>R<sub>n+1</sub> = (s<sub>1</sub>(n) - S<sub>1</sub>(n+1)) P<sup>-1</sup> u + P<sup>-1</sup> A P r<sub>n</sub></li>
  * </ul>
  * where A is a rows shifting matrix (the lower left part is an identity matrix):
  * <pre>
@@ -149,73 +149,78 @@ import org.hipparchus.util.FastMath;
  * </pre>
  * From this predicted vector, the corrected vector is computed as follows:
  * <ul>
- *   <li>y<sub>n+1</sub> = y<sub>n</sub> + S<sub>1</sub>(n+1) + [ -1 +1 -1 +1 ... &plusmn;1 ] r<sub>n+1</sub></li>
- *   <li>s<sub>1</sub>(n+1) = h f(t<sub>n+1</sub>, y<sub>n+1</sub>)</li>
- *   <li>r<sub>n+1</sub> = R<sub>n+1</sub> + (s<sub>1</sub>(n+1) - S<sub>1</sub>(n+1)) P<sup>-1</sup> u</li>
+ * <li>y<sub>n+1</sub> = y<sub>n</sub> + S<sub>1</sub>(n+1) + [ -1 +1 -1 +1 ... &plusmn;1 ] r<sub>n+1</sub></li>
+ * <li>s<sub>1</sub>(n+1) = h f(t<sub>n+1</sub>, y<sub>n+1</sub>)</li>
+ * <li>r<sub>n+1</sub> = R<sub>n+1</sub> + (s<sub>1</sub>(n+1) - S<sub>1</sub>(n+1)) P<sup>-1</sup> u</li>
  * </ul>
  * where the upper case Y<sub>n+1</sub>, S<sub>1</sub>(n+1) and R<sub>n+1</sub> represent the
  * predicted states whereas the lower case y<sub>n+1</sub>, s<sub>n+1</sub> and r<sub>n+1</sub>
  * represent the corrected states.</p>
- *
+ * <p>
  * <p>The P<sup>-1</sup>u vector and the P<sup>-1</sup> A P matrix do not depend on the state,
  * they only depend on k and therefore are precomputed once for all.</p>
- *
  */
 public class AdamsMoultonIntegrator extends AdamsIntegrator {
 
-    /** Integrator method name. */
+    /**
+     * Integrator method name.
+     */
     private static final String METHOD_NAME = "Adams-Moulton";
 
     /**
      * Build an Adams-Moulton integrator with the given order and error control parameters.
-     * @param nSteps number of steps of the method excluding the one being computed
-     * @param minStep minimal step (sign is irrelevant, regardless of
-     * integration direction, forward or backward), the last step can
-     * be smaller than this
-     * @param maxStep maximal step (sign is irrelevant, regardless of
-     * integration direction, forward or backward), the last step can
-     * be smaller than this
+     *
+     * @param nSteps                number of steps of the method excluding the one being computed
+     * @param minStep               minimal step (sign is irrelevant, regardless of
+     *                              integration direction, forward or backward), the last step can
+     *                              be smaller than this
+     * @param maxStep               maximal step (sign is irrelevant, regardless of
+     *                              integration direction, forward or backward), the last step can
+     *                              be smaller than this
      * @param scalAbsoluteTolerance allowed absolute error
      * @param scalRelativeTolerance allowed relative error
-     * @exception MathIllegalArgumentException if order is 1 or less
+     * @throws MathIllegalArgumentException if order is 1 or less
      */
     public AdamsMoultonIntegrator(final int nSteps,
                                   final double minStep, final double maxStep,
                                   final double scalAbsoluteTolerance,
                                   final double scalRelativeTolerance)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         super(METHOD_NAME, nSteps, nSteps + 1, minStep, maxStep,
-              scalAbsoluteTolerance, scalRelativeTolerance);
+                scalAbsoluteTolerance, scalRelativeTolerance);
     }
 
     /**
      * Build an Adams-Moulton integrator with the given order and error control parameters.
-     * @param nSteps number of steps of the method excluding the one being computed
-     * @param minStep minimal step (sign is irrelevant, regardless of
-     * integration direction, forward or backward), the last step can
-     * be smaller than this
-     * @param maxStep maximal step (sign is irrelevant, regardless of
-     * integration direction, forward or backward), the last step can
-     * be smaller than this
+     *
+     * @param nSteps               number of steps of the method excluding the one being computed
+     * @param minStep              minimal step (sign is irrelevant, regardless of
+     *                             integration direction, forward or backward), the last step can
+     *                             be smaller than this
+     * @param maxStep              maximal step (sign is irrelevant, regardless of
+     *                             integration direction, forward or backward), the last step can
+     *                             be smaller than this
      * @param vecAbsoluteTolerance allowed absolute error
      * @param vecRelativeTolerance allowed relative error
-     * @exception IllegalArgumentException if order is 1 or less
+     * @throws IllegalArgumentException if order is 1 or less
      */
     public AdamsMoultonIntegrator(final int nSteps,
                                   final double minStep, final double maxStep,
                                   final double[] vecAbsoluteTolerance,
                                   final double[] vecRelativeTolerance)
-        throws IllegalArgumentException {
+            throws IllegalArgumentException {
         super(METHOD_NAME, nSteps, nSteps + 1, minStep, maxStep,
-              vecAbsoluteTolerance, vecRelativeTolerance);
+                vecAbsoluteTolerance, vecRelativeTolerance);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ODEStateAndDerivative integrate(final ExpandableODE equations,
                                            final ODEState initialState,
                                            final double finalTime)
-        throws MathIllegalArgumentException, MathIllegalStateException {
+            throws MathIllegalArgumentException, MathIllegalStateException {
 
         sanityChecks(initialState, finalTime);
         setStepStart(initIntegration(equations, initialState, finalTime));
@@ -226,10 +231,10 @@ public class AdamsMoultonIntegrator extends AdamsIntegrator {
 
         // reuse the step that was chosen by the starter integrator
         ODEStateAndDerivative stepStart = getStepStart();
-        ODEStateAndDerivative stepEnd   =
-                        AdamsStateInterpolator.taylor(equations.getMapper(), stepStart,
-                                                      stepStart.getTime() + getStepSize(),
-                                                      getStepSize(), scaled, nordsieck);
+        ODEStateAndDerivative stepEnd =
+                AdamsStateInterpolator.taylor(equations.getMapper(), stepStart,
+                        stepStart.getTime() + getStepSize(),
+                        getStepSize(), scaled, nordsieck);
 
         setIsLastStep(false);
         final double[] y = stepStart.getCompleteState();
@@ -258,7 +263,7 @@ public class AdamsMoultonIntegrator extends AdamsIntegrator {
                 error = predictedNordsieck.walkInOptimizedOrder(new Corrector(y, predictedScaled, predictedY));
                 if (Double.isNaN(error)) {
                     throw new MathIllegalStateException(LocalizedODEFormats.NAN_APPEARING_DURING_INTEGRATION,
-                                                        stepEnd.getTime());
+                            stepEnd.getTime());
                 }
 
                 if (error >= 1.0) {
@@ -266,10 +271,10 @@ public class AdamsMoultonIntegrator extends AdamsIntegrator {
                     final double factor = computeStepGrowShrinkFactor(error);
                     rescale(filterStep(getStepSize() * factor, forward, false));
                     stepEnd = AdamsStateInterpolator.taylor(equations.getMapper(), getStepStart(),
-                                                            getStepStart().getTime() + getStepSize(),
-                                                            getStepSize(),
-                                                            scaled,
-                                                            nordsieck);
+                            getStepStart().getTime() + getStepSize(),
+                            getStepSize(),
+                            scaled,
+                            nordsieck);
                 }
             }
 
@@ -286,11 +291,11 @@ public class AdamsMoultonIntegrator extends AdamsIntegrator {
             // discrete events handling
             stepEnd = equations.getMapper().mapStateAndDerivative(stepEnd.getTime(), predictedY, correctedYDot);
             setStepStart(acceptStep(new AdamsStateInterpolator(getStepSize(), stepEnd,
-                                                               correctedScaled, predictedNordsieck, forward,
-                                                               getStepStart(), stepEnd,
-                                                               equations.getMapper()),
-                                    finalTime));
-            scaled    = correctedScaled;
+                            correctedScaled, predictedNordsieck, forward,
+                            getStepStart(), stepEnd,
+                            equations.getMapper()),
+                    finalTime));
+            scaled = correctedScaled;
             nordsieck = predictedNordsieck;
 
             if (!isLastStep()) {
@@ -301,10 +306,10 @@ public class AdamsMoultonIntegrator extends AdamsIntegrator {
                     // invalidate the derivatives, we need to restart from scratch
                     start(equations, getStepStart(), finalTime);
 
-                    final double  nextT      = getStepStart().getTime() + getStepSize();
+                    final double nextT = getStepStart().getTime() + getStepSize();
                     final boolean nextIsLast = forward ?
-                                               (nextT >= finalTime) :
-                                               (nextT <= finalTime);
+                            (nextT >= finalTime) :
+                            (nextT <= finalTime);
                     final double hNew = nextIsLast ? finalTime - getStepStart().getTime() : getStepSize();
 
                     rescale(hNew);
@@ -313,16 +318,16 @@ public class AdamsMoultonIntegrator extends AdamsIntegrator {
                 } else {
 
                     // stepsize control for next step
-                    final double  factor     = computeStepGrowShrinkFactor(error);
-                    final double  scaledH    = getStepSize() * factor;
-                    final double  nextT      = getStepStart().getTime() + scaledH;
+                    final double factor = computeStepGrowShrinkFactor(error);
+                    final double scaledH = getStepSize() * factor;
+                    final double nextT = getStepStart().getTime() + scaledH;
                     final boolean nextIsLast = forward ? (nextT >= finalTime) : (nextT <= finalTime);
                     double hNew = filterStep(scaledH, forward, nextIsLast);
 
-                    final double  filteredNextT      = getStepStart().getTime() + hNew;
+                    final double filteredNextT = getStepStart().getTime() + hNew;
                     final boolean filteredNextIsLast = forward ?
-                                                       (filteredNextT >= finalTime) :
-                                                       (filteredNextT <= finalTime);
+                            (filteredNextT >= finalTime) :
+                            (filteredNextT <= finalTime);
                     if (filteredNextIsLast) {
                         hNew = finalTime - getStepStart().getTime();
                     }
@@ -333,8 +338,8 @@ public class AdamsMoultonIntegrator extends AdamsIntegrator {
                 }
 
                 stepEnd = AdamsStateInterpolator.taylor(equations.getMapper(), getStepStart(),
-                                                        getStepStart().getTime() + getStepSize(),
-                                                        getStepSize(), scaled, nordsieck);
+                        getStepStart().getTime() + getStepSize(),
+                        getStepSize(), scaled, nordsieck);
             }
 
         } while (!isLastStep());
@@ -346,7 +351,8 @@ public class AdamsMoultonIntegrator extends AdamsIntegrator {
 
     }
 
-    /** Corrector for current state in Adams-Moulton method.
+    /**
+     * Corrector for current state in Adams-Moulton method.
      * <p>
      * This visitor implements the Taylor series formula:
      * <pre>
@@ -356,38 +362,52 @@ public class AdamsMoultonIntegrator extends AdamsIntegrator {
      */
     private class Corrector implements RealMatrixPreservingVisitor {
 
-        /** Previous state. */
+        /**
+         * Previous state.
+         */
         private final double[] previous;
 
-        /** Current scaled first derivative. */
+        /**
+         * Current scaled first derivative.
+         */
         private final double[] scaled;
 
-        /** Current state before correction. */
+        /**
+         * Current state before correction.
+         */
         private final double[] before;
 
-        /** Current state after correction. */
+        /**
+         * Current state after correction.
+         */
         private final double[] after;
 
-        /** Simple constructor.
+        /**
+         * Simple constructor.
+         *
          * @param previous previous state
-         * @param scaled current scaled first derivative
-         * @param state state to correct (will be overwritten after visit)
+         * @param scaled   current scaled first derivative
+         * @param state    state to correct (will be overwritten after visit)
          */
         Corrector(final double[] previous, final double[] scaled, final double[] state) {
             this.previous = previous;
-            this.scaled   = scaled;
-            this.after    = state;
-            this.before   = state.clone();
+            this.scaled = scaled;
+            this.after = state;
+            this.before = state.clone();
         }
 
-        /** {@inheritDoc} */
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void start(int rows, int columns,
                           int startRow, int endRow, int startColumn, int endColumn) {
             Arrays.fill(after, 0.0);
         }
 
-        /** {@inheritDoc} */
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void visit(int row, int column, double value) {
             if ((row & 0x1) == 0) {
@@ -403,6 +423,7 @@ public class AdamsMoultonIntegrator extends AdamsIntegrator {
          * considered to be an error, which must be normalized according to
          * error control settings. If the normalized value is greater than 1,
          * the correction was too large and the step must be rejected.</p>
+         *
          * @return the normalized correction, if greater than 1, the step
          * must be rejected
          */
@@ -413,10 +434,10 @@ public class AdamsMoultonIntegrator extends AdamsIntegrator {
                 after[i] += previous[i] + scaled[i];
                 if (i < mainSetDimension) {
                     final double yScale = FastMath.max(FastMath.abs(previous[i]), FastMath.abs(after[i]));
-                    final double tol    = (vecAbsoluteTolerance == null) ?
-                                          (scalAbsoluteTolerance + scalRelativeTolerance * yScale) :
-                                          (vecAbsoluteTolerance[i] + vecRelativeTolerance[i] * yScale);
-                    final double ratio  = (after[i] - before[i]) / tol; // (corrected-predicted)/tol
+                    final double tol = (vecAbsoluteTolerance == null) ?
+                            (scalAbsoluteTolerance + scalRelativeTolerance * yScale) :
+                            (vecAbsoluteTolerance[i] + vecRelativeTolerance[i] * yScale);
+                    final double ratio = (after[i] - before[i]) / tol; // (corrected-predicted)/tol
                     error += ratio * ratio;
                 }
             }

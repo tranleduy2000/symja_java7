@@ -16,9 +16,6 @@
  */
 package org.hipparchus.analysis.polynomials;
 
-import java.io.Serializable;
-import java.util.Arrays;
-
 import org.hipparchus.analysis.ParametricUnivariateFunction;
 import org.hipparchus.analysis.differentiation.DerivativeStructure;
 import org.hipparchus.analysis.differentiation.UnivariateDifferentiableFunction;
@@ -28,12 +25,14 @@ import org.hipparchus.exception.NullArgumentException;
 import org.hipparchus.util.FastMath;
 import org.hipparchus.util.MathUtils;
 
+import java.io.Serializable;
+import java.util.Arrays;
+
 /**
  * Immutable representation of a real polynomial function with real coefficients.
  * <p>
  * <a href="http://mathworld.wolfram.com/HornersMethod.html">Horner's Method</a>
  * is used to evaluate the function.</p>
- *
  */
 public class PolynomialFunction implements UnivariateDifferentiableFunction, Serializable {
     /**
@@ -58,11 +57,11 @@ public class PolynomialFunction implements UnivariateDifferentiableFunction, Ser
      * the coefficients property.</p>
      *
      * @param c Polynomial coefficients.
-     * @throws NullArgumentException if {@code c} is {@code null}.
+     * @throws NullArgumentException        if {@code c} is {@code null}.
      * @throws MathIllegalArgumentException if {@code c} is empty.
      */
     public PolynomialFunction(double c[])
-        throws MathIllegalArgumentException, NullArgumentException {
+            throws MathIllegalArgumentException, NullArgumentException {
         super();
         MathUtils.checkNotNull(c);
         int n = c.length;
@@ -77,20 +76,83 @@ public class PolynomialFunction implements UnivariateDifferentiableFunction, Ser
     }
 
     /**
+     * Uses Horner's Method to evaluate the polynomial with the given coefficients at
+     * the argument.
+     *
+     * @param coefficients Coefficients of the polynomial to evaluate.
+     * @param argument     Input value.
+     * @return the value of the polynomial.
+     * @throws MathIllegalArgumentException if {@code coefficients} is empty.
+     * @throws NullArgumentException        if {@code coefficients} is {@code null}.
+     */
+    protected static double evaluate(double[] coefficients, double argument)
+            throws MathIllegalArgumentException, NullArgumentException {
+        MathUtils.checkNotNull(coefficients);
+        int n = coefficients.length;
+        if (n == 0) {
+            throw new MathIllegalArgumentException(LocalizedCoreFormats.EMPTY_POLYNOMIALS_COEFFICIENTS_ARRAY);
+        }
+        double result = coefficients[n - 1];
+        for (int j = n - 2; j >= 0; j--) {
+            result = argument * result + coefficients[j];
+        }
+        return result;
+    }
+
+    /**
+     * Returns the coefficients of the derivative of the polynomial with the given coefficients.
+     *
+     * @param coefficients Coefficients of the polynomial to differentiate.
+     * @return the coefficients of the derivative or {@code null} if coefficients has length 1.
+     * @throws MathIllegalArgumentException if {@code coefficients} is empty.
+     * @throws NullArgumentException        if {@code coefficients} is {@code null}.
+     */
+    protected static double[] differentiate(double[] coefficients)
+            throws MathIllegalArgumentException, NullArgumentException {
+        MathUtils.checkNotNull(coefficients);
+        int n = coefficients.length;
+        if (n == 0) {
+            throw new MathIllegalArgumentException(LocalizedCoreFormats.EMPTY_POLYNOMIALS_COEFFICIENTS_ARRAY);
+        }
+        if (n == 1) {
+            return new double[]{0};
+        }
+        double[] result = new double[n - 1];
+        for (int i = n - 1; i > 0; i--) {
+            result[i - 1] = i * coefficients[i];
+        }
+        return result;
+    }
+
+    /**
+     * Creates a string representing a coefficient, removing ".0" endings.
+     *
+     * @param coeff Coefficient.
+     * @return a string representation of {@code coeff}.
+     */
+    private static String toString(double coeff) {
+        final String c = Double.toString(coeff);
+        if (c.endsWith(".0")) {
+            return c.substring(0, c.length() - 2);
+        } else {
+            return c;
+        }
+    }
+
+    /**
      * Compute the value of the function for the given argument.
      * <p>
-     *  The value returned is </p><p>
-     *  {@code coefficients[n] * x^n + ... + coefficients[1] * x  + coefficients[0]}
+     * The value returned is </p><p>
+     * {@code coefficients[n] * x^n + ... + coefficients[1] * x  + coefficients[0]}
      * </p>
      *
      * @param x Argument for which the function value should be computed.
      * @return the value of the polynomial at the given point.
-     *
      * @see org.hipparchus.analysis.UnivariateFunction#value(double)
      */
     @Override
     public double value(double x) {
-       return evaluate(coefficients, x);
+        return evaluate(coefficients, x);
     }
 
     /**
@@ -115,37 +177,14 @@ public class PolynomialFunction implements UnivariateDifferentiableFunction, Ser
     }
 
     /**
-     * Uses Horner's Method to evaluate the polynomial with the given coefficients at
-     * the argument.
+     * {@inheritDoc}
      *
-     * @param coefficients Coefficients of the polynomial to evaluate.
-     * @param argument Input value.
-     * @return the value of the polynomial.
      * @throws MathIllegalArgumentException if {@code coefficients} is empty.
-     * @throws NullArgumentException if {@code coefficients} is {@code null}.
-     */
-    protected static double evaluate(double[] coefficients, double argument)
-        throws MathIllegalArgumentException, NullArgumentException {
-        MathUtils.checkNotNull(coefficients);
-        int n = coefficients.length;
-        if (n == 0) {
-            throw new MathIllegalArgumentException(LocalizedCoreFormats.EMPTY_POLYNOMIALS_COEFFICIENTS_ARRAY);
-        }
-        double result = coefficients[n - 1];
-        for (int j = n - 2; j >= 0; j--) {
-            result = argument * result + coefficients[j];
-        }
-        return result;
-    }
-
-
-    /** {@inheritDoc}
-     * @throws MathIllegalArgumentException if {@code coefficients} is empty.
-     * @throws NullArgumentException if {@code coefficients} is {@code null}.
+     * @throws NullArgumentException        if {@code coefficients} is {@code null}.
      */
     @Override
     public DerivativeStructure value(final DerivativeStructure t)
-        throws MathIllegalArgumentException, NullArgumentException {
+            throws MathIllegalArgumentException, NullArgumentException {
         MathUtils.checkNotNull(coefficients);
         int n = coefficients.length;
         if (n == 0) {
@@ -166,7 +205,7 @@ public class PolynomialFunction implements UnivariateDifferentiableFunction, Ser
      */
     public PolynomialFunction add(final PolynomialFunction p) {
         // identify the lowest degree polynomial
-        final int lowLength  = FastMath.min(coefficients.length, p.coefficients.length);
+        final int lowLength = FastMath.min(coefficients.length, p.coefficients.length);
         final int highLength = FastMath.max(coefficients.length, p.coefficients.length);
 
         // build the coefficients array
@@ -175,10 +214,10 @@ public class PolynomialFunction implements UnivariateDifferentiableFunction, Ser
             newCoefficients[i] = coefficients[i] + p.coefficients[i];
         }
         System.arraycopy((coefficients.length < p.coefficients.length) ?
-                         p.coefficients : coefficients,
-                         lowLength,
-                         newCoefficients, lowLength,
-                         highLength - lowLength);
+                        p.coefficients : coefficients,
+                lowLength,
+                newCoefficients, lowLength,
+                highLength - lowLength);
 
         return new PolynomialFunction(newCoefficients);
     }
@@ -191,7 +230,7 @@ public class PolynomialFunction implements UnivariateDifferentiableFunction, Ser
      */
     public PolynomialFunction subtract(final PolynomialFunction p) {
         // identify the lowest degree polynomial
-        int lowLength  = FastMath.min(coefficients.length, p.coefficients.length);
+        int lowLength = FastMath.min(coefficients.length, p.coefficients.length);
         int highLength = FastMath.max(coefficients.length, p.coefficients.length);
 
         // build the coefficients array
@@ -205,7 +244,7 @@ public class PolynomialFunction implements UnivariateDifferentiableFunction, Ser
             }
         } else {
             System.arraycopy(coefficients, lowLength, newCoefficients, lowLength,
-                             highLength - lowLength);
+                    highLength - lowLength);
         }
 
         return new PolynomialFunction(newCoefficients);
@@ -238,36 +277,11 @@ public class PolynomialFunction implements UnivariateDifferentiableFunction, Ser
             for (int j = FastMath.max(0, i + 1 - p.coefficients.length);
                  j < FastMath.min(coefficients.length, i + 1);
                  ++j) {
-                newCoefficients[i] += coefficients[j] * p.coefficients[i-j];
+                newCoefficients[i] += coefficients[j] * p.coefficients[i - j];
             }
         }
 
         return new PolynomialFunction(newCoefficients);
-    }
-
-    /**
-     * Returns the coefficients of the derivative of the polynomial with the given coefficients.
-     *
-     * @param coefficients Coefficients of the polynomial to differentiate.
-     * @return the coefficients of the derivative or {@code null} if coefficients has length 1.
-     * @throws MathIllegalArgumentException if {@code coefficients} is empty.
-     * @throws NullArgumentException if {@code coefficients} is {@code null}.
-     */
-    protected static double[] differentiate(double[] coefficients)
-        throws MathIllegalArgumentException, NullArgumentException {
-        MathUtils.checkNotNull(coefficients);
-        int n = coefficients.length;
-        if (n == 0) {
-            throw new MathIllegalArgumentException(LocalizedCoreFormats.EMPTY_POLYNOMIALS_COEFFICIENTS_ARRAY);
-        }
-        if (n == 1) {
-            return new double[]{0};
-        }
-        double[] result = new double[n - 1];
-        for (int i = n - 1; i > 0; i--) {
-            result[i - 1] = i * coefficients[i];
-        }
-        return result;
     }
 
     /**
@@ -280,7 +294,7 @@ public class PolynomialFunction implements UnivariateDifferentiableFunction, Ser
         final double[] anti = new double[d + 2];
         anti[0] = 0d;
         for (int i = 1; i <= d + 1; i++) {
-            anti[i] = coefficients[i - 1]  / i;
+            anti[i] = coefficients[i - 1] / i;
         }
         return new PolynomialFunction(anti);
     }
@@ -318,7 +332,7 @@ public class PolynomialFunction implements UnivariateDifferentiableFunction, Ser
 
     /**
      * Returns a string representation of the polynomial.
-     *
+     * <p>
      * <p>The representation is user oriented. Terms are displayed lowest
      * degrees first. The multiplications signs, coefficients equals to
      * one and null terms are not displayed (except if the polynomial is 0,
@@ -374,21 +388,8 @@ public class PolynomialFunction implements UnivariateDifferentiableFunction, Ser
     }
 
     /**
-     * Creates a string representing a coefficient, removing ".0" endings.
-     *
-     * @param coeff Coefficient.
-     * @return a string representation of {@code coeff}.
+     * {@inheritDoc}
      */
-    private static String toString(double coeff) {
-        final String c = Double.toString(coeff);
-        if (c.endsWith(".0")) {
-            return c.substring(0, c.length() - 2);
-        } else {
-            return c;
-        }
-    }
-
-    /** {@inheritDoc} */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -397,7 +398,9 @@ public class PolynomialFunction implements UnivariateDifferentiableFunction, Ser
         return result;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -415,12 +418,13 @@ public class PolynomialFunction implements UnivariateDifferentiableFunction, Ser
 
     /**
      * Dedicated parametric polynomial class.
-     *
      */
     public static class Parametric implements ParametricUnivariateFunction {
-        /** {@inheritDoc} */
+        /**
+         * {@inheritDoc}
+         */
         @Override
-        public double[] gradient(double x, double ... parameters) {
+        public double[] gradient(double x, double... parameters) {
             final double[] gradient = new double[parameters.length];
             double xn = 1.0;
             for (int i = 0; i < parameters.length; ++i) {
@@ -430,10 +434,12 @@ public class PolynomialFunction implements UnivariateDifferentiableFunction, Ser
             return gradient;
         }
 
-        /** {@inheritDoc} */
+        /**
+         * {@inheritDoc}
+         */
         @Override
-        public double value(final double x, final double ... parameters)
-            throws MathIllegalArgumentException {
+        public double value(final double x, final double... parameters)
+                throws MathIllegalArgumentException {
             return PolynomialFunction.evaluate(parameters, x);
         }
     }

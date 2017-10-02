@@ -16,10 +16,10 @@
  */
 package org.hipparchus.analysis.interpolation;
 
-import java.io.Serializable;
-
 import org.hipparchus.analysis.polynomials.PolynomialFunctionLagrangeForm;
 import org.hipparchus.exception.MathIllegalArgumentException;
+
+import java.io.Serializable;
 
 /**
  * Implements the <a href="http://mathworld.wolfram.com/NevillesAlgorithm.html">
@@ -29,12 +29,13 @@ import org.hipparchus.exception.MathIllegalArgumentException;
  * <p>
  * The actual code of Neville's algorithm is in PolynomialFunctionLagrangeForm,
  * this class provides an easy-to-use interface to it.</p>
- *
  */
 public class NevilleInterpolator implements UnivariateInterpolator,
-    Serializable {
+        Serializable {
 
-    /** serializable version identifier */
+    /**
+     * serializable version identifier
+     */
     static final long serialVersionUID = 3003707660147873733L;
 
     /**
@@ -46,11 +47,11 @@ public class NevilleInterpolator implements UnivariateInterpolator,
      * @throws MathIllegalArgumentException if the array lengths are different.
      * @throws MathIllegalArgumentException if the number of points is less than 2.
      * @throws MathIllegalArgumentException if two abscissae have the same
-     * value.
+     *                                      value.
      */
     @Override
     public PolynomialFunctionLagrangeForm interpolate(double x[], double y[])
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         return new PolynomialFunctionLagrangeForm(x, y);
     }
 }

@@ -21,19 +21,20 @@ import org.hipparchus.RealFieldElement;
 import org.hipparchus.ode.FieldODEState;
 import org.hipparchus.ode.FieldODEStateAndDerivative;
 
-/** This interface represents a handler for discrete events triggered
+/**
+ * This interface represents a handler for discrete events triggered
  * during ODE integration.
- *
+ * <p>
  * <p>Some events can be triggered at discrete times as an ODE problem
  * is solved. This occurs for example when the integration process
  * should be stopped as some state is reached (G-stop facility) when the
  * precise date is unknown a priori, or when the derivatives have
  * states boundaries crossings.
  * </p>
- *
+ * <p>
  * <p>These events are defined as occurring when a <code>g</code>
  * switching function sign changes.</p>
- *
+ * <p>
  * <p>Since events are only problem-dependent and are triggered by the
  * independent <i>time</i> variable and the state vector, they can
  * occur at virtually any time, unknown in advance. The integrators will
@@ -48,9 +49,10 @@ import org.hipparchus.ode.FieldODEStateAndDerivative;
  *
  * @param <T> the type of the field elements
  */
-public interface FieldODEEventHandler<T extends RealFieldElement<T>>  {
+public interface FieldODEEventHandler<T extends RealFieldElement<T>> {
 
-    /** Initialize event handler at the start of an ODE integration.
+    /**
+     * Initialize event handler at the start of an ODE integration.
      * <p>
      * This method is called once at the start of the integration. It
      * may be used by the event handler to initialize some internal data
@@ -59,15 +61,17 @@ public interface FieldODEEventHandler<T extends RealFieldElement<T>>  {
      * <p>
      * The default implementation does nothing
      * </p>
+     *
      * @param initialState initial time, state vector and derivative
-     * @param finalTime target time for the integration
+     * @param finalTime    target time for the integration
      */
     default void init(FieldODEStateAndDerivative<T> initialState, T finalTime) {
         // nothing by default
     }
 
-    /** Compute the value of the switching function.
-
+    /**
+     * Compute the value of the switching function.
+     * <p>
      * <p>The discrete events are generated when the sign of this
      * switching function changes. The integrator will take care to change
      * the stepsize in such a way these events occur exactly at step boundaries.
@@ -97,15 +101,16 @@ public interface FieldODEEventHandler<T extends RealFieldElement<T>>  {
      * {@code h(state)} at bounce points, and {@code sign} is used to <em>unfold</em> it
      * back, so the solvers sees a {@code g(state)} function which behaves smoothly even
      * across events.</p>
-
+     *
      * @param state current value of the independent <i>time</i> variable, state vector
-     * and derivative
+     *              and derivative
      * @return value of the g switching function
      */
     T g(FieldODEStateAndDerivative<T> state);
 
-    /** Handle an event and choose what to do next.
-
+    /**
+     * Handle an event and choose what to do next.
+     * <p>
      * <p>This method is called when the integrator has accepted a step
      * ending exactly on a sign change of the function, just <em>before</em>
      * the step handler itself is called (see below for scheduling). It
@@ -115,23 +120,23 @@ public interface FieldODEEventHandler<T extends RealFieldElement<T>>  {
      * differential equations} to switch the derivatives computation in
      * case of discontinuity), or to direct the integrator to either stop
      * or continue integration, possibly with a reset state or derivatives.</p>
-
+     * <p>
      * <ul>
-     *   <li>if {@link Action#STOP} is returned, the step handler will be called
-     *   with the <code>isLast</code> flag of the {@link
-     *   org.hipparchus.ode.sampling.FieldODEStepHandler#handleStep handleStep}
-     *   method set to true and the integration will be stopped,</li>
-     *   <li>if {@link Action#RESET_STATE} is returned, the {@link #resetState
-     *   resetState} method will be called once the step handler has
-     *   finished its task, and the integrator will also recompute the
-     *   derivatives,</li>
-     *   <li>if {@link Action#RESET_DERIVATIVES} is returned, the integrator
-     *   will recompute the derivatives,
-     *   <li>if {@link Action#CONTINUE} is returned, no specific action will
-     *   be taken (apart from having called this method) and integration
-     *   will continue.</li>
+     * <li>if {@link Action#STOP} is returned, the step handler will be called
+     * with the <code>isLast</code> flag of the {@link
+     * org.hipparchus.ode.sampling.FieldODEStepHandler#handleStep handleStep}
+     * method set to true and the integration will be stopped,</li>
+     * <li>if {@link Action#RESET_STATE} is returned, the {@link #resetState
+     * resetState} method will be called once the step handler has
+     * finished its task, and the integrator will also recompute the
+     * derivatives,</li>
+     * <li>if {@link Action#RESET_DERIVATIVES} is returned, the integrator
+     * will recompute the derivatives,
+     * <li>if {@link Action#CONTINUE} is returned, no specific action will
+     * be taken (apart from having called this method) and integration
+     * will continue.</li>
      * </ul>
-
+     * <p>
      * <p>The scheduling between this method and the {@link
      * org.hipparchus.ode.sampling.FieldODEStepHandler FieldODEStepHandler} method {@link
      * org.hipparchus.ode.sampling.FieldODEStepHandler#handleStep
@@ -150,20 +155,21 @@ public interface FieldODEEventHandler<T extends RealFieldElement<T>>  {
      * {@code handleStep} method with t = 9 afterwards. Such out of order
      * calls are limited to the size of the integration step for {@link
      * org.hipparchus.ode.sampling.FieldODEStepHandler variable step handlers}.</p>
-
-     * @param state current value of the independent <i>time</i> variable, state vector
-     * and derivative
+     *
+     * @param state      current value of the independent <i>time</i> variable, state vector
+     *                   and derivative
      * @param increasing if true, the value of the switching function increases
-     * when times increases around event (note that increase is measured with respect
-     * to physical time, not with respect to integration which may go backward in time)
+     *                   when times increases around event (note that increase is measured with respect
+     *                   to physical time, not with respect to integration which may go backward in time)
      * @return indication of what the integrator should do next, this
      * value must be one of {@link Action#STOP}, {@link Action#RESET_STATE},
      * {@link Action#RESET_DERIVATIVES} or {@link Action#CONTINUE}
      */
     Action eventOccurred(FieldODEStateAndDerivative<T> state, boolean increasing);
 
-    /** Reset the state prior to continue the integration.
-
+    /**
+     * Reset the state prior to continue the integration.
+     * <p>
      * <p>This method is called after the step handler has returned and
      * before the next step is started, but only when {@link
      * #eventOccurred(FieldODEStateAndDerivative, boolean) eventOccurred} has itself
@@ -171,8 +177,9 @@ public interface FieldODEEventHandler<T extends RealFieldElement<T>>  {
      * the state vector for the next step, without perturbing the step handler of the
      * finishing step.</p>
      * <p>The default implementation returns its argument.</p>
+     *
      * @param state current value of the independent <i>time</i> variable, state vector
-     * and derivative
+     *              and derivative
      * @return reset state (note that it does not include the derivatives, they will
      * be added automatically by the integrator afterwards)
      */

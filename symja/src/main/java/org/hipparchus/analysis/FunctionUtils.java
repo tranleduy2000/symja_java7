@@ -29,13 +29,13 @@ import org.hipparchus.util.MathUtils;
 
 /**
  * Utilities for manipulating function objects.
- *
  */
 public class FunctionUtils {
     /**
      * Class only contains static methods.
      */
-    private FunctionUtils() {}
+    private FunctionUtils() {
+    }
 
     /**
      * Composes functions.
@@ -46,7 +46,7 @@ public class FunctionUtils {
      * @param f List of functions.
      * @return the composite function.
      */
-    public static UnivariateFunction compose(final UnivariateFunction ... f) {
+    public static UnivariateFunction compose(final UnivariateFunction... f) {
         return new UnivariateFunction() {
             /** {@inheritDoc} */
             @Override
@@ -69,7 +69,7 @@ public class FunctionUtils {
      * @param f List of functions.
      * @return the composite function.
      */
-    public static UnivariateDifferentiableFunction compose(final UnivariateDifferentiableFunction ... f) {
+    public static UnivariateDifferentiableFunction compose(final UnivariateDifferentiableFunction... f) {
         return new UnivariateDifferentiableFunction() {
 
             /** {@inheritDoc} */
@@ -101,7 +101,7 @@ public class FunctionUtils {
      * @param f List of functions.
      * @return a function that computes the sum of the functions.
      */
-    public static UnivariateFunction add(final UnivariateFunction ... f) {
+    public static UnivariateFunction add(final UnivariateFunction... f) {
         return new UnivariateFunction() {
             /** {@inheritDoc} */
             @Override
@@ -121,7 +121,7 @@ public class FunctionUtils {
      * @param f List of functions.
      * @return a function that computes the sum of the functions.
      */
-    public static UnivariateDifferentiableFunction add(final UnivariateDifferentiableFunction ... f) {
+    public static UnivariateDifferentiableFunction add(final UnivariateDifferentiableFunction... f) {
         return new UnivariateDifferentiableFunction() {
 
             /** {@inheritDoc} */
@@ -139,7 +139,7 @@ public class FunctionUtils {
              */
             @Override
             public DerivativeStructure value(final DerivativeStructure t)
-                throws MathIllegalArgumentException {
+                    throws MathIllegalArgumentException {
                 DerivativeStructure r = f[0].value(t);
                 for (int i = 1; i < f.length; i++) {
                     r = r.add(f[i].value(t));
@@ -156,7 +156,7 @@ public class FunctionUtils {
      * @param f List of functions.
      * @return a function that computes the product of the functions.
      */
-    public static UnivariateFunction multiply(final UnivariateFunction ... f) {
+    public static UnivariateFunction multiply(final UnivariateFunction... f) {
         return new UnivariateFunction() {
             /** {@inheritDoc} */
             @Override
@@ -176,7 +176,7 @@ public class FunctionUtils {
      * @param f List of functions.
      * @return a function that computes the product of the functions.
      */
-    public static UnivariateDifferentiableFunction multiply(final UnivariateDifferentiableFunction ... f) {
+    public static UnivariateDifferentiableFunction multiply(final UnivariateDifferentiableFunction... f) {
         return new UnivariateDifferentiableFunction() {
 
             /** {@inheritDoc} */
@@ -184,7 +184,7 @@ public class FunctionUtils {
             public double value(final double t) {
                 double r = f[0].value(t);
                 for (int i = 1; i < f.length; i++) {
-                    r  *= f[i].value(t);
+                    r *= f[i].value(t);
                 }
                 return r;
             }
@@ -207,8 +207,8 @@ public class FunctionUtils {
      * {@code h(x) = combiner(f(x), g(x)).}
      *
      * @param combiner Combiner function.
-     * @param f Function.
-     * @param g Function.
+     * @param f        Function.
+     * @param g        Function.
      * @return the composite function.
      */
     public static UnivariateFunction combine(final BivariateFunction combiner,
@@ -228,8 +228,8 @@ public class FunctionUtils {
      * h(x[]) = combiner(...combiner(combiner(initialValue,f(x[0])),f(x[1]))...),f(x[x.length-1]))
      * </code></pre>
      *
-     * @param combiner Combiner function.
-     * @param f Function.
+     * @param combiner     Combiner function.
+     * @param f            Function.
      * @param initialValue Initial value.
      * @return a collector function.
      */
@@ -254,7 +254,7 @@ public class FunctionUtils {
      * h(x[]) = combiner(...combiner(combiner(initialValue,x[0]),x[1])...),x[x.length-1])
      * </code></pre>
      *
-     * @param combiner Combiner function.
+     * @param combiner     Combiner function.
      * @param initialValue Initial value.
      * @return a collector function.
      */
@@ -266,7 +266,7 @@ public class FunctionUtils {
     /**
      * Creates a unary function by fixing the first argument of a binary function.
      *
-     * @param f Binary function.
+     * @param f     Binary function.
      * @param fixed value to which the first argument of {@code f} is set.
      * @return the unary function h(x) = f(fixed, x)
      */
@@ -280,10 +280,11 @@ public class FunctionUtils {
             }
         };
     }
+
     /**
      * Creates a unary function by fixing the second argument of a binary function.
      *
-     * @param f Binary function.
+     * @param f     Binary function.
      * @param fixed value to which the second argument of {@code f} is set.
      * @return the unary function h(x) = f(x, fixed)
      */
@@ -305,18 +306,18 @@ public class FunctionUtils {
      * are taken from {@code min} to {@code max - (max - min) / n}; therefore
      * {@code f} is not sampled at the upper bound {@code max}.</p>
      *
-     * @param f Function to be sampled
+     * @param f   Function to be sampled
      * @param min Lower bound of the interval (included).
      * @param max Upper bound of the interval (excluded).
-     * @param n Number of sample points.
+     * @param n   Number of sample points.
      * @return the array of samples.
      * @throws MathIllegalArgumentException if the lower bound {@code min} is
-     * greater than, or equal to the upper bound {@code max}.
+     *                                      greater than, or equal to the upper bound {@code max}.
      * @throws MathIllegalArgumentException if the number of sample points
-     * {@code n} is negative.
+     *                                      {@code n} is negative.
      */
     public static double[] sample(UnivariateFunction f, double min, double max, int n)
-       throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
 
         if (n <= 0) {
             throw new MathIllegalArgumentException(
@@ -325,7 +326,7 @@ public class FunctionUtils {
         }
         if (min >= max) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.NUMBER_TOO_LARGE_BOUND_EXCLUDED,
-                                                   min, max);
+                    min, max);
         }
 
         final double[] s = new double[n];
@@ -336,7 +337,8 @@ public class FunctionUtils {
         return s;
     }
 
-    /** Convert regular functions to {@link UnivariateDifferentiableFunction}.
+    /**
+     * Convert regular functions to {@link UnivariateDifferentiableFunction}.
      * <p>
      * This method handle the case with one free parameter and several derivatives.
      * For the case with several free parameters and only first order derivatives,
@@ -354,14 +356,15 @@ public class FunctionUtils {
      * contain f(sin(t)), df(sin(t))/dt, df<sup>2</sup>(sin(t))/dt<sup>2</sup> despite the
      * provided derivatives functions know nothing about the sine function.
      * </p>
-     * @param f base function f(x)
+     *
+     * @param f           base function f(x)
      * @param derivatives derivatives of the base function, in increasing differentiation order
      * @return a differentiable function with value and all specified derivatives
      * @see #toDifferentiable(MultivariateFunction, MultivariateVectorFunction)
      * @see #derivative(UnivariateDifferentiableFunction, int)
      */
     public static UnivariateDifferentiableFunction toDifferentiable(final UnivariateFunction f,
-                                                                       final UnivariateFunction ... derivatives) {
+                                                                    final UnivariateFunction... derivatives) {
 
         return new UnivariateDifferentiableFunction() {
 
@@ -376,7 +379,7 @@ public class FunctionUtils {
             public DerivativeStructure value(final DerivativeStructure x) {
                 if (x.getOrder() > derivatives.length) {
                     throw new MathIllegalArgumentException(LocalizedCoreFormats.NUMBER_TOO_LARGE,
-                                                           x.getOrder(), derivatives.length);
+                            x.getOrder(), derivatives.length);
                 }
                 final double[] packed = new double[x.getOrder() + 1];
                 packed[0] = f.value(x.getValue());
@@ -390,7 +393,8 @@ public class FunctionUtils {
 
     }
 
-    /** Convert regular functions to {@link MultivariateDifferentiableFunction}.
+    /**
+     * Convert regular functions to {@link MultivariateDifferentiableFunction}.
      * <p>
      * This method handle the case with several free parameters and only first order derivatives.
      * For the case with one free parameter and several derivatives,
@@ -408,7 +412,8 @@ public class FunctionUtils {
      * contain f(sin(t), cos(t)), df(sin(t), cos(t))/dt despite the provided derivatives functions
      * know nothing about the sine or cosine functions.
      * </p>
-     * @param f base function f(x)
+     *
+     * @param f        base function f(x)
      * @param gradient gradient of the base function
      * @return a differentiable function with value and gradient
      * @see #toDifferentiable(UnivariateFunction, UnivariateFunction...)
@@ -435,12 +440,12 @@ public class FunctionUtils {
                     dPoint[i] = point[i].getValue();
                     if (point[i].getOrder() > 1) {
                         throw new MathIllegalArgumentException(LocalizedCoreFormats.NUMBER_TOO_LARGE,
-                                                               point[i].getOrder(), 1);
+                                point[i].getOrder(), 1);
                     }
                 }
 
                 // evaluate regular functions
-                final double    v = f.value(dPoint);
+                final double v = f.value(dPoint);
                 final double[] dv = gradient.value(dPoint);
                 MathUtils.checkDimension(dv.length, point.length);
 
@@ -472,14 +477,16 @@ public class FunctionUtils {
 
     }
 
-    /** Convert an {@link UnivariateDifferentiableFunction} to an
+    /**
+     * Convert an {@link UnivariateDifferentiableFunction} to an
      * {@link UnivariateFunction} computing n<sup>th</sup> order derivative.
      * <p>
      * This converter is only a convenience method. Beware computing only one derivative does
      * not save any computation as the original function will really be called under the hood.
      * The derivative will be extracted from the full {@link DerivativeStructure} result.
      * </p>
-     * @param f original function, with value and all its derivatives
+     *
+     * @param f     original function, with value and all its derivatives
      * @param order of the derivative to extract
      * @return function computing the derivative at required order
      * @see #derivative(MultivariateDifferentiableFunction, int[])
@@ -501,14 +508,16 @@ public class FunctionUtils {
         };
     }
 
-    /** Convert an {@link MultivariateDifferentiableFunction} to an
+    /**
+     * Convert an {@link MultivariateDifferentiableFunction} to an
      * {@link MultivariateFunction} computing n<sup>th</sup> order derivative.
      * <p>
      * This converter is only a convenience method. Beware computing only one derivative does
      * not save any computation as the original function will really be called under the hood.
      * The derivative will be extracted from the full {@link DerivativeStructure} result.
      * </p>
-     * @param f original function, with value and all its derivatives
+     *
+     * @param f      original function, with value and all its derivatives
      * @param orders of the derivative to extract, for each free parameters
      * @return function computing the derivative at required order
      * @see #derivative(UnivariateDifferentiableFunction, int)

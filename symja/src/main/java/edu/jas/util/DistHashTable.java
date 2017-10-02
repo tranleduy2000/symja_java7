@@ -5,6 +5,8 @@
 package edu.jas.util;
 
 
+import org.apache.log4j.Logger;
+
 import java.io.IOException;
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -14,18 +16,18 @@ import java.util.List;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
-//import java.util.concurrent.ConcurrentSkipListMap;
 
-import org.apache.log4j.Logger;
+//import java.util.concurrent.ConcurrentSkipListMap;
 
 
 /**
  * Distributed version of a HashTable. Implemented with a SortedMap / TreeMap to
  * keep the sequence order of elements.
+ *
  * @author Heinz Kredel
  */
 
-public class DistHashTable<K, V> extends AbstractMap<K, V> /* implements Map<K,V> */{
+public class DistHashTable<K, V> extends AbstractMap<K, V> /* implements Map<K,V> */ {
 
 
     private static final Logger logger = Logger.getLogger(DistHashTable.class);
@@ -48,6 +50,7 @@ public class DistHashTable<K, V> extends AbstractMap<K, V> /* implements Map<K,V
 
     /**
      * Constructs a new DistHashTable.
+     *
      * @param host name or IP of server host.
      */
     public DistHashTable(String host) {
@@ -57,6 +60,7 @@ public class DistHashTable<K, V> extends AbstractMap<K, V> /* implements Map<K,V
 
     /**
      * DistHashTable.
+     *
      * @param host name or IP of server host.
      * @param port on server.
      */
@@ -67,7 +71,8 @@ public class DistHashTable<K, V> extends AbstractMap<K, V> /* implements Map<K,V
 
     /**
      * DistHashTable.
-     * @param cf ChannelFactory to use.
+     *
+     * @param cf   ChannelFactory to use.
      * @param host name or IP of server host.
      * @param port on server.
      */
@@ -92,6 +97,7 @@ public class DistHashTable<K, V> extends AbstractMap<K, V> /* implements Map<K,V
 
     /**
      * DistHashTable.
+     *
      * @param sc SocketChannel to use.
      */
     public DistHashTable(SocketChannel sc) {
@@ -238,6 +244,7 @@ public class DistHashTable<K, V> extends AbstractMap<K, V> /* implements Map<K,V
     /**
      * Put object to the distributed hash table. Blocks until the key value pair
      * is send and received from the server.
+     *
      * @param key
      * @param value
      */
@@ -254,6 +261,7 @@ public class DistHashTable<K, V> extends AbstractMap<K, V> /* implements Map<K,V
     /**
      * Put object to the distributed hash table. Returns immediately after
      * sending, does not block.
+     *
      * @param key
      * @param value
      */
@@ -263,7 +271,7 @@ public class DistHashTable<K, V> extends AbstractMap<K, V> /* implements Map<K,V
             throw new NullPointerException("null keys or values not allowed");
         }
         try {
-            DHTTransport<K, V> tc = DHTTransport.<K, V> create(key, value);
+            DHTTransport<K, V> tc = DHTTransport.<K, V>create(key, value);
             channel.send(tc);
             //System.out.println("send: "+tc+" @ "+listener);
         } catch (IOException e) {
@@ -281,6 +289,7 @@ public class DistHashTable<K, V> extends AbstractMap<K, V> /* implements Map<K,V
      * Get value under key from DHT. Blocks until the object is send and
      * received from the server (actually it blocks until some value under key
      * is received).
+     *
      * @param key
      * @return the value stored under the key.
      */
@@ -307,6 +316,7 @@ public class DistHashTable<K, V> extends AbstractMap<K, V> /* implements Map<K,V
     /**
      * Get value under key from DHT. If no value is jet available null is
      * returned.
+     *
      * @param key
      * @return the value stored under the key.
      */
@@ -319,7 +329,7 @@ public class DistHashTable<K, V> extends AbstractMap<K, V> /* implements Map<K,V
 
 
     /**
-     * Clear the List. 
+     * Clear the List.
      * Clearance request is distributed to all clients.
      */
     @Override

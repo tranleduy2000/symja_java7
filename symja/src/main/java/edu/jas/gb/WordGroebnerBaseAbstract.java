@@ -5,6 +5,8 @@
 package edu.jas.gb;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -12,8 +14,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.poly.GenWordPolynomial;
 import edu.jas.poly.GenWordPolynomialRing;
@@ -24,6 +24,7 @@ import edu.jas.structure.RingElem;
 /**
  * Non-commutative Groebner Bases abstract class. Implements common Groebner
  * bases and GB test methods.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
@@ -59,6 +60,7 @@ public abstract class WordGroebnerBaseAbstract<C extends RingElem<C>> implements
 
     /**
      * Constructor.
+     *
      * @param red Word Reduction engine
      */
     public WordGroebnerBaseAbstract(WordReduction<C> red) {
@@ -68,8 +70,9 @@ public abstract class WordGroebnerBaseAbstract<C extends RingElem<C>> implements
 
     /**
      * Constructor.
+     *
      * @param red Word Reduction engine
-     * @param pl Word pair selection strategy
+     * @param pl  Word pair selection strategy
      */
     public WordGroebnerBaseAbstract(WordReduction<C> red, WordPairList<C> pl) {
         this.red = red;
@@ -79,6 +82,7 @@ public abstract class WordGroebnerBaseAbstract<C extends RingElem<C>> implements
 
     /**
      * Get the String representation with GB engines.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -89,6 +93,7 @@ public abstract class WordGroebnerBaseAbstract<C extends RingElem<C>> implements
 
     /**
      * Normalize polynomial list.
+     *
      * @param A list of polynomials.
      * @return list of polynomials with zeros removed and ones/units reduced.
      */
@@ -119,6 +124,7 @@ public abstract class WordGroebnerBaseAbstract<C extends RingElem<C>> implements
     /**
      * Common zero test, test if univariate leading words exist for all
      * variables.
+     *
      * @param F polynomial list.
      * @return -1, 0 or 1 if "dimension"(ideal(F)) &eq; -1, 0 or &ge; 1.
      */
@@ -159,6 +165,7 @@ public abstract class WordGroebnerBaseAbstract<C extends RingElem<C>> implements
 
     /**
      * Univariate head term degrees.
+     *
      * @param A list of polynomials.
      * @return a list of the degrees of univariate head terms.
      */
@@ -196,6 +203,7 @@ public abstract class WordGroebnerBaseAbstract<C extends RingElem<C>> implements
 
     /**
      * Word Groebner base test.
+     *
      * @param F Word polynomial list.
      * @return true, if F is a Groebner base, else false.
      */
@@ -235,6 +243,7 @@ public abstract class WordGroebnerBaseAbstract<C extends RingElem<C>> implements
 
     /**
      * Groebner base using pairlist class.
+     *
      * @param F polynomial list.
      * @return GB(F) a Groebner base of F.
      */
@@ -243,6 +252,7 @@ public abstract class WordGroebnerBaseAbstract<C extends RingElem<C>> implements
 
     /**
      * Minimal ordered Groebner basis.
+     *
      * @param Gp a Groebner base.
      * @return a reduced Groebner base of Gp.
      */
@@ -312,6 +322,7 @@ public abstract class WordGroebnerBaseAbstract<C extends RingElem<C>> implements
 
     /**
      * Test for minimal ordered Groebner basis.
+     *
      * @param Gp an ideal base.
      * @return true, if Gp is a reduced minimal Groebner base.
      */

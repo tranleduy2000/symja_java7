@@ -5,6 +5,8 @@
 package edu.jas.poly;
 
 
+import org.apache.log4j.Logger;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -19,14 +21,12 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.apache.log4j.Logger;
-
 import edu.jas.arith.BigComplex;
 import edu.jas.arith.BigDecimal;
 import edu.jas.arith.BigInteger;
+import edu.jas.arith.BigOctonion;
 import edu.jas.arith.BigQuaternion;
 import edu.jas.arith.BigQuaternionRing;
-import edu.jas.arith.BigOctonion;
 import edu.jas.arith.BigRational;
 import edu.jas.arith.ModInteger;
 import edu.jas.arith.ModIntegerRing;
@@ -42,8 +42,9 @@ import edu.jas.structure.RingFactory;
  * QuotientRing since end of 2010, revision 3441. Quotient coefficients and
  * others can still be read if the respective factory is provided via the
  * constructor.
- * @see edu.jas.application.RingFactoryTokenizer
+ *
  * @author Heinz Kredel
+ * @see edu.jas.application.RingFactoryTokenizer
  */
 public class GenPolynomialTokenizer {
 
@@ -52,50 +53,22 @@ public class GenPolynomialTokenizer {
 
 
     private static final boolean debug = logger.isDebugEnabled();
-
-
-    private String[] vars;
-
-
-    private int nvars = 1;
-
-
-    private TermOrder tord;
-
-
-    private RelationTable table;
-
-
     private final StreamTokenizer tok;
-
-
     private final Reader reader;
-
-
+    private String[] vars;
+    private int nvars = 1;
+    private TermOrder tord;
+    private RelationTable table;
     private RingFactory fac;
-
-
-    private static enum coeffType {
-        BigRat, BigInt, ModInt, BigC, BigQ, BigO, BigD, ANrat, ANmod, IntFunc
-    };
-
-
     private coeffType parsedCoeff = coeffType.BigRat;
 
-
+    ;
     private GenPolynomialRing pfac;
-
-
-    private static enum polyType {
-        PolBigRat, PolBigInt, PolModInt, PolBigC, PolBigD, PolBigQ, PolBigO, PolANrat, PolANmod, PolIntFunc
-    };
-
-
     @SuppressWarnings("unused")
     private polyType parsedPoly = polyType.PolBigRat;
-
-
     private GenSolvablePolynomialRing spfac;
+
+    ;
 
 
     /**
@@ -108,8 +81,9 @@ public class GenPolynomialTokenizer {
 
     /**
      * Constructor with Ring and Reader.
+     *
      * @param rf ring factory.
-     * @param r reader stream.
+     * @param r  reader stream.
      */
     public GenPolynomialTokenizer(GenPolynomialRing rf, Reader r) {
         this(r);
@@ -140,6 +114,7 @@ public class GenPolynomialTokenizer {
 
     /**
      * Constructor with Reader.
+     *
      * @param r reader stream.
      */
     @SuppressWarnings("unchecked")
@@ -174,9 +149,132 @@ public class GenPolynomialTokenizer {
 
     }
 
+    static boolean digit(char x) {
+        return '0' <= x && x <= '9';
+    }
+
+    static boolean letter(char x) {
+        return ('a' <= x && x <= 'z') || ('A' <= x && x <= 'Z');
+    }
+
+    /**
+     * Parse variable list from String.
+     *
+     * @param s String. Syntax:
+     *          <p>
+     *          <pre>
+     *          (n1,...,nk)
+     *                     </pre>
+     *          <p>
+     *          or
+     *          <p>
+     *          <pre>
+     *          (n1 ... nk)
+     *                     </pre>
+     *          <p>
+     *          parenthesis are optional.
+     * @return array of variable names found in s.
+     */
+    public static String[] variableList(String s) {
+        String[] vl = null;
+        if (s == null) {
+            return vl;
+        }
+        String st = s.trim();
+        if (st.length() == 0) {
+            return new String[0];
+        }
+        if (st.charAt(0) == '(') {
+            st = st.substring(1);
+        }
+        if (st.charAt(st.length() - 1) == ')') {
+            st = st.substring(0, st.length() - 1);
+        }
+        st = st.replaceAll(",", " ");
+        List<String> sl = new ArrayList<String>();
+        Scanner sc = new Scanner(st);
+        while (sc.hasNext()) {
+            String sn = sc.next();
+            sl.add(sn);
+        }
+        sc.close();
+        vl = new String[sl.size()];
+        int i = 0;
+        for (String si : sl) {
+            vl[i] = si;
+            i++;
+        }
+        return vl;
+    }
+
+    /**
+     * Extract variable list from expression.
+     *
+     * @param s String. Syntax: any polynomial expression.
+     * @return array of variable names found in s.
+     */
+    public static String[] expressionVariables(String s) {
+        String[] vl = null;
+        if (s == null) {
+            return vl;
+        }
+        String st = s.trim();
+        if (st.length() == 0) {
+            return new String[0];
+        }
+        st = st.replaceAll(",", " ");
+        st = st.replaceAll("\\+", " ");
+        st = st.replaceAll("-", " ");
+        st = st.replaceAll("\\*", " ");
+        st = st.replaceAll("/", " ");
+        st = st.replaceAll("\\(", " ");
+        st = st.replaceAll("\\)", " ");
+        st = st.replaceAll("\\{", " ");
+        st = st.replaceAll("\\}", " ");
+        st = st.replaceAll("\\[", " ");
+        st = st.replaceAll("\\]", " ");
+        st = st.replaceAll("\\^", " ");
+        //System.out.println("st = " + st);
+
+        Set<String> sl = new TreeSet<String>();
+        Scanner sc = new Scanner(st);
+        while (sc.hasNext()) {
+            String sn = sc.next();
+            if (sn == null || sn.length() == 0) {
+                continue;
+            }
+            //System.out.println("sn = " + sn);
+            int i = 0;
+            while (digit(sn.charAt(i)) && i < sn.length() - 1) {
+                i++;
+            }
+            //System.out.println("sn = " + sn + ", i = " + i);
+            if (i > 0) {
+                sn = sn.substring(i, sn.length());
+            }
+            //System.out.println("sn = " + sn);
+            if (sn.length() == 0) {
+                continue;
+            }
+            if (!letter(sn.charAt(0))) {
+                continue;
+            }
+            //System.out.println("sn = " + sn);
+            sl.add(sn);
+        }
+        sc.close();
+        vl = new String[sl.size()];
+        int i = 0;
+        for (String si : sl) {
+            vl[i] = si;
+            i++;
+        }
+        return vl;
+    }
 
     /**
      * Initialize coefficient and polynomial factories.
+     *
      * @param rf ring factory.
      * @param ct coefficient type.
      */
@@ -186,47 +284,47 @@ public class GenPolynomialTokenizer {
         parsedCoeff = ct;
 
         switch (ct) {
-        case BigRat:
-            pfac = new GenPolynomialRing<BigRational>(fac, nvars, tord, vars);
-            parsedPoly = polyType.PolBigRat;
-            break;
-        case BigInt:
-            pfac = new GenPolynomialRing<BigInteger>(fac, nvars, tord, vars);
-            parsedPoly = polyType.PolBigInt;
-            break;
-        case ModInt:
-            pfac = new GenPolynomialRing<ModInteger>(fac, nvars, tord, vars);
-            parsedPoly = polyType.PolModInt;
-            break;
-        case BigC:
-            pfac = new GenPolynomialRing<BigComplex>(fac, nvars, tord, vars);
-            parsedPoly = polyType.PolBigC;
-            break;
-        case BigQ:
-            pfac = new GenPolynomialRing<BigQuaternion>(fac, nvars, tord, vars);
-            parsedPoly = polyType.PolBigQ;
-            break;
-        case BigO:
-            pfac = new GenPolynomialRing<BigOctonion>(fac, nvars, tord, vars);
-            parsedPoly = polyType.PolBigO;
-            break;
-        case BigD:
-            pfac = new GenPolynomialRing<BigDecimal>(fac, nvars, tord, vars);
-            parsedPoly = polyType.PolBigD;
-            break;
-        case IntFunc:
-            pfac = new GenPolynomialRing<GenPolynomial<BigRational>>(fac, nvars, tord, vars);
-            parsedPoly = polyType.PolIntFunc;
-            break;
-        default:
-            pfac = new GenPolynomialRing<BigRational>(fac, nvars, tord, vars);
-            parsedPoly = polyType.PolBigRat;
+            case BigRat:
+                pfac = new GenPolynomialRing<BigRational>(fac, nvars, tord, vars);
+                parsedPoly = polyType.PolBigRat;
+                break;
+            case BigInt:
+                pfac = new GenPolynomialRing<BigInteger>(fac, nvars, tord, vars);
+                parsedPoly = polyType.PolBigInt;
+                break;
+            case ModInt:
+                pfac = new GenPolynomialRing<ModInteger>(fac, nvars, tord, vars);
+                parsedPoly = polyType.PolModInt;
+                break;
+            case BigC:
+                pfac = new GenPolynomialRing<BigComplex>(fac, nvars, tord, vars);
+                parsedPoly = polyType.PolBigC;
+                break;
+            case BigQ:
+                pfac = new GenPolynomialRing<BigQuaternion>(fac, nvars, tord, vars);
+                parsedPoly = polyType.PolBigQ;
+                break;
+            case BigO:
+                pfac = new GenPolynomialRing<BigOctonion>(fac, nvars, tord, vars);
+                parsedPoly = polyType.PolBigO;
+                break;
+            case BigD:
+                pfac = new GenPolynomialRing<BigDecimal>(fac, nvars, tord, vars);
+                parsedPoly = polyType.PolBigD;
+                break;
+            case IntFunc:
+                pfac = new GenPolynomialRing<GenPolynomial<BigRational>>(fac, nvars, tord, vars);
+                parsedPoly = polyType.PolIntFunc;
+                break;
+            default:
+                pfac = new GenPolynomialRing<BigRational>(fac, nvars, tord, vars);
+                parsedPoly = polyType.PolBigRat;
         }
     }
 
-
     /**
      * Initialize coefficient and solvable polynomial factories.
+     *
      * @param rf ring factory.
      * @param ct coefficient type.
      */
@@ -236,59 +334,59 @@ public class GenPolynomialTokenizer {
         parsedCoeff = ct;
 
         switch (ct) {
-        case BigRat:
-            spfac = new GenSolvablePolynomialRing<BigRational>(fac, nvars, tord, vars);
-            parsedPoly = polyType.PolBigRat;
-            break;
-        case BigInt:
-            spfac = new GenSolvablePolynomialRing<BigInteger>(fac, nvars, tord, vars);
-            parsedPoly = polyType.PolBigInt;
-            break;
-        case ModInt:
-            spfac = new GenSolvablePolynomialRing<ModInteger>(fac, nvars, tord, vars);
-            parsedPoly = polyType.PolModInt;
-            break;
-        case BigC:
-            spfac = new GenSolvablePolynomialRing<BigComplex>(fac, nvars, tord, vars);
-            parsedPoly = polyType.PolBigC;
-            break;
-        case BigQ:
-            spfac = new GenSolvablePolynomialRing<BigQuaternion>(fac, nvars, tord, vars);
-            parsedPoly = polyType.PolBigQ;
-            break;
-        case BigO:
-            spfac = new GenSolvablePolynomialRing<BigOctonion>(fac, nvars, tord, vars);
-            parsedPoly = polyType.PolBigO;
-            break;
-        case BigD:
-            spfac = new GenSolvablePolynomialRing<BigDecimal>(fac, nvars, tord, vars);
-            parsedPoly = polyType.PolBigD;
-            break;
-        case IntFunc:
-            spfac = new GenSolvablePolynomialRing<GenPolynomial<BigRational>>(fac, nvars, tord, vars);
-            parsedPoly = polyType.PolIntFunc;
-            break;
-        default:
-            spfac = new GenSolvablePolynomialRing<BigRational>(fac, nvars, tord, vars);
-            parsedPoly = polyType.PolBigRat;
+            case BigRat:
+                spfac = new GenSolvablePolynomialRing<BigRational>(fac, nvars, tord, vars);
+                parsedPoly = polyType.PolBigRat;
+                break;
+            case BigInt:
+                spfac = new GenSolvablePolynomialRing<BigInteger>(fac, nvars, tord, vars);
+                parsedPoly = polyType.PolBigInt;
+                break;
+            case ModInt:
+                spfac = new GenSolvablePolynomialRing<ModInteger>(fac, nvars, tord, vars);
+                parsedPoly = polyType.PolModInt;
+                break;
+            case BigC:
+                spfac = new GenSolvablePolynomialRing<BigComplex>(fac, nvars, tord, vars);
+                parsedPoly = polyType.PolBigC;
+                break;
+            case BigQ:
+                spfac = new GenSolvablePolynomialRing<BigQuaternion>(fac, nvars, tord, vars);
+                parsedPoly = polyType.PolBigQ;
+                break;
+            case BigO:
+                spfac = new GenSolvablePolynomialRing<BigOctonion>(fac, nvars, tord, vars);
+                parsedPoly = polyType.PolBigO;
+                break;
+            case BigD:
+                spfac = new GenSolvablePolynomialRing<BigDecimal>(fac, nvars, tord, vars);
+                parsedPoly = polyType.PolBigD;
+                break;
+            case IntFunc:
+                spfac = new GenSolvablePolynomialRing<GenPolynomial<BigRational>>(fac, nvars, tord, vars);
+                parsedPoly = polyType.PolIntFunc;
+                break;
+            default:
+                spfac = new GenSolvablePolynomialRing<BigRational>(fac, nvars, tord, vars);
+                parsedPoly = polyType.PolBigRat;
         }
     }
-
 
     /**
      * Parsing method for GenPolynomial. Syntax depends also on the syntax of
      * the coefficients, as the respective parser is used. Basic term/monomial
      * syntax:
-     * 
+     * <p>
      * <pre>
-    ... coefficient variable**exponent ... variable^exponent + ... - ....
+     * ... coefficient variable**exponent ... variable^exponent + ... - ....
      * </pre>
-     * 
+     * <p>
      * Juxtaposition means multiplication <code>*</code>. Then terms/monomials
      * can be added or subtracted <code>+, -</code> and grouped by parenthesis
      * <code>()</code>. There are some heuristics to detect when a coefficient
      * should be parsed. To force parsing of a coefficient enclose it in braces
      * <code>{}</code>.
+     *
      * @return the next polynomial.
      * @throws IOException
      */
@@ -323,149 +421,63 @@ public class GenPolynomialTokenizer {
             if (tt == StreamTokenizer.TT_EOF)
                 break;
             switch (tt) {
-            case ')':
-            case ',':
-                return a; // do not change or remove
-            case '-':
-                b = b.negate();
-            case '+':
-            case '*':
-                tt = tok.nextToken();
-                break;
-            default: // skip
+                case ')':
+                case ',':
+                    return a; // do not change or remove
+                case '-':
+                    b = b.negate();
+                case '+':
+                case '*':
+                    tt = tok.nextToken();
+                    break;
+                default: // skip
             }
             // read coefficient, monic monomial and polynomial
             if (tt == StreamTokenizer.TT_EOF)
                 break;
             switch (tt) {
-            // case '_': removed 
-            case '}':
-                throw new InvalidExpressionException("mismatch of braces after " + a + ", error at " + b);
-            case '{': // recursion
-                StringBuffer rf = new StringBuffer();
-                int level = 0;
-                do {
-                    tt = tok.nextToken();
-                    //System.out.println("token { = " + ((char)tt) + ", " + tt + ", level = " + level);
-                    if (tt == StreamTokenizer.TT_EOF) {
-                        throw new InvalidExpressionException(
-                                        "mismatch of braces after " + a + ", error at " + b);
-                    }
-                    if (tt == '{') {
-                        level++;
-                    }
-                    if (tt == '}') {
-                        level--;
-                        if (level < 0) {
-                            continue; // skip last closing brace 
-                        }
-                    }
-                    if (tok.sval != null) {
-                        if (rf.length() > 0 && rf.charAt(rf.length() - 1) != '.') {
-                            rf.append(" ");
-                        }
-                        rf.append(tok.sval); // " " + 
-                    } else {
-                        rf.append((char) tt);
-                    }
-                } while (level >= 0);
-                //System.out.println("coeff{} = " + rf.toString() );
-                try {
-                    r = (RingElem) fac.parse(rf.toString());
-                } catch (NumberFormatException re) {
-                    throw new InvalidExpressionException("not a number " + rf, re);
-                }
-                if (debug)
-                    logger.debug("coeff " + r);
-                ie = nextExponent();
-                if (debug)
-                    logger.debug("ie " + ie);
-                r = (RingElem) r.power(ie); //Power.<RingElem> positivePower(r, ie);
-                if (debug)
-                    logger.debug("coeff^ie " + r);
-                b = b.multiply(r, leer);
-                tt = tok.nextToken();
-                if (debug)
-                    logger.debug("tt,digit = " + tok);
-                //no break;
-                break;
-
-            //case '.': // eventually a float
-            //System.out.println("start . = " + reader);
-            //throw new InvalidExpressionException("float must start with a digit ");
-
-            case StreamTokenizer.TT_WORD:
-                //System.out.println("TT_WORD: " + tok.sval);
-                if (tok.sval == null || tok.sval.length() == 0)
-                    break;
-                // read coefficient
-                first = tok.sval.charAt(0);
-                if (digit(first) || first == '/' || first == '.' || first == '~') {
-                    //System.out.println("coeff 0 = " + tok.sval );
-                    StringBuffer df = new StringBuffer();
-                    df.append(tok.sval);
-                    if (tok.sval.length() > 1 && digit(tok.sval.charAt(1))) {
-                        //System.out.println("start / or . = " + tok.sval);
-                        if (first == '/') { // let x/2 be x 1/2
-                            df.insert(0, "1");
-                        }
-                        if (first == '.') { // let x.2 be x 0.2
-                            df.insert(0, "0");
-                        }
-                    }
-                    if (tok.sval.charAt(tok.sval.length() - 1) == 'i') { // complex number
+                // case '_': removed
+                case '}':
+                    throw new InvalidExpressionException("mismatch of braces after " + a + ", error at " + b);
+                case '{': // recursion
+                    StringBuffer rf = new StringBuffer();
+                    int level = 0;
+                    do {
                         tt = tok.nextToken();
-                        if (debug)
-                            logger.debug("tt,im = " + tok);
-                        if (tok.sval != null || tt == '-') {
-                            if (tok.sval != null) {
-                                df.append(tok.sval);
-                            } else {
-                                df.append("-");
-                            }
-                            if (tt == '-') {
-                                tt = tok.nextToken(); // todo: decimal number
-                                if (tok.sval != null && digit(tok.sval.charAt(0))) {
-                                    df.append(tok.sval);
-
-                                } else {
-                                    tok.pushBack();
-                                }
-                            }
-                        } else {
-                            tok.pushBack();
+                        //System.out.println("token { = " + ((char)tt) + ", " + tt + ", level = " + level);
+                        if (tt == StreamTokenizer.TT_EOF) {
+                            throw new InvalidExpressionException(
+                                    "mismatch of braces after " + a + ", error at " + b);
                         }
-                    }
-                    tt = tok.nextToken();
-                    if (tt == '.') { // decimal number, obsolete by word char?
-                        tt = tok.nextToken();
-                        if (debug)
-                            logger.debug("tt,dot = " + tok);
+                        if (tt == '{') {
+                            level++;
+                        }
+                        if (tt == '}') {
+                            level--;
+                            if (level < 0) {
+                                continue; // skip last closing brace
+                            }
+                        }
                         if (tok.sval != null) {
-                            df.append(".");
-                            df.append(tok.sval);
+                            if (rf.length() > 0 && rf.charAt(rf.length() - 1) != '.') {
+                                rf.append(" ");
+                            }
+                            rf.append(tok.sval); // " " +
                         } else {
-                            tok.pushBack();
-                            tok.pushBack();
+                            rf.append((char) tt);
                         }
-                    } else {
-                        tok.pushBack();
-                    }
+                    } while (level >= 0);
+                    //System.out.println("coeff{} = " + rf.toString() );
                     try {
-                        //System.out.println("df = " + df + ", fac = " + fac.getClass());
-                        r = (RingElem) fac.parse(df.toString());
-                        //System.out.println("r = " + r);
+                        r = (RingElem) fac.parse(rf.toString());
                     } catch (NumberFormatException re) {
-                        //System.out.println("re = " + re);
-                        throw new InvalidExpressionException("not a number " + df, re);
+                        throw new InvalidExpressionException("not a number " + rf, re);
                     }
                     if (debug)
                         logger.debug("coeff " + r);
-                    //System.out.println("r = " + r.toScriptFactory());
                     ie = nextExponent();
                     if (debug)
                         logger.debug("ie " + ie);
-                    // r = r^ie;
                     r = (RingElem) r.power(ie); //Power.<RingElem> positivePower(r, ie);
                     if (debug)
                         logger.debug("coeff^ie " + r);
@@ -473,64 +485,150 @@ public class GenPolynomialTokenizer {
                     tt = tok.nextToken();
                     if (debug)
                         logger.debug("tt,digit = " + tok);
-                }
-                if (tt == StreamTokenizer.TT_EOF)
+                    //no break;
                     break;
-                if (tok.sval == null)
-                    break;
-                // read monomial or recursion 
-                first = tok.sval.charAt(0);
-                if (letter(first)) {
-                    ix = leer.indexVar(tok.sval, vars); //indexVar( tok.sval );
-                    if (ix < 0) { // not found
+
+                //case '.': // eventually a float
+                //System.out.println("start . = " + reader);
+                //throw new InvalidExpressionException("float must start with a digit ");
+
+                case StreamTokenizer.TT_WORD:
+                    //System.out.println("TT_WORD: " + tok.sval);
+                    if (tok.sval == null || tok.sval.length() == 0)
+                        break;
+                    // read coefficient
+                    first = tok.sval.charAt(0);
+                    if (digit(first) || first == '/' || first == '.' || first == '~') {
+                        //System.out.println("coeff 0 = " + tok.sval );
+                        StringBuffer df = new StringBuffer();
+                        df.append(tok.sval);
+                        if (tok.sval.length() > 1 && digit(tok.sval.charAt(1))) {
+                            //System.out.println("start / or . = " + tok.sval);
+                            if (first == '/') { // let x/2 be x 1/2
+                                df.insert(0, "1");
+                            }
+                            if (first == '.') { // let x.2 be x 0.2
+                                df.insert(0, "0");
+                            }
+                        }
+                        if (tok.sval.charAt(tok.sval.length() - 1) == 'i') { // complex number
+                            tt = tok.nextToken();
+                            if (debug)
+                                logger.debug("tt,im = " + tok);
+                            if (tok.sval != null || tt == '-') {
+                                if (tok.sval != null) {
+                                    df.append(tok.sval);
+                                } else {
+                                    df.append("-");
+                                }
+                                if (tt == '-') {
+                                    tt = tok.nextToken(); // todo: decimal number
+                                    if (tok.sval != null && digit(tok.sval.charAt(0))) {
+                                        df.append(tok.sval);
+
+                                    } else {
+                                        tok.pushBack();
+                                    }
+                                }
+                            } else {
+                                tok.pushBack();
+                            }
+                        }
+                        tt = tok.nextToken();
+                        if (tt == '.') { // decimal number, obsolete by word char?
+                            tt = tok.nextToken();
+                            if (debug)
+                                logger.debug("tt,dot = " + tok);
+                            if (tok.sval != null) {
+                                df.append(".");
+                                df.append(tok.sval);
+                            } else {
+                                tok.pushBack();
+                                tok.pushBack();
+                            }
+                        } else {
+                            tok.pushBack();
+                        }
                         try {
-                            r = (RingElem) fac.parse(tok.sval);
+                            //System.out.println("df = " + df + ", fac = " + fac.getClass());
+                            r = (RingElem) fac.parse(df.toString());
+                            //System.out.println("r = " + r);
                         } catch (NumberFormatException re) {
-                            throw new InvalidExpressionException("recursively unknown variable " + tok.sval);
+                            //System.out.println("re = " + re);
+                            throw new InvalidExpressionException("not a number " + df, re);
                         }
                         if (debug)
-                            logger.info("coeff " + r);
-                        //if (r.isONE() || r.isZERO()) {
-                        //logger.error("Unknown varibable " + tok.sval);
-                        //done = true;
-                        //break;
-                        //throw new InvalidExpressionException("recursively unknown variable " + tok.sval);
-                        //}
+                            logger.debug("coeff " + r);
+                        //System.out.println("r = " + r.toScriptFactory());
                         ie = nextExponent();
-                        //  System.out.println("ie: " + ie);
+                        if (debug)
+                            logger.debug("ie " + ie);
+                        // r = r^ie;
                         r = (RingElem) r.power(ie); //Power.<RingElem> positivePower(r, ie);
-                        b = b.multiply(r);
-                    } else { // found
-                        //  System.out.println("ix: " + ix);
-                        ie = nextExponent();
-                        //  System.out.println("ie: " + ie);
-                        e = ExpVector.create(vars.length, ix, ie);
-                        b = b.multiply(e);
+                        if (debug)
+                            logger.debug("coeff^ie " + r);
+                        b = b.multiply(r, leer);
+                        tt = tok.nextToken();
+                        if (debug)
+                            logger.debug("tt,digit = " + tok);
                     }
+                    if (tt == StreamTokenizer.TT_EOF)
+                        break;
+                    if (tok.sval == null)
+                        break;
+                    // read monomial or recursion
+                    first = tok.sval.charAt(0);
+                    if (letter(first)) {
+                        ix = leer.indexVar(tok.sval, vars); //indexVar( tok.sval );
+                        if (ix < 0) { // not found
+                            try {
+                                r = (RingElem) fac.parse(tok.sval);
+                            } catch (NumberFormatException re) {
+                                throw new InvalidExpressionException("recursively unknown variable " + tok.sval);
+                            }
+                            if (debug)
+                                logger.info("coeff " + r);
+                            //if (r.isONE() || r.isZERO()) {
+                            //logger.error("Unknown varibable " + tok.sval);
+                            //done = true;
+                            //break;
+                            //throw new InvalidExpressionException("recursively unknown variable " + tok.sval);
+                            //}
+                            ie = nextExponent();
+                            //  System.out.println("ie: " + ie);
+                            r = (RingElem) r.power(ie); //Power.<RingElem> positivePower(r, ie);
+                            b = b.multiply(r);
+                        } else { // found
+                            //  System.out.println("ix: " + ix);
+                            ie = nextExponent();
+                            //  System.out.println("ie: " + ie);
+                            e = ExpVector.create(vars.length, ix, ie);
+                            b = b.multiply(e);
+                        }
+                        tt = tok.nextToken();
+                        if (debug)
+                            logger.debug("tt,letter = " + tok);
+                    }
+                    break;
+
+                case '(':
+                    c = nextPolynomial();
+                    if (debug)
+                        logger.debug("factor " + c);
+                    ie = nextExponent();
+                    if (debug)
+                        logger.debug("ie " + ie);
+                    c = (GenPolynomial) c.power(ie); //Power.<GenPolynomial> positivePower(c, ie);
+                    if (debug)
+                        logger.debug("factor^ie " + c);
+                    b = b.multiply(c);
                     tt = tok.nextToken();
                     if (debug)
-                        logger.debug("tt,letter = " + tok);
-                }
-                break;
+                        logger.debug("tt,digit = " + tok);
+                    //no break;
+                    break;
 
-            case '(':
-                c = nextPolynomial();
-                if (debug)
-                    logger.debug("factor " + c);
-                ie = nextExponent();
-                if (debug)
-                    logger.debug("ie " + ie);
-                c = (GenPolynomial) c.power(ie); //Power.<GenPolynomial> positivePower(c, ie);
-                if (debug)
-                    logger.debug("factor^ie " + c);
-                b = b.multiply(c);
-                tt = tok.nextToken();
-                if (debug)
-                    logger.debug("tt,digit = " + tok);
-                //no break;
-                break;
-
-            default: //skip 
+                default: //skip
             }
             //if (done)
             //    break; // unknown variable
@@ -539,27 +637,27 @@ public class GenPolynomialTokenizer {
             // complete polynomial
             tok.pushBack();
             switch (tt) {
-            case '-':
-            case '+':
-            case ')':
-            case ',':
-                logger.debug("b, = " + b);
-                a = a.sum(b);
-                b = a1;
-                break;
-            case '*':
-                logger.debug("b, = " + b);
-                //a = a.sum(b); 
-                //b = a1;
-                break;
-            case '\n':
-                tt = tok.nextToken();
-                if (debug)
-                    logger.debug("tt,nl = " + tt);
-                break;
-            default: // skip or finish ?
-                if (debug)
-                    logger.debug("default: " + tok);
+                case '-':
+                case '+':
+                case ')':
+                case ',':
+                    logger.debug("b, = " + b);
+                    a = a.sum(b);
+                    b = a1;
+                    break;
+                case '*':
+                    logger.debug("b, = " + b);
+                    //a = a.sum(b);
+                    //b = a1;
+                    break;
+                case '\n':
+                    tt = tok.nextToken();
+                    if (debug)
+                        logger.debug("tt,nl = " + tt);
+                    break;
+                default: // skip or finish ?
+                    if (debug)
+                        logger.debug("default: " + tok);
             }
         }
         if (debug)
@@ -570,14 +668,13 @@ public class GenPolynomialTokenizer {
         return a;
     }
 
-
     /**
      * Parsing method for exponent (of variable). Syntax:
-     * 
+     * <p>
      * <pre>
      * ^long | **long
      * </pre>
-     * 
+     *
      * @return the next exponent or 1.
      * @throws IOException
      */
@@ -618,18 +715,17 @@ public class GenPolynomialTokenizer {
         return e;
     }
 
-
     /**
      * Parsing method for comments. Syntax:
-     * 
+     * <p>
      * <pre>
      * (* comment *) | /_* comment *_/
      * </pre>
-     * 
+     * <p>
      * without <code>_</code>. Unused, as it does not work with this pushBack().
      */
     public String nextComment() throws IOException {
-        // syntax: (* comment *) | /* comment */ 
+        // syntax: (* comment *) | /* comment */
         StringBuffer c = new StringBuffer();
         int tt;
         if (debug)
@@ -666,15 +762,15 @@ public class GenPolynomialTokenizer {
         return c.toString();
     }
 
-
     /**
      * Parsing method for variable list. Syntax:
-     * 
+     * <p>
      * <pre>
      * (a, b c, de)
      * </pre>
-     * 
+     * <p>
      * gives <code>[ "a", "b", "c", "de" ]</code>
+     *
      * @return the next variable list.
      * @throws IOException
      */
@@ -708,18 +804,17 @@ public class GenPolynomialTokenizer {
         return v;
     }
 
-
     /**
      * Parsing method for coefficient ring. Syntax:
-     * 
+     * <p>
      * <pre>
      * Rat | Q | Int | Z | Mod modul | Complex | C | D | Quat | AN[ (var) ( poly ) ] | AN[ modul (var) ( poly ) ] | IntFunc (var_list)
      * </pre>
-     * 
+     *
      * @return the next coefficient factory.
      * @throws IOException
      */
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings({"unchecked", "cast"})
     public RingFactory nextCoefficientRing() throws IOException {
         RingFactory coeff = null;
         coeffType ct = null;
@@ -785,7 +880,7 @@ public class GenPolynomialTokenizer {
             } else if (tok.sval.equalsIgnoreCase("RatFunc") || tok.sval.equalsIgnoreCase("ModFunc")) {
                 //logger.error("RatFunc and ModFunc can no more be read, see edu.jas.application.RingFactoryTokenizer.");
                 throw new InvalidExpressionException(
-                                "RatFunc and ModFunc can no more be read, see edu.jas.application.RingFactoryTokenizer.");
+                        "RatFunc and ModFunc can no more be read, see edu.jas.application.RingFactoryTokenizer.");
             } else if (tok.sval.equalsIgnoreCase("IntFunc")) {
                 String[] rfv = nextVariableList();
                 //System.out.println("rfv = " + rfv.length + " " + rfv[0]);
@@ -816,8 +911,8 @@ public class GenPolynomialTokenizer {
                     int vs = anv.length;
                     if (vs != 1) {
                         throw new InvalidExpressionException(
-                                        "AlgebraicNumber only for univariate polynomials "
-                                                        + Arrays.toString(anv));
+                                "AlgebraicNumber only for univariate polynomials "
+                                        + Arrays.toString(anv));
                     }
                     String[] ovars = vars;
                     vars = anv;
@@ -884,14 +979,13 @@ public class GenPolynomialTokenizer {
         return coeff;
     }
 
-
     /**
      * Parsing method for weight list. Syntax:
-     * 
+     * <p>
      * <pre>
      * (w1, w2, w3, ..., wn)
      * </pre>
-     * 
+     *
      * @return the next weight list.
      * @throws IOException
      */
@@ -931,14 +1025,13 @@ public class GenPolynomialTokenizer {
         return w;
     }
 
-
     /**
      * Parsing method for weight array. Syntax:
-     * 
+     * <p>
      * <pre>
      * ( (w11, ...,w1n), ..., (wm1, ..., wmn) )
      * </pre>
-     * 
+     *
      * @return the next weight array.
      * @throws IOException
      */
@@ -985,14 +1078,13 @@ public class GenPolynomialTokenizer {
         return w;
     }
 
-
     /**
      * Parsing method for split index. Syntax:
-     * 
+     * <p>
      * <pre>
      * |i|
      * </pre>
-     * 
+     *
      * @return the next split index.
      * @throws IOException
      */
@@ -1059,14 +1151,13 @@ public class GenPolynomialTokenizer {
         return e;
     }
 
-
     /**
      * Parsing method for term order name. Syntax:
-     * 
+     * <p>
      * <pre>
      * L | IL | LEX | G | IG | GRLEX | W(weights) | '|'split index'|'
      * </pre>
-     * 
+     *
      * @return the next term order.
      * @throws IOException
      */
@@ -1113,14 +1204,13 @@ public class GenPolynomialTokenizer {
         return new TermOrder(evord, evord, nvars, s);
     }
 
-
     /**
      * Parsing method for polynomial list. Syntax:
-     * 
+     * <p>
      * <pre>
      * ( p1, p2, p3, ..., pn )
      * </pre>
-     * 
+     *
      * @return the next polynomial list.
      * @throws IOException
      */
@@ -1157,14 +1247,13 @@ public class GenPolynomialTokenizer {
         return L;
     }
 
-
     /**
      * Parsing method for submodule list. Syntax:
-     * 
+     * <p>
      * <pre>
      * ( ( p11, p12, p13, ..., p1n ), ..., ( pm1, pm2, pm3, ..., pmn ) )
      * </pre>
-     * 
+     *
      * @return the next list of polynomial lists.
      * @throws IOException
      */
@@ -1196,16 +1285,16 @@ public class GenPolynomialTokenizer {
         return L;
     }
 
-
     /**
      * Parsing method for solvable polynomial relation table. Syntax:
-     * 
+     * <p>
      * <pre>
      * ( p_1, p_2, p_3, ..., p_{n+1}, p_{n+2}, p_{n+3} )
      * </pre>
-     * 
+     * <p>
      * semantics: <code>p_{n+1} * p_{n+2} = p_{n+3}</code>. The next relation
      * table is stored into the solvable polynomial factory.
+     *
      * @throws IOException
      */
     @SuppressWarnings("unchecked")
@@ -1231,7 +1320,7 @@ public class GenPolynomialTokenizer {
             tok.pushBack();
             return;
         }
-        for (Iterator<GenPolynomial> it = rels.iterator(); it.hasNext();) {
+        for (Iterator<GenPolynomial> it = rels.iterator(); it.hasNext(); ) {
             p = it.next();
             ExpVector e = p.leadingExpVector();
             if (it.hasNext()) {
@@ -1250,14 +1339,13 @@ public class GenPolynomialTokenizer {
         return;
     }
 
-
     /**
      * Parsing method for polynomial set. Syntax:
-     * 
+     * <p>
      * <pre>
      * coeffRing varList termOrderName polyList
      * </pre>
-     * 
+     *
      * @return the next polynomial set.
      * @throws IOException
      */
@@ -1288,14 +1376,13 @@ public class GenPolynomialTokenizer {
         return new PolynomialList(pfac, s);
     }
 
-
     /**
      * Parsing method for module set. Syntax:
-     * 
+     * <p>
      * <pre>
      * coeffRing varList termOrderName moduleList
      * </pre>
-     * 
+     *
      * @return the next module set.
      * @throws IOException
      */
@@ -1327,14 +1414,13 @@ public class GenPolynomialTokenizer {
         return new ModuleList(pfac, m);
     }
 
-
     /**
      * Parsing method for solvable polynomial list. Syntax:
-     * 
+     * <p>
      * <pre>
      * ( p1, p2, p3, ..., pn )
      * </pre>
-     * 
+     *
      * @return the next solvable polynomial list.
      * @throws IOException
      */
@@ -1347,7 +1433,7 @@ public class GenPolynomialTokenizer {
         GenPolynomial p;
         GenSolvablePolynomial ps;
         List<GenSolvablePolynomial> sp = new ArrayList<GenSolvablePolynomial>(s.size());
-        for (Iterator<GenPolynomial> it = s.iterator(); it.hasNext();) {
+        for (Iterator<GenPolynomial> it = s.iterator(); it.hasNext(); ) {
             p = it.next();
             ps = new GenSolvablePolynomial(spfac, p.val);
             //System.out.println("ps = " + ps);
@@ -1356,11 +1442,11 @@ public class GenPolynomialTokenizer {
         return sp;
     }
 
-
     /**
      * Parsing method for solvable polynomial. Syntax: same as for polynomial.
      * If the relation table is set-up, then multiplication will mean
      * solvable-multiplication.
+     *
      * @return the next polynomial.
      * @throws IOException
      */
@@ -1375,14 +1461,13 @@ public class GenPolynomialTokenizer {
         return ps;
     }
 
-
     /**
      * Parsing method for solvable polynomial set. Syntax:
-     * 
+     * <p>
      * <pre>
      * varList termOrderName relationTable polyList
      * </pre>
-     * 
+     *
      * @return the next solvable polynomial set.
      * @throws IOException
      */
@@ -1423,13 +1508,18 @@ public class GenPolynomialTokenizer {
     }
 
 
+    // must also allow +/- // does not work with tokenizer
+    //private static boolean number(char x) {
+    //    return digit(x) || x == '-' || x == '+';
+    //}
+
     /**
      * Parsing method for solvable submodule list. Syntax:
-     * 
+     * <p>
      * <pre>
      * ( ( p11, p12, p13, ..., p1n ), ..., ( pm1, pm2, pm3, ..., pmn ) )
      * </pre>
-     * 
+     *
      * @return the next list of solvable polynomial lists.
      * @throws IOException
      */
@@ -1461,14 +1551,13 @@ public class GenPolynomialTokenizer {
         return L;
     }
 
-
     /**
      * Parsing method for solvable module set. Syntax:
-     * 
+     * <p>
      * <pre>
      * varList termOrderName relationTable moduleList
      * </pre>
-     * 
+     *
      * @return the next solvable module set.
      * @throws IOException
      */
@@ -1509,23 +1598,6 @@ public class GenPolynomialTokenizer {
         return new OrderedModuleList(spfac, s); // Ordered
     }
 
-
-    // must also allow +/- // does not work with tokenizer
-    //private static boolean number(char x) {
-    //    return digit(x) || x == '-' || x == '+';
-    //}
-
-
-    static boolean digit(char x) {
-        return '0' <= x && x <= '9';
-    }
-
-
-    static boolean letter(char x) {
-        return ('a' <= x && x <= 'z') || ('A' <= x && x <= 'Z');
-    }
-
-
     // unused
     public void nextComma() throws IOException {
         int tt;
@@ -1538,118 +1610,13 @@ public class GenPolynomialTokenizer {
     }
 
 
-    /**
-     * Parse variable list from String.
-     * @param s String. Syntax:
-     * 
-     *            <pre>
-     * (n1,...,nk)
-     *            </pre>
-     * 
-     *            or
-     * 
-     *            <pre>
-     * (n1 ... nk)
-     *            </pre>
-     * 
-     *            parenthesis are optional.
-     * @return array of variable names found in s.
-     */
-    public static String[] variableList(String s) {
-        String[] vl = null;
-        if (s == null) {
-            return vl;
-        }
-        String st = s.trim();
-        if (st.length() == 0) {
-            return new String[0];
-        }
-        if (st.charAt(0) == '(') {
-            st = st.substring(1);
-        }
-        if (st.charAt(st.length() - 1) == ')') {
-            st = st.substring(0, st.length() - 1);
-        }
-        st = st.replaceAll(",", " ");
-        List<String> sl = new ArrayList<String>();
-        Scanner sc = new Scanner(st);
-        while (sc.hasNext()) {
-            String sn = sc.next();
-            sl.add(sn);
-        }
-        sc.close();
-        vl = new String[sl.size()];
-        int i = 0;
-        for (String si : sl) {
-            vl[i] = si;
-            i++;
-        }
-        return vl;
+    private static enum coeffType {
+        BigRat, BigInt, ModInt, BigC, BigQ, BigO, BigD, ANrat, ANmod, IntFunc
     }
 
 
-    /**
-     * Extract variable list from expression.
-     * @param s String. Syntax: any polynomial expression.
-     * @return array of variable names found in s.
-     */
-    public static String[] expressionVariables(String s) {
-        String[] vl = null;
-        if (s == null) {
-            return vl;
-        }
-        String st = s.trim();
-        if (st.length() == 0) {
-            return new String[0];
-        }
-        st = st.replaceAll(",", " ");
-        st = st.replaceAll("\\+", " ");
-        st = st.replaceAll("-", " ");
-        st = st.replaceAll("\\*", " ");
-        st = st.replaceAll("/", " ");
-        st = st.replaceAll("\\(", " ");
-        st = st.replaceAll("\\)", " ");
-        st = st.replaceAll("\\{", " ");
-        st = st.replaceAll("\\}", " ");
-        st = st.replaceAll("\\[", " ");
-        st = st.replaceAll("\\]", " ");
-        st = st.replaceAll("\\^", " ");
-        //System.out.println("st = " + st);
-
-        Set<String> sl = new TreeSet<String>();
-        Scanner sc = new Scanner(st);
-        while (sc.hasNext()) {
-            String sn = sc.next();
-            if (sn == null || sn.length() == 0) {
-                continue;
-            }
-            //System.out.println("sn = " + sn);
-            int i = 0;
-            while (digit(sn.charAt(i)) && i < sn.length() - 1) {
-                i++;
-            }
-            //System.out.println("sn = " + sn + ", i = " + i);
-            if (i > 0) {
-                sn = sn.substring(i, sn.length());
-            }
-            //System.out.println("sn = " + sn);
-            if (sn.length() == 0) {
-                continue;
-            }
-            if (!letter(sn.charAt(0))) {
-                continue;
-            }
-            //System.out.println("sn = " + sn);
-            sl.add(sn);
-        }
-        sc.close();
-        vl = new String[sl.size()];
-        int i = 0;
-        for (String si : sl) {
-            vl[i] = si;
-            i++;
-        }
-        return vl;
+    private static enum polyType {
+        PolBigRat, PolBigInt, PolModInt, PolBigC, PolBigD, PolBigQ, PolBigO, PolANrat, PolANmod, PolIntFunc
     }
 
 }

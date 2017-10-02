@@ -22,16 +22,18 @@ import org.hipparchus.analysis.differentiation.UnivariateDifferentiableFunction;
 
 /**
  * Inverse function.
- *
  */
 public class Inverse implements UnivariateDifferentiableFunction {
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double value(double x) {
         return 1 / x;
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     @Override
     public DerivativeStructure value(final DerivativeStructure t) {

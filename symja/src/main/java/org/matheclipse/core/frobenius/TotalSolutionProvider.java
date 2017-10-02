@@ -31,51 +31,51 @@ package org.matheclipse.core.frobenius;
 import org.matheclipse.core.interfaces.IInteger;
 
 /**
- *
  * @author Dmitry Bolotin
  * @author Stanislav Poslavsky
  */
 final class TotalSolutionProvider implements OutputPortUnsafe<IInteger[]> {
-	private final SolutionProvider[] providers;
-	private boolean inited = false;
+    private final SolutionProvider[] providers;
+    private boolean inited = false;
 
-	public TotalSolutionProvider(SolutionProvider[] providers) {
-		this.providers = providers;
-	}
+    public TotalSolutionProvider(SolutionProvider[] providers) {
+        this.providers = providers;
+    }
 
-	@Override
-	public IInteger[] take() {
-		if (!inited) {
-			for (SolutionProvider provider : providers) {
-				provider.tick();
-			}
-			inited = true;
-		}
-		int i = providers.length - 1;
-		IInteger[] solution = providers[i].take();
-		if (solution != null) {
-			return solution;
-		}
-		OUTER: while (true) {
-			boolean r;
-			while ((r = !(providers[i--].tick())) && i >= 0) {
-				//
-			}
-			if (i == -1 && r) {
-				return null;
-			}
-			i += 2;
-			for (; i < providers.length; ++i)
-				if (!providers[i].tick()) {
-					i--;
-					continue OUTER;
-				}
-			assert i == providers.length;
-			i--;
-			solution = providers[i].take();
-			if (solution != null) {
-				return solution;
-			}
-		}
-	}
+    @Override
+    public IInteger[] take() {
+        if (!inited) {
+            for (SolutionProvider provider : providers) {
+                provider.tick();
+            }
+            inited = true;
+        }
+        int i = providers.length - 1;
+        IInteger[] solution = providers[i].take();
+        if (solution != null) {
+            return solution;
+        }
+        OUTER:
+        while (true) {
+            boolean r;
+            while ((r = !(providers[i--].tick())) && i >= 0) {
+                //
+            }
+            if (i == -1 && r) {
+                return null;
+            }
+            i += 2;
+            for (; i < providers.length; ++i)
+                if (!providers[i].tick()) {
+                    i--;
+                    continue OUTER;
+                }
+            assert i == providers.length;
+            i--;
+            solution = providers[i].take();
+            if (solution != null) {
+                return solution;
+            }
+        }
+    }
 }

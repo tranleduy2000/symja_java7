@@ -5,11 +5,10 @@
 package edu.jas.gb;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
-// import java.util.Collections;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.poly.GenPolynomial;
 import edu.jas.poly.GenPolynomialRing;
@@ -17,13 +16,15 @@ import edu.jas.poly.OrderedPolynomialList;
 import edu.jas.poly.PolyUtil;
 import edu.jas.structure.RingElem;
 
+// import java.util.Collections;
+
 
 /**
  * Groebner Base sequential iterative algorithm. Implements Groebner bases and
  * GB test.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
- * 
  * @see edu.jas.application.GBAlgorithmBuilder
  * @see edu.jas.gbufd.GBFactory
  */
@@ -47,6 +48,7 @@ public class GroebnerBaseSeqIter<C extends RingElem<C>> extends GroebnerBaseAbst
 
     /**
      * Constructor.
+     *
      * @param red Reduction engine
      */
     public GroebnerBaseSeqIter(Reduction<C> red) {
@@ -56,6 +58,7 @@ public class GroebnerBaseSeqIter<C extends RingElem<C>> extends GroebnerBaseAbst
 
     /**
      * Constructor.
+     *
      * @param pl pair selection strategy
      */
     public GroebnerBaseSeqIter(PairList<C> pl) {
@@ -65,8 +68,9 @@ public class GroebnerBaseSeqIter<C extends RingElem<C>> extends GroebnerBaseAbst
 
     /**
      * Constructor.
+     *
      * @param red Reduction engine
-     * @param pl pair selection strategy
+     * @param pl  pair selection strategy
      */
     public GroebnerBaseSeqIter(Reduction<C> red, PairList<C> pl) {
         super(red, pl);
@@ -75,18 +79,19 @@ public class GroebnerBaseSeqIter<C extends RingElem<C>> extends GroebnerBaseAbst
 
     /**
      * Groebner base using pairlist class, iterative algorithm.
+     *
      * @param modv module variable number.
-     * @param F polynomial list.
+     * @param F    polynomial list.
      * @return GB(F) a Groebner base of F.
      */
     public List<GenPolynomial<C>> GB(int modv, List<GenPolynomial<C>> F) {
         List<GenPolynomial<C>> G = normalizeZerosOnes(F);
-        G = PolyUtil.<C> monic(G);
+        G = PolyUtil.<C>monic(G);
         if (G.size() <= 1) {
             return G;
         }
         // sort, no reverse
-        G = OrderedPolynomialList.<C> sort(G);
+        G = OrderedPolynomialList.<C>sort(G);
         //no: Collections.reverse(G);
         logger.info("G-sort = " + G);
         List<GenPolynomial<C>> Gp = new ArrayList<GenPolynomial<C>>();
@@ -112,10 +117,11 @@ public class GroebnerBaseSeqIter<C extends RingElem<C>> extends GroebnerBaseAbst
 
     /**
      * Groebner base using pairlist class.
+     *
      * @param modv module variable number.
-     * @param G polynomial list of a Groebner base.
-     * @param f polynomial.
-     * @return GB(G,f) a Groebner base of G+(f).
+     * @param G    polynomial list of a Groebner base.
+     * @param f    polynomial.
+     * @return GB(G, f) a Groebner base of G+(f).
      */
     public List<GenPolynomial<C>> GB(int modv, List<GenPolynomial<C>> G, GenPolynomial<C> f) {
         List<GenPolynomial<C>> F = new ArrayList<GenPolynomial<C>>(G);

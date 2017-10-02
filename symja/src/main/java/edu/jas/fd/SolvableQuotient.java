@@ -5,9 +5,9 @@
 package edu.jas.fd;
 
 
-import java.util.Arrays;
-
 import org.apache.log4j.Logger;
+
+import java.util.Arrays;
 
 import edu.jas.kern.PrettyPrint;
 import edu.jas.poly.ExpVector;
@@ -21,10 +21,11 @@ import edu.jas.structure.QuotPair;
  * SolvableQuotient, that is a (left) rational function, based on
  * GenSolvablePolynomial with RingElem interface. Objects of this class are
  * immutable.
+ *
  * @author Heinz Kredel
  */
 public class SolvableQuotient<C extends GcdRingElem<C>> implements GcdRingElem<SolvableQuotient<C>>,
-                QuotPair<GenPolynomial<C>> {
+        QuotPair<GenPolynomial<C>> {
     // should be QuotPair<GenSolvablePolynomial<C>
 
 
@@ -54,6 +55,7 @@ public class SolvableQuotient<C extends GcdRingElem<C>> implements GcdRingElem<S
 
     /**
      * The constructor creates a SolvableQuotient object from a ring factory.
+     *
      * @param r ring factory.
      */
     public SolvableQuotient(SolvableQuotientRing<C> r) {
@@ -64,6 +66,7 @@ public class SolvableQuotient<C extends GcdRingElem<C>> implements GcdRingElem<S
     /**
      * The constructor creates a SolvableQuotient object from a ring factory and
      * a numerator polynomial. The denominator is assumed to be 1.
+     *
      * @param r ring factory.
      * @param n numerator solvable polynomial.
      */
@@ -75,6 +78,7 @@ public class SolvableQuotient<C extends GcdRingElem<C>> implements GcdRingElem<S
     /**
      * The constructor creates a SolvableQuotient object from a ring factory and
      * a numerator and denominator solvable polynomial.
+     *
      * @param r ring factory.
      * @param n numerator polynomial.
      * @param d denominator polynomial.
@@ -87,13 +91,14 @@ public class SolvableQuotient<C extends GcdRingElem<C>> implements GcdRingElem<S
     /**
      * The constructor creates a SolvableQuotient object from a ring factory and
      * a numerator and denominator polynomial.
-     * @param r ring factory.
-     * @param n numerator polynomial.
-     * @param d denominator polynomial.
+     *
+     * @param r     ring factory.
+     * @param n     numerator polynomial.
+     * @param d     denominator polynomial.
      * @param isred <em>unused at the moment</em>.
      */
     protected SolvableQuotient(SolvableQuotientRing<C> r, GenSolvablePolynomial<C> n,
-                    GenSolvablePolynomial<C> d, boolean isred) {
+                               GenSolvablePolynomial<C> d, boolean isred) {
         if (d == null || d.isZERO()) {
             throw new IllegalArgumentException("denominator may not be zero");
         }
@@ -137,13 +142,13 @@ public class SolvableQuotient<C extends GcdRingElem<C>> implements GcdRingElem<S
         // must reduce to lowest terms
         // not perfect, TODO 
         //GenSolvablePolynomial<C>[] gcd = PolyModUtil.<C> syzGcdCofactors(r.ring, n, d);
-        GenSolvablePolynomial<C>[] gcd = FDUtil.<C> leftGcdCofactors(r.ring, n, d);
+        GenSolvablePolynomial<C>[] gcd = FDUtil.<C>leftGcdCofactors(r.ring, n, d);
         if (!gcd[0].isONE()) {
             logger.info("constructor: gcd = " + Arrays.toString(gcd)); // + ", " + n + ", " +d);
             n = gcd[1];
             d = gcd[2];
         }
-        gcd = FDUtil.<C> rightGcdCofactors(r.ring, n, d);
+        gcd = FDUtil.<C>rightGcdCofactors(r.ring, n, d);
         if (!gcd[0].isONE()) {
             logger.info("constructor: gcd = " + Arrays.toString(gcd)); // + ", " + n + ", " +d);
             n = gcd[1];
@@ -159,6 +164,7 @@ public class SolvableQuotient<C extends GcdRingElem<C>> implements GcdRingElem<S
 
     /**
      * Get the corresponding element factory.
+     *
      * @return factory for this Element.
      * @see edu.jas.structure.Element#factory()
      */
@@ -169,6 +175,7 @@ public class SolvableQuotient<C extends GcdRingElem<C>> implements GcdRingElem<S
 
     /**
      * Numerator.
+     *
      * @see edu.jas.structure.QuotPair#numerator()
      */
     public GenSolvablePolynomial<C> numerator() {
@@ -178,6 +185,7 @@ public class SolvableQuotient<C extends GcdRingElem<C>> implements GcdRingElem<S
 
     /**
      * Denominator.
+     *
      * @see edu.jas.structure.QuotPair#denominator()
      */
     public GenSolvablePolynomial<C> denominator() {
@@ -187,6 +195,7 @@ public class SolvableQuotient<C extends GcdRingElem<C>> implements GcdRingElem<S
 
     /**
      * Clone this.
+     *
      * @see java.lang.Object#clone()
      */
     @Override
@@ -197,6 +206,7 @@ public class SolvableQuotient<C extends GcdRingElem<C>> implements GcdRingElem<S
 
     /**
      * Is SolvableQuotient zero.
+     *
      * @return If this is 0 then true is returned, else false.
      * @see edu.jas.structure.RingElem#isZERO()
      */
@@ -207,6 +217,7 @@ public class SolvableQuotient<C extends GcdRingElem<C>> implements GcdRingElem<S
 
     /**
      * Is SolvableQuotient one.
+     *
      * @return If this is 1 then true is returned, else false.
      * @see edu.jas.structure.RingElem#isONE()
      */
@@ -217,6 +228,7 @@ public class SolvableQuotient<C extends GcdRingElem<C>> implements GcdRingElem<S
 
     /**
      * Is SolvableQuotient a unit.
+     *
      * @return If this is a unit then true is returned, else false.
      * @see edu.jas.structure.RingElem#isUnit()
      */
@@ -230,6 +242,7 @@ public class SolvableQuotient<C extends GcdRingElem<C>> implements GcdRingElem<S
 
     /**
      * Is Qoutient a constant.
+     *
      * @return true, if this has constant numerator and denominator, else false.
      */
     public boolean isConstant() {
@@ -239,6 +252,7 @@ public class SolvableQuotient<C extends GcdRingElem<C>> implements GcdRingElem<S
 
     /**
      * Get the String representation as RingElem.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -256,6 +270,7 @@ public class SolvableQuotient<C extends GcdRingElem<C>> implements GcdRingElem<S
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this Element.
      * @see edu.jas.structure.Element#toScript()
      */
@@ -271,6 +286,7 @@ public class SolvableQuotient<C extends GcdRingElem<C>> implements GcdRingElem<S
 
     /**
      * Get a scripting compatible string representation of the factory.
+     *
      * @return script compatible representation for this ElemFactory.
      * @see edu.jas.structure.Element#toScriptFactory()
      */
@@ -282,6 +298,7 @@ public class SolvableQuotient<C extends GcdRingElem<C>> implements GcdRingElem<S
 
     /**
      * SolvableQuotient comparison.
+     *
      * @param b SolvableQuotient.
      * @return sign(this-b).
      */
@@ -317,7 +334,7 @@ public class SolvableQuotient<C extends GcdRingElem<C>> implements GcdRingElem<S
         GenSolvablePolynomial<C>[] oc = ring.engine.leftOreCond(den, b.den);
         if (debug) {
             System.out.println("oc[0] den =<>= oc[1] b.den: (" + oc[0] + ") (" + den + ") = (" + oc[1]
-                            + ") (" + b.den + ")");
+                    + ") (" + b.den + ")");
         }
         r = oc[0].multiply(num);
         s = oc[1].multiply(b.num);
@@ -329,6 +346,7 @@ public class SolvableQuotient<C extends GcdRingElem<C>> implements GcdRingElem<S
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @SuppressWarnings("unchecked")
@@ -350,6 +368,7 @@ public class SolvableQuotient<C extends GcdRingElem<C>> implements GcdRingElem<S
 
     /**
      * Hash code for this element.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -366,8 +385,9 @@ public class SolvableQuotient<C extends GcdRingElem<C>> implements GcdRingElem<S
      * SolvableQuotient right fraction. <b>Note:</b> It is not possible to
      * distinguish right from left fractions in the current implementation. So
      * it is not possible to compute with right fractions.
-     * @return SolvableQuotient(a,b), where den<sup>-1</sup> num = a
-     *         b<sup>-1</sup>
+     *
+     * @return SolvableQuotient(a, b), where den<sup>-1</sup> num = a
+     * b<sup>-1</sup>
      */
     public SolvableQuotient<C> rightFraction() {
         if (isZERO() || isONE()) {
@@ -382,9 +402,10 @@ public class SolvableQuotient<C extends GcdRingElem<C>> implements GcdRingElem<S
      * Test if SolvableQuotient right fraction. <b>Note:</b> It is not possible
      * to distinguish right from left fractions in the current implementation.
      * So it is not possible to compute with right fractions.
+     *
      * @param s = SolvableQuotient(a,b)
      * @return true if s is a right fraction of this, i.e. den<sup>-1</sup> num
-     *         = a b<sup>-1</sup>
+     * = a b<sup>-1</sup>
      */
     public boolean isRightFraction(SolvableQuotient<C> s) {
         if (isZERO()) {
@@ -401,6 +422,7 @@ public class SolvableQuotient<C extends GcdRingElem<C>> implements GcdRingElem<S
 
     /**
      * SolvableQuotient absolute value.
+     *
      * @return the absolute value of this.
      * @see edu.jas.structure.RingElem#abs()
      */
@@ -411,6 +433,7 @@ public class SolvableQuotient<C extends GcdRingElem<C>> implements GcdRingElem<S
 
     /**
      * SolvableQuotient summation.
+     *
      * @param S SolvableQuotient.
      * @return this+S.
      */
@@ -449,7 +472,7 @@ public class SolvableQuotient<C extends GcdRingElem<C>> implements GcdRingElem<S
         GenSolvablePolynomial<C>[] oc = ring.engine.leftOreCond(den, S.den);
         if (debug) {
             System.out.println("oc[0] den =sum= oc[1] S.den: (" + oc[0] + ") (" + den + ") = (" + oc[1]
-                            + ") (" + S.den + ")");
+                    + ") (" + S.den + ")");
         }
         d = oc[0].multiply(den);
         n1 = oc[0].multiply(num);
@@ -463,6 +486,7 @@ public class SolvableQuotient<C extends GcdRingElem<C>> implements GcdRingElem<S
 
     /**
      * SolvableQuotient negate.
+     *
      * @return -this.
      * @see edu.jas.structure.RingElem#negate()
      */
@@ -473,8 +497,9 @@ public class SolvableQuotient<C extends GcdRingElem<C>> implements GcdRingElem<S
 
     /**
      * SolvableQuotient signum.
-     * @see edu.jas.structure.RingElem#signum()
+     *
      * @return signum(this).
+     * @see edu.jas.structure.RingElem#signum()
      */
     public int signum() {
         // assume sign(den) > 0
@@ -484,6 +509,7 @@ public class SolvableQuotient<C extends GcdRingElem<C>> implements GcdRingElem<S
 
     /**
      * SolvableQuotient subtraction.
+     *
      * @param S SolvableQuotient.
      * @return this-S.
      */
@@ -494,6 +520,7 @@ public class SolvableQuotient<C extends GcdRingElem<C>> implements GcdRingElem<S
 
     /**
      * SolvableQuotient division.
+     *
      * @param S SolvableQuotient.
      * @return this/S.
      */
@@ -504,8 +531,9 @@ public class SolvableQuotient<C extends GcdRingElem<C>> implements GcdRingElem<S
 
     /**
      * SolvableQuotient inverse.
-     * @see edu.jas.structure.RingElem#inverse()
+     *
      * @return S with S = 1/this.
+     * @see edu.jas.structure.RingElem#inverse()
      */
     public SolvableQuotient<C> inverse() {
         if (num.isZERO()) {
@@ -517,6 +545,7 @@ public class SolvableQuotient<C extends GcdRingElem<C>> implements GcdRingElem<S
 
     /**
      * SolvableQuotient remainder.
+     *
      * @param S SolvableQuotient.
      * @return this - (this/S)*S.
      */
@@ -530,17 +559,19 @@ public class SolvableQuotient<C extends GcdRingElem<C>> implements GcdRingElem<S
 
     /**
      * Quotient and remainder by division of this by S.
+     *
      * @param S a SolvableQuotient
      * @return [this/S, this - (this/S)*S].
      */
     @SuppressWarnings("unchecked")
     public SolvableQuotient<C>[] quotientRemainder(SolvableQuotient<C> S) {
-        return new SolvableQuotient[] { divide(S), remainder(S) };
+        return new SolvableQuotient[]{divide(S), remainder(S)};
     }
 
 
     /**
      * SolvableQuotient multiplication.
+     *
      * @param S SolvableQuotient.
      * @return this*S.
      */
@@ -584,7 +615,7 @@ public class SolvableQuotient<C extends GcdRingElem<C>> implements GcdRingElem<S
         d = oc[0].multiply(den);
         if (debug) {
             System.out.println("oc[0] num =mult= oc[1] S.den: (" + oc[0] + ") (" + num + ") = (" + oc[1]
-                            + ") (" + S.den + ")");
+                    + ") (" + S.den + ")");
         }
         return new SolvableQuotient<C>(ring, n, d, false);
     }
@@ -592,6 +623,7 @@ public class SolvableQuotient<C extends GcdRingElem<C>> implements GcdRingElem<S
 
     /**
      * SolvableQuotient multiplication by GenSolvablePolynomial.
+     *
      * @param b GenSolvablePolynomial<C>.
      * @return this*b.
      */
@@ -612,6 +644,7 @@ public class SolvableQuotient<C extends GcdRingElem<C>> implements GcdRingElem<S
 
     /**
      * SolvableQuotient multiplication by coefficient.
+     *
      * @param b coefficient.
      * @return this*b.
      */
@@ -632,6 +665,7 @@ public class SolvableQuotient<C extends GcdRingElem<C>> implements GcdRingElem<S
 
     /**
      * SolvableQuotient multiplication by exponent.
+     *
      * @param e exponent vector.
      * @return this*b.
      */
@@ -649,6 +683,7 @@ public class SolvableQuotient<C extends GcdRingElem<C>> implements GcdRingElem<S
 
     /**
      * SolvableQuotient monic.
+     *
      * @return this with monic value part.
      */
     public SolvableQuotient<C> monic() {
@@ -669,8 +704,9 @@ public class SolvableQuotient<C extends GcdRingElem<C>> implements GcdRingElem<S
 
     /**
      * Greatest common divisor.
+     *
      * @param b other element.
-     * @return gcd(this,b).
+     * @return gcd(this, b).
      */
     public SolvableQuotient<C> gcd(SolvableQuotient<C> b) {
         if (b == null || b.isZERO()) {
@@ -688,6 +724,7 @@ public class SolvableQuotient<C extends GcdRingElem<C>> implements GcdRingElem<S
 
     /**
      * Extended greatest common divisor.
+     *
      * @param b other element.
      * @return [ gcd(this,b), c1, c2 ] with c1*this + c2*b = gcd(this,b).
      */

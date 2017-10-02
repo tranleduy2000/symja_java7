@@ -5,6 +5,8 @@
 package edu.jas.gb;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Iterator;
@@ -13,8 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.poly.ExpVector;
 import edu.jas.poly.GenPolynomial;
@@ -26,6 +26,7 @@ import edu.jas.structure.RingElem;
  * Pair list management. For the Buchberger algorithm following the syzygy
  * criterions by Gebauer &amp; M&ouml;ller. Implemented using GenPolynomial,
  * TreeMap and BitSet.
+ *
  * @author Heinz Kredel
  */
 
@@ -45,6 +46,7 @@ public class OrderedSyzPairlist<C extends RingElem<C>> extends OrderedPairlist<C
 
     /**
      * Constructor.
+     *
      * @param r polynomial factory.
      */
     public OrderedSyzPairlist(GenPolynomialRing<C> r) {
@@ -54,6 +56,7 @@ public class OrderedSyzPairlist<C extends RingElem<C>> extends OrderedPairlist<C
 
     /**
      * Constructor.
+     *
      * @param m number of module variables.
      * @param r polynomial factory.
      */
@@ -64,6 +67,7 @@ public class OrderedSyzPairlist<C extends RingElem<C>> extends OrderedPairlist<C
 
     /**
      * Create a new PairList.
+     *
      * @param r polynomial ring.
      */
     @Override
@@ -74,6 +78,7 @@ public class OrderedSyzPairlist<C extends RingElem<C>> extends OrderedPairlist<C
 
     /**
      * Create a new PairList.
+     *
      * @param m number of module variables.
      * @param r polynomial ring.
      */
@@ -86,6 +91,7 @@ public class OrderedSyzPairlist<C extends RingElem<C>> extends OrderedPairlist<C
     /**
      * Put one Polynomial to the pairlist and reduction matrix. Removes all
      * unnecessary pairs identified by the syzygy criterion and criterion 4.
+     *
      * @param p polynomial.
      * @return the index of the added polynomial.
      */
@@ -145,7 +151,7 @@ public class OrderedSyzPairlist<C extends RingElem<C>> extends OrderedPairlist<C
         }
         // generate new pairs:
         SortedMap<ExpVector, LinkedList<Pair<C>>> npl = new TreeMap<ExpVector, LinkedList<Pair<C>>>(
-                        ring.tord.getAscendComparator());
+                ring.tord.getAscendComparator());
         for (int j = 0; j < ps; j++) {
             GenPolynomial<C> pj = P.get(j);
             ExpVector f = pj.leadingExpVector();
@@ -242,6 +248,7 @@ public class OrderedSyzPairlist<C extends RingElem<C>> extends OrderedPairlist<C
     /**
      * Remove the next required pair from the pairlist and reduction matrix.
      * Appy the criterions 3 and 4 to see if the S-polynomial is required.
+     *
      * @return the next pair if one exists, otherwise null.
      */
     @Override
@@ -293,6 +300,7 @@ public class OrderedSyzPairlist<C extends RingElem<C>> extends OrderedPairlist<C
 
     /**
      * GB criterium 3.
+     *
      * @return true if the S-polynomial(i,j) is required.
      */
     @Override

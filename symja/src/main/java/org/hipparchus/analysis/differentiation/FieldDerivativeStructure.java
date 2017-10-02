@@ -24,62 +24,132 @@ import org.hipparchus.util.FastMath;
 import org.hipparchus.util.MathArrays;
 import org.hipparchus.util.MathUtils;
 
-/** Class representing both the value and the differentials of a function.
+/**
+ * Class representing both the value and the differentials of a function.
  * <p>This class is similar to {@link DerivativeStructure} except function
  * parameters and value can be any {@link RealFieldElement}.</p>
  * <p>Instances of this class are guaranteed to be immutable.</p>
+ *
+ * @param <T> the type of the field elements
  * @see DerivativeStructure
  * @see FDSFactory
  * @see DSCompiler
- * @param <T> the type of the field elements
  */
 public class FieldDerivativeStructure<T extends RealFieldElement<T>>
-    implements RealFieldElement<FieldDerivativeStructure<T>> {
+        implements RealFieldElement<FieldDerivativeStructure<T>> {
 
-    /** Factory that built the instance. */
+    /**
+     * Factory that built the instance.
+     */
     private final FDSFactory<T> factory;
 
-    /** Combined array holding all values. */
+    /**
+     * Combined array holding all values.
+     */
     private final T[] data;
 
-    /** Build an instance with all values and derivatives set to 0.
+    /**
+     * Build an instance with all values and derivatives set to 0.
+     *
      * @param factory factory that built the instance
-     * @param data combined array holding all values
+     * @param data    combined array holding all values
      */
     FieldDerivativeStructure(final FDSFactory<T> factory, final T[] data) {
         this.factory = factory;
-        this.data    = data;
+        this.data = data;
     }
 
-    /** Get the factory that built the instance.
+    /**
+     * Returns the hypotenuse of a triangle with sides {@code x} and {@code y}
+     * - sqrt(<i>x</i><sup>2</sup>&nbsp;+<i>y</i><sup>2</sup>)
+     * avoiding intermediate overflow or underflow.
+     * <p>
+     * <ul>
+     * <li> If either argument is infinite, then the result is positive infinity.</li>
+     * <li> else, if either argument is NaN then the result is NaN.</li>
+     * </ul>
+     *
+     * @param x   a value
+     * @param y   a value
+     * @param <T> the type of the field elements
+     * @return sqrt(<i>x</i><sup>2</sup>&nbsp;+<i>y</i><sup>2</sup>)
+     * @throws MathIllegalArgumentException if number of free parameters
+     *                                      or orders do not match
+     */
+    public static <T extends RealFieldElement<T>> FieldDerivativeStructure<T>
+    hypot(final FieldDerivativeStructure<T> x, final FieldDerivativeStructure<T> y)
+            throws MathIllegalArgumentException {
+        return x.hypot(y);
+    }
+
+    /**
+     * Compute a<sup>x</sup> where a is a double and x a {@link FieldDerivativeStructure}
+     *
+     * @param a   number to exponentiate
+     * @param x   power to apply
+     * @param <T> the type of the field elements
+     * @return a<sup>x</sup>
+     */
+    public static <T extends RealFieldElement<T>> FieldDerivativeStructure<T> pow(final double a, final FieldDerivativeStructure<T> x) {
+        final FieldDerivativeStructure<T> result = x.factory.build();
+        x.factory.getCompiler().pow(a, x.data, 0, result.data, 0);
+        return result;
+    }
+
+    /**
+     * Two arguments arc tangent operation.
+     *
+     * @param y   first argument of the arc tangent
+     * @param x   second argument of the arc tangent
+     * @param <T> the type of the field elements
+     * @return atan2(y, x)
+     * @throws MathIllegalArgumentException if number of free parameters
+     *                                      or orders do not match
+     */
+    public static <T extends RealFieldElement<T>> FieldDerivativeStructure<T> atan2(final FieldDerivativeStructure<T> y,
+                                                                                    final FieldDerivativeStructure<T> x)
+            throws MathIllegalArgumentException {
+        return y.atan2(x);
+    }
+
+    /**
+     * Get the factory that built the instance.
+     *
      * @return factory that built the instance
      */
     public FDSFactory<T> getFactory() {
         return factory;
     }
 
-    /** Get the number of free parameters.
+    /**
+     * Get the number of free parameters.
+     *
      * @return number of free parameters
      */
     public int getFreeParameters() {
         return getFactory().getCompiler().getFreeParameters();
     }
 
-    /** Get the derivation order.
+    /**
+     * Get the derivation order.
+     *
      * @return derivation order
      */
     public int getOrder() {
         return getFactory().getCompiler().getOrder();
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     @Override
     public double getReal() {
         return data[0].getReal();
     }
 
-    /** Get the value part of the derivative structure.
+    /**
+     * Get the value part of the derivative structure.
+     *
      * @return value part of the derivative structure
      * @see #getPartialDerivative(int...)
      */
@@ -87,22 +157,26 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
         return data[0];
     }
 
-    /** Get a partial derivative.
+    /**
+     * Get a partial derivative.
+     *
      * @param orders derivation orders with respect to each variable (if all orders are 0,
-     * the value is returned)
+     *               the value is returned)
      * @return partial derivative
+     * @throws MathIllegalArgumentException if the numbers of variables does not
+     *                                      match the instance
+     * @throws MathIllegalArgumentException if sum of derivation orders is larger
+     *                                      than the instance limits
      * @see #getValue()
-     * @exception MathIllegalArgumentException if the numbers of variables does not
-     * match the instance
-     * @exception MathIllegalArgumentException if sum of derivation orders is larger
-     * than the instance limits
      */
-    public T getPartialDerivative(final int ... orders)
-        throws MathIllegalArgumentException {
+    public T getPartialDerivative(final int... orders)
+            throws MathIllegalArgumentException {
         return data[factory.getCompiler().getPartialDerivativeIndex(orders)];
     }
 
-    /** Get all partial derivatives.
+    /**
+     * Get all partial derivatives.
+     *
      * @return a fresh copy of partial derivatives, in an array sorted according to
      * {@link DSCompiler#getPartialDerivativeIndex(int...)}
      */
@@ -110,7 +184,9 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
         return data.clone();
     }
 
-    /** '+' operator.
+    /**
+     * '+' operator.
+     *
      * @param a right hand side parameter of the operator
      * @return this+a
      */
@@ -121,7 +197,8 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
         return ds;
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     @Override
     public FieldDerivativeStructure<T> add(final double a) {
@@ -131,20 +208,24 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
         return ds;
     }
 
-    /** {@inheritDoc}
-     * @exception MathIllegalArgumentException if number of free parameters
-     * or orders do not match
+    /**
+     * {@inheritDoc}
+     *
+     * @throws MathIllegalArgumentException if number of free parameters
+     *                                      or orders do not match
      */
     @Override
     public FieldDerivativeStructure<T> add(final FieldDerivativeStructure<T> a)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         factory.checkCompatibility(a.factory);
         final FieldDerivativeStructure<T> ds = factory.build();
         factory.getCompiler().add(data, 0, a.data, 0, ds.data, 0);
         return ds;
     }
 
-    /** '-' operator.
+    /**
+     * '-' operator.
+     *
      * @param a right hand side parameter of the operator
      * @return this-a
      */
@@ -155,7 +236,8 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
         return ds;
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     @Override
     public FieldDerivativeStructure<T> subtract(final double a) {
@@ -165,20 +247,24 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
         return ds;
     }
 
-    /** {@inheritDoc}
-     * @exception MathIllegalArgumentException if number of free parameters
-     * or orders do not match
+    /**
+     * {@inheritDoc}
+     *
+     * @throws MathIllegalArgumentException if number of free parameters
+     *                                      or orders do not match
      */
     @Override
     public FieldDerivativeStructure<T> subtract(final FieldDerivativeStructure<T> a)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         factory.checkCompatibility(a.factory);
         final FieldDerivativeStructure<T> ds = factory.build();
         factory.getCompiler().subtract(data, 0, a.data, 0, ds.data, 0);
         return ds;
     }
 
-    /** '&times;' operator.
+    /**
+     * '&times;' operator.
+     *
      * @param a right hand side parameter of the operator
      * @return this&times;a
      */
@@ -190,13 +276,16 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
         return ds;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FieldDerivativeStructure<T> multiply(final int n) {
         return multiply((double) n);
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     @Override
     public FieldDerivativeStructure<T> multiply(final double a) {
@@ -207,20 +296,24 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
         return ds;
     }
 
-    /** {@inheritDoc}
-     * @exception MathIllegalArgumentException if number of free parameters
-     * or orders do not match
+    /**
+     * {@inheritDoc}
+     *
+     * @throws MathIllegalArgumentException if number of free parameters
+     *                                      or orders do not match
      */
     @Override
     public FieldDerivativeStructure<T> multiply(final FieldDerivativeStructure<T> a)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         factory.checkCompatibility(a.factory);
         final FieldDerivativeStructure<T> result = factory.build();
         factory.getCompiler().multiply(data, 0, a.data, 0, result.data, 0);
         return result;
     }
 
-    /** '&divide;' operator.
+    /**
+     * '&divide;' operator.
+     *
      * @param a right hand side parameter of the operator
      * @return this&divide;a
      */
@@ -232,7 +325,8 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
         return ds;
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     @Override
     public FieldDerivativeStructure<T> divide(final double a) {
@@ -243,20 +337,24 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
         return ds;
     }
 
-    /** {@inheritDoc}
-     * @exception MathIllegalArgumentException if number of free parameters
-     * or orders do not match
+    /**
+     * {@inheritDoc}
+     *
+     * @throws MathIllegalArgumentException if number of free parameters
+     *                                      or orders do not match
      */
     @Override
     public FieldDerivativeStructure<T> divide(final FieldDerivativeStructure<T> a)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         factory.checkCompatibility(a.factory);
         final FieldDerivativeStructure<T> result = factory.build();
         factory.getCompiler().divide(data, 0, a.data, 0, result.data, 0);
         return result;
     }
 
-    /** IEEE remainder operator.
+    /**
+     * IEEE remainder operator.
+     *
      * @param a right hand side parameter of the operator
      * @return this - n &times; a where n is the closest integer to this/a
      * (the even integer is chosen for n if this/a is halfway between two integers)
@@ -268,7 +366,9 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
         return ds;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FieldDerivativeStructure<T> remainder(final double a) {
         final FieldDerivativeStructure<T> ds = factory.build();
@@ -277,20 +377,24 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
         return ds;
     }
 
-    /** {@inheritDoc}
-     * @exception MathIllegalArgumentException if number of free parameters
-     * or orders do not match
+    /**
+     * {@inheritDoc}
+     *
+     * @throws MathIllegalArgumentException if number of free parameters
+     *                                      or orders do not match
      */
     @Override
     public FieldDerivativeStructure<T> remainder(final FieldDerivativeStructure<T> a)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         factory.checkCompatibility(a.factory);
         final FieldDerivativeStructure<T> result = factory.build();
         factory.getCompiler().remainder(data, 0, a.data, 0, result.data, 0);
         return result;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FieldDerivativeStructure<T> negate() {
         final FieldDerivativeStructure<T> ds = factory.build();
@@ -300,7 +404,8 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
         return ds;
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     @Override
     public FieldDerivativeStructure<T> abs() {
@@ -312,34 +417,40 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
         }
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     @Override
     public FieldDerivativeStructure<T> ceil() {
         return factory.constant(data[0].ceil());
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     @Override
     public FieldDerivativeStructure<T> floor() {
         return factory.constant(data[0].floor());
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     @Override
     public FieldDerivativeStructure<T> rint() {
         return factory.constant(data[0].rint());
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public long round() {
         return data[0].round();
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     @Override
     public FieldDerivativeStructure<T> signum() {
@@ -362,7 +473,8 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
         return negate(); // flip sign
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     @Override
     public FieldDerivativeStructure<T> copySign(final double sign) {
@@ -374,7 +486,8 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
         return negate(); // flip sign
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     @Override
     public FieldDerivativeStructure<T> copySign(final FieldDerivativeStructure<T> sign) {
@@ -392,13 +505,15 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
      * For double numbers of the form 2<sup>x</sup>, the unbiased
      * exponent is exactly x.
      * </p>
+     *
      * @return exponent for instance in IEEE754 representation, without bias
      */
     public int getExponent() {
         return FastMath.getExponent(data[0].getReal());
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     @Override
     public FieldDerivativeStructure<T> scalb(final int n) {
@@ -409,13 +524,15 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
         return ds;
     }
 
-    /** {@inheritDoc}
-     * @exception MathIllegalArgumentException if number of free parameters
-     * or orders do not match
+    /**
+     * {@inheritDoc}
+     *
+     * @throws MathIllegalArgumentException if number of free parameters
+     *                                      or orders do not match
      */
     @Override
     public FieldDerivativeStructure<T> hypot(final FieldDerivativeStructure<T> y)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
 
         factory.checkCompatibility(y.factory);
 
@@ -455,39 +572,18 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
     }
 
     /**
-     * Returns the hypotenuse of a triangle with sides {@code x} and {@code y}
-     * - sqrt(<i>x</i><sup>2</sup>&nbsp;+<i>y</i><sup>2</sup>)
-     * avoiding intermediate overflow or underflow.
+     * Compute composition of the instance by a univariate function.
      *
-     * <ul>
-     * <li> If either argument is infinite, then the result is positive infinity.</li>
-     * <li> else, if either argument is NaN then the result is NaN.</li>
-     * </ul>
-     *
-     * @param x a value
-     * @param y a value
-     * @return sqrt(<i>x</i><sup>2</sup>&nbsp;+<i>y</i><sup>2</sup>)
-     * @exception MathIllegalArgumentException if number of free parameters
-     * or orders do not match
-     * @param <T> the type of the field elements
-     */
-    public static <T extends RealFieldElement<T>> FieldDerivativeStructure<T>
-        hypot(final FieldDerivativeStructure<T> x, final FieldDerivativeStructure<T> y)
-        throws MathIllegalArgumentException {
-        return x.hypot(y);
-    }
-
-    /** Compute composition of the instance by a univariate function.
      * @param f array of value and derivatives of the function at
-     * the current point (i.e. [f({@link #getValue()}),
-     * f'({@link #getValue()}), f''({@link #getValue()})...]).
+     *          the current point (i.e. [f({@link #getValue()}),
+     *          f'({@link #getValue()}), f''({@link #getValue()})...]).
      * @return f(this)
-     * @exception MathIllegalArgumentException if the number of derivatives
-     * in the array is not equal to {@link #getOrder() order} + 1
+     * @throws MathIllegalArgumentException if the number of derivatives
+     *                                      in the array is not equal to {@link #getOrder() order} + 1
      */
     @SafeVarargs
-    public final FieldDerivativeStructure<T> compose(final T ... f)
-        throws MathIllegalArgumentException {
+    public final FieldDerivativeStructure<T> compose(final T... f)
+            throws MathIllegalArgumentException {
 
         MathUtils.checkDimension(f.length, getOrder() + 1);
         final FieldDerivativeStructure<T> result = factory.build();
@@ -495,16 +591,18 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
         return result;
     }
 
-    /** Compute composition of the instance by a univariate function.
+    /**
+     * Compute composition of the instance by a univariate function.
+     *
      * @param f array of value and derivatives of the function at
-     * the current point (i.e. [f({@link #getValue()}),
-     * f'({@link #getValue()}), f''({@link #getValue()})...]).
+     *          the current point (i.e. [f({@link #getValue()}),
+     *          f'({@link #getValue()}), f''({@link #getValue()})...]).
      * @return f(this)
-     * @exception MathIllegalArgumentException if the number of derivatives
-     * in the array is not equal to {@link #getOrder() order} + 1
+     * @throws MathIllegalArgumentException if the number of derivatives
+     *                                      in the array is not equal to {@link #getOrder() order} + 1
      */
-    public FieldDerivativeStructure<T> compose(final double ... f)
-        throws MathIllegalArgumentException {
+    public FieldDerivativeStructure<T> compose(final double... f)
+            throws MathIllegalArgumentException {
 
         MathUtils.checkDimension(f.length, getOrder() + 1);
         final FieldDerivativeStructure<T> result = factory.build();
@@ -512,7 +610,9 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
         return result;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FieldDerivativeStructure<T> reciprocal() {
         final FieldDerivativeStructure<T> result = factory.build();
@@ -520,21 +620,24 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
         return result;
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     @Override
     public FieldDerivativeStructure<T> sqrt() {
         return rootN(2);
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     @Override
     public FieldDerivativeStructure<T> cbrt() {
         return rootN(3);
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     @Override
     public FieldDerivativeStructure<T> rootN(final int n) {
@@ -543,25 +646,16 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
         return result;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Field<FieldDerivativeStructure<T>> getField() {
         return factory.getDerivativeField();
     }
 
-    /** Compute a<sup>x</sup> where a is a double and x a {@link FieldDerivativeStructure}
-     * @param a number to exponentiate
-     * @param x power to apply
-     * @param <T> the type of the field elements
-     * @return a<sup>x</sup>
-     */
-    public static <T extends RealFieldElement<T>> FieldDerivativeStructure<T> pow(final double a, final FieldDerivativeStructure<T> x) {
-        final FieldDerivativeStructure<T> result = x.factory.build();
-        x.factory.getCompiler().pow(a, x.data, 0, result.data, 0);
-        return result;
-    }
-
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     @Override
     public FieldDerivativeStructure<T> pow(final double p) {
@@ -570,7 +664,8 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
         return result;
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     @Override
     public FieldDerivativeStructure<T> pow(final int n) {
@@ -579,20 +674,23 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
         return result;
     }
 
-    /** {@inheritDoc}
-     * @exception MathIllegalArgumentException if number of free parameters
-     * or orders do not match
+    /**
+     * {@inheritDoc}
+     *
+     * @throws MathIllegalArgumentException if number of free parameters
+     *                                      or orders do not match
      */
     @Override
     public FieldDerivativeStructure<T> pow(final FieldDerivativeStructure<T> e)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         factory.checkCompatibility(e.factory);
         final FieldDerivativeStructure<T> result = factory.build();
         factory.getCompiler().pow(data, 0, e.data, 0, result.data, 0);
         return result;
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     @Override
     public FieldDerivativeStructure<T> exp() {
@@ -601,7 +699,8 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
         return result;
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     @Override
     public FieldDerivativeStructure<T> expm1() {
@@ -610,7 +709,8 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
         return result;
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     @Override
     public FieldDerivativeStructure<T> log() {
@@ -619,7 +719,8 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
         return result;
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     @Override
     public FieldDerivativeStructure<T> log1p() {
@@ -628,7 +729,9 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
         return result;
     }
 
-    /** Base 10 logarithm.
+    /**
+     * Base 10 logarithm.
+     *
      * @return base 10 logarithm of the instance
      */
     @Override
@@ -638,7 +741,8 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
         return result;
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     @Override
     public FieldDerivativeStructure<T> cos() {
@@ -647,7 +751,8 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
         return result;
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     @Override
     public FieldDerivativeStructure<T> sin() {
@@ -656,7 +761,8 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
         return result;
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     @Override
     public FieldDerivativeStructure<T> tan() {
@@ -665,7 +771,8 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
         return result;
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     @Override
     public FieldDerivativeStructure<T> acos() {
@@ -674,7 +781,8 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
         return result;
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     @Override
     public FieldDerivativeStructure<T> asin() {
@@ -683,7 +791,8 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
         return result;
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     @Override
     public FieldDerivativeStructure<T> atan() {
@@ -692,32 +801,20 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
         return result;
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     @Override
     public FieldDerivativeStructure<T> atan2(final FieldDerivativeStructure<T> x)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         factory.checkCompatibility(x.factory);
         final FieldDerivativeStructure<T> result = factory.build();
         factory.getCompiler().atan2(data, 0, x.data, 0, result.data, 0);
         return result;
     }
 
-    /** Two arguments arc tangent operation.
-     * @param y first argument of the arc tangent
-     * @param x second argument of the arc tangent
-     * @param <T> the type of the field elements
-     * @return atan2(y, x)
-     * @exception MathIllegalArgumentException if number of free parameters
-     * or orders do not match
-     */
-    public static <T extends RealFieldElement<T>> FieldDerivativeStructure<T> atan2(final FieldDerivativeStructure<T> y,
-                                                                                    final FieldDerivativeStructure<T> x)
-        throws MathIllegalArgumentException {
-        return y.atan2(x);
-    }
-
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     @Override
     public FieldDerivativeStructure<T> cosh() {
@@ -726,7 +823,8 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
         return result;
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     @Override
     public FieldDerivativeStructure<T> sinh() {
@@ -735,7 +833,8 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
         return result;
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     @Override
     public FieldDerivativeStructure<T> tanh() {
@@ -744,7 +843,8 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
         return result;
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     @Override
     public FieldDerivativeStructure<T> acosh() {
@@ -753,7 +853,8 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
         return result;
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     @Override
     public FieldDerivativeStructure<T> asinh() {
@@ -762,7 +863,8 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
         return result;
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     @Override
     public FieldDerivativeStructure<T> atanh() {
@@ -771,8 +873,10 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
         return result;
     }
 
-    /** Convert radians to degrees, with error of less than 0.5 ULP
-     *  @return instance converted into degrees
+    /**
+     * Convert radians to degrees, with error of less than 0.5 ULP
+     *
+     * @return instance converted into degrees
      */
     public FieldDerivativeStructure<T> toDegrees() {
         final FieldDerivativeStructure<T> ds = factory.build();
@@ -783,8 +887,10 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
         return ds;
     }
 
-    /** Convert degrees to radians, with error of less than 0.5 ULP
-     *  @return instance converted into radians
+    /**
+     * Convert degrees to radians, with error of less than 0.5 ULP
+     *
+     * @return instance converted into radians
      */
     public FieldDerivativeStructure<T> toRadians() {
         final FieldDerivativeStructure<T> ds = factory.build();
@@ -795,33 +901,39 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
         return ds;
     }
 
-    /** Evaluate Taylor expansion of a derivative structure.
+    /**
+     * Evaluate Taylor expansion of a derivative structure.
+     *
      * @param delta parameters offsets (&Delta;x, &Delta;y, ...)
      * @return value of the Taylor expansion at x + &Delta;x, y + &Delta;y, ...
      * @throws MathRuntimeException if factorials becomes too large
      */
     @SafeVarargs
-    public final T taylor(final T ... delta) throws MathRuntimeException {
+    public final T taylor(final T... delta) throws MathRuntimeException {
         return factory.getCompiler().taylor(data, 0, delta);
     }
 
-    /** Evaluate Taylor expansion of a derivative structure.
+    /**
+     * Evaluate Taylor expansion of a derivative structure.
+     *
      * @param delta parameters offsets (&Delta;x, &Delta;y, ...)
      * @return value of the Taylor expansion at x + &Delta;x, y + &Delta;y, ...
      * @throws MathRuntimeException if factorials becomes too large
      */
-    public T taylor(final double ... delta) throws MathRuntimeException {
+    public T taylor(final double... delta) throws MathRuntimeException {
         return factory.getCompiler().taylor(data, 0, delta);
     }
 
-    /** {@inheritDoc}
-     * @exception MathIllegalArgumentException if number of free parameters
-     * or orders do not match
+    /**
+     * {@inheritDoc}
+     *
+     * @throws MathIllegalArgumentException if number of free parameters
+     *                                      or orders do not match
      */
     @Override
     public FieldDerivativeStructure<T> linearCombination(final FieldDerivativeStructure<T>[] a,
                                                          final FieldDerivativeStructure<T>[] b)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
 
         // compute an accurate value, taking care of cancellations
         final T[] aT = MathArrays.buildArray(factory.getValueField(), a.length);
@@ -849,13 +961,14 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
 
     /**
      * Compute a linear combination.
+     *
      * @param a Factors.
      * @param b Factors.
      * @return <code>&Sigma;<sub>i</sub> a<sub>i</sub> b<sub>i</sub></code>.
      * @throws MathIllegalArgumentException if arrays dimensions don't match
      */
     public FieldDerivativeStructure<T> linearCombination(final T[] a, final FieldDerivativeStructure<T>[] b)
-                    throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
 
         // compute an accurate value, taking care of cancellations
         final T[] bT = MathArrays.buildArray(factory.getValueField(), b.length);
@@ -877,13 +990,15 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
 
     }
 
-    /** {@inheritDoc}
-     * @exception MathIllegalArgumentException if number of free parameters
-     * or orders do not match
+    /**
+     * {@inheritDoc}
+     *
+     * @throws MathIllegalArgumentException if number of free parameters
+     *                                      or orders do not match
      */
     @Override
     public FieldDerivativeStructure<T> linearCombination(final double[] a, final FieldDerivativeStructure<T>[] b)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
 
         // compute an accurate value, taking care of cancellations
         final T[] bT = MathArrays.buildArray(factory.getValueField(), b.length);
@@ -905,18 +1020,20 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
 
     }
 
-    /** {@inheritDoc}
-     * @exception MathIllegalArgumentException if number of free parameters
-     * or orders do not match
+    /**
+     * {@inheritDoc}
+     *
+     * @throws MathIllegalArgumentException if number of free parameters
+     *                                      or orders do not match
      */
     @Override
     public FieldDerivativeStructure<T> linearCombination(final FieldDerivativeStructure<T> a1, final FieldDerivativeStructure<T> b1,
                                                          final FieldDerivativeStructure<T> a2, final FieldDerivativeStructure<T> b2)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
 
         // compute an accurate value, taking care of cancellations
         final T accurateValue = a1.getValue().linearCombination(a1.getValue(), b1.getValue(),
-                                                                a2.getValue(), b2.getValue());
+                a2.getValue(), b2.getValue());
 
         // compute a simple value, with all partial derivatives
         final FieldDerivativeStructure<T> simpleValue = a1.multiply(b1).add(a2.multiply(b2));
@@ -930,67 +1047,72 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
 
     /**
      * Compute a linear combination.
+     *
      * @param a1 first factor of the first term
      * @param b1 second factor of the first term
      * @param a2 first factor of the second term
      * @param b2 second factor of the second term
      * @return a<sub>1</sub>&times;b<sub>1</sub> +
      * a<sub>2</sub>&times;b<sub>2</sub>
+     * @throws MathIllegalArgumentException if number of free parameters or orders are inconsistent
      * @see #linearCombination(double, Object, double, Object, double, Object)
      * @see #linearCombination(double, Object, double, Object, double, Object, double, Object)
-     * @exception MathIllegalArgumentException if number of free parameters or orders are inconsistent
      */
     public FieldDerivativeStructure<T> linearCombination(final T a1, final FieldDerivativeStructure<T> b1,
                                                          final T a2, final FieldDerivativeStructure<T> b2)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
 
         factory.checkCompatibility(b1.factory);
         factory.checkCompatibility(b2.factory);
 
         final FieldDerivativeStructure<T> ds = factory.build();
         factory.getCompiler().linearCombination(a1, b1.data, 0,
-                                                a2, b2.data, 0,
-                                                ds.data, 0);
+                a2, b2.data, 0,
+                ds.data, 0);
 
         return ds;
 
     }
 
-    /** {@inheritDoc}
-     * @exception MathIllegalArgumentException if number of free parameters
-     * or orders do not match
+    /**
+     * {@inheritDoc}
+     *
+     * @throws MathIllegalArgumentException if number of free parameters
+     *                                      or orders do not match
      */
     @Override
     public FieldDerivativeStructure<T> linearCombination(final double a1, final FieldDerivativeStructure<T> b1,
                                                          final double a2, final FieldDerivativeStructure<T> b2)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
 
         factory.checkCompatibility(b1.factory);
         factory.checkCompatibility(b2.factory);
 
         final FieldDerivativeStructure<T> ds = factory.build();
         factory.getCompiler().linearCombination(a1, b1.data, 0,
-                                                a2, b2.data, 0,
-                                                ds.data, 0);
+                a2, b2.data, 0,
+                ds.data, 0);
 
         return ds;
 
     }
 
-    /** {@inheritDoc}
-     * @exception MathIllegalArgumentException if number of free parameters
-     * or orders do not match
+    /**
+     * {@inheritDoc}
+     *
+     * @throws MathIllegalArgumentException if number of free parameters
+     *                                      or orders do not match
      */
     @Override
     public FieldDerivativeStructure<T> linearCombination(final FieldDerivativeStructure<T> a1, final FieldDerivativeStructure<T> b1,
                                                          final FieldDerivativeStructure<T> a2, final FieldDerivativeStructure<T> b2,
                                                          final FieldDerivativeStructure<T> a3, final FieldDerivativeStructure<T> b3)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
 
         // compute an accurate value, taking care of cancellations
         final T accurateValue = a1.getValue().linearCombination(a1.getValue(), b1.getValue(),
-                                                                a2.getValue(), b2.getValue(),
-                                                                a3.getValue(), b3.getValue());
+                a2.getValue(), b2.getValue(),
+                a3.getValue(), b3.getValue());
 
         // compute a simple value, with all partial derivatives
         final FieldDerivativeStructure<T> simpleValue = a1.multiply(b1).add(a2.multiply(b2)).add(a3.multiply(b3));
@@ -1004,6 +1126,7 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
 
     /**
      * Compute a linear combination.
+     *
      * @param a1 first factor of the first term
      * @param b1 second factor of the first term
      * @param a2 first factor of the second term
@@ -1012,14 +1135,14 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
      * @param b3 second factor of the third term
      * @return a<sub>1</sub>&times;b<sub>1</sub> +
      * a<sub>2</sub>&times;b<sub>2</sub> + a<sub>3</sub>&times;b<sub>3</sub>
+     * @throws MathIllegalArgumentException if number of free parameters or orders are inconsistent
      * @see #linearCombination(double, Object, double, Object)
      * @see #linearCombination(double, Object, double, Object, double, Object, double, Object)
-     * @exception MathIllegalArgumentException if number of free parameters or orders are inconsistent
      */
     public FieldDerivativeStructure<T> linearCombination(final T a1, final FieldDerivativeStructure<T> b1,
                                                          final T a2, final FieldDerivativeStructure<T> b2,
                                                          final T a3, final FieldDerivativeStructure<T> b3)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
 
         factory.checkCompatibility(b1.factory);
         factory.checkCompatibility(b2.factory);
@@ -1027,23 +1150,25 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
 
         final FieldDerivativeStructure<T> ds = factory.build();
         factory.getCompiler().linearCombination(a1, b1.data, 0,
-                                                a2, b2.data, 0,
-                                                a3, b3.data, 0,
-                                                ds.data, 0);
+                a2, b2.data, 0,
+                a3, b3.data, 0,
+                ds.data, 0);
 
         return ds;
 
     }
 
-    /** {@inheritDoc}
-     * @exception MathIllegalArgumentException if number of free parameters
-     * or orders do not match
+    /**
+     * {@inheritDoc}
+     *
+     * @throws MathIllegalArgumentException if number of free parameters
+     *                                      or orders do not match
      */
     @Override
     public FieldDerivativeStructure<T> linearCombination(final double a1, final FieldDerivativeStructure<T> b1,
                                                          final double a2, final FieldDerivativeStructure<T> b2,
                                                          final double a3, final FieldDerivativeStructure<T> b3)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
 
         factory.checkCompatibility(b1.factory);
         factory.checkCompatibility(b2.factory);
@@ -1051,30 +1176,32 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
 
         final FieldDerivativeStructure<T> ds = factory.build();
         factory.getCompiler().linearCombination(a1, b1.data, 0,
-                                                a2, b2.data, 0,
-                                                a3, b3.data, 0,
-                                                ds.data, 0);
+                a2, b2.data, 0,
+                a3, b3.data, 0,
+                ds.data, 0);
 
         return ds;
 
     }
 
-    /** {@inheritDoc}
-     * @exception MathIllegalArgumentException if number of free parameters
-     * or orders do not match
+    /**
+     * {@inheritDoc}
+     *
+     * @throws MathIllegalArgumentException if number of free parameters
+     *                                      or orders do not match
      */
     @Override
     public FieldDerivativeStructure<T> linearCombination(final FieldDerivativeStructure<T> a1, final FieldDerivativeStructure<T> b1,
                                                          final FieldDerivativeStructure<T> a2, final FieldDerivativeStructure<T> b2,
                                                          final FieldDerivativeStructure<T> a3, final FieldDerivativeStructure<T> b3,
                                                          final FieldDerivativeStructure<T> a4, final FieldDerivativeStructure<T> b4)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
 
         // compute an accurate value, taking care of cancellations
         final T accurateValue = a1.getValue().linearCombination(a1.getValue(), b1.getValue(),
-                                                                a2.getValue(), b2.getValue(),
-                                                                a3.getValue(), b3.getValue(),
-                                                                a4.getValue(), b4.getValue());
+                a2.getValue(), b2.getValue(),
+                a3.getValue(), b3.getValue(),
+                a4.getValue(), b4.getValue());
 
         // compute a simple value, with all partial derivatives
         final FieldDerivativeStructure<T> simpleValue = a1.multiply(b1).add(a2.multiply(b2)).add(a3.multiply(b3)).add(a4.multiply(b4));
@@ -1088,6 +1215,7 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
 
     /**
      * Compute a linear combination.
+     *
      * @param a1 first factor of the first term
      * @param b1 second factor of the first term
      * @param a2 first factor of the second term
@@ -1099,15 +1227,15 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
      * @return a<sub>1</sub>&times;b<sub>1</sub> +
      * a<sub>2</sub>&times;b<sub>2</sub> + a<sub>3</sub>&times;b<sub>3</sub> +
      * a<sub>4</sub>&times;b<sub>4</sub>
+     * @throws MathIllegalArgumentException if number of free parameters or orders are inconsistent
      * @see #linearCombination(double, Object, double, Object)
      * @see #linearCombination(double, Object, double, Object, double, Object)
-     * @exception MathIllegalArgumentException if number of free parameters or orders are inconsistent
      */
     public FieldDerivativeStructure<T> linearCombination(final T a1, final FieldDerivativeStructure<T> b1,
                                                          final T a2, final FieldDerivativeStructure<T> b2,
                                                          final T a3, final FieldDerivativeStructure<T> b3,
                                                          final T a4, final FieldDerivativeStructure<T> b4)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
 
         factory.checkCompatibility(b1.factory);
         factory.checkCompatibility(b2.factory);
@@ -1116,25 +1244,27 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
 
         final FieldDerivativeStructure<T> ds = factory.build();
         factory.getCompiler().linearCombination(a1, b1.data, 0,
-                                                a2, b2.data, 0,
-                                                a3, b3.data, 0,
-                                                a4, b4.data, 0,
-                                                ds.data, 0);
+                a2, b2.data, 0,
+                a3, b3.data, 0,
+                a4, b4.data, 0,
+                ds.data, 0);
 
         return ds;
 
     }
 
-    /** {@inheritDoc}
-     * @exception MathIllegalArgumentException if number of free parameters
-     * or orders do not match
+    /**
+     * {@inheritDoc}
+     *
+     * @throws MathIllegalArgumentException if number of free parameters
+     *                                      or orders do not match
      */
     @Override
     public FieldDerivativeStructure<T> linearCombination(final double a1, final FieldDerivativeStructure<T> b1,
                                                          final double a2, final FieldDerivativeStructure<T> b2,
                                                          final double a3, final FieldDerivativeStructure<T> b3,
                                                          final double a4, final FieldDerivativeStructure<T> b4)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
 
         factory.checkCompatibility(b1.factory);
         factory.checkCompatibility(b2.factory);
@@ -1143,10 +1273,10 @@ public class FieldDerivativeStructure<T extends RealFieldElement<T>>
 
         final FieldDerivativeStructure<T> ds = factory.build();
         factory.getCompiler().linearCombination(a1, b1.data, 0,
-                                                a2, b2.data, 0,
-                                                a3, b3.data, 0,
-                                                a4, b4.data, 0,
-                                                ds.data, 0);
+                a2, b2.data, 0,
+                a3, b3.data, 0,
+                a4, b4.data, 0,
+                ds.data, 0);
 
         return ds;
 

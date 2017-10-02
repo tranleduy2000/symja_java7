@@ -5,14 +5,14 @@
 package edu.jas.gb;
 
 
+import org.apache.log4j.Logger;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.poly.ExpVector;
 import edu.jas.poly.GenPolynomial;
@@ -35,6 +35,7 @@ import edu.jas.util.ThreadPool;
  * with multi-core CPUs parallel version of Groebner bases with executable
  * channels. Using pairlist class, distributed multi-threaded tasks do
  * reduction, one communication channel per remote node.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
@@ -42,73 +43,61 @@ import edu.jas.util.ThreadPool;
 public class GroebnerBaseDistributedHybridEC<C extends RingElem<C>> extends GroebnerBaseAbstract<C> {
 
 
-    private static final Logger logger = Logger.getLogger(GroebnerBaseDistributedHybridEC.class);
-
-
-    private static final boolean debug = logger.isDebugEnabled();
-
-
     /**
-     * Number of threads to use.
+     * Message tag for pairs.
      */
-    protected final int threads;
-
-
+    public static final Integer pairTag = Integer.valueOf(1);
+    /**
+     * Message tag for results.
+     */
+    public static final Integer resultTag = Integer.valueOf(2);
+    /**
+     * Message tag for acknowledgments.
+     */
+    public static final Integer ackTag = Integer.valueOf(3);
     /**
      * Default number of threads.
      */
     protected static final int DEFAULT_THREADS = 2;
-
-
-    /**
-     * Number of threads per node to use.
-     */
-    protected final int threadsPerNode;
-
-
     /**
      * Default number of threads per compute node.
      */
     protected static final int DEFAULT_THREADS_PER_NODE = 1;
-
-
+    /**
+     * Default server port.
+     */
+    protected static final int DEFAULT_PORT = 55711;
+    private static final Logger logger = Logger.getLogger(GroebnerBaseDistributedHybridEC.class);
+    private static final boolean debug = logger.isDebugEnabled();
+    /**
+     * Number of threads to use.
+     */
+    protected final int threads;
+    /**
+     * Number of threads per node to use.
+     */
+    protected final int threadsPerNode;
     /**
      * Pool of threads to use.
      */
     //protected final ExecutorService pool; // not for single node tests
     protected transient final ThreadPool pool;
-
-
-    /**
-     * Default server port.
-     */
-    protected static final int DEFAULT_PORT = 55711;
-
-
     /**
      * Default distributed hash table server port.
      */
     protected final int DHT_PORT;
-
-
     /**
      * machine file to use.
      */
     protected final String mfile;
-
-
     /**
      * Server port to use.
      */
     protected final int port;
-
-
     /**
      * Distributed thread pool to use.
      */
     private final transient DistThreadPool dtp;
-
-
     /**
      * Distributed hash table server to use.
      */
@@ -116,25 +105,8 @@ public class GroebnerBaseDistributedHybridEC<C extends RingElem<C>> extends Groe
 
 
     /**
-     * Message tag for pairs.
-     */
-    public static final Integer pairTag = Integer.valueOf(1);
-
-
-    /**
-     * Message tag for results.
-     */
-    public static final Integer resultTag = Integer.valueOf(2);
-
-
-    /**
-     * Message tag for acknowledgments.
-     */
-    public static final Integer ackTag = Integer.valueOf(3);
-
-
-    /**
      * Constructor.
+     *
      * @param mfile name of the machine file.
      */
     public GroebnerBaseDistributedHybridEC(String mfile) {
@@ -144,7 +116,8 @@ public class GroebnerBaseDistributedHybridEC<C extends RingElem<C>> extends Groe
 
     /**
      * Constructor.
-     * @param mfile name of the machine file.
+     *
+     * @param mfile   name of the machine file.
      * @param threads number of threads to use.
      */
     public GroebnerBaseDistributedHybridEC(String mfile, int threads) {
@@ -154,9 +127,10 @@ public class GroebnerBaseDistributedHybridEC<C extends RingElem<C>> extends Groe
 
     /**
      * Constructor.
-     * @param mfile name of the machine file.
+     *
+     * @param mfile   name of the machine file.
      * @param threads number of threads to use.
-     * @param port server port to use.
+     * @param port    server port to use.
      */
     public GroebnerBaseDistributedHybridEC(String mfile, int threads, int port) {
         this(mfile, threads, new ThreadPool(threads), port);
@@ -165,10 +139,11 @@ public class GroebnerBaseDistributedHybridEC<C extends RingElem<C>> extends Groe
 
     /**
      * Constructor.
-     * @param mfile name of the machine file.
-     * @param threads number of threads to use.
+     *
+     * @param mfile          name of the machine file.
+     * @param threads        number of threads to use.
      * @param threadsPerNode threads per node to use.
-     * @param port server port to use.
+     * @param port           server port to use.
      */
     public GroebnerBaseDistributedHybridEC(String mfile, int threads, int threadsPerNode, int port) {
         this(mfile, threads, threadsPerNode, new ThreadPool(threads), port);
@@ -177,10 +152,11 @@ public class GroebnerBaseDistributedHybridEC<C extends RingElem<C>> extends Groe
 
     /**
      * Constructor.
-     * @param mfile name of the machine file.
+     *
+     * @param mfile   name of the machine file.
      * @param threads number of threads to use.
-     * @param pool ThreadPool to use.
-     * @param port server port to use.
+     * @param pool    ThreadPool to use.
+     * @param port    server port to use.
      */
     public GroebnerBaseDistributedHybridEC(String mfile, int threads, ThreadPool pool, int port) {
         this(mfile, threads, DEFAULT_THREADS_PER_NODE, pool, port);
@@ -189,42 +165,45 @@ public class GroebnerBaseDistributedHybridEC<C extends RingElem<C>> extends Groe
 
     /**
      * Constructor.
-     * @param mfile name of the machine file.
-     * @param threads number of threads to use.
+     *
+     * @param mfile          name of the machine file.
+     * @param threads        number of threads to use.
      * @param threadsPerNode threads per node to use.
-     * @param pl pair selection strategy
-     * @param port server port to use.
+     * @param pl             pair selection strategy
+     * @param port           server port to use.
      */
     public GroebnerBaseDistributedHybridEC(String mfile, int threads, int threadsPerNode, PairList<C> pl,
-                    int port) {
+                                           int port) {
         this(mfile, threads, threadsPerNode, new ThreadPool(threads), pl, port);
     }
 
 
     /**
      * Constructor.
-     * @param mfile name of the machine file.
-     * @param threads number of threads to use.
+     *
+     * @param mfile          name of the machine file.
+     * @param threads        number of threads to use.
      * @param threadsPerNode threads per node to use.
-     * @param port server port to use.
+     * @param port           server port to use.
      */
     public GroebnerBaseDistributedHybridEC(String mfile, int threads, int threadsPerNode, ThreadPool pool,
-                    int port) {
+                                           int port) {
         this(mfile, threads, threadsPerNode, pool, new OrderedPairlist<C>(), port);
     }
 
 
     /**
      * Constructor.
-     * @param mfile name of the machine file.
-     * @param threads number of threads to use.
+     *
+     * @param mfile          name of the machine file.
+     * @param threads        number of threads to use.
      * @param threadsPerNode threads per node to use.
-     * @param pool ThreadPool to use.
-     * @param pl pair selection strategy
-     * @param port server port to use.
+     * @param pool           ThreadPool to use.
+     * @param pl             pair selection strategy
+     * @param port           server port to use.
      */
     public GroebnerBaseDistributedHybridEC(String mfile, int threads, int threadsPerNode, ThreadPool pool,
-                    PairList<C> pl, int port) {
+                                           PairList<C> pl, int port) {
         super(new ReductionPar<C>(), pl);
         this.threads = threads;
         if (mfile == null || mfile.length() == 0) {
@@ -250,6 +229,51 @@ public class GroebnerBaseDistributedHybridEC<C extends RingElem<C>> extends Groe
         logger.info("running " + dhts);
     }
 
+    /**
+     * GB distributed client part.
+     *
+     * @param host    the server runs on.
+     * @param port    the server runs.
+     * @param dhtport of the DHT server.
+     * @throws IOException
+     */
+    public static <C extends RingElem<C>> void clientPart(String host, int threadsPerNode, int port,
+                                                          int dhtport) throws IOException {
+        ChannelFactory cf = new ChannelFactory(port + 10); // != port for localhost
+        cf.init();
+        logger.info("clientPart connecting to " + host + ", port = " + port + ", dhtport = " + dhtport);
+        SocketChannel channel = cf.getChannel(host, port);
+        TaggedSocketChannel pairChannel = new TaggedSocketChannel(channel);
+        pairChannel.init();
+
+        DistHashTable<Integer, GenPolynomial<C>> theList = new DistHashTable<Integer, GenPolynomial<C>>(host,
+                dhtport);
+        theList.init();
+
+        ThreadPool pool = new ThreadPool(threadsPerNode);
+        logger.info("client using pool = " + pool);
+        for (int i = 0; i < threadsPerNode; i++) {
+            HybridReducerClientEC<C> Rr = new HybridReducerClientEC<C>(/*threadsPerNode,*/pairChannel, /*i,*/
+                    theList);
+            pool.addJob(Rr);
+        }
+        logger.debug("clients submitted");
+
+        pool.terminate();
+        logger.debug("client pool.terminate()");
+
+        pairChannel.close();
+        logger.debug("client pairChannel.close()");
+
+        //master only: theList.clear();
+        theList.terminate();
+        cf.terminate();
+        logger.info("client cf.terminate()");
+
+        channel.close();
+        logger.info("client channel.close()");
+        return;
+    }
 
     /**
      * Cleanup and terminate ThreadPool.
@@ -259,11 +283,11 @@ public class GroebnerBaseDistributedHybridEC<C extends RingElem<C>> extends Groe
         terminate(true);
     }
 
-
     /**
      * Terminates the distributed thread pools.
+     *
      * @param shutDown true, if shut-down of the remote executable servers is
-     *            requested, false, if remote executable servers stay alive.
+     *                 requested, false, if remote executable servers stay alive.
      */
     public void terminate(boolean shutDown) {
         pool.terminate();
@@ -272,16 +296,16 @@ public class GroebnerBaseDistributedHybridEC<C extends RingElem<C>> extends Groe
         dhts.terminate();
     }
 
-
     /**
      * Distributed Groebner base.
+     *
      * @param modv number of module variables.
-     * @param F polynomial list.
+     * @param F    polynomial list.
      * @return GB(F) a Groebner base of F or null, if a IOException occurs.
      */
     public List<GenPolynomial<C>> GB(int modv, List<GenPolynomial<C>> F) {
         List<GenPolynomial<C>> Fp = normalizeZerosOnes(F);
-        Fp = PolyUtil.<C> monic(Fp);
+        Fp = PolyUtil.<C>monic(Fp);
         if (Fp.size() <= 1) {
             return Fp;
         }
@@ -301,11 +325,11 @@ public class GroebnerBaseDistributedHybridEC<C extends RingElem<C>> extends Groe
         return G;
     }
 
-
     /**
      * Distributed hybrid Groebner base.
+     *
      * @param modv number of module variables.
-     * @param F non empty monic polynomial list without zeros.
+     * @param F    non empty monic polynomial list without zeros.
      * @return GB(F) a Groebner base of F or null, if a IOException occurs.
      */
     List<GenPolynomial<C>> GBMaster(int modv, List<GenPolynomial<C>> F) {
@@ -365,7 +389,7 @@ public class GroebnerBaseDistributedHybridEC<C extends RingElem<C>> extends Groe
         */
         logger.info("start " + pairlist);
         DistHashTable<Integer, GenPolynomial<C>> theList = new DistHashTable<Integer, GenPolynomial<C>>(
-                        "localhost", DHT_PORT);
+                "localhost", DHT_PORT);
         theList.init();
         List<GenPolynomial<C>> al = pairlist.getList();
         for (int i = 0; i < al.size(); i++) {
@@ -416,55 +440,9 @@ public class GroebnerBaseDistributedHybridEC<C extends RingElem<C>> extends Groe
         return G;
     }
 
-
-    /**
-     * GB distributed client part.
-     * @param host the server runs on.
-     * @param port the server runs.
-     * @param dhtport of the DHT server.
-     * @throws IOException
-     */
-    public static <C extends RingElem<C>> void clientPart(String host, int threadsPerNode, int port,
-                    int dhtport) throws IOException {
-        ChannelFactory cf = new ChannelFactory(port + 10); // != port for localhost
-        cf.init();
-        logger.info("clientPart connecting to " + host + ", port = " + port + ", dhtport = " + dhtport);
-        SocketChannel channel = cf.getChannel(host, port);
-        TaggedSocketChannel pairChannel = new TaggedSocketChannel(channel);
-        pairChannel.init();
-
-        DistHashTable<Integer, GenPolynomial<C>> theList = new DistHashTable<Integer, GenPolynomial<C>>(host,
-                        dhtport);
-        theList.init();
-
-        ThreadPool pool = new ThreadPool(threadsPerNode);
-        logger.info("client using pool = " + pool);
-        for (int i = 0; i < threadsPerNode; i++) {
-            HybridReducerClientEC<C> Rr = new HybridReducerClientEC<C>(/*threadsPerNode,*/pairChannel, /*i,*/
-            theList);
-            pool.addJob(Rr);
-        }
-        logger.debug("clients submitted");
-
-        pool.terminate();
-        logger.debug("client pool.terminate()");
-
-        pairChannel.close();
-        logger.debug("client pairChannel.close()");
-
-        //master only: theList.clear();
-        theList.terminate();
-        cf.terminate();
-        logger.info("client cf.terminate()");
-
-        channel.close();
-        logger.info("client channel.close()");
-        return;
-    }
-
-
     /**
      * Minimal ordered groebner basis.
+     *
      * @param Fp a Groebner base.
      * @return a reduced Groebner base of Fp.
      */
@@ -550,6 +528,7 @@ public class GroebnerBaseDistributedHybridEC<C extends RingElem<C>> extends Groe
 
 /**
  * Distributed server reducing worker proxy threads.
+ *
  * @param <C> coefficient type
  */
 class HybridReducerServerEC<C extends RingElem<C>> implements Runnable {
@@ -559,54 +538,37 @@ class HybridReducerServerEC<C extends RingElem<C>> implements Runnable {
 
 
     private static final boolean debug = logger.isDebugEnabled();
-
-
-    private final Terminator finner;
-
-
-    private final ChannelFactory cf;
-
-
-    private TaggedSocketChannel pairChannel;
-
-
-    private final DistHashTable<Integer, GenPolynomial<C>> theList;
-
-
-    private final PairList<C> pairlist;
-
-
-    private final int threadsPerNode;
-
-
     /**
      * Message tag for pairs.
      */
     public final Integer pairTag = GroebnerBaseDistributedHybridEC.pairTag;
-
-
     /**
      * Message tag for results.
      */
     public final Integer resultTag = GroebnerBaseDistributedHybridEC.resultTag;
-
-
     /**
      * Message tag for acknowledgments.
      */
     public final Integer ackTag = GroebnerBaseDistributedHybridEC.ackTag;
+    private final Terminator finner;
+    private final ChannelFactory cf;
+    private final DistHashTable<Integer, GenPolynomial<C>> theList;
+    private final PairList<C> pairlist;
+    private final int threadsPerNode;
+    private TaggedSocketChannel pairChannel;
 
 
     /**
      * Constructor.
+     *
      * @param tpn number of threads per node
      * @param fin terminator
-     * @param cf channel factory
-     * @param dl distributed hash table
-     * @param L ordered pair list
+     * @param cf  channel factory
+     * @param dl  distributed hash table
+     * @param L   ordered pair list
      */
     HybridReducerServerEC(int tpn, Terminator fin, ChannelFactory cf,
-                    DistHashTable<Integer, GenPolynomial<C>> dl, PairList<C> L) {
+                          DistHashTable<Integer, GenPolynomial<C>> dl, PairList<C> L) {
         threadsPerNode = tpn;
         finner = fin;
         this.cf = cf;
@@ -618,6 +580,7 @@ class HybridReducerServerEC<C extends RingElem<C>> implements Runnable {
 
     /**
      * Work loop.
+     *
      * @see java.lang.Runnable#run()
      */
     @Override
@@ -643,7 +606,7 @@ class HybridReducerServerEC<C extends RingElem<C>> implements Runnable {
 
         // start receiver
         HybridReducerReceiverEC<C> receiver = new HybridReducerReceiverEC<C>(/*threadsPerNode,*/finner,
-                        active, pairChannel, theList, pairlist);
+                active, pairChannel, theList, pairlist);
         receiver.start();
 
         Pair<C> pair;
@@ -771,6 +734,7 @@ class HybridReducerServerEC<C extends RingElem<C>> implements Runnable {
 
 /**
  * Distributed server receiving worker thread.
+ *
  * @param <C> coefficient type
  */
 class HybridReducerReceiverEC<C extends RingElem<C>> extends Thread {
@@ -780,58 +744,41 @@ class HybridReducerReceiverEC<C extends RingElem<C>> extends Thread {
 
 
     private static final boolean debug = logger.isDebugEnabled();
-
-
-    private final DistHashTable<Integer, GenPolynomial<C>> theList;
-
-
-    private final PairList<C> pairlist;
-
-
-    private final TaggedSocketChannel pairChannel;
-
-
-    private final Terminator finner;
-
-
-    //private final int threadsPerNode;
-
-
-    private final AtomicInteger active;
-
-
-    private volatile boolean goon;
-
-
     /**
      * Message tag for pairs.
      */
     public final Integer pairTag = GroebnerBaseDistributedHybridEC.pairTag;
-
-
     /**
      * Message tag for results.
      */
     public final Integer resultTag = GroebnerBaseDistributedHybridEC.resultTag;
-
-
     /**
      * Message tag for acknowledgments.
      */
     public final Integer ackTag = GroebnerBaseDistributedHybridEC.ackTag;
+    private final DistHashTable<Integer, GenPolynomial<C>> theList;
+
+
+    //private final int threadsPerNode;
+    private final PairList<C> pairlist;
+    private final TaggedSocketChannel pairChannel;
+    private final Terminator finner;
+    private final AtomicInteger active;
+    private volatile boolean goon;
 
 
     /**
      * Constructor.
+     *
      * @param fin terminator
-     * @param a active remote tasks count
-     * @param pc tagged socket channel
-     * @param dl distributed hash table
-     * @param L ordered pair list
+     * @param a   active remote tasks count
+     * @param pc  tagged socket channel
+     * @param dl  distributed hash table
+     * @param L   ordered pair list
      */
     //param tpn number of threads per node
     HybridReducerReceiverEC(/*int tpn,*/Terminator fin, AtomicInteger a, TaggedSocketChannel pc,
-                    DistHashTable<Integer, GenPolynomial<C>> dl, PairList<C> L) {
+                            DistHashTable<Integer, GenPolynomial<C>> dl, PairList<C> L) {
         active = a;
         //threadsPerNode = tpn;
         finner = fin;
@@ -845,6 +792,7 @@ class HybridReducerReceiverEC<C extends RingElem<C>> extends Thread {
 
     /**
      * Work loop.
+     *
      * @see java.lang.Thread#run()
      */
     @Override
@@ -964,15 +912,18 @@ class HybridReducerClientEC<C extends RingElem<C>> implements Runnable {
 
 
     private static final boolean debug = logger.isDebugEnabled();
-
-
-    private final TaggedSocketChannel pairChannel;
-
-
-    private final DistHashTable<Integer, GenPolynomial<C>> theList;
-
-
-    private final ReductionPar<C> red;
+    /**
+     * Message tag for pairs.
+     */
+    public final Integer pairTag = GroebnerBaseDistributedHybridEC.pairTag;
+    /**
+     * Message tag for results.
+     */
+    public final Integer resultTag = GroebnerBaseDistributedHybridEC.resultTag;
+    /**
+     * Message tag for acknowledgments.
+     */
+    public final Integer ackTag = GroebnerBaseDistributedHybridEC.ackTag;
 
 
     //private final int threadsPerNode;
@@ -982,35 +933,21 @@ class HybridReducerClientEC<C extends RingElem<C>> implements Runnable {
      * Identification number for this thread.
      */
     //public final Integer threadId; // obsolete
-
-
-    /**
-     * Message tag for pairs.
-     */
-    public final Integer pairTag = GroebnerBaseDistributedHybridEC.pairTag;
-
-
-    /**
-     * Message tag for results.
-     */
-    public final Integer resultTag = GroebnerBaseDistributedHybridEC.resultTag;
-
-
-    /**
-     * Message tag for acknowledgments.
-     */
-    public final Integer ackTag = GroebnerBaseDistributedHybridEC.ackTag;
+    private final TaggedSocketChannel pairChannel;
+    private final DistHashTable<Integer, GenPolynomial<C>> theList;
+    private final ReductionPar<C> red;
 
 
     /**
      * Constructor.
+     *
      * @param tc tagged socket channel
      * @param dl distributed hash table
      */
     //param tpn number of threads per node
     //param tid thread identification
     HybridReducerClientEC(/*int tpn,*/TaggedSocketChannel tc, /*Integer tid,*/
-                    DistHashTable<Integer, GenPolynomial<C>> dl) {
+                          DistHashTable<Integer, GenPolynomial<C>> dl) {
         //threadsPerNode = tpn;
         pairChannel = tc;
         //threadId = 100 + tid; // keep distinct from other tags
@@ -1021,6 +958,7 @@ class HybridReducerClientEC<C extends RingElem<C>> implements Runnable {
 
     /**
      * Work loop.
+     *
      * @see java.lang.Runnable#run()
      */
     @Override
@@ -1204,6 +1142,7 @@ class GBHybridExerClient<C extends RingElem<C>> implements RemoteExecutable {
 
     /**
      * GBHybridExerClient.
+     *
      * @param host
      * @param port
      * @param dhtport
@@ -1221,7 +1160,7 @@ class GBHybridExerClient<C extends RingElem<C>> implements RemoteExecutable {
      */
     public void run() {
         try {
-            GroebnerBaseDistributedHybridEC.<C> clientPart(host, threadsPerNode, port, dhtport);
+            GroebnerBaseDistributedHybridEC.<C>clientPart(host, threadsPerNode, port, dhtport);
         } catch (Exception e) {
             e.printStackTrace();
         }

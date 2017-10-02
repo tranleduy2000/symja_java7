@@ -5,14 +5,13 @@
 package edu.jas.gb;
 
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Comparator;
-import java.util.stream.Collectors;
-import java.util.Map;
-
 import org.apache.log4j.Logger;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import edu.jas.poly.ExpVector;
 import edu.jas.poly.GenPolynomial;
@@ -23,6 +22,7 @@ import edu.jas.structure.RingElem;
 /**
  * Polynomial SigReduction class. Implements common S-Polynomial, normalform
  * with respect to signatures.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
@@ -49,9 +49,10 @@ public class SigReductionSeq<C extends RingElem<C>> implements SigReduction<C> {
 
     /**
      * S-Polynomial.
+     *
      * @param A polynomial.
      * @param B polynomial.
-     * @return spol(A,B) the S-polynomial of A and B.
+     * @return spol(A, B) the S-polynomial of A and B.
      */
     public GenPolynomial<C> SPolynomial(SigPoly<C> A, SigPoly<C> B) {
         GenPolynomial<C> s = red.SPolynomial(A.poly, B.poly);
@@ -61,6 +62,7 @@ public class SigReductionSeq<C extends RingElem<C>> implements SigReduction<C> {
 
     /**
      * S-Polynomial factors.
+     *
      * @param A monic polynomial.
      * @param B monic polynomial.
      * @return exponent vectors [e,f] such that spol(A,B) = e*a - f*B.
@@ -73,13 +75,14 @@ public class SigReductionSeq<C extends RingElem<C>> implements SigReduction<C> {
         ExpVector g = e.lcm(f);
         ExpVector e1 = g.subtract(e);
         ExpVector f1 = g.subtract(f);
-        ExpVector[] F = new ExpVector[] { e1, f1 };
+        ExpVector[] F = new ExpVector[]{e1, f1};
         return F;
     }
 
 
     /**
      * S-Polynomial half.
+     *
      * @param A monic polynomial.
      * @param B monic polynomial.
      * @return e*A "half" of an S-polynomial such that spol(A,B) = e*A - f*B.
@@ -98,6 +101,7 @@ public class SigReductionSeq<C extends RingElem<C>> implements SigReduction<C> {
 
     /**
      * S-Polynomial polynomial factors.
+     *
      * @param A monic polynomial.
      * @param B monic polynomial.
      * @return polynomials [e,f] such that spol(A,B) = e*a - f*B.
@@ -107,13 +111,14 @@ public class SigReductionSeq<C extends RingElem<C>> implements SigReduction<C> {
         GenPolynomial<C> e1 = A.poly.ring.valueOf(ev[0]);
         GenPolynomial<C> f1 = A.poly.ring.valueOf(ev[1]);
         @SuppressWarnings("unchecked")
-        GenPolynomial<C>[] F = new GenPolynomial[] { e1, f1 };
+        GenPolynomial<C>[] F = new GenPolynomial[]{e1, f1};
         return F;
     }
 
 
     /**
      * Is top reducible. Condition is lt(B) | lt(A) for some B in F or G.
+     *
      * @param A polynomial.
      * @param F polynomial list.
      * @param G polynomial list.
@@ -126,6 +131,7 @@ public class SigReductionSeq<C extends RingElem<C>> implements SigReduction<C> {
 
     /**
      * Is in top normalform.
+     *
      * @param A polynomial.
      * @param F polynomial list.
      * @param G polynomial list.
@@ -160,8 +166,8 @@ public class SigReductionSeq<C extends RingElem<C>> implements SigReduction<C> {
                         return false;
                     }
                     if (sigma.leadingExpVector().compareTo(A.sigma.leadingExpVector()) == 0
-                                    && sigma.leadingBaseCoefficient().compareTo(
-                                                    A.sigma.leadingBaseCoefficient()) != 0) {
+                            && sigma.leadingBaseCoefficient().compareTo(
+                            A.sigma.leadingBaseCoefficient()) != 0) {
                         return false;
                     }
                 }
@@ -173,6 +179,7 @@ public class SigReductionSeq<C extends RingElem<C>> implements SigReduction<C> {
 
     /**
      * Is sigma redundant.
+     *
      * @param A polynomial.
      * @param G polynomial list.
      * @return true if A is sigma redundant with respect to G.
@@ -209,10 +216,11 @@ public class SigReductionSeq<C extends RingElem<C>> implements SigReduction<C> {
 
     /**
      * Is sigma redundant, alternative algorithm.
+     *
      * @param A polynomial.
      * @param G polynomial list.
      * @return true if A is sigma redundant per alternative algorithm with
-     *         respect to G.
+     * respect to G.
      */
     public boolean isSigRedundantAlt(List<SigPoly<C>> G, SigPoly<C> A) {
         if (G.isEmpty()) {
@@ -248,6 +256,7 @@ public class SigReductionSeq<C extends RingElem<C>> implements SigReduction<C> {
 
     /**
      * Top normalform.
+     *
      * @param A polynomial.
      * @param F polynomial list.
      * @param G polynomial list.
@@ -292,8 +301,8 @@ public class SigReductionSeq<C extends RingElem<C>> implements SigReduction<C> {
                     }
                     //logger.info("sigup, sigma  = " + sigup + ", " + sigma);
                     boolean sigeq = (sigup.compareTo(sigma) < 0)
-                                    || ((sp.compareTo(se) == 0 && (sigup.leadingBaseCoefficient().compareTo(
-                                                    sigma.leadingBaseCoefficient()) != 0)));
+                            || ((sp.compareTo(se) == 0 && (sigup.leadingBaseCoefficient().compareTo(
+                            sigma.leadingBaseCoefficient()) != 0)));
                     //logger.info("sigup < sigma = " + sigup.compareTo(sigma));
                     if (sigeq) {
                         reduced = true;
@@ -325,6 +334,7 @@ public class SigReductionSeq<C extends RingElem<C>> implements SigReduction<C> {
 
     /**
      * Top semi-complete normalform.
+     *
      * @param A polynomial.
      * @param F polynomial list.
      * @param G polynomial list.
@@ -400,6 +410,7 @@ public class SigReductionSeq<C extends RingElem<C>> implements SigReduction<C> {
 
     /**
      * Select polynomials.
+     *
      * @param F list of signature polynomials.
      * @return the polynomials in F.
      */
@@ -416,6 +427,7 @@ public class SigReductionSeq<C extends RingElem<C>> implements SigReduction<C> {
 
     /**
      * Select signatures.
+     *
      * @param F list of signature polynomials.
      * @return the signatures in F.
      */
@@ -430,6 +442,7 @@ public class SigReductionSeq<C extends RingElem<C>> implements SigReduction<C> {
 
     /**
      * Minimal degree of signatures.
+     *
      * @param F list of signature polynomials.
      * @return the minimal degree of the signatures in F.
      */
@@ -448,10 +461,11 @@ public class SigReductionSeq<C extends RingElem<C>> implements SigReduction<C> {
 
     /**
      * Select signature polynomials of minimal degree and non minimal degree.
+     *
      * @param F list of signature polynomials.
-     * @return [m,p] where m is the list of signature polynomials of F of
-     *         minimal degree and p contains the rest of the signature
-     *         polynomials with non minimal degree.
+     * @return [m, p] where m is the list of signature polynomials of F of
+     * minimal degree and p contains the rest of the signature
+     * polynomials with non minimal degree.
      */
     public List<SigPair<C>>[] minDegSubset(List<SigPair<C>> F) {
         long mdeg = minimalSigDegree(F);
@@ -475,6 +489,7 @@ public class SigReductionSeq<C extends RingElem<C>> implements SigReduction<C> {
 
     /**
      * Sort signature polynomials according to the degree its signatures.
+     *
      * @param F list of signature polynomials.
      * @return list of signature polynomials sorted by degree of sigma.
      */

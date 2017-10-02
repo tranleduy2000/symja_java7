@@ -18,20 +18,24 @@ package org.hipparchus.ode;
 
 import java.util.List;
 
-/** This interface enables to process any parameterizable object.
- *
+/**
+ * This interface enables to process any parameterizable object.
  */
 
 public interface Parameterizable {
 
-    /** Get the names of the supported parameters.
+    /**
+     * Get the names of the supported parameters.
+     *
      * @return parameters names
      * @see #isSupported(String)
      */
     List<String> getParametersNames();
 
-    /** Check if a parameter is supported.
+    /**
+     * Check if a parameter is supported.
      * <p>Supported parameters are those listed by {@link #getParametersNames()}.</p>
+     *
      * @param name parameter name to check
      * @return true if the parameter is supported
      * @see #getParametersNames()

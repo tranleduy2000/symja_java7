@@ -5,10 +5,10 @@
 package edu.jas.gbufd;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.List;
 import java.util.Map;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.poly.ExpVector;
 import edu.jas.poly.GenPolynomial;
@@ -18,12 +18,13 @@ import edu.jas.structure.RegularRingElem;
 /**
  * Polynomial regular ring pseudo reduction sequential use algorithm. Implements
  * fraction free normalform algorithm.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
 
 public class RPseudoReductionSeq<C extends RegularRingElem<C>> extends RReductionSeq<C> implements
-                RPseudoReduction<C> {
+        RPseudoReduction<C> {
 
 
     private static final Logger logger = Logger.getLogger(RPseudoReductionSeq.class);
@@ -41,6 +42,7 @@ public class RPseudoReductionSeq<C extends RegularRingElem<C>> extends RReductio
 
     /**
      * Normalform using r-reduction.
+     *
      * @param Ap polynomial.
      * @param Pp polynomial list.
      * @return r-nf(Ap) with respect to Pp.
@@ -140,10 +142,11 @@ public class RPseudoReductionSeq<C extends RegularRingElem<C>> extends RReductio
 
     /**
      * Normalform using r-reduction.
+     *
      * @param Pp polynomial list.
      * @param Ap polynomial.
-     * @return ( nf(Ap), mf ) with respect to Pp and mf as multiplication factor
-     *         for Ap.
+     * @return (nf(Ap), mf ) with respect to Pp and mf as multiplication factor
+     * for Ap.
      */
     @SuppressWarnings("cast")
     public PseudoReductionEntry<C> normalformFactor(List<GenPolynomial<C>> Pp, GenPolynomial<C> Ap) {
@@ -249,15 +252,16 @@ public class RPseudoReductionSeq<C extends RegularRingElem<C>> extends RReductio
      * are exact. Compute first the multiplication factor <code>m</code> with
      * <code>normalform(Pp,Ap,m)</code>, then call this method with
      * <code>normalform(row,Pp,m*Ap)</code>.
+     *
      * @param row recording matrix, is modified.
-     * @param Pp a polynomial list for reduction.
-     * @param Ap a polynomial.
-     * @return nf(Pp,Ap), the normal form of Ap wrt. Pp.
+     * @param Pp  a polynomial list for reduction.
+     * @param Ap  a polynomial.
+     * @return nf(Pp, Ap), the normal form of Ap wrt. Pp.
      */
     @Override
     @SuppressWarnings("cast")
     public GenPolynomial<C> normalform(List<GenPolynomial<C>> row, List<GenPolynomial<C>> Pp,
-                    GenPolynomial<C> Ap) {
+                                       GenPolynomial<C> Ap) {
         if (Pp == null || Pp.isEmpty()) {
             return Ap;
         }
@@ -361,13 +365,14 @@ public class RPseudoReductionSeq<C extends RegularRingElem<C>> extends RReductio
 
     /**
      * Normalform recursive.
+     *
      * @param Ap recursive polynomial.
      * @param Pp recursive polynomial list.
      * @return nf(Ap) with respect to Pp.
      */
     @SuppressWarnings("unchecked")
     public GenPolynomial<GenPolynomial<C>> normalformRecursive(List<GenPolynomial<GenPolynomial<C>>> Pp,
-                    GenPolynomial<GenPolynomial<C>> Ap) {
+                                                               GenPolynomial<GenPolynomial<C>> Ap) {
         throw new UnsupportedOperationException("not implemented");
     }
 

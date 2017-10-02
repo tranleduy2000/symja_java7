@@ -6,8 +6,8 @@ package edu.jas.ufd;
 
 
 import java.io.Serializable;
-import java.util.SortedMap;
 import java.util.Map;
+import java.util.SortedMap;
 
 import edu.jas.poly.AlgebraicNumberRing;
 import edu.jas.poly.GenPolynomial;
@@ -16,8 +16,9 @@ import edu.jas.structure.GcdRingElem;
 
 /**
  * Container for the factors of a eventually non-squarefree factorization.
- * @author Heinz Kredel
+ *
  * @param <C> coefficient type
+ * @author Heinz Kredel
  */
 
 public class FactorsMap<C extends GcdRingElem<C>> implements Serializable {
@@ -43,7 +44,8 @@ public class FactorsMap<C extends GcdRingElem<C>> implements Serializable {
 
     /**
      * Constructor.
-     * @param p given GenPolynomial over C.
+     *
+     * @param p   given GenPolynomial over C.
      * @param map irreducible factors of p with coefficients from C.
      */
     public FactorsMap(GenPolynomial<C> p, SortedMap<GenPolynomial<C>, Long> map) {
@@ -53,13 +55,14 @@ public class FactorsMap<C extends GcdRingElem<C>> implements Serializable {
 
     /**
      * Constructor.
-     * @param p given GenPolynomial over C.
-     * @param map irreducible factors of p with coefficients from C.
+     *
+     * @param p    given GenPolynomial over C.
+     * @param map  irreducible factors of p with coefficients from C.
      * @param amap irreducible factors of p with coefficients from an algebraic
-     *            number field.
+     *             number field.
      */
     public FactorsMap(GenPolynomial<C> p, SortedMap<GenPolynomial<C>, Long> map,
-                    SortedMap<Factors<C>, Long> amap) {
+                      SortedMap<Factors<C>, Long> amap) {
         poly = p;
         factors = map;
         afactors = amap;
@@ -68,6 +71,7 @@ public class FactorsMap<C extends GcdRingElem<C>> implements Serializable {
 
     /**
      * Get the String representation.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -76,7 +80,7 @@ public class FactorsMap<C extends GcdRingElem<C>> implements Serializable {
         sb.append(poly.toString());
         sb.append(" =\n");
         boolean first = true;
-        for (Map.Entry<GenPolynomial<C>,Long> me : factors.entrySet()) {
+        for (Map.Entry<GenPolynomial<C>, Long> me : factors.entrySet()) {
             GenPolynomial<C> p = me.getKey();
             if (first) {
                 first = false;
@@ -92,7 +96,7 @@ public class FactorsMap<C extends GcdRingElem<C>> implements Serializable {
         if (afactors == null) {
             return sb.toString();
         }
-        for (Map.Entry<Factors<C>,Long> me : afactors.entrySet()) {
+        for (Map.Entry<Factors<C>, Long> me : afactors.entrySet()) {
             Factors<C> f = me.getKey();
             if (first) {
                 first = false;
@@ -114,6 +118,7 @@ public class FactorsMap<C extends GcdRingElem<C>> implements Serializable {
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this container.
      * @see edu.jas.structure.ElemFactory#toScript()
      */
@@ -123,7 +128,7 @@ public class FactorsMap<C extends GcdRingElem<C>> implements Serializable {
         //sb.append(poly.toScript());
         //sb.append(" =\n");
         boolean first = true;
-        for (Map.Entry<GenPolynomial<C>,Long> me : factors.entrySet()) {
+        for (Map.Entry<GenPolynomial<C>, Long> me : factors.entrySet()) {
             GenPolynomial<C> p = me.getKey();
             if (first) {
                 first = false;
@@ -139,7 +144,7 @@ public class FactorsMap<C extends GcdRingElem<C>> implements Serializable {
         if (afactors == null) {
             return sb.toString();
         }
-        for (Map.Entry<Factors<C>,Long> me : afactors.entrySet()) {
+        for (Map.Entry<Factors<C>, Long> me : afactors.entrySet()) {
             Factors<C> f = me.getKey();
             if (first) {
                 first = false;
@@ -166,6 +171,7 @@ public class FactorsMap<C extends GcdRingElem<C>> implements Serializable {
 
     /**
      * Length. Number of factors.
+     *
      * @return number of distinct factors.
      */
     public int length() {
@@ -174,7 +180,7 @@ public class FactorsMap<C extends GcdRingElem<C>> implements Serializable {
             return i;
         }
         for (Factors<C> f : afactors.keySet()) {
-             i += f.length();
+            i += f.length();
         }
         return i;
     }
@@ -182,6 +188,7 @@ public class FactorsMap<C extends GcdRingElem<C>> implements Serializable {
 
     /**
      * Find largest extension field.
+     *
      * @return largest extension field or null if no extension field
      */
     public AlgebraicNumberRing<C> findExtensionField() {

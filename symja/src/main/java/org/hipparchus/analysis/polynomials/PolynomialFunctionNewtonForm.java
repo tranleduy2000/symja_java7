@@ -29,31 +29,27 @@ import org.hipparchus.util.MathUtils;
  * ISBN 0070124477, chapter 2.
  * <p>
  * The formula of polynomial in Newton form is
- *     p(x) = a[0] + a[1](x-c[0]) + a[2](x-c[0])(x-c[1]) + ... +
- *            a[n](x-c[0])(x-c[1])...(x-c[n-1])
+ * p(x) = a[0] + a[1](x-c[0]) + a[2](x-c[0])(x-c[1]) + ... +
+ * a[n](x-c[0])(x-c[1])...(x-c[n-1])
  * Note that the length of a[] is one more than the length of c[]</p>
- *
  */
 public class PolynomialFunctionNewtonForm implements UnivariateDifferentiableFunction {
 
+    /**
+     * Centers of the Newton polynomial.
+     */
+    private final double c[];
+    /**
+     * When all c[i] = 0, a[] becomes normal polynomial coefficients,
+     * i.e. a[i] = coefficients[i].
+     */
+    private final double a[];
     /**
      * The coefficients of the polynomial, ordered by degree -- i.e.
      * coefficients[0] is the constant term and coefficients[n] is the
      * coefficient of x^n where n is the degree of the polynomial.
      */
     private double coefficients[];
-
-    /**
-     * Centers of the Newton polynomial.
-     */
-    private final double c[];
-
-    /**
-     * When all c[i] = 0, a[] becomes normal polynomial coefficients,
-     * i.e. a[i] = coefficients[i].
-     */
-    private final double a[];
-
     /**
      * Whether the polynomial coefficients are available.
      */
@@ -68,13 +64,13 @@ public class PolynomialFunctionNewtonForm implements UnivariateDifferentiableFun
      *
      * @param a Coefficients in Newton form formula.
      * @param c Centers.
-     * @throws NullArgumentException if any argument is {@code null}.
+     * @throws NullArgumentException        if any argument is {@code null}.
      * @throws MathIllegalArgumentException if any array has zero length.
      * @throws MathIllegalArgumentException if the size difference between
-     * {@code a} and {@code c} is not equal to 1.
+     *                                      {@code a} and {@code c} is not equal to 1.
      */
     public PolynomialFunctionNewtonForm(double a[], double c[])
-        throws MathIllegalArgumentException, NullArgumentException {
+            throws MathIllegalArgumentException, NullArgumentException {
 
         verifyInputArray(a, c);
         this.a = new double[a.length];
@@ -85,6 +81,61 @@ public class PolynomialFunctionNewtonForm implements UnivariateDifferentiableFun
     }
 
     /**
+     * Evaluate the Newton polynomial using nested multiplication. It is
+     * also called <a href="http://mathworld.wolfram.com/HornersRule.html">
+     * Horner's Rule</a> and takes O(N) time.
+     *
+     * @param a Coefficients in Newton form formula.
+     * @param c Centers.
+     * @param z Point at which the function value is to be computed.
+     * @return the function value.
+     * @throws NullArgumentException        if any argument is {@code null}.
+     * @throws MathIllegalArgumentException if any array has zero length.
+     * @throws MathIllegalArgumentException if the size difference between
+     *                                      {@code a} and {@code c} is not equal to 1.
+     */
+    public static double evaluate(double a[], double c[], double z)
+            throws MathIllegalArgumentException, NullArgumentException {
+        verifyInputArray(a, c);
+
+        final int n = c.length;
+        double value = a[n];
+        for (int i = n - 1; i >= 0; i--) {
+            value = a[i] + (z - c[i]) * value;
+        }
+
+        return value;
+    }
+
+    /**
+     * Verifies that the input arrays are valid.
+     * <p>
+     * The centers must be distinct for interpolation purposes, but not
+     * for general use. Thus it is not verified here.</p>
+     *
+     * @param a the coefficients in Newton form formula
+     * @param c the centers
+     * @throws NullArgumentException        if any argument is {@code null}.
+     * @throws MathIllegalArgumentException if any array has zero length.
+     * @throws MathIllegalArgumentException if the size difference between
+     *                                      {@code a} and {@code c} is not equal to 1.
+     * @see org.hipparchus.analysis.interpolation.DividedDifferenceInterpolator#computeDividedDifference(double[],
+     * double[])
+     */
+    protected static void verifyInputArray(double a[], double c[])
+            throws MathIllegalArgumentException, NullArgumentException {
+        MathUtils.checkNotNull(a);
+        MathUtils.checkNotNull(c);
+        if (a.length == 0 || c.length == 0) {
+            throw new MathIllegalArgumentException(LocalizedCoreFormats.EMPTY_POLYNOMIALS_COEFFICIENTS_ARRAY);
+        }
+        if (a.length != c.length + 1) {
+            throw new MathIllegalArgumentException(LocalizedCoreFormats.ARRAY_SIZES_SHOULD_HAVE_DIFFERENCE_1,
+                    a.length, c.length);
+        }
+    }
+
+    /**
      * Calculate the function value at the given point.
      *
      * @param z Point at which the function value is to be computed.
@@ -92,7 +143,7 @@ public class PolynomialFunctionNewtonForm implements UnivariateDifferentiableFun
      */
     @Override
     public double value(double z) {
-       return evaluate(a, c, z);
+        return evaluate(a, c, z);
     }
 
     /**
@@ -164,81 +215,26 @@ public class PolynomialFunctionNewtonForm implements UnivariateDifferentiableFun
     }
 
     /**
-     * Evaluate the Newton polynomial using nested multiplication. It is
-     * also called <a href="http://mathworld.wolfram.com/HornersRule.html">
-     * Horner's Rule</a> and takes O(N) time.
-     *
-     * @param a Coefficients in Newton form formula.
-     * @param c Centers.
-     * @param z Point at which the function value is to be computed.
-     * @return the function value.
-     * @throws NullArgumentException if any argument is {@code null}.
-     * @throws MathIllegalArgumentException if any array has zero length.
-     * @throws MathIllegalArgumentException if the size difference between
-     * {@code a} and {@code c} is not equal to 1.
-     */
-    public static double evaluate(double a[], double c[], double z)
-        throws MathIllegalArgumentException, NullArgumentException {
-        verifyInputArray(a, c);
-
-        final int n = c.length;
-        double value = a[n];
-        for (int i = n - 1; i >= 0; i--) {
-            value = a[i] + (z - c[i]) * value;
-        }
-
-        return value;
-    }
-
-    /**
      * Calculate the normal polynomial coefficients given the Newton form.
      * It also uses nested multiplication but takes O(N^2) time.
      */
     protected void computeCoefficients() {
         final int n = degree();
 
-        coefficients = new double[n+1];
+        coefficients = new double[n + 1];
         for (int i = 0; i <= n; i++) {
             coefficients[i] = 0.0;
         }
 
         coefficients[0] = a[n];
-        for (int i = n-1; i >= 0; i--) {
-            for (int j = n-i; j > 0; j--) {
-                coefficients[j] = coefficients[j-1] - c[i] * coefficients[j];
+        for (int i = n - 1; i >= 0; i--) {
+            for (int j = n - i; j > 0; j--) {
+                coefficients[j] = coefficients[j - 1] - c[i] * coefficients[j];
             }
             coefficients[0] = a[i] - c[i] * coefficients[0];
         }
 
         coefficientsComputed = true;
-    }
-
-    /**
-     * Verifies that the input arrays are valid.
-     * <p>
-     * The centers must be distinct for interpolation purposes, but not
-     * for general use. Thus it is not verified here.</p>
-     *
-     * @param a the coefficients in Newton form formula
-     * @param c the centers
-     * @throws NullArgumentException if any argument is {@code null}.
-     * @throws MathIllegalArgumentException if any array has zero length.
-     * @throws MathIllegalArgumentException if the size difference between
-     * {@code a} and {@code c} is not equal to 1.
-     * @see org.hipparchus.analysis.interpolation.DividedDifferenceInterpolator#computeDividedDifference(double[],
-     * double[])
-     */
-    protected static void verifyInputArray(double a[], double c[])
-        throws MathIllegalArgumentException, NullArgumentException {
-        MathUtils.checkNotNull(a);
-        MathUtils.checkNotNull(c);
-        if (a.length == 0 || c.length == 0) {
-            throw new MathIllegalArgumentException(LocalizedCoreFormats.EMPTY_POLYNOMIALS_COEFFICIENTS_ARRAY);
-        }
-        if (a.length != c.length + 1) {
-            throw new MathIllegalArgumentException(LocalizedCoreFormats.ARRAY_SIZES_SHOULD_HAVE_DIFFERENCE_1,
-                                                 a.length, c.length);
-        }
     }
 
 }

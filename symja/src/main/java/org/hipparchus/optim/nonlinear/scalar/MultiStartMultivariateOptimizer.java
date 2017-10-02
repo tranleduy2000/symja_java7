@@ -16,48 +16,51 @@
  */
 package org.hipparchus.optim.nonlinear.scalar;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
 import org.hipparchus.exception.MathIllegalArgumentException;
 import org.hipparchus.exception.NullArgumentException;
 import org.hipparchus.optim.BaseMultiStartMultivariateOptimizer;
 import org.hipparchus.optim.PointValuePair;
 import org.hipparchus.random.RandomVectorGenerator;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 /**
  * Multi-start optimizer.
- *
+ * <p>
  * This class wraps an optimizer in order to use it several times in
  * turn with different starting points (trying to avoid being trapped
  * in a local extremum when looking for a global one).
- *
  */
 public class MultiStartMultivariateOptimizer
-    extends BaseMultiStartMultivariateOptimizer<PointValuePair> {
-    /** Underlying optimizer. */
+        extends BaseMultiStartMultivariateOptimizer<PointValuePair> {
+    /**
+     * Underlying optimizer.
+     */
     private final MultivariateOptimizer optimizer;
-    /** Found optima. */
+    /**
+     * Found optima.
+     */
     private final List<PointValuePair> optima = new ArrayList<PointValuePair>();
 
     /**
      * Create a multi-start optimizer from a single-start optimizer.
      *
      * @param optimizer Single-start optimizer to wrap.
-     * @param starts Number of starts to perform.
-     * If {@code starts == 1}, the result will be same as if {@code optimizer}
-     * is called directly.
+     * @param starts    Number of starts to perform.
+     *                  If {@code starts == 1}, the result will be same as if {@code optimizer}
+     *                  is called directly.
      * @param generator Random vector generator to use for restarts.
-     * @throws NullArgumentException if {@code optimizer} or {@code generator}
-     * is {@code null}.
+     * @throws NullArgumentException        if {@code optimizer} or {@code generator}
+     *                                      is {@code null}.
      * @throws MathIllegalArgumentException if {@code starts < 1}.
      */
     public MultiStartMultivariateOptimizer(final MultivariateOptimizer optimizer,
                                            final int starts,
                                            final RandomVectorGenerator generator)
-        throws MathIllegalArgumentException, NullArgumentException {
+            throws MathIllegalArgumentException, NullArgumentException {
         super(optimizer, starts, generator);
         this.optimizer = optimizer;
     }
@@ -104,7 +107,7 @@ public class MultiStartMultivariateOptimizer
                 final double v1 = o1.getValue();
                 final double v2 = o2.getValue();
                 return (optimizer.getGoalType() == GoalType.MINIMIZE) ?
-                    Double.compare(v1, v2) : Double.compare(v2, v1);
+                        Double.compare(v1, v2) : Double.compare(v2, v1);
             }
         };
     }

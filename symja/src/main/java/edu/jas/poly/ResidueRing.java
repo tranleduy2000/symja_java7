@@ -5,12 +5,12 @@
 package edu.jas.poly;
 
 
+import org.apache.log4j.Logger;
+
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.structure.RingElem;
 import edu.jas.structure.RingFactory;
@@ -19,6 +19,7 @@ import edu.jas.structure.RingFactory;
 /**
  * Residue ring factory based on RingElem and RingFactory module. Objects of
  * this class are immutable.
+ *
  * @author Heinz Kredel
  */
 public class ResidueRing<C extends RingElem<C>> implements RingFactory<Residue<C>> {
@@ -51,6 +52,7 @@ public class ResidueRing<C extends RingElem<C>> implements RingFactory<Residue<C
     /**
      * The constructor creates a ResidueRing object from an ring factory and a
      * modul.
+     *
      * @param r ring factory.
      * @param m modul.
      */
@@ -71,6 +73,7 @@ public class ResidueRing<C extends RingElem<C>> implements RingFactory<Residue<C
 
     /**
      * Is this structure finite or infinite.
+     *
      * @return true if this structure is finite, else false.
      * @see edu.jas.structure.ElemFactory#isFinite()
      */
@@ -82,6 +85,7 @@ public class ResidueRing<C extends RingElem<C>> implements RingFactory<Residue<C
 
     /**
      * Copy Residue element c.
+     *
      * @param c
      * @return a copy of c.
      */
@@ -92,6 +96,7 @@ public class ResidueRing<C extends RingElem<C>> implements RingFactory<Residue<C
 
     /**
      * Get the zero element.
+     *
      * @return 0 as Residue.
      */
     public Residue<C> getZERO() {
@@ -101,6 +106,7 @@ public class ResidueRing<C extends RingElem<C>> implements RingFactory<Residue<C
 
     /**
      * Get the one element.
+     *
      * @return 1 as Residue.
      */
     public Residue<C> getONE() {
@@ -114,6 +120,7 @@ public class ResidueRing<C extends RingElem<C>> implements RingFactory<Residue<C
 
     /**
      * Get a list of the generating elements.
+     *
      * @return list of generators for the algebraic structure.
      * @see edu.jas.structure.ElemFactory#generators()
      */
@@ -129,6 +136,7 @@ public class ResidueRing<C extends RingElem<C>> implements RingFactory<Residue<C
 
     /**
      * Query if this ring is commutative.
+     *
      * @return true if this ring is commutative, else false.
      */
     public boolean isCommutative() {
@@ -138,6 +146,7 @@ public class ResidueRing<C extends RingElem<C>> implements RingFactory<Residue<C
 
     /**
      * Query if this ring is associative.
+     *
      * @return true if this ring is associative, else false.
      */
     public boolean isAssociative() {
@@ -147,6 +156,7 @@ public class ResidueRing<C extends RingElem<C>> implements RingFactory<Residue<C
 
     /**
      * Query if this ring is a field.
+     *
      * @return false.
      */
     public boolean isField() {
@@ -163,6 +173,7 @@ public class ResidueRing<C extends RingElem<C>> implements RingFactory<Residue<C
 
     /**
      * Characteristic of this ring.
+     *
      * @return characteristic of this ring.
      */
     public java.math.BigInteger characteristic() {
@@ -172,6 +183,7 @@ public class ResidueRing<C extends RingElem<C>> implements RingFactory<Residue<C
 
     /**
      * Get a Residue element from a BigInteger value.
+     *
      * @param a BigInteger.
      * @return a Residue.
      */
@@ -182,6 +194,7 @@ public class ResidueRing<C extends RingElem<C>> implements RingFactory<Residue<C
 
     /**
      * Get a Residue element from a long value.
+     *
      * @param a long.
      * @return a Residue.
      */
@@ -192,6 +205,7 @@ public class ResidueRing<C extends RingElem<C>> implements RingFactory<Residue<C
 
     /**
      * Get the String representation as RingFactory.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -202,6 +216,7 @@ public class ResidueRing<C extends RingElem<C>> implements RingFactory<Residue<C
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this ElemFactory.
      * @see edu.jas.structure.ElemFactory#toScript()
      */
@@ -214,6 +229,7 @@ public class ResidueRing<C extends RingElem<C>> implements RingFactory<Residue<C
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -235,6 +251,7 @@ public class ResidueRing<C extends RingElem<C>> implements RingFactory<Residue<C
 
     /**
      * Hash code for this residue ring.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -248,6 +265,7 @@ public class ResidueRing<C extends RingElem<C>> implements RingFactory<Residue<C
 
     /**
      * Residue random.
+     *
      * @param n such that 0 &le; v &le; (2<sup>n</sup>-1).
      * @return a random residue element.
      */
@@ -260,7 +278,8 @@ public class ResidueRing<C extends RingElem<C>> implements RingFactory<Residue<C
 
     /**
      * Residue random.
-     * @param n such that 0 &le; v &le; (2<sup>n</sup>-1).
+     *
+     * @param n   such that 0 &le; v &le; (2<sup>n</sup>-1).
      * @param rnd is a source for random bits.
      * @return a random residue element.
      */
@@ -273,6 +292,7 @@ public class ResidueRing<C extends RingElem<C>> implements RingFactory<Residue<C
 
     /**
      * Parse Residue from String.
+     *
      * @param s String.
      * @return Residue from s.
      */
@@ -284,6 +304,7 @@ public class ResidueRing<C extends RingElem<C>> implements RingFactory<Residue<C
 
     /**
      * Parse Residue from Reader.
+     *
      * @param r Reader.
      * @return next Residue from r.
      */

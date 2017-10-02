@@ -10,29 +10,28 @@ import org.matheclipse.core.interfaces.ISymbol;
 
 /**
  * TODO implement &quot;Defer&quot; mode
- * 
  */
 public class Defer extends AbstractCoreFunctionEvaluator {
 
-	public Defer() {
-	}
+    public Defer() {
+    }
 
-	@Override
-	public IExpr evaluate(final IAST ast, EvalEngine engine) {
-		if (!ToggleFeature.DEFER) {
-			return F.NIL;
-		}
+    @Override
+    public IExpr evaluate(final IAST ast, EvalEngine engine) {
+        if (!ToggleFeature.DEFER) {
+            return F.NIL;
+        }
 //		Validate.checkSize(ast, 2);
 //		IExpr arg1 = engine.evaluate(ast.arg1());
 
-		return F.NIL;
-	}
+        return F.NIL;
+    }
 
-	@Override
-	public void setUp(ISymbol newSymbol) {
-		if (!ToggleFeature.DEFER) {
-			return;
-		}
-		newSymbol.setAttributes(ISymbol.HOLDALL);
-	}
+    @Override
+    public void setUp(ISymbol newSymbol) {
+        if (!ToggleFeature.DEFER) {
+            return;
+        }
+        newSymbol.setAttributes(ISymbol.HOLDALL);
+    }
 }

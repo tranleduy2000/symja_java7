@@ -23,16 +23,18 @@ import org.hipparchus.util.FastMath;
 
 /**
  * Arc-cosine function.
- *
  */
 public class Acos implements UnivariateDifferentiableFunction {
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double value(double x) {
         return FastMath.acos(x);
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     @Override
     public DerivativeStructure value(final DerivativeStructure t) {

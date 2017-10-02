@@ -21,7 +21,7 @@ import java.util.Objects;
 
 /**
  * Utility class for input parameter validation.
- *
+ * <p>
  * TODO Replace usage with {@link Objects} when we switch to Java 7.
  */
 final class Assertions {

@@ -15,6 +15,7 @@ import java.io.Reader;
 /**
  * Reader to conncat two readers. Read from first reader until it is empty, then
  * read from second reader.
+ *
  * @author Heinz Kredel
  */
 
@@ -36,6 +37,7 @@ public class CatReader extends Reader {
 
     /**
      * Constructor.
+     *
      * @param f first Reader.
      * @param s second Reader.
      */
@@ -48,9 +50,10 @@ public class CatReader extends Reader {
 
     /**
      * Read char array.
+     *
      * @param cbuf array.
-     * @param off start offset.
-     * @param len number of chars to read.
+     * @param off  start offset.
+     * @param len  number of chars to read.
      * @return number of chars read, or -1.
      */
     @Override

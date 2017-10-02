@@ -5,7 +5,6 @@
 package edu.jas.application;
 
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,14 +13,15 @@ import edu.jas.arith.Rational;
 import edu.jas.poly.Complex;
 import edu.jas.poly.ComplexRing;
 import edu.jas.poly.GenPolynomial;
-//import edu.jas.root.RealAlgebraicNumber;
 import edu.jas.structure.GcdRingElem;
-import edu.jas.structure.RingElem;
+
+//import edu.jas.root.RealAlgebraicNumber;
 
 
 /**
  * Container for Ideals together with univariate polynomials and complex algebraic
  * roots.
+ *
  * @author Heinz Kredel
  */
 public class IdealWithComplexAlgebraicRoots<D extends GcdRingElem<D> & Rational>
@@ -50,12 +50,13 @@ public class IdealWithComplexAlgebraicRoots<D extends GcdRingElem<D> & Rational>
 
     /**
      * Constructor.
+     *
      * @param id the ideal
      * @param up the list of univariate polynomials
      * @param cr the list of complex algebraic roots
      */
     public IdealWithComplexAlgebraicRoots(Ideal<D> id, List<GenPolynomial<D>> up,
-            List<List<Complex<RealAlgebraicNumber<D>>>> cr) {
+                                          List<List<Complex<RealAlgebraicNumber<D>>>> cr) {
         super(id, up);
         can = cr;
     }
@@ -63,6 +64,7 @@ public class IdealWithComplexAlgebraicRoots<D extends GcdRingElem<D> & Rational>
 
     /**
      * Constructor.
+     *
      * @param iu the ideal with univariate polynomials
      * @param cr the list of real algebraic roots
      */
@@ -74,6 +76,7 @@ public class IdealWithComplexAlgebraicRoots<D extends GcdRingElem<D> & Rational>
 
     /**
      * String representation of the ideal.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -113,6 +116,7 @@ public class IdealWithComplexAlgebraicRoots<D extends GcdRingElem<D> & Rational>
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this Element.
      * @see edu.jas.structure.Element#toScript()
      */
@@ -137,7 +141,7 @@ public class IdealWithComplexAlgebraicRoots<D extends GcdRingElem<D> & Rational>
             for (Complex<RealAlgebraicNumber<D>> rr : rri) {
                 BigDecimal dr = new BigDecimal(rr.getRe().magnitude());
                 BigDecimal di = new BigDecimal(rr.getIm().magnitude());
-                Complex<BigDecimal> d = new Complex<BigDecimal>(cfac,dr,di);
+                Complex<BigDecimal> d = new Complex<BigDecimal>(cfac, dr, di);
                 r.add(d);
             }
             rroots.add(r);
@@ -152,7 +156,7 @@ public class IdealWithComplexAlgebraicRoots<D extends GcdRingElem<D> & Rational>
      */
     public void doDecimalApproximation() {
         List<List<Complex<BigDecimal>>> unused = decimalApproximation();
-        if ( unused.isEmpty() ) { // use for findbugs
+        if (unused.isEmpty()) { // use for findbugs
             System.out.println("unused is empty");
         }
         return;

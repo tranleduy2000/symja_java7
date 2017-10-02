@@ -18,7 +18,6 @@
 package org.hipparchus.stat.descriptive;
 
 
-
 import org.hipparchus.exception.NullArgumentException;
 import org.hipparchus.util.MathUtils;
 

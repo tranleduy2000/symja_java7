@@ -5,8 +5,6 @@
 package edu.jas.arith;
 
 
-
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -16,8 +14,8 @@ import java.util.List;
  * List of big primes. Provides an Iterator for generating prime numbers.
  * Similar to ALDES/SAC2 SACPOL.PRIME list.
  * See Knuth vol 2, page 390, for list of known primes. See also ALDES/SAC2
- *      SACPOL.PRIME
- * 
+ * SACPOL.PRIME
+ *
  * @author Heinz Kredel
  */
 
@@ -25,37 +23,19 @@ public final class PrimeList implements Iterable<java.math.BigInteger> {
 
 
     /**
-     * Range of probable primes.
-     */
-    public static enum Range {
-        small, low, medium, large, mersenne
-    };
-
-
-    /**
      * Cache the val list for different size
      */
     private volatile static List<java.math.BigInteger> SMALL_LIST = null;
 
-
+    ;
     private volatile static List<java.math.BigInteger> LOW_LIST = null;
-
-
     private volatile static List<java.math.BigInteger> MEDIUM_LIST = null;
-
-
     private volatile static List<java.math.BigInteger> LARGE_LIST = null;
-
-
     private volatile static List<java.math.BigInteger> MERSENNE_LIST = null;
-
-
     /**
      * The list of probable primes in requested range.
      */
     private List<java.math.BigInteger> val = null;
-
-
     /**
      * The last prime in the list.
      */
@@ -72,62 +52,85 @@ public final class PrimeList implements Iterable<java.math.BigInteger> {
 
     /**
      * Constructor for PrimeList.
-     * 
+     *
      * @param r size range for primes.
      */
     public PrimeList(Range r) {
         // initialize with some known primes, see knuth (2,390)
         switch (r) {
-        case small:
-            if (SMALL_LIST != null) {
-                val = SMALL_LIST;
-            } else {
-                val = new ArrayList<java.math.BigInteger>(50);
-                addSmall();
-                SMALL_LIST = val;
-            }
-            break;
-        case low:
-            if (LOW_LIST != null) {
-                val = LOW_LIST;
-            } else {
-                val = new ArrayList<java.math.BigInteger>(50);
-                addLow();
-                LOW_LIST = val;
-            }
-            break;
-        default:
-        case medium:
-            if (MEDIUM_LIST != null) {
-                val = MEDIUM_LIST;
-            } else {
-                val = new ArrayList<java.math.BigInteger>(50);
-                addMedium();
-                MEDIUM_LIST = val;
-            }
-            break;
-        case large:
-            if (LARGE_LIST != null) {
-                val = LARGE_LIST;
-            } else {
-                val = new ArrayList<java.math.BigInteger>(50);
-                addLarge();
-                LARGE_LIST = val;
-            }
-            break;
-        case mersenne:
-            if (MERSENNE_LIST != null) {
-                val = MERSENNE_LIST;
-            } else {
-                val = new ArrayList<java.math.BigInteger>(50);
-                addMersenne();
-                MERSENNE_LIST = val;
-            }
-            break;
+            case small:
+                if (SMALL_LIST != null) {
+                    val = SMALL_LIST;
+                } else {
+                    val = new ArrayList<java.math.BigInteger>(50);
+                    addSmall();
+                    SMALL_LIST = val;
+                }
+                break;
+            case low:
+                if (LOW_LIST != null) {
+                    val = LOW_LIST;
+                } else {
+                    val = new ArrayList<java.math.BigInteger>(50);
+                    addLow();
+                    LOW_LIST = val;
+                }
+                break;
+            default:
+            case medium:
+                if (MEDIUM_LIST != null) {
+                    val = MEDIUM_LIST;
+                } else {
+                    val = new ArrayList<java.math.BigInteger>(50);
+                    addMedium();
+                    MEDIUM_LIST = val;
+                }
+                break;
+            case large:
+                if (LARGE_LIST != null) {
+                    val = LARGE_LIST;
+                } else {
+                    val = new ArrayList<java.math.BigInteger>(50);
+                    addLarge();
+                    LARGE_LIST = val;
+                }
+                break;
+            case mersenne:
+                if (MERSENNE_LIST != null) {
+                    val = MERSENNE_LIST;
+                } else {
+                    val = new ArrayList<java.math.BigInteger>(50);
+                    addMersenne();
+                    MERSENNE_LIST = val;
+                }
+                break;
         }
         last = get(size() - 1);
     }
 
+    /**
+     * Method to compute a prime as 2**n - m.
+     *
+     * @param n power for 2.
+     * @param m for 2**n - m.
+     * @return 2**n - m
+     */
+    public static java.math.BigInteger getLongPrime(int n, int m) {
+        if (n < 30) {
+            return java.math.BigInteger.valueOf((1 << n) - m);
+        }
+        return java.math.BigInteger.ONE.shiftLeft(n).subtract(java.math.BigInteger.valueOf(m));
+    }
+
+    /**
+     * Method to compute a Mersenne prime as 2**n - 1.
+     *
+     * @param n power for 2.
+     * @return 2**n - 1
+     */
+    public static java.math.BigInteger getMersennePrime(int n) {
+        return java.math.BigInteger.ONE.shiftLeft(n).subtract(java.math.BigInteger.ONE);
+    }
 
     /**
      * Add small primes.
@@ -145,7 +148,6 @@ public final class PrimeList implements Iterable<java.math.BigInteger> {
         val.add(java.math.BigInteger.valueOf(23L));
         val.add(java.math.BigInteger.valueOf(29L));
     }
-
 
     /**
      * Add low sized primes.
@@ -174,7 +176,6 @@ public final class PrimeList implements Iterable<java.math.BigInteger> {
         val.add(getLongPrime(16, 117));
         val.add(getLongPrime(16, 123));
     }
-
 
     /**
      * Add medium sized primes.
@@ -214,7 +215,6 @@ public final class PrimeList implements Iterable<java.math.BigInteger> {
         val.add(getLongPrime(32, 209));
         val.add(getLongPrime(32, 267));
     }
-
 
     /**
      * Add large sized primes.
@@ -256,7 +256,6 @@ public final class PrimeList implements Iterable<java.math.BigInteger> {
         // 2^64-x not possible
     }
 
-
     /**
      * Add Mersenne sized primes.
      */
@@ -288,42 +287,18 @@ public final class PrimeList implements Iterable<java.math.BigInteger> {
         val.add(getMersennePrime(19937));
     }
 
-
-    /**
-     * Method to compute a prime as 2**n - m.
-     * @param n power for 2.
-     * @param m for 2**n - m.
-     * @return 2**n - m
-     */
-    public static java.math.BigInteger getLongPrime(int n, int m) {
-        if (n < 30) {
-            return java.math.BigInteger.valueOf((1 << n) - m);
-        }
-        return java.math.BigInteger.ONE.shiftLeft(n).subtract(java.math.BigInteger.valueOf(m));
-    }
-
-
-    /**
-     * Method to compute a Mersenne prime as 2**n - 1.
-     * @param n power for 2.
-     * @return 2**n - 1
-     */
-    public static java.math.BigInteger getMersennePrime(int n) {
-        return java.math.BigInteger.ONE.shiftLeft(n).subtract(java.math.BigInteger.ONE);
-    }
-
-
     /**
      * Check if the list contains really prime numbers.
+     *
      * @return true if all checked numbers are prime
      */
     protected boolean checkPrimes() {
         return checkPrimes(size());
     }
 
-
     /**
      * Check if the list contains really prime numbers.
+     *
      * @param n number of primes to check.
      * @return true if all checked numbers are prime
      */
@@ -343,7 +318,6 @@ public final class PrimeList implements Iterable<java.math.BigInteger> {
         return true;
     }
 
-
     /**
      * {@inheritDoc}
      */
@@ -352,18 +326,18 @@ public final class PrimeList implements Iterable<java.math.BigInteger> {
         return val.toString();
     }
 
-
     /**
      * Size of current list.
+     *
      * @return current size of list.
      */
     public int size() {
         return val.size();
     }
 
-
     /**
      * Get prime at index i.
+     *
      * @param i index to get element.
      * @return prime at index i.
      */
@@ -384,10 +358,10 @@ public final class PrimeList implements Iterable<java.math.BigInteger> {
         return p;
     }
 
-
     /**
-     * Iterator. 
+     * Iterator.
      * Always has next, will generate new primes if required.
+     *
      * @return iterator over the prime list.
      */
     public Iterator<java.math.BigInteger> iterator() {
@@ -412,6 +386,14 @@ public final class PrimeList implements Iterable<java.math.BigInteger> {
                 return get(index);
             }
         };
+    }
+
+
+    /**
+     * Range of probable primes.
+     */
+    public static enum Range {
+        small, low, medium, large, mersenne
     }
 
 }

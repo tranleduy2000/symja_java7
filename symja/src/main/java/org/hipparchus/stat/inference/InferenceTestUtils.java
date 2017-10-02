@@ -16,33 +16,43 @@
  */
 package org.hipparchus.stat.inference;
 
-import java.util.Collection;
-
 import org.hipparchus.distribution.RealDistribution;
 import org.hipparchus.exception.MathIllegalArgumentException;
 import org.hipparchus.exception.MathIllegalStateException;
 import org.hipparchus.exception.NullArgumentException;
 import org.hipparchus.stat.descriptive.StatisticalSummary;
 
+import java.util.Collection;
+
 /**
  * A collection of static methods to create inference test instances or to
  * perform inference tests.
  */
-public class InferenceTestUtils  {
+public class InferenceTestUtils {
 
-    /** Singleton TTest instance. */
+    /**
+     * Singleton TTest instance.
+     */
     private static final TTest T_TEST = new TTest();
 
-    /** Singleton ChiSquareTest instance. */
+    /**
+     * Singleton ChiSquareTest instance.
+     */
     private static final ChiSquareTest CHI_SQUARE_TEST = new ChiSquareTest();
 
-    /** Singleton OneWayAnova instance. */
+    /**
+     * Singleton OneWayAnova instance.
+     */
     private static final OneWayAnova ONE_WAY_ANANOVA = new OneWayAnova();
 
-    /** Singleton G-Test instance. */
+    /**
+     * Singleton G-Test instance.
+     */
     private static final GTest G_TEST = new GTest();
 
-    /** Singleton K-S test instance */
+    /**
+     * Singleton K-S test instance
+     */
     private static final KolmogorovSmirnovTest KS_TEST = new KolmogorovSmirnovTest();
 
     /**
@@ -58,7 +68,7 @@ public class InferenceTestUtils  {
      * @see TTest#homoscedasticT(double[], double[])
      */
     public static double homoscedasticT(final double[] sample1, final double[] sample2)
-        throws MathIllegalArgumentException, NullArgumentException {
+            throws MathIllegalArgumentException, NullArgumentException {
         return T_TEST.homoscedasticT(sample1, sample2);
     }
 
@@ -67,7 +77,7 @@ public class InferenceTestUtils  {
      */
     public static double homoscedasticT(final StatisticalSummary sampleStats1,
                                         final StatisticalSummary sampleStats2)
-        throws MathIllegalArgumentException, NullArgumentException {
+            throws MathIllegalArgumentException, NullArgumentException {
         return T_TEST.homoscedasticT(sampleStats1, sampleStats2);
     }
 
@@ -76,7 +86,7 @@ public class InferenceTestUtils  {
      */
     public static boolean homoscedasticTTest(final double[] sample1, final double[] sample2,
                                              final double alpha)
-        throws MathIllegalArgumentException, NullArgumentException, MathIllegalStateException {
+            throws MathIllegalArgumentException, NullArgumentException, MathIllegalStateException {
         return T_TEST.homoscedasticTTest(sample1, sample2, alpha);
     }
 
@@ -84,7 +94,7 @@ public class InferenceTestUtils  {
      * @see TTest#homoscedasticTTest(double[], double[])
      */
     public static double homoscedasticTTest(final double[] sample1, final double[] sample2)
-        throws MathIllegalArgumentException, NullArgumentException, MathIllegalStateException {
+            throws MathIllegalArgumentException, NullArgumentException, MathIllegalStateException {
         return T_TEST.homoscedasticTTest(sample1, sample2);
     }
 
@@ -93,7 +103,7 @@ public class InferenceTestUtils  {
      */
     public static double homoscedasticTTest(final StatisticalSummary sampleStats1,
                                             final StatisticalSummary sampleStats2)
-        throws MathIllegalArgumentException, NullArgumentException, MathIllegalStateException {
+            throws MathIllegalArgumentException, NullArgumentException, MathIllegalStateException {
         return T_TEST.homoscedasticTTest(sampleStats1, sampleStats2);
     }
 
@@ -101,7 +111,7 @@ public class InferenceTestUtils  {
      * @see TTest#pairedT(double[], double[])
      */
     public static double pairedT(final double[] sample1, final double[] sample2)
-        throws MathIllegalArgumentException, NullArgumentException {
+            throws MathIllegalArgumentException, NullArgumentException {
         return T_TEST.pairedT(sample1, sample2);
     }
 
@@ -110,7 +120,7 @@ public class InferenceTestUtils  {
      */
     public static boolean pairedTTest(final double[] sample1, final double[] sample2,
                                       final double alpha)
-        throws MathIllegalArgumentException, NullArgumentException, MathIllegalStateException {
+            throws MathIllegalArgumentException, NullArgumentException, MathIllegalStateException {
         return T_TEST.pairedTTest(sample1, sample2, alpha);
     }
 
@@ -118,7 +128,7 @@ public class InferenceTestUtils  {
      * @see TTest#pairedTTest(double[], double[])
      */
     public static double pairedTTest(final double[] sample1, final double[] sample2)
-        throws MathIllegalArgumentException, NullArgumentException, MathIllegalStateException {
+            throws MathIllegalArgumentException, NullArgumentException, MathIllegalStateException {
         return T_TEST.pairedTTest(sample1, sample2);
     }
 
@@ -126,7 +136,7 @@ public class InferenceTestUtils  {
      * @see TTest#t(double, double[])
      */
     public static double t(final double mu, final double[] observed)
-        throws MathIllegalArgumentException, NullArgumentException {
+            throws MathIllegalArgumentException, NullArgumentException {
         return T_TEST.t(mu, observed);
     }
 
@@ -134,7 +144,7 @@ public class InferenceTestUtils  {
      * @see TTest#t(double, StatisticalSummary)
      */
     public static double t(final double mu, final StatisticalSummary sampleStats)
-        throws MathIllegalArgumentException, NullArgumentException {
+            throws MathIllegalArgumentException, NullArgumentException {
         return T_TEST.t(mu, sampleStats);
     }
 
@@ -142,7 +152,7 @@ public class InferenceTestUtils  {
      * @see TTest#t(double[], double[])
      */
     public static double t(final double[] sample1, final double[] sample2)
-        throws MathIllegalArgumentException, NullArgumentException {
+            throws MathIllegalArgumentException, NullArgumentException {
         return T_TEST.t(sample1, sample2);
     }
 
@@ -151,7 +161,7 @@ public class InferenceTestUtils  {
      */
     public static double t(final StatisticalSummary sampleStats1,
                            final StatisticalSummary sampleStats2)
-        throws MathIllegalArgumentException, NullArgumentException {
+            throws MathIllegalArgumentException, NullArgumentException {
         return T_TEST.t(sampleStats1, sampleStats2);
     }
 
@@ -159,7 +169,7 @@ public class InferenceTestUtils  {
      * @see TTest#tTest(double, double[], double)
      */
     public static boolean tTest(final double mu, final double[] sample, final double alpha)
-        throws MathIllegalArgumentException, NullArgumentException, MathIllegalStateException {
+            throws MathIllegalArgumentException, NullArgumentException, MathIllegalStateException {
         return T_TEST.tTest(mu, sample, alpha);
     }
 
@@ -167,8 +177,8 @@ public class InferenceTestUtils  {
      * @see TTest#tTest(double, double[])
      */
     public static double tTest(final double mu, final double[] sample)
-        throws MathIllegalArgumentException, NullArgumentException,
-        MathIllegalStateException {
+            throws MathIllegalArgumentException, NullArgumentException,
+            MathIllegalStateException {
         return T_TEST.tTest(mu, sample);
     }
 
@@ -177,7 +187,7 @@ public class InferenceTestUtils  {
      */
     public static boolean tTest(final double mu, final StatisticalSummary sampleStats,
                                 final double alpha)
-        throws MathIllegalArgumentException, NullArgumentException, MathIllegalStateException {
+            throws MathIllegalArgumentException, NullArgumentException, MathIllegalStateException {
         return T_TEST.tTest(mu, sampleStats, alpha);
     }
 
@@ -185,8 +195,8 @@ public class InferenceTestUtils  {
      * @see TTest#tTest(double, StatisticalSummary)
      */
     public static double tTest(final double mu, final StatisticalSummary sampleStats)
-        throws MathIllegalArgumentException, NullArgumentException,
-        MathIllegalStateException {
+            throws MathIllegalArgumentException, NullArgumentException,
+            MathIllegalStateException {
         return T_TEST.tTest(mu, sampleStats);
     }
 
@@ -195,7 +205,7 @@ public class InferenceTestUtils  {
      */
     public static boolean tTest(final double[] sample1, final double[] sample2,
                                 final double alpha)
-        throws MathIllegalArgumentException, NullArgumentException, MathIllegalStateException {
+            throws MathIllegalArgumentException, NullArgumentException, MathIllegalStateException {
         return T_TEST.tTest(sample1, sample2, alpha);
     }
 
@@ -203,8 +213,8 @@ public class InferenceTestUtils  {
      * @see TTest#tTest(double[], double[])
      */
     public static double tTest(final double[] sample1, final double[] sample2)
-        throws MathIllegalArgumentException, NullArgumentException,
-        MathIllegalStateException {
+            throws MathIllegalArgumentException, NullArgumentException,
+            MathIllegalStateException {
         return T_TEST.tTest(sample1, sample2);
     }
 
@@ -214,7 +224,7 @@ public class InferenceTestUtils  {
     public static boolean tTest(final StatisticalSummary sampleStats1,
                                 final StatisticalSummary sampleStats2,
                                 final double alpha)
-        throws MathIllegalArgumentException, NullArgumentException, MathIllegalStateException {
+            throws MathIllegalArgumentException, NullArgumentException, MathIllegalStateException {
         return T_TEST.tTest(sampleStats1, sampleStats2, alpha);
     }
 
@@ -223,8 +233,8 @@ public class InferenceTestUtils  {
      */
     public static double tTest(final StatisticalSummary sampleStats1,
                                final StatisticalSummary sampleStats2)
-        throws MathIllegalArgumentException, NullArgumentException,
-        MathIllegalStateException {
+            throws MathIllegalArgumentException, NullArgumentException,
+            MathIllegalStateException {
         return T_TEST.tTest(sampleStats1, sampleStats2);
     }
 
@@ -232,7 +242,7 @@ public class InferenceTestUtils  {
      * @see ChiSquareTest#chiSquare(double[], long[])
      */
     public static double chiSquare(final double[] expected, final long[] observed)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         return CHI_SQUARE_TEST.chiSquare(expected, observed);
     }
 
@@ -240,7 +250,7 @@ public class InferenceTestUtils  {
      * @see ChiSquareTest#chiSquare(long[][])
      */
     public static double chiSquare(final long[][] counts)
-        throws MathIllegalArgumentException, NullArgumentException {
+            throws MathIllegalArgumentException, NullArgumentException {
         return CHI_SQUARE_TEST.chiSquare(counts);
     }
 
@@ -249,7 +259,7 @@ public class InferenceTestUtils  {
      */
     public static boolean chiSquareTest(final double[] expected, final long[] observed,
                                         final double alpha)
-        throws MathIllegalArgumentException, MathIllegalStateException {
+            throws MathIllegalArgumentException, MathIllegalStateException {
         return CHI_SQUARE_TEST.chiSquareTest(expected, observed, alpha);
     }
 
@@ -257,7 +267,7 @@ public class InferenceTestUtils  {
      * @see ChiSquareTest#chiSquareTest(double[], long[])
      */
     public static double chiSquareTest(final double[] expected, final long[] observed)
-        throws MathIllegalArgumentException, MathIllegalStateException {
+            throws MathIllegalArgumentException, MathIllegalStateException {
         return CHI_SQUARE_TEST.chiSquareTest(expected, observed);
     }
 
@@ -265,7 +275,7 @@ public class InferenceTestUtils  {
      * @see ChiSquareTest#chiSquareTest(long[][], double)
      */
     public static boolean chiSquareTest(final long[][] counts, final double alpha)
-        throws MathIllegalArgumentException, NullArgumentException, MathIllegalStateException {
+            throws MathIllegalArgumentException, NullArgumentException, MathIllegalStateException {
         return CHI_SQUARE_TEST.chiSquareTest(counts, alpha);
     }
 
@@ -273,7 +283,7 @@ public class InferenceTestUtils  {
      * @see ChiSquareTest#chiSquareTest(long[][])
      */
     public static double chiSquareTest(final long[][] counts)
-        throws MathIllegalArgumentException, NullArgumentException, MathIllegalStateException {
+            throws MathIllegalArgumentException, NullArgumentException, MathIllegalStateException {
         return CHI_SQUARE_TEST.chiSquareTest(counts);
     }
 
@@ -282,7 +292,7 @@ public class InferenceTestUtils  {
      */
     public static double chiSquareDataSetsComparison(final long[] observed1,
                                                      final long[] observed2)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         return CHI_SQUARE_TEST.chiSquareDataSetsComparison(observed1, observed2);
     }
 
@@ -291,8 +301,8 @@ public class InferenceTestUtils  {
      */
     public static double chiSquareTestDataSetsComparison(final long[] observed1,
                                                          final long[] observed2)
-        throws MathIllegalArgumentException,
-        MathIllegalStateException {
+            throws MathIllegalArgumentException,
+            MathIllegalStateException {
         return CHI_SQUARE_TEST.chiSquareTestDataSetsComparison(observed1, observed2);
     }
 
@@ -302,7 +312,7 @@ public class InferenceTestUtils  {
     public static boolean chiSquareTestDataSetsComparison(final long[] observed1,
                                                           final long[] observed2,
                                                           final double alpha)
-        throws MathIllegalArgumentException, MathIllegalStateException {
+            throws MathIllegalArgumentException, MathIllegalStateException {
         return CHI_SQUARE_TEST.chiSquareTestDataSetsComparison(observed1, observed2, alpha);
     }
 
@@ -310,7 +320,7 @@ public class InferenceTestUtils  {
      * @see OneWayAnova#anovaFValue(Collection)
      */
     public static double oneWayAnovaFValue(final Collection<double[]> categoryData)
-        throws MathIllegalArgumentException, NullArgumentException {
+            throws MathIllegalArgumentException, NullArgumentException {
         return ONE_WAY_ANANOVA.anovaFValue(categoryData);
     }
 
@@ -318,50 +328,50 @@ public class InferenceTestUtils  {
      * @see OneWayAnova#anovaPValue(Collection)
      */
     public static double oneWayAnovaPValue(final Collection<double[]> categoryData)
-        throws MathIllegalArgumentException, NullArgumentException,
-        MathIllegalStateException {
+            throws MathIllegalArgumentException, NullArgumentException,
+            MathIllegalStateException {
         return ONE_WAY_ANANOVA.anovaPValue(categoryData);
     }
 
     /**
-     * @see OneWayAnova#anovaTest(Collection,double)
+     * @see OneWayAnova#anovaTest(Collection, double)
      */
     public static boolean oneWayAnovaTest(final Collection<double[]> categoryData,
                                           final double alpha)
-        throws MathIllegalArgumentException, NullArgumentException, MathIllegalStateException {
+            throws MathIllegalArgumentException, NullArgumentException, MathIllegalStateException {
         return ONE_WAY_ANANOVA.anovaTest(categoryData, alpha);
     }
 
-     /**
+    /**
      * @see GTest#g(double[], long[])
      */
     public static double g(final double[] expected, final long[] observed)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         return G_TEST.g(expected, observed);
     }
 
     /**
-     * @see GTest#gTest( double[],  long[] )
+     * @see GTest#gTest(double[], long[])
      */
     public static double gTest(final double[] expected, final long[] observed)
-        throws MathIllegalArgumentException, MathIllegalStateException {
+            throws MathIllegalArgumentException, MathIllegalStateException {
         return G_TEST.gTest(expected, observed);
     }
 
     /**
-     * @see GTest#gTestIntrinsic(double[], long[] )
+     * @see GTest#gTestIntrinsic(double[], long[])
      */
     public static double gTestIntrinsic(final double[] expected, final long[] observed)
-        throws MathIllegalArgumentException, MathIllegalStateException {
+            throws MathIllegalArgumentException, MathIllegalStateException {
         return G_TEST.gTestIntrinsic(expected, observed);
     }
 
-     /**
-     * @see GTest#gTest( double[],long[],double)
+    /**
+     * @see GTest#gTest(double[], long[], double)
      */
     public static boolean gTest(final double[] expected, final long[] observed,
                                 final double alpha)
-        throws MathIllegalArgumentException, MathIllegalStateException {
+            throws MathIllegalArgumentException, MathIllegalStateException {
         return G_TEST.gTest(expected, observed, alpha);
     }
 
@@ -369,8 +379,8 @@ public class InferenceTestUtils  {
      * @see GTest#gDataSetsComparison(long[], long[])
      */
     public static double gDataSetsComparison(final long[] observed1,
-                                                  final long[] observed2)
-        throws MathIllegalArgumentException {
+                                             final long[] observed2)
+            throws MathIllegalArgumentException {
         return G_TEST.gDataSetsComparison(observed1, observed2);
     }
 
@@ -378,7 +388,7 @@ public class InferenceTestUtils  {
      * @see GTest#rootLogLikelihoodRatio(long, long, long, long)
      */
     public static double rootLogLikelihoodRatio(final long k11, final long k12, final long k21, final long k22)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         return G_TEST.rootLogLikelihoodRatio(k11, k12, k21, k22);
     }
 
@@ -387,19 +397,19 @@ public class InferenceTestUtils  {
      * @see GTest#gTestDataSetsComparison(long[], long[])
      */
     public static double gTestDataSetsComparison(final long[] observed1,
-                                                        final long[] observed2)
-        throws MathIllegalArgumentException,
-        MathIllegalStateException {
+                                                 final long[] observed2)
+            throws MathIllegalArgumentException,
+            MathIllegalStateException {
         return G_TEST.gTestDataSetsComparison(observed1, observed2);
     }
 
     /**
-     * @see GTest#gTestDataSetsComparison(long[],long[],double)
+     * @see GTest#gTestDataSetsComparison(long[], long[], double)
      */
     public static boolean gTestDataSetsComparison(final long[] observed1,
                                                   final long[] observed2,
                                                   final double alpha)
-        throws MathIllegalArgumentException, MathIllegalStateException {
+            throws MathIllegalArgumentException, MathIllegalStateException {
         return G_TEST.gTestDataSetsComparison(observed1, observed2, alpha);
     }
 
@@ -455,7 +465,7 @@ public class InferenceTestUtils  {
      * @see KolmogorovSmirnovTest#kolmogorovSmirnovTest(double[], double[], boolean)
      */
     public static double kolmogorovSmirnovTest(double[] x, double[] y, boolean strict)
-            throws MathIllegalArgumentException, NullArgumentException  {
+            throws MathIllegalArgumentException, NullArgumentException {
         return KS_TEST.kolmogorovSmirnovTest(x, y, strict);
     }
 

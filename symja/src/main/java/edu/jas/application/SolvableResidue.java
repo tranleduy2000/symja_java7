@@ -15,18 +15,17 @@ import edu.jas.poly.GenSolvablePolynomial;
 import edu.jas.structure.GcdRingElem;
 import edu.jas.structure.NotInvertibleException;
 import edu.jas.structure.QuotPair;
-import edu.jas.structure.QuotPairFactory;
 import edu.jas.structure.Value;
-import edu.jas.structure.ValueFactory;
 
 
 /**
  * SolvableResidue ring element based on GenSolvablePolynomial with GcdRingElem
  * interface. Objects of this class are immutable.
+ *
  * @author Heinz Kredel
  */
-public class SolvableResidue<C extends GcdRingElem<C>> 
-    implements GcdRingElem<SolvableResidue<C>>, QuotPair<GenPolynomial<C>>, Value<GenPolynomial<C>> {
+public class SolvableResidue<C extends GcdRingElem<C>>
+        implements GcdRingElem<SolvableResidue<C>>, QuotPair<GenPolynomial<C>>, Value<GenPolynomial<C>> {
 
 
     /**
@@ -50,6 +49,7 @@ public class SolvableResidue<C extends GcdRingElem<C>>
 
     /**
      * The constructor creates a SolvableResidue object from a ring factory.
+     *
      * @param r solvable residue ring factory.
      */
     public SolvableResidue(SolvableResidueRing<C> r) {
@@ -60,6 +60,7 @@ public class SolvableResidue<C extends GcdRingElem<C>>
     /**
      * The constructor creates a SolvableResidue object from a ring factory and
      * a polynomial.
+     *
      * @param r solvable residue ring factory.
      * @param a solvable polynomial.
      */
@@ -71,6 +72,7 @@ public class SolvableResidue<C extends GcdRingElem<C>>
     /**
      * The constructor creates a SolvableResidue object from a ring factory, a
      * polynomial and an indicator if a is a unit.
+     *
      * @param r solvable residue ring factory.
      * @param a solvable polynomial.
      * @param u isunit indicator, -1, 0, 1.
@@ -101,6 +103,7 @@ public class SolvableResidue<C extends GcdRingElem<C>>
 
     /**
      * Get the corresponding element factory.
+     *
      * @return factory for this Element.
      * @see edu.jas.structure.Element#factory()
      */
@@ -111,6 +114,7 @@ public class SolvableResidue<C extends GcdRingElem<C>>
 
     /**
      * Value. Returns the value.
+     *
      * @see edu.jas.structure.Value#value()
      */
     public GenSolvablePolynomial<C> value() {
@@ -120,6 +124,7 @@ public class SolvableResidue<C extends GcdRingElem<C>>
 
     /**
      * Numerator. Returns the value.
+     *
      * @see edu.jas.structure.QuotPair#numerator()
      */
     public GenSolvablePolynomial<C> numerator() {
@@ -129,6 +134,7 @@ public class SolvableResidue<C extends GcdRingElem<C>>
 
     /**
      * Denominator. Returns 1.
+     *
      * @see edu.jas.structure.QuotPair#denominator()
      */
     public GenSolvablePolynomial<C> denominator() {
@@ -138,6 +144,7 @@ public class SolvableResidue<C extends GcdRingElem<C>>
 
     /**
      * Clone this.
+     *
      * @see java.lang.Object#clone()
      */
     @Override
@@ -148,6 +155,7 @@ public class SolvableResidue<C extends GcdRingElem<C>>
 
     /**
      * Is SolvableResidue zero.
+     *
      * @return If this is 0 then true is returned, else false.
      * @see edu.jas.structure.RingElem#isZERO()
      */
@@ -158,6 +166,7 @@ public class SolvableResidue<C extends GcdRingElem<C>>
 
     /**
      * Is SolvableResidue one.
+     *
      * @return If this is 1 then true is returned, else false.
      * @see edu.jas.structure.RingElem#isONE()
      */
@@ -168,6 +177,7 @@ public class SolvableResidue<C extends GcdRingElem<C>>
 
     /**
      * Is SolvableResidue unit.
+     *
      * @return If this is a unit then true is returned, else false.
      * @see edu.jas.structure.RingElem#isUnit()
      */
@@ -191,6 +201,7 @@ public class SolvableResidue<C extends GcdRingElem<C>>
 
     /**
      * Is SolvableResidue a constant.
+     *
      * @return true if this.val is a constant polynomial, else false.
      */
     public boolean isConstant() {
@@ -200,6 +211,7 @@ public class SolvableResidue<C extends GcdRingElem<C>>
 
     /**
      * Get the String representation as RingElem.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -213,6 +225,7 @@ public class SolvableResidue<C extends GcdRingElem<C>>
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this Element.
      * @see edu.jas.structure.Element#toScript()
      */
@@ -227,6 +240,7 @@ public class SolvableResidue<C extends GcdRingElem<C>>
 
     /**
      * Get a scripting compatible string representation of the factory.
+     *
      * @return script compatible representation for this ElemFactory.
      * @see edu.jas.structure.Element#toScriptFactory()
      */
@@ -239,9 +253,10 @@ public class SolvableResidue<C extends GcdRingElem<C>>
 
     /**
      * SolvableResidue comparison.
+     *
      * @param b SolvableResidue.
      * @return sign(this-b), 0 means that this and b are equivalent in this
-     *         residue class ring.
+     * residue class ring.
      */
     @Override
     public int compareTo(SolvableResidue<C> b) {
@@ -255,9 +270,10 @@ public class SolvableResidue<C extends GcdRingElem<C>>
 
     /**
      * Comparison with any other object.
-     * @see java.lang.Object#equals(java.lang.Object)
+     *
      * @return true means that this and b are equivalent in this residue class
-     *         ring.
+     * ring.
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -279,6 +295,7 @@ public class SolvableResidue<C extends GcdRingElem<C>>
 
     /**
      * Hash code for this residue.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -292,6 +309,7 @@ public class SolvableResidue<C extends GcdRingElem<C>>
 
     /**
      * SolvableResidue absolute value.
+     *
      * @return the absolute value of this.
      * @see edu.jas.structure.RingElem#abs()
      */
@@ -302,6 +320,7 @@ public class SolvableResidue<C extends GcdRingElem<C>>
 
     /**
      * SolvableResidue summation.
+     *
      * @param S SolvableResidue.
      * @return this+S.
      */
@@ -312,6 +331,7 @@ public class SolvableResidue<C extends GcdRingElem<C>>
 
     /**
      * SolvableResidue negate.
+     *
      * @return -this.
      * @see edu.jas.structure.RingElem#negate()
      */
@@ -322,8 +342,9 @@ public class SolvableResidue<C extends GcdRingElem<C>>
 
     /**
      * SolvableResidue signum.
-     * @see edu.jas.structure.RingElem#signum()
+     *
      * @return signum(this).
+     * @see edu.jas.structure.RingElem#signum()
      */
     public int signum() {
         return val.signum();
@@ -332,6 +353,7 @@ public class SolvableResidue<C extends GcdRingElem<C>>
 
     /**
      * SolvableResidue subtraction.
+     *
      * @param S SolvableResidue.
      * @return this-S.
      */
@@ -342,6 +364,7 @@ public class SolvableResidue<C extends GcdRingElem<C>>
 
     /**
      * SolvableResidue division.
+     *
      * @param S SolvableResidue.
      * @return this/S.
      */
@@ -363,26 +386,27 @@ public class SolvableResidue<C extends GcdRingElem<C>>
         GenSolvablePolynomial<C> x = ring.bb.sred.leftNormalform(Q, V, val);
         GenSolvablePolynomial<C> y = Q.get(0);
         System.out.println("SolvableResidue val = " + val + ", div = " + S.val + ", quotient = " + y
-                        + ", remainder = " + x);
+                + ", remainder = " + x);
         return new SolvableResidue<C>(ring, y);
     }
 
 
     /**
      * SolvableResidue inverse.
-     * @see edu.jas.structure.RingElem#inverse()
+     *
      * @return S with S = 1/this if defined.
+     * @see edu.jas.structure.RingElem#inverse()
      */
     public SolvableResidue<C> inverse() {
         GenSolvablePolynomial<C> x = ring.ideal.inverse(val);
         SolvableResidue<C> xp = new SolvableResidue<C>(ring, x, 1);
         if (xp.isZERO()) {
             throw new NotInvertibleException("(" + x + ") * (" + val + ") = " + x.multiply(val) + " = 0 mod "
-                            + ring.ideal);
+                    + ring.ideal);
         }
         if (!xp.multiply(this).isONE()) {
             throw new NotInvertibleException("(" + x + ") * (" + val + ") = " + x.multiply(val)
-                            + " != 1 mod " + ring.ideal);
+                    + " != 1 mod " + ring.ideal);
         }
         return xp;
     }
@@ -390,6 +414,7 @@ public class SolvableResidue<C extends GcdRingElem<C>>
 
     /**
      * SolvableResidue remainder.
+     *
      * @param S SolvableResidue.
      * @return this - (this/S)*S.
      */
@@ -403,6 +428,7 @@ public class SolvableResidue<C extends GcdRingElem<C>>
 
     /**
      * SolvableResidue multiplication.
+     *
      * @param S SolvableResidue.
      * @return this*S.
      */
@@ -420,6 +446,7 @@ public class SolvableResidue<C extends GcdRingElem<C>>
 
     /**
      * SolvableResidue multiplication.
+     *
      * @param S GenSolvablePolynomial.
      * @return this*S.
      */
@@ -454,6 +481,7 @@ public class SolvableResidue<C extends GcdRingElem<C>>
 
     /**
      * SolvableResidue multiplication.
+     *
      * @param e exponent.
      * @return this*X<sup>e</sup>.
      */
@@ -471,6 +499,7 @@ public class SolvableResidue<C extends GcdRingElem<C>>
 
     /**
      * SolvableResidue monic.
+     *
      * @return this with monic value part.
      */
     public SolvableResidue<C> monic() {
@@ -480,8 +509,9 @@ public class SolvableResidue<C extends GcdRingElem<C>>
 
     /**
      * Greatest common divisor.
+     *
      * @param b other element.
-     * @return gcd(this,b).
+     * @return gcd(this, b).
      */
     public SolvableResidue<C> gcd(SolvableResidue<C> b) {
         throw new UnsupportedOperationException("gcd not implemented");
@@ -502,6 +532,7 @@ public class SolvableResidue<C extends GcdRingElem<C>>
     /**
      * Extended greatest common divisor. <b>Note: </b>Not implemented, throws
      * UnsupportedOperationException.
+     *
      * @param b other element.
      * @return [ gcd(this,b), c1, c2 ] with c1*this + c2*b = gcd(this,b).
      */

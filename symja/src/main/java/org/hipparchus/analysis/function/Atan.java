@@ -23,16 +23,18 @@ import org.hipparchus.util.FastMath;
 
 /**
  * Arc-tangent function.
- *
  */
 public class Atan implements UnivariateDifferentiableFunction {
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double value(double x) {
         return FastMath.atan(x);
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     @Override
     public DerivativeStructure value(final DerivativeStructure t) {

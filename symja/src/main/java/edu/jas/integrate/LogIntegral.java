@@ -17,8 +17,9 @@ import edu.jas.structure.GcdRingElem;
 /**
  * Container for the logarithmic part of a rational function integral. num/den =
  * sum( a_i ( der(d_i) / d_i ) ) integrate(num/den) = sum( a_i log ( d_i ) )
- * @author Heinz Kredel
+ *
  * @param <C> coefficient type
+ * @author Heinz Kredel
  */
 
 public class LogIntegral<C extends GcdRingElem<C>> implements Serializable {
@@ -64,16 +65,17 @@ public class LogIntegral<C extends GcdRingElem<C>> implements Serializable {
 
     /**
      * Constructor.
-     * @param n numerator GenPolynomial over C.
-     * @param d irreducible denominator GenPolynomial over C.
+     *
+     * @param n  numerator GenPolynomial over C.
+     * @param d  irreducible denominator GenPolynomial over C.
      * @param cf list of elements a_i.
      * @param cd list of linear factors d_i of d.
      * @param af list of algebraic elements a_i.
      * @param ad list of irreducible factors d_i of d with algebraic
-     *            coefficients. n/d = sum( a_i ( der(d_i) / d_i ) )
+     *           coefficients. n/d = sum( a_i ( der(d_i) / d_i ) )
      */
     public LogIntegral(GenPolynomial<C> n, GenPolynomial<C> d, List<C> cf, List<GenPolynomial<C>> cd,
-            List<AlgebraicNumber<C>> af, List<GenPolynomial<AlgebraicNumber<C>>> ad) {
+                       List<AlgebraicNumber<C>> af, List<GenPolynomial<AlgebraicNumber<C>>> ad) {
         num = n;
         den = d;
         cfactors = cf;
@@ -85,6 +87,7 @@ public class LogIntegral<C extends GcdRingElem<C>> implements Serializable {
 
     /**
      * Get the String representation.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -135,6 +138,7 @@ public class LogIntegral<C extends GcdRingElem<C>> implements Serializable {
 
     /**
      * Get the String representation.
+     *
      * @see java.lang.Object#toString()
      */
     //@Override
@@ -196,6 +200,7 @@ public class LogIntegral<C extends GcdRingElem<C>> implements Serializable {
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this container.
      * @see edu.jas.structure.ElemFactory#toScript()
      */
@@ -257,6 +262,7 @@ public class LogIntegral<C extends GcdRingElem<C>> implements Serializable {
 
     /**
      * Hash code for this Factors.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -273,6 +279,7 @@ public class LogIntegral<C extends GcdRingElem<C>> implements Serializable {
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

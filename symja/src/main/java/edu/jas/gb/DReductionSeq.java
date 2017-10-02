@@ -5,11 +5,11 @@
 package edu.jas.gb;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.poly.ExpVector;
 import edu.jas.poly.GenPolynomial;
@@ -19,6 +19,7 @@ import edu.jas.structure.RingElem;
 
 /**
  * Polynomial D-Reduction sequential use algorithm. Implements normalform.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
@@ -41,6 +42,7 @@ public class DReductionSeq<C extends RingElem<C>> extends ReductionAbstract<C> i
 
     /**
      * Is top reducible.
+     *
      * @param A polynomial.
      * @param P polynomial list.
      * @return true if A is top reducible with respect to P.
@@ -74,6 +76,7 @@ public class DReductionSeq<C extends RingElem<C>> extends ReductionAbstract<C> i
 
     /**
      * Is in Normalform.
+     *
      * @param Ap polynomial.
      * @param Pp polynomial list.
      * @return true if Ap is in normalform with respect to Pp.
@@ -136,6 +139,7 @@ public class DReductionSeq<C extends RingElem<C>> extends ReductionAbstract<C> i
 
     /**
      * Normalform using d-reduction.
+     *
      * @param Ap polynomial.
      * @param Pp polynomial list.
      * @return d-nf(Ap) with respect to Pp.
@@ -217,9 +221,10 @@ public class DReductionSeq<C extends RingElem<C>> extends ReductionAbstract<C> i
 
     /**
      * S-Polynomial.
+     *
      * @param Ap polynomial.
      * @param Bp polynomial.
-     * @return spol(Ap,Bp) the S-polynomial of Ap and Bp.
+     * @return spol(Ap, Bp) the S-polynomial of Ap and Bp.
      */
     @Override
     public GenPolynomial<C> SPolynomial(GenPolynomial<C> Ap, GenPolynomial<C> Bp) {
@@ -262,9 +267,10 @@ public class DReductionSeq<C extends RingElem<C>> extends ReductionAbstract<C> i
 
     /**
      * G-Polynomial.
+     *
      * @param Ap polynomial.
      * @param Bp polynomial.
-     * @return gpol(Ap,Bp) the g-polynomial of Ap and Bp.
+     * @return gpol(Ap, Bp) the g-polynomial of Ap and Bp.
      */
     public GenPolynomial<C> GPolynomial(GenPolynomial<C> Ap, GenPolynomial<C> Bp) {
         if (logger.isInfoEnabled()) {
@@ -303,15 +309,16 @@ public class DReductionSeq<C extends RingElem<C>> extends ReductionAbstract<C> i
 
     /**
      * D-Polynomial with recording.
-     * @param S recording matrix, is modified.
-     * @param i index of Ap in basis list.
+     *
+     * @param S  recording matrix, is modified.
+     * @param i  index of Ap in basis list.
      * @param Ap a polynomial.
-     * @param j index of Bp in basis list.
+     * @param j  index of Bp in basis list.
      * @param Bp a polynomial.
      * @return gpol(Ap, Bp), the g-Polynomial for Ap and Bp.
      */
     public GenPolynomial<C> GPolynomial(List<GenPolynomial<C>> S, int i, GenPolynomial<C> Ap, int j,
-                    GenPolynomial<C> Bp) {
+                                        GenPolynomial<C> Bp) {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
@@ -319,6 +326,7 @@ public class DReductionSeq<C extends RingElem<C>> extends ReductionAbstract<C> i
     /**
      * GB criterium 4. Use only for commutative polynomial rings. This version
      * works also for d-Groebner bases.
+     *
      * @param A polynomial.
      * @param B polynomial.
      * @param e = lcm(ht(A),ht(B))
@@ -357,6 +365,7 @@ public class DReductionSeq<C extends RingElem<C>> extends ReductionAbstract<C> i
     /**
      * GB criterium 4. Use only for commutative polynomial rings. This version
      * works also for d-Groebner bases.
+     *
      * @param A polynomial.
      * @param B polynomial.
      * @return true if the S-polynomial(i,j) is required, else false.
@@ -390,14 +399,15 @@ public class DReductionSeq<C extends RingElem<C>> extends ReductionAbstract<C> i
 
     /**
      * Normalform with recording.
+     *
      * @param row recording matrix, is modified.
-     * @param Pp a polynomial list for reduction.
-     * @param Ap a polynomial.
-     * @return nf(Pp,Ap), the normal form of Ap wrt. Pp.
+     * @param Pp  a polynomial list for reduction.
+     * @param Ap  a polynomial.
+     * @return nf(Pp, Ap), the normal form of Ap wrt. Pp.
      */
     @SuppressWarnings("unchecked")
     public GenPolynomial<C> normalform(List<GenPolynomial<C>> row, List<GenPolynomial<C>> Pp,
-                    GenPolynomial<C> Ap) {
+                                       GenPolynomial<C> Ap) {
         if (Pp == null || Pp.isEmpty()) {
             return Ap;
         }
@@ -477,6 +487,7 @@ public class DReductionSeq<C extends RingElem<C>> extends ReductionAbstract<C> i
 
     /**
      * Irreducible set.
+     *
      * @param Pp polynomial list.
      * @return a list P of polynomials which are in normalform wrt. P.
      */

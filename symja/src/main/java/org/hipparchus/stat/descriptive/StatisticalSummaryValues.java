@@ -16,49 +16,63 @@
  */
 package org.hipparchus.stat.descriptive;
 
-import java.io.Serializable;
-
 import org.hipparchus.util.FastMath;
 import org.hipparchus.util.MathUtils;
 import org.hipparchus.util.Precision;
+
+import java.io.Serializable;
 
 /**
  * Value object representing the results of a univariate
  * statistical summary.
  */
 public class StatisticalSummaryValues
-    implements Serializable, StatisticalSummary {
+        implements Serializable, StatisticalSummary {
 
-    /** Serialization id */
+    /**
+     * Serialization id
+     */
     private static final long serialVersionUID = 20160406L;
 
-    /** The sample mean */
+    /**
+     * The sample mean
+     */
     private final double mean;
 
-    /** The sample variance */
+    /**
+     * The sample variance
+     */
     private final double variance;
 
-    /** The number of observations in the sample */
+    /**
+     * The number of observations in the sample
+     */
     private final long n;
 
-    /** The maximum value */
+    /**
+     * The maximum value
+     */
     private final double max;
 
-    /** The minimum value */
+    /**
+     * The minimum value
+     */
     private final double min;
 
-    /** The sum of the sample values */
+    /**
+     * The sum of the sample values
+     */
     private final double sum;
 
     /**
-      * Constructor.
-      *
-      * @param mean  the sample mean
-      * @param variance  the sample variance
-      * @param n  the number of observations in the sample
-      * @param max  the maximum value
-      * @param min  the minimum value
-      * @param sum  the sum of the values
+     * Constructor.
+     *
+     * @param mean     the sample mean
+     * @param variance the sample variance
+     * @param n        the number of observations in the sample
+     * @param max      the maximum value
+     * @param min      the minimum value
+     * @param sum      the sum of the values
      */
     public StatisticalSummaryValues(double mean, double variance, long n,
                                     double max, double min, double sum) {
@@ -137,19 +151,19 @@ public class StatisticalSummaryValues
      */
     @Override
     public boolean equals(Object object) {
-        if (object == this ) {
+        if (object == this) {
             return true;
         }
         if (object instanceof StatisticalSummaryValues == false) {
             return false;
         }
         StatisticalSummary other = (StatisticalSummary) object;
-        return Precision.equalsIncludingNaN(other.getMax(),      getMax())  &&
-               Precision.equalsIncludingNaN(other.getMean(),     getMean()) &&
-               Precision.equalsIncludingNaN(other.getMin(),      getMin())  &&
-               Precision.equalsIncludingNaN(other.getN(),        getN())    &&
-               Precision.equalsIncludingNaN(other.getSum(),      getSum())  &&
-               Precision.equalsIncludingNaN(other.getVariance(), getVariance());
+        return Precision.equalsIncludingNaN(other.getMax(), getMax()) &&
+                Precision.equalsIncludingNaN(other.getMean(), getMean()) &&
+                Precision.equalsIncludingNaN(other.getMin(), getMin()) &&
+                Precision.equalsIncludingNaN(other.getN(), getN()) &&
+                Precision.equalsIncludingNaN(other.getSum(), getSum()) &&
+                Precision.equalsIncludingNaN(other.getVariance(), getVariance());
     }
 
     /**

@@ -5,12 +5,12 @@
 package edu.jas.gbufd;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.gb.SolvableExtendedGB;
 import edu.jas.gb.SolvableGroebnerBase;
@@ -26,6 +26,7 @@ import edu.jas.structure.RingFactory;
 /**
  * Syzygy sequential class for solvable polynomials. Implements Syzygy
  * computations and tests with Groebner bases.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
@@ -61,6 +62,7 @@ public class SolvableSyzygySeq<C extends GcdRingElem<C>> extends SolvableSyzygyA
 
     /**
      * Constructor.
+     *
      * @param cf coefficient ring.
      */
     public SolvableSyzygySeq(RingFactory<C> cf) {
@@ -71,6 +73,7 @@ public class SolvableSyzygySeq<C extends GcdRingElem<C>> extends SolvableSyzygyA
 
     /**
      * Resolution of a module. Only with direct GBs.
+     *
      * @param M a module list of a Groebner basis.
      * @return a resolution of M.
      */
@@ -94,6 +97,7 @@ public class SolvableSyzygySeq<C extends GcdRingElem<C>> extends SolvableSyzygyA
 
     /**
      * Resolution of a polynomial list. Only with direct GBs.
+     *
      * @param F a polynomial list of a Groebner basis.
      * @return a resolution of F.
      */
@@ -117,6 +121,7 @@ public class SolvableSyzygySeq<C extends GcdRingElem<C>> extends SolvableSyzygyA
 
     /**
      * Resolution of a module.
+     *
      * @param M a module list of an arbitrary basis.
      * @return a resolution of M.
      */
@@ -140,6 +145,7 @@ public class SolvableSyzygySeq<C extends GcdRingElem<C>> extends SolvableSyzygyA
 
     /**
      * Resolution of a polynomial list.
+     *
      * @param F a polynomial list of an arbitrary basis.
      * @return a resolution of F.
      */
@@ -161,13 +167,14 @@ public class SolvableSyzygySeq<C extends GcdRingElem<C>> extends SolvableSyzygyA
 
     /**
      * Left syzygy module from arbitrary base.
+     *
      * @param modv number of module variables.
-     * @param F a solvable polynomial list.
+     * @param F    a solvable polynomial list.
      * @return syz(F), a basis for the module of left syzygies for F.
      */
     @SuppressWarnings("unchecked")
     public List<List<GenSolvablePolynomial<C>>> leftZeroRelationsArbitrary(int modv,
-                    List<GenSolvablePolynomial<C>> F) {
+                                                                           List<GenSolvablePolynomial<C>> F) {
         if (F == null) {
             return null; //leftZeroRelations( modv, F );
         }
@@ -226,10 +233,10 @@ public class SolvableSyzygySeq<C extends GcdRingElem<C>> extends SolvableSyzygyA
                     continue;
                 }
                 // pi has wrong type:
-                List<GenPolynomial<C>> pi = blas.scalarProduct(si, PolynomialList.<C> castToList(ai));
+                List<GenPolynomial<C>> pi = blas.scalarProduct(si, PolynomialList.<C>castToList(ai));
                 //System.out.println("pi = " + pi);
-                rf = PolynomialList.<C> castToSolvableList(blas.vectorAdd(PolynomialList.<C> castToList(rf),
-                                pi));
+                rf = PolynomialList.<C>castToSolvableList(blas.vectorAdd(PolynomialList.<C>castToList(rf),
+                        pi));
             }
             if (it.hasNext() || jt.hasNext()) {
                 logger.error("leftZeroRelationsArbitrary wrong sizes");
@@ -265,10 +272,10 @@ public class SolvableSyzygySeq<C extends GcdRingElem<C>> extends SolvableSyzygyA
                     continue;
                 }
                 //pi has wrong type, should be: List<GenSolvablePolynomial<C>>
-                List<GenPolynomial<C>> pi = blas.scalarProduct(si, PolynomialList.<C> castToList(ai));
+                List<GenPolynomial<C>> pi = blas.scalarProduct(si, PolynomialList.<C>castToList(ai));
                 //System.out.println("pi = " + pi);
-                rf = PolynomialList.<C> castToSolvableList(blas.vectorAdd(PolynomialList.<C> castToList(rf),
-                                pi));
+                rf = PolynomialList.<C>castToSolvableList(blas.vectorAdd(PolynomialList.<C>castToList(rf),
+                        pi));
             }
             if (it.hasNext() || jt.hasNext()) {
                 logger.error("zeroRelationsArbitrary wrong sizes");
@@ -315,7 +322,7 @@ public class SolvableSyzygySeq<C extends GcdRingElem<C>> extends SolvableSyzygyA
                 j++;
             }
             M2.add(r2i);
-            if (!blas.isZero(PolynomialList.<C> castToList(r2i))) {
+            if (!blas.isZero(PolynomialList.<C>castToList(r2i))) {
                 sf.add(r2i);
             }
             i++;
@@ -344,11 +351,12 @@ public class SolvableSyzygySeq<C extends GcdRingElem<C>> extends SolvableSyzygyA
     /**
      * Left Ore condition. Generators for the left Ore condition of two solvable
      * polynomials.
+     *
      * @param a solvable polynomial
      * @param b solvable polynomial
-     * @return [p,q] with p*a = q*b
+     * @return [p, q] with p*a = q*b
      */
-    @SuppressWarnings({ "cast", "unchecked" })
+    @SuppressWarnings({"cast", "unchecked"})
     public GenSolvablePolynomial<C>[] leftOreCond(GenSolvablePolynomial<C> a, GenSolvablePolynomial<C> b) {
         if (a == null || a.isZERO() || b == null || b.isZERO()) {
             throw new IllegalArgumentException("a and b must be non zero");
@@ -423,11 +431,12 @@ public class SolvableSyzygySeq<C extends GcdRingElem<C>> extends SolvableSyzygyA
     /**
      * Right Ore condition. Generators for the right Ore condition of two
      * solvable polynomials.
+     *
      * @param a solvable polynomial
      * @param b solvable polynomial
-     * @return [p,q] with a*p = b*q
+     * @return [p, q] with a*p = b*q
      */
-    @SuppressWarnings({ "cast", "unchecked" })
+    @SuppressWarnings({"cast", "unchecked"})
     public GenSolvablePolynomial<C>[] rightOreCond(GenSolvablePolynomial<C> a, GenSolvablePolynomial<C> b) {
         if (a == null || a.isZERO() || b == null || b.isZERO()) {
             throw new IllegalArgumentException("a and b must be non zero");
@@ -491,26 +500,27 @@ public class SolvableSyzygySeq<C extends GcdRingElem<C>> extends SolvableSyzygyA
 
     /**
      * Left simplifier. Method of Apel &amp; Lassner (1987).
+     *
      * @param a solvable polynomial
      * @param b solvable polynomial
-     * @return [p,q] with a/b = p/q and q is minimal and monic
+     * @return [p, q] with a/b = p/q and q is minimal and monic
      */
     @Override
-    @SuppressWarnings({ "unchecked" })
+    @SuppressWarnings({"unchecked"})
     public GenSolvablePolynomial<C>[] leftSimplifier(GenSolvablePolynomial<C> a, GenSolvablePolynomial<C> b) {
         if (a == null || a.isZERO() || b == null || b.isZERO()) {
             throw new IllegalArgumentException("a and b must be non zero");
         }
         GenSolvablePolynomial<C>[] oc = null;
         if (a.isConstant() || b.isConstant()) {
-            oc = new GenSolvablePolynomial[] { a, b };
+            oc = new GenSolvablePolynomial[]{a, b};
             return oc;
         }
         if (a.totalDegree() > 3 || b.totalDegree() > 3) { // how avoid too long running GBs ?
             //if (a.totalDegree() + b.totalDegree() > 6) { 
             // && a.length() < 10 && b.length() < 10
             logger.warn("skipping simplifier GB computation: degs = " + a.totalDegree() + ", " + b.totalDegree());
-            oc = new GenSolvablePolynomial[] { a, b };
+            oc = new GenSolvablePolynomial[]{a, b};
             return oc;
         }
         //GenSolvablePolynomialRing<C> pfac = a.ring;
@@ -548,7 +558,7 @@ public class SolvableSyzygySeq<C extends GcdRingElem<C>> extends SolvableSyzygyA
         }
         //wrong: blas.scalarProduct(G2,exgb.G2F.get(m));
         GenSolvablePolynomial<C> min2 = (GenSolvablePolynomial<C>) blas.scalarProduct(
-                        PolynomialList.<C> castToList(exgb.G2F.get(m)), PolynomialList.<C> castToList(G2));
+                PolynomialList.<C>castToList(exgb.G2F.get(m)), PolynomialList.<C>castToList(G2));
         logger.info("min(den): " + min + ", min(num): " + min2 + ", m = " + m + ", " + exgb.G2F.get(m));
         // opposite order
         GenSolvablePolynomial<C> n = min2; // nominator

@@ -8,6 +8,7 @@ package edu.jas.structure;
 /**
  * NotDivisibleException class. Runtime Exception to be thrown for not
  * divisible monoid elements.
+ *
  * @author Heinz Kredel
  */
 

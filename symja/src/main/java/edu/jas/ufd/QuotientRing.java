@@ -5,30 +5,32 @@
 package edu.jas.ufd;
 
 
+import org.apache.log4j.Logger;
+
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.apache.log4j.Logger;
-
 import edu.jas.kern.StringUtil;
 import edu.jas.poly.GenPolynomial;
 import edu.jas.poly.GenPolynomialRing;
 import edu.jas.poly.PolyUtil;
-// import edu.jas.gbufd.PolyGBUtil;
 import edu.jas.structure.GcdRingElem;
 import edu.jas.structure.QuotPairFactory;
 import edu.jas.structure.RingFactory;
+
+// import edu.jas.gbufd.PolyGBUtil;
 
 
 /**
  * Quotient ring factory based on GenPolynomial with RingElem interface. Objects
  * of this class are immutable.
+ *
  * @author Heinz Kredel
  */
 public class QuotientRing<C extends GcdRingElem<C>> implements RingFactory<Quotient<C>>,
-                QuotPairFactory<GenPolynomial<C>, Quotient<C>> {
+        QuotPairFactory<GenPolynomial<C>, Quotient<C>> {
 
 
     private static final Logger logger = Logger.getLogger(QuotientRing.class);
@@ -57,6 +59,7 @@ public class QuotientRing<C extends GcdRingElem<C>> implements RingFactory<Quoti
 
     /**
      * The constructor creates a QuotientRing object from a GenPolynomialRing.
+     *
      * @param r polynomial ring.
      */
     public QuotientRing(GenPolynomialRing<C> r) {
@@ -66,7 +69,8 @@ public class QuotientRing<C extends GcdRingElem<C>> implements RingFactory<Quoti
 
     /**
      * The constructor creates a QuotientRing object from a GenPolynomialRing.
-     * @param r polynomial ring.
+     *
+     * @param r      polynomial ring.
      * @param ufdGCD flag, if syzygy or gcd based algorithm used for engine.
      */
     public QuotientRing(GenPolynomialRing<C> r, boolean ufdGCD) {
@@ -76,7 +80,7 @@ public class QuotientRing<C extends GcdRingElem<C>> implements RingFactory<Quoti
         //             engine = null;
         //             return;
         //         }
-        engine = GCDFactory.<C> getProxy(ring.coFac);
+        engine = GCDFactory.<C>getProxy(ring.coFac);
         logger.debug("quotient ring constructed");
     }
 
@@ -107,20 +111,22 @@ public class QuotientRing<C extends GcdRingElem<C>> implements RingFactory<Quoti
 
     /**
      * Divide.
+     *
      * @param n first polynomial.
      * @param d second polynomial.
-     * @return divide(n,d)
+     * @return divide(n, d)
      */
     protected GenPolynomial<C> divide(GenPolynomial<C> n, GenPolynomial<C> d) {
-        return PolyUtil.<C> basePseudoDivide(n, d);
+        return PolyUtil.<C>basePseudoDivide(n, d);
     }
 
 
     /**
      * Greatest common divisor.
+     *
      * @param n first polynomial.
      * @param d second polynomial.
-     * @return gcd(n,d)
+     * @return gcd(n, d)
      */
     protected GenPolynomial<C> gcd(GenPolynomial<C> n, GenPolynomial<C> d) {
         if (ufdGCD) {
@@ -133,6 +139,7 @@ public class QuotientRing<C extends GcdRingElem<C>> implements RingFactory<Quoti
 
     /**
      * Is this structure finite or infinite.
+     *
      * @return true if this structure is finite, else false.
      * @see edu.jas.structure.ElemFactory#isFinite()
      */
@@ -143,6 +150,7 @@ public class QuotientRing<C extends GcdRingElem<C>> implements RingFactory<Quoti
 
     /**
      * Copy Quotient element c.
+     *
      * @param c
      * @return a copy of c.
      */
@@ -153,6 +161,7 @@ public class QuotientRing<C extends GcdRingElem<C>> implements RingFactory<Quoti
 
     /**
      * Get the zero element.
+     *
      * @return 0 as Quotient.
      */
     public Quotient<C> getZERO() {
@@ -162,6 +171,7 @@ public class QuotientRing<C extends GcdRingElem<C>> implements RingFactory<Quoti
 
     /**
      * Get the one element.
+     *
      * @return 1 as Quotient.
      */
     public Quotient<C> getONE() {
@@ -171,6 +181,7 @@ public class QuotientRing<C extends GcdRingElem<C>> implements RingFactory<Quoti
 
     /**
      * Get a list of the generating elements.
+     *
      * @return list of generators for the algebraic structure.
      * @see edu.jas.structure.ElemFactory#generators()
      */
@@ -187,6 +198,7 @@ public class QuotientRing<C extends GcdRingElem<C>> implements RingFactory<Quoti
 
     /**
      * Query if this ring is commutative.
+     *
      * @return true if this ring is commutative, else false.
      */
     public boolean isCommutative() {
@@ -196,6 +208,7 @@ public class QuotientRing<C extends GcdRingElem<C>> implements RingFactory<Quoti
 
     /**
      * Query if this ring is associative.
+     *
      * @return true if this ring is associative, else false.
      */
     public boolean isAssociative() {
@@ -205,6 +218,7 @@ public class QuotientRing<C extends GcdRingElem<C>> implements RingFactory<Quoti
 
     /**
      * Query if this ring is a field.
+     *
      * @return true.
      */
     public boolean isField() {
@@ -214,6 +228,7 @@ public class QuotientRing<C extends GcdRingElem<C>> implements RingFactory<Quoti
 
     /**
      * Characteristic of this ring.
+     *
      * @return characteristic of this ring.
      */
     public java.math.BigInteger characteristic() {
@@ -223,6 +238,7 @@ public class QuotientRing<C extends GcdRingElem<C>> implements RingFactory<Quoti
 
     /**
      * Get a Quotient element from a BigInteger value.
+     *
      * @param a BigInteger.
      * @return a Quotient.
      */
@@ -233,6 +249,7 @@ public class QuotientRing<C extends GcdRingElem<C>> implements RingFactory<Quoti
 
     /**
      * Get a Quotient element from a long value.
+     *
      * @param a long.
      * @return a Quotient.
      */
@@ -243,6 +260,7 @@ public class QuotientRing<C extends GcdRingElem<C>> implements RingFactory<Quoti
 
     /**
      * Get the String representation as RingFactory.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -259,6 +277,7 @@ public class QuotientRing<C extends GcdRingElem<C>> implements RingFactory<Quoti
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this ElemFactory.
      * @see edu.jas.structure.ElemFactory#toScript()
      */
@@ -271,6 +290,7 @@ public class QuotientRing<C extends GcdRingElem<C>> implements RingFactory<Quoti
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -288,6 +308,7 @@ public class QuotientRing<C extends GcdRingElem<C>> implements RingFactory<Quoti
 
     /**
      * Hash code for this quotient ring.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -300,6 +321,7 @@ public class QuotientRing<C extends GcdRingElem<C>> implements RingFactory<Quoti
 
     /**
      * Quotient random.
+     *
      * @param n such that 0 &le; v &le; (2<sup>n</sup>-1).
      * @return a random residue element.
      */
@@ -315,6 +337,7 @@ public class QuotientRing<C extends GcdRingElem<C>> implements RingFactory<Quoti
 
     /**
      * Generate a random quotient polynomial.
+     *
      * @param k bitsize of random coefficients.
      * @param l number of terms.
      * @param d maximal degree in each variable.
@@ -333,7 +356,8 @@ public class QuotientRing<C extends GcdRingElem<C>> implements RingFactory<Quoti
 
     /**
      * Quotient random.
-     * @param n such that 0 &le; v &le; (2<sup>n</sup>-1).
+     *
+     * @param n   such that 0 &le; v &le; (2<sup>n</sup>-1).
      * @param rnd is a source for random bits.
      * @return a random quotient element.
      */
@@ -350,6 +374,7 @@ public class QuotientRing<C extends GcdRingElem<C>> implements RingFactory<Quoti
     /**
      * Parse Quotient from String. Syntax: "{ polynomial | polynomial }" or
      * "{ polynomial }" or " polynomial | polynomial " or " polynomial "
+     *
      * @param s String.
      * @return Quotient from s.
      */
@@ -377,6 +402,7 @@ public class QuotientRing<C extends GcdRingElem<C>> implements RingFactory<Quoti
 
     /**
      * Parse Quotient from Reader.
+     *
      * @param r Reader.
      * @return next Quotient from r.
      */
@@ -388,6 +414,7 @@ public class QuotientRing<C extends GcdRingElem<C>> implements RingFactory<Quoti
 
     /**
      * Degree of extension field.
+     *
      * @return degree of this extension field, -1 for transcendental extension.
      */
     public long extensionDegree() {

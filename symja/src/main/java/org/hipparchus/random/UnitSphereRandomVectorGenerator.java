@@ -24,16 +24,20 @@ import org.hipparchus.util.FastMath;
  * Generate random vectors isotropically located on the surface of a sphere.
  */
 public class UnitSphereRandomVectorGenerator
-    implements RandomVectorGenerator {
+        implements RandomVectorGenerator {
 
-    /** RNG used for generating the individual components of the vectors. */
+    /**
+     * RNG used for generating the individual components of the vectors.
+     */
     private final RandomGenerator rand;
-    /** Space dimension. */
+    /**
+     * Space dimension.
+     */
     private final int dimension;
 
     /**
      * @param dimension Space dimension.
-     * @param rand RNG for the individual components of the vectors.
+     * @param rand      RNG for the individual components of the vectors.
      */
     public UnitSphereRandomVectorGenerator(final int dimension,
                                            final RandomGenerator rand) {
@@ -51,7 +55,9 @@ public class UnitSphereRandomVectorGenerator
         this(dimension, new MersenneTwister());
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double[] nextVector() {
         final double[] v = new double[dimension];

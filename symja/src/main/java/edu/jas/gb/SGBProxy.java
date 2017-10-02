@@ -5,13 +5,13 @@
 package edu.jas.gb;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.kern.ComputerThreads;
 import edu.jas.kern.PreemptingException;
@@ -21,6 +21,7 @@ import edu.jas.structure.GcdRingElem;
 
 /**
  * Groebner bases parallel proxy.
+ *
  * @author Heinz Kredel
  */
 
@@ -50,6 +51,7 @@ public class SGBProxy<C extends GcdRingElem<C>> extends SolvableGroebnerBaseAbst
 
     /**
      * Proxy constructor.
+     *
      * @param e1 Groebner base engine.
      * @param e2 Groebner base engine.
      */
@@ -63,6 +65,7 @@ public class SGBProxy<C extends GcdRingElem<C>> extends SolvableGroebnerBaseAbst
 
     /**
      * Get the String representation with GB engines.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -94,8 +97,9 @@ public class SGBProxy<C extends GcdRingElem<C>> extends SolvableGroebnerBaseAbst
 
     /**
      * Groebner base.
+     *
      * @param modv module variable number.
-     * @param F polynomial list.
+     * @param F    polynomial list.
      * @return GB(F) a Groebner base of F.
      */
     @Override
@@ -106,7 +110,7 @@ public class SGBProxy<C extends GcdRingElem<C>> extends SolvableGroebnerBaseAbst
         // parallel case
         List<GenSolvablePolynomial<C>> G = null;
         List<Callable<List<GenSolvablePolynomial<C>>>> cs = new ArrayList<Callable<List<GenSolvablePolynomial<C>>>>(
-                        2);
+                2);
         cs.add(new Callable<List<GenSolvablePolynomial<C>>>() {
 
 
@@ -168,8 +172,9 @@ public class SGBProxy<C extends GcdRingElem<C>> extends SolvableGroebnerBaseAbst
 
     /**
      * Right Groebner base.
+     *
      * @param modv module variable number.
-     * @param F polynomial list.
+     * @param F    polynomial list.
      * @return rightGB(F) a Groebner base of F.
      */
     @Override
@@ -180,7 +185,7 @@ public class SGBProxy<C extends GcdRingElem<C>> extends SolvableGroebnerBaseAbst
         // parallel case
         List<GenSolvablePolynomial<C>> G = null;
         List<Callable<List<GenSolvablePolynomial<C>>>> cs = new ArrayList<Callable<List<GenSolvablePolynomial<C>>>>(
-                        2);
+                2);
         cs.add(new Callable<List<GenSolvablePolynomial<C>>>() {
 
 
@@ -242,8 +247,9 @@ public class SGBProxy<C extends GcdRingElem<C>> extends SolvableGroebnerBaseAbst
 
     /**
      * Groebner base.
+     *
      * @param modv module variable number.
-     * @param F polynomial list.
+     * @param F    polynomial list.
      * @return twosidedGB(F) a Groebner base of F.
      */
     @Override
@@ -254,7 +260,7 @@ public class SGBProxy<C extends GcdRingElem<C>> extends SolvableGroebnerBaseAbst
         // parallel case
         List<GenSolvablePolynomial<C>> G = null;
         List<Callable<List<GenSolvablePolynomial<C>>>> cs = new ArrayList<Callable<List<GenSolvablePolynomial<C>>>>(
-                        2);
+                2);
         cs.add(new Callable<List<GenSolvablePolynomial<C>>>() {
 
 

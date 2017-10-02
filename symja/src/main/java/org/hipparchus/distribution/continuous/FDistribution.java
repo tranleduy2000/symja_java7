@@ -29,59 +29,67 @@ import org.hipparchus.util.FastMath;
  * @see <a href="http://mathworld.wolfram.com/F-Distribution.html">F-distribution (MathWorld)</a>
  */
 public class FDistribution extends AbstractRealDistribution {
-    /** Serializable version identifier. */
+    /**
+     * Serializable version identifier.
+     */
     private static final long serialVersionUID = 20160320L;
-    /** The numerator degrees of freedom. */
+    /**
+     * The numerator degrees of freedom.
+     */
     private final double numeratorDegreesOfFreedom;
-    /** The numerator degrees of freedom. */
+    /**
+     * The numerator degrees of freedom.
+     */
     private final double denominatorDegreesOfFreedom;
-    /** Cached numerical variance */
+    /**
+     * Cached numerical variance
+     */
     private final double numericalVariance;
 
     /**
      * Creates an F distribution using the given degrees of freedom.
      *
-     * @param numeratorDegreesOfFreedom Numerator degrees of freedom.
+     * @param numeratorDegreesOfFreedom   Numerator degrees of freedom.
      * @param denominatorDegreesOfFreedom Denominator degrees of freedom.
      * @throws MathIllegalArgumentException if
-     * {@code numeratorDegreesOfFreedom <= 0} or
-     * {@code denominatorDegreesOfFreedom <= 0}.
+     *                                      {@code numeratorDegreesOfFreedom <= 0} or
+     *                                      {@code denominatorDegreesOfFreedom <= 0}.
      */
     public FDistribution(double numeratorDegreesOfFreedom,
                          double denominatorDegreesOfFreedom)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         this(numeratorDegreesOfFreedom, denominatorDegreesOfFreedom,
-             DEFAULT_SOLVER_ABSOLUTE_ACCURACY);
+                DEFAULT_SOLVER_ABSOLUTE_ACCURACY);
     }
 
 
     /**
      * Creates an F distribution.
      *
-     * @param numeratorDegreesOfFreedom Numerator degrees of freedom.
+     * @param numeratorDegreesOfFreedom   Numerator degrees of freedom.
      * @param denominatorDegreesOfFreedom Denominator degrees of freedom.
-     * @param inverseCumAccuracy the maximum absolute error in inverse
-     * cumulative probability estimates.
+     * @param inverseCumAccuracy          the maximum absolute error in inverse
+     *                                    cumulative probability estimates.
      * @throws MathIllegalArgumentException if {@code numeratorDegreesOfFreedom <= 0} or
-     * {@code denominatorDegreesOfFreedom <= 0}.
+     *                                      {@code denominatorDegreesOfFreedom <= 0}.
      */
     public FDistribution(double numeratorDegreesOfFreedom,
                          double denominatorDegreesOfFreedom,
                          double inverseCumAccuracy)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         super(inverseCumAccuracy);
 
         if (numeratorDegreesOfFreedom <= 0) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.DEGREES_OF_FREEDOM,
-                                                   numeratorDegreesOfFreedom);
+                    numeratorDegreesOfFreedom);
         }
         if (denominatorDegreesOfFreedom <= 0) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.DEGREES_OF_FREEDOM,
-                                                   denominatorDegreesOfFreedom);
+                    denominatorDegreesOfFreedom);
         }
-        this.numeratorDegreesOfFreedom   = numeratorDegreesOfFreedom;
+        this.numeratorDegreesOfFreedom = numeratorDegreesOfFreedom;
         this.denominatorDegreesOfFreedom = denominatorDegreesOfFreedom;
-        this.numericalVariance           = calculateNumericalVariance();
+        this.numericalVariance = calculateNumericalVariance();
     }
 
     /**
@@ -92,7 +100,9 @@ public class FDistribution extends AbstractRealDistribution {
         return FastMath.exp(logDensity(x));
     }
 
-    /** {@inheritDoc} **/
+    /**
+     * {@inheritDoc}
+     **/
     @Override
     public double logDensity(double x) {
         final double nhalf = numeratorDegreesOfFreedom / 2;
@@ -101,25 +111,25 @@ public class FDistribution extends AbstractRealDistribution {
         final double logn = FastMath.log(numeratorDegreesOfFreedom);
         final double logm = FastMath.log(denominatorDegreesOfFreedom);
         final double lognxm = FastMath.log(numeratorDegreesOfFreedom * x +
-                                           denominatorDegreesOfFreedom);
+                denominatorDegreesOfFreedom);
         return nhalf * logn + nhalf * logx - logx +
-               mhalf * logm - nhalf * lognxm - mhalf * lognxm -
-               Beta.logBeta(nhalf, mhalf);
+                mhalf * logm - nhalf * lognxm - mhalf * lognxm -
+                Beta.logBeta(nhalf, mhalf);
     }
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The implementation of this method is based on
      * <ul>
-     *  <li>
-     *   <a href="http://mathworld.wolfram.com/F-Distribution.html">
-     *   F-Distribution</a>, equation (4).
-     *  </li>
+     * <li>
+     * <a href="http://mathworld.wolfram.com/F-Distribution.html">
+     * F-Distribution</a>, equation (4).
+     * </li>
      * </ul>
      */
     @Override
-    public double cumulativeProbability(double x)  {
+    public double cumulativeProbability(double x) {
         double ret;
         if (x <= 0) {
             ret = 0;
@@ -128,8 +138,8 @@ public class FDistribution extends AbstractRealDistribution {
             double m = denominatorDegreesOfFreedom;
 
             ret = Beta.regularizedBeta((n * x) / (m + n * x),
-                0.5 * n,
-                0.5 * m);
+                    0.5 * n,
+                    0.5 * m);
         }
         return ret;
     }
@@ -154,11 +164,11 @@ public class FDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * For denominator degrees of freedom parameter {@code b}, the mean is
      * <ul>
-     *  <li>if {@code b > 2} then {@code b / (b - 2)},</li>
-     *  <li>else undefined ({@code Double.NaN}).
+     * <li>if {@code b > 2} then {@code b / (b - 2)},</li>
+     * <li>else undefined ({@code Double.NaN}).
      * </ul>
      */
     @Override
@@ -174,15 +184,15 @@ public class FDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * For numerator degrees of freedom parameter {@code a} and denominator
      * degrees of freedom parameter {@code b}, the variance is
      * <ul>
-     *  <li>
-     *    if {@code b > 4} then
-     *    {@code [2 * b^2 * (a + b - 2)] / [a * (b - 2)^2 * (b - 4)]},
-     *  </li>
-     *  <li>else undefined ({@code Double.NaN}).
+     * <li>
+     * if {@code b > 4} then
+     * {@code [2 * b^2 * (a + b - 2)] / [a * (b - 2)^2 * (b - 4)]},
+     * </li>
+     * <li>else undefined ({@code Double.NaN}).
      * </ul>
      */
     @Override
@@ -202,8 +212,8 @@ public class FDistribution extends AbstractRealDistribution {
             final double numeratorDF = getNumeratorDegreesOfFreedom();
             final double denomDFMinusTwo = denominatorDF - 2;
 
-            return ( 2 * (denominatorDF * denominatorDF) * (numeratorDF + denominatorDF - 2) ) /
-                   ( (numeratorDF * (denomDFMinusTwo * denomDFMinusTwo) * (denominatorDF - 4)) );
+            return (2 * (denominatorDF * denominatorDF) * (numeratorDF + denominatorDF - 2)) /
+                    ((numeratorDF * (denomDFMinusTwo * denomDFMinusTwo) * (denominatorDF - 4)));
         }
 
         return Double.NaN;
@@ -211,7 +221,7 @@ public class FDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The lower bound of the support is always 0 no matter the parameters.
      *
      * @return lower bound of the support (always 0)
@@ -223,7 +233,7 @@ public class FDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The upper bound of the support is always positive infinity
      * no matter the parameters.
      *
@@ -236,7 +246,7 @@ public class FDistribution extends AbstractRealDistribution {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * The support of this distribution is connected.
      *
      * @return {@code true}

@@ -23,7 +23,9 @@ package org.hipparchus.random;
  */
 public interface RandomVectorGenerator {
 
-    /** Generate a random vector.
+    /**
+     * Generate a random vector.
+     *
      * @return a random vector as an array of double.
      */
     double[] nextVector();

@@ -67,8 +67,8 @@ import org.hipparchus.util.MathUtils;
  * x = P<sup>T</sup> &middot; x<sub>hat</sub>.
  * The associated residual is
  * r<sub>hat</sub> = b<sub>hat</sub> - A<sub>hat</sub> &middot; x<sub>hat</sub>
- *                 = P &middot; [b - (A - shift &middot; I) &middot; x]
- *                 = P &middot; r.
+ * = P &middot; [b - (A - shift &middot; I) &middot; x]
+ * = P &middot; r.
  * </p>
  * <p>
  * In the case of preconditioning, the {@link IterativeLinearSolverEvent}s that
@@ -139,10 +139,9 @@ import org.hipparchus.util.MathUtils;
  * Solution of Sparse Indefinite Systems of Linear Equations</em></a>, SIAM
  * Journal on Numerical Analysis 12(4): 617-629, 1975</dd>
  * </dl>
- *
  */
 public class SymmLQ
-    extends PreconditionedIterativeLinearSolver {
+        extends PreconditionedIterativeLinearSolver {
 
     /*
      * IMPLEMENTATION NOTES
@@ -214,6 +213,360 @@ public class SymmLQ
      */
 
     /**
+     * {@code true} if symmetry of matrix and conditioner must be checked.
+     */
+    private final boolean check;
+    /**
+     * The value of the custom tolerance &delta; for the default stopping
+     * criterion.
+     */
+    private final double delta;
+
+    /**
+     * Creates a new instance of this class, with <a href="#stopcrit">default
+     * stopping criterion</a>. Note that setting {@code check} to {@code true}
+     * entails an extra matrix-vector product in the initial phase.
+     *
+     * @param maxIterations the maximum number of iterations
+     * @param delta         the &delta; parameter for the default stopping criterion
+     * @param check         {@code true} if self-adjointedness of both matrix and
+     *                      preconditioner should be checked
+     */
+    public SymmLQ(final int maxIterations, final double delta,
+                  final boolean check) {
+        super(maxIterations);
+        this.delta = delta;
+        this.check = check;
+    }
+
+    /**
+     * Creates a new instance of this class, with <a href="#stopcrit">default
+     * stopping criterion</a> and custom iteration manager. Note that setting
+     * {@code check} to {@code true} entails an extra matrix-vector product in
+     * the initial phase.
+     *
+     * @param manager the custom iteration manager
+     * @param delta   the &delta; parameter for the default stopping criterion
+     * @param check   {@code true} if self-adjointedness of both matrix and
+     *                preconditioner should be checked
+     */
+    public SymmLQ(final IterationManager manager, final double delta,
+                  final boolean check) {
+        super(manager);
+        this.delta = delta;
+        this.check = check;
+    }
+
+    /**
+     * Returns {@code true} if symmetry of the matrix, and symmetry as well as
+     * positive definiteness of the preconditioner should be checked.
+     *
+     * @return {@code true} if the tests are to be performed
+     */
+    public final boolean getCheck() {
+        return check;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @throws MathIllegalArgumentException if {@link #getCheck()} is
+     *                                      {@code true}, and {@code a} or {@code m} is not self-adjoint
+     * @throws MathIllegalArgumentException if {@code m} is not
+     *                                      positive definite
+     * @throws MathIllegalArgumentException if {@code a} is ill-conditioned
+     */
+    @Override
+    public RealVector solve(final RealLinearOperator a,
+                            final RealLinearOperator m, final RealVector b) throws
+            MathIllegalArgumentException, NullArgumentException, MathIllegalStateException, MathIllegalArgumentException {
+        MathUtils.checkNotNull(a);
+        final RealVector x = new ArrayRealVector(a.getColumnDimension());
+        return solveInPlace(a, m, b, x, false, 0.);
+    }
+
+    /**
+     * Returns an estimate of the solution to the linear system (A - shift
+     * &middot; I) &middot; x = b.
+     * <p>
+     * If the solution x is expected to contain a large multiple of {@code b}
+     * (as in Rayleigh-quotient iteration), then better precision may be
+     * achieved with {@code goodb} set to {@code true}; this however requires an
+     * extra call to the preconditioner.
+     * </p>
+     * <p>
+     * {@code shift} should be zero if the system A &middot; x = b is to be
+     * solved. Otherwise, it could be an approximation to an eigenvalue of A,
+     * such as the Rayleigh quotient b<sup>T</sup> &middot; A &middot; b /
+     * (b<sup>T</sup> &middot; b) corresponding to the vector b. If b is
+     * sufficiently like an eigenvector corresponding to an eigenvalue near
+     * shift, then the computed x may have very large components. When
+     * normalized, x may be closer to an eigenvector than b.
+     * </p>
+     *
+     * @param a     the linear operator A of the system
+     * @param m     the preconditioner, M (can be {@code null})
+     * @param b     the right-hand side vector
+     * @param goodb usually {@code false}, except if {@code x} is expected to
+     *              contain a large multiple of {@code b}
+     * @param shift the amount to be subtracted to all diagonal elements of A
+     * @return a reference to {@code x} (shallow copy)
+     * @throws NullArgumentException        if one of the parameters is {@code null}
+     * @throws MathIllegalArgumentException if {@code a} or {@code m} is not square
+     * @throws MathIllegalArgumentException if {@code m} or {@code b} have dimensions
+     *                                      inconsistent with {@code a}
+     * @throws MathIllegalStateException    at exhaustion of the iteration count,
+     *                                      unless a custom
+     *                                      {@link org.hipparchus.util.Incrementor.MaxCountExceededCallback callback}
+     *                                      has been set at construction of the {@link IterationManager}
+     * @throws MathIllegalArgumentException if {@link #getCheck()} is
+     *                                      {@code true}, and {@code a} or {@code m} is not self-adjoint
+     * @throws MathIllegalArgumentException if {@code m} is not
+     *                                      positive definite
+     * @throws MathIllegalArgumentException if {@code a} is ill-conditioned
+     */
+    public RealVector solve(final RealLinearOperator a, final RealLinearOperator m,
+                            final RealVector b, final boolean goodb, final double shift)
+            throws MathIllegalArgumentException, NullArgumentException, MathIllegalStateException {
+        MathUtils.checkNotNull(a);
+        final RealVector x = new ArrayRealVector(a.getColumnDimension());
+        return solveInPlace(a, m, b, x, goodb, shift);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param x not meaningful in this implementation; should not be considered
+     *          as an initial guess (<a href="#initguess">more</a>)
+     * @throws MathIllegalArgumentException if {@link #getCheck()} is
+     *                                      {@code true}, and {@code a} or {@code m} is not self-adjoint
+     * @throws MathIllegalArgumentException if {@code m} is not positive
+     *                                      definite
+     * @throws MathIllegalArgumentException if {@code a} is ill-conditioned
+     */
+    @Override
+    public RealVector solve(final RealLinearOperator a,
+                            final RealLinearOperator m, final RealVector b, final RealVector x)
+            throws MathIllegalArgumentException, NullArgumentException,
+            MathIllegalArgumentException,
+            MathIllegalStateException {
+        MathUtils.checkNotNull(x);
+        return solveInPlace(a, m, b, x.copy(), false, 0.);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @throws MathIllegalArgumentException if {@link #getCheck()} is
+     *                                      {@code true}, and {@code a} is not self-adjoint
+     * @throws MathIllegalArgumentException if {@code a} is ill-conditioned
+     */
+    @Override
+    public RealVector solve(final RealLinearOperator a, final RealVector b)
+            throws MathIllegalArgumentException, NullArgumentException,
+            MathIllegalArgumentException, MathIllegalStateException {
+        MathUtils.checkNotNull(a);
+        final RealVector x = new ArrayRealVector(a.getColumnDimension());
+        x.set(0.);
+        return solveInPlace(a, null, b, x, false, 0.);
+    }
+
+    /**
+     * Returns the solution to the system (A - shift &middot; I) &middot; x = b.
+     * <p>
+     * If the solution x is expected to contain a large multiple of {@code b}
+     * (as in Rayleigh-quotient iteration), then better precision may be
+     * achieved with {@code goodb} set to {@code true}.
+     * </p>
+     * <p>
+     * {@code shift} should be zero if the system A &middot; x = b is to be
+     * solved. Otherwise, it could be an approximation to an eigenvalue of A,
+     * such as the Rayleigh quotient b<sup>T</sup> &middot; A &middot; b /
+     * (b<sup>T</sup> &middot; b) corresponding to the vector b. If b is
+     * sufficiently like an eigenvector corresponding to an eigenvalue near
+     * shift, then the computed x may have very large components. When
+     * normalized, x may be closer to an eigenvector than b.
+     * </p>
+     *
+     * @param a     the linear operator A of the system
+     * @param b     the right-hand side vector
+     * @param goodb usually {@code false}, except if {@code x} is expected to
+     *              contain a large multiple of {@code b}
+     * @param shift the amount to be subtracted to all diagonal elements of A
+     * @return a reference to {@code x}
+     * @throws NullArgumentException        if one of the parameters is {@code null}
+     * @throws MathIllegalArgumentException if {@code a} is not square
+     * @throws MathIllegalArgumentException if {@code b} has dimensions
+     *                                      inconsistent with {@code a}
+     * @throws MathIllegalStateException    at exhaustion of the iteration count,
+     *                                      unless a custom
+     *                                      {@link org.hipparchus.util.Incrementor.MaxCountExceededCallback callback}
+     *                                      has been set at construction of the {@link IterationManager}
+     * @throws MathIllegalArgumentException if {@link #getCheck()} is
+     *                                      {@code true}, and {@code a} is not self-adjoint
+     * @throws MathIllegalArgumentException if {@code a} is ill-conditioned
+     */
+    public RealVector solve(final RealLinearOperator a, final RealVector b,
+                            final boolean goodb, final double shift)
+            throws MathIllegalArgumentException, NullArgumentException, MathIllegalStateException {
+        MathUtils.checkNotNull(a);
+        final RealVector x = new ArrayRealVector(a.getColumnDimension());
+        return solveInPlace(a, null, b, x, goodb, shift);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param x not meaningful in this implementation; should not be considered
+     *          as an initial guess (<a href="#initguess">more</a>)
+     * @throws MathIllegalArgumentException if {@link #getCheck()} is
+     *                                      {@code true}, and {@code a} is not self-adjoint
+     * @throws MathIllegalArgumentException if {@code a} is ill-conditioned
+     */
+    @Override
+    public RealVector solve(final RealLinearOperator a, final RealVector b,
+                            final RealVector x) throws MathIllegalArgumentException, NullArgumentException, MathIllegalArgumentException,
+            MathIllegalStateException {
+        MathUtils.checkNotNull(x);
+        return solveInPlace(a, null, b, x.copy(), false, 0.);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param x the vector to be updated with the solution; {@code x} should
+     *          not be considered as an initial guess (<a href="#initguess">more</a>)
+     * @throws MathIllegalArgumentException if {@link #getCheck()} is
+     *                                      {@code true}, and {@code a} or {@code m} is not self-adjoint
+     * @throws MathIllegalArgumentException if {@code m} is not
+     *                                      positive definite
+     * @throws MathIllegalArgumentException if {@code a} is ill-conditioned
+     */
+    @Override
+    public RealVector solveInPlace(final RealLinearOperator a,
+                                   final RealLinearOperator m, final RealVector b, final RealVector x)
+            throws MathIllegalArgumentException, NullArgumentException,
+            MathIllegalArgumentException,
+            MathIllegalStateException {
+        return solveInPlace(a, m, b, x, false, 0.);
+    }
+
+    /**
+     * Returns an estimate of the solution to the linear system (A - shift
+     * &middot; I) &middot; x = b. The solution is computed in-place.
+     * <p>
+     * If the solution x is expected to contain a large multiple of {@code b}
+     * (as in Rayleigh-quotient iteration), then better precision may be
+     * achieved with {@code goodb} set to {@code true}; this however requires an
+     * extra call to the preconditioner.
+     * </p>
+     * <p>
+     * {@code shift} should be zero if the system A &middot; x = b is to be
+     * solved. Otherwise, it could be an approximation to an eigenvalue of A,
+     * such as the Rayleigh quotient b<sup>T</sup> &middot; A &middot; b /
+     * (b<sup>T</sup> &middot; b) corresponding to the vector b. If b is
+     * sufficiently like an eigenvector corresponding to an eigenvalue near
+     * shift, then the computed x may have very large components. When
+     * normalized, x may be closer to an eigenvector than b.
+     * </p>
+     *
+     * @param a     the linear operator A of the system
+     * @param m     the preconditioner, M (can be {@code null})
+     * @param b     the right-hand side vector
+     * @param x     the vector to be updated with the solution; {@code x} should
+     *              not be considered as an initial guess (<a href="#initguess">more</a>)
+     * @param goodb usually {@code false}, except if {@code x} is expected to
+     *              contain a large multiple of {@code b}
+     * @param shift the amount to be subtracted to all diagonal elements of A
+     * @return a reference to {@code x} (shallow copy).
+     * @throws NullArgumentException        if one of the parameters is {@code null}
+     * @throws MathIllegalArgumentException if {@code a} or {@code m} is not square
+     * @throws MathIllegalArgumentException if {@code m}, {@code b} or {@code x}
+     *                                      have dimensions inconsistent with {@code a}.
+     * @throws MathIllegalStateException    at exhaustion of the iteration count,
+     *                                      unless a custom
+     *                                      {@link org.hipparchus.util.Incrementor.MaxCountExceededCallback callback}
+     *                                      has been set at construction of the {@link IterationManager}
+     * @throws MathIllegalArgumentException if {@link #getCheck()} is
+     *                                      {@code true}, and {@code a} or {@code m} is not self-adjoint
+     * @throws MathIllegalArgumentException if {@code m} is not positive definite
+     * @throws MathIllegalArgumentException if {@code a} is ill-conditioned
+     */
+    public RealVector solveInPlace(final RealLinearOperator a,
+                                   final RealLinearOperator m, final RealVector b,
+                                   final RealVector x, final boolean goodb, final double shift)
+            throws MathIllegalArgumentException, NullArgumentException, MathIllegalStateException {
+        checkParameters(a, m, b, x);
+
+        final IterationManager manager = getIterationManager();
+        /* Initialization counts as an iteration. */
+        manager.resetIterationCount();
+        manager.incrementIterationCount();
+
+        final State state;
+        state = new State(a, m, b, goodb, shift, delta, check);
+        state.init();
+        state.refineSolution(x);
+        IterativeLinearSolverEvent event;
+        event = new DefaultIterativeLinearSolverEvent(this,
+                manager.getIterations(),
+                x,
+                b,
+                state.getNormOfResidual());
+        if (state.bEqualsNullVector()) {
+            /* If b = 0 exactly, stop with x = 0. */
+            manager.fireTerminationEvent(event);
+            return x;
+        }
+        /* Cause termination if beta is essentially zero. */
+        final boolean earlyStop;
+        earlyStop = state.betaEqualsZero() || state.hasConverged();
+        manager.fireInitializationEvent(event);
+        if (!earlyStop) {
+            do {
+                manager.incrementIterationCount();
+                event = new DefaultIterativeLinearSolverEvent(this,
+                        manager.getIterations(),
+                        x,
+                        b,
+                        state.getNormOfResidual());
+                manager.fireIterationStartedEvent(event);
+                state.update();
+                state.refineSolution(x);
+                event = new DefaultIterativeLinearSolverEvent(this,
+                        manager.getIterations(),
+                        x,
+                        b,
+                        state.getNormOfResidual());
+                manager.fireIterationPerformedEvent(event);
+            } while (!state.hasConverged());
+        }
+        event = new DefaultIterativeLinearSolverEvent(this,
+                manager.getIterations(),
+                x,
+                b,
+                state.getNormOfResidual());
+        manager.fireTerminationEvent(event);
+        return x;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param x the vector to be updated with the solution; {@code x} should
+     *          not be considered as an initial guess (<a href="#initguess">more</a>)
+     * @throws MathIllegalArgumentException if {@link #getCheck()} is
+     *                                      {@code true}, and {@code a} is not self-adjoint
+     * @throws MathIllegalArgumentException if {@code a} is ill-conditioned
+     */
+    @Override
+    public RealVector solveInPlace(final RealLinearOperator a,
+                                   final RealVector b, final RealVector x) throws MathIllegalArgumentException, NullArgumentException, MathIllegalArgumentException,
+            MathIllegalStateException {
+        return solveInPlace(a, null, b, x, false, 0.);
+    }
+
+    /**
      * <p>
      * A simple container holding the non-final variables used in the
      * iterations. Making the current state of the solver visible from the
@@ -230,127 +583,15 @@ public class SymmLQ
      * </p>
      */
     private static class State {
-        /** The cubic root of {@link #MACH_PREC}. */
+        /**
+         * The cubic root of {@link #MACH_PREC}.
+         */
         static final double CBRT_MACH_PREC;
 
-        /** The machine precision. */
+        /**
+         * The machine precision.
+         */
         static final double MACH_PREC;
-
-        /** Reference to the linear operator. */
-        private final RealLinearOperator a;
-
-        /** Reference to the right-hand side vector. */
-        private final RealVector b;
-
-        /** {@code true} if symmetry of matrix and conditioner must be checked. */
-        private final boolean check;
-
-        /**
-         * The value of the custom tolerance &delta; for the default stopping
-         * criterion.
-         */
-        private final double delta;
-
-        /** The value of beta[k+1]. */
-        private double beta;
-
-        /** The value of beta[1]. */
-        private double beta1;
-
-        /** The value of bstep[k-1]. */
-        private double bstep;
-
-        /** The estimate of the norm of P * rC[k]. */
-        private double cgnorm;
-
-        /** The value of dbar[k+1] = -beta[k+1] * c[k-1]. */
-        private double dbar;
-
-        /**
-         * The value of gamma[k] * zeta[k]. Was called {@code rhs1} in the
-         * initial code.
-         */
-        private double gammaZeta;
-
-        /** The value of gbar[k]. */
-        private double gbar;
-
-        /** The value of max(|alpha[1]|, gamma[1], ..., gamma[k-1]). */
-        private double gmax;
-
-        /** The value of min(|alpha[1]|, gamma[1], ..., gamma[k-1]). */
-        private double gmin;
-
-        /** Copy of the {@code goodb} parameter. */
-        private final boolean goodb;
-
-        /** {@code true} if the default convergence criterion is verified. */
-        private boolean hasConverged;
-
-        /** The estimate of the norm of P * rL[k-1]. */
-        private double lqnorm;
-
-        /** Reference to the preconditioner, M. */
-        private final RealLinearOperator m;
-
-        /**
-         * The value of (-eps[k+1] * zeta[k-1]). Was called {@code rhs2} in the
-         * initial code.
-         */
-        private double minusEpsZeta;
-
-        /** The value of M * b. */
-        private final RealVector mb;
-
-        /** The value of beta[k]. */
-        private double oldb;
-
-        /** The value of beta[k] * M^(-1) * P' * v[k]. */
-        private RealVector r1;
-
-        /** The value of beta[k+1] * M^(-1) * P' * v[k+1]. */
-        private RealVector r2;
-
-        /**
-         * The value of the updated, preconditioned residual P * r. This value is
-         * given by {@code min(}{@link #cgnorm}{@code , }{@link #lqnorm}{@code )}.
-         */
-        private double rnorm;
-
-        /** Copy of the {@code shift} parameter. */
-        private final double shift;
-
-        /** The value of s[1] * ... * s[k-1]. */
-        private double snprod;
-
-        /**
-         * An estimate of the square of the norm of A * V[k], based on Paige and
-         * Saunders (1975), equation (3.3).
-         */
-        private double tnorm;
-
-        /**
-         * The value of P' * wbar[k] or P' * (wbar[k] - s[1] * ... * s[k-1] *
-         * v[1]) if {@code goodb} is {@code true}. Was called {@code w} in the
-         * initial code.
-         */
-        private RealVector wbar;
-
-        /**
-         * A reference to the vector to be updated with the solution. Contains
-         * the value of xL[k-1] if {@code goodb} is {@code false}, (xL[k-1] -
-         * bstep[k-1] * v[1]) otherwise.
-         */
-        private final RealVector xL;
-
-        /** The value of beta[k+1] * P' * v[k+1]. */
-        private RealVector y;
-
-        /** The value of zeta[1]^2 + ... + zeta[k-1]^2. */
-        private double ynorm2;
-
-        /** The value of {@code b == 0} (exact floating-point equality). */
-        private boolean bIsNull;
 
         static {
             MACH_PREC = FastMath.ulp(1.);
@@ -358,26 +599,160 @@ public class SymmLQ
         }
 
         /**
+         * Reference to the linear operator.
+         */
+        private final RealLinearOperator a;
+        /**
+         * Reference to the right-hand side vector.
+         */
+        private final RealVector b;
+        /**
+         * {@code true} if symmetry of matrix and conditioner must be checked.
+         */
+        private final boolean check;
+        /**
+         * The value of the custom tolerance &delta; for the default stopping
+         * criterion.
+         */
+        private final double delta;
+        /**
+         * Copy of the {@code goodb} parameter.
+         */
+        private final boolean goodb;
+        /**
+         * Reference to the preconditioner, M.
+         */
+        private final RealLinearOperator m;
+        /**
+         * The value of M * b.
+         */
+        private final RealVector mb;
+        /**
+         * Copy of the {@code shift} parameter.
+         */
+        private final double shift;
+        /**
+         * A reference to the vector to be updated with the solution. Contains
+         * the value of xL[k-1] if {@code goodb} is {@code false}, (xL[k-1] -
+         * bstep[k-1] * v[1]) otherwise.
+         */
+        private final RealVector xL;
+        /**
+         * The value of beta[k+1].
+         */
+        private double beta;
+        /**
+         * The value of beta[1].
+         */
+        private double beta1;
+        /**
+         * The value of bstep[k-1].
+         */
+        private double bstep;
+        /**
+         * The estimate of the norm of P * rC[k].
+         */
+        private double cgnorm;
+        /**
+         * The value of dbar[k+1] = -beta[k+1] * c[k-1].
+         */
+        private double dbar;
+        /**
+         * The value of gamma[k] * zeta[k]. Was called {@code rhs1} in the
+         * initial code.
+         */
+        private double gammaZeta;
+        /**
+         * The value of gbar[k].
+         */
+        private double gbar;
+        /**
+         * The value of max(|alpha[1]|, gamma[1], ..., gamma[k-1]).
+         */
+        private double gmax;
+        /**
+         * The value of min(|alpha[1]|, gamma[1], ..., gamma[k-1]).
+         */
+        private double gmin;
+        /**
+         * {@code true} if the default convergence criterion is verified.
+         */
+        private boolean hasConverged;
+        /**
+         * The estimate of the norm of P * rL[k-1].
+         */
+        private double lqnorm;
+        /**
+         * The value of (-eps[k+1] * zeta[k-1]). Was called {@code rhs2} in the
+         * initial code.
+         */
+        private double minusEpsZeta;
+        /**
+         * The value of beta[k].
+         */
+        private double oldb;
+        /**
+         * The value of beta[k] * M^(-1) * P' * v[k].
+         */
+        private RealVector r1;
+        /**
+         * The value of beta[k+1] * M^(-1) * P' * v[k+1].
+         */
+        private RealVector r2;
+        /**
+         * The value of the updated, preconditioned residual P * r. This value is
+         * given by {@code min(}{@link #cgnorm}{@code , }{@link #lqnorm}{@code )}.
+         */
+        private double rnorm;
+        /**
+         * The value of s[1] * ... * s[k-1].
+         */
+        private double snprod;
+        /**
+         * An estimate of the square of the norm of A * V[k], based on Paige and
+         * Saunders (1975), equation (3.3).
+         */
+        private double tnorm;
+        /**
+         * The value of P' * wbar[k] or P' * (wbar[k] - s[1] * ... * s[k-1] *
+         * v[1]) if {@code goodb} is {@code true}. Was called {@code w} in the
+         * initial code.
+         */
+        private RealVector wbar;
+        /**
+         * The value of beta[k+1] * P' * v[k+1].
+         */
+        private RealVector y;
+        /**
+         * The value of zeta[1]^2 + ... + zeta[k-1]^2.
+         */
+        private double ynorm2;
+        /**
+         * The value of {@code b == 0} (exact floating-point equality).
+         */
+        private boolean bIsNull;
+
+        /**
          * Creates and inits to k = 1 a new instance of this class.
          *
-         * @param a the linear operator A of the system
-         * @param m the preconditioner, M (can be {@code null})
-         * @param b the right-hand side vector
+         * @param a     the linear operator A of the system
+         * @param m     the preconditioner, M (can be {@code null})
+         * @param b     the right-hand side vector
          * @param goodb usually {@code false}, except if {@code x} is expected
-         * to contain a large multiple of {@code b}
+         *              to contain a large multiple of {@code b}
          * @param shift the amount to be subtracted to all diagonal elements of
-         * A
+         *              A
          * @param delta the &delta; parameter for the default stopping criterion
          * @param check {@code true} if self-adjointedness of both matrix and
-         * preconditioner should be checked
+         *              preconditioner should be checked
          */
         State(final RealLinearOperator a,
-            final RealLinearOperator m,
-            final RealVector b,
-            final boolean goodb,
-            final double shift,
-            final double delta,
-            final boolean check) {
+              final RealLinearOperator m,
+              final RealVector b,
+              final boolean goodb,
+              final double shift,
+              final double delta,
+              final boolean check) {
             this.a = a;
             this.m = m;
             this.b = b;
@@ -404,8 +779,8 @@ public class SymmLQ
          * @throws MathIllegalArgumentException when the test fails
          */
         private static void checkSymmetry(final RealLinearOperator l,
-            final RealVector x, final RealVector y, final RealVector z)
-            throws MathIllegalArgumentException {
+                                          final RealVector x, final RealVector y, final RealVector z)
+                throws MathIllegalArgumentException {
             final double s = y.dotProduct(y);
             final double t = x.dotProduct(z);
             final double epsa = (s + MACH_PREC) * CBRT_MACH_PREC;
@@ -423,7 +798,7 @@ public class SymmLQ
          * @throws MathIllegalArgumentException in any circumstances
          */
         private static void throwNPDLOException(final RealLinearOperator l,
-            final RealVector v) throws MathIllegalArgumentException {
+                                                final RealVector v) throws MathIllegalArgumentException {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.NON_POSITIVE_DEFINITE_OPERATOR);
         }
 
@@ -437,7 +812,7 @@ public class SymmLQ
          * @param y the vector to be incremented
          */
         private static void daxpy(final double a, final RealVector x,
-            final RealVector y) {
+                                  final RealVector y) {
             final int n = x.getDimension();
             for (int i = 0; i < n; i++) {
                 y.setEntry(i, a * x.getEntry(i) + y.getEntry(i));
@@ -456,7 +831,7 @@ public class SymmLQ
          * @param z the vector to be incremented
          */
         private static void daxpbypz(final double a, final RealVector x,
-            final double b, final RealVector y, final RealVector z) {
+                                     final double b, final RealVector y, final RealVector z) {
             final int n = z.getDimension();
             for (int i = 0; i < n; i++) {
                 final double zi;
@@ -478,7 +853,7 @@ public class SymmLQ
          *
          * @param x the vector to be updated with the refined value of xL
          */
-         void refineSolution(final RealVector x) {
+        void refineSolution(final RealVector x) {
             final int n = this.xL.getDimension();
             if (lqnorm < cgnorm) {
                 if (!goodb) {
@@ -519,7 +894,7 @@ public class SymmLQ
          * value of the state variables of {@code this} object correspond to k =
          * 1.
          */
-         void init() {
+        void init() {
             this.xL.set(0.);
             /*
              * Set up y for the first Lanczos vector. y and beta1 will be zero
@@ -743,7 +1118,7 @@ public class SymmLQ
             final double epsr = anorm * ynorm * delta;
             final double diag = gbar == 0. ? epsa : gbar;
             lqnorm = FastMath.sqrt(gammaZeta * gammaZeta +
-                                   minusEpsZeta * minusEpsZeta);
+                    minusEpsZeta * minusEpsZeta);
             final double qrnorm = snprod * beta1;
             cgnorm = qrnorm * beta / FastMath.abs(diag);
 
@@ -809,358 +1184,5 @@ public class SymmLQ
         double getNormOfResidual() {
             return rnorm;
         }
-    }
-
-    /** {@code true} if symmetry of matrix and conditioner must be checked. */
-    private final boolean check;
-
-    /**
-     * The value of the custom tolerance &delta; for the default stopping
-     * criterion.
-     */
-    private final double delta;
-
-    /**
-     * Creates a new instance of this class, with <a href="#stopcrit">default
-     * stopping criterion</a>. Note that setting {@code check} to {@code true}
-     * entails an extra matrix-vector product in the initial phase.
-     *
-     * @param maxIterations the maximum number of iterations
-     * @param delta the &delta; parameter for the default stopping criterion
-     * @param check {@code true} if self-adjointedness of both matrix and
-     * preconditioner should be checked
-     */
-    public SymmLQ(final int maxIterations, final double delta,
-                  final boolean check) {
-        super(maxIterations);
-        this.delta = delta;
-        this.check = check;
-    }
-
-    /**
-     * Creates a new instance of this class, with <a href="#stopcrit">default
-     * stopping criterion</a> and custom iteration manager. Note that setting
-     * {@code check} to {@code true} entails an extra matrix-vector product in
-     * the initial phase.
-     *
-     * @param manager the custom iteration manager
-     * @param delta the &delta; parameter for the default stopping criterion
-     * @param check {@code true} if self-adjointedness of both matrix and
-     * preconditioner should be checked
-     */
-    public SymmLQ(final IterationManager manager, final double delta,
-                  final boolean check) {
-        super(manager);
-        this.delta = delta;
-        this.check = check;
-    }
-
-    /**
-     * Returns {@code true} if symmetry of the matrix, and symmetry as well as
-     * positive definiteness of the preconditioner should be checked.
-     *
-     * @return {@code true} if the tests are to be performed
-     */
-    public final boolean getCheck() {
-        return check;
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @throws MathIllegalArgumentException if {@link #getCheck()} is
-     * {@code true}, and {@code a} or {@code m} is not self-adjoint
-     * @throws MathIllegalArgumentException if {@code m} is not
-     * positive definite
-     * @throws MathIllegalArgumentException if {@code a} is ill-conditioned
-     */
-    @Override
-    public RealVector solve(final RealLinearOperator a,
-        final RealLinearOperator m, final RealVector b) throws
-        MathIllegalArgumentException, NullArgumentException, MathIllegalStateException, MathIllegalArgumentException {
-        MathUtils.checkNotNull(a);
-        final RealVector x = new ArrayRealVector(a.getColumnDimension());
-        return solveInPlace(a, m, b, x, false, 0.);
-    }
-
-    /**
-     * Returns an estimate of the solution to the linear system (A - shift
-     * &middot; I) &middot; x = b.
-     * <p>
-     * If the solution x is expected to contain a large multiple of {@code b}
-     * (as in Rayleigh-quotient iteration), then better precision may be
-     * achieved with {@code goodb} set to {@code true}; this however requires an
-     * extra call to the preconditioner.
-     * </p>
-     * <p>
-     * {@code shift} should be zero if the system A &middot; x = b is to be
-     * solved. Otherwise, it could be an approximation to an eigenvalue of A,
-     * such as the Rayleigh quotient b<sup>T</sup> &middot; A &middot; b /
-     * (b<sup>T</sup> &middot; b) corresponding to the vector b. If b is
-     * sufficiently like an eigenvector corresponding to an eigenvalue near
-     * shift, then the computed x may have very large components. When
-     * normalized, x may be closer to an eigenvector than b.
-     * </p>
-     *
-     * @param a the linear operator A of the system
-     * @param m the preconditioner, M (can be {@code null})
-     * @param b the right-hand side vector
-     * @param goodb usually {@code false}, except if {@code x} is expected to
-     * contain a large multiple of {@code b}
-     * @param shift the amount to be subtracted to all diagonal elements of A
-     * @return a reference to {@code x} (shallow copy)
-     * @throws NullArgumentException if one of the parameters is {@code null}
-     * @throws MathIllegalArgumentException if {@code a} or {@code m} is not square
-     * @throws MathIllegalArgumentException if {@code m} or {@code b} have dimensions
-     * inconsistent with {@code a}
-     * @throws MathIllegalStateException at exhaustion of the iteration count,
-     * unless a custom
-     * {@link org.hipparchus.util.Incrementor.MaxCountExceededCallback callback}
-     * has been set at construction of the {@link IterationManager}
-     * @throws MathIllegalArgumentException if {@link #getCheck()} is
-     * {@code true}, and {@code a} or {@code m} is not self-adjoint
-     * @throws MathIllegalArgumentException if {@code m} is not
-     * positive definite
-     * @throws MathIllegalArgumentException if {@code a} is ill-conditioned
-     */
-    public RealVector solve(final RealLinearOperator a, final RealLinearOperator m,
-                            final RealVector b, final boolean goodb, final double shift)
-        throws MathIllegalArgumentException, NullArgumentException, MathIllegalStateException {
-        MathUtils.checkNotNull(a);
-        final RealVector x = new ArrayRealVector(a.getColumnDimension());
-        return solveInPlace(a, m, b, x, goodb, shift);
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param x not meaningful in this implementation; should not be considered
-     * as an initial guess (<a href="#initguess">more</a>)
-     * @throws MathIllegalArgumentException if {@link #getCheck()} is
-     * {@code true}, and {@code a} or {@code m} is not self-adjoint
-     * @throws MathIllegalArgumentException if {@code m} is not positive
-     * definite
-     * @throws MathIllegalArgumentException if {@code a} is ill-conditioned
-     */
-    @Override
-    public RealVector solve(final RealLinearOperator a,
-        final RealLinearOperator m, final RealVector b, final RealVector x)
-        throws MathIllegalArgumentException, NullArgumentException,
-        MathIllegalArgumentException,
-        MathIllegalStateException {
-        MathUtils.checkNotNull(x);
-        return solveInPlace(a, m, b, x.copy(), false, 0.);
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @throws MathIllegalArgumentException if {@link #getCheck()} is
-     * {@code true}, and {@code a} is not self-adjoint
-     * @throws MathIllegalArgumentException if {@code a} is ill-conditioned
-     */
-    @Override
-    public RealVector solve(final RealLinearOperator a, final RealVector b)
-        throws MathIllegalArgumentException, NullArgumentException,
-        MathIllegalArgumentException, MathIllegalStateException {
-        MathUtils.checkNotNull(a);
-        final RealVector x = new ArrayRealVector(a.getColumnDimension());
-        x.set(0.);
-        return solveInPlace(a, null, b, x, false, 0.);
-    }
-
-    /**
-     * Returns the solution to the system (A - shift &middot; I) &middot; x = b.
-     * <p>
-     * If the solution x is expected to contain a large multiple of {@code b}
-     * (as in Rayleigh-quotient iteration), then better precision may be
-     * achieved with {@code goodb} set to {@code true}.
-     * </p>
-     * <p>
-     * {@code shift} should be zero if the system A &middot; x = b is to be
-     * solved. Otherwise, it could be an approximation to an eigenvalue of A,
-     * such as the Rayleigh quotient b<sup>T</sup> &middot; A &middot; b /
-     * (b<sup>T</sup> &middot; b) corresponding to the vector b. If b is
-     * sufficiently like an eigenvector corresponding to an eigenvalue near
-     * shift, then the computed x may have very large components. When
-     * normalized, x may be closer to an eigenvector than b.
-     * </p>
-     *
-     * @param a the linear operator A of the system
-     * @param b the right-hand side vector
-     * @param goodb usually {@code false}, except if {@code x} is expected to
-     * contain a large multiple of {@code b}
-     * @param shift the amount to be subtracted to all diagonal elements of A
-     * @return a reference to {@code x}
-     * @throws NullArgumentException if one of the parameters is {@code null}
-     * @throws MathIllegalArgumentException if {@code a} is not square
-     * @throws MathIllegalArgumentException if {@code b} has dimensions
-     * inconsistent with {@code a}
-     * @throws MathIllegalStateException at exhaustion of the iteration count,
-     * unless a custom
-     * {@link org.hipparchus.util.Incrementor.MaxCountExceededCallback callback}
-     * has been set at construction of the {@link IterationManager}
-     * @throws MathIllegalArgumentException if {@link #getCheck()} is
-     * {@code true}, and {@code a} is not self-adjoint
-     * @throws MathIllegalArgumentException if {@code a} is ill-conditioned
-     */
-    public RealVector solve(final RealLinearOperator a, final RealVector b,
-                            final boolean goodb, final double shift)
-        throws MathIllegalArgumentException, NullArgumentException, MathIllegalStateException {
-        MathUtils.checkNotNull(a);
-        final RealVector x = new ArrayRealVector(a.getColumnDimension());
-        return solveInPlace(a, null, b, x, goodb, shift);
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param x not meaningful in this implementation; should not be considered
-     * as an initial guess (<a href="#initguess">more</a>)
-     * @throws MathIllegalArgumentException if {@link #getCheck()} is
-     * {@code true}, and {@code a} is not self-adjoint
-     * @throws MathIllegalArgumentException if {@code a} is ill-conditioned
-     */
-    @Override
-    public RealVector solve(final RealLinearOperator a, final RealVector b,
-        final RealVector x) throws MathIllegalArgumentException, NullArgumentException, MathIllegalArgumentException,
-        MathIllegalStateException {
-        MathUtils.checkNotNull(x);
-        return solveInPlace(a, null, b, x.copy(), false, 0.);
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param x the vector to be updated with the solution; {@code x} should
-     * not be considered as an initial guess (<a href="#initguess">more</a>)
-     * @throws MathIllegalArgumentException if {@link #getCheck()} is
-     * {@code true}, and {@code a} or {@code m} is not self-adjoint
-     * @throws MathIllegalArgumentException if {@code m} is not
-     * positive definite
-     * @throws MathIllegalArgumentException if {@code a} is ill-conditioned
-     */
-    @Override
-    public RealVector solveInPlace(final RealLinearOperator a,
-        final RealLinearOperator m, final RealVector b, final RealVector x)
-        throws MathIllegalArgumentException, NullArgumentException,
-        MathIllegalArgumentException,
-        MathIllegalStateException {
-        return solveInPlace(a, m, b, x, false, 0.);
-    }
-
-    /**
-     * Returns an estimate of the solution to the linear system (A - shift
-     * &middot; I) &middot; x = b. The solution is computed in-place.
-     * <p>
-     * If the solution x is expected to contain a large multiple of {@code b}
-     * (as in Rayleigh-quotient iteration), then better precision may be
-     * achieved with {@code goodb} set to {@code true}; this however requires an
-     * extra call to the preconditioner.
-     * </p>
-     * <p>
-     * {@code shift} should be zero if the system A &middot; x = b is to be
-     * solved. Otherwise, it could be an approximation to an eigenvalue of A,
-     * such as the Rayleigh quotient b<sup>T</sup> &middot; A &middot; b /
-     * (b<sup>T</sup> &middot; b) corresponding to the vector b. If b is
-     * sufficiently like an eigenvector corresponding to an eigenvalue near
-     * shift, then the computed x may have very large components. When
-     * normalized, x may be closer to an eigenvector than b.
-     * </p>
-     *
-     * @param a the linear operator A of the system
-     * @param m the preconditioner, M (can be {@code null})
-     * @param b the right-hand side vector
-     * @param x the vector to be updated with the solution; {@code x} should
-     * not be considered as an initial guess (<a href="#initguess">more</a>)
-     * @param goodb usually {@code false}, except if {@code x} is expected to
-     * contain a large multiple of {@code b}
-     * @param shift the amount to be subtracted to all diagonal elements of A
-     * @return a reference to {@code x} (shallow copy).
-     * @throws NullArgumentException if one of the parameters is {@code null}
-     * @throws MathIllegalArgumentException if {@code a} or {@code m} is not square
-     * @throws MathIllegalArgumentException if {@code m}, {@code b} or {@code x}
-     * have dimensions inconsistent with {@code a}.
-     * @throws MathIllegalStateException at exhaustion of the iteration count,
-     * unless a custom
-     * {@link org.hipparchus.util.Incrementor.MaxCountExceededCallback callback}
-     * has been set at construction of the {@link IterationManager}
-     * @throws MathIllegalArgumentException if {@link #getCheck()} is
-     * {@code true}, and {@code a} or {@code m} is not self-adjoint
-     * @throws MathIllegalArgumentException if {@code m} is not positive definite
-     * @throws MathIllegalArgumentException if {@code a} is ill-conditioned
-     */
-    public RealVector solveInPlace(final RealLinearOperator a,
-                                   final RealLinearOperator m, final RealVector b,
-                                   final RealVector x, final boolean goodb, final double shift)
-        throws MathIllegalArgumentException, NullArgumentException, MathIllegalStateException {
-        checkParameters(a, m, b, x);
-
-        final IterationManager manager = getIterationManager();
-        /* Initialization counts as an iteration. */
-        manager.resetIterationCount();
-        manager.incrementIterationCount();
-
-        final State state;
-        state = new State(a, m, b, goodb, shift, delta, check);
-        state.init();
-        state.refineSolution(x);
-        IterativeLinearSolverEvent event;
-        event = new DefaultIterativeLinearSolverEvent(this,
-                                                      manager.getIterations(),
-                                                      x,
-                                                      b,
-                                                      state.getNormOfResidual());
-        if (state.bEqualsNullVector()) {
-            /* If b = 0 exactly, stop with x = 0. */
-            manager.fireTerminationEvent(event);
-            return x;
-        }
-        /* Cause termination if beta is essentially zero. */
-        final boolean earlyStop;
-        earlyStop = state.betaEqualsZero() || state.hasConverged();
-        manager.fireInitializationEvent(event);
-        if (!earlyStop) {
-            do {
-                manager.incrementIterationCount();
-                event = new DefaultIterativeLinearSolverEvent(this,
-                                                              manager.getIterations(),
-                                                              x,
-                                                              b,
-                                                              state.getNormOfResidual());
-                manager.fireIterationStartedEvent(event);
-                state.update();
-                state.refineSolution(x);
-                event = new DefaultIterativeLinearSolverEvent(this,
-                                                              manager.getIterations(),
-                                                              x,
-                                                              b,
-                                                              state.getNormOfResidual());
-                manager.fireIterationPerformedEvent(event);
-            } while (!state.hasConverged());
-        }
-        event = new DefaultIterativeLinearSolverEvent(this,
-                                                      manager.getIterations(),
-                                                      x,
-                                                      b,
-                                                      state.getNormOfResidual());
-        manager.fireTerminationEvent(event);
-        return x;
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param x the vector to be updated with the solution; {@code x} should
-     * not be considered as an initial guess (<a href="#initguess">more</a>)
-     * @throws MathIllegalArgumentException if {@link #getCheck()} is
-     * {@code true}, and {@code a} is not self-adjoint
-     * @throws MathIllegalArgumentException if {@code a} is ill-conditioned
-     */
-    @Override
-    public RealVector solveInPlace(final RealLinearOperator a,
-        final RealVector b, final RealVector x) throws MathIllegalArgumentException, NullArgumentException, MathIllegalArgumentException,
-        MathIllegalStateException {
-        return solveInPlace(a, null, b, x, false, 0.);
     }
 }

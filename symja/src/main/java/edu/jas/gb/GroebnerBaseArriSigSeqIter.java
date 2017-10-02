@@ -5,10 +5,10 @@
 package edu.jas.gb;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.poly.ExpVector;
 import edu.jas.poly.GenPolynomial;
@@ -18,9 +18,9 @@ import edu.jas.structure.RingElem;
 /**
  * Groebner Base Arri signature based sequential iterative algorithm. Implements
  * Groebner bases.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
- * 
  * @see edu.jas.application.GBAlgorithmBuilder
  * @see edu.jas.gbufd.GBFactory
  */
@@ -44,6 +44,7 @@ public class GroebnerBaseArriSigSeqIter<C extends RingElem<C>> extends GroebnerB
 
     /**
      * Constructor.
+     *
      * @param red Reduction engine
      */
     public GroebnerBaseArriSigSeqIter(SigReductionSeq<C> red) {
@@ -53,8 +54,9 @@ public class GroebnerBaseArriSigSeqIter<C extends RingElem<C>> extends GroebnerB
 
     /**
      * S-Polynomial.
+     *
      * @param P pair.
-     * @return spol(A,B) the S-polynomial of the pair (A,B).
+     * @return spol(A, B) the S-polynomial of the pair (A,B).
      */
     @Override
     GenPolynomial<C> SPolynomial(SigPair<C> P) {
@@ -64,6 +66,7 @@ public class GroebnerBaseArriSigSeqIter<C extends RingElem<C>> extends GroebnerB
 
     /**
      * Pair with signature.
+     *
      * @param A polynomial with signature.
      * @param B polynomial with signature.
      * @param G polynomial ith signature list.
@@ -72,7 +75,7 @@ public class GroebnerBaseArriSigSeqIter<C extends RingElem<C>> extends GroebnerB
     @Override
     SigPair<C> newPair(SigPoly<C> A, SigPoly<C> B, List<SigPoly<C>> G) {
         ExpVector e = A.poly.leadingExpVector().lcm(B.poly.leadingExpVector())
-                        .subtract(A.poly.leadingExpVector());
+                .subtract(A.poly.leadingExpVector());
         GenPolynomial<C> sp = SPolynomial(A, B);
         GenPolynomial<C> sig = sp.ring.valueOf(e);
         return new SigPair<C>(sig, new SigPoly<C>(sig, sp), B, G);
@@ -81,6 +84,7 @@ public class GroebnerBaseArriSigSeqIter<C extends RingElem<C>> extends GroebnerB
 
     /**
      * Pair with signature.
+     *
      * @param s signature for pair.
      * @param A polynomial with signature.
      * @param B polynomial with signature.
@@ -96,6 +100,7 @@ public class GroebnerBaseArriSigSeqIter<C extends RingElem<C>> extends GroebnerB
 
     /**
      * Top normalform.
+     *
      * @param A polynomial.
      * @param F polynomial list.
      * @param G polynomial list.
@@ -109,7 +114,8 @@ public class GroebnerBaseArriSigSeqIter<C extends RingElem<C>> extends GroebnerB
 
     /**
      * Prune total pair list P.
-     * @param P pair list.
+     *
+     * @param P   pair list.
      * @param syz list of exponent vectors representing syzygies.
      * @return updated pair list.
      */
@@ -139,10 +145,11 @@ public class GroebnerBaseArriSigSeqIter<C extends RingElem<C>> extends GroebnerB
 
     /**
      * Prune pair list of degree d.
-     * @param S pair list.
-     * @param syz list of exponent vectors representing syzygies.
+     *
+     * @param S    pair list.
+     * @param syz  list of exponent vectors representing syzygies.
      * @param done list of treated polynomials.
-     * @param G polynomial with signature list.
+     * @param G    polynomial with signature list.
      * @return updated pair list.
      */
     @Override
@@ -206,6 +213,7 @@ public class GroebnerBaseArriSigSeqIter<C extends RingElem<C>> extends GroebnerB
 
     /**
      * Initializes syzygy list.
+     *
      * @param F polynomial list.
      * @param G polynomial with signature list.
      * @return list of exponent vectors representing syzygies.
@@ -225,8 +233,9 @@ public class GroebnerBaseArriSigSeqIter<C extends RingElem<C>> extends GroebnerB
 
     /**
      * Update syzygy list.
+     *
      * @param syz list of exponent vectors representing syzygies.
-     * @param r polynomial. <b>Note:</b> szy is modified to represent updated
+     * @param r   polynomial. <b>Note:</b> szy is modified to represent updated
      *            list of exponent vectors.
      */
     @Override

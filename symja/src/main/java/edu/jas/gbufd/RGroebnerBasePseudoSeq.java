@@ -5,13 +5,13 @@
 package edu.jas.gbufd;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.gb.Pair;
 import edu.jas.poly.ExpVector;
@@ -25,6 +25,7 @@ import edu.jas.ufd.GreatestCommonDivisorAbstract;
 /**
  * Regular ring Groebner Base with pseudo reduction sequential algorithm.
  * Implements R-Groebner bases and GB test.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
@@ -59,6 +60,7 @@ public class RGroebnerBasePseudoSeq<C extends RegularRingElem<C>> extends RGroeb
 
     /**
      * Constructor.
+     *
      * @param rf coefficient ring factory.
      */
     public RGroebnerBasePseudoSeq(RingFactory<C> rf) {
@@ -68,14 +70,15 @@ public class RGroebnerBasePseudoSeq<C extends RegularRingElem<C>> extends RGroeb
 
     /**
      * Constructor.
+     *
      * @param red R-pseudo-Reduction engine
-     * @param rf coefficient ring factory.
+     * @param rf  coefficient ring factory.
      */
     public RGroebnerBasePseudoSeq(RPseudoReduction<C> red, RingFactory<C> rf) {
         super(red);
         this.red = red;
         cofac = rf;
-        engine = GCDFactory.<C> getImplementation(rf);
+        engine = GCDFactory.<C>getImplementation(rf);
         // not used: engine =
         // (GreatestCommonDivisorAbstract<C>)GCDFactory.<C>getProxy( rf );
     }
@@ -83,8 +86,9 @@ public class RGroebnerBasePseudoSeq<C extends RegularRingElem<C>> extends RGroeb
 
     /**
      * R-Groebner base using pairlist class.
+     *
      * @param modv module variable number.
-     * @param F polynomial list.
+     * @param F    polynomial list.
      * @return GB(F) a R-Groebner base of F.
      */
     @Override
@@ -203,6 +207,7 @@ public class RGroebnerBasePseudoSeq<C extends RegularRingElem<C>> extends RGroeb
 
     /**
      * Minimal ordered Groebner basis.
+     *
      * @param Gp a Groebner base.
      * @return a reduced Groebner base of Gp.
      */
@@ -334,7 +339,7 @@ public class RGroebnerBasePseudoSeq<C extends RegularRingElem<C>> extends RGroeb
             }
         }
         //if (G.size() <= 1) {
-            // wg monic do not return G;
+        // wg monic do not return G;
         //}
         // remove top reducible polynomials
         GenPolynomial<C> a, b;
@@ -378,7 +383,7 @@ public class RGroebnerBasePseudoSeq<C extends RegularRingElem<C>> extends RGroeb
         }
         G = F;
         //if (G.size() <= 1) {
-            // wg monic return G;
+        // wg monic return G;
         //}
         Collections.reverse(G); // important for lex GB
         // reduce remaining polynomials
@@ -407,7 +412,7 @@ public class RGroebnerBasePseudoSeq<C extends RegularRingElem<C>> extends RGroeb
                 continue;
             }
             System.out.println("minGB not bc: a = " + a + "\n BC(a) = " + red.booleanClosure(a)
-                            + ", BR(a) = " + red.booleanRemainder(a));
+                    + ", BR(a) = " + red.booleanRemainder(a));
             bcH = red.reducedBooleanClosure(G, a);
             if (bcH.size() > 1) {
                 System.out.println("minGB not bc: bcH size = " + bcH.size());

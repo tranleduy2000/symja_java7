@@ -33,22 +33,34 @@ package org.hipparchus.random;
  */
 public class Well512a extends AbstractWell {
 
-    /** Serializable version identifier. */
+    /**
+     * Serializable version identifier.
+     */
     private static final long serialVersionUID = 20150223L;
 
-    /** Number of bits in the pool. */
+    /**
+     * Number of bits in the pool.
+     */
     private static final int K = 512;
 
-    /** First parameter of the algorithm. */
+    /**
+     * First parameter of the algorithm.
+     */
     private static final int M1 = 13;
 
-    /** Second parameter of the algorithm. */
+    /**
+     * Second parameter of the algorithm.
+     */
     private static final int M2 = 9;
 
-    /** Third parameter of the algorithm. */
+    /**
+     * Third parameter of the algorithm.
+     */
     private static final int M3 = 5;
 
-    /** The indirection index table. */
+    /**
+     * The indirection index table.
+     */
     private static final IndexTable TABLE = new IndexTable(K, M1, M2, M3);
 
     /**
@@ -62,6 +74,7 @@ public class Well512a extends AbstractWell {
 
     /**
      * Creates a new random number generator using a single int seed.
+     *
      * @param seed the initial seed (32 bits integer)
      */
     public Well512a(int seed) {
@@ -70,8 +83,9 @@ public class Well512a extends AbstractWell {
 
     /**
      * Creates a new random number generator using an int array seed.
+     *
      * @param seed the initial seed (32 bits integers array), if null
-     * the seed of the generator will be related to the current time
+     *             the seed of the generator will be related to the current time
      */
     public Well512a(int[] seed) {
         super(K, seed);
@@ -79,13 +93,16 @@ public class Well512a extends AbstractWell {
 
     /**
      * Creates a new random number generator using a single long seed.
+     *
      * @param seed the initial seed (64 bits integer)
      */
     public Well512a(long seed) {
         super(K, seed);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int nextInt() {
 
@@ -97,14 +114,14 @@ public class Well512a extends AbstractWell {
         final int z0 = v[indexRm1];
 
         // the values below include the errata of the original article
-        final int z1 = (vi ^ (vi << 16))   ^ (vi1 ^ (vi1 << 15));
+        final int z1 = (vi ^ (vi << 16)) ^ (vi1 ^ (vi1 << 15));
         final int z2 = vi2 ^ (vi2 >>> 11);
         final int z3 = z1 ^ z2;
         final int z4 = (z0 ^ (z0 << 2)) ^ (z1 ^ (z1 << 18)) ^ (z2 << 28) ^ (z3 ^ ((z3 << 5) & 0xda442d24));
 
         v[index] = z3;
-        v[indexRm1]  = z4;
-        index    = indexRm1;
+        v[indexRm1] = z4;
+        index = indexRm1;
 
         return z4;
     }

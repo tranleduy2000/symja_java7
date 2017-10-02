@@ -21,10 +21,11 @@ import org.hipparchus.optim.OptimizationData;
 
 /**
  * Gradient of the scalar function to be optimized.
- *
  */
 public class ObjectiveFunctionGradient implements OptimizationData {
-    /** Function to be optimized. */
+    /**
+     * Function to be optimized.
+     */
     private final MultivariateVectorFunction gradient;
 
     /**

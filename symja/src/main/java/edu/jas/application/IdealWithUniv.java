@@ -14,6 +14,7 @@ import edu.jas.structure.GcdRingElem;
 
 /**
  * Container for Ideals together with univariate polynomials.
+ *
  * @author Heinz Kredel
  */
 public class IdealWithUniv<C extends GcdRingElem<C>> implements Serializable {
@@ -53,6 +54,7 @@ public class IdealWithUniv<C extends GcdRingElem<C>> implements Serializable {
 
     /**
      * Constructor.
+     *
      * @param id the ideal
      * @param up the list of univariate polynomials
      */
@@ -63,6 +65,7 @@ public class IdealWithUniv<C extends GcdRingElem<C>> implements Serializable {
 
     /**
      * Constructor.
+     *
      * @param id the ideal
      * @param up the list of univariate polynomials
      * @param og the list of other polynomials
@@ -76,6 +79,7 @@ public class IdealWithUniv<C extends GcdRingElem<C>> implements Serializable {
 
     /**
      * String representation of the ideal.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -93,6 +97,7 @@ public class IdealWithUniv<C extends GcdRingElem<C>> implements Serializable {
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this Element.
      * @see edu.jas.structure.Element#toScript()
      */

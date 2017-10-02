@@ -28,61 +28,66 @@ import org.hipparchus.util.FastMath;
  * chapter 3.
  * <p>
  * The function should be integrable.</p>
- *
  */
 public class TrapezoidIntegrator extends BaseAbstractUnivariateIntegrator {
 
-    /** Maximum number of iterations for trapezoid. */
+    /**
+     * Maximum number of iterations for trapezoid.
+     */
     public static final int TRAPEZOID_MAX_ITERATIONS_COUNT = 64;
 
-    /** Intermediate result. */
+    /**
+     * Intermediate result.
+     */
     private double s;
 
     /**
      * Build a trapezoid integrator with given accuracies and iterations counts.
-     * @param relativeAccuracy relative accuracy of the result
-     * @param absoluteAccuracy absolute accuracy of the result
+     *
+     * @param relativeAccuracy      relative accuracy of the result
+     * @param absoluteAccuracy      absolute accuracy of the result
      * @param minimalIterationCount minimum number of iterations
      * @param maximalIterationCount maximum number of iterations
-     * (must be less than or equal to {@link #TRAPEZOID_MAX_ITERATIONS_COUNT}
-     * @exception MathIllegalArgumentException if minimal number of iterations
-     * is not strictly positive
-     * @exception MathIllegalArgumentException if maximal number of iterations
-     * is lesser than or equal to the minimal number of iterations
-     * @exception MathIllegalArgumentException if maximal number of iterations
-     * is greater than {@link #TRAPEZOID_MAX_ITERATIONS_COUNT}
+     *                              (must be less than or equal to {@link #TRAPEZOID_MAX_ITERATIONS_COUNT}
+     * @throws MathIllegalArgumentException if minimal number of iterations
+     *                                      is not strictly positive
+     * @throws MathIllegalArgumentException if maximal number of iterations
+     *                                      is lesser than or equal to the minimal number of iterations
+     * @throws MathIllegalArgumentException if maximal number of iterations
+     *                                      is greater than {@link #TRAPEZOID_MAX_ITERATIONS_COUNT}
      */
     public TrapezoidIntegrator(final double relativeAccuracy,
                                final double absoluteAccuracy,
                                final int minimalIterationCount,
                                final int maximalIterationCount)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         super(relativeAccuracy, absoluteAccuracy, minimalIterationCount, maximalIterationCount);
         if (maximalIterationCount > TRAPEZOID_MAX_ITERATIONS_COUNT) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.NUMBER_TOO_LARGE_BOUND_EXCLUDED,
-                                                   maximalIterationCount, TRAPEZOID_MAX_ITERATIONS_COUNT);
+                    maximalIterationCount, TRAPEZOID_MAX_ITERATIONS_COUNT);
         }
     }
 
     /**
      * Build a trapezoid integrator with given iteration counts.
+     *
      * @param minimalIterationCount minimum number of iterations
      * @param maximalIterationCount maximum number of iterations
-     * (must be less than or equal to {@link #TRAPEZOID_MAX_ITERATIONS_COUNT}
-     * @exception MathIllegalArgumentException if minimal number of iterations
-     * is not strictly positive
-     * @exception MathIllegalArgumentException if maximal number of iterations
-     * is lesser than or equal to the minimal number of iterations
-     * @exception MathIllegalArgumentException if maximal number of iterations
-     * is greater than {@link #TRAPEZOID_MAX_ITERATIONS_COUNT}
+     *                              (must be less than or equal to {@link #TRAPEZOID_MAX_ITERATIONS_COUNT}
+     * @throws MathIllegalArgumentException if minimal number of iterations
+     *                                      is not strictly positive
+     * @throws MathIllegalArgumentException if maximal number of iterations
+     *                                      is lesser than or equal to the minimal number of iterations
+     * @throws MathIllegalArgumentException if maximal number of iterations
+     *                                      is greater than {@link #TRAPEZOID_MAX_ITERATIONS_COUNT}
      */
     public TrapezoidIntegrator(final int minimalIterationCount,
                                final int maximalIterationCount)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         super(minimalIterationCount, maximalIterationCount);
         if (maximalIterationCount > TRAPEZOID_MAX_ITERATIONS_COUNT) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.NUMBER_TOO_LARGE_BOUND_EXCLUDED,
-                                                   maximalIterationCount, TRAPEZOID_MAX_ITERATIONS_COUNT);
+                    maximalIterationCount, TRAPEZOID_MAX_ITERATIONS_COUNT);
         }
     }
 
@@ -104,23 +109,23 @@ public class TrapezoidIntegrator extends BaseAbstractUnivariateIntegrator {
      * already computed values.</p>
      *
      * @param baseIntegrator integrator holding integration parameters
-     * @param n the stage of 1/2 refinement, n = 0 is no refinement
+     * @param n              the stage of 1/2 refinement, n = 0 is no refinement
      * @return the value of n-th stage integral
      * @throws MathIllegalStateException if the maximal number of evaluations
-     * is exceeded.
+     *                                   is exceeded.
      */
     double stage(final BaseAbstractUnivariateIntegrator baseIntegrator, final int n)
-        throws MathIllegalStateException {
+            throws MathIllegalStateException {
 
         if (n == 0) {
             final double max = baseIntegrator.getMax();
             final double min = baseIntegrator.getMin();
             s = 0.5 * (max - min) *
-                      (baseIntegrator.computeObjectiveValue(min) +
-                       baseIntegrator.computeObjectiveValue(max));
+                    (baseIntegrator.computeObjectiveValue(min) +
+                            baseIntegrator.computeObjectiveValue(max));
             return s;
         } else {
-            final long np = 1L << (n-1);           // number of new points in this stage
+            final long np = 1L << (n - 1);           // number of new points in this stage
             double sum = 0;
             final double max = baseIntegrator.getMax();
             final double min = baseIntegrator.getMin();
@@ -137,10 +142,12 @@ public class TrapezoidIntegrator extends BaseAbstractUnivariateIntegrator {
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected double doIntegrate()
-        throws MathIllegalArgumentException, MathIllegalStateException {
+            throws MathIllegalArgumentException, MathIllegalStateException {
 
         double oldt = stage(this, 0);
         iterations.increment();
@@ -150,7 +157,7 @@ public class TrapezoidIntegrator extends BaseAbstractUnivariateIntegrator {
             if (i >= getMinimalIterationCount()) {
                 final double delta = FastMath.abs(t - oldt);
                 final double rLimit =
-                    getRelativeAccuracy() * (FastMath.abs(oldt) + FastMath.abs(t)) * 0.5;
+                        getRelativeAccuracy() * (FastMath.abs(oldt) + FastMath.abs(t)) * 0.5;
                 if ((delta <= rLimit) || (delta <= getAbsoluteAccuracy())) {
                     return t;
                 }

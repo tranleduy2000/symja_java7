@@ -16,15 +16,14 @@
  */
 package org.hipparchus.transform;
 
-import java.util.Arrays;
-
 import org.hipparchus.complex.Complex;
 import org.hipparchus.exception.LocalizedCoreFormats;
 import org.hipparchus.exception.MathIllegalArgumentException;
 
+import java.util.Arrays;
+
 /**
  * Useful functions for the implementation of various transforms.
- *
  */
 public class TransformUtils {
     /**
@@ -33,15 +32,17 @@ public class TransformUtils {
      * @see #exactLog2(int)
      */
     private static final int[] POWERS_OF_TWO = {
-        0x00000001, 0x00000002, 0x00000004, 0x00000008, 0x00000010, 0x00000020,
-        0x00000040, 0x00000080, 0x00000100, 0x00000200, 0x00000400, 0x00000800,
-        0x00001000, 0x00002000, 0x00004000, 0x00008000, 0x00010000, 0x00020000,
-        0x00040000, 0x00080000, 0x00100000, 0x00200000, 0x00400000, 0x00800000,
-        0x01000000, 0x02000000, 0x04000000, 0x08000000, 0x10000000, 0x20000000,
-        0x40000000
+            0x00000001, 0x00000002, 0x00000004, 0x00000008, 0x00000010, 0x00000020,
+            0x00000040, 0x00000080, 0x00000100, 0x00000200, 0x00000400, 0x00000800,
+            0x00001000, 0x00002000, 0x00004000, 0x00008000, 0x00010000, 0x00020000,
+            0x00040000, 0x00080000, 0x00100000, 0x00200000, 0x00400000, 0x00800000,
+            0x01000000, 0x02000000, 0x04000000, 0x08000000, 0x10000000, 0x20000000,
+            0x40000000
     };
 
-    /** Private constructor. */
+    /**
+     * Private constructor.
+     */
     private TransformUtils() {
         super();
     }
@@ -90,7 +91,7 @@ public class TransformUtils {
      *
      * @param dataC the array of {@link Complex} data to be transformed
      * @return a two dimensional array filled with the real and imaginary parts
-     *   of the specified complex input
+     * of the specified complex input
      */
     public static double[][] createRealImaginaryArray(final Complex[] dataC) {
         final double[][] dataRI = new double[2][dataC.length];
@@ -116,20 +117,20 @@ public class TransformUtils {
      * @param dataRI the array of real and imaginary parts to be transformed
      * @return an array of {@link Complex} with specified real and imaginary parts.
      * @throws MathIllegalArgumentException if the number of rows of the specified
-     *   array is not two, or the array is not rectangular
+     *                                      array is not two, or the array is not rectangular
      */
     public static Complex[] createComplexArray(final double[][] dataRI)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
 
         if (dataRI.length != 2) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.DIMENSIONS_MISMATCH,
-                                                   dataRI.length, 2);
+                    dataRI.length, 2);
         }
         final double[] dataR = dataRI[0];
         final double[] dataI = dataRI[1];
         if (dataR.length != dataI.length) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.DIMENSIONS_MISMATCH,
-                                                   dataI.length, dataR.length);
+                    dataI.length, dataR.length);
         }
 
         final int n = dataR.length;
@@ -150,12 +151,12 @@ public class TransformUtils {
      * @throws MathIllegalArgumentException if {@code n} is not a power of two
      */
     public static int exactLog2(final int n)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
 
         int index = Arrays.binarySearch(TransformUtils.POWERS_OF_TWO, n);
         if (index < 0) {
             throw new MathIllegalArgumentException(LocalizedFFTFormats.NOT_POWER_OF_TWO_CONSIDER_PADDING,
-                                                   Integer.valueOf(n));
+                    Integer.valueOf(n));
         }
         return index;
     }

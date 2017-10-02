@@ -25,10 +25,10 @@ import org.hipparchus.util.FastMath;
 /**
  * This class implements an interpolator for the Gragg-Bulirsch-Stoer
  * integrator.
- *
+ * <p>
  * <p>This interpolator compute dense output inside the last step
  * produced by a Gragg-Bulirsch-Stoer integrator.</p>
- *
+ * <p>
  * <p>
  * This implementation is basically a reimplementation in Java of the
  * <a
@@ -38,21 +38,21 @@ import org.hipparchus.util.FastMath;
  * href="http://www.unige.ch/~hairer/prog/licence.txt">here</a>, for
  * convenience, it is reproduced below.</p>
  * </p>
- *
+ * <p>
  * <table border="0" width="80%" cellpadding="10" align="center" bgcolor="#E0E0E0">
  * <tr><td>Copyright (c) 2004, Ernst Hairer</td></tr>
- *
+ * <p>
  * <tr><td>Redistribution and use in source and binary forms, with or
  * without modification, are permitted provided that the following
  * conditions are met:
  * <ul>
- *  <li>Redistributions of source code must retain the above copyright
- *      notice, this list of conditions and the following disclaimer.</li>
- *  <li>Redistributions in binary form must reproduce the above copyright
- *      notice, this list of conditions and the following disclaimer in the
- *      documentation and/or other materials provided with the distribution.</li>
+ * <li>Redistributions of source code must retain the above copyright
+ * notice, this list of conditions and the following disclaimer.</li>
+ * <li>Redistributions in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in the
+ * documentation and/or other materials provided with the distribution.</li>
  * </ul></td></tr>
- *
+ * <p>
  * <tr><td><strong>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
  * CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
  * BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
@@ -70,35 +70,46 @@ import org.hipparchus.util.FastMath;
  */
 
 class GraggBulirschStoerStateInterpolator
-    extends AbstractODEStateInterpolator {
+        extends AbstractODEStateInterpolator {
 
-    /** Serializable version identifier. */
+    /**
+     * Serializable version identifier.
+     */
     private static final long serialVersionUID = 20160329L;
 
-    /** Scaled derivatives at the middle of the step $\tau$.
+    /**
+     * Scaled derivatives at the middle of the step $\tau$.
      * (element k is $h^{k} d^{k}y(\tau)/dt^{k}$ where h is step size...)
      */
     private final double[][] yMidDots;
 
-    /** Interpolation polynomials. */
+    /**
+     * Interpolation polynomials.
+     */
     private final double[][] polynomials;
 
-    /** Error coefficients for the interpolation. */
+    /**
+     * Error coefficients for the interpolation.
+     */
     private final double[] errfac;
 
-    /** Degree of the interpolation polynomials. */
+    /**
+     * Degree of the interpolation polynomials.
+     */
     private final int currentDegree;
 
-    /** Simple constructor.
-     * @param forward integration direction indicator
+    /**
+     * Simple constructor.
+     *
+     * @param forward             integration direction indicator
      * @param globalPreviousState start of the global step
-     * @param globalCurrentState end of the global step
-     * @param softPreviousState start of the restricted step
-     * @param softCurrentState end of the restricted step
-     * @param mapper equations mapper for the all equations
-     * @param yMidDots scaled derivatives at the middle of the step $\tau$
-     * (element k is $h^{k} d^{k}y(\tau)/dt^{k}$ where h is step size...)
-     * @param mu degree of the interpolation polynomial
+     * @param globalCurrentState  end of the global step
+     * @param softPreviousState   start of the restricted step
+     * @param softCurrentState    end of the restricted step
+     * @param mapper              equations mapper for the all equations
+     * @param yMidDots            scaled derivatives at the middle of the step $\tau$
+     *                            (element k is $h^{k} d^{k}y(\tau)/dt^{k}$ where h is step size...)
+     * @param mu                  degree of the interpolation polynomial
      */
     GraggBulirschStoerStateInterpolator(final boolean forward,
                                         final ODEStateAndDerivative globalPreviousState,
@@ -109,12 +120,12 @@ class GraggBulirschStoerStateInterpolator
                                         final double[][] yMidDots,
                                         final int mu) {
         super(forward,
-              globalPreviousState, globalCurrentState, softPreviousState, softCurrentState,
-              mapper);
+                globalPreviousState, globalCurrentState, softPreviousState, softCurrentState,
+                mapper);
 
-        this.yMidDots      = yMidDots.clone();
+        this.yMidDots = yMidDots.clone();
         this.currentDegree = mu + 4;
-        this.polynomials   = new double[currentDegree + 1][getCurrentState().getCompleteStateDimension()];
+        this.polynomials = new double[currentDegree + 1][getCurrentState().getCompleteStateDimension()];
 
         // initialize the error factors array for interpolation
         if (currentDegree <= 4) {
@@ -124,7 +135,7 @@ class GraggBulirschStoerStateInterpolator
             for (int i = 0; i < errfac.length; ++i) {
                 final int ip5 = i + 5;
                 errfac[i] = 1.0 / (ip5 * ip5);
-                final double e = 0.5 * FastMath.sqrt (((double) (i + 1)) / ip5);
+                final double e = 0.5 * FastMath.sqrt(((double) (i + 1)) / ip5);
                 for (int j = 0; j <= i; ++j) {
                     errfac[i] *= e / (j + 1);
                 }
@@ -136,7 +147,9 @@ class GraggBulirschStoerStateInterpolator
 
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected GraggBulirschStoerStateInterpolator create(final boolean newForward,
                                                          final ODEStateAndDerivative newGlobalPreviousState,
@@ -145,29 +158,31 @@ class GraggBulirschStoerStateInterpolator
                                                          final ODEStateAndDerivative newSoftCurrentState,
                                                          final EquationsMapper newMapper) {
         return new GraggBulirschStoerStateInterpolator(newForward,
-                                                       newGlobalPreviousState, newGlobalCurrentState,
-                                                       newSoftPreviousState, newSoftCurrentState,
-                                                       newMapper, yMidDots, currentDegree - 4);
+                newGlobalPreviousState, newGlobalCurrentState,
+                newSoftPreviousState, newSoftCurrentState,
+                newMapper, yMidDots, currentDegree - 4);
     }
 
-    /** Compute the interpolation coefficients for dense output.
+    /**
+     * Compute the interpolation coefficients for dense output.
+     *
      * @param mu degree of the interpolation polynomial
      */
     private void computeCoefficients(final int mu) {
 
         final double[] y0Dot = getGlobalPreviousState().getCompleteDerivative();
         final double[] y1Dot = getGlobalCurrentState().getCompleteDerivative();
-        final double[] y1    = getGlobalCurrentState().getCompleteState();
+        final double[] y1 = getGlobalCurrentState().getCompleteState();
 
         final double[] previousState = getGlobalPreviousState().getCompleteState();
         final double h = getGlobalCurrentState().getTime() - getGlobalPreviousState().getTime();
         for (int i = 0; i < previousState.length; ++i) {
 
-            final double yp0   = h * y0Dot[i];
-            final double yp1   = h * y1Dot[i];
+            final double yp0 = h * y0Dot[i];
+            final double yp1 = h * y1Dot[i];
             final double ydiff = y1[i] - previousState[i];
-            final double aspl  = ydiff - yp1;
-            final double bspl  = yp0 - ydiff;
+            final double aspl = ydiff - yp1;
+            final double bspl = yp0 - ydiff;
 
             polynomials[0][i] = previousState[i];
             polynomials[1][i] = ydiff;
@@ -197,8 +212,8 @@ class GraggBulirschStoerStateInterpolator
                         for (int j = 4; j <= mu; ++j) {
                             final double fac1 = 0.5 * j * (j - 1);
                             final double fac2 = 2 * fac1 * (j - 2) * (j - 3);
-                            polynomials[j+4][i] =
-                                            16 * (yMidDots[j][i] + fac1 * polynomials[j+2][i] - fac2 * polynomials[j][i]);
+                            polynomials[j + 4][i] =
+                                    16 * (yMidDots[j][i] + fac1 * polynomials[j + 2][i] - fac2 * polynomials[j][i]);
                         }
 
                     }
@@ -208,7 +223,9 @@ class GraggBulirschStoerStateInterpolator
 
     }
 
-    /** Estimate interpolation error.
+    /**
+     * Estimate interpolation error.
+     *
      * @param scale scaling array
      * @return estimate of the interpolation error
      */
@@ -224,7 +241,9 @@ class GraggBulirschStoerStateInterpolator
         return error;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected ODEStateAndDerivative computeInterpolatedStateAndDerivatives(final EquationsMapper mapper,
                                                                            final double time, final double theta,
@@ -232,17 +251,17 @@ class GraggBulirschStoerStateInterpolator
 
         final int dimension = mapper.getTotalDimension();
 
-        final double h             = thetaH / theta;
+        final double h = thetaH / theta;
         final double oneMinusTheta = 1.0 - theta;
-        final double theta05       = theta - 0.5;
-        final double tOmT          = theta * oneMinusTheta;
-        final double t4            = tOmT * tOmT;
-        final double t4Dot         = 2 * tOmT * (1 - 2 * theta);
-        final double dot1          = 1.0 / h;
-        final double dot2          = theta * (2 - 3 * theta) / h;
-        final double dot3          = ((3 * theta - 4) * theta + 1) / h;
+        final double theta05 = theta - 0.5;
+        final double tOmT = theta * oneMinusTheta;
+        final double t4 = tOmT * tOmT;
+        final double t4Dot = 2 * tOmT * (1 - 2 * theta);
+        final double dot1 = 1.0 / h;
+        final double dot2 = theta * (2 - 3 * theta) / h;
+        final double dot3 = ((3 * theta - 4) * theta + 1) / h;
 
-        final double[] interpolatedState       = new double[dimension];
+        final double[] interpolatedState = new double[dimension];
         final double[] interpolatedDerivatives = new double[dimension];
         for (int i = 0; i < dimension; ++i) {
 
@@ -261,7 +280,7 @@ class GraggBulirschStoerStateInterpolator
                     cDot = d * (theta05 * cDot + c);
                     c = polynomials[j][i] + c * d * theta05;
                 }
-                interpolatedState[i]       += t4 * c;
+                interpolatedState[i] += t4 * c;
                 interpolatedDerivatives[i] += (t4 * cDot + t4Dot * c) / h;
             }
 

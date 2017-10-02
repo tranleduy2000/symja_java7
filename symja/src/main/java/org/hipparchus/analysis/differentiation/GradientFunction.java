@@ -18,7 +18,8 @@ package org.hipparchus.analysis.differentiation;
 
 import org.hipparchus.analysis.MultivariateVectorFunction;
 
-/** Class representing the gradient of a multivariate function.
+/**
+ * Class representing the gradient of a multivariate function.
  * <p>
  * The vectorial components of the function represent the derivatives
  * with respect to each function parameters.
@@ -26,17 +27,23 @@ import org.hipparchus.analysis.MultivariateVectorFunction;
  */
 public class GradientFunction implements MultivariateVectorFunction {
 
-    /** Underlying real-valued function. */
+    /**
+     * Underlying real-valued function.
+     */
     private final MultivariateDifferentiableFunction f;
 
-    /** Simple constructor.
+    /**
+     * Simple constructor.
+     *
      * @param f underlying real-valued function
      */
     public GradientFunction(final MultivariateDifferentiableFunction f) {
         this.f = f;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double[] value(double[] point) {
 

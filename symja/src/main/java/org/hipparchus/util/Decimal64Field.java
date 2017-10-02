@@ -16,10 +16,10 @@
  */
 package org.hipparchus.util;
 
-import java.io.Serializable;
-
 import org.hipparchus.Field;
 import org.hipparchus.FieldElement;
+
+import java.io.Serializable;
 
 /**
  * The field of double precision floating-point numbers.
@@ -28,10 +28,14 @@ import org.hipparchus.FieldElement;
  */
 public class Decimal64Field implements Field<Decimal64>, Serializable {
 
-    /** Serializable version identifier */
+    /**
+     * Serializable version identifier
+     */
     private static final long serialVersionUID = 20161219L;
 
-    /** Default constructor. */
+    /**
+     * Default constructor.
+     */
     private Decimal64Field() {
         // Do nothing
     }
@@ -45,52 +49,68 @@ public class Decimal64Field implements Field<Decimal64>, Serializable {
         return LazyHolder.INSTANCE;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Decimal64 getZero() {
         return Decimal64.ZERO;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Decimal64 getOne() {
         return Decimal64.ONE;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Class<? extends FieldElement<Decimal64>> getRuntimeClass() {
         return Decimal64.class;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(final Object other) {
         return this == other;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
         return 0x0a04d2bf;
     }
 
     // CHECKSTYLE: stop HideUtilityClassConstructor
-    /** Holder for the instance.
-     * <p>We use here the Initialization On Demand Holder Idiom.</p>
-     */
-    private static class LazyHolder {
-        /** Cached field instance. */
-        private static final Decimal64Field INSTANCE = new Decimal64Field();
-    }
-    // CHECKSTYLE: resume HideUtilityClassConstructor
 
-    /** Handle deserialization of the singleton.
+    /**
+     * Handle deserialization of the singleton.
+     *
      * @return the singleton instance
      */
     private Object readResolve() {
         // return the singleton instance
         return LazyHolder.INSTANCE;
+    }
+    // CHECKSTYLE: resume HideUtilityClassConstructor
+
+    /**
+     * Holder for the instance.
+     * <p>We use here the Initialization On Demand Holder Idiom.</p>
+     */
+    private static class LazyHolder {
+        /**
+         * Cached field instance.
+         */
+        private static final Decimal64Field INSTANCE = new Decimal64Field();
     }
 
 }

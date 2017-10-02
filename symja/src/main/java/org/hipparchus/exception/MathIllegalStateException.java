@@ -20,32 +20,33 @@ package org.hipparchus.exception;
  * Base class for all exceptions that signal that the process
  * throwing the exception is in a state that does not comply with
  * the set of states that it is designed to be in.
- *
  */
 public class MathIllegalStateException extends MathRuntimeException {
-    /** Serializable version Id. */
+    /**
+     * Serializable version Id.
+     */
     private static final long serialVersionUID = -6024911025449780478L;
 
     /**
      * Simple constructor.
      *
      * @param pattern Message pattern explaining the cause of the error.
-     * @param args Arguments.
+     * @param args    Arguments.
      */
-    public MathIllegalStateException(Localizable pattern, Object ... args) {
+    public MathIllegalStateException(Localizable pattern, Object... args) {
         super(pattern, args);
     }
 
     /**
      * Simple constructor.
      *
-     * @param cause Root cause.
+     * @param cause   Root cause.
      * @param pattern Message pattern explaining the cause of the error.
-     * @param args Arguments.
+     * @param args    Arguments.
      */
     public MathIllegalStateException(Throwable cause,
                                      Localizable pattern,
-                                     Object ... args) {
+                                     Object... args) {
         super(cause, pattern, args);
     }
 

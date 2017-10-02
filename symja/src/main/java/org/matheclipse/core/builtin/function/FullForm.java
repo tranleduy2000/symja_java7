@@ -12,7 +12,7 @@ import org.matheclipse.core.interfaces.ISymbol;
  * <pre>
  * FullForm(expression)
  * </pre>
- * 
+ * <p>
  * <blockquote>
  * <p>
  * shows the internal representation of the given <code>expression</code>.
@@ -22,28 +22,28 @@ import org.matheclipse.core.interfaces.ISymbol;
  * <p>
  * FullForm shows the difference in the internal expression representation:
  * </p>
- * 
+ * <p>
  * <pre>
  * &gt;&gt;&gt; FullForm(x(x+1))
  * "x(Plus(1, x))"
- * 
+ *
  * &gt;&gt;&gt; FullForm(x*(x+1))
  * "Times(x, Plus(1, x))"
  * </pre>
  */
 public class FullForm extends AbstractCoreFunctionEvaluator {
 
-	public FullForm() {
-	}
+    public FullForm() {
+    }
 
-	@Override
-	public IExpr evaluate(final IAST ast, EvalEngine engine) {
-		Validate.checkSize(ast, 2);
+    @Override
+    public IExpr evaluate(final IAST ast, EvalEngine engine) {
+        Validate.checkSize(ast, 2);
 
-		return F.stringx(engine.evaluate(ast.arg1()).fullFormString());
-	}
+        return F.stringx(engine.evaluate(ast.arg1()).fullFormString());
+    }
 
-	@Override
-	public void setUp(ISymbol newSymbol) {
-	}
+    @Override
+    public void setUp(ISymbol newSymbol) {
+    }
 }

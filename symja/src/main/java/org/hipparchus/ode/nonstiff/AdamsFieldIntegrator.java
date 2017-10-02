@@ -28,77 +28,87 @@ import org.hipparchus.ode.FieldODEStateAndDerivative;
 import org.hipparchus.ode.MultistepFieldIntegrator;
 
 
-/** Base class for {@link AdamsBashforthFieldIntegrator Adams-Bashforth} and
+/**
+ * Base class for {@link AdamsBashforthFieldIntegrator Adams-Bashforth} and
  * {@link AdamsMoultonFieldIntegrator Adams-Moulton} integrators.
+ *
  * @param <T> the type of the field elements
  */
 public abstract class AdamsFieldIntegrator<T extends RealFieldElement<T>> extends MultistepFieldIntegrator<T> {
 
-    /** Transformer. */
+    /**
+     * Transformer.
+     */
     private final AdamsNordsieckFieldTransformer<T> transformer;
 
     /**
      * Build an Adams integrator with the given order and step control parameters.
-     * @param field field to which the time and state vector elements belong
-     * @param name name of the method
-     * @param nSteps number of steps of the method excluding the one being computed
-     * @param order order of the method
-     * @param minStep minimal step (sign is irrelevant, regardless of
-     * integration direction, forward or backward), the last step can
-     * be smaller than this
-     * @param maxStep maximal step (sign is irrelevant, regardless of
-     * integration direction, forward or backward), the last step can
-     * be smaller than this
+     *
+     * @param field                 field to which the time and state vector elements belong
+     * @param name                  name of the method
+     * @param nSteps                number of steps of the method excluding the one being computed
+     * @param order                 order of the method
+     * @param minStep               minimal step (sign is irrelevant, regardless of
+     *                              integration direction, forward or backward), the last step can
+     *                              be smaller than this
+     * @param maxStep               maximal step (sign is irrelevant, regardless of
+     *                              integration direction, forward or backward), the last step can
+     *                              be smaller than this
      * @param scalAbsoluteTolerance allowed absolute error
      * @param scalRelativeTolerance allowed relative error
-     * @exception MathIllegalArgumentException if order is 1 or less
+     * @throws MathIllegalArgumentException if order is 1 or less
      */
     public AdamsFieldIntegrator(final Field<T> field, final String name,
                                 final int nSteps, final int order,
                                 final double minStep, final double maxStep,
                                 final double scalAbsoluteTolerance,
                                 final double scalRelativeTolerance)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
         super(field, name, nSteps, order, minStep, maxStep,
-              scalAbsoluteTolerance, scalRelativeTolerance);
+                scalAbsoluteTolerance, scalRelativeTolerance);
         transformer = AdamsNordsieckFieldTransformer.getInstance(field, nSteps);
     }
 
     /**
      * Build an Adams integrator with the given order and step control parameters.
-     * @param field field to which the time and state vector elements belong
-     * @param name name of the method
-     * @param nSteps number of steps of the method excluding the one being computed
-     * @param order order of the method
-     * @param minStep minimal step (sign is irrelevant, regardless of
-     * integration direction, forward or backward), the last step can
-     * be smaller than this
-     * @param maxStep maximal step (sign is irrelevant, regardless of
-     * integration direction, forward or backward), the last step can
-     * be smaller than this
+     *
+     * @param field                field to which the time and state vector elements belong
+     * @param name                 name of the method
+     * @param nSteps               number of steps of the method excluding the one being computed
+     * @param order                order of the method
+     * @param minStep              minimal step (sign is irrelevant, regardless of
+     *                             integration direction, forward or backward), the last step can
+     *                             be smaller than this
+     * @param maxStep              maximal step (sign is irrelevant, regardless of
+     *                             integration direction, forward or backward), the last step can
+     *                             be smaller than this
      * @param vecAbsoluteTolerance allowed absolute error
      * @param vecRelativeTolerance allowed relative error
-     * @exception IllegalArgumentException if order is 1 or less
+     * @throws IllegalArgumentException if order is 1 or less
      */
     public AdamsFieldIntegrator(final Field<T> field, final String name,
                                 final int nSteps, final int order,
                                 final double minStep, final double maxStep,
                                 final double[] vecAbsoluteTolerance,
                                 final double[] vecRelativeTolerance)
-        throws IllegalArgumentException {
+            throws IllegalArgumentException {
         super(field, name, nSteps, order, minStep, maxStep,
-              vecAbsoluteTolerance, vecRelativeTolerance);
+                vecAbsoluteTolerance, vecRelativeTolerance);
         transformer = AdamsNordsieckFieldTransformer.getInstance(field, nSteps);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public abstract FieldODEStateAndDerivative<T> integrate(final FieldExpandableODE<T> equations,
                                                             final FieldODEState<T> initialState,
                                                             final T finalTime)
-        throws MathIllegalArgumentException, MathIllegalStateException;
+            throws MathIllegalArgumentException, MathIllegalStateException;
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Array2DRowFieldMatrix<T> initializeHighOrderDerivatives(final T h, final T[] t,
                                                                       final T[][] y,
@@ -106,14 +116,16 @@ public abstract class AdamsFieldIntegrator<T extends RealFieldElement<T>> extend
         return transformer.initializeHighOrderDerivatives(h, t, y, yDot);
     }
 
-    /** Update the high order scaled derivatives for Adams integrators (phase 1).
+    /**
+     * Update the high order scaled derivatives for Adams integrators (phase 1).
      * <p>The complete update of high order derivatives has a form similar to:
      * <pre>
      * r<sub>n+1</sub> = (s<sub>1</sub>(n) - s<sub>1</sub>(n+1)) P<sup>-1</sup> u + P<sup>-1</sup> A P r<sub>n</sub>
      * </pre>
      * this method computes the P<sup>-1</sup> A P r<sub>n</sub> part.</p>
+     *
      * @param highOrder high order scaled derivatives
-     * (h<sup>2</sup>/2 y'', ... h<sup>k</sup>/k! y(k))
+     *                  (h<sup>2</sup>/2 y'', ... h<sup>k</sup>/k! y(k))
      * @return updated high order derivatives
      * @see #updateHighOrderDerivativesPhase2(RealFieldElement[], RealFieldElement[], Array2DRowFieldMatrix)
      */
@@ -121,17 +133,19 @@ public abstract class AdamsFieldIntegrator<T extends RealFieldElement<T>> extend
         return transformer.updateHighOrderDerivativesPhase1(highOrder);
     }
 
-    /** Update the high order scaled derivatives Adams integrators (phase 2).
+    /**
+     * Update the high order scaled derivatives Adams integrators (phase 2).
      * <p>The complete update of high order derivatives has a form similar to:
      * <pre>
      * r<sub>n+1</sub> = (s<sub>1</sub>(n) - s<sub>1</sub>(n+1)) P<sup>-1</sup> u + P<sup>-1</sup> A P r<sub>n</sub>
      * </pre>
      * this method computes the (s<sub>1</sub>(n) - s<sub>1</sub>(n+1)) P<sup>-1</sup> u part.</p>
      * <p>Phase 1 of the update must already have been performed.</p>
-     * @param start first order scaled derivatives at step start
-     * @param end first order scaled derivatives at step end
+     *
+     * @param start     first order scaled derivatives at step start
+     * @param end       first order scaled derivatives at step end
      * @param highOrder high order scaled derivatives, will be modified
-     * (h<sup>2</sup>/2 y'', ... h<sup>k</sup>/k! y(k))
+     *                  (h<sup>2</sup>/2 y'', ... h<sup>k</sup>/k! y(k))
      * @see #updateHighOrderDerivativesPhase1(Array2DRowFieldMatrix)
      */
     public void updateHighOrderDerivativesPhase2(final T[] start, final T[] end,

@@ -19,24 +19,28 @@ package org.hipparchus.analysis.differentiation;
 import org.hipparchus.analysis.UnivariateFunction;
 import org.hipparchus.exception.MathIllegalArgumentException;
 
-/** Interface for univariate functions derivatives.
+/**
+ * Interface for univariate functions derivatives.
  * <p>This interface represents a simple function which computes
  * both the value and the first derivative of a mathematical function.
  * The derivative is computed with respect to the input variable.</p>
+ *
  * @see UnivariateDifferentiableFunction
  * @see UnivariateFunctionDifferentiator
  */
 public interface UnivariateDifferentiableFunction extends UnivariateFunction {
 
-    /** Simple mathematical function.
+    /**
+     * Simple mathematical function.
      * <p>{@link UnivariateDifferentiableFunction} classes compute both the
      * value and the first derivative of the function.</p>
+     *
      * @param t function input value
      * @return function result
-     * @exception MathIllegalArgumentException if t is inconsistent with the
-     * function's free parameters or order
+     * @throws MathIllegalArgumentException if t is inconsistent with the
+     *                                      function's free parameters or order
      */
     DerivativeStructure value(DerivativeStructure t)
-        throws MathIllegalArgumentException;
+            throws MathIllegalArgumentException;
 
 }

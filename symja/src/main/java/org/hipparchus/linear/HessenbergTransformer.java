@@ -40,15 +40,25 @@ import org.hipparchus.util.Precision;
  * @see <a href="http://en.wikipedia.org/wiki/Householder_transformation">Householder Transformations</a>
  */
 class HessenbergTransformer {
-    /** Householder vectors. */
+    /**
+     * Householder vectors.
+     */
     private final double householderVectors[][];
-    /** Temporary storage vector. */
+    /**
+     * Temporary storage vector.
+     */
     private final double ort[];
-    /** Cached value of P. */
+    /**
+     * Cached value of P.
+     */
     private RealMatrix cachedP;
-    /** Cached value of Pt. */
+    /**
+     * Cached value of Pt.
+     */
     private RealMatrix cachedPt;
-    /** Cached value of H. */
+    /**
+     * Cached value of H.
+     */
     private RealMatrix cachedH;
 
     /**
@@ -60,7 +70,7 @@ class HessenbergTransformer {
     HessenbergTransformer(final RealMatrix matrix) {
         if (!matrix.isSquare()) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.NON_SQUARE_MATRIX,
-                                                   matrix.getRowDimension(), matrix.getColumnDimension());
+                    matrix.getRowDimension(), matrix.getColumnDimension());
         }
 
         final int m = matrix.getRowDimension();

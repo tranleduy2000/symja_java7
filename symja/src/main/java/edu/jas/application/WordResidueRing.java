@@ -5,14 +5,14 @@
 package edu.jas.application;
 
 
+import org.apache.log4j.Logger;
+
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.SortedSet;
 import java.util.TreeSet;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.gb.WordGroebnerBaseAbstract;
 import edu.jas.gb.WordGroebnerBaseSeq;
@@ -27,37 +27,30 @@ import edu.jas.structure.ValueFactory;
 /**
  * WordResidue ring factory based on GenWordPolynomialRing with GcdRingFactory
  * interface. Objects of this class are immutable.
+ *
  * @author Heinz Kredel
  */
 public class WordResidueRing<C extends GcdRingElem<C>> implements RingFactory<WordResidue<C>>,
-                QuotPairFactory<GenWordPolynomial<C>, WordResidue<C>>,
-                ValueFactory<GenWordPolynomial<C>, WordResidue<C>> {
+        QuotPairFactory<GenWordPolynomial<C>, WordResidue<C>>,
+        ValueFactory<GenWordPolynomial<C>, WordResidue<C>> {
 
 
     private static final Logger logger = Logger.getLogger(WordResidueRing.class);
 
 
     //private static final boolean debug = logger.isDebugEnabled();
-
-
-    /**
-     * Groebner base engine.
-     */
-    protected final WordGroebnerBaseAbstract<C> bb;
-
-
     /**
      * Word polynomial ideal for the reduction.
      */
     public final WordIdeal<C> ideal;
-
-
     /**
      * Polynomial ring of the factory. Shortcut to ideal.list.ring.
      */
     public final GenWordPolynomialRing<C> ring;
-
-
+    /**
+     * Groebner base engine.
+     */
+    protected final WordGroebnerBaseAbstract<C> bb;
     /**
      * Indicator if this ring is a field.
      */
@@ -66,6 +59,7 @@ public class WordResidueRing<C extends GcdRingElem<C>> implements RingFactory<Wo
 
     /**
      * The constructor creates a WordResidueRing object from an Ideal.
+     *
      * @param i polynomial ideal.
      */
     public WordResidueRing(WordIdeal<C> i) {
@@ -75,7 +69,8 @@ public class WordResidueRing<C extends GcdRingElem<C>> implements RingFactory<Wo
 
     /**
      * The constructor creates a WordResidueRing object from an WordIdeal.
-     * @param i solvable polynomial ideal.
+     *
+     * @param i         solvable polynomial ideal.
      * @param isMaximal true, if ideal is maxmal.
      */
     public WordResidueRing(WordIdeal<C> i, boolean isMaximal) {
@@ -131,6 +126,7 @@ public class WordResidueRing<C extends GcdRingElem<C>> implements RingFactory<Wo
 
     /**
      * Is this structure finite or infinite.
+     *
      * @return true if this structure is finite, else false.
      * @see edu.jas.structure.ElemFactory#isFinite()
      */
@@ -141,6 +137,7 @@ public class WordResidueRing<C extends GcdRingElem<C>> implements RingFactory<Wo
 
     /**
      * Copy WordResidue element c.
+     *
      * @param c
      * @return a copy of c.
      */
@@ -158,6 +155,7 @@ public class WordResidueRing<C extends GcdRingElem<C>> implements RingFactory<Wo
 
     /**
      * Get the zero element.
+     *
      * @return 0 as WordResidue.
      */
     public WordResidue<C> getZERO() {
@@ -167,6 +165,7 @@ public class WordResidueRing<C extends GcdRingElem<C>> implements RingFactory<Wo
 
     /**
      * Get the one element.
+     *
      * @return 1 as WordResidue.
      */
     public WordResidue<C> getONE() {
@@ -180,6 +179,7 @@ public class WordResidueRing<C extends GcdRingElem<C>> implements RingFactory<Wo
 
     /**
      * Get a list of the generating elements.
+     *
      * @return list of generators for the algebraic structure.
      * @see edu.jas.structure.ElemFactory#generators()
      */
@@ -227,6 +227,7 @@ public class WordResidueRing<C extends GcdRingElem<C>> implements RingFactory<Wo
 
     /**
      * Query if this ring is commutative.
+     *
      * @return true if this ring is commutative, else false.
      */
     public boolean isCommutative() {
@@ -236,6 +237,7 @@ public class WordResidueRing<C extends GcdRingElem<C>> implements RingFactory<Wo
 
     /**
      * Query if this ring is associative.
+     *
      * @return true if this ring is associative, else false.
      */
     public boolean isAssociative() {
@@ -245,6 +247,7 @@ public class WordResidueRing<C extends GcdRingElem<C>> implements RingFactory<Wo
 
     /**
      * Query if this ring is a field.
+     *
      * @return false.
      */
     public boolean isField() {
@@ -264,6 +267,7 @@ public class WordResidueRing<C extends GcdRingElem<C>> implements RingFactory<Wo
 
     /**
      * Characteristic of this ring.
+     *
      * @return characteristic of this ring.
      */
     public java.math.BigInteger characteristic() {
@@ -273,6 +277,7 @@ public class WordResidueRing<C extends GcdRingElem<C>> implements RingFactory<Wo
 
     /**
      * Get a WordResidue element from a BigInteger value.
+     *
      * @param a BigInteger.
      * @return a WordResidue.
      */
@@ -283,6 +288,7 @@ public class WordResidueRing<C extends GcdRingElem<C>> implements RingFactory<Wo
 
     /**
      * Get a WordResidue element from a long value.
+     *
      * @param a long.
      * @return a WordResidue.
      */
@@ -293,6 +299,7 @@ public class WordResidueRing<C extends GcdRingElem<C>> implements RingFactory<Wo
 
     /**
      * Get the String representation as RingFactory.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -303,6 +310,7 @@ public class WordResidueRing<C extends GcdRingElem<C>> implements RingFactory<Wo
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this ElemFactory.
      * @see edu.jas.structure.ElemFactory#toScript()
      */
@@ -316,6 +324,7 @@ public class WordResidueRing<C extends GcdRingElem<C>> implements RingFactory<Wo
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -341,6 +350,7 @@ public class WordResidueRing<C extends GcdRingElem<C>> implements RingFactory<Wo
 
     /**
      * Hash code for this residue ring.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -353,6 +363,7 @@ public class WordResidueRing<C extends GcdRingElem<C>> implements RingFactory<Wo
 
     /**
      * WordResidue random.
+     *
      * @param n such that 0 &le; v &le; (2<sup>n</sup>-1).
      * @return a random residue element.
      */
@@ -364,6 +375,7 @@ public class WordResidueRing<C extends GcdRingElem<C>> implements RingFactory<Wo
 
     /**
      * Generate a random residum polynomial.
+     *
      * @param k bitsize of random coefficients.
      * @param l number of terms.
      * @param d maximal degree in each variable.
@@ -377,7 +389,8 @@ public class WordResidueRing<C extends GcdRingElem<C>> implements RingFactory<Wo
 
     /**
      * WordResidue random.
-     * @param n such that 0 &le; v &le; (2<sup>n</sup>-1).
+     *
+     * @param n   such that 0 &le; v &le; (2<sup>n</sup>-1).
      * @param rnd is a source for random bits.
      * @return a random residue element.
      */
@@ -389,6 +402,7 @@ public class WordResidueRing<C extends GcdRingElem<C>> implements RingFactory<Wo
 
     /**
      * Parse WordResidue from String.
+     *
      * @param s String.
      * @return WordResidue from s.
      */
@@ -400,6 +414,7 @@ public class WordResidueRing<C extends GcdRingElem<C>> implements RingFactory<Wo
 
     /**
      * Parse WordResidue from Reader.
+     *
      * @param r Reader.
      * @return next WordResidue from r.
      */

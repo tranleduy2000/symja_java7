@@ -23,40 +23,54 @@ import org.hipparchus.exception.MathIllegalArgumentException;
 
 import java.io.Serializable;
 
-/** Factory for {@link DerivativeStructure}.
+/**
+ * Factory for {@link DerivativeStructure}.
  * <p>This class is a factory for {@link DerivativeStructure} instances.</p>
  * <p>Instances of this class are guaranteed to be immutable.</p>
+ *
  * @see DerivativeStructure
  * @since 1.1
  */
 public class DSFactory implements Serializable {
 
-    /** Serializable UID. */
+    /**
+     * Serializable UID.
+     */
     private static final long serialVersionUID = 20161222L;
 
-    /** Compiler for the current dimensions. */
+    /**
+     * Compiler for the current dimensions.
+     */
     private final transient DSCompiler compiler;
 
-    /** Field the {@link DerivativeStructure} instances belong to. */
+    /**
+     * Field the {@link DerivativeStructure} instances belong to.
+     */
     private final transient Field<DerivativeStructure> derivativeField;
 
-    /** Simple constructor.
+    /**
+     * Simple constructor.
+     *
      * @param parameters number of free parameters
-     * @param order derivation order
+     * @param order      derivation order
      */
     public DSFactory(final int parameters, final int order) {
-        this.compiler        = DSCompiler.getCompiler(parameters, order);
+        this.compiler = DSCompiler.getCompiler(parameters, order);
         this.derivativeField = new DSField(constant(0.0), constant(1.0));
     }
 
-    /** Get the {@link Field} the {@link DerivativeStructure} instances belong to.
+    /**
+     * Get the {@link Field} the {@link DerivativeStructure} instances belong to.
+     *
      * @return {@link Field} the {@link DerivativeStructure} instances belong to
      */
     public Field<DerivativeStructure> getDerivativeField() {
         return derivativeField;
     }
 
-    /** Build a {@link DerivativeStructure} representing a constant value.
+    /**
+     * Build a {@link DerivativeStructure} representing a constant value.
+     *
      * @param value value of the constant
      * @return a {@link DerivativeStructure} representing a constant value
      */
@@ -66,24 +80,26 @@ public class DSFactory implements Serializable {
         return new DerivativeStructure(this, data);
     }
 
-    /** Build a {@link DerivativeStructure} representing a variable.
+    /**
+     * Build a {@link DerivativeStructure} representing a variable.
      * <p>Instances built using this method are considered
      * to be the free variables with respect to which differentials
      * are computed. As such, their differential with respect to
      * themselves is +1.</p>
+     *
      * @param index index of the variable (from 0 to
-     * {@link #getCompiler()}.{@link DSCompiler#getFreeParameters() getFreeParameters()} - 1)
+     *              {@link #getCompiler()}.{@link DSCompiler#getFreeParameters() getFreeParameters()} - 1)
      * @param value value of the variable
-     * @exception MathIllegalArgumentException if index if greater or
-     * equal to {@link #getCompiler()}.{@link DSCompiler#getFreeParameters() getFreeParameters()}.
      * @return a {@link DerivativeStructure} representing a variable
+     * @throws MathIllegalArgumentException if index if greater or
+     *                                      equal to {@link #getCompiler()}.{@link DSCompiler#getFreeParameters() getFreeParameters()}.
      */
     public DerivativeStructure variable(final int index, final double value)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
 
         if (index >= getCompiler().getFreeParameters()) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.NUMBER_TOO_LARGE_BOUND_EXCLUDED,
-                                                   index, getCompiler().getFreeParameters());
+                    index, getCompiler().getFreeParameters());
         }
 
         final double[] data = new double[compiler.getSize()];
@@ -97,23 +113,25 @@ public class DSFactory implements Serializable {
 
     }
 
-    /** Build a {@link DerivativeStructure} from all its derivatives.
+    /**
+     * Build a {@link DerivativeStructure} from all its derivatives.
+     *
      * @param derivatives derivatives sorted according to
-     * {@link DSCompiler#getPartialDerivativeIndex(int...)}
+     *                    {@link DSCompiler#getPartialDerivativeIndex(int...)}
      * @return a {@link DerivativeStructure} with specified derivatives
-     * @exception MathIllegalArgumentException if derivatives array does not match the
-     * {@link DSCompiler#getSize() size} expected by the compiler
-     * @exception MathIllegalArgumentException if order is too large
+     * @throws MathIllegalArgumentException if derivatives array does not match the
+     *                                      {@link DSCompiler#getSize() size} expected by the compiler
+     * @throws MathIllegalArgumentException if order is too large
      * @see DerivativeStructure#getAllDerivatives()
      */
     @SafeVarargs
-    public final DerivativeStructure build(final double ... derivatives)
-        throws MathIllegalArgumentException {
+    public final DerivativeStructure build(final double... derivatives)
+            throws MathIllegalArgumentException {
 
         final double[] data = new double[compiler.getSize()];
         if (derivatives.length != data.length) {
             throw new MathIllegalArgumentException(LocalizedCoreFormats.DIMENSIONS_MISMATCH,
-                                                   derivatives.length, data.length);
+                    derivatives.length, data.length);
         }
         System.arraycopy(derivatives, 0, data, 0, data.length);
 
@@ -121,24 +139,30 @@ public class DSFactory implements Serializable {
 
     }
 
-    /** Build a {@link DerivativeStructure} with an uninitialized array.
+    /**
+     * Build a {@link DerivativeStructure} with an uninitialized array.
      * <p>This method is intended only for DerivativeStructure internal use.</p>
+     *
      * @return a {@link DerivativeStructure} with an uninitialized array
      */
     DerivativeStructure build() {
         return new DerivativeStructure(this, new double[compiler.getSize()]);
     }
 
-    /** Get the compiler for the current dimensions.
+    /**
+     * Get the compiler for the current dimensions.
+     *
      * @return compiler for the current dimensions
      */
     public DSCompiler getCompiler() {
         return compiler;
     }
 
-    /** Check rules set compatibility.
+    /**
+     * Check rules set compatibility.
+     *
      * @param factory other factory field to check against instance
-     * @exception MathIllegalArgumentException if number of free parameters or orders are inconsistent
+     * @throws MathIllegalArgumentException if number of free parameters or orders are inconsistent
      */
     void checkCompatibility(final DSFactory factory) throws MathIllegalArgumentException {
         compiler.checkCompatibility(factory.compiler);
@@ -146,38 +170,51 @@ public class DSFactory implements Serializable {
 
     /**
      * Replace the instance with a data transfer object for serialization.
+     *
      * @return data transfer object that will be serialized
      */
     private Object writeReplace() {
         return new DataTransferObject(compiler.getFreeParameters(), compiler.getOrder());
     }
 
-    /** Internal class used only for serialization. */
+    /**
+     * Internal class used only for serialization.
+     */
     private static class DataTransferObject implements Serializable {
 
-        /** Serializable UID. */
+        /**
+         * Serializable UID.
+         */
         private static final long serialVersionUID = 20161222L;
 
-        /** Number of variables.
+        /**
+         * Number of variables.
+         *
          * @serial
          */
         private final int variables;
 
-        /** Derivation order.
+        /**
+         * Derivation order.
+         *
          * @serial
          */
         private final int order;
 
-        /** Simple constructor.
+        /**
+         * Simple constructor.
+         *
          * @param variables number of variables
-         * @param order derivation order
+         * @param order     derivation order
          */
         DataTransferObject(final int variables, final int order) {
             this.variables = variables;
-            this.order     = order;
+            this.order = order;
         }
 
-        /** Replace the deserialized data transfer object with a {@link DSFactory}.
+        /**
+         * Replace the deserialized data transfer object with a {@link DSFactory}.
+         *
          * @return replacement {@link DSFactory}
          */
         private Object readResolve() {
@@ -186,44 +223,59 @@ public class DSFactory implements Serializable {
 
     }
 
-    /** Field for {link DerivativeStructure} instances.
+    /**
+     * Field for {link DerivativeStructure} instances.
      */
     private static class DSField implements Field<DerivativeStructure> {
 
-        /** Constant function evaluating to 0.0. */
+        /**
+         * Constant function evaluating to 0.0.
+         */
         private final DerivativeStructure zero;
 
-        /** Constant function evaluating to 1.0. */
+        /**
+         * Constant function evaluating to 1.0.
+         */
         private final DerivativeStructure one;
 
-        /** Simple constructor.
+        /**
+         * Simple constructor.
+         *
          * @param zero constant function evaluating to 0.0
-         * @param one constant function evaluating to 1.0
+         * @param one  constant function evaluating to 1.0
          */
         DSField(final DerivativeStructure zero, final DerivativeStructure one) {
             this.zero = zero;
-            this.one  = one;
+            this.one = one;
         }
 
-        /** {@inheritDoc} */
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public DerivativeStructure getZero() {
             return zero;
         }
 
-        /** {@inheritDoc} */
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public DerivativeStructure getOne() {
             return one;
         }
 
-        /** {@inheritDoc} */
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public Class<? extends FieldElement<DerivativeStructure>> getRuntimeClass() {
             return DerivativeStructure.class;
         }
 
-        /** {@inheritDoc} */
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public boolean equals(final Object other) {
             if (this == other) {
@@ -237,7 +289,9 @@ public class DSFactory implements Serializable {
             }
         }
 
-        /** {@inheritDoc} */
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public int hashCode() {
             final DSCompiler compiler = zero.getFactory().getCompiler();
