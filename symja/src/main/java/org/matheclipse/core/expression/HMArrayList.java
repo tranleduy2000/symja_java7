@@ -15,7 +15,7 @@
  *  limitations under the License.
  */
 
-package org.matheclipse.core.expression; import java.util.function.Consumer; import java.util.function.Function; import java.util.function.Predicate;
+package org.matheclipse.core.expression;
 
 import org.matheclipse.core.eval.EvalEngine;
 import org.matheclipse.core.interfaces.IAST;
@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -35,6 +34,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 /**
  * HMArrayList is an implementation of a list, backed by an array. All optional
@@ -787,46 +787,47 @@ public abstract class HMArrayList extends AbstractAST implements Cloneable, Seri
     }
 
     @Override
-    public ArrayList<IExpr> stream() {
-        ArrayList<IExpr> result = new ArrayList<>();
-        for (int i = firstIndex + 1; i < lastIndex - firstIndex; i++) {
-            result.add(array[i]);
-        }
-        return result;
-//		return Arrays.stream(array, firstIndex + 1, lastIndex - firstIndex);
+    public Stream<IExpr> stream() {
+//        ArrayList<IExpr> result = new ArrayList<>();
+//        for (int i = firstIndex + 1; i < lastIndex - firstIndex; i++) {
+//            result.add(array[i]);
+//        }
+//        return result;
+        return Arrays.stream(array, firstIndex + 1, lastIndex - firstIndex);
     }
 
     @Override
-    public ArrayList<IExpr> stream(int startInclusive, int endExclusive) {
-        ArrayList<IExpr> result = new ArrayList<>();
-        IExpr[] array = toArray();
-        for (int i = firstIndex + startInclusive; i < firstIndex + endExclusive; i++) {
-            result.add(array[i]);
+    public Stream<IExpr> stream(int startInclusive, int endExclusive) {
+//        ArrayList<IExpr> result = new ArrayList<>();
+//        IExpr[] array = toArray();
+//        for (int i = firstIndex + startInclusive; i < firstIndex + endExclusive; i++) {
+//            result.add(array[i]);
+//        }
+//        return result;
+		return Arrays.stream(toArray(), firstIndex + startInclusive, firstIndex + endExclusive);
+    }
+
+        /**
+         * Returns a new array containing all elements contained in this
+         * {@code ArrayList}.
+         *
+         * @return an array of the elements from this {@code ArrayList}
+         */
+        @Override
+        public IExpr[] toArray () {
+            int size = lastIndex - firstIndex;
+            IExpr[] result = new IExpr[size];
+            System.arraycopy(array, firstIndex, result, 0, size);
+            return result;
         }
-        return result;
-//		return Arrays.stream(toArray(), firstIndex + startInclusive, firstIndex + endExclusive);
-    }
 
-    /**
-     * Returns a new array containing all elements contained in this
-     * {@code ArrayList}.
-     *
-     * @return an array of the elements from this {@code ArrayList}
-     */
-    @Override
-    public IExpr[] toArray() {
-        int size = lastIndex - firstIndex;
-        IExpr[] result = new IExpr[size];
-        System.arraycopy(array, firstIndex, result, 0, size);
-        return result;
-    }
+        /**
+         * Sets the capacity of this {@code ArrayList} to be the same as the current
+         * size.
+         *
+         * @see #size
+         */
 
-    /**
-     * Sets the capacity of this {@code ArrayList} to be the same as the current
-     * size.
-     *
-     * @see #size
-     */
     public void trimToSize() {
         int size = lastIndex - firstIndex;
         IExpr[] newArray = newElementArray(size);

@@ -1,4 +1,4 @@
-package org.matheclipse.core.expression; import java.util.function.Consumer; import java.util.function.Function; import java.util.function.Predicate;
+package org.matheclipse.core.expression;
 
 import org.hipparchus.complex.Complex;
 import org.hipparchus.linear.Array2DRowRealMatrix;
@@ -40,6 +40,7 @@ import org.matheclipse.core.visit.IVisitorLong;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -51,6 +52,7 @@ import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 public abstract class AbstractAST extends ASTImpl {
 
@@ -2943,25 +2945,25 @@ public abstract class AbstractAST extends ASTImpl {
     }
 
     @Override
-    public ArrayList<IExpr> stream() {
-        ArrayList<IExpr> result = new ArrayList<>();
-        IExpr[] array = toArray();
-        for (int i = 1; i < size(); i++) {
-            result.add(array[i]);
-        }
-        return result;
-//        return Arrays.stream(toArray(), 1, size());
+    public Stream<IExpr> stream() {
+//        ArrayList<IExpr> result = new ArrayList<>();
+//        IExpr[] array = toArray();
+//        for (int i = 1; i < size(); i++) {
+//            result.add(array[i]);
+//        }
+//        return result;
+        return Arrays.stream(toArray(), 1, size());
     }
 
     @Override
-    public ArrayList<IExpr> stream(int startInclusive, int endExclusive) {
-        ArrayList<IExpr> result = new ArrayList<>();
-        IExpr[] array = toArray();
-        for (int i = startInclusive; i < endExclusive; i++) {
-            result.add(array[i]);
-        }
-        return result;
-//        return Arrays.stream(toArray(), startInclusive, endExclusive);
+    public Stream<IExpr> stream(int startInclusive, int endExclusive) {
+//        ArrayList<IExpr> result = new ArrayList<>();
+//        IExpr[] array = toArray();
+//        for (int i = startInclusive; i < endExclusive; i++) {
+//            result.add(array[i]);
+//        }
+//        return result;
+        return Arrays.stream(toArray(), startInclusive, endExclusive);
     }
 
     @Override

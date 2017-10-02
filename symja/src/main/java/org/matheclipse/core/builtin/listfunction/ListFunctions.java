@@ -1787,7 +1787,7 @@ public final class ListFunctions {
                         IExpr result = ast.arg1();
                         IAST arg3 = (IAST) ast.arg3();
                         // TODO: 10/2/2017 debug
-                        for (IExpr subList : arg3.stream()) {
+                        for (IExpr subList : arg3) {
                             IExpr expr = result.replacePart(F.Rule(subList, ast.arg2()));
                             if (expr.isPresent()) {
                                 result = expr;
@@ -1801,7 +1801,7 @@ public final class ListFunctions {
                     IExpr result = ast.arg1();
                     IAST iast = (IAST) ast.arg2();
                     // TODO: 10/2/2017 debug
-                    for (IExpr subList : iast.stream()) {
+                    for (IExpr subList : iast) {
                         if (subList.isRuleAST()) {
                             IExpr expr = result.replacePart((IAST) subList);
                             if (expr.isPresent()) {

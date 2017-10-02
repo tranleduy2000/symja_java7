@@ -1123,7 +1123,7 @@ public interface IAST extends IExpr, Cloneable, Iterable<IExpr> {
      *
      * @return a {@code Stream} for the internal array range
      */
-    public ArrayList<IExpr> stream();
+    public Stream<IExpr> stream();
 
     /**
      * Returns a sequential {@link Stream} with the specified range of the specified
@@ -1136,7 +1136,7 @@ public interface IAST extends IExpr, Cloneable, Iterable<IExpr> {
      *                                        less than {@code startInclusive}, or {@code endExclusive} is
      *                                        greater than the array size
      */
-    public ArrayList<IExpr> stream(int startInclusive, int endExclusive);
+    public Stream<IExpr> stream(int startInclusive, int endExclusive);
 
     /**
      * Returns an array containing all elements contained in this {@code List}.
