@@ -58,7 +58,7 @@ public class Dimension implements Serializable {
 
     /**
      * String representation of the ideal.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {

@@ -66,7 +66,7 @@ public class GroebnerSystem<C extends GcdRingElem<C>> {
 
     /**
      * Get the String representation.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -179,7 +179,7 @@ public class GroebnerSystem<C extends GcdRingElem<C>> {
 
     /**
      * Hash code for this colored system.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

@@ -35,7 +35,7 @@ import edu.jas.ufd.GreatestCommonDivisorFake;
  * @author Heinz Kredel
  * 
  * @see edu.jas.application.GBAlgorithmBuilder
- * @see GBFactory
+ * @see edu.jas.gbufd.GBFactory
  */
 
 public class SolvableGroebnerBasePseudoSeq<C extends GcdRingElem<C>> extends SolvableGroebnerBaseAbstract<C> {

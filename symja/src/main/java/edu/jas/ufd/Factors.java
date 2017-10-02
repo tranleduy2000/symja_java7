@@ -106,7 +106,7 @@ public class Factors<C extends GcdRingElem<C>> implements Comparable<Factors<C>>
 
     /**
      * Get the String representation.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -203,7 +203,7 @@ public class Factors<C extends GcdRingElem<C>> implements Comparable<Factors<C>>
 
     /**
      * Hash code for this Factors.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {
@@ -228,7 +228,7 @@ public class Factors<C extends GcdRingElem<C>> implements Comparable<Factors<C>>
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     @SuppressWarnings("unchecked")

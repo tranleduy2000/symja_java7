@@ -9,12 +9,13 @@ import java.io.Serializable;
 import java.util.List;
 
 import edu.jas.arith.Rational;
+import edu.jas.poly.AlgebraicNumberRing;
 import edu.jas.poly.AlgebraicNumber;
-import edu.jas.poly.Complex;
 import edu.jas.poly.GenPolynomial;
+import edu.jas.poly.Complex;
 import edu.jas.root.AlgebraicRoots;
-import edu.jas.root.ComplexAlgebraicNumber;
 import edu.jas.root.RealAlgebraicNumber;
+import edu.jas.root.ComplexAlgebraicNumber;
 import edu.jas.structure.GcdRingElem;
 
 
@@ -90,7 +91,7 @@ public class AlgebraicRootsPrimElem<C extends GcdRingElem<C> & Rational>
 
     /**
      * String representation of AlgebraicRootsPrimElem.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -148,7 +149,7 @@ public class AlgebraicRootsPrimElem<C extends GcdRingElem<C> & Rational>
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -169,7 +170,7 @@ public class AlgebraicRootsPrimElem<C extends GcdRingElem<C> & Rational>
 
     /**
      * Hash code for this AlgebraicRootsPrimElem.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

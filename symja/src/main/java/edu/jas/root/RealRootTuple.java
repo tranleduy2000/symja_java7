@@ -43,7 +43,7 @@ public class RealRootTuple<C extends GcdRingElem<C> & Rational> implements Seria
 
     /**
      * String representation of tuple.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -136,7 +136,7 @@ public class RealRootTuple<C extends GcdRingElem<C> & Rational> implements Seria
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -155,7 +155,7 @@ public class RealRootTuple<C extends GcdRingElem<C> & Rational> implements Seria
 
     /**
      * Hash code for this Rectangle.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

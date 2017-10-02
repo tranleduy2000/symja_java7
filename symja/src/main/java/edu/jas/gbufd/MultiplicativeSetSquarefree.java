@@ -63,7 +63,7 @@ public class MultiplicativeSetSquarefree<C extends GcdRingElem<C>> extends Multi
 
     /**
      * toString.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -73,7 +73,7 @@ public class MultiplicativeSetSquarefree<C extends GcdRingElem<C>> extends Multi
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     public boolean equals(Object B) {

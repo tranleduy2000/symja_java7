@@ -34,7 +34,7 @@ public class MapEntry<K,V> implements Map.Entry<K,V> {
 
     /**
      * Get the key.
-     * @see Map.Entry#getKey()
+     * @see java.util.Map.Entry#getKey()
      */
     public K getKey() {
         return key;
@@ -43,7 +43,7 @@ public class MapEntry<K,V> implements Map.Entry<K,V> {
 
     /**
      * Get the value.
-     * @see Map.Entry#getValue()
+     * @see java.util.Map.Entry#getValue()
      */
     public V getValue() {
         return value;
@@ -53,7 +53,7 @@ public class MapEntry<K,V> implements Map.Entry<K,V> {
     /**
      * Set the value.
      * Is not implemented.
-     * @see Map.Entry
+     * @see java.util.Map.Entry
      */
     public V setValue(V value) {
         throw new UnsupportedOperationException("not implemented");
@@ -62,7 +62,7 @@ public class MapEntry<K,V> implements Map.Entry<K,V> {
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -77,7 +77,7 @@ public class MapEntry<K,V> implements Map.Entry<K,V> {
 
     /**
      * Hash code for this MapEntry.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

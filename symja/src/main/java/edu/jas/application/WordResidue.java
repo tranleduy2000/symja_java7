@@ -110,7 +110,7 @@ public class WordResidue<C extends GcdRingElem<C>> implements GcdRingElem<WordRe
 
     /**
      * Value. Returns the value.
-     * @see Value#value()
+     * @see edu.jas.structure.Value#value()
      */
     public GenWordPolynomial<C> value() {
         return val;
@@ -119,7 +119,7 @@ public class WordResidue<C extends GcdRingElem<C>> implements GcdRingElem<WordRe
 
     /**
      * Numerator. Returns the value.
-     * @see QuotPair#numerator()
+     * @see edu.jas.structure.QuotPair#numerator()
      */
     public GenWordPolynomial<C> numerator() {
         return val;
@@ -128,7 +128,7 @@ public class WordResidue<C extends GcdRingElem<C>> implements GcdRingElem<WordRe
 
     /**
      * Denominator. Returns 1.
-     * @see QuotPair#denominator()
+     * @see edu.jas.structure.QuotPair#denominator()
      */
     public GenWordPolynomial<C> denominator() {
         return ring.ring.getONE();
@@ -137,7 +137,7 @@ public class WordResidue<C extends GcdRingElem<C>> implements GcdRingElem<WordRe
 
     /**
      * Clone this.
-     * @see Object#clone()
+     * @see java.lang.Object#clone()
      */
     @Override
     public WordResidue<C> copy() {
@@ -200,7 +200,7 @@ public class WordResidue<C extends GcdRingElem<C>> implements GcdRingElem<WordRe
 
     /**
      * Get the String representation as RingElem.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -255,7 +255,7 @@ public class WordResidue<C extends GcdRingElem<C>> implements GcdRingElem<WordRe
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      * @return true means that this and b are equivalent in this residue class
      *         ring.
      */
@@ -279,7 +279,7 @@ public class WordResidue<C extends GcdRingElem<C>> implements GcdRingElem<WordRe
 
     /**
      * Hash code for this residue.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

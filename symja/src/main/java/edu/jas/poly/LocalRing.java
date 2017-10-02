@@ -210,7 +210,7 @@ public class LocalRing<C extends RingElem<C>> implements RingFactory<Local<C>>, 
 
     /**
      * Get the String representation as RingFactory.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -232,7 +232,7 @@ public class LocalRing<C extends RingElem<C>> implements RingFactory<Local<C>>, 
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -254,7 +254,7 @@ public class LocalRing<C extends RingElem<C>> implements RingFactory<Local<C>>, 
 
     /**
      * Hash code for this local ring.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

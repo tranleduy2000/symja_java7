@@ -140,7 +140,7 @@ public class Pair<C extends RingElem<C>> implements Serializable, Comparable<Pai
 
     /**
      * Hash code for this Pair.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

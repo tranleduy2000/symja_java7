@@ -38,7 +38,7 @@ import edu.jas.structure.RingFactory;
  * @author Heinz Kredel
  * 
  * @see edu.jas.application.GBAlgorithmBuilder
- * @see GBFactory
+ * @see edu.jas.gbufd.GBFactory
  */
 public class GroebnerBaseWalk<C extends GcdRingElem<C>> extends GroebnerBaseAbstract<C> {
 
@@ -119,7 +119,7 @@ public class GroebnerBaseWalk<C extends GcdRingElem<C>> extends GroebnerBaseAbst
 
     /**
      * Get the String representation with GB engine.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {

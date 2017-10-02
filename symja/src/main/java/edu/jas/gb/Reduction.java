@@ -42,7 +42,7 @@ public interface Reduction<C extends RingElem<C>> extends Serializable {
      * @return Spol(Ap, Bp), the S-Polynomial for Ap and Bp.
      */
     public GenPolynomial<C> SPolynomial(List<GenPolynomial<C>> S, int i, GenPolynomial<C> Ap, int j,
-                                        GenPolynomial<C> Bp);
+                    GenPolynomial<C> Bp);
 
 
     /**
@@ -155,7 +155,7 @@ public interface Reduction<C extends RingElem<C>> extends Serializable {
      * @return nf(Pp,Ap), the normal form of Ap wrt. Pp.
      */
     public GenPolynomial<C> normalform(List<GenPolynomial<C>> row, List<GenPolynomial<C>> Pp,
-                                       GenPolynomial<C> Ap);
+                    GenPolynomial<C> Ap);
 
 
     /**
@@ -177,6 +177,6 @@ public interface Reduction<C extends RingElem<C>> extends Serializable {
      */
 
     public boolean isReductionNF(List<GenPolynomial<C>> row, List<GenPolynomial<C>> Pp, GenPolynomial<C> Ap,
-                                 GenPolynomial<C> Np);
+                    GenPolynomial<C> Np);
 
 }

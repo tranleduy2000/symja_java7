@@ -115,7 +115,7 @@ public class QuotSolvablePolynomial<C extends GcdRingElem<C>> extends
 
     /**
      * Clone this QuotSolvablePolynomial.
-     * @see Object#clone()
+     * @see java.lang.Object#clone()
      */
     @Override
     public QuotSolvablePolynomial<C> copy() {
@@ -125,7 +125,7 @@ public class QuotSolvablePolynomial<C extends GcdRingElem<C>> extends
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     public boolean equals(Object B) {

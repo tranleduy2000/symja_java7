@@ -73,7 +73,7 @@ public abstract class FactorAbsolute<C extends GcdRingElem<C>> extends FactorAbs
 
     /**
      * Get the String representation.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {

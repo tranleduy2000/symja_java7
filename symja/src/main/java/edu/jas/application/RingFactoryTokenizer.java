@@ -46,7 +46,7 @@ import edu.jas.ufd.QuotientRing;
 /**
  * RingFactory Tokenizer. Used to read ring factories from input streams. It can
  * also read QuotientRing factory.
- * @see GenPolynomialTokenizer
+ * @see edu.jas.poly.GenPolynomialTokenizer
  * @author Heinz Kredel
  */
 public class RingFactoryTokenizer {

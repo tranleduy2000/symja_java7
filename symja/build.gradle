@@ -8,25 +8,19 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 26
-        versionCode 30
-        versionName "3.8"
+        versionCode 1
+        versionName "1.0"
         multiDexEnabled true
     }
+
     buildTypes {
         release {
             minifyEnabled false
             debuggable false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-        debug {
-            minifyEnabled false
-            debuggable true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
     }
-    lintOptions {
-        abortOnError false
-    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -43,14 +37,11 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.google.guava:guava:20.0'
     testCompile 'junit:junit:4.12'
-
-    compile 'com.android.support:multidex:1.0.1'
-
-    retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:+'
+    retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:2.5.1'
 }
 
 retrolambda {
     javaVersion JavaVersion.VERSION_1_7
     defaultMethods true
-    incremental true
+    jvmArgs '-noverify'
 }

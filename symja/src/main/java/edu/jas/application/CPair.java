@@ -147,7 +147,7 @@ public class CPair<C extends RingElem<C>> implements Serializable, Comparable<CP
 
     /**
      * Hash code for this pair.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

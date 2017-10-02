@@ -234,7 +234,7 @@ public class OrderedCPairlist<C extends GcdRingElem<C>> implements Serializable 
 
     /**
      * Hash code for this pair list.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

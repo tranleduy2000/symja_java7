@@ -108,7 +108,7 @@ public class GenSolvablePolynomial<C extends RingElem<C>> extends GenPolynomial<
 
     /**
      * Clone this GenSolvablePolynomial.
-     * @see Object#clone()
+     * @see java.lang.Object#clone()
      */
     @Override
     public GenSolvablePolynomial<C> copy() {
@@ -118,7 +118,7 @@ public class GenSolvablePolynomial<C extends RingElem<C>> extends GenPolynomial<
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     public boolean equals(Object B) {
@@ -814,7 +814,7 @@ public class GenSolvablePolynomial<C extends RingElem<C>> extends GenPolynomial<
      *            coefficient.
      * @return quotient with this = quotient * S + remainder and
      *         deg(remainder) &lt; deg(S) or remiander = 0.
-     * @see PolyUtil#baseSparsePseudoRemainder(GenPolynomial,GenPolynomial)
+     * @see edu.jas.poly.PolyUtil#baseSparsePseudoRemainder(edu.jas.poly.GenPolynomial,edu.jas.poly.GenPolynomial)
      */
     // cannot @Override, @NoOverride
     @SuppressWarnings({ "unchecked" })
@@ -831,7 +831,7 @@ public class GenSolvablePolynomial<C extends RingElem<C>> extends GenPolynomial<
      *            coefficient.
      * @return remainder with this = quotient * S + remainder and
      *         deg(remainder) &lt; deg(S) or remiander = 0.
-     * @see PolyUtil#baseSparsePseudoRemainder(GenPolynomial,GenPolynomial)
+     * @see edu.jas.poly.PolyUtil#baseSparsePseudoRemainder(edu.jas.poly.GenPolynomial,edu.jas.poly.GenPolynomial)
      */
     // cannot @Override, @NoOverride
     @SuppressWarnings({ "unchecked" })
@@ -848,7 +848,7 @@ public class GenSolvablePolynomial<C extends RingElem<C>> extends GenPolynomial<
      *            coefficient.
      * @return [ quotient , remainder ] with this = quotient * S + remainder and
      *         deg(remainder) &lt; deg(S) or remiander = 0.
-     * @see PolyUtil#baseSparsePseudoRemainder(GenPolynomial,GenPolynomial)
+     * @see edu.jas.poly.PolyUtil#baseSparsePseudoRemainder(edu.jas.poly.GenPolynomial,edu.jas.poly.GenPolynomial)
      */
     // cannot @Override, @NoOverride
     @SuppressWarnings({ "unchecked" })
@@ -899,7 +899,7 @@ public class GenSolvablePolynomial<C extends RingElem<C>> extends GenPolynomial<
      *            coefficient.
      * @return quotient with this = S * quotient + remainder and
      *         deg(remainder) &lt; deg(S) or remiander = 0.
-     * @see PolyUtil#baseSparsePseudoRemainder(GenPolynomial,GenPolynomial)
+     * @see edu.jas.poly.PolyUtil#baseSparsePseudoRemainder(edu.jas.poly.GenPolynomial,edu.jas.poly.GenPolynomial)
      */
     @SuppressWarnings({ "unchecked" })
     public GenSolvablePolynomial<C> rightDivide(GenSolvablePolynomial<C> S) {
@@ -915,7 +915,7 @@ public class GenSolvablePolynomial<C extends RingElem<C>> extends GenPolynomial<
      *            coefficient.
      * @return remainder with this = S * quotient + remainder and
      *         deg(remainder) &lt; deg(S) or remiander = 0.
-     * @see PolyUtil#baseSparsePseudoRemainder(GenPolynomial,GenPolynomial)
+     * @see edu.jas.poly.PolyUtil#baseSparsePseudoRemainder(edu.jas.poly.GenPolynomial,edu.jas.poly.GenPolynomial)
      */
     @SuppressWarnings({ "unchecked" })
     public GenSolvablePolynomial<C> rightRemainder(GenSolvablePolynomial<C> S) {
@@ -931,7 +931,7 @@ public class GenSolvablePolynomial<C extends RingElem<C>> extends GenPolynomial<
      *            coefficient.
      * @return [ quotient , remainder ] with this = S * quotient + remainder and
      *         deg(remainder) &lt; deg(S) or remainder = 0.
-     * @see PolyUtil#baseSparsePseudoRemainder(GenPolynomial,GenPolynomial)
+     * @see edu.jas.poly.PolyUtil#baseSparsePseudoRemainder(edu.jas.poly.GenPolynomial,edu.jas.poly.GenPolynomial)
      */
     @SuppressWarnings({ "unchecked" })
     public GenSolvablePolynomial<C>[] rightQuotientRemainder(GenSolvablePolynomial<C> S) {

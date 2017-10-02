@@ -95,7 +95,7 @@ public class ExpVectorPair implements Serializable {
 
 
     /** hash code.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

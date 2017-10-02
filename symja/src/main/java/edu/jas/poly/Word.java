@@ -136,7 +136,7 @@ public final class Word implements MonoidElem<Word> {
 
     /**
      * Get the string representation.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -209,7 +209,7 @@ public final class Word implements MonoidElem<Word> {
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     public boolean equals(Object B) {
@@ -226,7 +226,7 @@ public final class Word implements MonoidElem<Word> {
 
     /**
      * hashCode.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

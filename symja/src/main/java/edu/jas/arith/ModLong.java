@@ -151,7 +151,7 @@ public final class ModLong implements GcdRingElem<ModLong>, Modular {
 
     /**
      * Clone this.
-     * @see Object#clone()
+     * @see java.lang.Object#clone()
      */
     @Override
     public ModLong copy() {
@@ -198,7 +198,7 @@ public final class ModLong implements GcdRingElem<ModLong>, Modular {
 
     /**
      * Get the String representation.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -250,7 +250,7 @@ public final class ModLong implements GcdRingElem<ModLong>, Modular {
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     public boolean equals(Object b) {
@@ -263,7 +263,7 @@ public final class ModLong implements GcdRingElem<ModLong>, Modular {
 
     /**
      * Hash code for this ModLong.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

@@ -157,7 +157,7 @@ public class ComplexRing<C extends RingElem<C>> implements RingFactory<Complex<C
      * Characteristic of this ring.
      * @return characteristic of this ring.
      */
-    public BigInteger characteristic() {
+    public java.math.BigInteger characteristic() {
         return ring.characteristic();
     }
 
@@ -223,7 +223,7 @@ public class ComplexRing<C extends RingElem<C>> implements RingFactory<Complex<C
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -244,7 +244,7 @@ public class ComplexRing<C extends RingElem<C>> implements RingFactory<Complex<C
 
     /**
      * Hash code for this ComplexRing&lt;C&gt;.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

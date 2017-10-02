@@ -110,7 +110,7 @@ public class WordPair<C extends RingElem<C>> implements Comparable<WordPair> {
 
     /**
      * Hash code for this WordPair.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

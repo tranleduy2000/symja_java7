@@ -167,7 +167,7 @@ public interface SolvableGroebnerBase<C extends RingElem<C>> extends Serializabl
      * @return true, if Mg and Mf are left reduction matrices, else false.
      */
     public boolean isLeftReductionMatrix(List<GenSolvablePolynomial<C>> F, List<GenSolvablePolynomial<C>> G,
-                                         List<List<GenSolvablePolynomial<C>>> Mf, List<List<GenSolvablePolynomial<C>>> Mg);
+                    List<List<GenSolvablePolynomial<C>>> Mf, List<List<GenSolvablePolynomial<C>>> Mg);
 
 
     /**

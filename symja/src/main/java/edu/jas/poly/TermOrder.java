@@ -1460,7 +1460,7 @@ public final class TermOrder implements Serializable {
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     public boolean equals(Object B) {
@@ -1482,7 +1482,7 @@ public final class TermOrder implements Serializable {
 
     /**
      * Hash code.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {
@@ -1582,7 +1582,7 @@ public final class TermOrder implements Serializable {
 
     /**
      * String representation of TermOrder.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {

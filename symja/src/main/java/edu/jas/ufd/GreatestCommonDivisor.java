@@ -34,7 +34,7 @@ import edu.jas.structure.GcdRingElem;
  * c = engine.gcd(a, b);
  * </pre>
  * 
- * @see GCDFactory#getImplementation
+ * @see edu.jas.ufd.GCDFactory#getImplementation
  */
 
 public interface GreatestCommonDivisor<C extends GcdRingElem<C>> extends Serializable {

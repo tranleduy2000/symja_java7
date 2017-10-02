@@ -304,7 +304,7 @@ public class Ideal<C extends GcdRingElem<C>> implements Comparable<Ideal<C>>, Se
 
     /**
      * String representation of the ideal.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -326,7 +326,7 @@ public class Ideal<C extends GcdRingElem<C>> implements Comparable<Ideal<C>>, Se
     /**
      * Comparison with any other object. Note: If both ideals are not Groebner
      * Bases, then false may be returned even the ideals are equal.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -361,7 +361,7 @@ public class Ideal<C extends GcdRingElem<C>> implements Comparable<Ideal<C>>, Se
 
     /**
      * Hash code for this ideal.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

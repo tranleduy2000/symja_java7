@@ -133,7 +133,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * Clone this power series.
-     * @see Object#clone()
+     * @see java.lang.Object#clone()
      */
     @Override
     public MultiVarPowerSeries<C> copy() {
@@ -143,7 +143,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * String representation of power series.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -1061,7 +1061,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
     /**
      * Comparison with any other object. <b>Note: </b> compare only up to
      * truncate.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -1079,7 +1079,7 @@ public class MultiVarPowerSeries<C extends RingElem<C>> implements RingElem<Mult
 
     /**
      * Hash code for this polynomial. <b>Note: </b> only up to truncate.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

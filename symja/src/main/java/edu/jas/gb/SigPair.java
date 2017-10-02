@@ -112,7 +112,7 @@ public class SigPair<C extends RingElem<C>> //extends AbstractSigPair<C>
 
     /**
      * Hash code for this SigPair.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

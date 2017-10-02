@@ -311,11 +311,13 @@ public class SigReductionSeq<C extends RingElem<C>> implements SigReduction<C> {
                 }
             }
         }
-        C ac = a.leadingBaseCoefficient();
-        if (!ac.isONE()) {
-            ac = ac.inverse();
-            a = a.multiply(ac);
-            sigma = sigma.multiply(ac);
+        if (!a.isZERO()) {
+            C ac = a.leadingBaseCoefficient();
+            if (!ac.isONE()) {
+                ac = ac.inverse();
+                a = a.multiply(ac);
+                sigma = sigma.multiply(ac);
+            }
         }
         return new SigPoly<C>(sigma, a);
     }
@@ -366,6 +368,7 @@ public class SigReductionSeq<C extends RingElem<C>> implements SigReduction<C> {
                     if (eup == null) {
                         logger.info("eup = null");
                         //eup = a.ring.evzero;
+                        throw new IllegalArgumentException("eup == null: " + sigup);
                     }
 
                     //wrong: boolean sigeq = (sigup.compareTo(sigma) < 0);
@@ -384,10 +387,12 @@ public class SigReductionSeq<C extends RingElem<C>> implements SigReduction<C> {
                 }
             }
         }
-        C ac = a.leadingBaseCoefficient();
-        if (!ac.isONE()) {
-            ac = ac.inverse();
-            a = a.multiply(ac);
+        if (!a.isZERO()) {
+            C ac = a.leadingBaseCoefficient();
+            if (!ac.isONE()) {
+                ac = ac.inverse();
+                a = a.multiply(ac);
+            }
         }
         return new SigPoly<C>(sigma, a);
     }

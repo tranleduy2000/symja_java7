@@ -101,7 +101,7 @@ public class UnivPowerSeries<C extends RingElem<C>> implements RingElem<UnivPowe
 
     /**
      * Clone this power series.
-     * @see Object#clone()
+     * @see java.lang.Object#clone()
      */
     @Override
     public UnivPowerSeries<C> copy() {
@@ -111,7 +111,7 @@ public class UnivPowerSeries<C extends RingElem<C>> implements RingElem<UnivPowe
 
     /**
      * String representation of power series.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -602,7 +602,7 @@ public class UnivPowerSeries<C extends RingElem<C>> implements RingElem<UnivPowe
     /**
      * Comparison with any other object. <b>Note: </b> compare only up to
      * truncate.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -621,7 +621,7 @@ public class UnivPowerSeries<C extends RingElem<C>> implements RingElem<UnivPowe
 
     /**
      * Hash code for this polynomial. <b>Note: </b> only up to truncate.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

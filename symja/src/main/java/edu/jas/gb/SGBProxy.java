@@ -63,7 +63,7 @@ public class SGBProxy<C extends GcdRingElem<C>> extends SolvableGroebnerBaseAbst
 
     /**
      * Get the String representation with GB engines.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {

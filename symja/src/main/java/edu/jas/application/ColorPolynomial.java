@@ -71,7 +71,7 @@ public class ColorPolynomial<C extends RingElem<C>> implements Serializable
 
     /**
      * String representation of ColorPolynomial.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -143,7 +143,7 @@ public class ColorPolynomial<C extends RingElem<C>> implements Serializable
 
     /**
      * Hash code for this colored polynomial.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

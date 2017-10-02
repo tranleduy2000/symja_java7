@@ -80,7 +80,7 @@ public interface RReduction<C extends RegularRingElem<C>> extends Reduction<C> {
      * @return red(bc(A)).
      */
     public List<GenPolynomial<C>> reducedBooleanClosure(List<GenPolynomial<C>> F,
-                                                        GenPolynomial<C> A);
+            GenPolynomial<C> A);
 
 
 }

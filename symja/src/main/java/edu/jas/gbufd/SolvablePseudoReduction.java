@@ -31,7 +31,7 @@ public interface SolvablePseudoReduction<C extends RingElem<C>> extends Solvable
      *         for Ap.
      */
     public PseudoReductionEntry<C> leftNormalformFactor(List<GenSolvablePolynomial<C>> Pp,
-                                                        GenSolvablePolynomial<C> Ap);
+                    GenSolvablePolynomial<C> Ap);
 
 
     /*
@@ -51,8 +51,8 @@ public interface SolvablePseudoReduction<C extends RingElem<C>> extends Solvable
      * @return nf(Ap) with respect to Pp.
      */
     public GenSolvablePolynomial<GenPolynomial<C>> leftNormalformRecursive(
-            List<GenSolvablePolynomial<GenPolynomial<C>>> Pp,
-            GenSolvablePolynomial<GenPolynomial<C>> Ap);
+                    List<GenSolvablePolynomial<GenPolynomial<C>>> Pp,
+                    GenSolvablePolynomial<GenPolynomial<C>> Ap);
 
 
     /*

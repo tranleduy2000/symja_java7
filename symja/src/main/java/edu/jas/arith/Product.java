@@ -107,7 +107,7 @@ public class Product<C extends RingElem<C>> implements RegularRingElem<Product<C
 
     /**
      * Clone this.
-     * @see Object#clone()
+     * @see java.lang.Object#clone()
      */
     @Override
     public Product<C> copy() {
@@ -200,7 +200,7 @@ public class Product<C extends RingElem<C>> implements RegularRingElem<Product<C
 
     /**
      * Get the String representation as RingElem.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -292,7 +292,7 @@ public class Product<C extends RingElem<C>> implements RegularRingElem<Product<C
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @SuppressWarnings("unchecked")
     @Override
@@ -310,7 +310,7 @@ public class Product<C extends RingElem<C>> implements RegularRingElem<Product<C
 
     /**
      * Hash code for this local.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

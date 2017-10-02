@@ -287,7 +287,7 @@ class Counter implements Serializable, Comparable<Counter> {
 
     /**
      * Hash code for this Counter.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

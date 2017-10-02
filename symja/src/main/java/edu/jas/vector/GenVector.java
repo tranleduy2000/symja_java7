@@ -56,7 +56,7 @@ public class GenVector<C extends RingElem<C>> implements ModulElem<GenVector<C>,
 
     /**
      * Get the String representation as RingElem.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -128,7 +128,7 @@ public class GenVector<C extends RingElem<C>> implements ModulElem<GenVector<C>,
 
     /**
      * clone method.
-     * @see Object#clone()
+     * @see java.lang.Object#clone()
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -168,7 +168,7 @@ public class GenVector<C extends RingElem<C>> implements ModulElem<GenVector<C>,
 
     /**
      * Hash code for this GenVector.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

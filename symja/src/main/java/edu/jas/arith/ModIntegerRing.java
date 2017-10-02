@@ -276,7 +276,7 @@ public final class ModIntegerRing implements ModularRingFactory<ModInteger>, Ite
 
     /**
      * Get the String representation.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -301,7 +301,7 @@ public final class ModIntegerRing implements ModularRingFactory<ModInteger>, Ite
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     public boolean equals(Object b) {
@@ -315,7 +315,7 @@ public final class ModIntegerRing implements ModularRingFactory<ModInteger>, Ite
 
     /**
      * Hash code for this ModIntegerRing.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

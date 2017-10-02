@@ -101,7 +101,7 @@ public class RealAlgebraicNumber<C extends GcdRingElem<C> & Rational> implements
 
     /**
      * Clone this.
-     * @see Object#clone()
+     * @see java.lang.Object#clone()
      */
     @Override
     public RealAlgebraicNumber<C> copy() {
@@ -112,7 +112,7 @@ public class RealAlgebraicNumber<C extends GcdRingElem<C> & Rational> implements
     /**
      * Return a BigRational approximation of this Element.
      * @return a BigRational approximation of this.
-     * @see Rational#getRational()
+     * @see edu.jas.arith.Rational#getRational()
      */
     @Override
     public BigRational getRational() {
@@ -161,7 +161,7 @@ public class RealAlgebraicNumber<C extends GcdRingElem<C> & Rational> implements
 
     /**
      * Get the String representation as RingElem.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -231,7 +231,7 @@ public class RealAlgebraicNumber<C extends GcdRingElem<C> & Rational> implements
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -256,7 +256,7 @@ public class RealAlgebraicNumber<C extends GcdRingElem<C> & Rational> implements
 
     /**
      * Hash code for this RealAlgebraicNumber.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

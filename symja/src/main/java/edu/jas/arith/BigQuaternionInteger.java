@@ -140,7 +140,7 @@ public final class BigQuaternionInteger extends BigQuaternion
 
     /**
      * Clone this.
-     * @see Object#clone()
+     * @see java.lang.Object#clone()
      */
     @Override
     public BigQuaternionInteger copy() {

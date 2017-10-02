@@ -101,7 +101,7 @@ public class Residue<C extends GcdRingElem<C>> implements GcdRingElem<Residue<C>
 
     /**
      * Clone this.
-     * @see Object#clone()
+     * @see java.lang.Object#clone()
      */
     @Override
     public Residue<C> copy() {
@@ -163,7 +163,7 @@ public class Residue<C extends GcdRingElem<C>> implements GcdRingElem<Residue<C>
 
     /**
      * Get the String representation as RingElem.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -218,7 +218,7 @@ public class Residue<C extends GcdRingElem<C>> implements GcdRingElem<Residue<C>
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      * @return true means that this and b are equivalent in this residue class
      *         ring.
      */
@@ -242,7 +242,7 @@ public class Residue<C extends GcdRingElem<C>> implements GcdRingElem<Residue<C>
 
     /**
      * Hash code for this residue.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

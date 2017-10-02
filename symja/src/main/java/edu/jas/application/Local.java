@@ -171,7 +171,7 @@ public class Local<C extends GcdRingElem<C>>
 
     /**
      * Numerator.
-     * @see QuotPair#numerator()
+     * @see edu.jas.structure.QuotPair#numerator()
      */
     public GenPolynomial<C> numerator() {
         return num;
@@ -180,7 +180,7 @@ public class Local<C extends GcdRingElem<C>>
 
     /**
      * Denominator.
-     * @see QuotPair#denominator()
+     * @see edu.jas.structure.QuotPair#denominator()
      */
     public GenPolynomial<C> denominator() {
         return den;
@@ -189,7 +189,7 @@ public class Local<C extends GcdRingElem<C>>
 
     /**
      * Clone this.
-     * @see Object#clone()
+     * @see java.lang.Object#clone()
      */
     @Override
     public Local<C> copy() {
@@ -200,7 +200,7 @@ public class Local<C extends GcdRingElem<C>>
     /**
      * Is Local zero.
      * @return If this is 0 then true is returned, else false.
-     * @see RingElem#isZERO()
+     * @see edu.jas.structure.RingElem#isZERO()
      */
     public boolean isZERO() {
         return num.isZERO();
@@ -210,7 +210,7 @@ public class Local<C extends GcdRingElem<C>>
     /**
      * Is Local one.
      * @return If this is 1 then true is returned, else false.
-     * @see RingElem#isONE()
+     * @see edu.jas.structure.RingElem#isONE()
      */
     public boolean isONE() {
         return num.equals(den);
@@ -220,7 +220,7 @@ public class Local<C extends GcdRingElem<C>>
     /**
      * Is Local unit.
      * @return If this is a unit then true is returned, else false.
-     * @see RingElem#isUnit()
+     * @see edu.jas.structure.RingElem#isUnit()
      */
     public boolean isUnit() {
         if (isunit > 0) {
@@ -256,7 +256,7 @@ public class Local<C extends GcdRingElem<C>>
 
     /**
      * Get the String representation as RingElem.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -332,7 +332,7 @@ public class Local<C extends GcdRingElem<C>>
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @SuppressWarnings("unchecked")
     @Override
@@ -354,7 +354,7 @@ public class Local<C extends GcdRingElem<C>>
 
     /**
      * Hash code for this local.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {
@@ -369,7 +369,7 @@ public class Local<C extends GcdRingElem<C>>
     /**
      * Local absolute value.
      * @return the absolute value of this.
-     * @see RingElem#abs()
+     * @see edu.jas.structure.RingElem#abs()
      */
     public Local<C> abs() {
         return new Local<C>(ring, num.abs(), den, true);
@@ -395,7 +395,7 @@ public class Local<C extends GcdRingElem<C>>
     /**
      * Local negate.
      * @return -this.
-     * @see RingElem#negate()
+     * @see edu.jas.structure.RingElem#negate()
      */
     public Local<C> negate() {
         return new Local<C>(ring, num.negate(), den, true);
@@ -404,7 +404,7 @@ public class Local<C extends GcdRingElem<C>>
 
     /**
      * Local signum.
-     * @see RingElem#signum()
+     * @see edu.jas.structure.RingElem#signum()
      * @return signum(this).
      */
     public int signum() {
@@ -440,7 +440,7 @@ public class Local<C extends GcdRingElem<C>>
 
     /**
      * Local inverse.
-     * @see RingElem#inverse()
+     * @see edu.jas.structure.RingElem#inverse()
      * @return S with S = 1/this if defined.
      */
     public Local<C> inverse() {

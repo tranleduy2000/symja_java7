@@ -121,7 +121,7 @@ public class RecSolvableWordPolynomial<C extends RingElem<C>> extends
 
     /**
      * Clone this RecSolvableWordPolynomial.
-     * @see Object#clone()
+     * @see java.lang.Object#clone()
      */
     @Override
     public RecSolvableWordPolynomial<C> copy() {
@@ -131,7 +131,7 @@ public class RecSolvableWordPolynomial<C extends RingElem<C>> extends
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     public boolean equals(Object B) {

@@ -163,7 +163,7 @@ public class Quotient<C extends RingElem<C>> implements RingElem<Quotient<C>>, Q
 
     /**
      * Clone this.
-     * @see Object#clone()
+     * @see java.lang.Object#clone()
      */
     @Override
     public Quotient<C> copy() {
@@ -206,7 +206,7 @@ public class Quotient<C extends RingElem<C>> implements RingElem<Quotient<C>>, Q
 
     /**
      * Get the String representation as RingElem.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -257,7 +257,7 @@ public class Quotient<C extends RingElem<C>> implements RingElem<Quotient<C>>, Q
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -275,7 +275,7 @@ public class Quotient<C extends RingElem<C>> implements RingElem<Quotient<C>>, Q
 
     /**
      * Hash code for this local.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

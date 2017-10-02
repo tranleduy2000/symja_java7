@@ -188,7 +188,7 @@ public class SolvableLocalResidue<C extends GcdRingElem<C>> implements GcdRingEl
 
     /**
      * Numerator.
-     * @see QuotPair#numerator()
+     * @see edu.jas.structure.QuotPair#numerator()
      */
     public GenSolvablePolynomial<C> numerator() {
         return num;
@@ -197,7 +197,7 @@ public class SolvableLocalResidue<C extends GcdRingElem<C>> implements GcdRingEl
 
     /**
      * Denominator.
-     * @see QuotPair#denominator()
+     * @see edu.jas.structure.QuotPair#denominator()
      */
     public GenSolvablePolynomial<C> denominator() {
         return den;
@@ -206,7 +206,7 @@ public class SolvableLocalResidue<C extends GcdRingElem<C>> implements GcdRingEl
 
     /**
      * Clone this.
-     * @see Object#clone()
+     * @see java.lang.Object#clone()
      */
     @Override
     public SolvableLocalResidue<C> copy() {
@@ -258,7 +258,7 @@ public class SolvableLocalResidue<C extends GcdRingElem<C>> implements GcdRingEl
 
     /**
      * Get the String representation as RingElem.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -345,7 +345,7 @@ public class SolvableLocalResidue<C extends GcdRingElem<C>> implements GcdRingEl
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @SuppressWarnings("unchecked")
     @Override
@@ -370,7 +370,7 @@ public class SolvableLocalResidue<C extends GcdRingElem<C>> implements GcdRingEl
 
     /**
      * Hash code for this element.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

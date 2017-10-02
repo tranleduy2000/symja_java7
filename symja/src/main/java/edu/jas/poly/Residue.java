@@ -173,7 +173,7 @@ public class Residue<C extends RingElem<C>> implements RingElem<Residue<C>> {
 
     /**
      * Get the String representation as RingElem.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -223,7 +223,7 @@ public class Residue<C extends RingElem<C>> implements RingElem<Residue<C>> {
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      * @return true means that this and b are equivalent in this residue class
      *         ring.
      */
@@ -243,7 +243,7 @@ public class Residue<C extends RingElem<C>> implements RingElem<Residue<C>> {
 
     /**
      * Hash code for this local.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

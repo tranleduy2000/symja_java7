@@ -156,7 +156,7 @@ public final class BigDecimalComplex implements StarRingElem<BigDecimalComplex>,
 
     /**
      * Clone this.
-     * @see Object#clone()
+     * @see java.lang.Object#clone()
      */
     @Override
     public BigDecimalComplex copy() {
@@ -232,8 +232,8 @@ public final class BigDecimalComplex implements StarRingElem<BigDecimalComplex>,
      * Characteristic of this ring.
      * @return characteristic of this ring.
      */
-    public BigInteger characteristic() {
-        return BigInteger.ZERO;
+    public java.math.BigInteger characteristic() {
+        return java.math.BigInteger.ZERO;
     }
 
 
@@ -436,7 +436,7 @@ public final class BigDecimalComplex implements StarRingElem<BigDecimalComplex>,
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     public boolean equals(Object b) {
@@ -451,7 +451,7 @@ public final class BigDecimalComplex implements StarRingElem<BigDecimalComplex>,
 
     /**
      * Hash code for this BigDecimalComplex.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

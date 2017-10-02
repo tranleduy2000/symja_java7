@@ -104,7 +104,7 @@ import edu.jas.ufd.QuotientRing;
  *        <b>Note:</b> Not all combinations are meanigful
  * 
  * @see edu.jas.gb.GroebnerBase
- * @see GBFactory
+ * @see edu.jas.gbufd.GBFactory
  */
 
 public class GBAlgorithmBuilder<C extends GcdRingElem<C>> implements Serializable {
@@ -538,7 +538,7 @@ public class GBAlgorithmBuilder<C extends GcdRingElem<C>> implements Serializabl
 
     /**
      * String representation of the GB algorithm implementation.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {

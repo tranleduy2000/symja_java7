@@ -100,7 +100,7 @@ public class QuotIntegral<C extends GcdRingElem<C>> implements Serializable {
 
     /**
      * Get the String representation.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -139,7 +139,7 @@ public class QuotIntegral<C extends GcdRingElem<C>> implements Serializable {
 
     /**
      * Hash code for QuotIntegral.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {
@@ -152,7 +152,7 @@ public class QuotIntegral<C extends GcdRingElem<C>> implements Serializable {
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     @SuppressWarnings("unchecked")

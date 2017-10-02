@@ -247,7 +247,7 @@ public final class BigRational implements GcdRingElem<BigRational>, RingFactory<
 
     /**
      * Clone this.
-     * @see Object#clone()
+     * @see java.lang.Object#clone()
      */
     @Override
     public BigRational copy() {
@@ -268,7 +268,7 @@ public final class BigRational implements GcdRingElem<BigRational>, RingFactory<
     /**
      * Return a BigRational approximation of this Element.
      * @return a BigRational approximation of this.
-     * @see Rational#getRational()
+     * @see edu.jas.arith.Rational#getRational()
      */
     public BigRational getRational() {
         return this;
@@ -295,7 +295,7 @@ public final class BigRational implements GcdRingElem<BigRational>, RingFactory<
 
     /**
      * Get the string representation.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -320,7 +320,7 @@ public final class BigRational implements GcdRingElem<BigRational>, RingFactory<
         if (n < 0) {
             return toString();
         }
-        MathContext mc = new MathContext(n);
+        java.math.MathContext mc = new java.math.MathContext(n);
         BigDecimal d = new BigDecimal(this, mc);
         return d.toString();
     }
@@ -339,7 +339,7 @@ public final class BigRational implements GcdRingElem<BigRational>, RingFactory<
     /**
      * Get this as a <tt>double</tt>.
      * @return this as a <tt>double</tt>
-     * @see Number#doubleValue()
+     * @see java.lang.Number#doubleValue()
      */
     public double doubleValue() {
         BigDecimal d = new BigDecimal(this, MathContext.DECIMAL64);
@@ -443,7 +443,7 @@ public final class BigRational implements GcdRingElem<BigRational>, RingFactory<
      * Characteristic of this ring.
      * @return characteristic of this ring.
      */
-    public BigInteger characteristic() {
+    public java.math.BigInteger characteristic() {
         return BigInteger.ZERO;
     }
 
@@ -539,7 +539,7 @@ public final class BigRational implements GcdRingElem<BigRational>, RingFactory<
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     public boolean equals(Object b) {
@@ -553,7 +553,7 @@ public final class BigRational implements GcdRingElem<BigRational>, RingFactory<
 
     /**
      * Hash code for this BigRational.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {
@@ -735,7 +735,7 @@ public final class BigRational implements GcdRingElem<BigRational>, RingFactory<
     public static void RNDWR(BigRational R, int NL) {
         //BigInteger num = R.num;
         //BigInteger den = R.den;
-        MathContext mc = new MathContext(NL);
+        java.math.MathContext mc = new java.math.MathContext(NL);
         BigDecimal d = new BigDecimal(R, mc);
         System.out.print(d.toString());
         return;
@@ -1355,7 +1355,7 @@ class BigRationalIterator implements Iterator<BigRational> {
      */
     public BigRationalIterator(boolean nn) {
         nonNegative = nn;
-        curr = BigRational.ZERO;
+        curr = edu.jas.arith.BigRational.ZERO;
         level = 0;
         den = new edu.jas.arith.BigInteger(); // ZERO
         num = edu.jas.arith.BigInteger.ONE.copy();

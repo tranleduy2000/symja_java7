@@ -74,7 +74,7 @@ public class AlgebraicRoots<C extends GcdRingElem<C> & Rational> implements Seri
 
     /**
      * String representation of AlgebraicRoots.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -175,7 +175,7 @@ public class AlgebraicRoots<C extends GcdRingElem<C> & Rational> implements Seri
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -196,7 +196,7 @@ public class AlgebraicRoots<C extends GcdRingElem<C> & Rational> implements Seri
 
     /**
      * Hash code for this AlgebraicRoots.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

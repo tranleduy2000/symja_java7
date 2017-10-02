@@ -112,7 +112,7 @@ public abstract class GroebnerBaseAbstract<C extends RingElem<C>> implements Gro
 
     /**
      * Get the String representation with GB engines.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {

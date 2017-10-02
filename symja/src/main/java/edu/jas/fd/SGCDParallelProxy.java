@@ -74,7 +74,7 @@ public class SGCDParallelProxy<C extends GcdRingElem<C>> extends GreatestCommonD
 
     /**
      * Get the String representation with gcd engines.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {

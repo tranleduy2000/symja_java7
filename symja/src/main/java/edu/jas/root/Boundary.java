@@ -118,7 +118,7 @@ public class Boundary<C extends RingElem<C> & Rational> implements Serializable 
 
     /**
      * String representation of Boundary.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -169,7 +169,7 @@ public class Boundary<C extends RingElem<C> & Rational> implements Serializable 
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -188,7 +188,7 @@ public class Boundary<C extends RingElem<C> & Rational> implements Serializable 
 
     /**
      * Hash code for this Rectangle.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

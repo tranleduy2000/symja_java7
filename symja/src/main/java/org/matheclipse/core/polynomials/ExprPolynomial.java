@@ -198,7 +198,7 @@ public class ExprPolynomial implements RingElem<ExprPolynomial>, Iterable<ExprMo
 		if (debug) {
 			IExpr a = val.get(e);
 			if (a != null) {
-				logger.error("map entry exists " + e + " to " + a + " new " + c);
+//				logger.error("map entry exists " + e + " to " + a + " new " + c);
 			}
 		}
 		if (!c.isZero()) {
@@ -224,7 +224,7 @@ public class ExprPolynomial implements RingElem<ExprPolynomial>, Iterable<ExprMo
 				return;
 			}
 			if (!c.equals(b)) {
-				logger.error("map entry wrong " + e + " to " + c + " old " + b);
+//				logger.error("map entry wrong " + e + " to " + c + " old " + b);
 			}
 		}
 	}
@@ -244,7 +244,7 @@ public class ExprPolynomial implements RingElem<ExprPolynomial>, Iterable<ExprMo
 			if (debug) {
 				IExpr a = val.get(e);
 				if (a != null) {
-					logger.error("map entry exists " + e + " to " + a + " new " + me.getValue());
+////					logger.error("map entry exists " + e + " to " + a + " new " + me.getValue());
 				}
 			}
 			IExpr c = me.getValue();
@@ -1672,7 +1672,7 @@ public class ExprPolynomial implements RingElem<ExprPolynomial>, Iterable<ExprMo
 			if (debug) {
 				IExpr x = c1.remainder(s);
 				if (!x.isZero()) {
-					logger.info("divide x = " + x);
+//					logger.info("divide x = " + x);
 					throw new ArithmeticException("no exact division: " + c1 + "/" + s);
 				}
 			}

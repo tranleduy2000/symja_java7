@@ -114,7 +114,7 @@ public class QLRSolvablePolynomial<C extends GcdRingElem<C> & QuotPair<GenPolyno
 
     /**
      * Clone this QLRSolvablePolynomial.
-     * @see Object#clone()
+     * @see java.lang.Object#clone()
      */
     @Override
     public QLRSolvablePolynomial<C, D> copy() {
@@ -124,7 +124,7 @@ public class QLRSolvablePolynomial<C extends GcdRingElem<C> & QuotPair<GenPolyno
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     public boolean equals(Object B) {

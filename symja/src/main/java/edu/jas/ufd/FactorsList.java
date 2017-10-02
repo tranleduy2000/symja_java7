@@ -66,7 +66,7 @@ public class FactorsList<C extends GcdRingElem<C>> implements Serializable {
 
     /**
      * Get the String representation.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {

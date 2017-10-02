@@ -74,7 +74,7 @@ public class PolynomialList<C extends RingElem<C>> implements Comparable<Polynom
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -129,7 +129,7 @@ public class PolynomialList<C extends RingElem<C>> implements Comparable<Polynom
 
     /**
      * Hash code for this polynomial list.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {
@@ -142,7 +142,7 @@ public class PolynomialList<C extends RingElem<C>> implements Comparable<Polynom
 
     /**
      * String representation of the polynomial list.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -235,7 +235,7 @@ public class PolynomialList<C extends RingElem<C>> implements Comparable<Polynom
 
     /**
      * Get ModuleList from PolynomialList. Extract module from polynomial ring.
-     * @see ModuleList
+     * @see edu.jas.poly.ModuleList
      * @param i number of variables to be contract form the polynomials.
      * @return module list corresponding to this.
      */

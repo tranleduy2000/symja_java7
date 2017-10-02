@@ -86,7 +86,7 @@ public class PrimitiveElement<C extends GcdRingElem<C>> implements Serializable 
 
     /**
      * String representation of the primitive element.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {

@@ -176,7 +176,7 @@ public class TaggedSocketChannel extends Thread {
 
     /**
      * To string.
-     * @see Thread#toString()
+     * @see java.lang.Thread#toString()
      */
     @Override
     public String toString() {
@@ -211,7 +211,7 @@ public class TaggedSocketChannel extends Thread {
 
     /**
      * Run receive() in an infinite loop.
-     * @see Thread#run()
+     * @see java.lang.Thread#run()
      */
     @Override
     @SuppressWarnings("unchecked")

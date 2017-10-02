@@ -264,7 +264,7 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
 
     /**
      * Get the String representation.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @SuppressWarnings("cast")
     @Override
@@ -386,7 +386,7 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -417,7 +417,7 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
 
     /**
      * Hash code for this polynomial ring.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {
@@ -553,7 +553,7 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
      * Characteristic of this ring.
      * @return characteristic of this ring.
      */
-    public BigInteger characteristic() {
+    public java.math.BigInteger characteristic() {
         return coFac.characteristic();
     }
 

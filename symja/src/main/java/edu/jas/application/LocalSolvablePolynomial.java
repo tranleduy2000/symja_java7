@@ -114,7 +114,7 @@ public class LocalSolvablePolynomial<C extends GcdRingElem<C>> extends
 
     /**
      * Clone this LocalSolvablePolynomial.
-     * @see Object#clone()
+     * @see java.lang.Object#clone()
      */
     @Override
     public LocalSolvablePolynomial<C> copy() {
@@ -124,7 +124,7 @@ public class LocalSolvablePolynomial<C extends GcdRingElem<C>> extends
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     public boolean equals(Object B) {

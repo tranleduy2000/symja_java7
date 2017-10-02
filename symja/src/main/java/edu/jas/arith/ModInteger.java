@@ -141,7 +141,7 @@ public final class ModInteger implements GcdRingElem<ModInteger>, Modular {
 
     /**
      * Clone this.
-     * @see Object#clone()
+     * @see java.lang.Object#clone()
      */
     @Override
     public ModInteger copy() {
@@ -188,7 +188,7 @@ public final class ModInteger implements GcdRingElem<ModInteger>, Modular {
 
     /**
      * Get the String representation.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -250,7 +250,7 @@ public final class ModInteger implements GcdRingElem<ModInteger>, Modular {
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     public boolean equals(Object b) {
@@ -263,7 +263,7 @@ public final class ModInteger implements GcdRingElem<ModInteger>, Modular {
 
     /**
      * Hash code for this ModInteger.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

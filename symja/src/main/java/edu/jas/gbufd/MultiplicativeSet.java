@@ -70,7 +70,7 @@ public class MultiplicativeSet<C extends GcdRingElem<C>> implements Serializable
 
     /**
      * toString.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -104,7 +104,7 @@ public class MultiplicativeSet<C extends GcdRingElem<C>> implements Serializable
 
     /**
      * Hash code for this condition.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

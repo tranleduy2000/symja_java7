@@ -312,7 +312,7 @@ public class RealAlgebraicRing<C extends GcdRingElem<C> & Rational>
 
     /**
      * Get the String representation as RingFactory.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -338,7 +338,7 @@ public class RealAlgebraicRing<C extends GcdRingElem<C> & Rational>
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -356,7 +356,7 @@ public class RealAlgebraicRing<C extends GcdRingElem<C> & Rational>
 
     /**
      * Hash code for this RealAlgebraicNumber.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

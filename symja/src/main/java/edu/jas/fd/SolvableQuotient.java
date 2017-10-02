@@ -25,6 +25,7 @@ import edu.jas.structure.QuotPair;
  */
 public class SolvableQuotient<C extends GcdRingElem<C>> implements GcdRingElem<SolvableQuotient<C>>,
                 QuotPair<GenPolynomial<C>> {
+    // should be QuotPair<GenSolvablePolynomial<C>
 
 
     private static final Logger logger = Logger.getLogger(SolvableQuotient.class);
@@ -186,7 +187,7 @@ public class SolvableQuotient<C extends GcdRingElem<C>> implements GcdRingElem<S
 
     /**
      * Clone this.
-     * @see Object#clone()
+     * @see java.lang.Object#clone()
      */
     @Override
     public SolvableQuotient<C> copy() {
@@ -238,7 +239,7 @@ public class SolvableQuotient<C extends GcdRingElem<C>> implements GcdRingElem<S
 
     /**
      * Get the String representation as RingElem.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -328,7 +329,7 @@ public class SolvableQuotient<C extends GcdRingElem<C>> implements GcdRingElem<S
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @SuppressWarnings("unchecked")
     @Override
@@ -349,7 +350,7 @@ public class SolvableQuotient<C extends GcdRingElem<C>> implements GcdRingElem<S
 
     /**
      * Hash code for this element.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {
@@ -532,6 +533,7 @@ public class SolvableQuotient<C extends GcdRingElem<C>> implements GcdRingElem<S
      * @param S a SolvableQuotient
      * @return [this/S, this - (this/S)*S].
      */
+    @SuppressWarnings("unchecked")
     public SolvableQuotient<C>[] quotientRemainder(SolvableQuotient<C> S) {
         return new SolvableQuotient[] { divide(S), remainder(S) };
     }
@@ -689,7 +691,7 @@ public class SolvableQuotient<C extends GcdRingElem<C>> implements GcdRingElem<S
      * @param b other element.
      * @return [ gcd(this,b), c1, c2 ] with c1*this + c2*b = gcd(this,b).
      */
-    @SuppressWarnings("cast")
+    @SuppressWarnings("unchecked")
     public SolvableQuotient<C>[] egcd(SolvableQuotient<C> b) {
         SolvableQuotient<C>[] ret = (SolvableQuotient<C>[]) new SolvableQuotient[3];
         ret[0] = null;

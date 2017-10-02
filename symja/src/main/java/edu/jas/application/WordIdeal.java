@@ -212,7 +212,7 @@ public class WordIdeal<C extends GcdRingElem<C>> implements Comparable<WordIdeal
 
     /**
      * String representation of the solvable ideal.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -281,7 +281,7 @@ public class WordIdeal<C extends GcdRingElem<C>> implements Comparable<WordIdeal
     /**
      * Comparison with any other object. <b>Note:</b> If not both ideals are
      * Groebner Bases, then false may be returned even the ideals are equal.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -366,7 +366,7 @@ public class WordIdeal<C extends GcdRingElem<C>> implements Comparable<WordIdeal
 
     /**
      * Hash code for this solvable ideal.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

@@ -205,7 +205,7 @@ public class UnivPowerSeriesRing<C extends RingElem<C>> implements RingFactory<U
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -230,7 +230,7 @@ public class UnivPowerSeriesRing<C extends RingElem<C>> implements RingFactory<U
 
     /**
      * Hash code for this .
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

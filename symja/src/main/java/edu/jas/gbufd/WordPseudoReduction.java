@@ -40,7 +40,7 @@ public interface WordPseudoReduction<C extends RingElem<C>> extends WordReductio
      * @return nf(Ap) with respect to Pp.
      */
     public GenWordPolynomial<GenPolynomial<C>> normalformRecursive(
-            List<GenWordPolynomial<GenPolynomial<C>>> Pp, GenWordPolynomial<GenPolynomial<C>> Ap);
+                    List<GenWordPolynomial<GenPolynomial<C>>> Pp, GenWordPolynomial<GenPolynomial<C>> Ap);
 
 
 }

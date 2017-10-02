@@ -118,7 +118,7 @@ public class RecSolvablePolynomial<C extends RingElem<C>> extends GenSolvablePol
 
     /**
      * Clone this RecSolvablePolynomial.
-     * @see Object#clone()
+     * @see java.lang.Object#clone()
      */
     @Override
     public RecSolvablePolynomial<C> copy() {
@@ -128,7 +128,7 @@ public class RecSolvablePolynomial<C extends RingElem<C>> extends GenSolvablePol
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     public boolean equals(Object B) {

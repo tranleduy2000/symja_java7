@@ -39,7 +39,7 @@ import edu.jas.structure.GcdRingElem;
  * Sm = engine.factors(poly);
  * </pre>
  * 
- * @see FactorFactory#getImplementation
+ * @see edu.jas.ufd.FactorFactory#getImplementation
  * @author Heinz Kredel
  * @param <C> coefficient type
  */

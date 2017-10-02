@@ -28,7 +28,7 @@ public interface DReduction<C extends RingElem<C>>
      * @param Bp polynomial.
      * @return gpol(Ap,Bp) the g-polynomial of Ap and Bp.
      */
-    public GenPolynomial<C> GPolynomial(GenPolynomial<C> Ap,
+    public GenPolynomial<C> GPolynomial(GenPolynomial<C> Ap, 
                                         GenPolynomial<C> Bp);
 
 
@@ -44,7 +44,7 @@ public interface DReduction<C extends RingElem<C>>
     public GenPolynomial<C> 
            GPolynomial(List<GenPolynomial<C>> S,
                        int i,
-                       GenPolynomial<C> Ap,
+                       GenPolynomial<C> Ap, 
                        int j,
                        GenPolynomial<C> Bp);
 

@@ -116,7 +116,7 @@ public class GenMatrix<C extends RingElem<C>> implements AlgebraElem<GenMatrix<C
 
     /**
      * Get the String representation as RingElem.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -208,7 +208,7 @@ public class GenMatrix<C extends RingElem<C>> implements AlgebraElem<GenMatrix<C
 
     /**
      * clone method.
-     * @see Object#clone()
+     * @see java.lang.Object#clone()
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -265,7 +265,7 @@ public class GenMatrix<C extends RingElem<C>> implements AlgebraElem<GenMatrix<C
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -286,7 +286,7 @@ public class GenMatrix<C extends RingElem<C>> implements AlgebraElem<GenMatrix<C
 
     /**
      * Hash code for this GenMatrix.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

@@ -123,7 +123,7 @@ public class GenMatrixRing<C extends RingElem<C>> implements AlgebraFactory<GenM
 
     /**
      * Get the String representation as RingElem.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -204,7 +204,7 @@ public class GenMatrixRing<C extends RingElem<C>> implements AlgebraFactory<GenM
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     public boolean equals(Object other) {
@@ -227,7 +227,7 @@ public class GenMatrixRing<C extends RingElem<C>> implements AlgebraFactory<GenM
 
     /**
      * Hash code for this matrix ring.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {
@@ -270,7 +270,7 @@ public class GenMatrixRing<C extends RingElem<C>> implements AlgebraFactory<GenM
      * Characteristic of this ring.
      * @return characteristic of this ring.
      */
-    public BigInteger characteristic() {
+    public java.math.BigInteger characteristic() {
         return coFac.characteristic();
     }
 

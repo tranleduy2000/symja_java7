@@ -35,7 +35,7 @@ public class OrderedPolynomialList<C extends RingElem<C>> extends PolynomialList
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -59,7 +59,7 @@ public class OrderedPolynomialList<C extends RingElem<C>> extends PolynomialList
 
     /**
      * Hash code for OrderedPolynomialList.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

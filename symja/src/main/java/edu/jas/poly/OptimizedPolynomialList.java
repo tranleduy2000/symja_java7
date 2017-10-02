@@ -44,7 +44,7 @@ public class OptimizedPolynomialList<C extends RingElem<C>> extends PolynomialLi
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     public boolean equals(Object B) {

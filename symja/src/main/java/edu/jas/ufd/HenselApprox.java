@@ -65,7 +65,7 @@ public class HenselApprox<MOD extends GcdRingElem<MOD> & Modular> implements Ser
 
     /**
      * Get the String representation.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -102,7 +102,7 @@ public class HenselApprox<MOD extends GcdRingElem<MOD> & Modular> implements Ser
 
     /**
      * Hash code for this Factors.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {
@@ -116,7 +116,7 @@ public class HenselApprox<MOD extends GcdRingElem<MOD> & Modular> implements Ser
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     @SuppressWarnings("unchecked")

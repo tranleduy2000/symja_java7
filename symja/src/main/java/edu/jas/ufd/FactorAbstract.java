@@ -36,7 +36,7 @@ import edu.jas.util.KsubSet;
  * <code>GreatestCommonDivisor</code> classes and are included for convenience.
  * @param <C> coefficient type
  * @author Heinz Kredel
- * @see FactorFactory
+ * @see edu.jas.ufd.FactorFactory
  */
 
 public abstract class FactorAbstract<C extends GcdRingElem<C>> implements Factorization<C> {
@@ -81,7 +81,7 @@ public abstract class FactorAbstract<C extends GcdRingElem<C>> implements Factor
 
     /**
      * Get the String representation.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {

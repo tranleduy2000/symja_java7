@@ -16,10 +16,6 @@
  */
 package org.hipparchus.fraction;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-
 import org.hipparchus.FieldElement;
 import org.hipparchus.exception.LocalizedCoreFormats;
 import org.hipparchus.exception.MathIllegalArgumentException;
@@ -29,6 +25,10 @@ import org.hipparchus.exception.NullArgumentException;
 import org.hipparchus.util.ArithmeticUtils;
 import org.hipparchus.util.FastMath;
 import org.hipparchus.util.MathUtils;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 
 /**
  * Representation of a rational number without any overflow. This class is

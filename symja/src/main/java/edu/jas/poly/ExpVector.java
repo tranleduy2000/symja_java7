@@ -198,7 +198,7 @@ public abstract class ExpVector implements AbelianGroupElem<ExpVector> {
 
     /**
      * Clone this.
-     * @see Object#clone()
+     * @see java.lang.Object#clone()
      */
     @Override
     public abstract ExpVector copy();
@@ -301,7 +301,7 @@ public abstract class ExpVector implements AbelianGroupElem<ExpVector> {
 
     /**
      * Get the string representation.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -320,7 +320,7 @@ public abstract class ExpVector implements AbelianGroupElem<ExpVector> {
     /**
      * Get the string representation with variable names.
      * @param vars names of variables.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     public String toString(String[] vars) {
         StringBuffer s = new StringBuffer();
@@ -514,7 +514,7 @@ public abstract class ExpVector implements AbelianGroupElem<ExpVector> {
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     public boolean equals(Object B) {
@@ -531,7 +531,7 @@ public abstract class ExpVector implements AbelianGroupElem<ExpVector> {
     /**
      * hashCode. Optimized for small exponents, i.e. &le; 2<sup>4</sup> and
      * small number of variables, i.e. &le; 8.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

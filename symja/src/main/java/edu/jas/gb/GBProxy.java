@@ -63,7 +63,7 @@ public class GBProxy<C extends GcdRingElem<C>> extends GroebnerBaseAbstract<C> {
 
     /**
      * Get the String representation with GB engines.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {

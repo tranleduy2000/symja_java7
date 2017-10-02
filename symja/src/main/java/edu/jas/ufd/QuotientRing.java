@@ -243,7 +243,7 @@ public class QuotientRing<C extends GcdRingElem<C>> implements RingFactory<Quoti
 
     /**
      * Get the String representation as RingFactory.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -271,7 +271,7 @@ public class QuotientRing<C extends GcdRingElem<C>> implements RingFactory<Quoti
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     public boolean equals(Object b) {
@@ -288,7 +288,7 @@ public class QuotientRing<C extends GcdRingElem<C>> implements RingFactory<Quoti
 
     /**
      * Hash code for this quotient ring.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

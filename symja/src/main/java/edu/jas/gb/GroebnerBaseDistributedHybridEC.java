@@ -618,7 +618,7 @@ class HybridReducerServerEC<C extends RingElem<C>> implements Runnable {
 
     /**
      * Work loop.
-     * @see Runnable#run()
+     * @see java.lang.Runnable#run()
      */
     @Override
     public void run() {
@@ -845,7 +845,7 @@ class HybridReducerReceiverEC<C extends RingElem<C>> extends Thread {
 
     /**
      * Work loop.
-     * @see Thread#run()
+     * @see java.lang.Thread#run()
      */
     @Override
     public void run() {
@@ -1021,7 +1021,7 @@ class HybridReducerClientEC<C extends RingElem<C>> implements Runnable {
 
     /**
      * Work loop.
-     * @see Runnable#run()
+     * @see java.lang.Runnable#run()
      */
     @Override
     public void run() {

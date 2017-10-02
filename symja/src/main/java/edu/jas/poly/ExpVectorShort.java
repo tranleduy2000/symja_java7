@@ -145,7 +145,7 @@ public final class ExpVectorShort extends ExpVector
 
     /**
      * Clone this.
-     * @see Object#clone()
+     * @see java.lang.Object#clone()
      */
     @Override
     public ExpVectorShort copy() {
@@ -359,7 +359,7 @@ public final class ExpVectorShort extends ExpVector
 
     /**
      * Get the string representation.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -369,7 +369,7 @@ public final class ExpVectorShort extends ExpVector
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     public boolean equals(Object B) {
@@ -385,7 +385,7 @@ public final class ExpVectorShort extends ExpVector
 
     /**
      * hashCode for this exponent vector.
-     * @see Object#hashCode() Only for findbugs.
+     * @see java.lang.Object#hashCode() Only for findbugs.
      */
     @Override
     public int hashCode() {

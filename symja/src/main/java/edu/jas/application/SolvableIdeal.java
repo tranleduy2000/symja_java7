@@ -358,7 +358,7 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
 
     /**
      * String representation of the solvable ideal.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -380,7 +380,7 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
     /**
      * Comparison with any other object. <b>Note:</b> If not both ideals are
      * Groebner Bases, then false may be returned even the ideals are equal.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -415,7 +415,7 @@ public class SolvableIdeal<C extends GcdRingElem<C>> implements Comparable<Solva
 
     /**
      * Hash code for this solvable ideal.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

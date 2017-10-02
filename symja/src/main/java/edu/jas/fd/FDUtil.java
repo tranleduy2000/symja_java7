@@ -5,12 +5,12 @@
 package edu.jas.fd;
 
 
-import org.apache.log4j.Logger;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.log4j.Logger;
 
 import edu.jas.poly.ExpVector;
 import edu.jas.poly.GenPolynomial;

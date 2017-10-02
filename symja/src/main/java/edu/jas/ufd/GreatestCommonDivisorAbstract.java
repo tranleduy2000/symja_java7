@@ -34,7 +34,7 @@ public abstract class GreatestCommonDivisorAbstract<C extends GcdRingElem<C>> im
 
     /**
      * Get the String representation.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -512,7 +512,7 @@ public abstract class GreatestCommonDivisorAbstract<C extends GcdRingElem<C>> im
      * @param P GenPolynomial.
      * @param S GenPolynomial.
      * @return res(P,S).
-     * @see GreatestCommonDivisorSubres#recursiveResultant
+     * @see edu.jas.ufd.GreatestCommonDivisorSubres#recursiveResultant
      * @throws UnsupportedOperationException if there is no implementation in
      *             the sub-class.
      */

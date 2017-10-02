@@ -143,7 +143,7 @@ public final class BigInteger
 
     /**
      * Clone this.
-     * @see Object#clone()
+     * @see java.lang.Object#clone()
      */
     @Override
     public BigInteger copy() {
@@ -285,7 +285,7 @@ public final class BigInteger
 
     /**
      * Get the String representation.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -343,7 +343,7 @@ public final class BigInteger
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     public boolean equals(Object b) {
@@ -357,7 +357,7 @@ public final class BigInteger
 
     /**
      * Hash code for this BigInteger.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

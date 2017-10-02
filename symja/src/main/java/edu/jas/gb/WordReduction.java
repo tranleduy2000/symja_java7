@@ -45,7 +45,7 @@ public interface WordReduction<C extends RingElem<C>> extends Serializable {
      * @return list of all spol(Ap,Bp) the S-polynomials of Ap and Bp.
      */
     public GenWordPolynomial<C> SPolynomial(C a, Word l1, GenWordPolynomial<C> A, Word r1, C b, Word l2,
-                                            GenWordPolynomial<C> B, Word r2);
+                    GenWordPolynomial<C> B, Word r2);
 
 
     /**
@@ -110,7 +110,7 @@ public interface WordReduction<C extends RingElem<C>> extends Serializable {
      * @return nf(Pp,Ap), the normal form of Ap wrt. Pp.
      */
     public GenWordPolynomial<C> normalform(List<GenWordPolynomial<C>> lrow, List<GenWordPolynomial<C>> rrow,
-                                           List<GenWordPolynomial<C>> Pp, GenWordPolynomial<C> Ap);
+                    List<GenWordPolynomial<C>> Pp, GenWordPolynomial<C> Ap);
 
 
     /**
@@ -129,8 +129,8 @@ public interface WordReduction<C extends RingElem<C>> extends Serializable {
      * @param Ap a polynomial.
      * @return nf(Pp,Ap), the left normal form of Ap wrt. Pp.
      */
-    public GenWordPolynomial<C> leftNormalform(List<GenWordPolynomial<C>> lrow,
-                                               List<GenWordPolynomial<C>> Pp, GenWordPolynomial<C> Ap);
+    public GenWordPolynomial<C> leftNormalform(List<GenWordPolynomial<C>> lrow, 
+                                    List<GenWordPolynomial<C>> Pp, GenWordPolynomial<C> Ap);
 
 
     /**
@@ -152,7 +152,7 @@ public interface WordReduction<C extends RingElem<C>> extends Serializable {
      * @return true, if Np + sum( row[i]*Pp[i] ) == Ap, else false.
      */
     public boolean isReductionNF(List<GenWordPolynomial<C>> lrow, List<GenWordPolynomial<C>> rrow,
-                                 List<GenWordPolynomial<C>> Pp, GenWordPolynomial<C> Ap, GenWordPolynomial<C> Np);
+                    List<GenWordPolynomial<C>> Pp, GenWordPolynomial<C> Ap, GenWordPolynomial<C> Np);
 
 
     /**
@@ -171,7 +171,7 @@ public interface WordReduction<C extends RingElem<C>> extends Serializable {
      * @param Ap a polynomial.
      * @return nf(Pp,Ap), the right normal form of Ap wrt. Pp.
      */
-    public GenWordPolynomial<C> rightNormalform(List<GenWordPolynomial<C>> rrow,
-                                                List<GenWordPolynomial<C>> Pp, GenWordPolynomial<C> Ap);
+    public GenWordPolynomial<C> rightNormalform(List<GenWordPolynomial<C>> rrow, 
+                List<GenWordPolynomial<C>> Pp, GenWordPolynomial<C> Ap);
 
 }

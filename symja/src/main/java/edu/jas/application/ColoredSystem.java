@@ -5,12 +5,12 @@
 package edu.jas.application;
 
 
-import org.apache.log4j.Logger;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import org.apache.log4j.Logger;
 
 import edu.jas.poly.GenPolynomial;
 import edu.jas.structure.GcdRingElem;
@@ -108,7 +108,7 @@ public class ColoredSystem<C extends GcdRingElem<C>> {
 
     /**
      * Get the String representation.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -197,7 +197,7 @@ public class ColoredSystem<C extends GcdRingElem<C>> {
 
     /**
      * Hash code for this colored system.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

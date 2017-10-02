@@ -167,7 +167,7 @@ public class AlgebraicNumber<C extends RingElem<C>> implements GcdRingElem<Algeb
 
     /**
      * Get the String representation as RingElem.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -222,7 +222,7 @@ public class AlgebraicNumber<C extends RingElem<C>> implements GcdRingElem<Algeb
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -243,7 +243,7 @@ public class AlgebraicNumber<C extends RingElem<C>> implements GcdRingElem<Algeb
 
     /**
      * Hash code for this AlgebraicNumber.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

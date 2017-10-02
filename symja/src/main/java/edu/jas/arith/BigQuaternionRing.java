@@ -29,7 +29,7 @@ public final class BigQuaternionRing implements RingFactory<BigQuaternion> {
     /**
      * List of all 24 integral units.
      */
-    public static List<BigQuaternion> entierUnits = null; //later: unitsOfHurwitzian();
+    static List<BigQuaternion> entierUnits = null; //later: unitsOfHurwitzian();
 
 
     /**
@@ -218,7 +218,7 @@ public final class BigQuaternionRing implements RingFactory<BigQuaternion> {
 
     /**
      * Get the string representation. Is compatible with the string constructor.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -244,7 +244,7 @@ public final class BigQuaternionRing implements RingFactory<BigQuaternion> {
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     public boolean equals(Object b) {
@@ -258,7 +258,7 @@ public final class BigQuaternionRing implements RingFactory<BigQuaternion> {
 
     /**
      * Hash code for this BigQuaternionRing.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

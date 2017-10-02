@@ -215,7 +215,7 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
 
     /**
      * Get the String representation.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -265,7 +265,7 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -291,7 +291,7 @@ public class GenSolvablePolynomialRing<C extends RingElem<C>> extends GenPolynom
 
     /**
      * Hash code for this polynomial ring.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

@@ -11,6 +11,7 @@ import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
 
+import edu.jas.poly.ExpVector;
 import edu.jas.poly.AlgebraicNumber;
 import edu.jas.poly.AlgebraicNumberRing;
 import edu.jas.poly.GenPolynomial;
@@ -99,7 +100,7 @@ public abstract class SquarefreeFieldCharP<C extends GcdRingElem<C>> extends Squ
 
     /**
      * Get the String representation.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -352,6 +353,19 @@ public abstract class SquarefreeFieldCharP<C extends GcdRingElem<C>> extends Squ
                 sfactors.put(cr, rk);
             }
         }
+        // divide by trailing term
+        ExpVector et = P.trailingExpVector();
+        if (!et.isZERO()) {
+            GenPolynomial<GenPolynomial<C>> tr = pfac.valueOf(et);
+            if (logger.isInfoEnabled()) {
+               logger.info("trailing term = " + tr);
+            }
+            P = PolyUtil.<C> recursivePseudoDivide(P, tr);
+            long ep = et.getVal(0); // univariate
+            et = et.subst(0,1);
+            tr = pfac.valueOf(et);
+            sfactors.put(tr, ep);
+	}
 
         // factors of recursive polynomial
         GenPolynomial<GenPolynomial<C>> T0 = P;
@@ -479,12 +493,9 @@ public abstract class SquarefreeFieldCharP<C extends GcdRingElem<C>> extends Squ
             sfactors.put(P, 1L);
             return sfactors;
         }
-        GenPolynomialRing<C> cfac = pfac.contract(1);
-        GenPolynomialRing<GenPolynomial<C>> rfac = new GenPolynomialRing<GenPolynomial<C>>(cfac, 1);
-
+        GenPolynomialRing<GenPolynomial<C>> rfac = pfac.recursive(1);
         GenPolynomial<GenPolynomial<C>> Pr = PolyUtil.<C> recursive(rfac, P);
         SortedMap<GenPolynomial<GenPolynomial<C>>, Long> PP = recursiveUnivariateSquarefreeFactors(Pr);
-
         for (Map.Entry<GenPolynomial<GenPolynomial<C>>, Long> m : PP.entrySet()) {
             Long i = m.getValue();
             GenPolynomial<GenPolynomial<C>> Dr = m.getKey();

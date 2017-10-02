@@ -76,7 +76,7 @@ public class PolynomialComparator<C extends RingElem<C>> implements Serializable
 
     /**
      * Hash code for this PolynomialComparator.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

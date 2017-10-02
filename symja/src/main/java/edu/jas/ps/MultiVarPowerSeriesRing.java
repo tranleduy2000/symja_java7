@@ -266,7 +266,7 @@ public class MultiVarPowerSeriesRing<C extends RingElem<C>> implements RingFacto
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -291,7 +291,7 @@ public class MultiVarPowerSeriesRing<C extends RingElem<C>> implements RingFacto
 
     /**
      * Hash code for this .
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

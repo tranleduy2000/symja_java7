@@ -106,7 +106,7 @@ public class ModularNotInvertibleException extends NotInvertibleException {
 
     /**
      * Get the String representation.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {

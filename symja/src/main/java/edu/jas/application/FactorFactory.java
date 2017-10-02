@@ -55,7 +55,7 @@ import edu.jas.ufdroot.FactorRealAlgebraic;
  *        </pre>
  * 
  * @see edu.jas.ufd.Factorization#factors(edu.jas.poly.GenPolynomial P)
- * @see edu.jas.ufd.FactorFactory#getImplementation(RingFactory
+ * @see edu.jas.ufd.FactorFactory#getImplementation(edu.jas.structure.RingFactory
  *      P)
  */
 
@@ -147,9 +147,9 @@ public class FactorFactory extends edu.jas.ufd.FactorFactory {
     @SuppressWarnings("unchecked")
     public static <C extends GcdRingElem<C> & Rational> FactorAbstract<edu.jas.application.RealAlgebraicNumber<C>> getImplementation(
                     edu.jas.application.RealAlgebraicRing<C> fac) {
-        RealAlgebraicRing<C> rar = (RealAlgebraicRing<C>) (Object) fac.realRing;
+        edu.jas.root.RealAlgebraicRing<C> rar = (edu.jas.root.RealAlgebraicRing<C>) (Object) fac.realRing;
         return new FactorRealReal<C>(fac,
-                        FactorFactory.<RealAlgebraicNumber<C>> getImplementation(rar));
+                        FactorFactory.<edu.jas.root.RealAlgebraicNumber<C>> getImplementation(rar));
     }
 
 
@@ -177,11 +177,11 @@ public class FactorFactory extends edu.jas.ufd.FactorFactory {
             rrfac = (edu.jas.application.RealAlgebraicRing) ofac;
             //ofac = rrfac.realRing;
             ufd = new FactorRealReal/*raw <C>*/(rrfac,
-                            FactorFactory.<RealAlgebraicNumber> getImplementation(
+                            FactorFactory.<edu.jas.root.RealAlgebraicNumber> getImplementation(
                                             rrfac.realRing));
-        } else if (ofac instanceof RealAlgebraicRing) {
+        } else if (ofac instanceof edu.jas.root.RealAlgebraicRing) {
             //System.out.println("rfac_o = " + ofac);
-            rfac = (RealAlgebraicRing) ofac;
+            rfac = (edu.jas.root.RealAlgebraicRing) ofac;
             //ofac = rfac.algebraic;
             ufd = new FactorRealAlgebraic/*raw <C>*/(rfac,
                             FactorFactory.<AlgebraicNumber<C>> getImplementation(rfac.algebraic));

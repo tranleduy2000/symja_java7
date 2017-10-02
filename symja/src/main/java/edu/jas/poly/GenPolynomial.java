@@ -5,6 +5,7 @@
 package edu.jas.poly;
 
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -267,7 +268,7 @@ public class GenPolynomial<C extends RingElem<C>>
 
     /**
      * String representation of GenPolynomial.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -300,7 +301,7 @@ public class GenPolynomial<C extends RingElem<C>>
     /**
      * String representation of GenPolynomial.
      * @param v names for variables.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     public String toString(String[] v) {
         StringBuffer s = new StringBuffer();
@@ -526,7 +527,7 @@ public class GenPolynomial<C extends RingElem<C>>
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -544,7 +545,7 @@ public class GenPolynomial<C extends RingElem<C>>
 
     /**
      * Hash code for this polynomial.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {
@@ -1819,7 +1820,7 @@ public class GenPolynomial<C extends RingElem<C>>
      * @param S nonzero GenPolynomial with invertible leading coefficient.
      * @return [ quotient , remainder ] with this = quotient * S + remainder and
      *         deg(remainder) &lt; deg(S) or remiander = 0.
-     * @see PolyUtil#baseSparsePseudoRemainder(GenPolynomial,GenPolynomial)
+     * @see edu.jas.poly.PolyUtil#baseSparsePseudoRemainder(edu.jas.poly.GenPolynomial,edu.jas.poly.GenPolynomial)
      */
     @SuppressWarnings("unchecked")
     public GenPolynomial<C>[] quotientRemainder(GenPolynomial<C> S) {
@@ -1862,7 +1863,7 @@ public class GenPolynomial<C extends RingElem<C>>
      * over fields, but works in any case.
      * @param S nonzero GenPolynomial with invertible leading coefficient.
      * @return quotient with this = quotient * S + remainder.
-     * @see PolyUtil#baseSparsePseudoRemainder(GenPolynomial,GenPolynomial)
+     * @see edu.jas.poly.PolyUtil#baseSparsePseudoRemainder(edu.jas.poly.GenPolynomial,edu.jas.poly.GenPolynomial)
      */
     public GenPolynomial<C> divide(GenPolynomial<C> S) {
         if (this instanceof GenSolvablePolynomial || S instanceof GenSolvablePolynomial) {
@@ -1882,7 +1883,7 @@ public class GenPolynomial<C extends RingElem<C>>
      * over fields, but works in any case.
      * @param S nonzero GenPolynomial with invertible leading coefficient.
      * @return remainder with this = quotient * S + remainder.
-     * @see PolyUtil#baseSparsePseudoRemainder(GenPolynomial,GenPolynomial)
+     * @see edu.jas.poly.PolyUtil#baseSparsePseudoRemainder(edu.jas.poly.GenPolynomial,edu.jas.poly.GenPolynomial)
      */
     public GenPolynomial<C> remainder(GenPolynomial<C> S) {
         if (this instanceof GenSolvablePolynomial || S instanceof GenSolvablePolynomial) {
@@ -2453,4 +2454,14 @@ public class GenPolynomial<C extends RingElem<C>>
         return blen;
     }
 
+    //private void writeObject(java.io.ObjectOutputStream out) throws IOException {
+    //    out.defaultWriteObject();
+    //}
+
+
+    private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        blen = -1;
+        hash = -1;
+    }
 }

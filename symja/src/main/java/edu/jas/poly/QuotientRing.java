@@ -183,7 +183,7 @@ public class QuotientRing<C extends RingElem<C>> implements RingFactory<Quotient
 
     /**
      * Get the String representation as RingFactory.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -205,7 +205,7 @@ public class QuotientRing<C extends RingElem<C>> implements RingFactory<Quotient
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -223,7 +223,7 @@ public class QuotientRing<C extends RingElem<C>> implements RingFactory<Quotient
 
     /**
      * Hash code for this quotient ring.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

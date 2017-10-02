@@ -229,7 +229,7 @@ public final class BigDecimal implements GcdRingElem<BigDecimal>, RingFactory<Bi
 
     /**
      * Clone this.
-     * @see Object#clone()
+     * @see java.lang.Object#clone()
      */
     @Override
     public BigDecimal copy() {
@@ -378,7 +378,7 @@ public final class BigDecimal implements GcdRingElem<BigDecimal>, RingFactory<Bi
 
     /**
      * Get the String representation.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -390,7 +390,7 @@ public final class BigDecimal implements GcdRingElem<BigDecimal>, RingFactory<Bi
     /**
      * Get this decimal as a <tt>double</tt>.
      * @return the decimal as a <tt>double</tt>
-     * @see Number#doubleValue()
+     * @see java.lang.Number#doubleValue()
      */
     public double doubleValue() {
         return val.doubleValue();
@@ -506,7 +506,7 @@ public final class BigDecimal implements GcdRingElem<BigDecimal>, RingFactory<Bi
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     public boolean equals(Object b) {
@@ -523,7 +523,7 @@ public final class BigDecimal implements GcdRingElem<BigDecimal>, RingFactory<Bi
 
     /**
      * Hash code for this BigDecimal.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

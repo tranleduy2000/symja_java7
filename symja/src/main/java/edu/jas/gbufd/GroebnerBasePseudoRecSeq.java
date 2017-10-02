@@ -33,7 +33,7 @@ import edu.jas.ufd.GreatestCommonDivisorAbstract;
  * @author Heinz Kredel
  * 
  * @see edu.jas.application.GBAlgorithmBuilder
- * @see GBFactory
+ * @see edu.jas.gbufd.GBFactory
  */
 
 public class GroebnerBasePseudoRecSeq<C extends GcdRingElem<C>> extends

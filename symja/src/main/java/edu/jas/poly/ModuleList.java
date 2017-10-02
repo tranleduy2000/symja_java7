@@ -97,7 +97,7 @@ public class ModuleList<C extends RingElem<C>> implements Serializable {
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -138,7 +138,7 @@ public class ModuleList<C extends RingElem<C>> implements Serializable {
 
     /**
      * Hash code for this module list.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {
@@ -151,7 +151,7 @@ public class ModuleList<C extends RingElem<C>> implements Serializable {
 
     /**
      * String representation of the module list.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     //@SuppressWarnings("unchecked") 

@@ -324,7 +324,7 @@ public final class ModLongRing implements ModularRingFactory<ModLong>, Iterable<
 
     /**
      * Get the String representation.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -349,7 +349,7 @@ public final class ModLongRing implements ModularRingFactory<ModLong>, Iterable<
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     public boolean equals(Object b) {
@@ -363,7 +363,7 @@ public final class ModLongRing implements ModularRingFactory<ModLong>, Iterable<
 
     /**
      * Hash code for this ModLongRing.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

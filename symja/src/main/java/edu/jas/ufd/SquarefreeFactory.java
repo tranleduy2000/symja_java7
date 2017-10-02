@@ -48,7 +48,7 @@ import edu.jas.structure.RingFactory;
  * Sm = engine.sqaurefreeFactors(poly);
  * </pre>
  * 
- * @see Squarefree#squarefreeFactors(edu.jas.poly.GenPolynomial P)
+ * @see edu.jas.ufd.Squarefree#squarefreeFactors(edu.jas.poly.GenPolynomial P)
  */
 
 public class SquarefreeFactory {

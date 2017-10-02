@@ -173,7 +173,7 @@ public class Roots {
         // ensure enough precision
         MathContext mc = A.context;
         BigDecimal eps = new BigDecimal("0.1"); //e-13"); // TODO
-        int p = Math.max(mc.getPrecision(), MathContext.DECIMAL64.getPrecision());
+        int p = Math.max(mc.getPrecision(),java.math.MathContext.DECIMAL64.getPrecision());
         //java.math.MathContext.UNLIMITED.getPrecision() == 0
         eps = eps.power(p/2); //Power.positivePower(eps,p/2);
         // newton iteration
@@ -232,7 +232,7 @@ public class Roots {
         // ensure enough precision
         MathContext mc = A.context;
         BigDecimal eps = new BigDecimal("0.1"); //e-10"); // TODO
-        int p = Math.max(mc.getPrecision(), MathContext.DECIMAL64.getPrecision());
+        int p = Math.max(mc.getPrecision(),java.math.MathContext.DECIMAL64.getPrecision());
         //java.math.MathContext.UNLIMITED.getPrecision() == 0
         eps = eps.power((p*2)/3); //Power.positivePower(eps,(p*2)/3);
         // newton iteration

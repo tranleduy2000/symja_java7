@@ -92,7 +92,7 @@ public class RelationTable<C extends RingElem<C>> implements Serializable {
 
     /**
      * RelationTable equals. Tests same keySets and base relations.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -207,7 +207,7 @@ public class RelationTable<C extends RingElem<C>> implements Serializable {
 
     /**
      * Hash code for this relation table.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {
@@ -235,7 +235,7 @@ public class RelationTable<C extends RingElem<C>> implements Serializable {
 
     /**
      * Get the String representation.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -262,7 +262,7 @@ public class RelationTable<C extends RingElem<C>> implements Serializable {
     /**
      * Get the String representation.
      * @param vars names for the variables.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @SuppressWarnings({ "unchecked", "cast" })
     public String toString(String[] vars) {

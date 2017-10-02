@@ -225,7 +225,7 @@ public /*final*/ class BigQuaternion implements StarRingElem<BigQuaternion>, Gcd
 
     /**
      * Clone this.
-     * @see Object#clone()
+     * @see java.lang.Object#clone()
      */
     @Override
     public BigQuaternion copy() {
@@ -271,7 +271,7 @@ public /*final*/ class BigQuaternion implements StarRingElem<BigQuaternion>, Gcd
 
     /**
      * Get the string representation. Is compatible with the string constructor.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -449,7 +449,7 @@ public /*final*/ class BigQuaternion implements StarRingElem<BigQuaternion>, Gcd
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     public boolean equals(Object b) {
@@ -464,7 +464,7 @@ public /*final*/ class BigQuaternion implements StarRingElem<BigQuaternion>, Gcd
 
     /**
      * Hash code for this BigQuaternion.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

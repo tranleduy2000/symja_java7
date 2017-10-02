@@ -5,13 +5,13 @@
 package edu.jas.arith;
 
 
-import org.apache.log4j.Logger;
-
 import java.io.Reader;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import org.apache.log4j.Logger;
 
 import edu.jas.kern.StringUtil;
 import edu.jas.structure.GcdRingElem;
@@ -156,7 +156,7 @@ public final class BigComplex implements StarRingElem<BigComplex>, GcdRingElem<B
 
     /**
      * Clone this.
-     * @see Object#clone()
+     * @see java.lang.Object#clone()
      */
     @Override
     public BigComplex copy() {
@@ -232,8 +232,8 @@ public final class BigComplex implements StarRingElem<BigComplex>, GcdRingElem<B
      * Characteristic of this ring.
      * @return characteristic of this ring.
      */
-    public BigInteger characteristic() {
-        return BigInteger.ZERO;
+    public java.math.BigInteger characteristic() {
+        return java.math.BigInteger.ZERO;
     }
 
 
@@ -433,7 +433,7 @@ public final class BigComplex implements StarRingElem<BigComplex>, GcdRingElem<B
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     public boolean equals(Object b) {
@@ -447,7 +447,7 @@ public final class BigComplex implements StarRingElem<BigComplex>, GcdRingElem<B
 
     /**
      * Hash code for this BigComplex.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

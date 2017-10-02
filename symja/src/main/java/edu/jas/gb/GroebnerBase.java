@@ -51,7 +51,7 @@ public interface GroebnerBase<C extends RingElem<C>>
      * @return GB(F) a Groebner base of F.
      */
     public List<GenPolynomial<C>> 
-           GB(List<GenPolynomial<C>> F);
+           GB( List<GenPolynomial<C>> F );
 
 
     /**
@@ -61,8 +61,8 @@ public interface GroebnerBase<C extends RingElem<C>>
      * @return GB(F) a Groebner base of F.
      */
     public List<GenPolynomial<C>> 
-           GB(int modv,
-              List<GenPolynomial<C>> F);
+           GB( int modv, 
+               List<GenPolynomial<C>> F );
 
 
     /**
@@ -87,7 +87,7 @@ public interface GroebnerBase<C extends RingElem<C>>
      * @return a container for a Groebner base G of F together with back-and-forth transformations.
      */
     public ExtendedGB<C>  
-           extGB(List<GenPolynomial<C>> F);
+           extGB( List<GenPolynomial<C>> F );
 
 
     /**
@@ -97,8 +97,8 @@ public interface GroebnerBase<C extends RingElem<C>>
      * @return a container for a Groebner base G of F together with back-and-forth transformations.
      */
     public ExtendedGB<C> 
-           extGB(int modv,
-                 List<GenPolynomial<C>> F);
+           extGB( int modv, 
+                  List<GenPolynomial<C>> F );
 
 
     /**
@@ -128,9 +128,9 @@ public interface GroebnerBase<C extends RingElem<C>>
      * @return true, if Mg and Mf are reduction matrices, else false.
      */
     public boolean
-           isReductionMatrix(List<GenPolynomial<C>> F,
+           isReductionMatrix(List<GenPolynomial<C>> F, 
                              List<GenPolynomial<C>> G,
-                             List<List<GenPolynomial<C>>> Mf,
+                             List<List<GenPolynomial<C>>> Mf,  
                              List<List<GenPolynomial<C>>> Mg);
 
 }

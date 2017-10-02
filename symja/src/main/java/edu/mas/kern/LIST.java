@@ -243,7 +243,7 @@ public class LIST<C> {
      * are system dependent.
      */
     public static long CLOCK() {
-        return System.currentTimeMillis();
+        return java.lang.System.currentTimeMillis();
     }
 
 

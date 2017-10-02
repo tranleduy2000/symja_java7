@@ -253,7 +253,7 @@ public final class GenWordPolynomial<C extends RingElem<C>> implements RingElem<
 
     /**
      * String representation of GenWordPolynomial.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -461,7 +461,7 @@ public final class GenWordPolynomial<C extends RingElem<C>> implements RingElem<
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -479,7 +479,7 @@ public final class GenWordPolynomial<C extends RingElem<C>> implements RingElem<
 
     /**
      * Hash code for this polynomial.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {
@@ -1223,7 +1223,7 @@ public final class GenWordPolynomial<C extends RingElem<C>> implements RingElem<
      * @param S nonzero GenWordPolynomial with invertible leading coefficient.
      * @return [ quotient , remainder ] with this = quotient * S + remainder and
      *         deg(remainder) &lt; deg(S) or remiander = 0.
-     * @see PolyUtil#baseSparsePseudoRemainder(GenPolynomial,GenPolynomial)
+     * @see edu.jas.poly.PolyUtil#baseSparsePseudoRemainder(edu.jas.poly.GenPolynomial,edu.jas.poly.GenPolynomial)
      *      .
      */
     @SuppressWarnings("unchecked")
@@ -1274,7 +1274,7 @@ public final class GenWordPolynomial<C extends RingElem<C>> implements RingElem<
      * over fields, but works in any case.
      * @param S nonzero GenWordPolynomial with invertible leading coefficient.
      * @return quotient with this = quotient * S + remainder.
-     * @see PolyUtil#baseSparsePseudoRemainder(GenPolynomial,GenPolynomial)
+     * @see edu.jas.poly.PolyUtil#baseSparsePseudoRemainder(edu.jas.poly.GenPolynomial,edu.jas.poly.GenPolynomial)
      *      .
      */
     public GenWordPolynomial<C> divide(GenWordPolynomial<C> S) {
@@ -1288,7 +1288,7 @@ public final class GenWordPolynomial<C extends RingElem<C>> implements RingElem<
      * over fields, but works in any case.
      * @param S nonzero GenWordPolynomial with invertible leading coefficient.
      * @return remainder with this = quotient * S + remainder.
-     * @see PolyUtil#baseSparsePseudoRemainder(GenPolynomial,GenPolynomial)
+     * @see edu.jas.poly.PolyUtil#baseSparsePseudoRemainder(edu.jas.poly.GenPolynomial,edu.jas.poly.GenPolynomial)
      *      .
      */
     public GenWordPolynomial<C> remainder(GenWordPolynomial<C> S) {

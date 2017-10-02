@@ -169,7 +169,7 @@ public class Pair<C extends RingElem<C> > extends AbstractPair<C>
 
     /**
      * Hash code for this Pair.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

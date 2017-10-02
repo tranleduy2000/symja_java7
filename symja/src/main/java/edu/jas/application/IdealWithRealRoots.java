@@ -59,7 +59,7 @@ public class IdealWithRealRoots<C extends GcdRingElem<C>> extends IdealWithUniv<
 
     /**
      * String representation of the ideal.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {

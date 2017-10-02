@@ -44,7 +44,7 @@ public class OptimizedModuleList<C extends RingElem<C>> extends ModuleList<C> {
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     public boolean equals(Object B) {

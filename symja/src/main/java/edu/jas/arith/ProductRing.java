@@ -376,7 +376,7 @@ public class ProductRing<C extends RingElem<C>> implements RingFactory<Product<C
 
     /**
      * Get the String representation as RingFactory.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -434,7 +434,7 @@ public class ProductRing<C extends RingElem<C>> implements RingFactory<Product<C
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -468,7 +468,7 @@ public class ProductRing<C extends RingElem<C>> implements RingFactory<Product<C
 
     /**
      * Hash code for this product ring.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

@@ -293,7 +293,7 @@ public class WordResidueRing<C extends GcdRingElem<C>> implements RingFactory<Wo
 
     /**
      * Get the String representation as RingFactory.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -316,7 +316,7 @@ public class WordResidueRing<C extends GcdRingElem<C>> implements RingFactory<Wo
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -341,7 +341,7 @@ public class WordResidueRing<C extends GcdRingElem<C>> implements RingFactory<Wo
 
     /**
      * Hash code for this residue ring.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

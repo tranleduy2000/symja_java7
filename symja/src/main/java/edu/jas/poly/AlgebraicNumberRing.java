@@ -298,7 +298,7 @@ public class AlgebraicNumberRing<C extends RingElem<C>> implements RingFactory<A
 
     /**
      * Get the String representation as RingFactory.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -334,7 +334,7 @@ public class AlgebraicNumberRing<C extends RingElem<C>> implements RingFactory<A
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -353,7 +353,7 @@ public class AlgebraicNumberRing<C extends RingElem<C>> implements RingFactory<A
 
     /**
      * Hash code for this AlgebraicNumber.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

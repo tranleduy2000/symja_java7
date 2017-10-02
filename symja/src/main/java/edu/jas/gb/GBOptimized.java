@@ -65,7 +65,7 @@ public class GBOptimized<C extends GcdRingElem<C>> extends GroebnerBaseAbstract<
 
     /**
      * Get the String representation with GB engine.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {

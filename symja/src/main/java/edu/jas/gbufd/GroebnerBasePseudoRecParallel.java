@@ -35,7 +35,7 @@ import edu.jas.util.ThreadPool;
  * @author Heinz Kredel
  * 
  * @see edu.jas.application.GBAlgorithmBuilder
- * @see GBFactory
+ * @see edu.jas.gbufd.GBFactory
  */
 
 public class GroebnerBasePseudoRecParallel<C extends GcdRingElem<C>> extends

@@ -136,7 +136,7 @@ public class ComplexAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * Get the String representation as RingElem.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -206,7 +206,7 @@ public class ComplexAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -227,7 +227,7 @@ public class ComplexAlgebraicNumber<C extends GcdRingElem<C> & Rational>
 
     /**
      * Hash code for this ComplexAlgebraicNumber.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

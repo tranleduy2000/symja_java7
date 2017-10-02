@@ -111,7 +111,7 @@ public class SolvableResidue<C extends GcdRingElem<C>>
 
     /**
      * Value. Returns the value.
-     * @see Value#value()
+     * @see edu.jas.structure.Value#value()
      */
     public GenSolvablePolynomial<C> value() {
         return val;
@@ -120,7 +120,7 @@ public class SolvableResidue<C extends GcdRingElem<C>>
 
     /**
      * Numerator. Returns the value.
-     * @see QuotPair#numerator()
+     * @see edu.jas.structure.QuotPair#numerator()
      */
     public GenSolvablePolynomial<C> numerator() {
         return val;
@@ -129,7 +129,7 @@ public class SolvableResidue<C extends GcdRingElem<C>>
 
     /**
      * Denominator. Returns 1.
-     * @see QuotPair#denominator()
+     * @see edu.jas.structure.QuotPair#denominator()
      */
     public GenSolvablePolynomial<C> denominator() {
         return ring.ring.getONE();
@@ -138,7 +138,7 @@ public class SolvableResidue<C extends GcdRingElem<C>>
 
     /**
      * Clone this.
-     * @see Object#clone()
+     * @see java.lang.Object#clone()
      */
     @Override
     public SolvableResidue<C> copy() {
@@ -200,7 +200,7 @@ public class SolvableResidue<C extends GcdRingElem<C>>
 
     /**
      * Get the String representation as RingElem.
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -255,7 +255,7 @@ public class SolvableResidue<C extends GcdRingElem<C>>
 
     /**
      * Comparison with any other object.
-     * @see Object#equals(Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      * @return true means that this and b are equivalent in this residue class
      *         ring.
      */
@@ -279,7 +279,7 @@ public class SolvableResidue<C extends GcdRingElem<C>>
 
     /**
      * Hash code for this residue.
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {
