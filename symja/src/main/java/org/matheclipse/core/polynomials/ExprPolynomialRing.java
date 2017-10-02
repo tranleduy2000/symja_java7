@@ -1,5 +1,7 @@
 package org.matheclipse.core.polynomials;
 
+
+
 import java.io.Reader;
 import java.math.BigInteger;
 import java.util.ArrayList;

@@ -1,13 +1,4 @@
-package org.matheclipse.core.builtin;
-
-import static org.matheclipse.core.expression.F.And;
-import static org.matheclipse.core.expression.F.Equivalent;
-import static org.matheclipse.core.expression.F.Implies;
-import static org.matheclipse.core.expression.F.List;
-import static org.matheclipse.core.expression.F.Nand;
-import static org.matheclipse.core.expression.F.Nor;
-import static org.matheclipse.core.expression.F.Or;
-import static org.matheclipse.core.expression.F.Xor;
+package org.matheclipse.core.builtin.booleanfunction;
 
 import org.matheclipse.core.basic.Config;
 import org.matheclipse.core.boole.QuineMcCluskyFormula;
@@ -30,6 +21,15 @@ import org.matheclipse.core.interfaces.ISignedNumber;
 import org.matheclipse.core.interfaces.ISymbol;
 import org.matheclipse.core.interfaces.ITernaryComparator;
 import org.matheclipse.core.visit.VisitorExpr;
+
+import static org.matheclipse.core.expression.F.And;
+import static org.matheclipse.core.expression.F.Equivalent;
+import static org.matheclipse.core.expression.F.Implies;
+import static org.matheclipse.core.expression.F.List;
+import static org.matheclipse.core.expression.F.Nand;
+import static org.matheclipse.core.expression.F.Nor;
+import static org.matheclipse.core.expression.F.Or;
+import static org.matheclipse.core.expression.F.Xor;
 
 public final class BooleanFunctions {
 	public final static Equal CONST_EQUAL = new Equal();

@@ -1,8 +1,8 @@
 package org.matheclipse.core.interfaces;
 
-import java.util.Map;
-
 import org.matheclipse.core.patternmatching.PatternMap;
+
+import java.util.Map;
 
 /**
  * Interface for pattern objects (i.e. _, x_, x__)
@@ -25,11 +25,6 @@ public interface IPatternObject extends IExpr {
 	 * Check if the two left-hand-side pattern expressions are equivalent. (i.e. <code>f[x_,y_]</code> is equivalent to
 	 * <code>f[a_,b_]</code> )
 	 * 
-	 * @param patternExpr1
-	 * @param patternExpr2
-	 * @param pm1
-	 * @param pm2
-	 * @return
 	 */
 	public boolean equivalent(final IPatternObject patternExpr2, final PatternMap pm1, PatternMap pm2);
 

@@ -10,8 +10,6 @@ import org.matheclipse.core.interfaces.ISymbol;
 import org.matheclipse.core.reflection.system.function.TrigExpandFunction;
 import org.matheclipse.core.visit.VisitorPlusTimesPowerReplaceAll;
 
-import java.util.function.Function;
-
 import static org.matheclipse.core.expression.F.evalExpandAll;
 
 /**

@@ -1,8 +1,5 @@
 package org.matheclipse.core.visit;
 
-import java.util.function.Function;
-import java.util.function.Predicate;
-
 import org.matheclipse.core.expression.F;
 import org.matheclipse.core.interfaces.IAST;
 import org.matheclipse.core.interfaces.IExpr;

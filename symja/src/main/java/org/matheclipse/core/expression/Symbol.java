@@ -11,7 +11,6 @@ import java.util.Deque;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.function.Function;
 
 import org.hipparchus.complex.Complex;
 import org.matheclipse.core.basic.Config;
@@ -27,6 +26,7 @@ import org.matheclipse.core.interfaces.IExpr;
 import org.matheclipse.core.interfaces.INumber;
 import org.matheclipse.core.interfaces.ISignedNumber;
 import org.matheclipse.core.interfaces.ISymbol;
+import org.matheclipse.core.interfaces.impl.SymbolImpl;
 import org.matheclipse.core.patternmatching.IPatternMatcher;
 import org.matheclipse.core.patternmatching.PatternMap;
 import org.matheclipse.core.patternmatching.PatternMatcher;
@@ -38,7 +38,7 @@ import org.matheclipse.core.visit.IVisitorBoolean;
 import org.matheclipse.core.visit.IVisitorInt;
 import org.matheclipse.core.visit.IVisitorLong;
 
-public class Symbol implements ISymbol, Serializable {
+public class Symbol extends SymbolImpl implements ISymbol, Serializable {
 	protected transient Context fContext;
 
 	private final static Collator US_COLLATOR = Collator.getInstance(Locale.US);
@@ -59,7 +59,7 @@ public class Symbol implements ISymbol, Serializable {
 	protected String fSymbolName;
 	/**
 	 * The hash value of this object computed in the constructor.
-	 * 
+	 *
 	 */
 	protected int fHashValue;
 
@@ -177,7 +177,7 @@ public class Symbol implements ISymbol, Serializable {
 			// sort lexicographically
 			return US_COLLATOR.compare(fSymbolName, ((Symbol) expr).fSymbolName);
 		}
-		return ISymbol.super.compareTo(expr);
+		return super.compareTo(expr);
 	}
 
 	/** {@inheritDoc} */
@@ -348,7 +348,7 @@ public class Symbol implements ISymbol, Serializable {
 	@Override
 	public IExpr evaluate(EvalEngine engine) {
 		if (hasLocalVariableStack()) {
-			return IExpr.ofNullable(get());
+			return ofNullable(get());
 		}
 		IExpr result;
 		if ((result = evalDownRule(engine, this)).isPresent()) {
@@ -446,7 +446,7 @@ public class Symbol implements ISymbol, Serializable {
 
 	/**
 	 * Get the rules for initializing the pattern matching rules of this symbol.
-	 * 
+	 *
 	 * @return <code>null</code> if no rule is defined
 	 */
 	@Override
@@ -556,7 +556,7 @@ public class Symbol implements ISymbol, Serializable {
 
 	/**
 	 * Used to generate special Symja Java code
-	 * 
+	 *
 	 * @return
 	 */
 	private String internalJavaStringAsFactoryMethod() {

@@ -1,14 +1,14 @@
 package org.matheclipse.core.expression;
 
+import org.matheclipse.core.eval.EvalEngine;
+import org.matheclipse.core.interfaces.IAST;
+import org.matheclipse.core.interfaces.IExpr;
+
 import java.io.ObjectStreamException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Supplier;
-
-import org.matheclipse.core.eval.EvalEngine;
-import org.matheclipse.core.interfaces.IAST;
-import org.matheclipse.core.interfaces.IExpr;
 
 /**
  * The class <code>NILPointer</code> implements the constant object

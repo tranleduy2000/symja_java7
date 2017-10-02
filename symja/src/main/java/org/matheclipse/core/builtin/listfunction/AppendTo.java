@@ -8,8 +8,6 @@ import org.matheclipse.core.interfaces.IAST;
 import org.matheclipse.core.interfaces.IExpr;
 import org.matheclipse.core.interfaces.ISymbol;
 
-import java.util.function.Function;
-
 /**
  * <p>
  * See the online Symja function reference: <a href=

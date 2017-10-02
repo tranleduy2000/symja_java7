@@ -3,7 +3,6 @@ package org.matheclipse.core.expression;
 import java.io.ObjectStreamException;
 import java.util.Collection;
 import java.util.Map;
-import java.util.function.Predicate;
 
 import org.matheclipse.core.basic.Config;
 import org.matheclipse.core.eval.EvalEngine;

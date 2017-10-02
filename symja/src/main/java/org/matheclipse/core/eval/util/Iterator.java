@@ -1,10 +1,5 @@
 package org.matheclipse.core.eval.util;
 
-import static org.matheclipse.core.expression.F.Divide;
-import static org.matheclipse.core.expression.F.Less;
-import static org.matheclipse.core.expression.F.LessEqual;
-import static org.matheclipse.core.expression.F.Subtract;
-
 import org.matheclipse.core.eval.EvalEngine;
 import org.matheclipse.core.eval.exception.NoEvalException;
 import org.matheclipse.core.expression.F;
@@ -17,6 +12,12 @@ import org.matheclipse.core.interfaces.INum;
 import org.matheclipse.core.interfaces.IRational;
 import org.matheclipse.core.interfaces.ISignedNumber;
 import org.matheclipse.core.interfaces.ISymbol;
+import org.matheclipse.core.interfaces.impl.IteratorImpl;
+
+import static org.matheclipse.core.expression.F.Divide;
+import static org.matheclipse.core.expression.F.Less;
+import static org.matheclipse.core.expression.F.LessEqual;
+import static org.matheclipse.core.expression.F.Subtract;
 
 /**
  * Create iterators for functions like <code>Table()</code>, <code>Sum()</code>
@@ -27,7 +28,7 @@ import org.matheclipse.core.interfaces.ISymbol;
  * @see org.matheclipse.core.reflection.system.Table
  */
 public class Iterator {
-	public static class ExprIterator implements IIterator<IExpr> {
+	public static class ExprIterator extends IteratorImpl {
 
 		IExpr count;
 
@@ -243,7 +244,7 @@ public class Iterator {
 		}
 	}
 
-	public static class DoubleIterator implements IIterator<IExpr> {
+	public static class DoubleIterator extends IteratorImpl {
 		double count;
 
 		double lowerLimit;
@@ -386,7 +387,7 @@ public class Iterator {
 		}
 	}
 
-	public static class RationalIterator implements IIterator<IExpr> {
+	public static class RationalIterator extends IteratorImpl {
 		IRational count;
 
 		IRational lowerLimit;
@@ -529,7 +530,7 @@ public class Iterator {
 		}
 	}
 
-	public static class ISignedNumberIterator implements IIterator<IExpr> {
+	public static class ISignedNumberIterator extends IteratorImpl {
 		ISignedNumber count;
 
 		ISignedNumber lowerLimit;
@@ -669,7 +670,7 @@ public class Iterator {
 		}
 	}
 
-	public static class IntIterator implements IIterator<IExpr> {
+	public static class IntIterator extends IteratorImpl {
 		int count;
 
 		int lowerLimit;

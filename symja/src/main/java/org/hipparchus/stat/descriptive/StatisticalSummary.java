@@ -16,6 +16,8 @@
  */
 package org.hipparchus.stat.descriptive;
 
+
+
 import java.util.Arrays;
 
 import org.hipparchus.util.MathUtils;

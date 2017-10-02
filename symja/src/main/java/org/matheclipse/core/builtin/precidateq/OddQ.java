@@ -7,8 +7,6 @@ import org.matheclipse.core.interfaces.IExpr;
 import org.matheclipse.core.interfaces.IInteger;
 import org.matheclipse.core.interfaces.ISymbol;
 
-import java.util.function.Predicate;
-
 /**
  * Predicate function
  * <p>

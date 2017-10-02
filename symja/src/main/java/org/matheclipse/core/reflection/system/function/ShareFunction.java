@@ -3,7 +3,6 @@ package org.matheclipse.core.reflection.system.function;
 import org.matheclipse.core.interfaces.IExpr;
 
 import java.util.HashMap;
-import java.util.function.Function;
 
 public class ShareFunction implements Function<IExpr, IExpr> {
     java.util.Map<IExpr, IExpr> map;

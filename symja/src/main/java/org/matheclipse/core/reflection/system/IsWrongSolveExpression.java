@@ -2,8 +2,6 @@ package org.matheclipse.core.reflection.system;
 
 import org.matheclipse.core.interfaces.IExpr;
 
-import java.util.function.Predicate;
-
 /**
  * Check an expression, if it's an allowed object.
  */

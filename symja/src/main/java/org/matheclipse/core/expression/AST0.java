@@ -1,5 +1,8 @@
 package org.matheclipse.core.expression;
 
+import org.matheclipse.core.interfaces.IAST;
+import org.matheclipse.core.interfaces.IExpr;
+
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
@@ -10,12 +13,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.RandomAccess;
 import java.util.Set;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
-
-import org.matheclipse.core.interfaces.IAST;
-import org.matheclipse.core.interfaces.IExpr;
 
 /**
  * <p>
@@ -49,6 +46,7 @@ import org.matheclipse.core.interfaces.IExpr;
  * @see AST
  */
 public class AST0 extends AbstractAST implements Cloneable, Externalizable, RandomAccess {
+
 
 	private final static int SIZE = 1;
 

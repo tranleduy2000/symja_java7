@@ -26,7 +26,7 @@ public class Out extends AbstractFunctionEvaluator {
 	 */
 	public IExpr e1DblArg(final double iNum) {
 		try {
-			// int i = iNum.toInt();
+			// int i =  toInt();
 			int i = NumberUtil.toInt(iNum);
 			final LastCalculationsHistory list = EvalEngine.get().getOutList();
 			return list.get(i);

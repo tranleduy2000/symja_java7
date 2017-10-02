@@ -5,13 +5,15 @@
 package edu.jas.poly;
 
 
+
+
+import org.apache.log4j.Logger;
+
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.kern.PreemptingException;
 import edu.jas.structure.NotInvertibleException;
@@ -31,7 +33,7 @@ import edu.jas.structure.UnaryFunctor;
  * @author Heinz Kredel
  */
 public final class GenWordPolynomial<C extends RingElem<C>> implements RingElem<GenWordPolynomial<C>>,
-                Iterable<WordMonomial<C>> {
+        Iterable<WordMonomial<C>> {
 
 
     /**

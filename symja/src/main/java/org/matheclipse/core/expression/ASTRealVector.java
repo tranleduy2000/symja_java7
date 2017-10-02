@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.RandomAccess;
 import java.util.Set;
 import java.util.function.DoubleUnaryOperator;
-import java.util.function.Function;
-import java.util.function.Predicate;
 
 import org.hipparchus.linear.ArrayRealVector;
 import org.hipparchus.linear.RealVector;

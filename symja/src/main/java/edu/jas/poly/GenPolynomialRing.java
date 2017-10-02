@@ -5,6 +5,8 @@
 package edu.jas.poly;
 
 
+import org.apache.log4j.Logger;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
@@ -16,8 +18,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.arith.ModIntegerRing;
 import edu.jas.kern.PreemptStatus;
@@ -36,76 +36,69 @@ import edu.jas.util.LongIterable;
  * C. The variables commute with each other and with the
  * coefficients. For non-commutative coefficients some care is taken
  * to respect the multiplication order.
- *
+ * <p>
  * Almost immutable object, except variable names.
+ *
  * @param <C> coefficient type
  * @author Heinz Kredel
  */
 
 public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<GenPolynomial<C>>,
-                Iterable<GenPolynomial<C>> {
-
-
-    /**
-     * The factory for the coefficients.
-     */
-    public final RingFactory<C> coFac;
-
-
-    /**
-     * The number of variables.
-     */
-    public final int nvar;
-
-
-    /**
-     * The term order.
-     */
-    public final TermOrder tord;
-
-
-    /**
-     * True for partially reversed variables.
-     */
-    protected boolean partial;
-
-
-    /**
-     * The names of the variables. This value can be modified.
-     */
-    protected String[] vars;
-
-
-    /**
-     * The names of all known variables.
-     */
-    private static Set<String> knownVars = new HashSet<String>();
-
-
-    /**
-     * The constant polynomial 0 for this ring.
-     */
-    public final GenPolynomial<C> ZERO;
-
-
-    /**
-     * The constant polynomial 1 for this ring.
-     */
-    public final GenPolynomial<C> ONE;
-
-
-    /**
-     * The constant exponent vector 0 for this ring.
-     */
-    public final ExpVector evzero;
+        Iterable<GenPolynomial<C>> {
 
 
     /**
      * A default random sequence generator.
      */
     protected final static Random random = new Random();
-
-
+    /**
+     * Log4j logger object.
+     */
+    private static final Logger logger = Logger.getLogger(GenPolynomialRing.class);
+    /**
+     * Count for number of polynomial creations.
+     */
+    static int creations = 0;
+    /**
+     * The names of all known variables.
+     */
+    private static Set<String> knownVars = new HashSet<String>();
+    /**
+     * The factory for the coefficients.
+     */
+    public final RingFactory<C> coFac;
+    /**
+     * The number of variables.
+     */
+    public final int nvar;
+    /**
+     * The term order.
+     */
+    public final TermOrder tord;
+    /**
+     * The constant polynomial 0 for this ring.
+     */
+    public final GenPolynomial<C> ZERO;
+    /**
+     * The constant polynomial 1 for this ring.
+     */
+    public final GenPolynomial<C> ONE;
+    /**
+     * The constant exponent vector 0 for this ring.
+     */
+    public final ExpVector evzero;
+    /**
+     * Flag to enable if preemptive interrrupt is checked.
+     */
+    final boolean checkPreempt = PreemptStatus.isAllowed();
+    /**
+     * True for partially reversed variables.
+     */
+    protected boolean partial;
+    /**
+     * The names of the variables. This value can be modified.
+     */
+    protected String[] vars;
     /**
      * Indicator if this ring is a field.
      */
@@ -113,28 +106,11 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
 
 
     /**
-     * Log4j logger object.
-     */
-    private static final Logger logger = Logger.getLogger(GenPolynomialRing.class);
-
-
-    /**
-     * Count for number of polynomial creations.
-     */
-    static int creations = 0;
-
-
-    /**
-     * Flag to enable if preemptive interrrupt is checked.
-     */
-    final boolean checkPreempt = PreemptStatus.isAllowed();
-
-
-    /**
      * The constructor creates a polynomial factory object with the default term
      * order.
+     *
      * @param cf factory for coefficients of type C.
-     * @param n number of variables.
+     * @param n  number of variables.
      */
     public GenPolynomialRing(RingFactory<C> cf, int n) {
         this(cf, n, new TermOrder(), null);
@@ -143,9 +119,10 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
 
     /**
      * The constructor creates a polynomial factory object.
+     *
      * @param cf factory for coefficients of type C.
-     * @param n number of variables.
-     * @param t a term order.
+     * @param n  number of variables.
+     * @param t  a term order.
      */
     public GenPolynomialRing(RingFactory<C> cf, int n, TermOrder t) {
         this(cf, n, t, null);
@@ -154,8 +131,9 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
 
     /**
      * The constructor creates a polynomial factory object.
+     *
      * @param cf factory for coefficients of type C.
-     * @param v names for the variables.
+     * @param v  names for the variables.
      */
     public GenPolynomialRing(RingFactory<C> cf, String[] v) {
         this(cf, v.length, v);
@@ -164,9 +142,10 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
 
     /**
      * The constructor creates a polynomial factory object.
+     *
      * @param cf factory for coefficients of type C.
-     * @param n number of variables.
-     * @param v names for the variables.
+     * @param n  number of variables.
+     * @param v  names for the variables.
      */
     public GenPolynomialRing(RingFactory<C> cf, int n, String[] v) {
         this(cf, n, new TermOrder(), v);
@@ -175,9 +154,10 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
 
     /**
      * The constructor creates a polynomial factory object.
+     *
      * @param cf factory for coefficients of type C.
-     * @param t a term order.
-     * @param v names for the variables.
+     * @param t  a term order.
+     * @param v  names for the variables.
      */
     public GenPolynomialRing(RingFactory<C> cf, TermOrder t, String[] v) {
         this(cf, v.length, t, v);
@@ -186,9 +166,10 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
 
     /**
      * The constructor creates a polynomial factory object.
+     *
      * @param cf factory for coefficients of type C.
-     * @param v names for the variables.
-     * @param t a term order.
+     * @param v  names for the variables.
+     * @param t  a term order.
      */
     public GenPolynomialRing(RingFactory<C> cf, String[] v, TermOrder t) {
         this(cf, v.length, t, v);
@@ -197,10 +178,11 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
 
     /**
      * The constructor creates a polynomial factory object.
+     *
      * @param cf factory for coefficients of type C.
-     * @param n number of variables.
-     * @param t a term order.
-     * @param v names for the variables.
+     * @param n  number of variables.
+     * @param t  a term order.
+     * @param v  names for the variables.
      */
     public GenPolynomialRing(RingFactory<C> cf, int n, TermOrder t, String[] v) {
         coFac = cf;
@@ -233,8 +215,9 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
      * The constructor creates a polynomial factory object with the the same
      * term order, number of variables and variable names as the given
      * polynomial factory, only the coefficient factories differ.
+     *
      * @param cf factory for coefficients of type C.
-     * @param o other polynomial ring.
+     * @param o  other polynomial ring.
      */
     public GenPolynomialRing(RingFactory<C> cf, GenPolynomialRing o) {
         this(cf, o.nvar, o.tord, o.vars);
@@ -245,25 +228,98 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
      * The constructor creates a polynomial factory object with the the same
      * coefficient factory, number of variables and variable names as the given
      * polynomial factory, only the term order differs.
+     *
      * @param to term order.
-     * @param o other polynomial ring.
+     * @param o  other polynomial ring.
      */
     public GenPolynomialRing(GenPolynomialRing<C> o, TermOrder to) {
         this(o.coFac, o.nvar, to, o.vars);
     }
 
+    /**
+     * New variable names. Generate new names for variables,
+     *
+     * @param prefix name prefix.
+     * @param n      number of variables.
+     * @return new variable names.
+     */
+    public static String[] newVars(String prefix, int n) {
+        String[] vars = new String[n];
+        synchronized (knownVars) {
+            int m = knownVars.size();
+            String name = prefix + m;
+            for (int i = 0; i < n; i++) {
+                while (knownVars.contains(name)) {
+                    m++;
+                    name = prefix + m;
+                }
+                vars[i] = name;
+                //System.out.println("new variable: " + name);
+                knownVars.add(name);
+                m++;
+                name = prefix + m;
+            }
+        }
+        return vars;
+    }
+
+    /**
+     * New variable names. Generate new names for variables,
+     *
+     * @param n number of variables.
+     * @return new variable names.
+     */
+    public static String[] newVars(int n) {
+        return newVars("x", n);
+    }
+
+    /**
+     * Add variable names.
+     *
+     * @param vars variable names to be recorded.
+     */
+    public static void addVars(String[] vars) {
+        if (vars == null) {
+            return;
+        }
+        synchronized (knownVars) {
+            for (int i = 0; i < vars.length; i++) {
+                knownVars.add(vars[i]); // eventualy names 'overwritten'
+            }
+        }
+    }
+
+    /**
+     * Permute variable names.
+     *
+     * @param vars variable names.
+     * @param P    permutation.
+     * @return P(vars).
+     */
+    public static String[] permuteVars(List<Integer> P, String[] vars) {
+        if (vars == null || vars.length <= 1) {
+            return vars;
+        }
+        String[] b = new String[vars.length];
+        int j = 0;
+        for (Integer i : P) {
+            b[j++] = vars[i];
+        }
+        return b;
+    }
 
     /**
      * Copy this factory.
+     *
      * @return a clone of this.
      */
     public GenPolynomialRing<C> copy() {
         return new GenPolynomialRing<C>(coFac, this);
     }
 
-
     /**
      * Get the String representation.
+     *
      * @see java.lang.Object#toString()
      */
     @SuppressWarnings("cast")
@@ -331,9 +387,9 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
         return res;
     }
 
-
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this Element.
      * @see edu.jas.structure.Element#toScript()
      */
@@ -341,12 +397,12 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
     public String toScript() {
         StringBuffer s = new StringBuffer();
         switch (Scripting.getLang()) {
-        case Ruby:
-            s.append("PolyRing.new(");
-            break;
-        case Python:
-        default:
-            s.append("PolyRing(");
+            case Ruby:
+                s.append("PolyRing.new(");
+                break;
+            case Python:
+            default:
+                s.append("PolyRing(");
         }
         if (coFac instanceof RingElem) {
             s.append(((RingElem<C>) coFac).toScriptFactory());
@@ -366,16 +422,16 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
         return s.toString();
     }
 
-
     /**
      * Get a scripting compatible string representation of an ExpVector of this
      * ring.
+     *
      * @param e exponent vector
      * @return script compatible representation for the ExpVector.
      */
     public String toScript(ExpVector e) {
         if (e == null) {
-	    return "null";
+            return "null";
         }
         if (vars != null) {
             return e.toScript(vars);
@@ -383,9 +439,9 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
         return e.toScript();
     }
 
-
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -414,9 +470,9 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
         return true;
     }
 
-
     /**
      * Hash code for this polynomial ring.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -428,42 +484,42 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
         return h;
     }
 
-
     /**
      * Get the number of polynomial creations.
+     *
      * @return creations.
      */
     public int getCreations() {
         return creations;
     }
 
-
     /**
      * Get the variable names.
+     *
      * @return vars.
      */
     public String[] getVars() {
         return Arrays.copyOf(vars, vars.length); // > Java-5
     }
 
-
     /**
      * Set the variable names.
+     *
      * @return old vars.
      */
     public String[] setVars(String[] v) {
         if (v.length != nvar) {
             throw new IllegalArgumentException("v not matching number of variables: " + Arrays.toString(v)
-                            + ", nvar " + nvar);
+                    + ", nvar " + nvar);
         }
         String[] t = vars;
-        vars = Arrays.copyOf(v, v.length); // > Java-5 
+        vars = Arrays.copyOf(v, v.length); // > Java-5
         return t;
     }
 
-
     /**
      * Get a String representation of the variable names.
+     *
      * @return names seperated by commas.
      */
     public String varsToString() {
@@ -474,63 +530,63 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
         return ExpVector.varsToString(vars);
     }
 
-
     /**
      * Get the zero element from the coefficients.
+     *
      * @return 0 as C.
      */
     public C getZEROCoefficient() {
         return coFac.getZERO();
     }
 
-
     /**
      * Get the one element from the coefficients.
+     *
      * @return 1 as C.
      */
     public C getONECoefficient() {
         return coFac.getONE();
     }
 
-
     /**
      * Get the zero element.
+     *
      * @return 0 as GenPolynomial<C>.
      */
     public GenPolynomial<C> getZERO() {
         return ZERO;
     }
 
-
     /**
      * Get the one element.
+     *
      * @return 1 as GenPolynomial<C>.
      */
     public GenPolynomial<C> getONE() {
         return ONE;
     }
 
-
     /**
      * Query if this ring is commutative.
+     *
      * @return true if this ring is commutative, else false.
      */
     public boolean isCommutative() {
         return coFac.isCommutative();
     }
 
-
     /**
      * Query if this ring is associative.
+     *
      * @return true if this ring is associative, else false.
      */
     public boolean isAssociative() {
         return coFac.isAssociative();
     }
 
-
     /**
      * Query if this ring is a field.
+     *
      * @return false.
      */
     public boolean isField() {
@@ -548,18 +604,18 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
         return false;
     }
 
-
     /**
      * Characteristic of this ring.
+     *
      * @return characteristic of this ring.
      */
     public java.math.BigInteger characteristic() {
         return coFac.characteristic();
     }
 
-
     /**
      * Get a (constant) GenPolynomial&lt;C&gt; element from a coefficient value.
+     *
      * @param a coefficient.
      * @return a GenPolynomial&lt;C&gt;.
      */
@@ -567,9 +623,9 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
         return new GenPolynomial<C>(this, a);
     }
 
-
     /**
      * Get a GenPolynomial&lt;C&gt; element from an exponent vector.
+     *
      * @param e exponent vector.
      * @return a GenPolynomial&lt;C&gt;.
      */
@@ -580,9 +636,9 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
         return new GenPolynomial<C>(this, coFac.getONE(), e);
     }
 
-
     /**
      * Get a GenPolynomial&lt;C&gt; element from a list of exponent vectors.
+     *
      * @param E list of exponent vector.
      * @return a GenPolynomial&lt;C&gt;.
      */
@@ -591,17 +647,17 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
             return null;
         }
         List<GenPolynomial<C>> P = new ArrayList<GenPolynomial<C>>(); //E.size());
-        for ( ExpVector e : E ) {
+        for (ExpVector e : E) {
             GenPolynomial<C> p = valueOf(e);
             P.add(p);
         }
         return P;
     }
 
-
     /**
      * Get a GenPolynomial&lt;C&gt; element from a coeffcient and an exponent
      * vector.
+     *
      * @param a coefficient.
      * @param e exponent vector.
      * @return a GenPolynomial&lt;C&gt;.
@@ -610,9 +666,9 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
         return new GenPolynomial<C>(this, a, e);
     }
 
-
     /**
      * Get a GenPolynomial&lt;C&gt; element from a monomial.
+     *
      * @param m monomial.
      * @return a GenPolynomial&lt;C&gt;.
      */
@@ -620,9 +676,9 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
         return new GenPolynomial<C>(this, m.c, m.e);
     }
 
-
     /**
      * Get a (constant) GenPolynomial&lt;C&gt; element from a long value.
+     *
      * @param a long.
      * @return a GenPolynomial&lt;C&gt;.
      */
@@ -630,9 +686,9 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
         return new GenPolynomial<C>(this, coFac.fromInteger(a), evzero);
     }
 
-
     /**
      * Get a (constant) GenPolynomial&lt;C&gt; element from a BigInteger value.
+     *
      * @param a BigInteger.
      * @return a GenPolynomial&lt;C&gt;.
      */
@@ -640,10 +696,10 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
         return new GenPolynomial<C>(this, coFac.fromInteger(a), evzero);
     }
 
-
     /**
      * Random polynomial. Generates a random polynomial with k = 5, l = n, d =
      * (nvar == 1) ? n : 3, q = (nvar == 1) ? 0.7 : 0.3.
+     *
      * @param n number of terms.
      * @return a random polynomial.
      */
@@ -651,11 +707,11 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
         return random(n, random);
     }
 
-
     /**
      * Random polynomial. Generates a random polynomial with k = 5, l = n, d =
      * n, q = (nvar == 1) ? 0.5 : 0.3.
-     * @param n number of terms.
+     *
+     * @param n   number of terms.
      * @param rnd is a source for random bits.
      * @return a random polynomial.
      */
@@ -666,9 +722,9 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
         return random(3, n, n, 0.3f, rnd);
     }
 
-
     /**
      * Generate a random polynomial.
+     *
      * @param k bitsize of random coefficients.
      * @param l number of terms.
      * @param d maximal degree in each variable.
@@ -679,18 +735,18 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
         return random(k, l, d, q, random);
     }
 
-
     /**
      * Generate a random polynomial.
-     * @param k bitsize of random coefficients.
-     * @param l number of terms.
-     * @param d maximal degree in each variable.
-     * @param q density of nozero exponents.
+     *
+     * @param k   bitsize of random coefficients.
+     * @param l   number of terms.
+     * @param d   maximal degree in each variable.
+     * @param q   density of nozero exponents.
      * @param rnd is a source for random bits.
      * @return a random polynomial.
      */
     public GenPolynomial<C> random(int k, int l, int d, float q, Random rnd) {
-        GenPolynomial<C> r = getZERO(); //.clone() or copy( ZERO ); 
+        GenPolynomial<C> r = getZERO(); //.clone() or copy( ZERO );
         ExpVector e;
         C a;
         // add l random coeffs and exponents
@@ -704,9 +760,9 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
         return r;
     }
 
-
     /**
      * Copy polynomial c.
+     *
      * @param c
      * @return a copy of c.
      */
@@ -715,9 +771,9 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
         return new GenPolynomial<C>(this, c.val);
     }
 
-
     /**
      * Copy polynomial list.
+     *
      * @param L polynomial list
      * @return a copy of L in this ring.
      */
@@ -726,15 +782,15 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
             return L;
         }
         List<GenPolynomial<C>> R = new ArrayList<GenPolynomial<C>>(L.size());
-        for ( GenPolynomial<C> a : L ) {
-            R.add( copy(a) );
+        for (GenPolynomial<C> a : L) {
+            R.add(copy(a));
         }
         return R;
     }
 
-
     /**
      * Parse a polynomial with the use of GenPolynomialTokenizer.
+     *
      * @param s String.
      * @return GenPolynomial from s.
      */
@@ -746,13 +802,13 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
         return parse(new StringReader(val));
     }
 
-
     /**
      * Parse a polynomial with the use of GenPolynomialTokenizer.
+     *
      * @param r Reader.
      * @return next GenPolynomial from r.
      */
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings({"unchecked", "cast"})
     public GenPolynomial<C> parse(Reader r) {
         GenPolynomialTokenizer pt = new GenPolynomialTokenizer(this, r);
         GenPolynomial<C> p = null;
@@ -765,9 +821,9 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
         return p;
     }
 
-
     /**
      * Generate univariate polynomial in a given variable with given exponent.
+     *
      * @param x the name of a variable.
      * @return x as univariate polynomial.
      */
@@ -775,9 +831,9 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
         return univariate(x, 1L);
     }
 
-
     /**
      * Generate univariate polynomial in a given variable with given exponent.
+     *
      * @param x the name of the variable.
      * @param e the exponent of the variable.
      * @return x^e as univariate polynomial.
@@ -790,7 +846,7 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
             throw new IllegalArgumentException("no variable name given");
         }
         int i;
-        for ( i = 0 ; i < vars.length; i++ ) {
+        for (i = 0; i < vars.length; i++) {
             if (x.equals(vars[i])) { // use HashMap or TreeMap
                 break;
             }
@@ -801,9 +857,9 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
         return univariate(0, nvar - i - 1, e);
     }
 
-
     /**
      * Generate univariate polynomial in a given variable.
+     *
      * @param i the index of the variable.
      * @return X_i as univariate polynomial.
      */
@@ -811,9 +867,9 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
         return univariate(0, i, 1L);
     }
 
-
     /**
      * Generate univariate polynomial in a given variable with given exponent.
+     *
      * @param i the index of the variable.
      * @param e the exponent of the variable.
      * @return X_i^e as univariate polynomial.
@@ -822,12 +878,12 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
         return univariate(0, i, e);
     }
 
-
     /**
      * Generate univariate polynomial in a given variable with given exponent.
+     *
      * @param modv number of module variables.
-     * @param i the index of the variable.
-     * @param e the exponent of the variable.
+     * @param i    the index of the variable.
+     * @param e    the exponent of the variable.
      * @return X_i^e as univariate polynomial.
      */
     public GenPolynomial<C> univariate(int modv, int i, long e) {
@@ -844,10 +900,10 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
         return p;
     }
 
-
     /**
      * Get the generating elements excluding the generators for the coefficient
      * ring.
+     *
      * @return a list of generating elements for this ring.
      */
     public List<GenPolynomial<C>> getGenerators() {
@@ -858,9 +914,9 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
         return gens;
     }
 
-
     /**
      * Get a list of the generating elements.
+     *
      * @return list of generators for the algebraic structure.
      * @see edu.jas.structure.ElemFactory#generators()
      */
@@ -875,9 +931,9 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
         return gens;
     }
 
-
     /**
      * Get a list of the generating elements excluding the module variables.
+     *
      * @param modv number of module variables
      * @return list of generators for the polynomial ring.
      */
@@ -892,9 +948,9 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
         return gens;
     }
 
-
     /**
      * Is this structure finite or infinite.
+     *
      * @return true if this structure is finite, else false.
      * @see edu.jas.structure.ElemFactory#isFinite()
      */
@@ -902,32 +958,32 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
         return (nvar == 0) && coFac.isFinite();
     }
 
-
     /**
      * Generate list of univariate polynomials in all variables.
-     * @return List(X_1,...,X_n) a list of univariate polynomials.
+     *
+     * @return List(X_1, ..., X_n) a list of univariate polynomials.
      */
     public List<? extends GenPolynomial<C>> univariateList() {
         return univariateList(0, 1L);
     }
 
-
     /**
      * Generate list of univariate polynomials in all variables.
+     *
      * @param modv number of module variables.
-     * @return List(X_1,...,X_n) a list of univariate polynomials.
+     * @return List(X_1, ..., X_n) a list of univariate polynomials.
      */
     public List<? extends GenPolynomial<C>> univariateList(int modv) {
         return univariateList(modv, 1L);
     }
 
-
     /**
      * Generate list of univariate polynomials in all variables with given
      * exponent.
+     *
      * @param modv number of module variables.
-     * @param e the exponent of the variables.
-     * @return List(X_1^e,...,X_n^e) a list of univariate polynomials.
+     * @param e    the exponent of the variables.
+     * @return List(X_1^e, ..., X_n^e) a list of univariate polynomials.
      */
     public List<? extends GenPolynomial<C>> univariateList(int modv, long e) {
         List<GenPolynomial<C>> pols = new ArrayList<GenPolynomial<C>>(nvar);
@@ -939,10 +995,10 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
         return pols;
     }
 
-
     /**
      * Extend variables. Used e.g. in module embedding. Extend number of
      * variables by i.
+     *
      * @param i number of variables to extend.
      * @return extended polynomial ring factory.
      */
@@ -952,10 +1008,10 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
         return extend(v);
     }
 
-
     /**
      * Extend variables. Used e.g. in module embedding. Extend number of
      * variables by length(vn).
+     *
      * @param vn names for extended variables.
      * @return extended polynomial ring factory.
      */
@@ -977,9 +1033,9 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
         return pfac;
     }
 
-
     /**
      * Extend lower variables. Extend number of variables by i.
+     *
      * @param i number of variables to extend.
      * @return extended polynomial ring factory.
      */
@@ -988,9 +1044,9 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
         return extendLower(v);
     }
 
-
     /**
      * Extend lower variables. Extend number of variables by length(vn).
+     *
      * @param vn names for extended lower variables.
      * @return extended polynomial ring factory.
      */
@@ -1011,10 +1067,10 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
         return pfac;
     }
 
-
     /**
      * Contract variables. Used e.g. in module embedding. Contract number of
      * variables by i.
+     *
      * @param i number of variables to remove.
      * @return contracted polynomial ring factory.
      */
@@ -1031,9 +1087,9 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
         return pfac;
     }
 
-
     /**
      * Recursive representation as polynomial with i main variables.
+     *
      * @param i number of main variables.
      * @return recursive polynomial ring factory.
      */
@@ -1055,9 +1111,9 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
         return pfac;
     }
 
-
     /**
      * Distributive representation as polynomial with all main variables.
+     *
      * @return distributive polynomial ring factory.
      */
     @SuppressWarnings("cast")
@@ -1077,18 +1133,18 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
         return pfac;
     }
 
-
     /**
      * Reverse variables. Used e.g. in opposite rings.
+     *
      * @return polynomial ring factory with reversed variables.
      */
     public GenPolynomialRing<C> reverse() {
         return reverse(false);
     }
 
-
     /**
      * Reverse variables. Used e.g. in opposite rings.
+     *
      * @param partial true for partialy reversed term orders.
      * @return polynomial ring factory with reversed variables.
      */
@@ -1122,18 +1178,18 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
         return pfac;
     }
 
-
     /**
      * Get PolynomialComparator.
+     *
      * @return polynomial comparator.
      */
     public PolynomialComparator<C> getComparator() {
         return new PolynomialComparator<C>(tord, false);
     }
 
-
     /**
      * Get PolynomialComparator.
+     *
      * @param rev for reverse comparator.
      * @return polynomial comparator.
      */
@@ -1141,36 +1197,9 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
         return new PolynomialComparator<C>(tord, rev);
     }
 
-
     /**
      * New variable names. Generate new names for variables,
-     * @param prefix name prefix.
-     * @param n number of variables.
-     * @return new variable names.
-     */
-    public static String[] newVars(String prefix, int n) {
-        String[] vars = new String[n];
-        synchronized (knownVars) {
-            int m = knownVars.size();
-            String name = prefix + m;
-            for (int i = 0; i < n; i++) {
-                while (knownVars.contains(name)) {
-                    m++;
-                    name = prefix + m;
-                }
-                vars[i] = name;
-                //System.out.println("new variable: " + name);
-                knownVars.add(name);
-                m++;
-                name = prefix + m;
-            }
-        }
-        return vars;
-    }
-
-
-    /**
-     * New variable names. Generate new names for variables,
+     *
      * @param prefix name prefix.
      * @return new variable names.
      */
@@ -1178,63 +1207,18 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
         return newVars(prefix, nvar);
     }
 
-
     /**
      * New variable names. Generate new names for variables,
-     * @param n number of variables.
-     * @return new variable names.
-     */
-    public static String[] newVars(int n) {
-        return newVars("x", n);
-    }
-
-
-    /**
-     * New variable names. Generate new names for variables,
+     *
      * @return new variable names.
      */
     public String[] newVars() {
         return newVars(nvar);
     }
 
-
-    /**
-     * Add variable names.
-     * @param vars variable names to be recorded.
-     */
-    public static void addVars(String[] vars) {
-        if (vars == null) {
-            return;
-        }
-        synchronized (knownVars) {
-            for (int i = 0; i < vars.length; i++) {
-                knownVars.add(vars[i]); // eventualy names 'overwritten'
-            }
-        }
-    }
-
-
-    /**
-     * Permute variable names.
-     * @param vars variable names.
-     * @param P permutation.
-     * @return P(vars).
-     */
-    public static String[] permuteVars(List<Integer> P, String[] vars) {
-        if (vars == null || vars.length <= 1) {
-            return vars;
-        }
-        String[] b = new String[vars.length];
-        int j = 0;
-        for (Integer i : P) {
-            b[j++] = vars[i];
-        }
-        return b;
-    }
-
-
     /**
      * Permutation of polynomial ring variables.
+     *
      * @param P permutation.
      * @return P(this).
      */
@@ -1261,6 +1245,7 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
 
     /**
      * Get a GenPolynomial iterator.
+     *
      * @return an iterator over all polynomials.
      */
     public Iterator<GenPolynomial<C>> iterator() {
@@ -1268,7 +1253,7 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
             return new GenPolynomialIterator<C>(this);
         }
         logger.warn("ring of coefficients " + coFac
-                        + " is infinite, constructing iterator only over monomials");
+                + " is infinite, constructing iterator only over monomials");
         return new GenPolynomialMonomialIterator<C>(this);
         //throw new IllegalArgumentException("only for finite iterable coefficients implemented");
     }
@@ -1278,6 +1263,7 @@ public class GenPolynomialRing<C extends RingElem<C>> implements RingFactory<Gen
 
 /**
  * Polynomial iterator.
+ *
  * @author Heinz Kredel
  */
 class GenPolynomialIterator<C extends RingElem<C>> implements Iterator<GenPolynomial<C>> {
@@ -1312,7 +1298,7 @@ class GenPolynomialIterator<C extends RingElem<C>> implements Iterator<GenPolyno
         ring = fac;
         LongIterable li = new LongIterable();
         li.setNonNegativeIterator();
-        List<Iterable<Long>> tlist = new ArrayList<Iterable<Long>>(ring.nvar);
+        List<Iterable<Long>> tlist = new ArrayList<>(ring.nvar);
         for (int i = 0; i < ring.nvar; i++) {
             tlist.add(li);
         }
@@ -1341,6 +1327,7 @@ class GenPolynomialIterator<C extends RingElem<C>> implements Iterator<GenPolyno
 
     /**
      * Test for availability of a next element.
+     *
      * @return true if the iteration has more elements, else false.
      */
     public boolean hasNext() {
@@ -1350,6 +1337,7 @@ class GenPolynomialIterator<C extends RingElem<C>> implements Iterator<GenPolyno
 
     /**
      * Get next polynomial.
+     *
      * @return next polynomial.
      */
     public synchronized GenPolynomial<C> next() {
@@ -1409,6 +1397,7 @@ class GenPolynomialIterator<C extends RingElem<C>> implements Iterator<GenPolyno
 
 /**
  * Polynomial monomial iterator.
+ *
  * @author Heinz Kredel
  */
 class GenPolynomialMonomialIterator<C extends RingElem<C>> implements Iterator<GenPolynomial<C>> {
@@ -1469,6 +1458,7 @@ class GenPolynomialMonomialIterator<C extends RingElem<C>> implements Iterator<G
 
     /**
      * Test for availability of a next element.
+     *
      * @return true if the iteration has more elements, else false.
      */
     public boolean hasNext() {
@@ -1478,6 +1468,7 @@ class GenPolynomialMonomialIterator<C extends RingElem<C>> implements Iterator<G
 
     /**
      * Get next polynomial.
+     *
      * @return next polynomial.
      */
     @SuppressWarnings("unchecked")

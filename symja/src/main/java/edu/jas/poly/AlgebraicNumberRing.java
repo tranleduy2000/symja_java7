@@ -5,13 +5,15 @@
 package edu.jas.poly;
 
 
+
+
+import org.apache.log4j.Logger;
+
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.kern.Scripting;
 import edu.jas.structure.RingElem;
@@ -23,32 +25,28 @@ import edu.jas.util.CartesianProductInfinite;
 /**
  * Algebraic number factory. Based on GenPolynomial factory with RingElem
  * interface. Objects of this class are immutable.
+ *
  * @author Heinz Kredel
  */
 
 public class AlgebraicNumberRing<C extends RingElem<C>> implements RingFactory<AlgebraicNumber<C>>,
-                Iterable<AlgebraicNumber<C>> {
+// TODO: 10/2/2017 change
+        java.lang.Iterable<AlgebraicNumber<C>> {
 
 
+    private static final Logger logger = Logger.getLogger(AlgebraicNumberRing.class);
     /**
      * Ring part of the factory data structure.
      */
     public final GenPolynomialRing<C> ring;
-
-
     /**
      * Module part of the factory data structure.
      */
     public final GenPolynomial<C> modul;
-
-
     /**
      * Indicator if this ring is a field
      */
     protected int isField = -1; // initially unknown
-
-
-    private static final Logger logger = Logger.getLogger(AlgebraicNumberRing.class);
 
 
     //  private static final boolean debug = logger.isDebugEnabled();
@@ -57,6 +55,7 @@ public class AlgebraicNumberRing<C extends RingElem<C>> implements RingFactory<A
     /**
      * The constructor creates a AlgebraicNumber factory object from a
      * GenPolynomial objects module.
+     *
      * @param m module GenPolynomial<C>.
      */
     public AlgebraicNumberRing(GenPolynomial<C> m) {
@@ -71,7 +70,8 @@ public class AlgebraicNumberRing<C extends RingElem<C>> implements RingFactory<A
     /**
      * The constructor creates a AlgebraicNumber factory object from a
      * GenPolynomial objects module.
-     * @param m module GenPolynomial<C>.
+     *
+     * @param m       module GenPolynomial<C>.
      * @param isField indicator if m is prime.
      */
     public AlgebraicNumberRing(GenPolynomial<C> m, boolean isField) {
@@ -86,6 +86,7 @@ public class AlgebraicNumberRing<C extends RingElem<C>> implements RingFactory<A
 
     /**
      * Get the module part.
+     *
      * @return modul.
      */
     public GenPolynomial<C> getModul() {
@@ -95,6 +96,7 @@ public class AlgebraicNumberRing<C extends RingElem<C>> implements RingFactory<A
 
     /**
      * Copy AlgebraicNumber element c.
+     *
      * @param c algebraic number to copy.
      * @return a copy of c.
      */
@@ -105,6 +107,7 @@ public class AlgebraicNumberRing<C extends RingElem<C>> implements RingFactory<A
 
     /**
      * Get the zero element.
+     *
      * @return 0 as AlgebraicNumber.
      */
     public AlgebraicNumber<C> getZERO() {
@@ -114,6 +117,7 @@ public class AlgebraicNumberRing<C extends RingElem<C>> implements RingFactory<A
 
     /**
      * Get the one element.
+     *
      * @return 1 as AlgebraicNumber.
      */
     public AlgebraicNumber<C> getONE() {
@@ -123,6 +127,7 @@ public class AlgebraicNumberRing<C extends RingElem<C>> implements RingFactory<A
 
     /**
      * Get the generating element.
+     *
      * @return alpha as AlgebraicNumber.
      */
     public AlgebraicNumber<C> getGenerator() {
@@ -132,6 +137,7 @@ public class AlgebraicNumberRing<C extends RingElem<C>> implements RingFactory<A
 
     /**
      * Get a list of the generating elements.
+     *
      * @return list of generators for the algebraic structure.
      * @see edu.jas.structure.ElemFactory#generators()
      */
@@ -147,6 +153,7 @@ public class AlgebraicNumberRing<C extends RingElem<C>> implements RingFactory<A
 
     /**
      * Is this structure finite or infinite.
+     *
      * @return true if this structure is finite, else false.
      * @see edu.jas.structure.ElemFactory#isFinite()
      */
@@ -157,6 +164,7 @@ public class AlgebraicNumberRing<C extends RingElem<C>> implements RingFactory<A
 
     /**
      * Query if this ring is commutative.
+     *
      * @return true if this ring is commutative, else false.
      */
     public boolean isCommutative() {
@@ -166,6 +174,7 @@ public class AlgebraicNumberRing<C extends RingElem<C>> implements RingFactory<A
 
     /**
      * Query if this ring is associative.
+     *
      * @return true if this ring is associative, else false.
      */
     public boolean isAssociative() {
@@ -175,6 +184,7 @@ public class AlgebraicNumberRing<C extends RingElem<C>> implements RingFactory<A
 
     /**
      * Query if this ring is a field.
+     *
      * @return true if modul is prime, else false.
      */
     public boolean isField() {
@@ -191,11 +201,20 @@ public class AlgebraicNumberRing<C extends RingElem<C>> implements RingFactory<A
         return false;
     }
 
+    /**
+     * Get the internal field indicator.
+     *
+     * @return internal field indicator.
+     */
+    public int getField() {
+        return isField;
+    }
 
     /**
      * Set field property of this ring.
+     *
      * @param field true, if this ring is determined to be a field, false, if it
-     *            is determined that it is not a field.
+     *              is determined that it is not a field.
      */
     public void setField(boolean field) {
         if (isField > 0 && field) {
@@ -212,18 +231,9 @@ public class AlgebraicNumberRing<C extends RingElem<C>> implements RingFactory<A
         return;
     }
 
-
-    /**
-     * Get the internal field indicator.
-     * @return internal field indicator.
-     */
-    public int getField() {
-        return isField;
-    }
-
-
     /**
      * Characteristic of this ring.
+     *
      * @return characteristic of this ring.
      */
     public java.math.BigInteger characteristic() {
@@ -233,6 +243,7 @@ public class AlgebraicNumberRing<C extends RingElem<C>> implements RingFactory<A
 
     /**
      * Get a AlgebraicNumber element from a BigInteger value.
+     *
      * @param a BigInteger.
      * @return a AlgebraicNumber.
      */
@@ -265,6 +276,7 @@ public class AlgebraicNumberRing<C extends RingElem<C>> implements RingFactory<A
 
     /**
      * Get a AlgebraicNumber element from a long value.
+     *
      * @param a long.
      * @return a AlgebraicNumber.
      */
@@ -275,6 +287,7 @@ public class AlgebraicNumberRing<C extends RingElem<C>> implements RingFactory<A
 
     /**
      * Get a AlgebraicNumber element from a BigInteger value.
+     *
      * @param a BigInteger.
      * @return a AlgebraicNumber.
      */
@@ -285,6 +298,7 @@ public class AlgebraicNumberRing<C extends RingElem<C>> implements RingFactory<A
 
     /**
      * Get a AlgebraicNumber element from a long value.
+     *
      * @param a long.
      * @return a AlgebraicNumber.
      */
@@ -298,17 +312,19 @@ public class AlgebraicNumberRing<C extends RingElem<C>> implements RingFactory<A
 
     /**
      * Get the String representation as RingFactory.
+     *
      * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
         return "AlgebraicNumberRing[ " + modul.toString() + " | isField=" + isField + " :: "
-                        + ring.toString() + " ]";
+                + ring.toString() + " ]";
     }
 
 
     /**
      * Get a scripting compatible string representation.
+     *
      * @return script compatible representation for this ElemFactory.
      * @see edu.jas.structure.ElemFactory#toScript()
      */
@@ -318,12 +334,12 @@ public class AlgebraicNumberRing<C extends RingElem<C>> implements RingFactory<A
         s.append("AN(");
         s.append(modul.toScript());
         switch (Scripting.getLang()) {
-        case Ruby:
-            s.append((isField() ? ",true" : ",false"));
-            break;
-        case Python:
-        default:
-            s.append((isField() ? ",True" : ",False"));
+            case Ruby:
+                s.append((isField() ? ",true" : ",false"));
+                break;
+            case Python:
+            default:
+                s.append((isField() ? ",True" : ",False"));
         }
         s.append(",");
         s.append(ring.toScript());
@@ -334,6 +350,7 @@ public class AlgebraicNumberRing<C extends RingElem<C>> implements RingFactory<A
 
     /**
      * Comparison with any other object.
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -353,6 +370,7 @@ public class AlgebraicNumberRing<C extends RingElem<C>> implements RingFactory<A
 
     /**
      * Hash code for this AlgebraicNumber.
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -363,6 +381,7 @@ public class AlgebraicNumberRing<C extends RingElem<C>> implements RingFactory<A
 
     /**
      * AlgebraicNumber random.
+     *
      * @param n such that 0 &le; v &le; (2<sup>n</sup>-1).
      * @return a random integer mod modul.
      */
@@ -374,7 +393,8 @@ public class AlgebraicNumberRing<C extends RingElem<C>> implements RingFactory<A
 
     /**
      * AlgebraicNumber random.
-     * @param n such that 0 &le; v &le; (2<sup>n</sup>-1).
+     *
+     * @param n   such that 0 &le; v &le; (2<sup>n</sup>-1).
      * @param rnd is a source for random bits.
      * @return a random integer mod modul.
      */
@@ -386,6 +406,7 @@ public class AlgebraicNumberRing<C extends RingElem<C>> implements RingFactory<A
 
     /**
      * Parse AlgebraicNumber from String.
+     *
      * @param s String.
      * @return AlgebraicNumber from s.
      */
@@ -397,6 +418,7 @@ public class AlgebraicNumberRing<C extends RingElem<C>> implements RingFactory<A
 
     /**
      * Parse AlgebraicNumber from Reader.
+     *
      * @param r Reader.
      * @return next AlgebraicNumber from r.
      */
@@ -409,13 +431,14 @@ public class AlgebraicNumberRing<C extends RingElem<C>> implements RingFactory<A
     /**
      * AlgebraicNumber chinese remainder algorithm. Assert deg(c.modul) >=
      * deg(a.modul) and c.modul * a.modul = this.modul.
-     * @param c AlgebraicNumber.
+     *
+     * @param c  AlgebraicNumber.
      * @param ci inverse of c.modul in ring of a.
-     * @param a other AlgebraicNumber.
+     * @param a  other AlgebraicNumber.
      * @return S, with S mod c.modul == c and S mod a.modul == a.
      */
     public AlgebraicNumber<C> chineseRemainder(AlgebraicNumber<C> c, AlgebraicNumber<C> ci,
-                    AlgebraicNumber<C> a) {
+                                               AlgebraicNumber<C> a) {
         if (true) { // debug
             if (c.ring.modul.compareTo(a.ring.modul) < 1) {
                 System.out.println("AlgebraicNumber error " + c + ", " + a);
@@ -441,14 +464,15 @@ public class AlgebraicNumberRing<C extends RingElem<C>> implements RingFactory<A
      * AlgebraicNumber interpolation algorithm. Assert deg(c.modul) >=
      * deg(A.modul) and c.modul * A.modul = this.modul. Special case with
      * deg(A.modul) == 1. Similar algorithm as chinese remainder algortihm.
-     * @param c AlgebraicNumber.
+     *
+     * @param c  AlgebraicNumber.
      * @param ci inverse of (c.modul)(a) in ring of A.
      * @param am trailing base coefficient of modul of other AlgebraicNumber A.
-     * @param a value of other AlgebraicNumber A.
+     * @param a  value of other AlgebraicNumber A.
      * @return S, with S(c) == c and S(A) == a.
      */
     public AlgebraicNumber<C> interpolate(AlgebraicNumber<C> c, C ci, C am, C a) {
-        C b = PolyUtil.<C> evaluateMain(ring.coFac /*a*/, c.val, am);
+        C b = PolyUtil.<C>evaluateMain(ring.coFac /*a*/, c.val, am);
         // c mod a.modul
         // c( tbcf(a.modul) ) if deg(a.modul)==1
         C d = a.subtract(b); // a-c mod a.modul
@@ -466,9 +490,10 @@ public class AlgebraicNumberRing<C extends RingElem<C>> implements RingFactory<A
 
     /**
      * Depth of extension field tower.
+     *
      * @return number of nested algebraic extension fields
      */
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings({"unchecked", "cast"})
     public int depth() {
         AlgebraicNumberRing<C> arr = this;
         int depth = 1;
@@ -483,6 +508,7 @@ public class AlgebraicNumberRing<C extends RingElem<C>> implements RingFactory<A
 
     /**
      * Degree of extension field.
+     *
      * @return degree of this algebraic extension field
      */
     public long extensionDegree() {
@@ -493,9 +519,10 @@ public class AlgebraicNumberRing<C extends RingElem<C>> implements RingFactory<A
 
     /**
      * Total degree of nested extension fields.
+     *
      * @return degree of tower of algebraic extension fields
      */
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings({"unchecked", "cast"})
     public long totalExtensionDegree() {
         long degree = modul.degree(0);
         AlgebraicNumberRing<C> arr = this;
@@ -515,6 +542,7 @@ public class AlgebraicNumberRing<C extends RingElem<C>> implements RingFactory<A
     /**
      * Get a AlgebraicNumber iterator. <b>Note: </b> Only for finite field
      * coefficients or fields which are iterable.
+     *
      * @return a iterator over all algebraic numbers in this ring.
      */
     public Iterator<AlgebraicNumber<C>> iterator() {
@@ -526,24 +554,19 @@ public class AlgebraicNumberRing<C extends RingElem<C>> implements RingFactory<A
 
 /**
  * Algebraic number iterator.
+ *
  * @author Heinz Kredel
  */
 class AlgebraicNumberIterator<C extends RingElem<C>> implements Iterator<AlgebraicNumber<C>> {
 
 
+    private static final Logger logger = Logger.getLogger(AlgebraicNumberIterator.class);
     /**
      * data structure.
      */
     final Iterator<List<C>> iter;
-
-
     final List<GenPolynomial<C>> powers;
-
-
     final AlgebraicNumberRing<C> aring;
-
-
-    private static final Logger logger = Logger.getLogger(AlgebraicNumberIterator.class);
 
 
     //  private static final boolean debug = logger.isDebugEnabled();
@@ -551,6 +574,7 @@ class AlgebraicNumberIterator<C extends RingElem<C>> implements Iterator<Algebra
 
     /**
      * CartesianProduct iterator constructor.
+     *
      * @param aring AlgebraicNumberRing components of the Cartesian product.
      */
     @SuppressWarnings("unchecked")
@@ -587,6 +611,7 @@ class AlgebraicNumberIterator<C extends RingElem<C>> implements Iterator<Algebra
 
     /**
      * Test for availability of a next tuple.
+     *
      * @return true if the iteration has more tuples, else false.
      */
     public boolean hasNext() {
@@ -596,6 +621,7 @@ class AlgebraicNumberIterator<C extends RingElem<C>> implements Iterator<Algebra
 
     /**
      * Get next tuple.
+     *
      * @return next tuple.
      */
     public AlgebraicNumber<C> next() {

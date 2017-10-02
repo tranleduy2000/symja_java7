@@ -7,8 +7,6 @@ import org.matheclipse.core.generic.functors.Functors;
 import org.matheclipse.core.interfaces.IAST;
 import org.matheclipse.core.interfaces.IExpr;
 
-import java.util.function.Function;
-
 import static org.matheclipse.core.reflection.system.Replace.replaceRule;
 
 public final class ReplaceFunction implements Function<IExpr, IExpr> {

@@ -273,7 +273,7 @@ public abstract class FactorAbstract<C extends GcdRingElem<C>> implements Factor
         ExpVector evt = u.trailingExpVector();
         //System.out.println("deg = " + deg);
         for (int j = 1; j <= dl; j++) {
-            KsubSet<GenPolynomial<C>> ps = new KsubSet<GenPolynomial<C>>(ulist, j);
+            KsubSet<GenPolynomial<C>> ps = new KsubSet<>(ulist, j);
             for (List<GenPolynomial<C>> flist : ps) {
                 //System.out.println("flist = " + flist);
                 GenPolynomial<C> utrial = ufac.getONE();

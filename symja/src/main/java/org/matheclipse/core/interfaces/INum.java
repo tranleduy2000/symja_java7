@@ -2,7 +2,6 @@ package org.matheclipse.core.interfaces;
 
 /**
  * A numeric (double) number.
- * 
  */
 public interface INum extends ISignedNumber {
 	public final static double Catalan = 0.91596559417721901505460351493238411077414937428167;

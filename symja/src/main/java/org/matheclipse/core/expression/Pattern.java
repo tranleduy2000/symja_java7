@@ -2,7 +2,6 @@ package org.matheclipse.core.expression;
 
 import java.io.ObjectStreamException;
 import java.util.Map;
-import java.util.function.Predicate;
 
 import javax.annotation.Nonnull;
 

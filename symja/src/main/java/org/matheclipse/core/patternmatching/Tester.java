@@ -1,7 +1,5 @@
 package org.matheclipse.core.patternmatching;
 
-import java.util.function.Predicate;
-
 import org.matheclipse.core.eval.EvalEngine;
 import org.matheclipse.core.expression.Context;
 import org.matheclipse.core.expression.F;

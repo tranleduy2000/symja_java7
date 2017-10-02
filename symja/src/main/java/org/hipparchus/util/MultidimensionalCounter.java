@@ -17,6 +17,8 @@
 
 package org.hipparchus.util;
 
+
+
 import java.util.NoSuchElementException;
 
 import org.hipparchus.exception.LocalizedCoreFormats;

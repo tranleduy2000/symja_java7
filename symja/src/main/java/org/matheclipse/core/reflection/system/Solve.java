@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.function.Predicate;
 
 import org.hipparchus.linear.FieldMatrix;
 import org.matheclipse.core.basic.Config;

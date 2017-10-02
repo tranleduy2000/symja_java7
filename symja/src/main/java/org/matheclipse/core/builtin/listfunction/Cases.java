@@ -12,8 +12,6 @@ import org.matheclipse.core.patternmatching.PatternMatcher;
 import org.matheclipse.core.patternmatching.PatternMatcherEvalEngine;
 import org.matheclipse.core.visit.VisitorLevelSpecification;
 
-import java.util.function.Function;
-
 /**
  * <p>
  * See the online Symja function reference: <a href=

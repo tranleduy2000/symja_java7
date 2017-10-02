@@ -15,7 +15,9 @@ import java.util.NoSuchElementException;
  * K-Subset with iterator.
  * @author Heinz Kredel
  */
-public class KsubSet<E> implements Iterable<List<E>> {
+public class KsubSet<E> implements
+        // TODO: 10/2/2017 change
+        java.lang.Iterable<List<E>> {
 
 
     /**

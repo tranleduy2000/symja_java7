@@ -29,6 +29,7 @@ import org.matheclipse.core.interfaces.IIterator;
 import org.matheclipse.core.interfaces.INumber;
 import org.matheclipse.core.interfaces.ISignedNumber;
 import org.matheclipse.core.interfaces.ISymbol;
+import org.matheclipse.core.interfaces.impl.IteratorImpl;
 import org.matheclipse.core.patternmatching.PatternMatcher;
 import org.matheclipse.core.patternmatching.PatternMatcherEvalEngine;
 import org.matheclipse.core.reflection.system.Product;
@@ -47,7 +48,6 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
-import java.util.function.Function;
 import java.util.function.Predicate;
 
 import static org.matheclipse.core.expression.F.List;
@@ -491,7 +491,7 @@ public final class ListFunctions {
             }
         }
 
-        private static class ArrayIterator implements IIterator<IExpr> {
+        private static class ArrayIterator extends IteratorImpl {
             final int fFrom;
             final int fTo;
             int fCurrent;
@@ -763,7 +763,7 @@ public final class ListFunctions {
             }
         }
 
-        private static class ArrayIterator implements IIterator<IExpr> {
+        private static class ArrayIterator extends IteratorImpl {
             final int fFrom;
             final int fTo;
             int fCurrent;
@@ -1785,7 +1785,9 @@ public final class ListFunctions {
                 if (ast.isAST3()) {
                     if (ast.arg3().isList()) {
                         IExpr result = ast.arg1();
-                        for (IExpr subList : (IAST) ast.arg3()) {
+                        IAST arg3 = (IAST) ast.arg3();
+                        // TODO: 10/2/2017 debug
+                        for (IExpr subList : arg3.stream()) {
                             IExpr expr = result.replacePart(F.Rule(subList, ast.arg2()));
                             if (expr.isPresent()) {
                                 result = expr;
@@ -1797,7 +1799,9 @@ public final class ListFunctions {
                 }
                 if (ast.arg2().isList()) {
                     IExpr result = ast.arg1();
-                    for (IExpr subList : (IAST) ast.arg2()) {
+                    IAST iast = (IAST) ast.arg2();
+                    // TODO: 10/2/2017 debug
+                    for (IExpr subList : iast.stream()) {
                         if (subList.isRuleAST()) {
                             IExpr expr = result.replacePart((IAST) subList);
                             if (expr.isPresent()) {

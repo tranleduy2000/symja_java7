@@ -7,8 +7,6 @@ import org.matheclipse.core.interfaces.IAST;
 import org.matheclipse.core.interfaces.IExpr;
 import org.matheclipse.core.visit.VisitorLevelSpecification;
 
-import java.util.function.Function;
-
 public final class MapThread extends AbstractFunctionEvaluator {
 
     public MapThread() {

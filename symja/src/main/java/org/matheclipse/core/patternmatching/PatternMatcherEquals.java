@@ -1,5 +1,12 @@
 package org.matheclipse.core.patternmatching;
 
+import org.matheclipse.core.eval.EvalEngine;
+import org.matheclipse.core.expression.F;
+import org.matheclipse.core.interfaces.IAST;
+import org.matheclipse.core.interfaces.IExpr;
+import org.matheclipse.core.interfaces.ISymbol;
+import org.matheclipse.core.interfaces.ISymbol.RuleType;
+
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
@@ -8,12 +15,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import org.matheclipse.core.eval.EvalEngine;
-import org.matheclipse.core.expression.F;
-import org.matheclipse.core.interfaces.IAST;
-import org.matheclipse.core.interfaces.IExpr;
-import org.matheclipse.core.interfaces.ISymbol;
-import org.matheclipse.core.interfaces.ISymbol.RuleType;
+import static org.matheclipse.core.interfaces.impl.ExprImpl.ofNullable;
 
 /**
  * Matches a given expression by simply comparing the left-hand-side expression of this pattern matcher with the
@@ -97,7 +99,7 @@ public class PatternMatcherEquals extends IPatternMatcher implements Externaliza
 	/** {@inheritDoc} */
 	@Override
 	public IExpr getRHS() {
-		return IExpr.ofNullable(fRightHandSide);
+		return  ofNullable(fRightHandSide);
 	}
 
 	/**

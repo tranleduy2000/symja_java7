@@ -5,6 +5,8 @@
 package edu.jas.poly;
 
 
+import org.apache.log4j.Logger;
+
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -15,8 +17,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
-
-import org.apache.log4j.Logger;
 
 import edu.jas.kern.PreemptingException;
 import edu.jas.kern.PrettyPrint;
@@ -45,7 +45,8 @@ import edu.jas.structure.UnaryFunctor;
  */
 public class GenPolynomial<C extends RingElem<C>>
                 implements RingElem<GenPolynomial<C>>, /* not yet Polynomial<C> */
-                Iterable<Monomial<C>> {
+        // TODO: 10/2/2017 change
+        java.lang.Iterable<Monomial<C>> {
 
 
     /**

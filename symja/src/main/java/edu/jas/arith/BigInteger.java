@@ -21,43 +21,38 @@ import edu.jas.structure.RingFactory;
  * BigInteger class to make java.math.BigInteger available with RingElem
  * respectively the GcdRingElem interface. Objects of this class are immutable.
  * The SAC2 static methods are also provided.
+ *
  * @author Heinz Kredel
  * @see java.math.BigInteger
  */
 
 public final class BigInteger
-                implements GcdRingElem<BigInteger>, RingFactory<BigInteger>, Iterable<BigInteger>, Rational {
-
-
-    /**
-     * The data structure.
-     */
-    public final java.math.BigInteger val;
-
-
-    private final static Random random = new Random();
+        implements GcdRingElem<BigInteger>, RingFactory<BigInteger>, Iterable<BigInteger>, Rational {
 
 
     /**
      * The constant 0.
      */
     public final static BigInteger ZERO = new BigInteger(java.math.BigInteger.ZERO);
-
-
     /**
      * The constant 1.
      */
     public final static BigInteger ONE = new BigInteger(java.math.BigInteger.ONE);
-
-
     /**
      * The constant 2.
      */
     public final static BigInteger TWO = new BigInteger(2);
+    private final static Random random = new Random();
+    /**
+     * The data structure.
+     */
+    public final java.math.BigInteger val;
+    private boolean nonNegative = true;
 
 
     /**
      * Constructor for BigInteger from math.BigInteger.
+     *
      * @param a java.math.BigInteger.
      */
     public BigInteger(java.math.BigInteger a) {
@@ -67,6 +62,7 @@ public final class BigInteger
 
     /**
      * Constructor for BigInteger from long.
+     *
      * @param a long.
      */
     public BigInteger(long a) {
@@ -76,6 +72,7 @@ public final class BigInteger
 
     /**
      * Constructor for BigInteger from String.
+     *
      * @param s String.
      */
     public BigInteger(String s) {
@@ -90,143 +87,9 @@ public final class BigInteger
         val = java.math.BigInteger.ZERO;
     }
 
-
-    /**
-     * Get the value.
-     * @return val java.math.BigInteger.
-     */
-    public java.math.BigInteger getVal() {
-        return val;
-    }
-
-
-    /**
-     * Get the value as long.
-     * @return val as long.
-     */
-    public long longValue() {
-        return val.longValue();
-    }
-
-
-    /**
-     * Get the corresponding element factory.
-     * @return factory for this Element.
-     * @see edu.jas.structure.Element#factory()
-     */
-    public BigInteger factory() {
-        return this;
-    }
-
-
-    /**
-     * Get a list of the generating elements.
-     * @return list of generators for the algebraic structure.
-     * @see edu.jas.structure.ElemFactory#generators()
-     */
-    public List<BigInteger> generators() {
-        List<BigInteger> g = new ArrayList<BigInteger>(1);
-        g.add(getONE());
-        return g;
-    }
-
-
-    /**
-     * Is this structure finite or infinite.
-     * @return true if this structure is finite, else false.
-     * @see edu.jas.structure.ElemFactory#isFinite()
-     */
-    public boolean isFinite() {
-        return false;
-    }
-
-
-    /**
-     * Clone this.
-     * @see java.lang.Object#clone()
-     */
-    @Override
-    public BigInteger copy() {
-        return new BigInteger(val);
-    }
-
-
-    /**
-     * Copy BigInteger element c.
-     * @param c BigInteger.
-     * @return a copy of c.
-     */
-    public BigInteger copy(BigInteger c) {
-        return new BigInteger(c.val);
-    }
-
-
-    /**
-     * Get the zero element.
-     * @return 0.
-     */
-    public BigInteger getZERO() {
-        return ZERO;
-    }
-
-
-    /**
-     * Get the one element.
-     * @return 1.
-     */
-    public BigInteger getONE() {
-        return ONE;
-    }
-
-
-    /**
-     * Query if this ring is commutative.
-     * @return true.
-     */
-    public boolean isCommutative() {
-        return true;
-    }
-
-
-    /**
-     * Query if this ring is associative.
-     * @return true.
-     */
-    public boolean isAssociative() {
-        return true;
-    }
-
-
-    /**
-     * Query if this ring is a field.
-     * @return false.
-     */
-    public boolean isField() {
-        return false;
-    }
-
-
-    /**
-     * Characteristic of this ring.
-     * @return characteristic of this ring.
-     */
-    public java.math.BigInteger characteristic() {
-        return java.math.BigInteger.ZERO;
-    }
-
-
     /**
      * Get a BigInteger element from a math.BigInteger.
-     * @param a math.BigInteger.
-     * @return a as BigInteger.
-     */
-    public BigInteger fromInteger(java.math.BigInteger a) {
-        return new BigInteger(a);
-    }
-
-
-    /**
-     * Get a BigInteger element from a math.BigInteger.
+     *
      * @param a math.BigInteger.
      * @return a as BigInteger.
      */
@@ -234,19 +97,9 @@ public final class BigInteger
         return new BigInteger(a);
     }
 
-
     /**
      * Get a BigInteger element from long.
-     * @param a long.
-     * @return a as BigInteger.
-     */
-    public BigInteger fromInteger(long a) {
-        return new BigInteger(a);
-    }
-
-
-    /**
-     * Get a BigInteger element from long.
+     *
      * @param a long.
      * @return a as BigInteger.
      */
@@ -254,82 +107,9 @@ public final class BigInteger
         return new BigInteger(a);
     }
 
-
-    /**
-     * Is BigInteger number zero.
-     * @return If this is 0 then true is returned, else false.
-     * @see edu.jas.structure.RingElem#isZERO()
-     */
-    public boolean isZERO() {
-        return val.signum() == 0; //equals(java.math.BigInteger.ZERO);
-    }
-
-
-    /**
-     * Is BigInteger number one.
-     * @see edu.jas.structure.RingElem#isONE()
-     */
-    public boolean isONE() {
-        return val.equals(java.math.BigInteger.ONE);
-    }
-
-
-    /**
-     * Is BigInteger number unit.
-     * @see edu.jas.structure.RingElem#isUnit()
-     */
-    public boolean isUnit() {
-        return (this.isONE() || this.negate().isONE());
-    }
-
-
-    /**
-     * Get the String representation.
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    public String toString() {
-        return val.toString();
-    }
-
-
-    /**
-     * Get a scripting compatible string representation.
-     * @return script compatible representation for this Element.
-     * @see edu.jas.structure.Element#toScript()
-     */
-    @Override
-    public String toScript() {
-        // Python case
-        return toString();
-    }
-
-
-    /**
-     * Get a scripting compatible string representation of the factory.
-     * @return script compatible representation for this ElemFactory.
-     * @see edu.jas.structure.Element#toScriptFactory()
-     */
-    @Override
-    public String toScriptFactory() {
-        // Python case
-        return "ZZ()";
-    }
-
-
-    /**
-     * Compare to BigInteger b.
-     * @param b BigInteger.
-     * @return 0 if this == b, 1 if this > b, -1 if this < b.
-     */
-    @Override
-    public int compareTo(BigInteger b) {
-        return val.compareTo(b.val);
-    }
-
-
     /**
      * Integer comparison.
+     *
      * @param A BigInteger.
      * @param B BigInteger.
      * @return 0 if A == B, 1 if A > B, -1 if A < B.
@@ -340,42 +120,9 @@ public final class BigInteger
         return A.compareTo(B);
     }
 
-
-    /**
-     * Comparison with any other object.
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
-    @Override
-    public boolean equals(Object b) {
-        if (!(b instanceof BigInteger)) {
-            return false;
-        }
-        BigInteger bi = (BigInteger) b;
-        return val.equals(bi.val);
-    }
-
-
-    /**
-     * Hash code for this BigInteger.
-     * @see java.lang.Object#hashCode()
-     */
-    @Override
-    public int hashCode() {
-        return val.hashCode();
-    }
-
-
-    /**
-     * Absolute value of this.
-     * @see edu.jas.structure.RingElem#abs()
-     */
-    public BigInteger abs() {
-        return new BigInteger(val.abs());
-    }
-
-
     /**
      * Absolute value.
+     *
      * @param A BigInteger.
      * @return abs(A).
      */
@@ -386,17 +133,9 @@ public final class BigInteger
         return A.abs();
     }
 
-
-    /* Negative value of this.
-     * @see edu.jas.structure.RingElem#negate()
-     */
-    public BigInteger negate() {
-        return new BigInteger(val.negate());
-    }
-
-
     /**
      * Negative value.
+     *
      * @param A BigInteger.
      * @return -A.
      */
@@ -407,18 +146,9 @@ public final class BigInteger
         return A.negate();
     }
 
-
-    /**
-     * signum.
-     * @see edu.jas.structure.RingElem#signum()
-     */
-    public int signum() {
-        return val.signum();
-    }
-
-
     /**
      * Integer signum.
+     *
      * @param A BigInteger.
      * @return signum(A).
      */
@@ -428,19 +158,9 @@ public final class BigInteger
         return A.signum();
     }
 
-
     /**
      * BigInteger subtract.
-     * @param S BigInteger.
-     * @return this-S.
-     */
-    public BigInteger subtract(BigInteger S) {
-        return new BigInteger(val.subtract(S.val));
-    }
-
-
-    /**
-     * BigInteger subtract.
+     *
      * @param A BigInteger.
      * @param B BigInteger.
      * @return A-B.
@@ -451,19 +171,9 @@ public final class BigInteger
         return A.subtract(B);
     }
 
-
     /**
      * BigInteger divide.
-     * @param S BigInteger.
-     * @return this/S.
-     */
-    public BigInteger divide(BigInteger S) {
-        return new BigInteger(val.divide(S.val));
-    }
-
-
-    /**
-     * BigInteger divide.
+     *
      * @param A BigInteger.
      * @param B BigInteger.
      * @return A/B.
@@ -475,33 +185,9 @@ public final class BigInteger
         return A.divide(B);
     }
 
-
-    /**
-     * Integer inverse. R is a non-zero integer. S=1/R if defined else throws
-     * not invertible exception.
-     * @see edu.jas.structure.RingElem#inverse()
-     */
-    public BigInteger inverse() {
-        if (this.isONE() || this.negate().isONE()) {
-            return this;
-        }
-        //return ZERO;
-        throw new NotInvertibleException("element not invertible " + this + " :: BigInteger");
-    }
-
-
     /**
      * BigInteger remainder.
-     * @param S BigInteger.
-     * @return this - (this/S)*S.
-     */
-    public BigInteger remainder(BigInteger S) {
-        return new BigInteger(val.remainder(S.val));
-    }
-
-
-    /**
-     * BigInteger remainder.
+     *
      * @param A BigInteger.
      * @param B BigInteger.
      * @return A - (A/B)*B.
@@ -513,10 +199,401 @@ public final class BigInteger
         return A.remainder(B);
     }
 
+    /**
+     * Integer quotient and remainder. A and B are integers, B ne 0. Q is the
+     * quotient, integral part of A/B, and R is the remainder A-B*Q. Throws an
+     * exception, if B == 0.
+     *
+     * @param A BigInteger.
+     * @param B BigInteger.
+     * @return BigInteger[] { q, r } with A = q B + r and 0 &le; r &lt; |B|
+     */
+    public static BigInteger[] IQR(BigInteger A, BigInteger B) {
+        if (A == null) {
+            throw new IllegalArgumentException("null A not allowed");
+        }
+        return A.quotientRemainder(B);
+    }
+
+    /**
+     * BigInteger greatest common divisor.
+     *
+     * @param A BigInteger.
+     * @param B BigInteger.
+     * @return gcd(A, B).
+     */
+    public static BigInteger IGCD(BigInteger A, BigInteger B) {
+        if (A == null) {
+            throw new IllegalArgumentException("null A not allowed");
+        }
+        return A.gcd(B);
+    }
+
+    /**
+     * BigInteger random.
+     *
+     * @param NL such that 0 &le; r &le; (2<sup>n</sup>-1).
+     * @return r, a random BigInteger.
+     */
+    public static BigInteger IRAND(int NL) {
+        return ONE.random(NL, random);
+    }
+
+    /**
+     * BigInteger multiply.
+     *
+     * @param A BigInteger.
+     * @param B BigInteger.
+     * @return A*B.
+     */
+    public static BigInteger IPROD(BigInteger A, BigInteger B) {
+        if (A == null) {
+            throw new IllegalArgumentException("null A not allowed");
+        }
+        return A.multiply(B);
+    }
+
+    /**
+     * BigInteger addition.
+     *
+     * @param A BigInteger.
+     * @param B BigInteger.
+     * @return A+B.
+     */
+    public static BigInteger ISUM(BigInteger A, BigInteger B) {
+        if (A == null) {
+            throw new IllegalArgumentException("null A not allowed");
+        }
+        return A.sum(B);
+    }
+
+    /**
+     * Returns the number of bits in the representation of a Long, including a
+     * sign bit.
+     *
+     * @param v value.
+     * @return number of bits in the representation of a Long, including a sign
+     * bit.
+     */
+    public static long bitLength(long v) { // compare BigInteger.bitLengthForInt
+        long n = 64 - Long.numberOfLeadingZeros(v);
+        return ++n;
+    }
+
+    /**
+     * Get the value.
+     *
+     * @return val java.math.BigInteger.
+     */
+    public java.math.BigInteger getVal() {
+        return val;
+    }
+
+    /**
+     * Get the value as long.
+     *
+     * @return val as long.
+     */
+    public long longValue() {
+        return val.longValue();
+    }
+
+    /**
+     * Get the corresponding element factory.
+     *
+     * @return factory for this Element.
+     * @see edu.jas.structure.Element#factory()
+     */
+    public BigInteger factory() {
+        return this;
+    }
+
+    /**
+     * Get a list of the generating elements.
+     *
+     * @return list of generators for the algebraic structure.
+     * @see edu.jas.structure.ElemFactory#generators()
+     */
+    public List<BigInteger> generators() {
+        List<BigInteger> g = new ArrayList<BigInteger>(1);
+        g.add(getONE());
+        return g;
+    }
+
+    /**
+     * Is this structure finite or infinite.
+     *
+     * @return true if this structure is finite, else false.
+     * @see edu.jas.structure.ElemFactory#isFinite()
+     */
+    public boolean isFinite() {
+        return false;
+    }
+
+    /**
+     * Clone this.
+     *
+     * @see java.lang.Object#clone()
+     */
+    @Override
+    public BigInteger copy() {
+        return new BigInteger(val);
+    }
+
+    /**
+     * Copy BigInteger element c.
+     *
+     * @param c BigInteger.
+     * @return a copy of c.
+     */
+    public BigInteger copy(BigInteger c) {
+        return new BigInteger(c.val);
+    }
+
+    /**
+     * Get the zero element.
+     *
+     * @return 0.
+     */
+    public BigInteger getZERO() {
+        return ZERO;
+    }
+
+    /**
+     * Get the one element.
+     *
+     * @return 1.
+     */
+    public BigInteger getONE() {
+        return ONE;
+    }
+
+    /**
+     * Query if this ring is commutative.
+     *
+     * @return true.
+     */
+    public boolean isCommutative() {
+        return true;
+    }
+
+    /**
+     * Query if this ring is associative.
+     *
+     * @return true.
+     */
+    public boolean isAssociative() {
+        return true;
+    }
+
+    /**
+     * Query if this ring is a field.
+     *
+     * @return false.
+     */
+    public boolean isField() {
+        return false;
+    }
+
+    /**
+     * Characteristic of this ring.
+     *
+     * @return characteristic of this ring.
+     */
+    public java.math.BigInteger characteristic() {
+        return java.math.BigInteger.ZERO;
+    }
+
+    /**
+     * Get a BigInteger element from a math.BigInteger.
+     *
+     * @param a math.BigInteger.
+     * @return a as BigInteger.
+     */
+    public BigInteger fromInteger(java.math.BigInteger a) {
+        return new BigInteger(a);
+    }
+
+    /**
+     * Get a BigInteger element from long.
+     *
+     * @param a long.
+     * @return a as BigInteger.
+     */
+    public BigInteger fromInteger(long a) {
+        return new BigInteger(a);
+    }
+
+    /**
+     * Is BigInteger number zero.
+     *
+     * @return If this is 0 then true is returned, else false.
+     * @see edu.jas.structure.RingElem#isZERO()
+     */
+    public boolean isZERO() {
+        return val.signum() == 0; //equals(java.math.BigInteger.ZERO);
+    }
+
+    /**
+     * Is BigInteger number one.
+     *
+     * @see edu.jas.structure.RingElem#isONE()
+     */
+    public boolean isONE() {
+        return val.equals(java.math.BigInteger.ONE);
+    }
+
+    /**
+     * Is BigInteger number unit.
+     *
+     * @see edu.jas.structure.RingElem#isUnit()
+     */
+    public boolean isUnit() {
+        return (this.isONE() || this.negate().isONE());
+    }
+
+    /**
+     * Get the String representation.
+     *
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return val.toString();
+    }
+
+    /**
+     * Get a scripting compatible string representation.
+     *
+     * @return script compatible representation for this Element.
+     * @see edu.jas.structure.Element#toScript()
+     */
+    @Override
+    public String toScript() {
+        // Python case
+        return toString();
+    }
+
+    /**
+     * Get a scripting compatible string representation of the factory.
+     *
+     * @return script compatible representation for this ElemFactory.
+     * @see edu.jas.structure.Element#toScriptFactory()
+     */
+    @Override
+    public String toScriptFactory() {
+        // Python case
+        return "ZZ()";
+    }
+
+    /**
+     * Compare to BigInteger b.
+     *
+     * @param b BigInteger.
+     * @return 0 if this == b, 1 if this > b, -1 if this < b.
+     */
+    @Override
+    public int compareTo(BigInteger b) {
+        return val.compareTo(b.val);
+    }
+
+    /**
+     * Comparison with any other object.
+     *
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object b) {
+        if (!(b instanceof BigInteger)) {
+            return false;
+        }
+        BigInteger bi = (BigInteger) b;
+        return val.equals(bi.val);
+    }
+
+    /**
+     * Hash code for this BigInteger.
+     *
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        return val.hashCode();
+    }
+
+    /**
+     * Absolute value of this.
+     *
+     * @see edu.jas.structure.RingElem#abs()
+     */
+    public BigInteger abs() {
+        return new BigInteger(val.abs());
+    }
+
+    /* Negative value of this.
+     * @see edu.jas.structure.RingElem#negate()
+     */
+    public BigInteger negate() {
+        return new BigInteger(val.negate());
+    }
+
+    /**
+     * signum.
+     *
+     * @see edu.jas.structure.RingElem#signum()
+     */
+    public int signum() {
+        return val.signum();
+    }
+
+    /**
+     * BigInteger subtract.
+     *
+     * @param S BigInteger.
+     * @return this-S.
+     */
+    public BigInteger subtract(BigInteger S) {
+        return new BigInteger(val.subtract(S.val));
+    }
+
+    /**
+     * BigInteger divide.
+     *
+     * @param S BigInteger.
+     * @return this/S.
+     */
+    public BigInteger divide(BigInteger S) {
+        return new BigInteger(val.divide(S.val));
+    }
+
+    /**
+     * Integer inverse. R is a non-zero integer. S=1/R if defined else throws
+     * not invertible exception.
+     *
+     * @see edu.jas.structure.RingElem#inverse()
+     */
+    public BigInteger inverse() {
+        if (this.isONE() || this.negate().isONE()) {
+            return this;
+        }
+        //return ZERO;
+        throw new NotInvertibleException("element not invertible " + this + " :: BigInteger");
+    }
+
+    /**
+     * BigInteger remainder.
+     *
+     * @param S BigInteger.
+     * @return this - (this/S)*S.
+     */
+    public BigInteger remainder(BigInteger S) {
+        return new BigInteger(val.remainder(S.val));
+    }
 
     /**
      * BigInteger compute quotient and remainder. Throws an exception, if S ==
      * 0.
+     *
      * @param S BigInteger.
      * @return BigInteger[] { q, r } with this = q S + r and 0 &le; r &lt; |S|.
      */
@@ -529,35 +606,19 @@ public final class BigInteger
         return qr;
     }
 
-
-    /**
-     * Integer quotient and remainder. A and B are integers, B ne 0. Q is the
-     * quotient, integral part of A/B, and R is the remainder A-B*Q. Throws an
-     * exception, if B == 0.
-     * @param A BigInteger.
-     * @param B BigInteger.
-     * @return BigInteger[] { q, r } with A = q B + r and 0 &le; r &lt; |B|
-     */
-    public static BigInteger[] IQR(BigInteger A, BigInteger B) {
-        if (A == null) {
-            throw new IllegalArgumentException("null A not allowed");
-        }
-        return A.quotientRemainder(B);
-    }
-
-
     /**
      * BigInteger greatest common divisor.
+     *
      * @param S BigInteger.
-     * @return gcd(this,S).
+     * @return gcd(this, S).
      */
     public BigInteger gcd(BigInteger S) {
         return new BigInteger(val.gcd(S.val));
     }
 
-
     /**
      * BigInteger extended greatest common divisor.
+     *
      * @param S BigInteger.
      * @return [ gcd(this,S), a, b ] with a*this + b*S = gcd(this,S).
      */
@@ -608,23 +669,9 @@ public final class BigInteger
         return ret;
     }
 
-
-    /**
-     * BigInteger greatest common divisor.
-     * @param A BigInteger.
-     * @param B BigInteger.
-     * @return gcd(A,B).
-     */
-    public static BigInteger IGCD(BigInteger A, BigInteger B) {
-        if (A == null) {
-            throw new IllegalArgumentException("null A not allowed");
-        }
-        return A.gcd(B);
-    }
-
-
     /**
      * BigInteger random.
+     *
      * @param n such that 0 &le; r &le; (2<sup>n</sup>-1).
      * @return r, a random BigInteger.
      */
@@ -632,10 +679,10 @@ public final class BigInteger
         return random(n, random);
     }
 
-
     /**
      * BigInteger random.
-     * @param n such that 0 &le; r &le; (2<sup>n</sup>-1).
+     *
+     * @param n   such that 0 &le; r &le; (2<sup>n</sup>-1).
      * @param rnd is a source for random bits.
      * @return r, a random BigInteger.
      */
@@ -647,19 +694,9 @@ public final class BigInteger
         return new BigInteger(r);
     }
 
-
-    /**
-     * BigInteger random.
-     * @param NL such that 0 &le; r &le; (2<sup>n</sup>-1).
-     * @return r, a random BigInteger.
-     */
-    public static BigInteger IRAND(int NL) {
-        return ONE.random(NL, random);
-    }
-
-
     /**
      * BigInteger multiply.
+     *
      * @param S BigInteger.
      * @return this*S.
      */
@@ -667,9 +704,9 @@ public final class BigInteger
         return new BigInteger(val.multiply(S.val));
     }
 
-
     /**
      * BigInteger shift left.
+     *
      * @param n bits to shift.
      * @return this &lt;&lt; n.
      */
@@ -677,23 +714,9 @@ public final class BigInteger
         return new BigInteger(val.shiftLeft(n));
     }
 
-
-    /**
-     * BigInteger multiply.
-     * @param A BigInteger.
-     * @param B BigInteger.
-     * @return A*B.
-     */
-    public static BigInteger IPROD(BigInteger A, BigInteger B) {
-        if (A == null) {
-            throw new IllegalArgumentException("null A not allowed");
-        }
-        return A.multiply(B);
-    }
-
-
     /**
      * BigInteger summation.
+     *
      * @param S BigInteger.
      * @return this+S.
      */
@@ -701,23 +724,9 @@ public final class BigInteger
         return new BigInteger(val.add(S.val));
     }
 
-
-    /**
-     * BigInteger addition.
-     * @param A BigInteger.
-     * @param B BigInteger.
-     * @return A+B.
-     */
-    public static BigInteger ISUM(BigInteger A, BigInteger B) {
-        if (A == null) {
-            throw new IllegalArgumentException("null A not allowed");
-        }
-        return A.sum(B);
-    }
-
-
     /**
      * BigInteger parse from String.
+     *
      * @param s String.
      * @return Biginteger from s.
      */
@@ -725,9 +734,9 @@ public final class BigInteger
         return new BigInteger(s);
     }
 
-
     /**
      * BigInteger parse from Reader.
+     *
      * @param r Reader.
      * @return next Biginteger from r.
      */
@@ -735,22 +744,22 @@ public final class BigInteger
         return parse(StringUtil.nextString(r));
     }
 
-
     /**
      * Return a BigRational approximation of this Element.
+     *
      * @return a BigRational approximation of this.
      */
     public BigRational getRational() {
         return new BigRational(val);
     }
 
-
     /**
      * Returns the number of bits in the representation of this BigInteger,
      * including a sign bit. For positive BigIntegers, this is equivalent to
      * {@code (ceil(log2(this+1))+1)}.)
+     *
      * @return number of bits in the representation of this BigInteger,
-     *         including a sign bit.
+     * including a sign bit.
      */
     public long bitLength() {
         long n = val.bitLength();
@@ -760,23 +769,6 @@ public final class BigInteger
         }
         return ++n;
     }
-
-
-    /**
-     * Returns the number of bits in the representation of a Long, including a
-     * sign bit.
-     * @param v value.
-     * @return number of bits in the representation of a Long, including a sign
-     *         bit.
-     */
-    public static long bitLength(long v) { // compare BigInteger.bitLengthForInt
-        long n = 64 - Long.numberOfLeadingZeros(v);
-        return ++n;
-    }
-
-
-    private boolean nonNegative = true;
-
 
     /**
      * Set the iteration algorithm to all elements.
@@ -796,6 +788,7 @@ public final class BigInteger
 
     /**
      * Get a BigInteger iterator.
+     *
      * @return a iterator over all integers.
      */
     public Iterator<BigInteger> iterator() {
@@ -807,18 +800,17 @@ public final class BigInteger
 
 /**
  * Big integer iterator.
+ *
  * @author Heinz Kredel
  */
 class BigIntegerIterator implements Iterator<BigInteger> {
 
 
+    final boolean nonNegative;
     /**
      * data structure.
      */
     java.math.BigInteger curr;
-
-
-    final boolean nonNegative;
 
 
     /**
@@ -831,8 +823,9 @@ class BigIntegerIterator implements Iterator<BigInteger> {
 
     /**
      * BigInteger iterator constructor.
+     *
      * @param nn true for an iterator over non-negative longs, false for all
-     *            elements iterator.
+     *           elements iterator.
      */
     public BigIntegerIterator(boolean nn) {
         curr = java.math.BigInteger.ZERO;
@@ -842,6 +835,7 @@ class BigIntegerIterator implements Iterator<BigInteger> {
 
     /**
      * Test for availability of a next element.
+     *
      * @return true if the iteration has more elements, else false.
      */
     public boolean hasNext() {
@@ -851,6 +845,7 @@ class BigIntegerIterator implements Iterator<BigInteger> {
 
     /**
      * Get next integer.
+     *
      * @return next integer.
      */
     public synchronized BigInteger next() {

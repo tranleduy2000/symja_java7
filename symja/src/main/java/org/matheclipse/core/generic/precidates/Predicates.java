@@ -17,7 +17,6 @@ public class Predicates {
 
     /**
      * Check if the evaluation of an unary AST object gives <code>True</code>.
-     *
      */
 //	public class IsUnaryTrue<E extends IExpr> implements Predicate<E> {
 //		protected final EvalEngine fEngine;
@@ -52,7 +51,6 @@ public class Predicates {
 //		}
 //
 //	}
-
     private Predicates() {
 
     }

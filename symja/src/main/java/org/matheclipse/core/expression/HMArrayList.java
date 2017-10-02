@@ -17,10 +17,15 @@
 
 package org.matheclipse.core.expression;
 
+import org.matheclipse.core.eval.EvalEngine;
+import org.matheclipse.core.interfaces.IAST;
+import org.matheclipse.core.interfaces.IExpr;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -30,11 +35,6 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.stream.Stream;
-
-import org.matheclipse.core.eval.EvalEngine;
-import org.matheclipse.core.interfaces.IAST;
-import org.matheclipse.core.interfaces.IExpr;
 
 /**
  * HMArrayList is an implementation of a list, backed by an array. All optional
@@ -794,13 +794,24 @@ public abstract class HMArrayList extends AbstractAST implements Cloneable, Seri
 	}
 
 	@Override
-	public Stream<IExpr> stream() {
-		return Arrays.stream(array, firstIndex + 1, lastIndex - firstIndex);
+	public ArrayList<IExpr> stream() {
+		ArrayList<IExpr> result = new ArrayList<>();
+		for (int i = firstIndex + 1; i < lastIndex - firstIndex; i++) {
+			result.add(array[i]);
+		}
+		return result;
+//		return Arrays.stream(array, firstIndex + 1, lastIndex - firstIndex);
 	}
 
 	@Override
-	public Stream<IExpr> stream(int startInclusive, int endExclusive) {
-		return Arrays.stream(toArray(), firstIndex + startInclusive, firstIndex + endExclusive);
+	public ArrayList<IExpr> stream(int startInclusive, int endExclusive) {
+		ArrayList<IExpr> result = new ArrayList<>();
+		IExpr[] array = toArray();
+		for (int i = firstIndex + startInclusive; i < firstIndex + endExclusive; i++) {
+			result.add(array[i]);
+		}
+		return result;
+//		return Arrays.stream(toArray(), firstIndex + startInclusive, firstIndex + endExclusive);
 	}
 
 	/**

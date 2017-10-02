@@ -5,6 +5,8 @@
 package edu.jas.arith;
 
 
+
+
 import java.io.Reader;
 import java.math.BigInteger;
 import java.math.MathContext;
@@ -30,7 +32,7 @@ import edu.jas.structure.RingFactory;
  */
 
 public final class BigRational implements GcdRingElem<BigRational>, RingFactory<BigRational>, Rational,
-                Iterable<BigRational> {
+        Iterable<BigRational> {
 
 
     /**

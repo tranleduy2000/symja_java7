@@ -5,8 +5,6 @@ import org.matheclipse.core.interfaces.IAST;
 import org.matheclipse.core.interfaces.IExpr;
 import org.matheclipse.core.interfaces.IInteger;
 
-import java.util.function.Function;
-
 import static org.matheclipse.core.expression.F.Binomial;
 import static org.matheclipse.core.expression.F.C1D2;
 import static org.matheclipse.core.expression.F.CN1;

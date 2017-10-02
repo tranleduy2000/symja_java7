@@ -1,9 +1,6 @@
 package org.matheclipse.core.patternmatching;
 
-import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
-import java.util.function.Function;
-import java.util.function.Predicate;
 
 import org.matheclipse.core.eval.EvalEngine;
 import org.matheclipse.core.expression.Context;
