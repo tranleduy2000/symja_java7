@@ -1,7 +1,5 @@
 package org.matheclipse.core.reflection.system;
 
-import java.util.List;
-
 import org.matheclipse.core.basic.Config;
 import org.matheclipse.core.convert.JASConvert;
 import org.matheclipse.core.convert.VariablesSet;
@@ -13,6 +11,8 @@ import org.matheclipse.core.expression.ASTRange;
 import org.matheclipse.core.expression.F;
 import org.matheclipse.core.interfaces.IAST;
 import org.matheclipse.core.interfaces.IExpr;
+
+import java.util.List;
 
 import edu.jas.arith.BigRational;
 import edu.jas.poly.Complex;
@@ -27,84 +27,83 @@ import edu.jas.ufd.SquarefreeFactory;
 
 /**
  * Determine complex root intervals of a univariate polynomial
- * 
  */
 public class RootIntervals extends AbstractFunctionEvaluator {
 
-	public RootIntervals() {
-	}
+    public RootIntervals() {
+    }
 
-	@Override
-	public IExpr evaluate(final IAST ast, EvalEngine engine) {
-		Validate.checkSize(ast, 2);
+    /**
+     * Complex numeric roots intervals.
+     *
+     * @param ast
+     * @return
+     */
+    public static IAST croots(final IExpr arg, boolean numeric) {
 
-		return croots(ast.arg1(), false);
-	}
+        try {
+            VariablesSet eVar = new VariablesSet(arg);
+            if (!eVar.isSize(1)) {
+                // only possible for univariate polynomials
+                return F.NIL;
+            }
+            IExpr expr = F.evalExpandAll(arg);
+            ASTRange r = new ASTRange(eVar.getVarList(), 1);
+            List<IExpr> varList = r;
 
-	/**
-	 * Complex numeric roots intervals.
-	 * 
-	 * @param ast
-	 * @return
-	 */
-	public static IAST croots(final IExpr arg, boolean numeric) {
+            ComplexRing<BigRational> cfac = new ComplexRing<BigRational>(new BigRational(1));
+            ComplexRootsAbstract<BigRational> cr = new ComplexRootsSturm<BigRational>(cfac);
 
-		try {
-			VariablesSet eVar = new VariablesSet(arg);
-			if (!eVar.isSize(1)) {
-				// only possible for univariate polynomials
-				return F.NIL;
-			}
-			IExpr expr = F.evalExpandAll(arg);
-			ASTRange r = new ASTRange(eVar.getVarList(), 1);
-			List<IExpr> varList = r;
+            JASConvert<Complex<BigRational>> jas = new JASConvert<Complex<BigRational>>(varList, cfac);
+            GenPolynomial<Complex<BigRational>> poly = jas.numericExpr2JAS(expr);
 
-			ComplexRing<BigRational> cfac = new ComplexRing<BigRational>(new BigRational(1));
-			ComplexRootsAbstract<BigRational> cr = new ComplexRootsSturm<BigRational>(cfac);
+            Squarefree<Complex<BigRational>> engine = SquarefreeFactory.<Complex<BigRational>>getImplementation(cfac);
+            poly = engine.squarefreePart(poly);
 
-			JASConvert<Complex<BigRational>> jas = new JASConvert<Complex<BigRational>>(varList, cfac);
-			GenPolynomial<Complex<BigRational>> poly = jas.numericExpr2JAS(expr);
+            List<Rectangle<BigRational>> roots = cr.complexRoots(poly);
 
-			Squarefree<Complex<BigRational>> engine = SquarefreeFactory.<Complex<BigRational>> getImplementation(cfac);
-			poly = engine.squarefreePart(poly);
+            BigRational len = new BigRational(1, 100000L);
 
-			List<Rectangle<BigRational>> roots = cr.complexRoots(poly);
+            IAST resultList = F.List();
 
-			BigRational len = new BigRational(1, 100000L);
+            if (numeric) {
+                for (Rectangle<BigRational> root : roots) {
+                    Rectangle<BigRational> refine = cr.complexRootRefinement(root, poly, len);
+                    resultList.append(JASConvert.jas2Numeric(refine.getCenter(), Config.DEFAULT_ROOTS_CHOP_DELTA));
+                }
+            } else {
+                IAST rectangleList;
+                for (Rectangle<BigRational> root : roots) {
+                    rectangleList = F.List();
 
-			IAST resultList = F.List();
+                    Rectangle<BigRational> refine = cr.complexRootRefinement(root, poly, len);
+                    rectangleList.append(JASConvert.jas2Complex(refine.getNW()));
+                    rectangleList.append(JASConvert.jas2Complex(refine.getSW()));
+                    rectangleList.append(JASConvert.jas2Complex(refine.getSE()));
+                    rectangleList.append(JASConvert.jas2Complex(refine.getNE()));
+                    resultList.append(rectangleList);
+                    // System.out.println("refine = " + refine);
 
-			if (numeric) {
-				for (Rectangle<BigRational> root : roots) {
-					Rectangle<BigRational> refine = cr.complexRootRefinement(root, poly, len);
-					resultList.append(JASConvert.jas2Numeric(refine.getCenter(), Config.DEFAULT_ROOTS_CHOP_DELTA));
-				}
-			} else {
-				IAST rectangleList;
-				for (Rectangle<BigRational> root : roots) {
-					rectangleList = F.List();
+                }
+            }
+            return resultList;
+        } catch (InvalidBoundaryException e) {
+            if (Config.SHOW_STACKTRACE) {
+                e.printStackTrace();
+            }
+        } catch (JASConversionException e) {
+            if (Config.SHOW_STACKTRACE) {
+                e.printStackTrace();
+            }
+        }
+        return F.NIL;
+    }
 
-					Rectangle<BigRational> refine = cr.complexRootRefinement(root, poly, len);
-					rectangleList.append(JASConvert.jas2Complex(refine.getNW()));
-					rectangleList.append(JASConvert.jas2Complex(refine.getSW()));
-					rectangleList.append(JASConvert.jas2Complex(refine.getSE()));
-					rectangleList.append(JASConvert.jas2Complex(refine.getNE()));
-					resultList.append(rectangleList);
-					// System.out.println("refine = " + refine);
+    @Override
+    public IExpr evaluate(final IAST ast, EvalEngine engine) {
+        Validate.checkSize(ast, 2);
 
-				}
-			}
-			return resultList;
-		} catch (InvalidBoundaryException e) {
-			if (Config.SHOW_STACKTRACE) {
-				e.printStackTrace();
-			}
-		} catch (JASConversionException e) {
-			if (Config.SHOW_STACKTRACE) {
-				e.printStackTrace();
-			}
-		}
-		return F.NIL;
-	}
+        return croots(ast.arg1(), false);
+    }
 
 }

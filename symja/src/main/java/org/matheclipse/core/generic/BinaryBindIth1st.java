@@ -1,6 +1,4 @@
-package org.matheclipse.core.generic;
-
-import org.matheclipse.core.interfaces.IAST;
+package org.matheclipse.core.generic; import org.matheclipse.core.interfaces.IAST;
 import org.matheclipse.core.interfaces.IExpr;
 import org.matheclipse.core.interfaces.IUnaryIndexFunction;
 

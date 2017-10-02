@@ -36,7 +36,7 @@ public class Scan extends Map {
             IExpr arg2 = ast.arg2();
             if (lastIndex == 3) {
                 IAST result = F.ListAlloc(10);
-                com.duy.lambda.Function<IExpr, IExpr> sf = x -> {
+                java.util.function.Function<IExpr, IExpr> sf = x -> {
                     IAST a = F.unaryAST1(arg1, x);
                     result.append(a);
                     return F.NIL;

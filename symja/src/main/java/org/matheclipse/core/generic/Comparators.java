@@ -1,4 +1,4 @@
-package org.matheclipse.core.generic;
+package org.matheclipse.core.generic; import java.util.function.Consumer; import java.util.function.Function; import java.util.function.Predicate;
 
 import org.matheclipse.core.generic.precidates.Predicates;
 import org.matheclipse.core.interfaces.IExpr;

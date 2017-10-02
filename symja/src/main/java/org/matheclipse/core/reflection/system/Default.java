@@ -13,20 +13,20 @@ import org.matheclipse.core.interfaces.ISymbol;
  */
 public class Default extends AbstractFunctionEvaluator {
 
-	public Default() {
-	}
+    public Default() {
+    }
 
-	@Override
-	public IExpr evaluate(final IAST ast, EvalEngine engine) {
-		Validate.checkRange(ast, 2, 4);
-		ISymbol symbol = Validate.checkSymbolType(ast, 1);
+    @Override
+    public IExpr evaluate(final IAST ast, EvalEngine engine) {
+        Validate.checkRange(ast, 2, 4);
+        ISymbol symbol = Validate.checkSymbolType(ast, 1);
 
-		if (ast.size() > 2) {
-			int pos = Validate.checkIntType(ast, 2);
-			return symbol.getDefaultValue(pos);
-		} else {
-			return symbol.getDefaultValue();
-		}
-	}
+        if (ast.size() > 2) {
+            int pos = Validate.checkIntType(ast, 2);
+            return symbol.getDefaultValue(pos);
+        } else {
+            return symbol.getDefaultValue();
+        }
+    }
 
 }

@@ -1,4 +1,4 @@
-package org.matheclipse.core.expression;
+package org.matheclipse.core.expression; import java.util.function.Consumer; import java.util.function.Function; import java.util.function.Predicate;
 
 import org.hipparchus.fraction.BigFraction;
 import org.matheclipse.core.basic.Config;

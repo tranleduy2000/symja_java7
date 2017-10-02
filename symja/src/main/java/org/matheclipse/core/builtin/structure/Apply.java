@@ -23,7 +23,7 @@ public class Apply extends AbstractCoreFunctionEvaluator {
     public static IExpr evalApply(IExpr arg1, IExpr arg2, IAST evaledAST, int lastIndex, boolean heads,
                                   EvalEngine engine) {
         VisitorLevelSpecification level = null;
-        com.duy.lambda.Function<IExpr, IExpr> af = x -> x.isAST() ? ((IAST) x).setAtCopy(0, arg1) : F.NIL;
+        java.util.function.Function<IExpr, IExpr> af = x -> x.isAST() ? ((IAST) x).setAtCopy(0, arg1) : F.NIL;
         try {
             if (lastIndex == 3) {
                 level = new VisitorLevelSpecification(af, evaledAST.get(lastIndex), heads, engine);

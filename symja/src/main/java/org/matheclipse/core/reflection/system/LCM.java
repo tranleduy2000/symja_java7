@@ -11,50 +11,49 @@ import org.matheclipse.core.interfaces.ISymbol;
 
 /**
  * Least common multiple
- * 
+ * <p>
  * See
  * <a href="http://en.wikipedia.org/wiki/Least_common_multiple">Wikipedia:Least
  * common multiple</a>
  */
 public class LCM extends AbstractArgMultiple {
-	/**
-	 * Constructor for the LCM object
-	 */
-	public LCM() {
-	}
+    /**
+     * Constructor for the LCM object
+     */
+    public LCM() {
+    }
 
-	@Override
-	public IExpr evaluate(final IAST ast, EvalEngine engine) {
-		Validate.checkRange(ast, 2);
+    @Override
+    public IExpr evaluate(final IAST ast, EvalEngine engine) {
+        Validate.checkRange(ast, 2);
 
-		if (ast.isAST1()) {
-			if (ast.arg1().isExactNumber()) {
-				return ast.arg1().abs();
-			}
-		}
-		return super.evaluate(ast, engine);
-	}
+        if (ast.isAST1()) {
+            if (ast.arg1().isExactNumber()) {
+                return ast.arg1().abs();
+            }
+        }
+        return super.evaluate(ast, engine);
+    }
 
-	/**
-	 * Compute lcm of 2 integer numbers
-	 * 
-	 */
-	@Override
-	public IExpr e2IntArg(final IInteger i0, final IInteger i1) {
-		return i0.lcm(i1);
-	}
+    /**
+     * Compute lcm of 2 integer numbers
+     */
+    @Override
+    public IExpr e2IntArg(final IInteger i0, final IInteger i1) {
+        return i0.lcm(i1);
+    }
 
-	@Override
-	public IExpr e2ObjArg(final IExpr o0, final IExpr o1) {
-		if (o0.isZero()) {
-			return o0;
-		}
-		return F.NIL;
-	}
+    @Override
+    public IExpr e2ObjArg(final IExpr o0, final IExpr o1) {
+        if (o0.isZero()) {
+            return o0;
+        }
+        return F.NIL;
+    }
 
-	@Override
-	public void setUp(final ISymbol newSymbol) {
-		newSymbol.setAttributes(ISymbol.ORDERLESS | ISymbol.FLAT | ISymbol.LISTABLE);
-	}
+    @Override
+    public void setUp(final ISymbol newSymbol) {
+        newSymbol.setAttributes(ISymbol.ORDERLESS | ISymbol.FLAT | ISymbol.LISTABLE);
+    }
 
 }

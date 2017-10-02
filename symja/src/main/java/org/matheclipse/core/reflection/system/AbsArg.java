@@ -10,25 +10,24 @@ import org.matheclipse.core.interfaces.ISymbol;
 /**
  * Return a list with the 2 values <code>Abs(x), Arg(x)</code> for a complex
  * number <code>x</code>.
- *
  */
 public class AbsArg extends AbstractEvaluator {
 
-	public AbsArg() {
-	}
+    public AbsArg() {
+    }
 
-	@Override
-	public IExpr evaluate(final IAST ast, EvalEngine engine) {
-		int size = ast.size();
-		if (size == 2) {
-			IExpr z = ast.arg1();
-			return F.List(F.Abs(z), F.Arg(z));
-		}
-		return F.NIL;
-	}
+    @Override
+    public IExpr evaluate(final IAST ast, EvalEngine engine) {
+        int size = ast.size();
+        if (size == 2) {
+            IExpr z = ast.arg1();
+            return F.List(F.Abs(z), F.Arg(z));
+        }
+        return F.NIL;
+    }
 
-	@Override
-	public void setUp(ISymbol newSymbol) {
-		newSymbol.setAttributes(ISymbol.LISTABLE);
-	}
+    @Override
+    public void setUp(ISymbol newSymbol) {
+        newSymbol.setAttributes(ISymbol.LISTABLE);
+    }
 }

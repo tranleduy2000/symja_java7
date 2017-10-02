@@ -4,6 +4,8 @@ import org.matheclipse.core.eval.EvalEngine;
 import org.matheclipse.core.eval.interfaces.AbstractCorePredicateEvaluator;
 import org.matheclipse.core.interfaces.IExpr;
 
+import java.util.function.Predicate;
+
 /**
  * Predicate function
  * <p>

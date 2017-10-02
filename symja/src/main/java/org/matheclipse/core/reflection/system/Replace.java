@@ -12,6 +12,8 @@ import org.matheclipse.core.interfaces.ISymbol;
 import org.matheclipse.core.reflection.system.function.ReplaceFunction;
 import org.matheclipse.core.visit.VisitorLevelSpecification;
 
+import java.util.function.Function;
+
 /**
  * <pre>
  * Rationalize(expression)

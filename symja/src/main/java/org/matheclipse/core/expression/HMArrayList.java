@@ -15,7 +15,7 @@
  *  limitations under the License.
  */
 
-package org.matheclipse.core.expression;
+package org.matheclipse.core.expression; import java.util.function.Consumer; import java.util.function.Function; import java.util.function.Predicate;
 
 import org.matheclipse.core.eval.EvalEngine;
 import org.matheclipse.core.interfaces.IAST;

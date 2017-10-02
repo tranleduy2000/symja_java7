@@ -10,9 +10,6 @@ import org.hipparchus.optim.linear.NonNegativeConstraint;
 import org.hipparchus.optim.linear.PivotSelectionRule;
 import org.hipparchus.optim.linear.SimplexSolver;
 import org.hipparchus.optim.nonlinear.scalar.GoalType;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.matheclipse.core.convert.Expr2LP;
 import org.matheclipse.core.convert.VariablesSet;
 import org.matheclipse.core.eval.EvalEngine;
@@ -23,11 +20,14 @@ import org.matheclipse.core.expression.F;
 import org.matheclipse.core.interfaces.IAST;
 import org.matheclipse.core.interfaces.IExpr;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * <pre>
  * NMinimize(coefficientsOfLinearObjectiveFunction, constraintList, constraintRelationList)
  * </pre>
- * 
+ * <p>
  * <blockquote>
  * <p>
  * the <code>NMinimize</code> function provides an implementation of
@@ -45,7 +45,7 @@ import org.matheclipse.core.interfaces.IExpr;
  * See also: <a href="LinearProgramming.md">LinearProgramming</a>, <a href="NMaximize.md">NMaximize</a>
  * </p>
  * <h3>Examples</h3>
- * 
+ * <p>
  * <pre>
  * &gt;&gt; NMinimize({-2*x+y-5, x+2*y&lt;=6 &amp;&amp; 3*x + 2*y &lt;= 12}, {x, y})
  * {-13.0,{x-&gt;4.0,y-&gt;0.0}
@@ -53,14 +53,14 @@ import org.matheclipse.core.interfaces.IExpr;
  * <p>
  * solves the linear problem:
  * </p>
- * 
+ * <p>
  * <pre>
  * Minimize -2x + y - 5
  * </pre>
  * <p>
  * with the constraints:
  * </p>
- * 
+ * <p>
  * <pre>
  *   x  + 2y &lt;=  6
  *   3x + 2y &lt;= 12
@@ -70,73 +70,73 @@ import org.matheclipse.core.interfaces.IExpr;
  */
 public class NMinimize extends AbstractFunctionEvaluator {
 
-	public NMinimize() {
-		super();
-	}
+    public NMinimize() {
+        super();
+    }
 
-	@Override
-	public IExpr evaluate(final IAST ast, EvalEngine engine) {
-		// switch to numeric calculation
-		return numericEval(ast, engine);
-	}
+    protected static LinearObjectiveFunction getObjectiveFunction(VariablesSet vars, IExpr objectiveFunction) {
+        Expr2LP x2LP = new Expr2LP(objectiveFunction, vars);
+        return x2LP.expr2ObjectiveFunction();
+    }
 
-	@Override
-	public IExpr numericEval(final IAST ast, EvalEngine engine) {
-		Validate.checkSize(ast, 3);
+    protected static List<LinearConstraint> getConstraints(VariablesSet vars, IExpr listOfconstraints) {
+        Expr2LP x2LP;
+        List<LinearConstraint> constraints = new ArrayList<LinearConstraint>();
+        IAST andAST = (IAST) listOfconstraints;
+        for (int i = 1; i < andAST.size(); i++) {
+            x2LP = new Expr2LP(andAST.get(i), vars);
+            constraints.add(x2LP.expr2Constraint());
+        }
+        return constraints;
+    }
 
-		if (ast.arg1().isList() && ast.arg2().isList()) {
-			IAST list1 = (IAST) ast.arg1();
-			IAST list2 = (IAST) ast.arg2();
-			VariablesSet vars = new VariablesSet(list2);
-			if (list1.isAST2()) {
-				IExpr function = list1.arg1();
-				IExpr listOfconstraints = list1.arg2();
-				if (listOfconstraints.isAnd()) {
-					// lc1 && lc2 && lc3...
-					LinearObjectiveFunction objectiveFunction = getObjectiveFunction(vars, function);
-					List<LinearConstraint> constraints = getConstraints(vars, listOfconstraints);
-					return simplexSolver(vars, objectiveFunction, objectiveFunction,
-							new LinearConstraintSet(constraints), GoalType.MINIMIZE, new NonNegativeConstraint(true),
-							PivotSelectionRule.BLAND);
-				}
-			}
-		}
-		return F.NIL;
-	}
+    protected static IExpr simplexSolver(VariablesSet vars, LinearObjectiveFunction f, OptimizationData... optData) {
+        try {
+            SimplexSolver solver = new SimplexSolver();
+            PointValuePair solution = solver.optimize(optData);
+            double[] values = solution.getPointRef();
+            IAST list = F.ListAlloc(values.length);
+            List<IExpr> varList = vars.getArrayList();
+            for (int i = 0; i < values.length; i++) {
+                list.append(F.Rule(varList.get(i), F.num(values[i])));
+            }
+            IAST result = F.List(F.num(f.value(values)), list);
+            return result;
+        } catch (MathIllegalStateException oe) {
+            throw new WrappedException(oe);
+            // if (Config.SHOW_STACKTRACE) {
+            // oe.printStackTrace();
+            // }
+        }
+    }
 
-	protected static LinearObjectiveFunction getObjectiveFunction(VariablesSet vars, IExpr objectiveFunction) {
-		Expr2LP x2LP = new Expr2LP(objectiveFunction, vars);
-		return x2LP.expr2ObjectiveFunction();
-	}
+    @Override
+    public IExpr evaluate(final IAST ast, EvalEngine engine) {
+        // switch to numeric calculation
+        return numericEval(ast, engine);
+    }
 
-	protected static List<LinearConstraint> getConstraints(VariablesSet vars, IExpr listOfconstraints) {
-		Expr2LP x2LP;
-		List<LinearConstraint> constraints = new ArrayList<LinearConstraint>();
-		IAST andAST = (IAST) listOfconstraints;
-		for (int i = 1; i < andAST.size(); i++) {
-			x2LP = new Expr2LP(andAST.get(i), vars);
-			constraints.add(x2LP.expr2Constraint());
-		}
-		return constraints;
-	}
+    @Override
+    public IExpr numericEval(final IAST ast, EvalEngine engine) {
+        Validate.checkSize(ast, 3);
 
-	protected static IExpr simplexSolver(VariablesSet vars, LinearObjectiveFunction f, OptimizationData... optData) {
-		try {
-			SimplexSolver solver = new SimplexSolver();
-			PointValuePair solution = solver.optimize(optData);
-			double[] values = solution.getPointRef();
-			IAST list = F.ListAlloc(values.length);
-			List<IExpr> varList = vars.getArrayList();
-			for (int i = 0; i < values.length; i++) {
-				list.append(F.Rule(varList.get(i), F.num(values[i])));
-			}
-			IAST result = F.List(F.num(f.value(values)), list);
-			return result;
-		} catch (MathIllegalStateException oe) {
-			throw new WrappedException(oe);
-			// if (Config.SHOW_STACKTRACE) {
-			// oe.printStackTrace();
-			// }
-		}
-	}
+        if (ast.arg1().isList() && ast.arg2().isList()) {
+            IAST list1 = (IAST) ast.arg1();
+            IAST list2 = (IAST) ast.arg2();
+            VariablesSet vars = new VariablesSet(list2);
+            if (list1.isAST2()) {
+                IExpr function = list1.arg1();
+                IExpr listOfconstraints = list1.arg2();
+                if (listOfconstraints.isAnd()) {
+                    // lc1 && lc2 && lc3...
+                    LinearObjectiveFunction objectiveFunction = getObjectiveFunction(vars, function);
+                    List<LinearConstraint> constraints = getConstraints(vars, listOfconstraints);
+                    return simplexSolver(vars, objectiveFunction, objectiveFunction,
+                            new LinearConstraintSet(constraints), GoalType.MINIMIZE, new NonNegativeConstraint(true),
+                            PivotSelectionRule.BLAND);
+                }
+            }
+        }
+        return F.NIL;
+    }
 }

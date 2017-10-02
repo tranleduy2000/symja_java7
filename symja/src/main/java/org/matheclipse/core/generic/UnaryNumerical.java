@@ -1,6 +1,4 @@
-package org.matheclipse.core.generic;
-
-import org.hipparchus.analysis.UnivariateFunction;
+package org.matheclipse.core.generic; import org.hipparchus.analysis.UnivariateFunction;
 import org.matheclipse.commons.math.analysis.solvers.DifferentiableUnivariateFunction;
 import org.matheclipse.core.eval.DoubleStackEvaluator;
 import org.matheclipse.core.eval.EvalEngine;
@@ -13,6 +11,7 @@ import org.matheclipse.core.interfaces.INum;
 import org.matheclipse.core.interfaces.ISymbol;
 
 import java.util.Deque;
+import java.util.function.Function;
 
 /**
  * Unary numerical function for functions like Plot

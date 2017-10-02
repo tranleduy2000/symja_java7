@@ -1,4 +1,4 @@
-package org.matheclipse.core.builtin.listfunction;
+package org.matheclipse.core.builtin.listfunction; import java.util.function.Consumer; import java.util.function.Function; import java.util.function.Predicate;
 
 import org.matheclipse.core.basic.Config;
 import org.matheclipse.core.builtin.precidateq.PredicateQ;

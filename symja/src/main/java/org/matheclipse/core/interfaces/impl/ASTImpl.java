@@ -233,4 +233,9 @@ public abstract class ASTImpl extends ExprImpl implements IAST {
         }
         return append(expr);
     }
+
+    @Override
+    public IAST clone() {
+        return null;
+    }
 }

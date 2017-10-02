@@ -7,6 +7,8 @@ import org.matheclipse.core.interfaces.IExpr;
 import org.matheclipse.core.interfaces.IInteger;
 import org.matheclipse.core.interfaces.ISymbol;
 
+import java.util.function.Predicate;
+
 /**
  * Test if a number is prime. See:
  * <a href="http://en.wikipedia.org/wiki/Prime_number">Wikipedia:Prime

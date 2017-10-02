@@ -456,7 +456,7 @@ public interface IAST extends IExpr, Cloneable, Iterable<IExpr> {
      *
      * @return a clone of this <code>IAST</code> instance.
      */
-    public IAST clone();
+    IAST clone();
 
     /**
      * Tests whether this {@code List} contains the specified object.

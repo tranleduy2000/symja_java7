@@ -6,6 +6,8 @@ import org.matheclipse.core.expression.F;
 import org.matheclipse.core.interfaces.IExpr;
 import org.matheclipse.core.interfaces.ISymbol;
 
+import static org.matheclipse.core.interfaces.impl.ExprImpl.ofNullable;
+
 /**
  * Data structure for <code>HashedOrderlessMatcher</code>.
  * <p>

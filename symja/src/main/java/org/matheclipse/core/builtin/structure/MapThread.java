@@ -17,7 +17,7 @@ public final class MapThread extends AbstractFunctionEvaluator {
         Validate.checkRange(ast, 3, 4);
 
         VisitorLevelSpecification level = null;
-        Function<IExpr, IExpr> umt = new UnaryMapThread(ast.arg1());
+        java.util.function.Function<IExpr, IExpr> umt = new UnaryMapThread(ast.arg1());
         if (ast.isAST3()) {
             level = new VisitorLevelSpecification(umt, ast.arg3(), false, engine);
         } else {

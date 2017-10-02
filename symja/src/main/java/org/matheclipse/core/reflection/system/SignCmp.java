@@ -11,32 +11,32 @@ import org.matheclipse.core.interfaces.ISymbol;
 
 /**
  * Gets the signum value of a complex number
- * 
+ *
  * @return 0 for <code>this == 0</code>;<br/>
- *         +1 for <code>real(this) &gt; 0 || ( real(this) == 0 &amp;&amp; imaginary(this) &gt; 0 )</code> ;<br/>
- *         -1 for <code>real(this) &lt; 0 || ( real(this) == 0 &amp;&amp; imaginary(this) &lt; 0 )
+ * +1 for <code>real(this) &gt; 0 || ( real(this) == 0 &amp;&amp; imaginary(this) &gt; 0 )</code> ;<br/>
+ * -1 for <code>real(this) &lt; 0 || ( real(this) == 0 &amp;&amp; imaginary(this) &lt; 0 )
  */
 public class SignCmp extends AbstractEvaluator {
 
-	public SignCmp() {
-	}
+    public SignCmp() {
+    }
 
-	@Override
-	public IExpr evaluate(final IAST ast, EvalEngine engine) {
-		Validate.checkSize(ast, 2);
+    @Override
+    public IExpr evaluate(final IAST ast, EvalEngine engine) {
+        Validate.checkSize(ast, 2);
 
-		IExpr arg1 = ast.arg1();
-		INumber number = arg1.evalNumber();
-		if (number != null) {
-			final int signum = number.complexSign();
-			return F.integer(signum);
-		}
-		return F.NIL;
-	}
+        IExpr arg1 = ast.arg1();
+        INumber number = arg1.evalNumber();
+        if (number != null) {
+            final int signum = number.complexSign();
+            return F.integer(signum);
+        }
+        return F.NIL;
+    }
 
-	@Override
-	public void setUp(final ISymbol newSymbol) {
-		newSymbol.setAttributes(ISymbol.LISTABLE | ISymbol.NUMERICFUNCTION);
-	}
+    @Override
+    public void setUp(final ISymbol newSymbol) {
+        newSymbol.setAttributes(ISymbol.LISTABLE | ISymbol.NUMERICFUNCTION);
+    }
 
 }

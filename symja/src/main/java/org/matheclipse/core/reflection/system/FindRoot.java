@@ -28,29 +28,29 @@ import org.matheclipse.core.interfaces.ISymbol;
  * <pre>
  * FindRoot(f, {x, xmin, xmax})
  * </pre>
- * 
+ * <p>
  * <blockquote>
  * <p>
  * searches for a numerical root of <code>f</code> for the variable <code>x</code>, in the range <code>xmin</code> to
  * <code>xmax</code>.
  * </p>
  * </blockquote>
- * 
+ * <p>
  * <pre>
  * FindRoot(f, {x, xmin, xmax}, MaxIterations-&gt;maxiter)
  * </pre>
- * 
+ * <p>
  * <blockquote>
  * <p>
  * searches for a numerical root of <code>f</code> for the variable <code>x</code>, with <code>maxiter</code>
  * iterations. The default maximum iteraton is <code>100</code>.
  * </p>
  * </blockquote>
- * 
+ * <p>
  * <pre>
  * FindRoot(f, {x, xmin, xmax}, Method-&gt;method_name)
  * </pre>
- * 
+ * <p>
  * <blockquote>
  * <p>
  * searches for a numerical root of <code>f</code> for the variable <code>x</code>, with one of the following method
@@ -129,110 +129,109 @@ import org.matheclipse.core.interfaces.ISymbol;
  * function is continuous, but not necessarily smooth.
  * </p>
  * <h3>Examples</h3>
- * 
+ * <p>
  * <pre>
  * &gt;&gt; FindRoot(Exp(x)==Pi^3,{x,-1,10}, Method-&gt;Bisection)
  * {x-&gt;3.434189647436142}
- * 
+ *
  * &gt;&gt; FindRoot(Sin(x), {x, -0.5, 0.5})
  * {x-&gt;0.0}
  * </pre>
- * 
  */
 
 public class FindRoot extends AbstractFunctionEvaluator {
 
-	// public final static ISymbol Newton = F.initFinalSymbol(Config.PARSER_USE_LOWERCASE_SYMBOLS ? "newton" :
-	// "Newton");
+    // public final static ISymbol Newton = F.initFinalSymbol(Config.PARSER_USE_LOWERCASE_SYMBOLS ? "newton" :
+    // "Newton");
 
-	public FindRoot() {
-	}
+    public FindRoot() {
+    }
 
-	@Override
-	public IExpr evaluate(final IAST ast, EvalEngine engine) {
-		Validate.checkRange(ast, 3);
+    @Override
+    public IExpr evaluate(final IAST ast, EvalEngine engine) {
+        Validate.checkRange(ast, 3);
 
-		String method = "Newton";
-		int maxIterations = 100;
-		if (ast.size() >= 4) {
-			final Options options = new Options(ast.topHead(), ast, 3, engine);
-			IExpr optionMaxIterations = options.getOption("MaxIterations");
-			if (optionMaxIterations.isSignedNumber()) {
-				maxIterations = ((ISignedNumber) optionMaxIterations).toInt();
-			}
-			IExpr optionMethod = options.getOption("Method");
-			if (optionMethod.isSymbol()) {
-				method = optionMethod.toString();
-			} else {
-				if (ast.arg3().isSymbol()) {
-					method = ast.arg3().toString();
-				}
-			}
-		}
-		if ((ast.arg2().isList())) {
-			IAST list = (IAST) ast.arg2();
-			IExpr function = ast.arg1();
-			if (list.size() >= 3 && list.arg1().isSymbol()) {
-				if (function.isEqual()) {
-					IAST equalAST = (IAST) function;
-					function = F.Plus(equalAST.arg1(), F.Negate(equalAST.arg2()));
-				}
-				ISignedNumber min = list.arg2().evalSignedNumber();
-				ISignedNumber max = null;
-				if (list.size() > 3) {
-					max = list.arg3().evalSignedNumber();
-				}
-				if (min != null) {
-					return F.List(F.Rule(list.arg1(),
-							Num.valueOf(findRoot(method, maxIterations, list, min, max, function, engine))));
-				}
-			}
-		}
-		return F.NIL;
-	}
+        String method = "Newton";
+        int maxIterations = 100;
+        if (ast.size() >= 4) {
+            final Options options = new Options(ast.topHead(), ast, 3, engine);
+            IExpr optionMaxIterations = options.getOption("MaxIterations");
+            if (optionMaxIterations.isSignedNumber()) {
+                maxIterations = ((ISignedNumber) optionMaxIterations).toInt();
+            }
+            IExpr optionMethod = options.getOption("Method");
+            if (optionMethod.isSymbol()) {
+                method = optionMethod.toString();
+            } else {
+                if (ast.arg3().isSymbol()) {
+                    method = ast.arg3().toString();
+                }
+            }
+        }
+        if ((ast.arg2().isList())) {
+            IAST list = (IAST) ast.arg2();
+            IExpr function = ast.arg1();
+            if (list.size() >= 3 && list.arg1().isSymbol()) {
+                if (function.isEqual()) {
+                    IAST equalAST = (IAST) function;
+                    function = F.Plus(equalAST.arg1(), F.Negate(equalAST.arg2()));
+                }
+                ISignedNumber min = list.arg2().evalSignedNumber();
+                ISignedNumber max = null;
+                if (list.size() > 3) {
+                    max = list.arg3().evalSignedNumber();
+                }
+                if (min != null) {
+                    return F.List(F.Rule(list.arg1(),
+                            Num.valueOf(findRoot(method, maxIterations, list, min, max, function, engine))));
+                }
+            }
+        }
+        return F.NIL;
+    }
 
-	private double findRoot(String method, int maxIterations, IAST list, ISignedNumber min, ISignedNumber max,
-			IExpr function, EvalEngine engine) {
-		ISymbol xVar = (ISymbol) list.arg1();
-		function = engine.evaluate(function);
-		UnivariateFunction f = new UnaryNumerical(function, xVar, engine);
-		BaseAbstractUnivariateSolver<UnivariateFunction> solver = null;
-		if (method.equalsIgnoreCase("Bisection")) {
-			solver = new BisectionSolver();
-		} else if (method.equalsIgnoreCase("Brent")) {
-			solver = new BrentSolver();
-			// } else if (method.isSymbolName("Laguerre")) {
-			// solver = new LaguerreSolver();
-		} else if (method.equalsIgnoreCase("Muller")) {
-			solver = new MullerSolver();
-		} else if (method.equalsIgnoreCase("Ridders")) {
-			solver = new RiddersSolver();
-		} else if (method.equalsIgnoreCase("Secant")) {
-			solver = new SecantSolver();
-		} else if (method.equalsIgnoreCase("RegulaFalsi")) {
-			solver = new RegulaFalsiSolver();
-		} else if (method.equalsIgnoreCase("Illinois")) {
-			solver = new IllinoisSolver();
-		} else if (method.equalsIgnoreCase("Pegasus")) {
-			solver = new PegasusSolver();
-		} else {
-			// default: NewtonSolver
-			DifferentiableUnivariateFunction fNewton = new UnaryNumerical(function, xVar, engine);
-			BaseAbstractUnivariateSolver<DifferentiableUnivariateFunction> solver2 = new NewtonSolver();
-			if (max == null) {
-				return solver2.solve(maxIterations, fNewton, min.doubleValue());
-			}
-			return solver2.solve(maxIterations, fNewton, min.doubleValue(), max.doubleValue());
-		}
-		if (max == null) {
-			return solver.solve(maxIterations, f, min.doubleValue());
-		}
-		return solver.solve(maxIterations, f, min.doubleValue(), max.doubleValue());
+    private double findRoot(String method, int maxIterations, IAST list, ISignedNumber min, ISignedNumber max,
+                            IExpr function, EvalEngine engine) {
+        ISymbol xVar = (ISymbol) list.arg1();
+        function = engine.evaluate(function);
+        UnivariateFunction f = new UnaryNumerical(function, xVar, engine);
+        BaseAbstractUnivariateSolver<UnivariateFunction> solver = null;
+        if (method.equalsIgnoreCase("Bisection")) {
+            solver = new BisectionSolver();
+        } else if (method.equalsIgnoreCase("Brent")) {
+            solver = new BrentSolver();
+            // } else if (method.isSymbolName("Laguerre")) {
+            // solver = new LaguerreSolver();
+        } else if (method.equalsIgnoreCase("Muller")) {
+            solver = new MullerSolver();
+        } else if (method.equalsIgnoreCase("Ridders")) {
+            solver = new RiddersSolver();
+        } else if (method.equalsIgnoreCase("Secant")) {
+            solver = new SecantSolver();
+        } else if (method.equalsIgnoreCase("RegulaFalsi")) {
+            solver = new RegulaFalsiSolver();
+        } else if (method.equalsIgnoreCase("Illinois")) {
+            solver = new IllinoisSolver();
+        } else if (method.equalsIgnoreCase("Pegasus")) {
+            solver = new PegasusSolver();
+        } else {
+            // default: NewtonSolver
+            DifferentiableUnivariateFunction fNewton = new UnaryNumerical(function, xVar, engine);
+            BaseAbstractUnivariateSolver<DifferentiableUnivariateFunction> solver2 = new NewtonSolver();
+            if (max == null) {
+                return solver2.solve(maxIterations, fNewton, min.doubleValue());
+            }
+            return solver2.solve(maxIterations, fNewton, min.doubleValue(), max.doubleValue());
+        }
+        if (max == null) {
+            return solver.solve(maxIterations, f, min.doubleValue());
+        }
+        return solver.solve(maxIterations, f, min.doubleValue(), max.doubleValue());
 
-	}
+    }
 
-	@Override
-	public void setUp(final ISymbol newSymbol) {
-		newSymbol.setAttributes(ISymbol.HOLDFIRST);
-	}
+    @Override
+    public void setUp(final ISymbol newSymbol) {
+        newSymbol.setAttributes(ISymbol.HOLDFIRST);
+    }
 }

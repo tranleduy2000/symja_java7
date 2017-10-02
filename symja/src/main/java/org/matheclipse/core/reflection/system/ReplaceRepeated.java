@@ -11,42 +11,42 @@ import org.matheclipse.core.interfaces.ISymbol;
 
 public class ReplaceRepeated extends AbstractEvaluator {
 
-	public ReplaceRepeated() {
-	}
+    public ReplaceRepeated() {
+    }
 
-	@Override
-	public IExpr evaluate(final IAST ast, EvalEngine engine) {
-		try {
-			Validate.checkSize(ast, 3);
-			if (ast.arg2().isListOfLists()) {
-				IAST list = (IAST) ast.arg2();
-				IAST result = F.ListAlloc(list.size());
-				for (IExpr subList : list) {
-					IExpr temp = engine.evaluate(subList);
-					if (temp.isAST()) {
-						result.append(ast.arg1().replaceRepeated((IAST) temp));
-					}
-				}
-				return result;
-			}
-			if (ast.arg2().isAST()) {
-				IExpr temp = engine.evaluate(ast.arg2());
-				if (temp.isAST()) {
-					return ast.arg1().replaceRepeated((IAST) temp);
-				}
-			} else {
-				WrongArgumentType wat = new WrongArgumentType(ast, ast, -1, "Rule expression (x->y) expected: ");
-				engine.printMessage(wat.getMessage());
-			}
-		} catch (WrongArgumentType wat) {
-			engine.printMessage(wat.getMessage());
-		}
-		return F.NIL;
-	}
+    @Override
+    public IExpr evaluate(final IAST ast, EvalEngine engine) {
+        try {
+            Validate.checkSize(ast, 3);
+            if (ast.arg2().isListOfLists()) {
+                IAST list = (IAST) ast.arg2();
+                IAST result = F.ListAlloc(list.size());
+                for (IExpr subList : list) {
+                    IExpr temp = engine.evaluate(subList);
+                    if (temp.isAST()) {
+                        result.append(ast.arg1().replaceRepeated((IAST) temp));
+                    }
+                }
+                return result;
+            }
+            if (ast.arg2().isAST()) {
+                IExpr temp = engine.evaluate(ast.arg2());
+                if (temp.isAST()) {
+                    return ast.arg1().replaceRepeated((IAST) temp);
+                }
+            } else {
+                WrongArgumentType wat = new WrongArgumentType(ast, ast, -1, "Rule expression (x->y) expected: ");
+                engine.printMessage(wat.getMessage());
+            }
+        } catch (WrongArgumentType wat) {
+            engine.printMessage(wat.getMessage());
+        }
+        return F.NIL;
+    }
 
-	@Override
-	public void setUp(final ISymbol newSymbol) {
-		newSymbol.setAttributes(ISymbol.HOLDREST);
-	}
+    @Override
+    public void setUp(final ISymbol newSymbol) {
+        newSymbol.setAttributes(ISymbol.HOLDREST);
+    }
 
 }

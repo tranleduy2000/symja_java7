@@ -1,4 +1,4 @@
-package org.matheclipse.core.expression;
+package org.matheclipse.core.expression; import java.util.function.Consumer; import java.util.function.Function; import java.util.function.Predicate;
 
 import org.matheclipse.core.interfaces.IAST;
 import org.matheclipse.core.interfaces.IExpr;
@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.RandomAccess;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**
@@ -310,6 +311,7 @@ public class AST0 extends AbstractAST implements Cloneable, Externalizable, Rand
     @Override
     public final IAST filterFunction(IAST filterAST, IAST restAST, final Function<IExpr, IExpr> function) {
         final int size = size();
+
         for (int i = 1; i < size; i++) {
             IExpr expr = function.apply(get(i));
             if (expr.isPresent()) {
