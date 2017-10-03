@@ -5,7 +5,7 @@ import static org.matheclipse.core.expression.F.Rule;
 import static org.matheclipse.core.expression.F.Show;
 import static org.matheclipse.core.expression.F.SurfaceGraphics;
 
-import javax.annotation.Nonnull;
+import  android.support.annotation.NonNull;
 
 import org.matheclipse.core.basic.Config;
 import org.matheclipse.core.convert.Object2Expr;
@@ -118,7 +118,7 @@ public class Plot3D extends AbstractEvaluator {
 	 * @return <code>F.NIL</code> is no conversion of the data into an
 	 *         <code>IExpr</code> was possible
 	 */
-	@Nonnull
+	@NonNull
 	public static IExpr plotArray(final double xMin, final double xMax, final double yMin, final double yMax,
 			final IExpr function, final ISymbol xVar, final ISymbol yVar, final EvalEngine engine) {
 		final double xStep = (xMax - xMin) / NUMBER_OF_DIVISIONS;

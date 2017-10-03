@@ -1,6 +1,6 @@
 package org.matheclipse.core.generic;
 
-import javax.annotation.Nonnull;
+import  android.support.annotation.NonNull;
 
 import org.matheclipse.core.interfaces.IAST;
 import org.matheclipse.core.interfaces.IExpr;
@@ -26,7 +26,7 @@ public class BinaryBindIth1st implements IUnaryIndexFunction<IExpr, IExpr> {
 	 *          a &quot;template AST&quot; with all arguments set with a
 	 *          predefined value.
 	 */
-	public BinaryBindIth1st(@Nonnull final IAST constant1, @Nonnull final IAST constant2) {
+	public BinaryBindIth1st(@NonNull final IAST constant1, @NonNull final IAST constant2) {
 		super();
 		fConstant1 = constant1;
 		fConstant2 = constant2;

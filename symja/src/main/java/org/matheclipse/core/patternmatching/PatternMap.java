@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Function;
 
-import javax.annotation.Nonnull;
+import  android.support.annotation.NonNull;
 
 import org.matheclipse.core.eval.EvalEngine;
 import org.matheclipse.core.expression.F;
@@ -260,7 +260,7 @@ public class PatternMap implements ISymbol2IntMap, Cloneable, Serializable {
 	 * @param pExpr
 	 * @return <code>null</code> if no matched expression exists
 	 */
-	public IExpr getValue(@Nonnull IPatternObject pattern) {
+	public IExpr getValue(@NonNull IPatternObject pattern) {
 		ISymbol sym = pattern.getSymbol();
 		if (sym != null) {
 			return val(sym);
@@ -278,7 +278,7 @@ public class PatternMap implements ISymbol2IntMap, Cloneable, Serializable {
 	 *            the symbol
 	 * @return <code>null</code> if no matched expression exists
 	 */
-	public final IExpr val(@Nonnull ISymbol symbol) {
+	public final IExpr val(@NonNull ISymbol symbol) {
 		int indx = get(symbol);
 		return indx >= 0 ? fPatternValuesArray[indx] : null;
 	}

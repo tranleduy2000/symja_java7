@@ -6,7 +6,7 @@ import static org.matheclipse.core.expression.F.evalExpandAll;
 
 import java.util.List;
 
-import javax.annotation.Nonnull;
+import  android.support.annotation.NonNull;
 
 import org.hipparchus.linear.Array2DRowRealMatrix;
 import org.hipparchus.linear.EigenDecomposition;
@@ -130,7 +130,7 @@ public class Roots extends AbstractFunctionEvaluator {
 	 *            coefficients of the polynomial.
 	 * @return the roots of the polynomial
 	 */
-	@Nonnull
+	@NonNull
 	public static IAST findRoots(double... coefficients) {
 		int N = coefficients.length - 1;
 

@@ -6,7 +6,7 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.util.List;
 
-import javax.annotation.Nonnull;
+import  android.support.annotation.NonNull;
 
 import org.matheclipse.core.eval.EvalEngine;
 import org.matheclipse.core.expression.F;
@@ -56,8 +56,8 @@ public class PatternMatcherEquals extends IPatternMatcher implements Externaliza
 	 * @param rightHandSide
 	 *            the result which should be evaluated if the "pattern-matching" succeeds
 	 */
-	public PatternMatcherEquals(final ISymbol.RuleType setSymbol, @Nonnull final IExpr leftHandSide,
-			@Nonnull final IExpr rightHandSide) {
+	public PatternMatcherEquals(final ISymbol.RuleType setSymbol, @NonNull final IExpr leftHandSide,
+			@NonNull final IExpr rightHandSide) {
 		super(leftHandSide);
 		fSetSymbol = setSymbol;
 		fRightHandSide = rightHandSide;
@@ -97,7 +97,7 @@ public class PatternMatcherEquals extends IPatternMatcher implements Externaliza
 	/** {@inheritDoc} */
 	@Override
 	public IExpr getRHS() {
-		return IExpr.ofNullable(fRightHandSide);
+		return IExprImpl.ofNullable(fRightHandSide);
 	}
 
 	/**

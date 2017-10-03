@@ -1,6 +1,6 @@
 package org.matheclipse.core.eval.util;
 
-import javax.annotation.Nonnull;
+import  android.support.annotation.NonNull;
 
 import org.matheclipse.core.expression.F;
 import org.matheclipse.core.interfaces.IAST;
@@ -37,7 +37,7 @@ public class IndexTableGenerator {
 		fCurrentIndex = new int[indexArray.length];
 	}
 
-	@Nonnull
+	@NonNull
 	public IExpr table() {
 		if (fIndex < fIndexArray.length) {
 			final int iter = fIndexArray[fIndex];

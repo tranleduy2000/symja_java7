@@ -2,7 +2,7 @@ package org.matheclipse.core.eval;
 
 import java.util.Comparator;
 
-import javax.annotation.Nonnull;
+import  android.support.annotation.NonNull;
 
 import org.matheclipse.core.basic.Config;
 import org.matheclipse.core.expression.F;
@@ -47,7 +47,7 @@ public class EvalAttributes {
 	 * 
 	 * @return returns the flattened list or <code>F.NIL</code>
 	 */
-	public static IAST flatten(@Nonnull final IAST ast) {
+	public static IAST flatten(@NonNull final IAST ast) {
 		if ((ast.getEvalFlags() & IAST.IS_FLATTENED) == IAST.IS_FLATTENED) {
 			// already flattened
 			return F.NIL;

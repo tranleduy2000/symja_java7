@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import javax.annotation.Nonnull;
+import  android.support.annotation.NonNull;
 
 import org.matheclipse.core.eval.EvalEngine;
 import org.matheclipse.core.eval.exception.WrongArgumentType;
@@ -38,7 +38,7 @@ public class Functors {
 		}
 
 		@Override
-		@Nonnull
+		@NonNull
 		public IExpr apply(final IExpr arg) {
 			IExpr temp = fEqualRules.get(arg);
 			return temp != null ? temp : F.NIL;
@@ -68,7 +68,7 @@ public class Functors {
 		}
 
 		@Override
-		@Nonnull
+		@NonNull
 		public IExpr apply(final IExpr arg) {
 			IExpr temp = fEqualRules.get(arg);
 			if (temp != null) {
@@ -104,7 +104,7 @@ public class Functors {
 	 * @return
 	 * @throws WrongArgumentType
 	 */
-	public static Function<IExpr, IExpr> rules(@Nonnull String[] strRules) throws WrongArgumentType {
+	public static Function<IExpr, IExpr> rules(@NonNull String[] strRules) throws WrongArgumentType {
 		IAST astRules = F.ListAlloc(strRules.length);
 		ExprParser parser = new ExprParser(EvalEngine.get());
 		// final Parser parser = new Parser();
@@ -129,7 +129,7 @@ public class Functors {
 	 * @return
 	 * @throws WrongArgumentType
 	 */
-	public static Function<IExpr, IExpr> rules(@Nonnull IAST astRules, EvalEngine engine) throws WrongArgumentType {
+	public static Function<IExpr, IExpr> rules(@NonNull IAST astRules, EvalEngine engine) throws WrongArgumentType {
 		final Map<IExpr, IExpr> equalRules;
 
 		List<PatternMatcherAndEvaluator> matchers = new ArrayList<PatternMatcherAndEvaluator>();

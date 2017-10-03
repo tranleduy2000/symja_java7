@@ -231,7 +231,7 @@ public class PatternMatcherAndEvaluator extends PatternMatcher implements Extern
 
 	@Override
 	public IExpr getRHS() {
-		return IExpr.ofNullable(fRightHandSide);
+		return IExprImpl.ofNullable(fRightHandSide);
 	}
 
 	/**

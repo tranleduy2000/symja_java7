@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.function.DoubleFunction;
 import java.util.function.Function;
 
-import javax.annotation.Nonnull;
+import  android.support.annotation.NonNull;
 
 import org.matheclipse.core.eval.EvalEngine;
 import org.matheclipse.core.eval.exception.WrongArgumentType;
@@ -170,7 +170,7 @@ public interface ISymbol extends IExpr { // Variable<IExpr>
 	 * 
 	 * @param sizes
 	 */
-	public void createRulesData(@Nonnull int[] sizes);
+	public void createRulesData(@NonNull int[] sizes);
 
 	/**
 	 * Return a list of the rules associated to this symbol

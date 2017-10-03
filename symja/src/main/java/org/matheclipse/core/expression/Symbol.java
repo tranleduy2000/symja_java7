@@ -348,7 +348,7 @@ public class Symbol implements ISymbol, Serializable {
 	@Override
 	public IExpr evaluate(EvalEngine engine) {
 		if (hasLocalVariableStack()) {
-			return IExpr.ofNullable(get());
+			return IExprImpl.ofNullable(get());
 		}
 		IExpr result;
 		if ((result = evalDownRule(engine, this)).isPresent()) {

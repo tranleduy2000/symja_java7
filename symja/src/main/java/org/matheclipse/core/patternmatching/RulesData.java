@@ -26,7 +26,7 @@ import java.util.TreeSet;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-import javax.annotation.Nonnull;
+import  android.support.annotation.NonNull;
 
 /**
  * The pattern matching rules associated with a symbol.
@@ -127,7 +127,7 @@ public class RulesData implements Serializable {
 		clear();
 	}
 
-	public RulesData(Context context, @Nonnull int[] sizes) {
+	public RulesData(Context context, @NonNull int[] sizes) {
 		// this.context = context;
 		clear();
 		if (sizes.length > 0) {

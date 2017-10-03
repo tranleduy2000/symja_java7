@@ -1,18 +1,19 @@
 package org.matheclipse.core.expression;
 
-import java.io.IOException;
-import java.io.ObjectStreamException;
-import java.util.function.DoubleFunction;
-
 import org.matheclipse.core.eval.EvalEngine;
 import org.matheclipse.core.eval.interfaces.ICoreFunctionEvaluator;
 import org.matheclipse.core.eval.interfaces.ISignedNumberConstant;
 import org.matheclipse.core.eval.interfaces.ISymbolEvaluator;
+import org.matheclipse.core.interfaces.defaultmethod.IExprImpl;
 import org.matheclipse.core.interfaces.IAST;
 import org.matheclipse.core.interfaces.IBuiltInSymbol;
 import org.matheclipse.core.interfaces.IEvaluator;
 import org.matheclipse.core.interfaces.IExpr;
 import org.matheclipse.core.interfaces.ISymbol;
+
+import java.io.IOException;
+import java.io.ObjectStreamException;
+import java.util.function.DoubleFunction;
 
 /**
  * Implements Symbols for function, constant and variable names
@@ -68,7 +69,7 @@ public class BuiltInSymbol extends Symbol implements IBuiltInSymbol {
 	@Override
 	public IExpr evaluate(EvalEngine engine) {
 		if (hasLocalVariableStack()) {
-			return IExpr.ofNullable(get());
+			return IExprImpl.ofNullable(get());
 		}
 		IExpr result;
 		if ((result = evalDownRule(engine, this)).isPresent()) {

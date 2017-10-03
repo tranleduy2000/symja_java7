@@ -14,7 +14,7 @@ import java.util.function.Consumer;
 import java.util.function.DoubleUnaryOperator;
 import java.util.function.Predicate;
 
-import javax.annotation.Nonnull;
+import  android.support.annotation.NonNull;
 
 import org.matheclipse.core.basic.Config;
 import org.matheclipse.core.builtin.Arithmetic;
@@ -636,7 +636,7 @@ public class EvalEngine implements Serializable, IEvaluationEngine {
 	 *            the AST which should be evaluated
 	 * @return
 	 */
-	public IExpr evalAttributes(@Nonnull ISymbol symbol, @Nonnull IAST ast) {
+	public IExpr evalAttributes(@NonNull ISymbol symbol, @NonNull IAST ast) {
 		IAST tempAST = ast;
 		final int astSize = tempAST.size();
 		if (astSize == 2) {
@@ -887,7 +887,7 @@ public class EvalEngine implements Serializable, IEvaluationEngine {
 	 *         possible
 	 * @see EvalEngine#evalWithoutNumericReset(IExpr)
 	 */
-	public IExpr evalLoop(@Nonnull final IExpr expr) {
+	public IExpr evalLoop(@NonNull final IExpr expr) {
 		if ((fRecursionLimit > 0) && (fRecursionCounter > fRecursionLimit)) {
 			if (Config.DEBUG) {
 				System.out.println(expr.toString());
@@ -981,7 +981,7 @@ public class EvalEngine implements Serializable, IEvaluationEngine {
 	 *            the object which should be evaluated
 	 * @return the evaluated object
 	 */
-	public final IExpr evalPattern(@Nonnull final IExpr expr) {
+	public final IExpr evalPattern(@NonNull final IExpr expr) {
 		boolean numericMode = fNumericMode;
 		try {
 			if (expr.isFreeOfPatterns()) {
@@ -1009,7 +1009,7 @@ public class EvalEngine implements Serializable, IEvaluationEngine {
 	 *            the object which should be evaluated
 	 * @return an <code>IPatterMatcher</code> cretaed from the given expression.
 	 */
-	public final IPatternMatcher evalPatternMatcher(@Nonnull final IExpr expr) {
+	public final IPatternMatcher evalPatternMatcher(@NonNull final IExpr expr) {
 		IExpr temp = evalPattern(expr);
 		return new PatternMatcher(temp);
 	}

@@ -24,7 +24,7 @@ import static org.matheclipse.core.expression.F.integer;
 import java.util.Set;
 import java.util.TreeSet;
 
-import javax.annotation.Nonnull;
+import  android.support.annotation.NonNull;
 
 import org.matheclipse.core.eval.exception.Validate;
 import org.matheclipse.core.eval.exception.WrongArgumentType;
@@ -137,7 +137,7 @@ public class QuarticSolver {
 		return false;
 	}
 
-	@Nonnull
+	@NonNull
 	public static IAST quarticSolveN(IExpr a, IExpr b, IExpr c, IExpr d, IExpr e) {
 		return (IAST) F.evaln(quarticSolve(a, b, c, d, e));
 	}
@@ -154,7 +154,7 @@ public class QuarticSolver {
 	 * @param d
 	 * @return
 	 */
-	@Nonnull
+	@NonNull
 	public static IAST quarticSolve(IExpr a, IExpr b, IExpr c, IExpr d, IExpr e) {
 		if (a.isZero()) {
 			return cubicSolve(b, c, d, e, null);
