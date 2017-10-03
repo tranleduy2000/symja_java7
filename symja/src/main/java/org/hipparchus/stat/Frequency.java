@@ -31,6 +31,7 @@ import java.util.Objects;
 import java.util.TreeMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.ToLongFunction;
 import java.util.stream.Collectors;
 
 /**
@@ -128,7 +129,12 @@ public class Frequency<T extends Comparable<T>> implements Serializable {
     public long getSumFreq() {
         return freqTable.values()
                 .stream()
-                .mapToLong(Long::longValue)
+                .mapToLong(new ToLongFunction<Long>() {
+                    @Override
+                    public long applyAsLong(Long aLong) {
+                        return aLong.longValue();
+                    }
+                })
                 .sum();
     }
 
@@ -195,7 +201,12 @@ public class Frequency<T extends Comparable<T>> implements Serializable {
 
         return headMap.values()
                 .stream()
-                .mapToLong(Long::longValue)
+                .mapToLong(new ToLongFunction<Long>() {
+                    @Override
+                    public long applyAsLong(Long aLong) {
+                        return aLong.longValue();
+                    }
+                })
                 .sum();
     }
 
@@ -228,7 +239,12 @@ public class Frequency<T extends Comparable<T>> implements Serializable {
         final long mostPopular =
                 freqTable.values()
                         .stream()
-                        .mapToLong(Long::longValue)
+                        .mapToLong(new ToLongFunction<Long>() {
+                            @Override
+                            public long applyAsLong(Long aLong) {
+                                return aLong.longValue();
+                            }
+                        })
                         .max()
                         .orElse(0L);
 

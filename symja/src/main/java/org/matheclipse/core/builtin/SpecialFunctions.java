@@ -1,29 +1,5 @@
 package org.matheclipse.core.builtin;
 
-import static org.matheclipse.core.expression.F.BernoulliB;
-import static org.matheclipse.core.expression.F.C1;
-import static org.matheclipse.core.expression.F.C1D2;
-import static org.matheclipse.core.expression.F.C2;
-import static org.matheclipse.core.expression.F.C4;
-import static org.matheclipse.core.expression.F.CComplexInfinity;
-import static org.matheclipse.core.expression.F.CInfinity;
-import static org.matheclipse.core.expression.F.CN1;
-import static org.matheclipse.core.expression.F.CN1D2;
-import static org.matheclipse.core.expression.F.CNInfinity;
-import static org.matheclipse.core.expression.F.Erf;
-import static org.matheclipse.core.expression.F.Factorial;
-import static org.matheclipse.core.expression.F.Log;
-import static org.matheclipse.core.expression.F.NIL;
-import static org.matheclipse.core.expression.F.Negate;
-import static org.matheclipse.core.expression.F.Pi;
-import static org.matheclipse.core.expression.F.Plus;
-import static org.matheclipse.core.expression.F.Power;
-import static org.matheclipse.core.expression.F.QQ;
-import static org.matheclipse.core.expression.F.Sqr;
-import static org.matheclipse.core.expression.F.Times;
-import static org.matheclipse.core.expression.F.Zeta;
-
-import java.math.BigDecimal;
 import java.util.function.DoubleUnaryOperator;
 import java.util.function.Function;
 
@@ -57,6 +33,31 @@ import org.matheclipse.core.reflection.system.rules.ProductLogRules;
 import org.matheclipse.core.reflection.system.rules.StieltjesGammaRules;
 import org.matheclipse.core.reflection.system.rules.StruveHRules;
 import org.matheclipse.core.reflection.system.rules.StruveLRules;
+
+import java.math.BigDecimal;
+
+import static org.matheclipse.core.expression.F.BernoulliB;
+import static org.matheclipse.core.expression.F.C1;
+import static org.matheclipse.core.expression.F.C1D2;
+import static org.matheclipse.core.expression.F.C2;
+import static org.matheclipse.core.expression.F.C4;
+import static org.matheclipse.core.expression.F.CComplexInfinity;
+import static org.matheclipse.core.expression.F.CInfinity;
+import static org.matheclipse.core.expression.F.CN1;
+import static org.matheclipse.core.expression.F.CN1D2;
+import static org.matheclipse.core.expression.F.CNInfinity;
+import static org.matheclipse.core.expression.F.Erf;
+import static org.matheclipse.core.expression.F.Factorial;
+import static org.matheclipse.core.expression.F.Log;
+import static org.matheclipse.core.expression.F.NIL;
+import static org.matheclipse.core.expression.F.Negate;
+import static org.matheclipse.core.expression.F.Pi;
+import static org.matheclipse.core.expression.F.Plus;
+import static org.matheclipse.core.expression.F.Power;
+import static org.matheclipse.core.expression.F.QQ;
+import static org.matheclipse.core.expression.F.Sqr;
+import static org.matheclipse.core.expression.F.Times;
+import static org.matheclipse.core.expression.F.Zeta;
 
 public class SpecialFunctions {
 	static {
@@ -190,8 +191,6 @@ public class SpecialFunctions {
 
 	/**
 	 * Returns the error function.
-	 * 
-	 * @see org.matheclipse.core.reflection.system.InverseErf
 	 */
 	private final static class Erf extends AbstractTrigArg1 implements INumeric, DoubleUnaryOperator {
 
@@ -326,8 +325,8 @@ public class SpecialFunctions {
 		@Override
 		public IExpr evaluate(final IAST ast, EvalEngine engine) {
 			Validate.checkSize(ast, 3);
-			IExpr n = ast.arg1();
-			IExpr z = ast.arg2();
+			final IExpr n = ast.arg1();
+			final IExpr z = ast.arg2();
 
 			int nInt = n.toIntDefault(Integer.MIN_VALUE);
 			if (nInt > Integer.MIN_VALUE) {
@@ -416,7 +415,6 @@ public class SpecialFunctions {
 	/**
 	 * Returns the inverse erf.
 	 * 
-	 * @see org.matheclipse.core.reflection.system.Erf
 	 */
 	private final static class InverseErf extends AbstractTrigArg1 implements INumeric {
 
@@ -472,7 +470,6 @@ public class SpecialFunctions {
 	/**
 	 * Returns the inverse erf.
 	 * 
-	 * @see org.matheclipse.core.reflection.system.Erf
 	 */
 	private final static class InverseErfc extends AbstractTrigArg1 implements INumeric {
 
@@ -954,7 +951,7 @@ public class SpecialFunctions {
 		}
 
 		@Override
-		public IExpr e2ObjArg(IExpr s, IExpr a) {
+		public IExpr e2ObjArg(final IExpr s, IExpr a) {
 			if (a.isZero()) {
 				return Zeta(s);
 			}

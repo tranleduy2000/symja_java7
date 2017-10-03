@@ -7,10 +7,13 @@ package edu.jas.gb;
 
 import org.apache.log4j.Logger;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.function.ToLongFunction;
 import java.util.stream.Collectors;
 
 import edu.jas.poly.ExpVector;
@@ -495,7 +498,12 @@ public class SigReductionSeq<C extends RingElem<C>> implements SigReduction<C> {
      */
     public List<SigPair<C>> sortSigma(List<SigPair<C>> F) {
         //Comparator<SigPair<C>> sigcmp = Comparator.comparing(SigPair::getSigma::degree);
-        Comparator<SigPair<C>> sigcmp = Comparator.comparingLong(SigPair::getSigmaDegree);
+        Comparator<SigPair<C>> sigcmp = Comparator.comparingLong(new ToLongFunction<SigPair<C>>() {
+            @Override
+            public long applyAsLong(SigPair<C> cSigPair) {
+                return cSigPair.getSigmaDegree();
+            }
+        });
         List<SigPair<C>> ff = F.stream().sorted(sigcmp).collect(Collectors.toList());
         return ff;
     }

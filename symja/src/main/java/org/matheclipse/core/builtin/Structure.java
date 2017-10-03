@@ -21,6 +21,7 @@ import org.matheclipse.parser.client.math.MathException;
 
 import java.util.HashMap;
 import java.util.function.BiPredicate;
+
 import java.util.function.Predicate;
 
 public class Structure {
