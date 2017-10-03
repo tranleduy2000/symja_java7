@@ -8,6 +8,7 @@ import org.matheclipse.core.eval.ExprEvaluator;
 import org.matheclipse.core.eval.TimeConstrainedEvaluator;
 import org.matheclipse.core.form.output.OutputFormFactory;
 import org.matheclipse.core.interfaces.IAST;
+import org.matheclipse.core.interfaces.IExpr;
 
 import java.io.StringWriter;
 
@@ -21,22 +22,34 @@ public abstract class AbstractTestCase extends TestCase {
         Config.SERVER_MODE = false;
     }
 
-    public void check(String evalString, String expectedResult) {
-    }
-
-    public void check(String evalString, String expectedResult, int resultLength) {
+    public void check(String input, String expected) {
         try {
-            if (evalString.length() == 0 && expectedResult.length() == 0) {
+            if (input.length() == 0 && expected.length() == 0) {
                 return;
             }
-            // scriptEngine.put("STEPWISE",Boolean.TRUE);
-            String evaledResult = new ExprEvaluator().eval(evalString).toString();
-
-            if (resultLength > 0 && evaledResult.length() > resultLength) {
-                evaledResult = evaledResult.substring(0, resultLength) + "<<SHORT>>";
-                assertEquals(expectedResult, evaledResult);
+            IExpr evaluated = new ExprEvaluator().eval(input);
+            String result = evaluated.toString();
+            if (input.startsWith("FullForm") ||
+                    input.contains("ToString") ||
+                    input.startsWith("StringJoin") ||
+                    input.startsWith("JavaForm") ||
+                    input.startsWith("FromCharacterCode")) {
+                assertEquals(expected, evaluated.fullFormString());
+            }
+            if (expected.length() > 0  &&result.length() > expected.length()) {
+                String temp = result.substring(0, expected.length() - 1);
+                String temp2 = expected.substring(0, expected.length() - 1);
+                if (temp.equals(temp2)) {
+                    assertEquals(temp, temp2);
+                } else {
+                    assertEquals(expected, result);
+                }
             } else {
-                assertEquals(expectedResult, evaledResult);
+                if (expected.isEmpty()) {
+                    assertEquals("Null", result);
+                } else {
+                    assertEquals(expected, result);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -45,11 +58,7 @@ public abstract class AbstractTestCase extends TestCase {
     }
 
     public void checkNumeric(String evalString, String expectedResult) {
-        check(evalString, expectedResult, -1);
-    }
-
-    public void checkNumeric(String evalString, String expectedResult, int resultLength) {
-        check(evalString, expectedResult, resultLength);
+        check(evalString, expectedResult);
     }
 
     public void check(IAST ast, String strResult) {

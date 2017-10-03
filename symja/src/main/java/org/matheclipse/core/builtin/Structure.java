@@ -21,8 +21,8 @@ import org.matheclipse.parser.client.math.MathException;
 
 import java.util.HashMap;
 import java.util.function.BiPredicate;
-import java.util.function.Function;
-import java.util.function.Predicate;
+
+import com.duy.lambda.Predicate;
 
 public class Structure {
 
@@ -86,7 +86,7 @@ public class Structure {
 		public static IExpr evalApply(IExpr arg1, IExpr arg2, IAST evaledAST, int lastIndex, boolean heads,
 				EvalEngine engine) {
 			VisitorLevelSpecification level = null;
-			java.util.function.Function<IExpr, IExpr> af = new java.util.function.Function<IExpr, IExpr>() {
+			com.duy.lambda.Function<IExpr, IExpr> af = new com.duy.lambda.Function<IExpr, IExpr>() {
                 @Override
                 public IExpr apply(IExpr x) {
                     return x.isAST() ? ((IAST) x).setAtCopy(0, arg1) : F.NIL;
@@ -243,7 +243,7 @@ public class Structure {
 						if (symbolSlots.size() > ast.size()) {
 							throw new WrongNumberOfArguments(ast, symbolSlots.size() - 1, ast.size() - 1);
 						}
-						return arg2.replaceAll(new java.util.function.Function<IExpr, IExpr>() {
+						return arg2.replaceAll(new com.duy.lambda.Function<IExpr, IExpr>() {
                             @Override
                             public IExpr apply(IExpr x) {
                                 IExpr temp = getRulesMap(symbolSlots, ast).get(x);
@@ -304,14 +304,14 @@ public class Structure {
 				IExpr arg2 = ast.arg2();
 				VisitorLevelSpecification level;
 				if (lastIndex == 3) {
-					level = new VisitorLevelSpecification(new java.util.function.Function<IExpr, IExpr>() {
+					level = new VisitorLevelSpecification(new com.duy.lambda.Function<IExpr, IExpr>() {
                         @Override
                         public IExpr apply(IExpr x) {
                             return F.unaryAST1(arg1, x);
                         }
                     }, ast.get(lastIndex), heads, engine);
 				} else {
-					level = new VisitorLevelSpecification(new java.util.function.Function<IExpr, IExpr>() {
+					level = new VisitorLevelSpecification(new com.duy.lambda.Function<IExpr, IExpr>() {
                         @Override
                         public IExpr apply(IExpr x) {
                             return F.unaryAST1(arg1, x);
@@ -334,7 +334,7 @@ public class Structure {
 			Validate.checkRange(ast, 3);
 
 			final IExpr arg1 = ast.arg1();
-			final VisitorLevelSpecification level = new VisitorLevelSpecification(new java.util.function.Function<IExpr, IExpr>() {
+			final VisitorLevelSpecification level = new VisitorLevelSpecification(new com.duy.lambda.Function<IExpr, IExpr>() {
                 @Override
                 public IExpr apply(IExpr x) {
                     return F.unaryAST1(arg1, x);
@@ -374,7 +374,7 @@ public class Structure {
 
 	private final static class MapThread extends AbstractFunctionEvaluator {
 
-		private static class UnaryMapThread implements java.util.function.Function<IExpr, IExpr> {
+		private static class UnaryMapThread implements com.duy.lambda.Function<IExpr, IExpr> {
 			final IExpr fConstant;
 
 			public UnaryMapThread(final IExpr constant) {
@@ -399,7 +399,7 @@ public class Structure {
 			Validate.checkRange(ast, 3, 4);
 
 			VisitorLevelSpecification level = null;
-			java.util.function.Function<IExpr, IExpr> umt = new UnaryMapThread(ast.arg1());
+			com.duy.lambda.Function<IExpr, IExpr> umt = new UnaryMapThread(ast.arg1());
 			if (ast.isAST3()) {
 				level = new VisitorLevelSpecification(umt, ast.arg3(), false, engine);
 			} else {
@@ -526,7 +526,7 @@ public class Structure {
 				IExpr arg2 = ast.arg2();
 				if (lastIndex == 3) {
 					IAST result = F.ListAlloc(10);
-					java.util.function.Function<IExpr, IExpr> sf = new java.util.function.Function<IExpr, IExpr>() {
+					com.duy.lambda.Function<IExpr, IExpr> sf = new com.duy.lambda.Function<IExpr, IExpr>() {
                         @Override
                         public IExpr apply(IExpr x) {
                             IAST a = F.unaryAST1(arg1, x);
@@ -545,7 +545,7 @@ public class Structure {
 
 				} else {
 					if (arg2.isAST())
-                        engine.evaluate(((IAST) arg2).map(new java.util.function.Function<IExpr, IExpr>() {
+                        engine.evaluate(((IAST) arg2).map(new com.duy.lambda.Function<IExpr, IExpr>() {
                             @Override
                             public IExpr apply(IExpr x) {
                                 return F.unaryAST1(arg1, x);

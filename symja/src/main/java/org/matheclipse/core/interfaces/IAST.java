@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
+import com.duy.lambda.Function;
+import com.duy.lambda.Predicate;
 
 /**
  * <p>

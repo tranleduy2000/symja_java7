@@ -12,7 +12,7 @@ import org.matheclipse.core.interfaces.IPatternSequence;
 import org.matheclipse.core.interfaces.IStringX;
 import org.matheclipse.core.interfaces.ISymbol;
 
-import java.util.function.Predicate;
+import com.duy.lambda.Predicate;
 
 public class VisitorPredicate implements IVisitorBoolean {
 	int fHeadOffset;

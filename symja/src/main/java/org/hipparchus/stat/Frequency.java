@@ -29,8 +29,8 @@ import java.util.Map;
 import java.util.NavigableMap;
 import java.util.Objects;
 import java.util.TreeMap;
-import java.util.function.Function;
-import java.util.function.Predicate;
+import com.duy.lambda.Function;
+import com.duy.lambda.Predicate;
 import java.util.function.ToLongFunction;
 import java.util.stream.Collectors;
 

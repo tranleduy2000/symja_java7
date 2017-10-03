@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.RandomAccess;
 import java.util.Set;
 import java.util.function.DoubleUnaryOperator;
-import java.util.function.Function;
-import java.util.function.Predicate;
+import com.duy.lambda.Function;
+import com.duy.lambda.Predicate;
 
 import org.hipparchus.linear.Array2DRowRealMatrix;
 import org.hipparchus.linear.RealMatrix;

@@ -1,5 +1,8 @@
 package org.matheclipse.core.system;
 
+import org.matheclipse.core.expression.F;
+import org.matheclipse.core.interfaces.IAST;
+
 import static org.matheclipse.core.expression.F.$s;
 import static org.matheclipse.core.expression.F.AtomQ;
 import static org.matheclipse.core.expression.F.C0;
@@ -43,10 +46,22 @@ import static org.matheclipse.core.expression.F.m;
 import static org.matheclipse.core.expression.F.p;
 import static org.matheclipse.core.expression.F.v;
 import static org.matheclipse.core.expression.F.x;
-import static org.matheclipse.core.integrate.rubi45.UtilityFunctionCtors.*;
-
-import org.matheclipse.core.expression.F;
-import org.matheclipse.core.interfaces.IAST;
+import static org.matheclipse.core.integrate.rubi45.UtilityFunctionCtors.AbortRubi;
+import static org.matheclipse.core.integrate.rubi45.UtilityFunctionCtors.ContentFactor;
+import static org.matheclipse.core.integrate.rubi45.UtilityFunctionCtors.DeactivateTrig;
+import static org.matheclipse.core.integrate.rubi45.UtilityFunctionCtors.EasyDQ;
+import static org.matheclipse.core.integrate.rubi45.UtilityFunctionCtors.ExpandToSum;
+import static org.matheclipse.core.integrate.rubi45.UtilityFunctionCtors.FixSimplify;
+import static org.matheclipse.core.integrate.rubi45.UtilityFunctionCtors.FunctionOfTrig;
+import static org.matheclipse.core.integrate.rubi45.UtilityFunctionCtors.FunctionOfTrigOfLinearQ;
+import static org.matheclipse.core.integrate.rubi45.UtilityFunctionCtors.LinearQ;
+import static org.matheclipse.core.integrate.rubi45.UtilityFunctionCtors.PolyQ;
+import static org.matheclipse.core.integrate.rubi45.UtilityFunctionCtors.QuadraticMatchQ;
+import static org.matheclipse.core.integrate.rubi45.UtilityFunctionCtors.RealNumericQ;
+import static org.matheclipse.core.integrate.rubi45.UtilityFunctionCtors.RemoveContent;
+import static org.matheclipse.core.integrate.rubi45.UtilityFunctionCtors.SimpFixFactor;
+import static org.matheclipse.core.integrate.rubi45.UtilityFunctionCtors.SubstForFractionalPowerOfLinear;
+import static org.matheclipse.core.integrate.rubi45.UtilityFunctionCtors.TrigSimplifyAux;
 
 /**
  * Tests for the Java port of the <a href="http://www.apmaths.uwo.ca/~arich/">Rubi - rule-based integrator</a>.
@@ -57,10 +72,7 @@ public class RubiIntegrationTest extends AbstractTestCase {
 		super(name);
 	}
 
-	@Override
-	public void check(String evalString, String expectedResult) {
-		check(evalString, expectedResult, -1);
-	}
+
 
 	public void testRubi001() {
 		IAST ast;
@@ -456,12 +468,12 @@ public class RubiIntegrationTest extends AbstractTestCase {
 	public void testIssue82() {
 		check("Integrate(Sin(a^4)*a,a)", "(I*1/8*Sqrt(Pi)*Erf((-1)^(1/4)*a^2))/(-1)^(1/4)+(-I*1/8*Sqrt(Pi)*Erfi((-1)^(1/4)*a^\n" + 
 				"2))/(-1)^(1/4)");
-		check("Integrate(Sin(a^4)*a,{a,0,2.0})", "(0.15666+I*0.15666)*Erf(2.82843+I*2.82843)+(0.15666+I*0.15666)*Erfi(0.0)+(-0.15666+I*(-0.15666))*Erfi(2.82843+I*2.82843)");
+		check("Integrate(Sin(a^4)*a,{a,0,2.0})", "(0.15666426716443752+I*0.15666426716443754)*Erf(2.8284271247461903+I*2.82842712474619)+(0.15666426716443752+I*0.15666426716443754)*Erfi(0.0)+(-0.15666426716443752+I*(-0.15666426716443754))*Erfi(2.8284271247461903+I*2.82842712474619)");
 	}
 
 	public void testIssue83() {
 		check("Integrate(sin(x) / x,x)", "SinIntegral(x)");
-		check("Integrate(sin(x) / x, {x,0,0.5})", "0.49311");
+		check("Integrate(sin(x) / x, {x,0,0.5})", "0.4931074180430667");
 		check("Integrate(cos(x) / x,x)", "CosIntegral(x)");
 		check("Integrate(cos(x) / x, {x,0.25,0.5})", "0.64688");
 	}

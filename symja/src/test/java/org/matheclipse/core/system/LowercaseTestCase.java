@@ -6092,8 +6092,7 @@ public class LowercaseTestCase extends AbstractTestCase {
 
 		checkNumeric("Sin(1.1*Pi)", "-0.30901699437494773");
 		checkNumeric("Sin({-0.5,9.1})", "{-0.479425538604203,0.3190983623493521}");
-		checkNumeric("Sin({{0.5,1.1},{6.4,7.5}})",
-				"{{0.479425538604203,0.8912073600614354},\n" + " {0.11654920485049364,0.9379999767747389}}");
+		checkNumeric("Sin({{0.5,1.1},{6.4,7.5}})", "{{0.479425538604203,0.8912073600614354},\n" + " {0.11654920485049364,0.9379999767747389}}");
 		check("Sin({1,2})", "{Sin(1),Sin(2)}");
 		check("Sin(z+1/4*Pi)", "Sin(Pi/4+z)");
 		check("Sin(z+1/2*Pi)", "Cos(z)");
@@ -6291,7 +6290,7 @@ public class LowercaseTestCase extends AbstractTestCase {
 		// Issue #168
 		checkNumeric("y=297.0004444386505", "297.0004444386505");
 		checkNumeric("z=22.13904248493947", "22.13904248493947");
-		checkNumeric("Solve(x/y==z/x,x)", "{{x->-81.08825721072805},{x->81.08825721072805}}");
+		checkNumeric("Solve(x/y==z/x,x)", "{{x->Sqrt(y)*Sqrt(z)},{x->-Sqrt(y)*Sqrt(z)}}");
 	}
 
 	public void testSolveIssue130() {
@@ -6542,7 +6541,7 @@ public class LowercaseTestCase extends AbstractTestCase {
 		check("Table(StirlingS2(10, m), {m, 10})", "{1,511,9330,34105,42525,22827,5880,750,45,1}");
 		check("StirlingS2({2, 4, 6}, 2)", "{1,7,31}");
 		check("StirlingS2(10,4)", "34105");
-		check("StirlingS2(1000, 500)", "11897164077580438091910055658742826<<SHORT>>", 35);
+		check("StirlingS2(1000, 500)", "11897164077580438091910055658742826<<SHORT>>");
 	}
 
 	public void testStringJoin() {

@@ -20,7 +20,7 @@ import org.matheclipse.core.polynomials.ExprPolynomialRing;
 import org.matheclipse.core.polynomials.PartialFractionGenerator;
 import org.matheclipse.core.reflection.system.rules.LimitRules;
 
-import java.util.function.Predicate;
+import com.duy.lambda.Predicate;
 
 /**
  * <pre>
