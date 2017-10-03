@@ -12,7 +12,7 @@ import java.util.BitSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
-import java.util.function.Function;
+import com.duy.lambda.Function;
 
 import edu.jas.kern.PrettyPrint;
 import edu.jas.poly.ExpVector;

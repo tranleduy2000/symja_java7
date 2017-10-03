@@ -32,7 +32,7 @@ import org.hipparchus.util.MathUtils;
 import org.hipparchus.util.Precision;
 
 import java.io.Serializable;
-import java.util.function.DoubleConsumer;
+import com.duy.lambda.DoubleConsumer;
 
 /**
  * Computes summary statistics for a stream of data values added using the

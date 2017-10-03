@@ -2,7 +2,7 @@ package org.matheclipse.core.patternmatching;
 
 import com.duy.lambda.BiFunction;
 import com.duy.lambda.BiPredicate;
-import java.util.function.Function;
+import com.duy.lambda.Function;
 import com.duy.lambda.Predicate;
 
 import org.matheclipse.core.eval.EvalEngine;

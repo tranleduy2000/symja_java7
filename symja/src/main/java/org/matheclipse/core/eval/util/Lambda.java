@@ -2,7 +2,7 @@ package org.matheclipse.core.eval.util;
 
 import com.duy.lambda.BiPredicate;
 import java.util.function.Consumer;
-import java.util.function.Function;
+import com.duy.lambda.Function;
 import com.duy.lambda.Predicate;
 
 import org.matheclipse.core.expression.F;

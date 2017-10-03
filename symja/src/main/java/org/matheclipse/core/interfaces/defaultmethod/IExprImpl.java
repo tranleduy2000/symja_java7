@@ -45,7 +45,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
-import java.util.function.Function;
+import com.duy.lambda.Function;
 import com.duy.lambda.Predicate;
 import java.util.function.Supplier;
 

@@ -23,7 +23,7 @@ import org.matheclipse.core.interfaces.ITernaryComparator;
 import org.matheclipse.core.visit.VisitorExpr;
 
 import com.duy.lambda.BiPredicate;
-import java.util.function.Function;
+import com.duy.lambda.Function;
 import com.duy.lambda.Predicate;
 
 import static org.matheclipse.core.expression.F.And;

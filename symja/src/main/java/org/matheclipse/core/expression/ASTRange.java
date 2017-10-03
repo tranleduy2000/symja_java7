@@ -8,7 +8,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import com.duy.lambda.BiFunction;
 import com.duy.lambda.BiPredicate;
-import java.util.function.Function;
+import com.duy.lambda.Function;
 import com.duy.lambda.Predicate;
 
 import org.matheclipse.core.interfaces.IAST;

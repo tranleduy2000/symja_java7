@@ -1,7 +1,7 @@
 package org.matheclipse.core.generic;
 
 import com.duy.lambda.BiFunction;
-import java.util.function.Function;
+import com.duy.lambda.Function;
 
 /**
  * A function object that takes two arguments and returns a result. The two

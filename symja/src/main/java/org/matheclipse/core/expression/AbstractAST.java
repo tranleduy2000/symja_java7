@@ -48,7 +48,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import com.duy.lambda.BiFunction;
 import java.util.function.Consumer;
-import java.util.function.Function;
+import com.duy.lambda.Function;
 import com.duy.lambda.Predicate;
 
 public abstract class AbstractAST extends IASTImpl implements IAST {
