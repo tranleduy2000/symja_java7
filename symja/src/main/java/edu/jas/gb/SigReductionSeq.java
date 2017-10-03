@@ -5,16 +5,16 @@
 package edu.jas.gb;
 
 
-import com.duy.stream.DComparator;
 import com.duy.lambda.ToLongFunction;
+import com.duy.stream.DComparator;
 
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import edu.jas.poly.ExpVector;
 import edu.jas.poly.GenPolynomial;
@@ -505,7 +505,13 @@ public class SigReductionSeq<C extends RingElem<C>> implements SigReduction<C> {
             }
         };
         Comparator<SigPair<C>> sigcmp = DComparator.comparingLong(function);
-        List<SigPair<C>> ff = list.stream().sorted(sigcmp).collect(Collectors.toList());
+//        List<SigPair<C>> ff = list.stream()
+//                .sorted(sigcmp)
+//                .collect(Collectors.toList());
+
+        List<SigPair<C>> ff = new ArrayList<>(list);
+        Collections.sort(ff, sigcmp);
+
         return ff;
     }
 }
