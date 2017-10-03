@@ -395,8 +395,9 @@ public abstract class AbstractIntegerSym extends IIntegerImpl implements IIntege
 
     /**
      * Get all prime factors of this integer
+     * <p>
+     * add the prime factors to this result list
      *
-     * @param result add the prime factors to this result list
      * @return
      */
     public IAST factorize() {

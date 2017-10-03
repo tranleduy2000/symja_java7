@@ -1,1 +1,1 @@
-include ':symja', ':hipparchus', ':jas-java8', ':csv', ':jas-java7'
+include ':symja', ':hipparchus', ':csv'
