@@ -47,7 +47,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 import com.duy.lambda.Function;
 import com.duy.lambda.Predicate;
-import java.util.function.Supplier;
+import com.duy.lambda.Supplier;
 
 import javax.annotation.Nullable;
 

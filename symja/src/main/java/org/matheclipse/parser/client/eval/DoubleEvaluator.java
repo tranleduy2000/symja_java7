@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.DoubleBinaryOperator;
-import java.util.function.DoubleSupplier;
+import com.duy.lambda.DoubleSupplier;
 import com.duy.lambda.DoubleUnaryOperator;
 
 import org.matheclipse.parser.client.Parser;
