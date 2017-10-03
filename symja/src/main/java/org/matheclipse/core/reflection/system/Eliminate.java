@@ -2,6 +2,7 @@ package org.matheclipse.core.reflection.system;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import org.matheclipse.core.builtin.BooleanFunctions;
@@ -173,7 +174,12 @@ public class Eliminate extends AbstractFunctionEvaluator {
 			}
 			try {
 				fCurrentDepth++;
-				ast.forEach(x -> x.accept(this));
+				ast.forEach(new Consumer<IExpr>() {
+                    @Override
+                    public void accept(IExpr x) {
+                        x.accept(VariableCounterVisitor.this);
+                    }
+                });
 			} finally {
 				fCurrentDepth--;
 			}

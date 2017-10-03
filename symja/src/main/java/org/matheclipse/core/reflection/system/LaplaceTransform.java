@@ -8,6 +8,8 @@ import org.matheclipse.core.interfaces.IAST;
 import org.matheclipse.core.interfaces.IExpr;
 import org.matheclipse.core.reflection.system.rules.LaplaceTransformRules;
 
+import java.util.function.Predicate;
+
 /**
  * <pre>
  * LaplaceTransform(f, s, t)
@@ -54,7 +56,12 @@ public class LaplaceTransform extends AbstractFunctionEvaluator implements Lapla
 				if (arg1.isTimes()) {
 					IAST result = F.Times();
 					IAST rest = F.TimesAlloc(arg1.size());
-					arg1.filter(result, rest, x -> x.isFree(t));
+					arg1.filter(result, rest, new Predicate<IExpr>() {
+                        @Override
+                        public boolean test(IExpr x) {
+                            return x.isFree(t);
+                        }
+                    });
 					if (result.size() > 1) {
 						return F.Times(result.getOneIdentity(F.C1), F.LaplaceTransform(rest, t, s));
 					}
