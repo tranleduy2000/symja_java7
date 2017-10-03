@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.DoubleUnaryOperator;
 import java.util.function.Predicate;
 
@@ -751,7 +752,12 @@ public class EvalEngine implements Serializable, IEvaluationEngine {
 			return evaluate(expr);
 		} finally {
 			// pop all local variables from local variable stack
-			variables.forEach(x -> localStack(x).pop());
+			variables.forEach(new Consumer<ISymbol>() {
+                @Override
+                public void accept(ISymbol x) {
+                    EvalEngine.this.localStack(x).pop();
+                }
+            });
 		}
 	}
 

@@ -1,7 +1,5 @@
 package org.matheclipse.core.visit;
 
-import java.util.function.Predicate;
-
 import org.matheclipse.core.interfaces.IAST;
 import org.matheclipse.core.interfaces.IComplex;
 import org.matheclipse.core.interfaces.IComplexNum;
@@ -13,6 +11,8 @@ import org.matheclipse.core.interfaces.IPattern;
 import org.matheclipse.core.interfaces.IPatternSequence;
 import org.matheclipse.core.interfaces.IStringX;
 import org.matheclipse.core.interfaces.ISymbol;
+
+import java.util.function.Predicate;
 
 public class VisitorPredicate implements IVisitorBoolean {
 	int fHeadOffset;
@@ -78,6 +78,11 @@ public class VisitorPredicate implements IVisitorBoolean {
 		if (fMatcher.test(list)) {
 			return true;
 		}
-		return list.exists(x->x.accept(this), fHeadOffset);
+		return list.exists(new Predicate<IExpr>() {
+            @Override
+            public boolean test(IExpr x) {
+                return x.accept(VisitorPredicate.this);
+            }
+        }, fHeadOffset);
 	}
 }

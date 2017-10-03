@@ -689,7 +689,12 @@ public abstract class AbstractAST implements IAST {
 	@Override
 	public final IAST filter(IAST filterAST, IExpr expr) {
 		EvalEngine engine = EvalEngine.get();
-		return filter(filterAST, x -> engine.evalTrue(F.unaryAST1(expr, x)));
+		return filter(filterAST, new Predicate<IExpr>() {
+            @Override
+            public boolean test(IExpr x) {
+                return engine.evalTrue(F.unaryAST1(expr, x));
+            }
+        });
 	}
 
 	/** {@inheritDoc} */
@@ -1803,7 +1808,12 @@ public abstract class AbstractAST implements IAST {
 		if (predicate.test(this)) {
 			return true;
 		}
-		return exists(x -> x.isMember(predicate, heads), heads ? 0 : 1);
+		return exists(new Predicate<IExpr>() {
+            @Override
+            public boolean test(IExpr x) {
+                return x.isMember(predicate, heads);
+            }
+        }, heads ? 0 : 1);
 	}
 
 	/** {@inheritDoc} */
@@ -2568,7 +2578,12 @@ public abstract class AbstractAST implements IAST {
 	@Override
 	public IAST mapThread(IAST appendAST, final IAST replacement, int position) {
 		EvalEngine engine = EvalEngine.get();
-		final Function<IExpr, IExpr> function = x -> engine.evaluate(replacement.setAtCopy(position, x));
+		final Function<IExpr, IExpr> function = new Function<IExpr, IExpr>() {
+            @Override
+            public IExpr apply(IExpr x) {
+                return engine.evaluate(replacement.setAtCopy(position, x));
+            }
+        };
 
 		IExpr temp;
 		for (int i = 1; i < size(); i++) {
@@ -2584,7 +2599,12 @@ public abstract class AbstractAST implements IAST {
 	@Override
 	public final IAST mapThread(final IAST replacement, int position) {
 		EvalEngine engine = EvalEngine.get();
-		final Function<IExpr, IExpr> function = x -> engine.evaluate(replacement.setAtCopy(position, x));
+		final Function<IExpr, IExpr> function = new Function<IExpr, IExpr>() {
+            @Override
+            public IExpr apply(IExpr x) {
+                return engine.evaluate(replacement.setAtCopy(position, x));
+            }
+        };
 		return map(function, 1);
 	}
 
@@ -2754,7 +2774,12 @@ public abstract class AbstractAST implements IAST {
 			return F.C0;
 		}
 		if (this.isPlus()) {
-			IAST plus = this.map(x -> x.times(that), 1);
+			IAST plus = this.map(new Function<IExpr, IExpr>() {
+                @Override
+                public IExpr apply(IExpr x) {
+                    return x.times(that);
+                }
+            }, 1);
 			return F.eval(plus);
 		}
 		return F.eval(F.Times(this, that));

@@ -1,9 +1,10 @@
 package org.matheclipse.core.visit;
 
-import java.util.Collection;
-
 import org.matheclipse.core.interfaces.IAST;
 import org.matheclipse.core.interfaces.IExpr;
+
+import java.util.Collection;
+import java.util.function.Consumer;
 
 abstract public class VisitorCollectionBoolean<T extends IExpr> extends AbstractVisitorBoolean {
 	protected int fHeadOffset;
@@ -25,7 +26,12 @@ abstract public class VisitorCollectionBoolean<T extends IExpr> extends Abstract
 	@Override
 	public boolean visit(IAST list) {
 		int size=list.size();
-		list.forEach(x->x.accept(this), fHeadOffset);
+		list.forEach(new Consumer<IExpr>() {
+            @Override
+            public void accept(IExpr x) {
+                x.accept(VisitorCollectionBoolean.this);
+            }
+        }, fHeadOffset);
 		return false;
 	}
 }

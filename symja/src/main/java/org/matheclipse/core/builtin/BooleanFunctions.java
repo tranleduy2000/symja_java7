@@ -22,6 +22,7 @@ import org.matheclipse.core.interfaces.ISymbol;
 import org.matheclipse.core.interfaces.ITernaryComparator;
 import org.matheclipse.core.visit.VisitorExpr;
 
+import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -1996,7 +1997,12 @@ public final class BooleanFunctions {
 		@Override
 		public IExpr evaluate(final IAST ast, EvalEngine engine) {
 			if (ast.size() > 1) {
-				return Lambda.existsLeft(ast, (x, y) -> !x.isSame(y), F.False, F.True);
+				return Lambda.existsLeft(ast, new BiPredicate<IExpr, IExpr>() {
+                    @Override
+                    public boolean test(IExpr x, IExpr y) {
+                        return !x.isSame(y);
+                    }
+                }, F.False, F.True);
 			}
 			return F.False;
 		}

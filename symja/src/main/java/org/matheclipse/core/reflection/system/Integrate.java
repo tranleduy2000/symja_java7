@@ -18,6 +18,7 @@ import static org.matheclipse.core.expression.F.Times;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.BiFunction;
 import java.util.function.Predicate;
 
 import org.matheclipse.core.basic.Config;
@@ -87,7 +88,12 @@ public class Integrate extends AbstractFunctionEvaluator {
 			if (holdallAST.size() > 3) {
 				// reduce arguments by folding Integrate[fxy, x, y] to
 				// Integrate[Integrate[fxy, y], x] ...
-				return holdallAST.range(2).foldRight((x, y) -> engine.evaluate(F.Integrate(x, y)), arg1);
+				return holdallAST.range(2).foldRight(new BiFunction<IExpr, IExpr, IExpr>() {
+                    @Override
+                    public IExpr apply(IExpr x, IExpr y) {
+                        return engine.evaluate(F.Integrate(x, y));
+                    }
+                }, arg1);
 			}
 
 			IExpr arg2 = engine.evaluateNull(holdallAST.arg2());

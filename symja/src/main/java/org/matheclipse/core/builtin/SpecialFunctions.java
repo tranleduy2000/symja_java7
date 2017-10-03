@@ -25,6 +25,7 @@ import static org.matheclipse.core.expression.F.Zeta;
 
 import java.math.BigDecimal;
 import java.util.function.DoubleUnaryOperator;
+import java.util.function.Function;
 
 import org.apfloat.Apcomplex;
 import org.apfloat.ApcomplexMath;
@@ -346,9 +347,14 @@ public class SpecialFunctions {
 					// 2*k)!), {k, 1, Floor(n/2)})
 					int floorND2 = nInt / 2;
 					return Plus(Times(Power(C2, n), Power(n, -1), Power(z, n)),
-							F.sum(k -> Times(Power(CN1, k), Power(Times(C2, z), Plus(Times(F.CN2, k), n)),
-									Power(Times(Factorial(k), Factorial(Plus(Times(F.CN2, k), n))), -1),
-									Factorial(Plus(CN1, Negate(k), n))), 1, floorND2));
+							F.sum(new Function<IExpr, IExpr>() {
+                                @Override
+                                public IExpr apply(IExpr k) {
+                                    return Times(Power(CN1, k), Power(Times(C2, z), Plus(Times(F.CN2, k), n)),
+                                            Power(Times(Factorial(k), Factorial(Plus(Times(F.CN2, k), n))), -1),
+                                            Factorial(Plus(CN1, Negate(k), n)));
+                                }
+                            }, 1, floorND2));
 				}
 			}
 
@@ -961,7 +967,12 @@ public class SpecialFunctions {
 					if (nInt < 0) {
 						nInt *= -1;
 						// Zeta(s, -n) := Zeta(s) + Sum(1/k^s, {k, 1, n})
-						return Plus(F.sum(k -> Power(Power(k, s), -1), 1, nInt), Zeta(s));
+						return Plus(F.sum(new Function<IExpr, IExpr>() {
+                            @Override
+                            public IExpr apply(IExpr k) {
+                                return Power(Power(k, s), -1);
+                            }
+                        }, 1, nInt), Zeta(s));
 					}
 				}
 			}

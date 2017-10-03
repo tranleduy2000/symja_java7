@@ -22,6 +22,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
+import java.util.function.Predicate;
 
 import org.matheclipse.core.basic.Config;
 import org.matheclipse.core.convert.JASConvert;
@@ -1981,7 +1982,12 @@ public final class NumberTheory {
 			if (ast.isAST2()) {
 				return F.Binomial(F.Plus(ast.arg1(), ast.arg2()), ast.arg1());
 			}
-			if (Lambda.exists(ast, x -> (!x.isInteger()) || ((IInteger) x).isNegative(), 1)) {
+			if (Lambda.exists(ast, new Predicate<IExpr>() {
+                @Override
+                public boolean test(IExpr x) {
+                    return (!x.isInteger()) || ((IInteger) x).isNegative();
+                }
+            }, 1)) {
 				return F.NIL;
 			}
 			// for (int i = 1; i < ast.size(); i++) {

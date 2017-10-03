@@ -33,6 +33,7 @@ import static org.matheclipse.core.expression.F.y;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 import org.hipparchus.exception.MathIllegalArgumentException;
 import org.hipparchus.linear.BlockFieldMatrix;
@@ -58,6 +59,7 @@ import org.matheclipse.core.eval.interfaces.AbstractFunctionEvaluator;
 import org.matheclipse.core.eval.interfaces.AbstractMatrix1Expr;
 import org.matheclipse.core.eval.interfaces.AbstractMatrix1Matrix;
 import org.matheclipse.core.eval.interfaces.AbstractNonOrderlessArgMultiple;
+import org.matheclipse.core.eval.util.IIndexFunction;
 import org.matheclipse.core.eval.util.IndexFunctionDiagonal;
 import org.matheclipse.core.eval.util.IndexTableGenerator;
 import org.matheclipse.core.expression.ASTRealMatrix;
@@ -1321,7 +1323,12 @@ public final class LinearAlgebra {
 			indexArray[0] = rowSize;
 			indexArray[1] = columnSize;
 			final IndexTableGenerator generator = new IndexTableGenerator(indexArray, F.List,
-					indx -> F.fraction(1L, 1L + indx[0] + indx[1]));
+                    new IIndexFunction<IExpr>() {
+                        @Override
+                        public IExpr evaluate(int[] indx) {
+                            return F.fraction(1L, 1L + indx[0] + indx[1]);
+                        }
+                    });
 			final IAST matrix = (IAST) generator.table();
 			matrix.addEvalFlags(IAST.IS_MATRIX);
 			return matrix;
@@ -2151,7 +2158,12 @@ public final class LinearAlgebra {
 				if (ast.isAST2()) {
 					IExpr arg2 = ast.arg2();
 					if (arg2.isInfinity()) {
-						return arg1AST.map(F.Max, x -> F.Abs(x));
+						return arg1AST.map(F.Max, new Function<IExpr, IExpr>() {
+                            @Override
+                            public IExpr apply(IExpr x) {
+                                return F.Abs(x);
+                            }
+                        });
 					} else {
 						if (arg2.isSymbol() || arg2.isSignedNumber()) {
 							if (arg2.isZero()) {
@@ -2162,12 +2174,22 @@ public final class LinearAlgebra {
 								engine.printMessage("Norm: Second argument is < 1!");
 								return F.NIL;
 							}
-							return F.Power(arg1AST.map(F.Plus, x -> F.Power(F.Abs(x), arg2)), arg2.inverse());
+							return F.Power(arg1AST.map(F.Plus, new Function<IExpr, IExpr>() {
+                                @Override
+                                public IExpr apply(IExpr x) {
+                                    return F.Power(F.Abs(x), arg2);
+                                }
+                            }), arg2.inverse());
 						}
 					}
 					return F.NIL;
 				}
-				return F.Sqrt(arg1AST.map(F.Plus, x -> F.Sqr(F.Abs(x))));
+				return F.Sqrt(arg1AST.map(F.Plus, new Function<IExpr, IExpr>() {
+                    @Override
+                    public IExpr apply(IExpr x) {
+                        return F.Sqr(F.Abs(x));
+                    }
+                }));
 			}
 			if (arg1.isNumber()) {
 				if (ast.isAST2()) {
@@ -3014,7 +3036,12 @@ public final class LinearAlgebra {
 				// }
 				// };
 				final IndexTableGenerator generator = new IndexTableGenerator(indexArray, F.List, //
-						indx -> Power(lst.get(indx[0] + 1), F.integer(indx[1])));
+                        new IIndexFunction<IExpr>() {
+                            @Override
+                            public IExpr evaluate(int[] indx) {
+                                return Power(lst.get(indx[0] + 1), F.integer(indx[1]));
+                            }
+                        });
 				final IAST matrix = (IAST) generator.table();
 				matrix.addEvalFlags(IAST.IS_MATRIX);
 				return matrix;
