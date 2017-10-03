@@ -16,7 +16,6 @@ import org.matheclipse.core.form.output.OutputFormFactory;
 import org.matheclipse.core.generic.Predicates;
 import org.matheclipse.core.generic.UnaryVariable2Slot;
 import org.matheclipse.core.interfaces.IAST;
-import org.matheclipse.core.interfaces.defaultmethod.IASTImpl;
 import org.matheclipse.core.interfaces.IComplex;
 import org.matheclipse.core.interfaces.IComplexNum;
 import org.matheclipse.core.interfaces.IExpr;
@@ -29,6 +28,7 @@ import org.matheclipse.core.interfaces.IPatternObject;
 import org.matheclipse.core.interfaces.ISignedNumber;
 import org.matheclipse.core.interfaces.IStringX;
 import org.matheclipse.core.interfaces.ISymbol;
+import org.matheclipse.core.interfaces.defaultmethod.IASTImpl;
 import org.matheclipse.core.patternmatching.IPatternMatcher;
 import org.matheclipse.core.patternmatching.PatternMatcherEvalEngine;
 import org.matheclipse.core.polynomials.ExprPolynomial;
@@ -39,7 +39,6 @@ import org.matheclipse.core.visit.IVisitorInt;
 import org.matheclipse.core.visit.IVisitorLong;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -51,7 +50,6 @@ import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 public abstract class AbstractAST extends IASTImpl implements IAST {
 
@@ -330,9 +328,9 @@ public abstract class AbstractAST extends IASTImpl implements IAST {
     public IAST clone() {
         AbstractAST ast = null;
 //        try {
-            ast = (AbstractAST) super.clone();
-            ast.fEvalFlags = 0;
-            ast.hashValue = 0;
+        ast = (AbstractAST) super.clone();
+        ast.fEvalFlags = 0;
+        ast.hashValue = 0;
 //        } catch (CloneNotSupportedException e) {
 //        }
         return ast;

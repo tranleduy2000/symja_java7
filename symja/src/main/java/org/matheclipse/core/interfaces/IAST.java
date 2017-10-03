@@ -11,7 +11,6 @@ import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 /**
  * <p>
@@ -1120,7 +1119,7 @@ public interface IAST extends IExpr, Cloneable, Iterable<IExpr> {
     public int size();
 
     /**
-     * Returns a sequential {@link Stream} with the specified range of the specified
+     * Returns a sequential {@link Streamz} with the specified range of the specified
      * array as its source.
      *
      * @return a {@code Stream} for the internal array range
@@ -1128,7 +1127,7 @@ public interface IAST extends IExpr, Cloneable, Iterable<IExpr> {
 //    public Stream<IExpr> stream();
 
     /**
-     * Returns a sequential {@link Stream} with the specified range of the specified
+     * Returns a sequential {@link Streamz} with the specified range of the specified
      * array as its source.
      *
      * @param startInclusive the first index to cover, inclusive
