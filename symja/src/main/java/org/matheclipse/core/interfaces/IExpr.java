@@ -1,5 +1,7 @@
 package org.matheclipse.core.interfaces;
 
+import android.support.annotation.Nullable;
+
 import org.hipparchus.Field;
 import org.hipparchus.FieldElement;
 import org.hipparchus.complex.Complex;
@@ -23,8 +25,6 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
-
-import javax.annotation.Nullable;
 
 import edu.jas.structure.ElemFactory;
 import edu.jas.structure.GcdRingElem;
