@@ -35,11 +35,11 @@ package org.matheclipse.core.frobenius;
 import org.matheclipse.core.interfaces.IInteger;
 
 /**
+ *
  * @author Dmitry Bolotin
  * @author Stanislav Poslavsky
  */
 interface SolutionProvider extends OutputPortUnsafe<IInteger[]> {
     boolean tick();
-
     IInteger[] currentRemainders();
 }

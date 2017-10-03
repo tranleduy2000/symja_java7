@@ -22,7 +22,7 @@ import org.hipparchus.analysis.solvers.BaseUnivariateSolver;
 /**
  * Interface for (univariate real) rootfinding algorithms.
  * Implementations will search for only one zero in the given interval.
+ *
  */
 public interface DifferentiableUnivariateSolver
-        extends BaseUnivariateSolver<DifferentiableUnivariateFunction> {
-}
+    extends BaseUnivariateSolver<DifferentiableUnivariateFunction> {}

@@ -29,6 +29,8 @@ import java.util.Map;
 import java.util.NavigableMap;
 import java.util.Objects;
 import java.util.TreeMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -232,8 +234,18 @@ public class Frequency<T extends Comparable<T>> implements Serializable {
 
         return freqTable.entrySet()
                 .stream()
-                .filter(entry -> entry.getValue() == mostPopular)
-                .map(entry -> entry.getKey())
+                .filter(new Predicate<Map.Entry<T, Long>>() {
+                    @Override
+                    public boolean test(Map.Entry<T, Long> entry) {
+                        return entry.getValue() == mostPopular;
+                    }
+                })
+                .map(new Function<Map.Entry<T, Long>, T>() {
+                    @Override
+                    public T apply(Map.Entry<T, Long> entry) {
+                        return entry.getKey();
+                    }
+                })
                 .collect(Collectors.toList());
     }
 

@@ -32,39 +32,40 @@ import org.matheclipse.core.expression.F;
 import org.matheclipse.core.interfaces.IInteger;
 
 /**
+ *
  * @author Dmitry Bolotin
  * @author Stanislav Poslavsky
  */
 abstract class SolutionProviderAbstract implements SolutionProvider {
-    final int position;
-    final IInteger[] coefficients;
-    private final SolutionProvider provider;
-    IInteger[] currentSolution;
-    IInteger currentCounter;
-    IInteger[] currentRemainder;
+	private final SolutionProvider provider;
+	final int position;
+	final IInteger[] coefficients;
+	IInteger[] currentSolution;
+	IInteger currentCounter;
+	IInteger[] currentRemainder;
 
-    SolutionProviderAbstract(SolutionProvider provider, int position, IInteger[] coefficients) {
-        this.provider = provider;
-        this.position = position;
-        this.coefficients = coefficients;
-        this.currentCounter = F.C0;
-    }
+	SolutionProviderAbstract(SolutionProvider provider, int position, IInteger[] coefficients) {
+		this.provider = provider;
+		this.position = position;
+		this.coefficients = coefficients;
+		this.currentCounter = F.C0;
+	}
 
-    @Override
-    public boolean tick() {
-        currentSolution = provider.take();
-        currentRemainder = provider.currentRemainders();
-        currentCounter = F.C0;
-        return currentSolution != null;
-    }
+	@Override
+	public boolean tick() {
+		currentSolution = provider.take();
+		currentRemainder = provider.currentRemainders();
+		currentCounter = F.C0;
+		return currentSolution != null;
+	}
 
-    @Override
-    public IInteger[] currentRemainders() {
-        IInteger[] remainders = new IInteger[coefficients.length];
-        IInteger factor = currentCounter.subtract(F.C1);
-        for (int i = 0; i < coefficients.length; ++i) {
-            remainders[i] = currentRemainder[i].subtract(coefficients[i].multiply(factor));
-        }
-        return remainders;
-    }
+	@Override
+	public IInteger[] currentRemainders() {
+		IInteger[] remainders = new IInteger[coefficients.length];
+		IInteger factor = currentCounter.subtract(F.C1);
+		for (int i = 0; i < coefficients.length; ++i) {
+			remainders[i] = currentRemainder[i].subtract(coefficients[i].multiply(factor));
+		}
+		return remainders;
+	}
 }

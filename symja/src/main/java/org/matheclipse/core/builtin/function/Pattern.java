@@ -10,32 +10,32 @@ import org.matheclipse.core.interfaces.IPatternObject;
 import org.matheclipse.core.interfaces.ISymbol;
 
 public class Pattern extends AbstractCoreFunctionEvaluator {
-    public final static Pattern CONST = new Pattern();
+	public final static Pattern CONST = new Pattern();
 
-    public Pattern() {
-    }
+	public Pattern() {
+	}
 
-    @Override
-    public IExpr evaluate(final IAST ast, EvalEngine engine) {
-        Validate.checkSize(ast, 3);
+	@Override
+	public IExpr evaluate(final IAST ast, EvalEngine engine) {
+		Validate.checkSize(ast, 3);
 
-        if (ast.arg1().isSymbol()) {
-            if (ast.arg2().isBlank()) {
-                IPatternObject blank = (IPatternObject) ast.arg2();
-                return F.$p((ISymbol) ast.arg1(), blank.getCondition());
-            }
-            // if (ast.arg2().isPattern()) {
-            // IPattern blank = (IPattern) ast.arg2();
-            // // if (blank.isBlank()) {
-            // return F.$p((ISymbol) ast.arg1(), blank.getCondition());
-            // // }
-            // }
-        }
-        return F.NIL;
-    }
+		if (ast.arg1().isSymbol()) {
+			if (ast.arg2().isBlank()) {
+				IPatternObject blank = (IPatternObject) ast.arg2();
+				return F.$p((ISymbol) ast.arg1(), blank.getCondition());
+			}
+			// if (ast.arg2().isPattern()) {
+			// IPattern blank = (IPattern) ast.arg2();
+			// // if (blank.isBlank()) {
+			// return F.$p((ISymbol) ast.arg1(), blank.getCondition());
+			// // }
+			// }
+		}
+		return F.NIL;
+	}
 
-    @Override
-    public void setUp(ISymbol newSymbol) {
-        newSymbol.setAttributes(ISymbol.HOLDALL);
-    }
+	@Override
+	public void setUp(ISymbol newSymbol) {
+		newSymbol.setAttributes(ISymbol.HOLDALL);
+	}
 }

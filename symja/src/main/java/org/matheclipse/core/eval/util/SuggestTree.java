@@ -33,7 +33,7 @@ import java.util.Random;
  * on a compressed trie of the terms (implemented as a randomized ternary search
  * tree) in which each node holds a weight-ordered list of the k
  * highest-weighted terms in its subtree.
- * <p>
+ *
  * <p>
  * Note that this implementation is not synchronized. If multiple threads access
  * a Suggest Tree concurrently, and at least one of the threads modifies the
@@ -49,9 +49,11 @@ public class SuggestTree {
     /**
      * Creates a Suggest Tree with the specified k-value.
      *
-     * @param k the maximum number of auto-complete suggestions to return for a
-     *          given prefix
-     * @throws IllegalArgumentException if the specified k-value is less than 1
+     * @param k
+     *            the maximum number of auto-complete suggestions to return for a
+     *            given prefix
+     * @throws IllegalArgumentException
+     *             if the specified k-value is less than 1
      */
     public SuggestTree(int k) {
         if (k < 1) {
@@ -62,43 +64,18 @@ public class SuggestTree {
         size = 0;
     }
 
-    public static void main(String[] args) {
-        SuggestTree st = new SuggestTree(10);
-
-        st.put("data", 1);
-        st.put("tables", 1);
-        st.put("order", 1);
-        st.put("ascending", 1);
-        st.put("descending", 1);
-        st.put("select", 1);
-        st.put("select-options", 1);
-        st.put("selection", 1);
-        st.put("from", 1);
-        st.put("endif", 1);
-        st.put("endwhile", 1);
-        st.put("exit", 1);
-        st.put("return", 1);
-        st.put("enddo", 1);
-        st.put("endcase", 1);
-
-        Node n = st.getAutocompleteSuggestions("sel");
-        if (n != null) {
-            for (int i = 0; i < n.listLength(); i++) {
-                System.out.println(n.getSuggestion(i).getTerm());
-            }
-        }
-
-    }
-
     /**
      * Returns the k highest-weighted terms in the tree that start with the
      * specified prefix, or null if there is no such term.
      *
-     * @param prefix the prefix for which to return autocomplete suggestions
+     * @param prefix
+     *            the prefix for which to return autocomplete suggestions
      * @return the k highest-weighted terms in the tree that start with the
-     * specified prefix, or null if there is no such term
-     * @throws IllegalArgumentException if the specified prefix is an empty string
-     * @throws NullPointerException     if the specified prefix is null
+     *         specified prefix, or null if there is no such term
+     * @throws IllegalArgumentException
+     *             if the specified prefix is an empty string
+     * @throws NullPointerException
+     *             if the specified prefix is null
      */
     public final Node getAutocompleteSuggestions(final String prefix) {
         return search(prefix);
@@ -108,11 +85,14 @@ public class SuggestTree {
      * Returns the tree entry for the specified term, or null if there is no
      * such entry.
      *
-     * @param term the term for which to return the corresponding tree entry
+     * @param term
+     *            the term for which to return the corresponding tree entry
      * @return the tree entry for the specified term, or null if there is no
-     * such entry
-     * @throws IllegalArgumentException if the specified term is an empty string
-     * @throws NullPointerException     if the specified term is null
+     *         such entry
+     * @throws IllegalArgumentException
+     *             if the specified term is an empty string
+     * @throws NullPointerException
+     *             if the specified term is null
      */
     public Entry getEntry(final String term) {
         Node n = search(term);
@@ -145,11 +125,15 @@ public class SuggestTree {
      * Inserts the specified term with the specified weight into the tree, or
      * reweights the term if it is already present.
      *
-     * @param term   the term to be inserted or reweighted
-     * @param weight the weight to be assigned to the term
-     * @throws IllegalArgumentException if the specified term is an empty string or much too long
-     *                                  (longer than 32767 characters)
-     * @throws NullPointerException     if the specified term is null
+     * @param term
+     *            the term to be inserted or reweighted
+     * @param weight
+     *            the weight to be assigned to the term
+     * @throws IllegalArgumentException
+     *             if the specified term is an empty string or much too long
+     *             (longer than 32767 characters)
+     * @throws NullPointerException
+     *             if the specified term is null
      */
     public void put(String term, int weight) {
         if (term.isEmpty() || term.length() > Short.MAX_VALUE) {
@@ -212,9 +196,12 @@ public class SuggestTree {
     /**
      * Removes the specified term from the tree.
      *
-     * @param term the term to be removed
-     * @throws IllegalArgumentException if the specified term is an empty string
-     * @throws NullPointerException     if the specified term is null
+     * @param term
+     *            the term to be removed
+     * @throws IllegalArgumentException
+     *             if the specified term is an empty string
+     * @throws NullPointerException
+     *             if the specified term is null
      */
     public void remove(final String term) {
         Node n = search(term);
@@ -580,6 +567,87 @@ public class SuggestTree {
     }
 
     /**
+     * An iterator over the terms in the tree. The iterator returns the terms in
+     * alphabetical order and allows the caller to remove returned terms from
+     * the tree during the iteration.
+     */
+    public final class Iterator {
+
+        private Node next;
+
+        private Iterator() {
+            if (root == null) {
+                next = null;
+            } else {
+                next = firstEntry(root);
+            }
+        }
+
+        /**
+         * Returns true if the iteration has more terms.
+         *
+         * @return true if the iteration has more terms
+         */
+        public boolean hasNext() {
+            return (next != null);
+        }
+
+        /**
+         * Returns the next term in the iteration.
+         *
+         * @return the next term in the iteration
+         * @throws NoSuchElementException
+         *             if the iteration has no more terms
+         */
+        public Entry next() throws NoSuchElementException {
+            if (next == null) {
+                throw new NoSuchElementException();
+            }
+            Entry e = next.entry;
+            next = nextEntry(next);
+            return e;
+        }
+
+        private Node firstEntry(final Node node) {
+            Node n = node;
+            while (true) {
+                while (n.left != null) {
+                    n = n.left;
+                }
+                if (n.entry == null) {
+                    n = n.mid;
+                } else {
+                    return n;
+                }
+            }
+        }
+
+        private Node nextEntry(final Node node) {
+            Node n = node;
+            if (n.mid != null) {
+                return firstEntry(n.mid);
+            } else if (n.right != null) {
+                return firstEntry(n.right);
+            } else {
+                while (n.up != null) {
+                    if (n == n.up.left) {
+                        if (n.up.entry != null) {
+                            return n.up;
+                        } else {
+                            return firstEntry(n.up.mid);
+                        }
+                    } else if (n == n.up.mid && n.up.right != null) {
+                        return firstEntry(n.up.right);
+                    } else {
+                        n = n.up;
+                    }
+                }
+                return null;
+            }
+        }
+    }
+
+    /**
      * A list of autocomplete suggestions, ordered from highest weight to lowest
      * weight.
      */
@@ -594,7 +662,7 @@ public class SuggestTree {
         private Node up; // parent in the ternary search tree
 
         private Node(final String term, final int weight, final int charStart,
-                     final Node up) {
+                final Node up) {
             entry = new Entry(term, weight);
             firstChar = term.charAt(charStart);
             charEnd = (short) term.length();
@@ -617,10 +685,12 @@ public class SuggestTree {
          * Returns the suggestion at the specified index in the list. The first
          * suggestion is at index 0, the second at index 1, and so on.
          *
-         * @param index the index of the suggestion to return
+         * @param index
+         *            the index of the suggestion to return
          * @return the suggestion at the specified index in the list
-         * @throws ArrayIndexOutOfBoundsException if the specified index is negative or not less than the
-         *                                        list length
+         * @throws ArrayIndexOutOfBoundsException
+         *             if the specified index is negative or not less than the
+         *             list length
          */
         public Entry getSuggestion(final int index) {
             return list[index];
@@ -686,84 +756,32 @@ public class SuggestTree {
         }
     }
 
-    /**
-     * An iterator over the terms in the tree. The iterator returns the terms in
-     * alphabetical order and allows the caller to remove returned terms from
-     * the tree during the iteration.
-     */
-    public final class Iterator {
+    public static void main(String[] args) {
+        SuggestTree st = new SuggestTree(10);
 
-        private Node next;
+        st.put("data", 1);
+        st.put("tables", 1);
+        st.put("order", 1);
+        st.put("ascending", 1);
+        st.put("descending", 1);
+        st.put("select", 1);
+        st.put("select-options", 1);
+        st.put("selection", 1);
+        st.put("from", 1);
+        st.put("endif", 1);
+        st.put("endwhile", 1);
+        st.put("exit", 1);
+        st.put("return", 1);
+        st.put("enddo", 1);
+        st.put("endcase", 1);
 
-        private Iterator() {
-            if (root == null) {
-                next = null;
-            } else {
-                next = firstEntry(root);
+        Node n = st.getAutocompleteSuggestions("sel");
+        if (n != null) {
+            for (int i = 0; i < n.listLength(); i++) {
+                System.out.println(n.getSuggestion(i).getTerm());
             }
         }
 
-        /**
-         * Returns true if the iteration has more terms.
-         *
-         * @return true if the iteration has more terms
-         */
-        public boolean hasNext() {
-            return (next != null);
-        }
-
-        /**
-         * Returns the next term in the iteration.
-         *
-         * @return the next term in the iteration
-         * @throws NoSuchElementException if the iteration has no more terms
-         */
-        public Entry next() throws NoSuchElementException {
-            if (next == null) {
-                throw new NoSuchElementException();
-            }
-            Entry e = next.entry;
-            next = nextEntry(next);
-            return e;
-        }
-
-        private Node firstEntry(final Node node) {
-            Node n = node;
-            while (true) {
-                while (n.left != null) {
-                    n = n.left;
-                }
-                if (n.entry == null) {
-                    n = n.mid;
-                } else {
-                    return n;
-                }
-            }
-        }
-
-        private Node nextEntry(final Node node) {
-            Node n = node;
-            if (n.mid != null) {
-                return firstEntry(n.mid);
-            } else if (n.right != null) {
-                return firstEntry(n.right);
-            } else {
-                while (n.up != null) {
-                    if (n == n.up.left) {
-                        if (n.up.entry != null) {
-                            return n.up;
-                        } else {
-                            return firstEntry(n.up.mid);
-                        }
-                    } else if (n == n.up.mid && n.up.right != null) {
-                        return firstEntry(n.up.right);
-                    } else {
-                        n = n.up;
-                    }
-                }
-                return null;
-            }
-        }
     }
 
 }

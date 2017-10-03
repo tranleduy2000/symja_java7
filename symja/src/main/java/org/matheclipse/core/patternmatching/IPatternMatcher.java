@@ -1,177 +1,184 @@
 package org.matheclipse.core.patternmatching;
 
-import org.matheclipse.core.eval.EvalEngine;
-import org.matheclipse.core.expression.F;
-import org.matheclipse.core.interfaces.IExpr;
-
 import java.io.Serializable;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
 
+import org.matheclipse.core.eval.EvalEngine;
+import org.matheclipse.core.expression.F;
+import org.matheclipse.core.interfaces.IExpr;
+
 /**
  * Interface for the pattern matcher
  */
 public abstract class IPatternMatcher implements Predicate<IExpr>, Cloneable, Serializable {// Comparable<IPatternMatcher>,
-    // Serializable {
-    public final static EquivalenceComparator EQUIVALENCE_COMPARATOR = new EquivalenceComparator();
-    /**
-     *
-     */
-    private static final long serialVersionUID = 2841686297882535691L;
-    /**
-     * Contains the "pattern-matching" expression
-     */
-    protected IExpr fLhsPatternExpr;
+																							// Serializable {
+	public final static EquivalenceComparator EQUIVALENCE_COMPARATOR = new EquivalenceComparator();
 
-    protected IPatternMatcher() {
-        fLhsPatternExpr = null;
-    }
+	public static class EquivalenceComparator implements Comparator<IPatternMatcher>, Serializable {
 
-    public IPatternMatcher(IExpr lhsPatternExpr) {
-        fLhsPatternExpr = lhsPatternExpr;
-    }
+		private static final long serialVersionUID = 8357661139299702326L;
 
-    @Override
-    public Object clone() throws CloneNotSupportedException {
-        IPatternMatcher v = (IPatternMatcher) super.clone();
-        v.fLhsPatternExpr = fLhsPatternExpr;
-        return v;
-    }
+		@Override
+		public int compare(final IPatternMatcher o1, final IPatternMatcher o2) {
+			if (o1 == o2) {
+				return 0;
+			}
+			return o1.equivalentTo(o2);
+		}
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        IPatternMatcher other = (IPatternMatcher) obj;
-        if (fLhsPatternExpr == null) {
-            if (other.fLhsPatternExpr != null)
-                return false;
-        } else if (!fLhsPatternExpr.equals(other.fLhsPatternExpr))
-            return false;
-        return true;
-    }
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2841686297882535691L;
 
-    public abstract int equivalentTo(IPatternMatcher patternMatcher);
+	/**
+	 * Contains the "pattern-matching" expression
+	 * 
+	 */
+	protected IExpr fLhsPatternExpr;
 
-    /**
-     * Compare only the left-hand-side expressions in the matchers for equivalence
-     *
-     * @param obj
-     * @return
-     */
-    public abstract int equivalentLHS(final IPatternMatcher obj);
+	protected IPatternMatcher() {
+		fLhsPatternExpr = null;
+	}
 
-    /**
-     * Compare the matchers for equivalence
-     *
-     * @param obj
-     * @return
-     */
-    // public abstract int equivalent(final IPatternMatcher obj);
+	public IPatternMatcher(IExpr lhsPatternExpr) {
+		fLhsPatternExpr = lhsPatternExpr;
+	}
 
-    /**
-     * Match the given left-hand-side and return an evaluated expression
-     *
-     * @param leftHandSide left-hand-side expression
-     * @param engine
-     * @return <code>F.NIL</code> if the match wasn't successful, the evaluated
-     * expression otherwise.
-     */
-    public abstract IExpr eval(final IExpr leftHandSide, EvalEngine engine);
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		IPatternMatcher v = (IPatternMatcher) super.clone();
+		v.fLhsPatternExpr = fLhsPatternExpr;
+		return v;
+	}
 
-    /**
-     * Get the "left-hand-side" of a pattern-matching rule.
-     *
-     * @return
-     */
-    public IExpr getLHS() {
-        return fLhsPatternExpr;
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		IPatternMatcher other = (IPatternMatcher) obj;
+		if (fLhsPatternExpr == null) {
+			if (other.fLhsPatternExpr != null)
+				return false;
+		} else if (!fLhsPatternExpr.equals(other.fLhsPatternExpr))
+			return false;
+		return true;
+	}
 
-    /**
-     * Returns the matched pattern in the order they appear in the pattern
-     * expression.
-     *
-     * @param resultList  a list instance
-     * @param patternExpr the expression which contains the pattern objects
-     */
-    public abstract void getPatterns(List<IExpr> resultList, IExpr patternExpr);
+	public abstract int equivalentTo(IPatternMatcher patternMatcher);
 
-    /**
-     * Get the priority of the left-and-side of this pattern-matcher. Lower values
-     * have higher priorities.
-     *
-     * @return the priority
-     */
-    public abstract int getLHSPriority();
+	/**
+	 * Compare the matchers for equivalence
+	 * 
+	 * @param obj
+	 * @return
+	 */
+	// public abstract int equivalent(final IPatternMatcher obj);
 
-    /**
-     * Get the priority of the left-and-side of this pattern-matcher. Lower values
-     * have higher priorities.
-     *
-     * @return the priority
-     */
-    public long getRHSleafCountSimplify() {
-        return Long.MAX_VALUE;
-    }
+	/**
+	 * Compare only the left-hand-side expressions in the matchers for equivalence
+	 * 
+	 * @param obj
+	 * @return
+	 */
+	public abstract int equivalentLHS(final IPatternMatcher obj);
 
-    /**
-     * Get the "right-hand-side" of a pattern-matching rule.
-     *
-     * @return <code>F.NIL</code> if no right-hand-side is defined for the pattern
-     * matcher
-     */
-    public IExpr getRHS() {
-        return F.NIL;
-    }
+	/**
+	 * Match the given left-hand-side and return an evaluated expression
+	 * 
+	 * @param leftHandSide
+	 *            left-hand-side expression
+	 * @param engine
+	 * @return <code>F.NIL</code> if the match wasn't successful, the evaluated
+	 *         expression otherwise.
+	 */
+	public abstract IExpr eval(final IExpr leftHandSide, EvalEngine engine);
 
-    @Override
-    public int hashCode() {
-        return fLhsPatternExpr.hashCode();
-    }
+	/**
+	 * Get the "left-hand-side" of a pattern-matching rule.
+	 * 
+	 * @return
+	 */
+	public IExpr getLHS() {
+		return fLhsPatternExpr;
+	}
 
-    /**
-     * Check if the pattern-matchings left-hand-side expression contains no
-     * patterns.
-     *
-     * @return <code>true</code>, if the given expression contains no patterns
-     */
-    public abstract boolean isRuleWithoutPatterns();
+	/**
+	 * Returns the matched pattern in the order they appear in the pattern
+	 * expression.
+	 * 
+	 * 
+	 * @param resultList
+	 *            a list instance
+	 * @param patternExpr
+	 *            the expression which contains the pattern objects
+	 */
+	public abstract void getPatterns(List<IExpr> resultList, IExpr patternExpr);
 
-    /**
-     * Start pattern matching.
-     *
-     * @param expr
-     * @return <code>true</code> if the <code>expr</code> matches the
-     * pattern-matchings left-hand-side expression.
-     */
-    @Override
-    public abstract boolean test(IExpr expr);
+	/**
+	 * Get the priority of the left-and-side of this pattern-matcher. Lower values
+	 * have higher priorities.
+	 * 
+	 * @return the priority
+	 */
+	public abstract int getLHSPriority();
 
-    /**
-     * Start pattern matching.
-     *
-     * @param expr
-     * @return <code>true</code> if the <code>expr</code> matches the
-     * pattern-matchings left-hand-side expression.
-     */
-    public abstract boolean test(IExpr expr, EvalEngine engine);
+	/**
+	 * Get the priority of the left-and-side of this pattern-matcher. Lower values
+	 * have higher priorities.
+	 * 
+	 * @return the priority
+	 */
+	public long getRHSleafCountSimplify() {
+		return Long.MAX_VALUE;
+	}
 
-    public static class EquivalenceComparator implements Comparator<IPatternMatcher>, Serializable {
+	/**
+	 * Get the "right-hand-side" of a pattern-matching rule.
+	 * 
+	 * @return <code>F.NIL</code> if no right-hand-side is defined for the pattern
+	 *         matcher
+	 */
+	public IExpr getRHS() {
+		return F.NIL;
+	}
 
-        private static final long serialVersionUID = 8357661139299702326L;
+	@Override
+	public int hashCode() {
+		return fLhsPatternExpr.hashCode();
+	}
 
-        @Override
-        public int compare(final IPatternMatcher o1, final IPatternMatcher o2) {
-            if (o1 == o2) {
-                return 0;
-            }
-            return o1.equivalentTo(o2);
-        }
-    }
+	/**
+	 * Check if the pattern-matchings left-hand-side expression contains no
+	 * patterns.
+	 * 
+	 * @return <code>true</code>, if the given expression contains no patterns
+	 */
+	public abstract boolean isRuleWithoutPatterns();
+
+	/**
+	 * Start pattern matching.
+	 * 
+	 * @param expr
+	 * @return <code>true</code> if the <code>expr</code> matches the
+	 *         pattern-matchings left-hand-side expression.
+	 */
+	@Override
+	public abstract boolean test(IExpr expr);
+	
+	/**
+	 * Start pattern matching.
+	 * 
+	 * @param expr
+	 * @return <code>true</code> if the <code>expr</code> matches the
+	 *         pattern-matchings left-hand-side expression.
+	 */
+	public abstract boolean test(IExpr expr, EvalEngine engine);
 }

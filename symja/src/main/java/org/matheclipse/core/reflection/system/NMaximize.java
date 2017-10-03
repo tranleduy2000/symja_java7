@@ -6,6 +6,8 @@ import org.hipparchus.optim.linear.LinearObjectiveFunction;
 import org.hipparchus.optim.linear.NonNegativeConstraint;
 import org.hipparchus.optim.linear.PivotSelectionRule;
 import org.hipparchus.optim.nonlinear.scalar.GoalType;
+import java.util.List;
+
 import org.matheclipse.core.convert.VariablesSet;
 import org.matheclipse.core.eval.EvalEngine;
 import org.matheclipse.core.eval.exception.Validate;
@@ -13,13 +15,11 @@ import org.matheclipse.core.expression.F;
 import org.matheclipse.core.interfaces.IAST;
 import org.matheclipse.core.interfaces.IExpr;
 
-import java.util.List;
-
 /**
  * <pre>
  * NMaximize(maximize_function, constraints, variables_list)
  * </pre>
- * <p>
+ * 
  * <blockquote>
  * <p>
  * the <code>NMaximize</code> function provides an implementation of
@@ -37,7 +37,7 @@ import java.util.List;
  * See also: <a href="LinearProgramming.md">LinearProgramming</a>, <a href="NMinimize.md">NMinimize</a>
  * </p>
  * <h3>Examples</h3>
- * <p>
+ * 
  * <pre>
  * &gt;&gt; NMaximize({-2*x+y-5, x+2*y&lt;=6 &amp;&amp; 3*x + 2*y &lt;= 12 }, {x, y})
  * {-2.0,{x-&gt;0.0,y-&gt;3.0}}
@@ -45,14 +45,14 @@ import java.util.List;
  * <p>
  * solves the linear problem:
  * </p>
- * <p>
+ * 
  * <pre>
  * Maximize -2x + y - 5
  * </pre>
  * <p>
  * with the constraints:
  * </p>
- * <p>
+ * 
  * <pre>
  *   x  + 2y &lt;=  6
  *   3x + 2y &lt;= 12
@@ -62,32 +62,32 @@ import java.util.List;
  */
 public class NMaximize extends NMinimize {
 
-    public NMaximize() {
-        super();
-    }
+	public NMaximize() {
+		super();
+	}
 
-    @Override
-    public IExpr numericEval(final IAST ast, EvalEngine engine) {
-        Validate.checkSize(ast, 3);
+	@Override
+	public IExpr numericEval(final IAST ast, EvalEngine engine) {
+		Validate.checkSize(ast, 3);
 
-        if (ast.arg1().isList() && ast.arg2().isList()) {
-            IAST list1 = (IAST) ast.arg1();
-            IAST list2 = (IAST) ast.arg2();
-            VariablesSet vars = new VariablesSet(list2);
-            if (list1.isAST2()) {
-                IExpr function = list1.arg1();
-                IExpr listOfconstraints = list1.arg2();
-                if (listOfconstraints.isAnd()) {
-                    // lc1 && lc2 && lc3...
-                    LinearObjectiveFunction objectiveFunction = getObjectiveFunction(vars, function);
-                    List<LinearConstraint> constraints = getConstraints(vars, listOfconstraints);
-                    return simplexSolver(vars, objectiveFunction, objectiveFunction,
-                            new LinearConstraintSet(constraints), GoalType.MAXIMIZE, new NonNegativeConstraint(true),
-                            PivotSelectionRule.BLAND);
-                }
-            }
-        }
-        return F.NIL;
-    }
+		if (ast.arg1().isList() && ast.arg2().isList()) {
+			IAST list1 = (IAST) ast.arg1();
+			IAST list2 = (IAST) ast.arg2();
+			VariablesSet vars = new VariablesSet(list2);
+			if (list1.isAST2()) {
+				IExpr function = list1.arg1();
+				IExpr listOfconstraints = list1.arg2();
+				if (listOfconstraints.isAnd()) {
+					// lc1 && lc2 && lc3...
+					LinearObjectiveFunction objectiveFunction = getObjectiveFunction(vars, function);
+					List<LinearConstraint> constraints = getConstraints(vars, listOfconstraints);
+					return simplexSolver(vars, objectiveFunction, objectiveFunction,
+							new LinearConstraintSet(constraints), GoalType.MAXIMIZE, new NonNegativeConstraint(true),
+							PivotSelectionRule.BLAND);
+				}
+			}
+		}
+		return F.NIL;
+	}
 
 }

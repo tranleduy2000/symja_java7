@@ -11,14 +11,14 @@ import org.matheclipse.core.interfaces.IExpr;
  * <pre>
  * Outer(f, x, y)
  * </pre>
- * <p>
+ * 
  * <blockquote>
  * <p>
  * computes a generalised outer product of <code>x</code> and <code>y</code>, using the function <code>f</code> in place
  * of multiplication.
  * </p>
  * </blockquote>
- * <p>
+ * 
  * <pre>
  * &gt;&gt; Outer(f, {a, b}, {1, 2, 3})
  * {{f(a, 1), f(a, 2), f(a, 3)}, {f(b, 1), f(b, 2), f(b, 3)}}
@@ -26,7 +26,7 @@ import org.matheclipse.core.interfaces.IExpr;
  * <p>
  * Outer product of two matrices:
  * </p>
- * <p>
+ * 
  * <pre>
  * &gt;&gt; Outer(Times, {{a, b}, {c, d}}, {{1, 2}, {3, 4}})
  * {{{{a, 2 a}, {3 a, 4 a}}, {{b, 2 b}, {3 b, 4 b}}}, {{{c, 2 c}, {3 c, 4 c}}, {{d, 2 d}, {3 d, 4 d}}}}
@@ -34,7 +34,7 @@ import org.matheclipse.core.interfaces.IExpr;
  * <p>
  * Outer of multiple lists:
  * </p>
- * <p>
+ * 
  * <pre>
  * &gt;&gt; Outer(f, {a, b}, {x, y, z}, {1, 2})
  * {{{f(a, x, 1), f(a, x, 2)}, {f(a, y, 1), f(a, y, 2)}, {f(a, z, 1), f(a, z, 2)}}, {{f(b, x, 1), f(b, x, 2)}, {f(b, y, 1), f(b, y, 2)}, {f(b, z, 1), f(b, z, 2)}}}
@@ -42,7 +42,7 @@ import org.matheclipse.core.interfaces.IExpr;
  * <p>
  * Arrays can be ragged:
  * </p>
- * <p>
+ * 
  * <pre>
  * &gt;&gt; Outer(Times, {{1, 2}}, {{a, b}, {c, d, e}})
  * {{{{a, b}, {c, d, e}}, {{2 a, 2 b}, {2 c, 2 d, 2 e}}}}
@@ -50,15 +50,15 @@ import org.matheclipse.core.interfaces.IExpr;
  * <p>
  * Word combinations:
  * </p>
- * <p>
+ * 
  * <pre>
- * &gt;&gt; Outer(StringJoin, {"", "re", "un"}, {"cover", "draw", "wind"}, {"", "ing", "s"})
+ * &gt;&gt; Outer(StringJoin, {"", "re", "un"}, {"cover", "draw", "wind"}, {"", "ing", "s"}) 
  * {{{"cover", "covering", "covers"}, {"draw", "drawing", "draws"}, {"wind", "winding", "winds"}}, {{"recover", "recovering", "recovers"}, {"redraw", "redrawing", "redraws"}, {"rewind", "rewinding", "rewinds"}}, {{"uncover", "uncovering", "uncovers"}, {"undraw", "undrawing", "undraws"}, {"unwind", "unwinding", "unwinds"}}}
  * </pre>
  * <p>
  * Compositions of trigonometric functions:
  * </p>
- * <p>
+ * 
  * <pre>
  * &gt;&gt; trigs = Outer(Composition, {Sin, Cos, Tan}, {ArcSin, ArcCos, ArcTan})
  * {{Composition(Sin, ArcSin), Composition(Sin, ArcCos), Composition(Sin, ArcTan)}, {Composition(Cos, ArcSin), Composition(Cos, ArcCos), Composition(Cos, ArcTan)}, {Composition(Tan, ArcSin), Composition(Tan, ArcCos), Composition(Tan, ArcTan)}}
@@ -66,7 +66,7 @@ import org.matheclipse.core.interfaces.IExpr;
  * <p>
  * Evaluate at <code>0</code>:
  * </p>
- * <p>
+ * 
  * <pre>
  * &gt;&gt; Map(#(0) &amp;, trigs, {2})
  * {{0, 1, 0}, {1, 0, 1}, {0, ComplexInfinity, 0}}
@@ -74,64 +74,64 @@ import org.matheclipse.core.interfaces.IExpr;
  */
 public class Outer extends AbstractFunctionEvaluator {
 
-    public Outer() {
-    }
+	private static class OuterAlgorithm {
+		final IAST ast;
+		final IExpr f;
+		final IExpr head;
 
-    @Override
-    public IExpr evaluate(final IAST ast, EvalEngine engine) {
-        Validate.checkRange(ast, 4);
+		public OuterAlgorithm(final IAST ast, final IExpr head) {
+			this.ast = ast;
+			this.f = ast.arg1();
+			this.head = head;
+		}
 
-        IExpr head = null;
-        for (int i = 2; i < ast.size(); i++) {
-            IExpr list = ast.get(i);
-            if (!list.isAST()) {
-                return F.NIL;
-            }
-            if (head == null) {
-                head = list.head();
-            } else if (!head.equals(list.head())) {
-                return F.NIL;
-            }
-        }
-        OuterAlgorithm algorithm = new OuterAlgorithm(ast, head);
-        return algorithm.outer(3, ast.arg2(), F.ast(F.List, ast.size() - 1, false));
-    }
+		private IAST outer(int astPosition, IExpr expr, IAST current) {
+			if (expr.isAST() && head.equals(expr.head())) {
+				IAST list = (IAST) expr;
+				IAST result = F.ast(head);
+				for (int i = 1; i < list.size(); i++) {
+					IExpr temp = list.get(i);
+					result.append(outer(astPosition, temp, current));
+				}
+				return result;
+			}
 
-    private static class OuterAlgorithm {
-        final IAST ast;
-        final IExpr f;
-        final IExpr head;
+			if (ast.size() > astPosition) {
+				try {
+					current.append(expr);
+					return outer(astPosition + 1, ast.get(astPosition), current);
+				} finally {
+					current.remove(current.size() - 1);
+				}
+			} else {
+				IAST result = F.ast(f);
+				result.appendArgs(current);
+				result.append(expr);
+				return result;
+			}
+		}
+	}
 
-        public OuterAlgorithm(final IAST ast, final IExpr head) {
-            this.ast = ast;
-            this.f = ast.arg1();
-            this.head = head;
-        }
+	public Outer() {
+	}
 
-        private IAST outer(int astPosition, IExpr expr, IAST current) {
-            if (expr.isAST() && head.equals(expr.head())) {
-                IAST list = (IAST) expr;
-                IAST result = F.ast(head);
-                for (int i = 1; i < list.size(); i++) {
-                    IExpr temp = list.get(i);
-                    result.append(outer(astPosition, temp, current));
-                }
-                return result;
-            }
+	@Override
+	public IExpr evaluate(final IAST ast, EvalEngine engine) {
+		Validate.checkRange(ast, 4);
 
-            if (ast.size() > astPosition) {
-                try {
-                    current.append(expr);
-                    return outer(astPosition + 1, ast.get(astPosition), current);
-                } finally {
-                    current.remove(current.size() - 1);
-                }
-            } else {
-                IAST result = F.ast(f);
-                result.appendArgs(current);
-                result.append(expr);
-                return result;
-            }
-        }
-    }
+		IExpr head = null;
+		for (int i = 2; i < ast.size(); i++) {
+			IExpr list = ast.get(i);
+			if (!list.isAST()) {
+				return F.NIL;
+			}
+			if (head == null) {
+				head = list.head();
+			} else if (!head.equals(list.head())) {
+				return F.NIL;
+			}
+		}
+		OuterAlgorithm algorithm = new OuterAlgorithm(ast, head);
+		return algorithm.outer(3, ast.arg2(), F.ast(F.List, ast.size() - 1, false));
+	}
 }

@@ -1,11 +1,11 @@
 package org.matheclipse.core.visit;
 
+import java.util.function.Function;
+import java.util.function.Predicate;
+
 import org.matheclipse.core.expression.F;
 import org.matheclipse.core.interfaces.IAST;
 import org.matheclipse.core.interfaces.IExpr;
-
-import java.util.function.Function;
-import java.util.function.Predicate;
 
 /**
  * Replace all occurrences of expressions where the given <code>function.apply()</code> method returns a non
@@ -13,36 +13,36 @@ import java.util.function.Predicate;
  * occurred.
  */
 public class VisitorPredicateReplaceAll extends VisitorReplaceAll {
-    final Predicate<IExpr> fPredicate;
+	final Predicate<IExpr> fPredicate;
 
-    public VisitorPredicateReplaceAll(Function<IExpr, IExpr> function, Predicate<IExpr> predicate) {
-        this(function, predicate, 0);
-    }
+	public VisitorPredicateReplaceAll(Function<IExpr, IExpr> function, Predicate<IExpr> predicate) {
+		this(function, predicate, 0);
+	}
 
-    public VisitorPredicateReplaceAll(Function<IExpr, IExpr> function, Predicate<IExpr> predicate, int offset) {
-        super(function, offset);
-        this.fPredicate = predicate;
-    }
+	public VisitorPredicateReplaceAll(Function<IExpr, IExpr> function, Predicate<IExpr> predicate, int offset) {
+		super(function, offset);
+		this.fPredicate = predicate;
+	}
 
-    public VisitorPredicateReplaceAll(IAST ast, Predicate<IExpr> predicate) {
-        this(ast, predicate, 0);
-    }
+	public VisitorPredicateReplaceAll(IAST ast, Predicate<IExpr> predicate) {
+		this(ast, predicate, 0);
+	}
 
-    public VisitorPredicateReplaceAll(IAST ast, Predicate<IExpr> predicate, int offset) {
-        super(ast, offset);
-        this.fPredicate = predicate;
-    }
+	public VisitorPredicateReplaceAll(IAST ast, Predicate<IExpr> predicate, int offset) {
+		super(ast, offset);
+		this.fPredicate = predicate;
+	}
 
-    @Override
-    public IExpr visit(IAST ast) {
-        if (fPredicate.test(ast)) {
-            return visitAST(ast);
-        }
-        IExpr temp = fFunction.apply(ast);
-        if (temp.isPresent()) {
-            return temp;
-        }
-        return F.NIL;
-    }
+	@Override
+	public IExpr visit(IAST ast) {
+		if (fPredicate.test(ast)) {
+			return visitAST(ast);
+		}
+		IExpr temp = fFunction.apply(ast);
+		if (temp.isPresent()) {
+			return temp;
+		}
+		return F.NIL;
+	}
 
 }

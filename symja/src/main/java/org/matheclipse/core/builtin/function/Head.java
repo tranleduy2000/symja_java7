@@ -10,13 +10,13 @@ import org.matheclipse.core.interfaces.IExpr;
  * <pre>
  * Head(expr)
  * </pre>
- * <p>
+ * 
  * <blockquote>
  * <p>
  * returns the head of the expression or atom <code>expr</code>.
  * </p>
  * <h3>Examples</h3>
- * <p>
+ * 
  * <pre>
  * &gt; Head(a * b)
  * Times
@@ -25,20 +25,20 @@ import org.matheclipse.core.interfaces.IExpr;
  * &gt; Head(x)
  * Symbol
  * </pre>
- * <p>
+ * 
  * </blockquote>
  */
 public class Head extends AbstractCoreFunctionEvaluator {
 
-    public Head() {
-    }
+	public Head() {
+	}
 
-    @Override
-    public IExpr evaluate(final IAST ast, EvalEngine engine) {
-        if (ast.isAST1()) {
-            return engine.evaluate(ast.arg1()).head();
-        }
-        return F.SymbolHead;
-    }
+	@Override
+	public IExpr evaluate(final IAST ast, EvalEngine engine) {
+		if (ast.isAST1()) {
+			return engine.evaluate(ast.arg1()).head();
+		}
+		return F.SymbolHead;
+	}
 
 }

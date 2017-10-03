@@ -13,61 +13,62 @@ import org.matheclipse.core.interfaces.ISymbol;
  * <p>
  * Bessel function of the first kind.
  * </p>
- * <p>
+ * 
  * See <a href="http://en.wikipedia.org/wiki/Bessel_function">Wikipedia: Bessel
  * function</a>
+ *
  */
 public class BesselJ extends AbstractFunctionEvaluator {
 
-    public BesselJ() {
-    }
+	public BesselJ() {
+	}
 
-    @Override
-    public IExpr evaluate(final IAST ast, EvalEngine engine) {
-        Validate.checkSize(ast, 3);
+	@Override
+	public IExpr evaluate(final IAST ast, EvalEngine engine) {
+		Validate.checkSize(ast, 3);
 
-        IExpr arg1 = ast.arg1();
-        IExpr arg2 = ast.arg2();
-        if (arg1 instanceof INum && arg2 instanceof INum) {
-            try {
-                // numeric mode evaluation
-                org.hipparchus.special.BesselJ besselJ = new org.hipparchus.special.BesselJ(
-                        ((INum) arg2).doubleValue());
-                return F.num(besselJ.value(((INum) arg1).doubleValue()));
-            } catch (NegativeArraySizeException nae) {
-                engine.printMessage(ast.toString() + " caused NegativeArraySizeException");
-            } catch (RuntimeException rte) {
-                engine.printMessage(rte.getMessage());
-                return F.NIL;
-            }
-        }
-        if (arg2.isZero()) {
-            if (arg1.isZero()) {
-                // (0, 0)
-                return F.C1;
-            }
-            if (arg1.isInteger()) {
-                return F.C0;
-            }
+		IExpr arg1 = ast.arg1();
+		IExpr arg2 = ast.arg2();
+		if (arg1 instanceof INum && arg2 instanceof INum) {
+			try {
+				// numeric mode evaluation
+				org.hipparchus.special.BesselJ besselJ = new org.hipparchus.special.BesselJ(
+						((INum) arg2).doubleValue());
+				return F.num(besselJ.value(((INum) arg1).doubleValue()));
+			} catch (NegativeArraySizeException nae) {
+				engine.printMessage(ast.toString() + " caused NegativeArraySizeException");
+			} catch (RuntimeException rte) {
+				engine.printMessage(rte.getMessage());
+				return F.NIL;
+			}
+		}
+		if (arg2.isZero()) {
+			if (arg1.isZero()) {
+				// (0, 0)
+				return F.C1;
+			}
+			if (arg1.isInteger()) {
+				return F.C0;
+			}
 
-            IExpr a = arg1.re();
-            if (a.isPositive()) {
-                // Re(arg1) > 0
-                return F.C0;
-            } else if (a.isNegative()) {
-                // Re(arg1) < 0 && !a.isInteger()
-                return F.CComplexInfinity;
-            } else if (a.isZero() && !arg1.isZero()) {
-                return F.Indeterminate;
-            }
+			IExpr a = arg1.re();
+			if (a.isPositive()) {
+				// Re(arg1) > 0
+				return F.C0;
+			} else if (a.isNegative()) {
+				// Re(arg1) < 0 && !a.isInteger()
+				return F.CComplexInfinity;
+			} else if (a.isZero() && !arg1.isZero()) {
+				return F.Indeterminate;
+			}
 
-        }
+		}
 
-        return F.NIL;
-    }
+		return F.NIL;
+	}
 
-    @Override
-    public void setUp(final ISymbol newSymbol) {
-        newSymbol.setAttributes(ISymbol.LISTABLE | ISymbol.NUMERICFUNCTION);
-    }
+	@Override
+	public void setUp(final ISymbol newSymbol) {
+		newSymbol.setAttributes(ISymbol.LISTABLE | ISymbol.NUMERICFUNCTION);
+	}
 }

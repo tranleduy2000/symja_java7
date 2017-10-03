@@ -16,7 +16,7 @@
  * This code is modified for the MathEclipse project
  */
 
-package org.matheclipse.core.expression; import java.util.function.Consumer; import java.util.function.Function; import java.util.function.Predicate;
+package org.matheclipse.core.expression;
 
 import org.matheclipse.parser.client.math.MathUtils;
 
@@ -24,7 +24,7 @@ import org.matheclipse.parser.client.math.MathUtils;
  * Static implementations of common
  * {@link org.matheclipse.parser.client.math.Complex}-valued functions.  Included
  * are trigonometric, exponential, log, power and square root functions.
- * <p>
+ *<p>
  * Reference:
  * <ul>
  * <li><a href="http://myweb.lmu.edu/dmsmith/ZMLIB.pdf">
@@ -68,7 +68,7 @@ public class ComplexUtils {
         }
 
         return ComplexNum.I.negate().multiply(log(z.add(
-                ComplexNum.I.multiply(sqrt1z(z)))));
+            ComplexNum.I.multiply(sqrt1z(z)))));
     }
 
     /**
@@ -92,7 +92,7 @@ public class ComplexUtils {
         }
 
         return ComplexNum.I.negate().multiply(log(sqrt1z(z).add(
-                ComplexNum.I.multiply(z))));
+            ComplexNum.I.multiply(z))));
     }
 
     /**
@@ -116,8 +116,8 @@ public class ComplexUtils {
         }
 
         return ComplexNum.I.multiply(
-                log(ComplexNum.I.add(z).divide(ComplexNum.I.subtract(z))))
-                .divide(ComplexNum.valueOf(2.0, 0.0));
+            log(ComplexNum.I.add(z).divide(ComplexNum.I.subtract(z))))
+            .divide(ComplexNum.valueOf(2.0, 0.0));
     }
 
     /**
@@ -156,7 +156,7 @@ public class ComplexUtils {
         final double b = z.getImaginary();
 
         return ComplexNum.valueOf(Math.cos(a) * MathUtils.cosh(b),
-                -Math.sin(a) * MathUtils.sinh(b));
+            -Math.sin(a) * MathUtils.sinh(b));
     }
 
     /**
@@ -195,7 +195,7 @@ public class ComplexUtils {
         final double b = z.getImaginary();
 
         return ComplexNum.valueOf(MathUtils.cosh(a) * Math.cos(b),
-                MathUtils.sinh(a) * Math.sin(b));
+            MathUtils.sinh(a) * Math.sin(b));
     }
 
     /**
@@ -233,7 +233,7 @@ public class ComplexUtils {
 
         final double b = z.getImaginary();
         final double expA = Math.exp(z.getReal());
-        return ComplexNum.valueOf(expA * Math.cos(b), expA * Math.sin(b));
+        return ComplexNum.valueOf(expA *  Math.cos(b), expA * Math.sin(b));
     }
 
     /**
@@ -272,7 +272,7 @@ public class ComplexUtils {
         }
 
         return ComplexNum.valueOf(Math.log(z.dabs()),
-                Math.atan2(z.getImaginary(), z.getReal()));
+            Math.atan2(z.getImaginary(), z.getReal()));
     }
 
     /**
@@ -294,16 +294,16 @@ public class ComplexUtils {
      * polar2Complex(INFINITY, -&pi;/4) = INFINITY - INFINITY i
      * polar2Complex(INFINITY, 5&pi;/4) = -INFINITY - INFINITY i </code></pre>
      *
-     * @param r     the modulus of the complex number to create
-     * @param theta the argument of the complex number to create
+     * @param r the modulus of the complex number to create
+     * @param theta  the argument of the complex number to create
      * @return <code>r&middot;e<sup>i&middot;theta</sup></code>
-     * @throws IllegalArgumentException if r is negative
+     * @throws IllegalArgumentException  if r is negative
      * @since 1.1
      */
     public static ComplexNum polar2Complex(final double r, final double theta) {
         if (r < 0) {
             throw new IllegalArgumentException
-                    ("DoubleComplexImpl modulus must not be negative");
+                ("DoubleComplexImpl modulus must not be negative");
         }
         return ComplexNum.valueOf(r * Math.cos(theta), r * Math.sin(theta));
     }
@@ -335,7 +335,7 @@ public class ComplexUtils {
      * sine</a>
      * for the given complex argument.
      * <p>
-     * Implements the formula: <pre>
+      * Implements the formula: <pre>
      * <code> sin(a + bi) = sin(a)cosh(b) - cos(a)sinh(b)i</code></pre>
      * where the (real) functions on the right-hand side are
      * {@link java.lang.Math#sin}, {@link java.lang.Math#cos},
@@ -351,7 +351,7 @@ public class ComplexUtils {
      * sin(1 &plusmn; INFINITY i) = 1 &plusmn; INFINITY i
      * sin(&plusmn;INFINITY + i) = NaN + NaN i
      * sin(&plusmn;INFINITY &plusmn; INFINITY i) = NaN + NaN i</code></pre>
-     * <p>
+     *
      * Throws <code>NullPointerException</code> if z is null.
      *
      * @param z the value whose sine is to be returned.
@@ -366,7 +366,7 @@ public class ComplexUtils {
         final double b = z.getImaginary();
 
         return ComplexNum.valueOf(Math.sin(a) * MathUtils.cosh(b),
-                Math.cos(a) * MathUtils.sinh(b));
+            Math.cos(a) * MathUtils.sinh(b));
     }
 
     /**
@@ -390,7 +390,7 @@ public class ComplexUtils {
      * sinh(1 &plusmn; INFINITY i) = NaN + NaN i
      * sinh(&plusmn;INFINITY + i) = &plusmn; INFINITY + INFINITY i
      * sinh(&plusmn;INFINITY &plusmn; INFINITY i) = NaN + NaN i</code></pre
-     * <p>
+     *
      * @param z the value whose hyperbolic sine is to be returned
      * @return the hyperbolic sine of <code>z</code>
      * @throws NullPointerException if <code>z</code> is null
@@ -404,7 +404,7 @@ public class ComplexUtils {
         final double b = z.getImaginary();
 
         return ComplexNum.valueOf(MathUtils.sinh(a) * Math.cos(b),
-                MathUtils.cosh(a) * Math.sin(b));
+            MathUtils.cosh(a) * Math.sin(b));
     }
 
     /**
@@ -454,7 +454,7 @@ public class ComplexUtils {
             return ComplexNum.valueOf(t, b / (2.0 * t));
         } else {
             return ComplexNum.valueOf(Math.abs(b) / (2.0 * t),
-                    MathUtils.indicator(b) * t);
+                MathUtils.indicator(b) * t);
         }
     }
 
@@ -524,7 +524,7 @@ public class ComplexUtils {
      * Compute the
      * <a href="http://mathworld.wolfram.com/HyperbolicTangent.html" TARGET="_top">
      * hyperbolic tangent</a> for the given complex argument.
-     * <p>
+    * <p>
      * Implements the formula: <pre>
      * <code>tan(a + bi) = sinh(2a)/(cosh(2a)+cos(2b)) + [sin(2b)/(cosh(2a)+cos(2b))]i</code></pre>
      * where the (real) functions on the right-hand side are

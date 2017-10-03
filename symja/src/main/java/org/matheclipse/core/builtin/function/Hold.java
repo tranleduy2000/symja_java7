@@ -9,17 +9,17 @@ import org.matheclipse.core.interfaces.ISymbol;
 
 public class Hold extends AbstractCoreFunctionEvaluator {
 
-    public Hold() {
-    }
+	public Hold() {
+	}
 
-    @Override
-    public IExpr evaluate(final IAST ast, EvalEngine engine) {
-        return F.NIL;
-    }
-
-    @Override
-    public void setUp(final ISymbol newSymbol) {
-        newSymbol.setAttributes(ISymbol.HOLDALL);
-    }
+	@Override
+	public IExpr evaluate(final IAST ast, EvalEngine engine) {
+		return F.NIL;
+	}
+ 
+	@Override
+	public void setUp(final ISymbol newSymbol) {
+		newSymbol.setAttributes(ISymbol.HOLDALL);
+	}
 
 }

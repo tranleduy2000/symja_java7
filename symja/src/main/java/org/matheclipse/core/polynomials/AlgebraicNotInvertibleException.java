@@ -13,17 +13,16 @@ import edu.jas.structure.NotInvertibleException;
  * Runtime Exception to be thrown for not invertible algebraic numbers.
  * Container for the non-trivial factors found by the inversion algorithm.
  * <b>Note: </b> cannot be generic because of Throwable.
- *
  * @author Heinz Kredel
  */
 public class AlgebraicNotInvertibleException extends NotInvertibleException {
 
     /**
-     *
-     */
-    private static final long serialVersionUID = 4734826103269124125L;
+	 * 
+	 */
+	private static final long serialVersionUID = 4734826103269124125L;
 
-    public final ExprPolynomial f; // = f1 * f2
+	public final ExprPolynomial f; // = f1 * f2
 
     public final ExprPolynomial f1;
 
@@ -31,29 +30,28 @@ public class AlgebraicNotInvertibleException extends NotInvertibleException {
 
 
     public AlgebraicNotInvertibleException() {
-        this(null, null, null);
+        this(null,null,null);
     }
 
 
     public AlgebraicNotInvertibleException(String c) {
-        this(c, null, null, null);
+        this(c,null,null,null);
     }
 
 
     public AlgebraicNotInvertibleException(String c, Throwable t) {
-        this(c, t, null, null, null);
+        this(c,t,null,null,null);
     }
 
 
     public AlgebraicNotInvertibleException(Throwable t) {
-        this(t, null, null, null);
+        this(t,null,null,null);
     }
 
 
     /**
      * Constructor.
-     *
-     * @param f  polynomial with f = f1 * f2.
+     * @param f polynomial with f = f1 * f2.
      * @param f1 polynomial.
      * @param f2 polynomial.
      */
@@ -67,8 +65,7 @@ public class AlgebraicNotInvertibleException extends NotInvertibleException {
 
     /**
      * Constructor.
-     *
-     * @param f  polynomial with f = f1 * f2.
+     * @param f polynomial with f = f1 * f2.
      * @param f1 polynomial.
      * @param f2 polynomial.
      */
@@ -82,13 +79,12 @@ public class AlgebraicNotInvertibleException extends NotInvertibleException {
 
     /**
      * Constructor.
-     *
-     * @param f  polynomial with f = f1 * f2.
+     * @param f polynomial with f = f1 * f2.
      * @param f1 polynomial.
      * @param f2 polynomial.
      */
     public AlgebraicNotInvertibleException(String c, Throwable t, ExprPolynomial f, ExprPolynomial f1, ExprPolynomial f2) {
-        super(c, t);
+        super(c,t);
         this.f = f;
         this.f1 = f1;
         this.f2 = f2;
@@ -97,13 +93,12 @@ public class AlgebraicNotInvertibleException extends NotInvertibleException {
 
     /**
      * Constructor.
-     *
-     * @param f  polynomial with f = f1 * f2.
+     * @param f polynomial with f = f1 * f2.
      * @param f1 polynomial.
      * @param f2 polynomial.
      */
     public AlgebraicNotInvertibleException(Throwable t, ExprPolynomial f, ExprPolynomial f1, ExprPolynomial f2) {
-        super("AlgebraicNotInvertibleException", t);
+        super("AlgebraicNotInvertibleException",t);
         this.f = f;
         this.f1 = f1;
         this.f2 = f2;
@@ -112,13 +107,12 @@ public class AlgebraicNotInvertibleException extends NotInvertibleException {
 
     /**
      * Get the String representation.
-     *
      * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
         String s = super.toString();
-        if (f != null || f1 != null || f2 != null) {
+        if ( f != null || f1 != null || f2 != null) {
             s += ", f = " + f + ", f1 = " + f1 + ", f2 = " + f2;
         }
         return s;

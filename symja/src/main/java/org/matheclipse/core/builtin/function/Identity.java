@@ -9,18 +9,18 @@ import org.matheclipse.core.interfaces.ISymbol;
 
 public class Identity extends AbstractCoreFunctionEvaluator {
 
-    public Identity() {
-    }
+	public Identity() {
+	}
 
-    @Override
-    public IExpr evaluate(final IAST ast, EvalEngine engine) {
-        Validate.checkRange(ast, 2);
+	@Override
+	public IExpr evaluate(final IAST ast, EvalEngine engine) {
+		Validate.checkRange(ast, 2);
 
-        return ast.arg1();
-    }
+		return ast.arg1();
+	}
 
-    @Override
-    public void setUp(ISymbol newSymbol) {
-        newSymbol.setAttributes(ISymbol.HOLDALL);
-    }
+	@Override
+	public void setUp(ISymbol newSymbol) {
+		newSymbol.setAttributes(ISymbol.HOLDALL);
+	}
 }
