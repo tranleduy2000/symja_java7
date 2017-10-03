@@ -37,8 +37,8 @@ import static org.apache.commons.csv.Token.Type.TOKEN;
  */
 final class Lexer implements Closeable {
 
-    private static final String CR_STRING = Character.toString(Constants.CR);
-    private static final String LF_STRING = Character.toString(Constants.LF);
+    private static final String CR_STRING = Character.toString(CR);
+    private static final String LF_STRING = Character.toString(LF);
 
     /**
      * Constant char to use for disabling comments, escapes and encapsulation. The value -2 is used because it
