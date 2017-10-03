@@ -1,1 +1,1 @@
-include ':symja', ':hipparchus'
+include ':symja', ':hipparchus', ':jas'
