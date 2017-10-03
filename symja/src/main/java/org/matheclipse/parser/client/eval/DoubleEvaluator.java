@@ -21,7 +21,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.DoubleBinaryOperator;
 import java.util.function.DoubleSupplier;
-import java.util.function.DoubleUnaryOperator;
+import com.duy.lambda.DoubleUnaryOperator;
 
 import org.matheclipse.parser.client.Parser;
 import org.matheclipse.parser.client.SyntaxError;

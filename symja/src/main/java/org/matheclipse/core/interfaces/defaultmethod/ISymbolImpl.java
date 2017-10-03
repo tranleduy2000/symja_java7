@@ -4,7 +4,7 @@ import org.matheclipse.core.expression.F;
 import org.matheclipse.core.interfaces.IExpr;
 import org.matheclipse.core.interfaces.ISymbol;
 
-import java.util.function.DoubleFunction;
+import com.duy.lambda.DoubleFunction;
 
 /**
  * Created by Duy on 10/3/2017.

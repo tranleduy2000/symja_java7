@@ -13,7 +13,7 @@ import org.matheclipse.core.interfaces.defaultmethod.IExprImpl;
 
 import java.io.IOException;
 import java.io.ObjectStreamException;
-import java.util.function.DoubleFunction;
+import com.duy.lambda.DoubleFunction;
 
 /**
  * Implements Symbols for function, constant and variable names

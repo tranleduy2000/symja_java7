@@ -37,7 +37,7 @@ import java.util.Deque;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.function.DoubleFunction;
+import com.duy.lambda.DoubleFunction;
 import com.duy.lambda.Function;
 
 public class Symbol extends IExprImpl implements ISymbol, Serializable {

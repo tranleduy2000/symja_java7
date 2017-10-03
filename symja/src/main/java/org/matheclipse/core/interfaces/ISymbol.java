@@ -12,7 +12,7 @@ import org.matheclipse.core.patternmatching.RulesData;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.function.DoubleFunction;
+import com.duy.lambda.DoubleFunction;
 import com.duy.lambda.Function;
 
 /**

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
-import java.util.function.DoubleUnaryOperator;
+import com.duy.lambda.DoubleUnaryOperator;
 import com.duy.lambda.Predicate;
 
 import  android.support.annotation.NonNull;
