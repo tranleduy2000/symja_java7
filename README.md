@@ -1,1 +1,0 @@
-"# symja_java7" 

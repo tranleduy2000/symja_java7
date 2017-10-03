@@ -2490,14 +2490,15 @@ public final class ListFunctions {
 				return F.NIL;
 			}
 			IExpr functorHead = functorList.get(pos);
-			final Function<IExpr, IExpr> function = new Function<IExpr, IExpr>() {
+			final Function<IExpr, IExpr> function;
+            function = new Function<IExpr, IExpr>() {
                 @Override
                 public IExpr apply(IExpr x) {
                     return engine.evaluate(F.unaryAST1(functorHead, x));
                 }
             };
 
-			IAST result = F.List();
+            IAST result = F.List();
 			if (list.size() > 1) {
 				IExpr last = function.apply(list.get(1));
 				IExpr current;

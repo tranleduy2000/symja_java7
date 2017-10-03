@@ -65,40 +65,40 @@ public class RulesData implements Serializable {
 					}
 					if (neededSymbols != null && arg1.isOrderlessAST()) {
 						boolean lambda = !Lambda.exists(lhsAST, new Predicate<IExpr>() {
-                            @Override
-                            public boolean test(IExpr x) {
-                                return x.isPatternDefault() || x.isOrderlessAST();
-                            }
-                        }, 1);
+							@Override
+							public boolean test(IExpr x) {
+								return x.isPatternDefault() || x.isOrderlessAST();
+							}
+						}, 1);
 						boolean[] isComplicated = { false };
 						arg1.forEach(new Consumer<IExpr>() {
-                            @Override
-                            public void accept(IExpr t) {
-                                if (t.isPatternDefault()) {
-                                    isComplicated[0] = true;
-                                } else if (lambda && t.isAST() && t.head().isSymbol()) {
-                                    neededSymbols.add((ISymbol) t.head());
-                                }
-                            }
-                        });
+							@Override
+							public void accept(IExpr t) {
+								if (t.isPatternDefault()) {
+									isComplicated[0] = true;
+								} else if (lambda && t.isAST() && t.head().isSymbol()) {
+									neededSymbols.add((ISymbol) t.head());
+								}
+							}
+						});
 						return isComplicated[0];
 					}
 					// the left hand side is associated with the first argument
 					// see if one of the arguments contain a pattern with default
 					// value
 					return Lambda.exists(arg1, new Predicate<IExpr>() {
-                        @Override
-                        public boolean test(IExpr x) {
-                            return x.isPatternDefault();
-                        }
-                    }, 1);
+						@Override
+						public boolean test(IExpr x) {
+							return x.isPatternDefault();
+						}
+					}, 1);
 				}
 				return Lambda.exists(lhsAST, new Predicate<IExpr>() {
-                    @Override
-                    public boolean test(IExpr x) {
-                        return x.isPatternDefault();
-                    }
-                }, 2);
+					@Override
+					public boolean test(IExpr x) {
+						return x.isPatternDefault();
+					}
+				}, 2);
 			}
 		} else if (lhsExpr.isPattern()) {
 			return true;

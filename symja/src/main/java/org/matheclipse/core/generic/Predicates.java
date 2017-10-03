@@ -1,18 +1,18 @@
 package org.matheclipse.core.generic;
 
-import java.io.Serializable;
-import java.util.Comparator;
-import java.util.function.BiPredicate;
-import java.util.function.Predicate;
-
 import org.matheclipse.core.eval.EvalEngine;
 import org.matheclipse.core.expression.F;
 import org.matheclipse.core.interfaces.IAST;
+import org.matheclipse.core.interfaces.IBuiltInSymbol;
 import org.matheclipse.core.interfaces.IEvaluator;
 import org.matheclipse.core.interfaces.IExpr;
 import org.matheclipse.core.interfaces.IPattern;
 import org.matheclipse.core.interfaces.ISymbol;
-import org.matheclipse.core.interfaces.IBuiltInSymbol;
+
+import java.io.Serializable;
+import java.util.Comparator;
+import java.util.function.BiPredicate;
+import java.util.function.Predicate;
 
 public class Predicates {
 	private static class InASTPredicate implements Predicate<IExpr>, Serializable {

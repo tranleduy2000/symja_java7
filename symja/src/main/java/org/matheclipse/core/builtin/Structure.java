@@ -21,7 +21,7 @@ import org.matheclipse.parser.client.math.MathException;
 
 import java.util.HashMap;
 import java.util.function.BiPredicate;
-
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 public class Structure {
@@ -544,14 +544,14 @@ public class Structure {
 					}
 
 				} else {
-					if (arg2.isAST()) {
-						engine.evaluate(((IAST) arg2).map(new java.util.function.Function<IExpr, IExpr>() {
+					if (arg2.isAST())
+                        engine.evaluate(((IAST) arg2).map(new java.util.function.Function<IExpr, IExpr>() {
                             @Override
                             public IExpr apply(IExpr x) {
                                 return F.unaryAST1(arg1, x);
                             }
                         }, 1));
-					} else {
+                    else {
 						engine.evaluate(arg2);
 					}
 				}

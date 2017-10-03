@@ -753,11 +753,11 @@ public class EvalEngine implements Serializable, IEvaluationEngine {
 		} finally {
 			// pop all local variables from local variable stack
 			variables.forEach(new Consumer<ISymbol>() {
-                @Override
-                public void accept(ISymbol x) {
-                    EvalEngine.this.localStack(x).pop();
-                }
-            });
+				@Override
+				public void accept(ISymbol x) {
+					EvalEngine.this.localStack(x).pop();
+				}
+			});
 		}
 	}
 

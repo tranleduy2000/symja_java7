@@ -1,10 +1,5 @@
 package org.matheclipse.core.graphics;
 
-import java.io.IOException;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.util.Locale;
-
 import org.matheclipse.core.basic.Config;
 import org.matheclipse.core.eval.EvalEngine;
 import org.matheclipse.core.eval.util.Options;
@@ -12,6 +7,11 @@ import org.matheclipse.core.expression.F;
 import org.matheclipse.core.interfaces.IAST;
 import org.matheclipse.core.interfaces.IExpr;
 import org.matheclipse.core.interfaces.ISignedNumber;
+
+import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 public class Show2SVG {
 //
@@ -403,10 +403,10 @@ public class Show2SVG {
 
 	public static void toSVG(IAST ast, Appendable buf) throws IOException {
 
-		if (ast.size() > 1 && ast.get(1).isASTSizeGE(F.Graphics, 2)) {
-			graphicsToSVG(ast.getAST(1), buf);
-		} else if (ast.size() > 1 && ast.get(1).isASTSizeGE(F.Graphics3D, 2)) {
-			graphics3dToSVG(ast.getAST(1), buf);
-		}
+//		if (ast.size() > 1 && ast.get(1).isASTSizeGE(F.Graphics, 2)) {
+//			graphicsToSVG(ast.getAST(1), buf);
+//		} else if (ast.size() > 1 && ast.get(1).isASTSizeGE(F.Graphics3D, 2)) {
+//			graphics3dToSVG(ast.getAST(1), buf);
+//		}
 	}
 }

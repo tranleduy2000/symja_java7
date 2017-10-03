@@ -440,7 +440,7 @@ public class Limit extends AbstractFunctionEvaluator implements LimitRules {
                     return x.isFree(data.getSymbol(), true);
                 }
             }, F.C1, F.C1, F.List);
-            if (!isFreeResult.get(2).isOne()) {
+			if (!isFreeResult.get(2).isOne()) {
 				return F.Times(F.Power(isFreeResult.get(1), exponent),
 						data.limit(F.Power(isFreeResult.get(2), exponent)));
 			}
