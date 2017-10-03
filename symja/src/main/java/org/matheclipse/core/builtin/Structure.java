@@ -20,8 +20,8 @@ import org.matheclipse.core.visit.VisitorLevelSpecification;
 import org.matheclipse.parser.client.math.MathException;
 
 import java.util.HashMap;
-import java.util.function.BiPredicate;
-import java.util.function.Function;
+import com.duy.lambda.BiPredicate;
+
 import java.util.function.Predicate;
 
 public class Structure {

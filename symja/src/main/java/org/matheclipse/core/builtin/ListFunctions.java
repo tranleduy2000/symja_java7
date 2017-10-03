@@ -12,7 +12,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.function.BiFunction;
-import java.util.function.BiPredicate;
+import com.duy.lambda.BiPredicate;
 import java.util.function.Function;
 import java.util.function.Predicate;
 

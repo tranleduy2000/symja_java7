@@ -11,7 +11,7 @@ import org.matheclipse.core.interfaces.ISymbol;
 
 import java.io.Serializable;
 import java.util.Comparator;
-import java.util.function.BiPredicate;
+import com.duy.lambda.BiPredicate;
 import java.util.function.Predicate;
 
 public class Predicates {
@@ -269,7 +269,7 @@ public class Predicates {
 	 * returned.
 	 * 
 	 * @param expr
-	 * @return a <code>java.util.function.BiPredicate</code> predicate of two
+	 * @return a <code>com.duy.lambda.BiPredicate</code> predicate of two
 	 *         arguments.
 	 */
 	public static BiPredicate<IExpr, IExpr> isBinaryFalse(IExpr expr) {
@@ -282,7 +282,7 @@ public class Predicates {
 	 * returned.
 	 * 
 	 * @param expr
-	 * @return a <code>java.util.function.BiPredicate</code> predicate of two
+	 * @return a <code>com.duy.lambda.BiPredicate</code> predicate of two
 	 *         arguments.
 	 */
 	public static BiPredicate<IExpr, IExpr> isBinaryTrue(IExpr expr) {
