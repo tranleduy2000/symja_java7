@@ -1,5 +1,7 @@
 package org.matheclipse.core.reflection.system;
 
+import static org.matheclipse.core.expression.F.List;
+
 import org.matheclipse.core.builtin.ListFunctions;
 import org.matheclipse.core.eval.EvalEngine;
 import org.matheclipse.core.eval.interfaces.AbstractEvaluator;
@@ -9,8 +11,6 @@ import org.matheclipse.core.interfaces.IExpr;
 import org.matheclipse.core.interfaces.ISymbol;
 
 import java.util.function.BiFunction;
-
-import static org.matheclipse.core.expression.F.List;
 
 /**
  * <pre>

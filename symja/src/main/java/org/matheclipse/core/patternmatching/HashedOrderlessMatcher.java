@@ -1,5 +1,8 @@
 package org.matheclipse.core.patternmatching;
 
+import java.util.List;
+import java.util.function.Predicate;
+
 import org.matheclipse.core.eval.EvalEngine;
 import org.matheclipse.core.eval.util.OpenIntToList;
 import org.matheclipse.core.expression.F;
@@ -7,9 +10,6 @@ import org.matheclipse.core.generic.BinaryFunctorImpl;
 import org.matheclipse.core.interfaces.IAST;
 import org.matheclipse.core.interfaces.IExpr;
 import org.matheclipse.core.visit.HashValueVisitor;
-
-import java.util.List;
-import java.util.function.Predicate;
 
 /**
  * Match two arguments of an <code>Orderless</code> AST into a new resulting
