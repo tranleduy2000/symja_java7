@@ -3,7 +3,7 @@ package org.matheclipse.core.expression;
 import org.matheclipse.core.interfaces.IExpr;
 import org.matheclipse.core.interfaces.IStringX;
 import org.matheclipse.core.interfaces.ISymbol;
-import org.matheclipse.core.interfaces.defaultmethod.IStringXImpl;
+import org.matheclipse.core.interfaces.IStringXImpl;
 import org.matheclipse.core.visit.IVisitor;
 import org.matheclipse.core.visit.IVisitorBoolean;
 import org.matheclipse.core.visit.IVisitorInt;

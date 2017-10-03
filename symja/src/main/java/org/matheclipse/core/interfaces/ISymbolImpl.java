@@ -1,8 +1,6 @@
-package org.matheclipse.core.interfaces.defaultmethod;
+package org.matheclipse.core.interfaces;
 
 import org.matheclipse.core.expression.F;
-import org.matheclipse.core.interfaces.IExpr;
-import org.matheclipse.core.interfaces.ISymbol;
 
 import java.util.function.DoubleFunction;
 

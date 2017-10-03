@@ -1,4 +1,6 @@
-package org.matheclipse.core.interfaces.defaultmethod;
+package org.matheclipse.core.interfaces;
+
+import android.support.annotation.NonNull;
 
 import org.hipparchus.Field;
 import org.hipparchus.complex.Complex;
@@ -47,7 +49,6 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import  android.support.annotation.NonNull;
 import javax.annotation.Nullable;
 
 import edu.jas.structure.ElemFactory;

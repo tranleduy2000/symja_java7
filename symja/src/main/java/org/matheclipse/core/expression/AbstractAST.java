@@ -16,6 +16,7 @@ import org.matheclipse.core.form.output.OutputFormFactory;
 import org.matheclipse.core.generic.Predicates;
 import org.matheclipse.core.generic.UnaryVariable2Slot;
 import org.matheclipse.core.interfaces.IAST;
+import org.matheclipse.core.interfaces.IASTImpl;
 import org.matheclipse.core.interfaces.IComplex;
 import org.matheclipse.core.interfaces.IComplexNum;
 import org.matheclipse.core.interfaces.IExpr;
@@ -28,7 +29,7 @@ import org.matheclipse.core.interfaces.IPatternObject;
 import org.matheclipse.core.interfaces.ISignedNumber;
 import org.matheclipse.core.interfaces.IStringX;
 import org.matheclipse.core.interfaces.ISymbol;
-import org.matheclipse.core.interfaces.defaultmethod.IExprImpl;
+import org.matheclipse.core.interfaces.IExprImpl;
 import org.matheclipse.core.patternmatching.IPatternMatcher;
 import org.matheclipse.core.patternmatching.PatternMatcherEvalEngine;
 import org.matheclipse.core.polynomials.ExprPolynomial;
@@ -53,7 +54,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-public abstract class AbstractAST extends IExprImpl implements IAST {
+public abstract class AbstractAST extends IASTImpl implements IAST {
 
     private static final long serialVersionUID = -8682706994448890660L;
     /**
@@ -329,12 +330,12 @@ public abstract class AbstractAST extends IExprImpl implements IAST {
     @Override
     public IAST clone() {
         AbstractAST ast = null;
-        try {
+//        try {
             ast = (AbstractAST) super.clone();
             ast.fEvalFlags = 0;
             ast.hashValue = 0;
-        } catch (CloneNotSupportedException e) {
-        }
+//        } catch (CloneNotSupportedException e) {
+//        }
         return ast;
     }
 

@@ -1,6 +1,4 @@
-package org.matheclipse.core.interfaces.defaultmethod;
-
-import org.matheclipse.core.interfaces.IInteger;
+package org.matheclipse.core.interfaces;
 
 import java.math.BigInteger;
 

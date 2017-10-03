@@ -11,7 +11,7 @@ import org.matheclipse.core.interfaces.IInteger;
 import org.matheclipse.core.interfaces.IRational;
 import org.matheclipse.core.interfaces.ISignedNumber;
 import org.matheclipse.core.interfaces.ISymbol;
-import org.matheclipse.core.interfaces.defaultmethod.IIntegerImpl;
+import org.matheclipse.core.interfaces.IIntegerImpl;
 import org.matheclipse.core.numbertheory.Primality;
 import org.matheclipse.core.visit.IVisitor;
 import org.matheclipse.core.visit.IVisitorBoolean;

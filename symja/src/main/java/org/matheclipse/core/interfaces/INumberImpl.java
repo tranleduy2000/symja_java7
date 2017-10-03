@@ -1,8 +1,4 @@
-package org.matheclipse.core.interfaces.defaultmethod;
-
-import org.matheclipse.core.interfaces.IExpr;
-import org.matheclipse.core.interfaces.INumber;
-import org.matheclipse.core.interfaces.ISignedNumber;
+package org.matheclipse.core.interfaces;
 
 /**
  * Created by Duy on 10/3/2017.

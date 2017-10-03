@@ -1,6 +1,4 @@
-package org.matheclipse.core.interfaces.defaultmethod;
-
-import org.matheclipse.core.interfaces.IPatternSequence;
+package org.matheclipse.core.interfaces;
 
 /**
  * Created by Duy on 10/3/2017.
