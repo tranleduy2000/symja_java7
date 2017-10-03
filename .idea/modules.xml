@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/hipparchus/hipparchus.iml" filepath="$PROJECT_DIR$/hipparchus/hipparchus.iml" />
       <module fileurl="file://$PROJECT_DIR$/symja/symja.iml" filepath="$PROJECT_DIR$/symja/symja.iml" />
       <module fileurl="file://$PROJECT_DIR$/symja_android_library2.iml" filepath="$PROJECT_DIR$/symja_android_library2.iml" />
     </modules>
