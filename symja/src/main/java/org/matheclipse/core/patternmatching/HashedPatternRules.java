@@ -5,7 +5,7 @@ import org.matheclipse.core.expression.Context;
 import org.matheclipse.core.expression.F;
 import org.matheclipse.core.interfaces.IExpr;
 import org.matheclipse.core.interfaces.ISymbol;
-import org.matheclipse.core.interfaces.IExprImpl;
+import org.matheclipse.core.interfaces.defaultmethod.IExprImpl;
 
 /**
  * Data structure for <code>HashedOrderlessMatcher</code>.

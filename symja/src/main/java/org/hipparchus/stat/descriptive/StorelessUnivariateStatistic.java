@@ -36,8 +36,7 @@ import java.util.function.DoubleConsumer;
  * {@link #evaluate(double[], int, int)} methods do <b>NOT</b> alter the internal
  * state of the respective statistic.
  */
-public interface StorelessUnivariateStatistic
-        extends UnivariateStatistic, DoubleConsumer {
+public interface StorelessUnivariateStatistic extends UnivariateStatistic, DoubleConsumer {
 
     /**
      * {@inheritDoc}

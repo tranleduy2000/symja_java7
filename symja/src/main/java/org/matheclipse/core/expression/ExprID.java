@@ -2,7 +2,7 @@ package org.matheclipse.core.expression;
 
 import org.matheclipse.core.interfaces.IExpr;
 import org.matheclipse.core.interfaces.ISymbol;
-import org.matheclipse.core.interfaces.IExprImpl;
+import org.matheclipse.core.interfaces.defaultmethod.IExprImpl;
 import org.matheclipse.core.visit.IVisitor;
 import org.matheclipse.core.visit.IVisitorBoolean;
 import org.matheclipse.core.visit.IVisitorInt;

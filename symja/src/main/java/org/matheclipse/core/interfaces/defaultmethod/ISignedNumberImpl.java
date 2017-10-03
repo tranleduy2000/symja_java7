@@ -1,6 +1,9 @@
-package org.matheclipse.core.interfaces;
+package org.matheclipse.core.interfaces.defaultmethod;
 
 import org.matheclipse.core.expression.F;
+import org.matheclipse.core.interfaces.IExpr;
+import org.matheclipse.core.interfaces.INumber;
+import org.matheclipse.core.interfaces.ISignedNumber;
 
 
 /**

@@ -9,7 +9,7 @@ import org.matheclipse.core.interfaces.IBuiltInSymbol;
 import org.matheclipse.core.interfaces.IEvaluator;
 import org.matheclipse.core.interfaces.IExpr;
 import org.matheclipse.core.interfaces.ISymbol;
-import org.matheclipse.core.interfaces.IExprImpl;
+import org.matheclipse.core.interfaces.defaultmethod.IExprImpl;
 
 import java.io.IOException;
 import java.io.ObjectStreamException;

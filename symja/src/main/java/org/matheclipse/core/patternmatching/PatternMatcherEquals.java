@@ -8,7 +8,7 @@ import org.matheclipse.core.interfaces.IAST;
 import org.matheclipse.core.interfaces.IExpr;
 import org.matheclipse.core.interfaces.ISymbol;
 import org.matheclipse.core.interfaces.ISymbol.RuleType;
-import org.matheclipse.core.interfaces.IExprImpl;
+import org.matheclipse.core.interfaces.defaultmethod.IExprImpl;
 
 import java.io.Externalizable;
 import java.io.IOException;

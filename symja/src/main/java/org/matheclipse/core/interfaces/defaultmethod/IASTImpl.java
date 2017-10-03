@@ -1,6 +1,8 @@
-package org.matheclipse.core.interfaces;
+package org.matheclipse.core.interfaces.defaultmethod;
 
 import org.matheclipse.core.expression.F;
+import org.matheclipse.core.interfaces.IAST;
+import org.matheclipse.core.interfaces.IExpr;
 
 import java.util.Collection;
 import java.util.Iterator;

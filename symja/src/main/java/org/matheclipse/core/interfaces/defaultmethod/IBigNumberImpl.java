@@ -1,4 +1,4 @@
-package org.matheclipse.core.interfaces;
+package org.matheclipse.core.interfaces.defaultmethod;
 
 /**
  * Created by Duy on 10/3/2017.

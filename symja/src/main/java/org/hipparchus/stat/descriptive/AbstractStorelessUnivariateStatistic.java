@@ -26,8 +26,7 @@ import org.hipparchus.util.Precision;
  * Provides default {@code hashCode()} and {@code equals(Object)}
  * implementations.
  */
-public abstract class AbstractStorelessUnivariateStatistic
-        implements StorelessUnivariateStatistic {
+public abstract class AbstractStorelessUnivariateStatistic implements StorelessUnivariateStatistic {
 
     /**
      * {@inheritDoc}

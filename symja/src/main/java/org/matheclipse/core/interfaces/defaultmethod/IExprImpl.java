@@ -1,4 +1,4 @@
-package org.matheclipse.core.interfaces;
+package org.matheclipse.core.interfaces.defaultmethod;
 
 import android.support.annotation.NonNull;
 
