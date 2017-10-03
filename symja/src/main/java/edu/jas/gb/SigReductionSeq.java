@@ -7,13 +7,12 @@ package edu.jas.gb;
 
 import org.apache.log4j.Logger;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.function.ToLongFunction;
+
+import com.duy.lambda.ToLongFunction;
 import java.util.stream.Collectors;
 
 import edu.jas.poly.ExpVector;
