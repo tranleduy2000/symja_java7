@@ -1117,7 +1117,7 @@ public interface IAST extends IExpr, Cloneable, Iterable<IExpr> {
      *
      * @return the number of elements in this {@code IAST}.
      */
-    public int size();
+//    public int size();
 
     /**
      * Returns a sequential {@link Stream} with the specified range of the specified
@@ -1125,7 +1125,7 @@ public interface IAST extends IExpr, Cloneable, Iterable<IExpr> {
      *
      * @return a {@code Stream} for the internal array range
      */
-    public Stream<IExpr> stream();
+//    public Stream<IExpr> stream();
 
     /**
      * Returns a sequential {@link Stream} with the specified range of the specified

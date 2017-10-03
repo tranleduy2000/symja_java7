@@ -2966,15 +2966,15 @@ public abstract class AbstractAST extends IASTImpl implements IAST {
         return 1;
     }
 
-    @Override
-    public Stream<IExpr> stream() {
-        return Arrays.stream(toArray(), 1, size());
-    }
-
-    @Override
-    public Stream<IExpr> stream(int startInclusive, int endExclusive) {
-        return Arrays.stream(toArray(), startInclusive, endExclusive);
-    }
+//    @Override
+//    public Stream<IExpr> stream() {
+//        return Arrays.stream(toArray(), 1, size());
+//    }
+//
+//    @Override
+//    public Stream<IExpr> stream(int startInclusive, int endExclusive) {
+//        return Arrays.stream(toArray(), startInclusive, endExclusive);
+//    }
 
     @Override
     public final IExpr timesDistributed(final IExpr that) {

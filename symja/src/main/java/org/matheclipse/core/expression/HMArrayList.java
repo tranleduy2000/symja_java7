@@ -796,15 +796,15 @@ public abstract class HMArrayList extends AbstractAST implements Cloneable, Seri
 		return lastIndex - firstIndex;
 	}
 
-	@Override
-	public Stream<IExpr> stream() {
-		return Arrays.stream(array, firstIndex + 1, lastIndex - firstIndex);
-	}
-
-	@Override
-	public Stream<IExpr> stream(int startInclusive, int endExclusive) {
-		return Arrays.stream(toArray(), firstIndex + startInclusive, firstIndex + endExclusive);
-	}
+//	@Override
+//	public Stream<IExpr> stream() {
+//		return Arrays.stream(array, firstIndex + 1, lastIndex - firstIndex);
+//	}
+//
+//	@Override
+//	public Stream<IExpr> stream(int startInclusive, int endExclusive) {
+//		return Arrays.stream(toArray(), firstIndex + startInclusive, firstIndex + endExclusive);
+//	}
 
 	/**
 	 * Returns a new array containing all elements contained in this
