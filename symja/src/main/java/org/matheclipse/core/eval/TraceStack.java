@@ -7,7 +7,7 @@ import org.matheclipse.core.interfaces.AbstractEvalStepListener;
 import org.matheclipse.core.interfaces.IAST;
 import org.matheclipse.core.interfaces.IExpr;
 
-import com.duy.lambda.Predicate;
+import java.util.function.Predicate;
 
 final public class TraceStack extends AbstractEvalStepListener {
 

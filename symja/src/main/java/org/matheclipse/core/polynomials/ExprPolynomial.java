@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
-import com.duy.lambda.Function;
+import java.util.function.Function;
 
 import org.apache.log4j.Logger;
 import org.matheclipse.core.eval.exception.Validate;

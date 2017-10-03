@@ -13,8 +13,8 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
-import com.duy.lambda.Function;
-import com.duy.lambda.Predicate;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 import org.matheclipse.core.basic.Config;
 import org.matheclipse.core.convert.VariablesSet;

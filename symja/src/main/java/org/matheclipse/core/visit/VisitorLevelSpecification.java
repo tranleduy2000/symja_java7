@@ -1,6 +1,6 @@
 package org.matheclipse.core.visit;
 
-import com.duy.lambda.Function;
+import java.util.function.Function;
 
 import org.matheclipse.core.eval.EvalEngine;
 import org.matheclipse.core.eval.exception.Validate;

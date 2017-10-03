@@ -2,7 +2,7 @@ package org.matheclipse.core.expression;
 
 import java.io.ObjectStreamException;
 import java.util.Map;
-import com.duy.lambda.Predicate;
+import java.util.function.Predicate;
 
 import  android.support.annotation.NonNull;
 

@@ -8,8 +8,8 @@ import static org.matheclipse.core.expression.F.Negate;
 import static org.matheclipse.core.expression.F.Round;
 
 import java.math.BigInteger;
-import com.duy.lambda.Function;
-import com.duy.lambda.Predicate;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 import org.matheclipse.core.eval.EvalEngine;
 import org.matheclipse.core.eval.exception.Validate;

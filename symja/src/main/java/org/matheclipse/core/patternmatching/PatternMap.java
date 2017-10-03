@@ -7,7 +7,7 @@ import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import com.duy.lambda.Function;
+import java.util.function.Function;
 
 import  android.support.annotation.NonNull;
 

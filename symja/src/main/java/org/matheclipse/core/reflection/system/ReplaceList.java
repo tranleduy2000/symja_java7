@@ -1,6 +1,6 @@
 package org.matheclipse.core.reflection.system;
 
-import com.duy.lambda.Function;
+import java.util.function.Function;
 
 import org.matheclipse.core.basic.ToggleFeature;
 import org.matheclipse.core.eval.EvalEngine;

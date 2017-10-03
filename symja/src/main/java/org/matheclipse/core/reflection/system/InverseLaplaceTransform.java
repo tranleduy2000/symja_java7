@@ -10,7 +10,7 @@ import org.matheclipse.core.interfaces.IExpr;
 import org.matheclipse.core.polynomials.PartialFractionGenerator;
 import org.matheclipse.core.reflection.system.rules.InverseLaplaceTransformRules;
 
-import com.duy.lambda.Predicate;
+import java.util.function.Predicate;
 
 /**
  * <pre>

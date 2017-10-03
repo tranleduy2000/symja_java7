@@ -20,7 +20,7 @@ import org.matheclipse.core.visit.IVisitorLong;
 import java.io.ObjectStreamException;
 import java.util.Collection;
 import java.util.Map;
-import com.duy.lambda.Predicate;
+import java.util.function.Predicate;
 
 /**
  * A &quot;blank pattern&quot; with no assigned &quot;pattern name&quot; (i.e. &quot;<code>_</code>&quot;)

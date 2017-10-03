@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.Locale;
 import java.util.Map;
-import com.duy.lambda.Function;
+import java.util.function.Function;
 
 import  android.support.annotation.NonNull;
 

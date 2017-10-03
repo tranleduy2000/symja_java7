@@ -33,7 +33,7 @@ import static org.matheclipse.core.expression.F.y;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.duy.lambda.Function;
+import java.util.function.Function;
 
 import org.hipparchus.exception.MathIllegalArgumentException;
 import org.hipparchus.linear.BlockFieldMatrix;

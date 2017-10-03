@@ -38,7 +38,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.function.DoubleFunction;
-import com.duy.lambda.Function;
+import java.util.function.Function;
 
 public class Symbol extends IExprImpl implements ISymbol, Serializable {
 	protected transient Context fContext;

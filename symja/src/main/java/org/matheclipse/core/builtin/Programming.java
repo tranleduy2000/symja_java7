@@ -8,7 +8,7 @@ import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
-import com.duy.lambda.Function;
+import java.util.function.Function;
 
 import org.matheclipse.core.basic.Config;
 import org.matheclipse.core.convert.VariablesSet;

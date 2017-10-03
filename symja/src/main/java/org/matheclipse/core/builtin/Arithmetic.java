@@ -48,7 +48,7 @@ import static org.matheclipse.core.expression.F.y_;
 import java.math.BigInteger;
 import java.util.function.DoubleFunction;
 import java.util.function.DoubleUnaryOperator;
-import com.duy.lambda.Function;
+import java.util.function.Function;
 
 import org.apfloat.Apcomplex;
 import org.apfloat.ApcomplexMath;

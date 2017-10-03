@@ -1,6 +1,6 @@
 package org.matheclipse.core.patternmatching;
 
-import com.duy.lambda.Predicate;
+import java.util.function.Predicate;
 
 import org.matheclipse.core.eval.EvalEngine;
 import org.matheclipse.core.expression.Context;

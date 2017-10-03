@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Consumer;
-import com.duy.lambda.Predicate;
+import java.util.function.Predicate;
 
 import  android.support.annotation.NonNull;
 

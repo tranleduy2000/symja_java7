@@ -1,7 +1,7 @@
 package org.matheclipse.core.patternmatching;
 
 import java.util.List;
-import com.duy.lambda.Predicate;
+import java.util.function.Predicate;
 
 import org.matheclipse.core.eval.EvalEngine;
 import org.matheclipse.core.eval.util.OpenIntToList;

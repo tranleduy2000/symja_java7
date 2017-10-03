@@ -2,8 +2,8 @@ package org.matheclipse.core.eval.util;
 
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
-import com.duy.lambda.Function;
-import com.duy.lambda.Predicate;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 import org.matheclipse.core.expression.F;
 import org.matheclipse.core.interfaces.IAST;

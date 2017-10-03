@@ -3,7 +3,7 @@ package org.matheclipse.core.expression;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
-import com.duy.lambda.Predicate;
+import java.util.function.Predicate;
 
 import org.matheclipse.core.interfaces.IAST;
 import org.matheclipse.core.interfaces.IExpr;

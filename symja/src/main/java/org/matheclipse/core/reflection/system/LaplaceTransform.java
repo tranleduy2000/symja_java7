@@ -8,7 +8,7 @@ import org.matheclipse.core.interfaces.IAST;
 import org.matheclipse.core.interfaces.IExpr;
 import org.matheclipse.core.reflection.system.rules.LaplaceTransformRules;
 
-import com.duy.lambda.Predicate;
+import java.util.function.Predicate;
 
 /**
  * <pre>
