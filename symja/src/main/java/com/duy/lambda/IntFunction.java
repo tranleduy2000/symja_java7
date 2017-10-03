@@ -1,4 +1,4 @@
-package com.duy.stream;
+package com.duy.lambda;
 
 public interface IntFunction<R> {
 
