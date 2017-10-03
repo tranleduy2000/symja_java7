@@ -18,7 +18,7 @@ import static org.matheclipse.core.expression.F.Times;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.function.BiFunction;
+import com.duy.lambda.BiFunction;
 import java.util.function.Predicate;
 
 import org.matheclipse.core.basic.Config;

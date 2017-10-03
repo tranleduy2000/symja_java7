@@ -1,6 +1,6 @@
 package org.matheclipse.core.generic;
 
-import java.util.function.BiFunction;
+import com.duy.lambda.BiFunction;
 import java.util.function.Function;
 
 /**

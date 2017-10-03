@@ -1,6 +1,6 @@
 package org.matheclipse.core.patternmatching;
 
-import java.util.function.BiFunction;
+import com.duy.lambda.BiFunction;
 import com.duy.lambda.BiPredicate;
 import java.util.function.Function;
 import java.util.function.Predicate;
