@@ -19,7 +19,7 @@ import org.matheclipse.core.patternmatching.PatternMatcher;
 import org.matheclipse.core.patternmatching.RulesData;
 
 import java.util.function.Consumer;
-import java.util.function.Predicate;
+import com.duy.lambda.Predicate;
 
 import static org.matheclipse.core.expression.F.Rule;
 import static org.matheclipse.core.expression.F.RuleDelayed;

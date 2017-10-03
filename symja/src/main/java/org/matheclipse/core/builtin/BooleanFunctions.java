@@ -24,7 +24,7 @@ import org.matheclipse.core.visit.VisitorExpr;
 
 import com.duy.lambda.BiPredicate;
 import java.util.function.Function;
-import java.util.function.Predicate;
+import com.duy.lambda.Predicate;
 
 import static org.matheclipse.core.expression.F.And;
 import static org.matheclipse.core.expression.F.Equivalent;

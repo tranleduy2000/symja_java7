@@ -1,4 +1,4 @@
-package java.util.function;
+package com.duy.lambda;
 
 public interface Predicate<T> {
 

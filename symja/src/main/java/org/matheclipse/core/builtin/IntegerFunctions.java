@@ -9,7 +9,7 @@ import static org.matheclipse.core.expression.F.Round;
 
 import java.math.BigInteger;
 import java.util.function.Function;
-import java.util.function.Predicate;
+import com.duy.lambda.Predicate;
 
 import org.matheclipse.core.eval.EvalEngine;
 import org.matheclipse.core.eval.exception.Validate;

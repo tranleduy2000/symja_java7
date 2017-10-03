@@ -22,7 +22,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
-import java.util.function.Predicate;
+import com.duy.lambda.Predicate;
 
 import org.matheclipse.core.basic.Config;
 import org.matheclipse.core.convert.JASConvert;

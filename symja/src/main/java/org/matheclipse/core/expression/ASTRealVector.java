@@ -18,7 +18,7 @@ import java.util.RandomAccess;
 import java.util.Set;
 import java.util.function.DoubleUnaryOperator;
 import java.util.function.Function;
-import java.util.function.Predicate;
+import com.duy.lambda.Predicate;
 
 
 /**

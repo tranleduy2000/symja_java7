@@ -9,7 +9,7 @@ import java.util.NoSuchElementException;
 import com.duy.lambda.BiFunction;
 import com.duy.lambda.BiPredicate;
 import java.util.function.Function;
-import java.util.function.Predicate;
+import com.duy.lambda.Predicate;
 
 import org.matheclipse.core.interfaces.IAST;
 import org.matheclipse.core.interfaces.IExpr;

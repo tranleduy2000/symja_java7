@@ -14,7 +14,7 @@ import java.util.TreeSet;
 import com.duy.lambda.BiFunction;
 import com.duy.lambda.BiPredicate;
 import java.util.function.Function;
-import java.util.function.Predicate;
+import com.duy.lambda.Predicate;
 
 import org.matheclipse.core.basic.Config;
 import org.matheclipse.core.convert.VariablesSet;

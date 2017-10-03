@@ -55,7 +55,7 @@ import java.util.Map.Entry;
 import java.util.SortedMap;
 import com.duy.lambda.BiPredicate;
 import java.util.function.Function;
-import java.util.function.Predicate;
+import com.duy.lambda.Predicate;
 
 import edu.jas.arith.BigInteger;
 import edu.jas.arith.BigRational;

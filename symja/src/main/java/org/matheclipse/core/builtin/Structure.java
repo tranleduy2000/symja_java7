@@ -22,7 +22,7 @@ import org.matheclipse.parser.client.math.MathException;
 import java.util.HashMap;
 import com.duy.lambda.BiPredicate;
 
-import java.util.function.Predicate;
+import com.duy.lambda.Predicate;
 
 public class Structure {
 
