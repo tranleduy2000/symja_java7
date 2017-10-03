@@ -2,7 +2,7 @@ package org.matheclipse.core.reflection.system;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.function.Consumer;
+import com.duy.lambda.Consumer;
 import com.duy.lambda.Predicate;
 
 import org.matheclipse.core.builtin.BooleanFunctions;

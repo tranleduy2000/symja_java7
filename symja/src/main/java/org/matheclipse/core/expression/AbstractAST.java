@@ -47,7 +47,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import com.duy.lambda.BiFunction;
-import java.util.function.Consumer;
+import com.duy.lambda.Consumer;
 import com.duy.lambda.Function;
 import com.duy.lambda.Predicate;
 

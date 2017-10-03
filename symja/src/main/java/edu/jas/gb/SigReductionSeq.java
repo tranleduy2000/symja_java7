@@ -5,14 +5,15 @@
 package edu.jas.gb;
 
 
+import com.duy.stream.DComparator;
+import com.duy.lambda.ToLongFunction;
+
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-
-import com.duy.lambda.ToLongFunction;
 import java.util.stream.Collectors;
 
 import edu.jas.poly.ExpVector;
@@ -492,18 +493,19 @@ public class SigReductionSeq<C extends RingElem<C>> implements SigReduction<C> {
     /**
      * Sort signature polynomials according to the degree its signatures.
      *
-     * @param F list of signature polynomials.
+     * @param list list of signature polynomials.
      * @return list of signature polynomials sorted by degree of sigma.
      */
-    public List<SigPair<C>> sortSigma(List<SigPair<C>> F) {
+    public List<SigPair<C>> sortSigma(List<SigPair<C>> list) {
         //Comparator<SigPair<C>> sigcmp = Comparator.comparing(SigPair::getSigma::degree);
-        Comparator<SigPair<C>> sigcmp = Comparator.comparingLong(new ToLongFunction<SigPair<C>>() {
+        ToLongFunction<SigPair<C>> function = new ToLongFunction<SigPair<C>>() {
             @Override
             public long applyAsLong(SigPair<C> cSigPair) {
                 return cSigPair.getSigmaDegree();
             }
-        });
-        List<SigPair<C>> ff = F.stream().sorted(sigcmp).collect(Collectors.toList());
+        };
+        Comparator<SigPair<C>> sigcmp = DComparator.comparingLong(function);
+        List<SigPair<C>> ff = list.stream().sorted(sigcmp).collect(Collectors.toList());
         return ff;
     }
 }

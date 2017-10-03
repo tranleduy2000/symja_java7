@@ -44,7 +44,7 @@ import org.matheclipse.core.visit.VisitorReplaceSlots;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
+import com.duy.lambda.Consumer;
 import com.duy.lambda.Function;
 import com.duy.lambda.Predicate;
 import com.duy.lambda.Supplier;

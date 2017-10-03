@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.function.Consumer;
+import com.duy.lambda.Consumer;
 import com.duy.lambda.Predicate;
 
 import org.matheclipse.core.expression.F;

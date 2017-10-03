@@ -18,7 +18,7 @@ import org.matheclipse.core.interfaces.ISymbol.RuleType;
 import org.matheclipse.core.patternmatching.PatternMatcher;
 import org.matheclipse.core.patternmatching.RulesData;
 
-import java.util.function.Consumer;
+import com.duy.lambda.Consumer;
 import com.duy.lambda.Predicate;
 
 import static org.matheclipse.core.expression.F.Rule;

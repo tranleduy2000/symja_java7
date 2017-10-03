@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.function.Consumer;
+import com.duy.lambda.Consumer;
 
 /**
  * The pattern matching rules associated with a symbol.

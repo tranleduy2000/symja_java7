@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Consumer;
+import com.duy.lambda.Consumer;
 import com.duy.lambda.Function;
 import com.duy.lambda.Predicate;
 
@@ -672,7 +672,6 @@ public interface IAST extends IExpr, Cloneable, Iterable<IExpr> {
      * <b>Note:</b> the 0-th element (i.e. the head of the AST) will not be
      * selected.
      */
-    @Override
     public void forEach(Consumer<? super IExpr> action);
 
     /**
