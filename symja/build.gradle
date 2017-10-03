@@ -45,6 +45,6 @@ dependencies {
 retrolambda {
     javaVersion JavaVersion.VERSION_1_7
     defaultMethods true
-
+    incremental false
     jvmArgs '-noverify'
 }
