@@ -8,32 +8,32 @@ import org.matheclipse.parser.client.math.MathException;
  * was exceeded.
  */
 public class IterationLimitExceeded extends MathException {
-    /**
-     *
-     */
-    private static final long serialVersionUID = 4334847679009499117L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4334847679009499117L;
 
-    /**
-     *
-     */
-    long fLimit;
+	/**
+	 * 
+	 */
+	long fLimit;
 
 
-    public IterationLimitExceeded(final long limit) {
-        fLimit = limit;
-    }
+	public IterationLimitExceeded(final long limit) {
+		fLimit = limit;
+	}
 
-    public static void throwIt(long iterationCounter, final IExpr expr) {
-        // HeapContext.enter();
-        // try {
-        throw new IterationLimitExceeded(iterationCounter);// expr.copy());
-        // } finally {
-        // HeapContext.exit();
-        // }
-    }
+	@Override
+	public String getMessage() {
+		return "Iteration limit of " + fLimit + " exceeded.";
+	}
 
-    @Override
-    public String getMessage() {
-        return "Iteration limit of " + fLimit + " exceeded.";
-    }
+	public static void throwIt(long iterationCounter, final IExpr expr) {
+		// HeapContext.enter();
+		// try {
+		throw new IterationLimitExceeded(iterationCounter);// expr.copy());
+		// } finally {
+		// HeapContext.exit();
+		// }
+	}
 }

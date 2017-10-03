@@ -1,7 +1,7 @@
 package org.matheclipse.core.builtin.function;
 
-import com.google.common.util.concurrent.SimpleTimeLimiter;
-import com.google.common.util.concurrent.TimeLimiter;
+import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
 
 import org.matheclipse.core.basic.Config;
 import org.matheclipse.core.eval.EvalEngine;
@@ -14,97 +14,98 @@ import org.matheclipse.core.interfaces.ISignedNumber;
 import org.matheclipse.core.interfaces.ISymbol;
 import org.matheclipse.parser.client.math.MathException;
 
-import java.util.concurrent.Callable;
-import java.util.concurrent.TimeUnit;
+import com.google.common.util.concurrent.SimpleTimeLimiter;
+import com.google.common.util.concurrent.TimeLimiter;
 
 /**
  * TODO implement &quot;TimeConstrained&quot; mode
+ * 
  */
 public class TimeConstrained extends AbstractCoreFunctionEvaluator {
 
-    public TimeConstrained() {
-    }
+	private static class EvalCallable implements Callable<IExpr> {
+		private final EvalEngine fEngine;
+		private final IExpr fExpr;
 
-    @Override
-    public IExpr evaluate(final IAST ast, EvalEngine engine) {
-        Validate.checkRange(ast, 3, 4);
+		public EvalCallable(IExpr expr, EvalEngine engine) {
+			fExpr = expr;
+			fEngine = engine;
+		}
 
-        if (Config.JAS_NO_THREADS) {
-            // no thread can be spawned
-            try {
-                return engine.evaluate(ast.arg1());
-            } catch (final MathException e) {
-                throw e;
-            } catch (final Throwable th) {
-                if (ast.isAST3()) {
-                    return ast.arg3();
-                }
-            }
-            return F.Aborted;
-        }
+		@Override
+		public IExpr call() throws Exception {
+			// TODO Auto-generated method stub
+			return fEngine.evaluate(fExpr);
+		}
 
-        IExpr arg2 = engine.evaluate(ast.arg2());
-        long seconds = 0L;
-        try {
-            // if (ast.arg2().toString().equals("§timelimit")){
-            // arg2=F.num(5.0);
-            // }
-            if (arg2.isSignedNumber()) {
-                arg2 = ((ISignedNumber) arg2).ceilFraction();
-                seconds = ((ISignedNumber) arg2).toLong();
-            } else {
-                engine.printMessage("TimeConstrained: " + ast.arg2().toString() + " is not a Java long value.");
-                return F.NIL;
-            }
+	}
 
-        } catch (ArithmeticException ae) {
-            engine.printMessage("TimeConstrained: " + ast.arg2().toString() + " is not a Java long value.");
-            return F.NIL;
-        }
+	public TimeConstrained() {
+	}
 
-        TimeLimiter timeLimiter = new SimpleTimeLimiter();
-        Callable<IExpr> work = new EvalCallable(ast.arg1(), engine);
+	@Override
+	public IExpr evaluate(final IAST ast, EvalEngine engine) {
+		Validate.checkRange(ast, 3, 4);
 
-        try {
-            return timeLimiter.callWithTimeout(work, seconds, TimeUnit.SECONDS, true);
-        } catch (java.util.concurrent.TimeoutException e) {
-            if (ast.isAST3()) {
-                return ast.arg3();
-            }
-            return F.Aborted;
-        } catch (com.google.common.util.concurrent.UncheckedTimeoutException e) {
-            if (ast.isAST3()) {
-                return ast.arg3();
-            }
-            return F.Aborted;
-        } catch (Exception e) {
-            if (Config.DEBUG) {
-                e.printStackTrace();
-            }
-            return F.Null;
-        }
+		if (Config.JAS_NO_THREADS) {
+			// no thread can be spawned
+			try {
+				return engine.evaluate(ast.arg1());
+			} catch (final MathException e) {
+				throw e;
+			} catch (final Throwable th) {
+				if (ast.isAST3()) {
+					return ast.arg3();
+				}
+			}
+			return F.Aborted;
+		}
 
-    }
+		IExpr arg2 = engine.evaluate(ast.arg2());
+		long seconds = 0L;
+		try {
+			// if (ast.arg2().toString().equals("§timelimit")){
+			// arg2=F.num(5.0);
+			// }
+			if (arg2.isSignedNumber()) {
+				arg2 = ((ISignedNumber) arg2).ceilFraction();
+				seconds = ((ISignedNumber) arg2).toLong();
+			} else {
+				engine.printMessage("TimeConstrained: " + ast.arg2().toString() + " is not a Java long value.");
+				return F.NIL;
+			}
 
-    @Override
-    public void setUp(ISymbol newSymbol) {
-        newSymbol.setAttributes(ISymbol.HOLDALL);
-    }
+		} catch (ArithmeticException ae) {
+			engine.printMessage("TimeConstrained: " + ast.arg2().toString() + " is not a Java long value.");
+			return F.NIL;
+		}
 
-    private static class EvalCallable implements Callable<IExpr> {
-        private final EvalEngine fEngine;
-        private final IExpr fExpr;
+		TimeLimiter timeLimiter = new SimpleTimeLimiter();
+		Callable<IExpr> work = new EvalCallable(ast.arg1(), engine);
 
-        public EvalCallable(IExpr expr, EvalEngine engine) {
-            fExpr = expr;
-            fEngine = engine;
-        }
+		try {
+			return timeLimiter.callWithTimeout(work, seconds, TimeUnit.SECONDS, true);
+		} catch (java.util.concurrent.TimeoutException e) {
+			if (ast.isAST3()) {
+				return ast.arg3();
+			}
+			return F.Aborted;
+		} catch (com.google.common.util.concurrent.UncheckedTimeoutException e) {
+			if (ast.isAST3()) {
+				return ast.arg3();
+			}
+			return F.Aborted;
+		} catch (Exception e) {
+			if (Config.DEBUG) {
+				e.printStackTrace();
+			}
+			return F.Null;
+		}
 
-        @Override
-        public IExpr call() throws Exception {
-            // TODO Auto-generated method stub
-            return fEngine.evaluate(fExpr);
-        }
+	}
 
-    }
+	@Override
+	public void setUp(ISymbol newSymbol) {
+		newSymbol.setAttributes(ISymbol.HOLDALL);
+	}
 }

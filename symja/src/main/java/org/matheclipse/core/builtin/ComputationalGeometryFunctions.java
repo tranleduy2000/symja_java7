@@ -8,29 +8,29 @@ import org.matheclipse.core.interfaces.IAST;
 import org.matheclipse.core.interfaces.IExpr;
 
 public class ComputationalGeometryFunctions {
-    final static ComputationalGeometryFunctions CONST = new ComputationalGeometryFunctions();
+	static {
+		F.ConvexHullMesh.setEvaluator(new ConvexHullMesh());
+	}
 
-    static {
-        F.ConvexHullMesh.setEvaluator(new ConvexHullMesh());
-    }
+	private static class ConvexHullMesh extends AbstractEvaluator {
 
-    private ComputationalGeometryFunctions() {
+		@Override
+		public IExpr evaluate(final IAST ast, EvalEngine engine) {
+			Validate.checkRange(ast, 2);
+			if (ast.arg1().isList()) {
+			}
+			return F.NIL;
+		}
+	}
 
-    }
+	final static ComputationalGeometryFunctions CONST = new ComputationalGeometryFunctions();
 
-    public static ComputationalGeometryFunctions initialize() {
-        return CONST;
-    }
+	public static ComputationalGeometryFunctions initialize() {
+		return CONST;
+	}
 
-    private static class ConvexHullMesh extends AbstractEvaluator {
+	private ComputationalGeometryFunctions() {
 
-        @Override
-        public IExpr evaluate(final IAST ast, EvalEngine engine) {
-            Validate.checkRange(ast, 2);
-            if (ast.arg1().isList()) {
-            }
-            return F.NIL;
-        }
-    }
+	}
 
 }

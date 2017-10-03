@@ -29,7 +29,6 @@
 
 package org.matheclipse.core.frobenius;
 
-
 import java.util.Iterator;
 
 /**

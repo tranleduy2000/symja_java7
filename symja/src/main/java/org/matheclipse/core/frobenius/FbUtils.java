@@ -28,83 +28,83 @@
  */
 package org.matheclipse.core.frobenius;
 
-
-import org.matheclipse.core.interfaces.IInteger;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
+import org.matheclipse.core.interfaces.IInteger;
+
 /**
+ * 
  * @author Dmitry Bolotin
  * @author Stanislav Poslavsky
  */
 public final class FbUtils {
-    public static final Comparator<int[]> SOLUTION_COMPARATOR = new Comparator<int[]>() {
-        @Override
-        public int compare(int[] o1, int[] o2) {
-            if (o1.length != o2.length)
-                throw new IllegalArgumentException();
-            // int c = 0;
-            for (int i = 0; i < o1.length; ++i) {
-                if (o1[i] > o2[i]) {
-                    return 1;
-                }
-                if (o1[i] < o2[i]) {
-                    return -1;
-                }
-                // c = Integer.compare(o1[i], o2[i]);
-                // if (c != 0)
-                // return c;
-            }
-            return 0;
-        }
-    };
+	public static final Comparator<int[]> SOLUTION_COMPARATOR = new Comparator<int[]>() {
+		@Override
+		public int compare(int[] o1, int[] o2) {
+			if (o1.length != o2.length)
+				throw new IllegalArgumentException();
+			// int c = 0;
+			for (int i = 0; i < o1.length; ++i) {
+				if (o1[i] > o2[i]) {
+					return 1;
+				}
+				if (o1[i] < o2[i]) {
+					return -1;
+				}
+				// c = Integer.compare(o1[i], o2[i]);
+				// if (c != 0)
+				// return c;
+			}
+			return 0;
+		}
+	};
 
-    public static List<IInteger[]> getAllSolutions(final IInteger[]... equations) {
-        List<IInteger[]> solutions = new ArrayList<IInteger[]>();
-        FrobeniusSolver fbSolver = new FrobeniusSolver(equations);
-        IInteger[] solution;
-        while ((solution = fbSolver.take()) != null)
-            solutions.add(solution);
-        return solutions;
-    }
+	public static List<IInteger[]> getAllSolutions(final IInteger[]... equations) {
+		List<IInteger[]> solutions = new ArrayList<IInteger[]>();
+		FrobeniusSolver fbSolver = new FrobeniusSolver(equations);
+		IInteger[] solution;
+		while ((solution = fbSolver.take()) != null)
+			solutions.add(solution);
+		return solutions;
+	}
 
-    public static Iterator<IInteger[]> iterator(IInteger[][] equations) {
-        return new SolutionsIterator(equations);
-    }
+	public static Iterator<IInteger[]> iterator(IInteger[][] equations) {
+		return new SolutionsIterator(equations);
+	}
 
-    public static Iterable<IInteger[]> iterable(IInteger[][] equations) {
-        return new SolutionsIterator(equations);
-    }
+	public static Iterable<IInteger[]> iterable(IInteger[][] equations) {
+		return new SolutionsIterator(equations);
+	}
 
-    private static class SolutionsIterator implements Iterator<IInteger[]>, Iterable<IInteger[]> {
-        private final FrobeniusSolver fbSolver;
-        private IInteger[] solution;
+	private static class SolutionsIterator implements Iterator<IInteger[]>, Iterable<IInteger[]> {
+		private final FrobeniusSolver fbSolver;
+		private IInteger[] solution;
 
-        SolutionsIterator(IInteger[][] equations) {
-            this.fbSolver = new FrobeniusSolver(equations);
-        }
+		SolutionsIterator(IInteger[][] equations) {
+			this.fbSolver = new FrobeniusSolver(equations);
+		}
 
-        @Override
-        public boolean hasNext() {
-            return (solution = fbSolver.take()) != null;
-        }
+		@Override
+		public boolean hasNext() {
+			return (solution = fbSolver.take()) != null;
+		}
 
-        @Override
-        public IInteger[] next() {
-            return solution;
-        }
+		@Override
+		public IInteger[] next() {
+			return solution;
+		}
 
-        @Override
-        public void remove() {
-            throw new UnsupportedOperationException("Not supported.");
-        }
+		@Override
+		public void remove() {
+			throw new UnsupportedOperationException("Not supported.");
+		}
 
-        @Override
-        public Iterator<IInteger[]> iterator() {
-            return this;
-        }
-    }
+		@Override
+		public Iterator<IInteger[]> iterator() {
+			return this;
+		}
+	}
 }

@@ -35,31 +35,31 @@ import org.matheclipse.core.interfaces.IInteger;
  *
  */
 final class DummySolutionProvider implements SolutionProvider {
-    private IInteger[] solution;
-    private IInteger[] currentRemainder;
+	private IInteger[] solution;
+	private IInteger[] currentRemainder;
 
-    DummySolutionProvider(IInteger[] solution, IInteger[] currentRemainder) {
-        this.solution = solution;
-        this.currentRemainder = currentRemainder;
-    }
+	DummySolutionProvider(IInteger[] solution, IInteger[] currentRemainder) {
+		this.solution = solution;
+		this.currentRemainder = currentRemainder;
+	}
 
-    @Override
-    public boolean tick() {
-        return solution != null;
-    }
+	@Override
+	public boolean tick() {
+		return solution != null;
+	}
 
-    @Override
-    public IInteger[] take() {
-        if (solution == null) {
-            return null;
-        }
-        IInteger[] ret = solution;
-        solution = null;
-        return ret;
-    }
+	@Override
+	public IInteger[] take() {
+		if (solution == null) {
+			return null;
+		}
+		IInteger[] ret = solution;
+		solution = null;
+		return ret;
+	}
 
-    @Override
-    public IInteger[] currentRemainders() {
-        return currentRemainder;
-    }
+	@Override
+	public IInteger[] currentRemainders() {
+		return currentRemainder;
+	}
 }

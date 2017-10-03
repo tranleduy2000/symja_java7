@@ -20,14 +20,15 @@ import org.hipparchus.analysis.UnivariateFunction;
 
 /**
  * Extension of {@link UnivariateFunction} representing a differentiable univariate real function.
- */
+ *
+ */ 
 public interface DifferentiableUnivariateFunction
-        extends UnivariateFunction {
+    extends UnivariateFunction {
 
     /**
      * Returns the derivative of the function
      *
-     * @return the derivative function
+     * @return  the derivative function
      */
     UnivariateFunction derivative();
 

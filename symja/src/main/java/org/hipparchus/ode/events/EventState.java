@@ -301,7 +301,12 @@ public class EventState {
         // check there appears to be a root in [ta, tb]
         check(ga == 0.0 || gb == 0.0 || (ga > 0.0 && gb < 0.0) || (ga < 0.0 && gb > 0.0));
 
-        final UnivariateFunction f = t -> handler.g(interpolator.getInterpolatedState(t));
+        final UnivariateFunction f = new UnivariateFunction() {
+            @Override
+            public double value(double t) {
+                return handler.g(interpolator.getInterpolatedState(t));
+            }
+        };
 
         // event time, just at or before the actual root.
         double beforeRootT = Double.NaN;

@@ -35,6 +35,9 @@ import org.hipparchus.util.MathUtils;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.DoubleConsumer;
+import java.util.function.DoublePredicate;
+import java.util.function.ToDoubleFunction;
 
 /**
  * StatUtils provides static methods for computing statistics based on data
@@ -859,13 +862,28 @@ public final class StatUtils {
         Frequency<Double> freq = new Frequency<>();
 
         Arrays.stream(values, begin, begin + length)
-                .filter(d -> !Double.isNaN(d))
-                .forEach(freq::addValue);
+                .filter(new DoublePredicate() {
+                    @Override
+                    public boolean test(double d) {
+                        return !Double.isNaN(d);
+                    }
+                })
+                .forEach(new DoubleConsumer() {
+                    @Override
+                    public void accept(double v) {
+                        freq.addValue(v);
+                    }
+                });
 
         List<Double> list = freq.getMode();
         // Convert the list to an array of primitive double
         return list.stream()
-                .mapToDouble(Double::doubleValue)
+                .mapToDouble(new ToDoubleFunction<Double>() {
+                    @Override
+                    public double applyAsDouble(Double aDouble) {
+                        return aDouble.doubleValue();
+                    }
+                })
                 .toArray();
     }
 

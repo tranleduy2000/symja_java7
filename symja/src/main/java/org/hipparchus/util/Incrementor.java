@@ -34,8 +34,11 @@ public class Incrementor {
      * Default callback.
      */
     private static final MaxCountExceededCallback DEFAULT_CALLBACK =
-            (int max) -> {
-                throw new MathIllegalStateException(LocalizedCoreFormats.MAX_COUNT_EXCEEDED, max);
+            new MaxCountExceededCallback() {
+                @Override
+                public void trigger(int max) throws MathIllegalStateException {
+                    throw new MathIllegalStateException(LocalizedCoreFormats.MAX_COUNT_EXCEEDED, max);
+                }
             };
 
     /**

@@ -11,19 +11,19 @@ import org.matheclipse.core.interfaces.IExpr;
  * Power series expansion
  */
 public class SeriesData extends AbstractFunctionEvaluator {
-    public SeriesData() {
-    }
+	public SeriesData() {
+	}
 
-    @Override
-    public IExpr evaluate(final IAST ast, EvalEngine engine) {
-        if (!ToggleFeature.SERIES) {
-            return F.NIL;
-        }
-        if (ast.size() == 7) {
-            if (ast.arg1().isNumber()) {
-                return F.Indeterminate;
-            }
-        }
-        return F.NIL;
-    }
+	@Override
+	public IExpr evaluate(final IAST ast, EvalEngine engine) {
+		if (!ToggleFeature.SERIES) {
+			return F.NIL;
+		}
+		if (ast.size() == 7) {
+			if (ast.arg1().isNumber()) {
+				return F.Indeterminate;
+			}
+		}
+		return F.NIL;
+	}
 }

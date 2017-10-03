@@ -326,7 +326,12 @@ public class FieldEventState<T extends RealFieldElement<T>> {
                 (ga.getReal() < 0.0 && gb.getReal() > 0.0));
 
         final RealFieldUnivariateFunction<T> f =
-                t -> handler.g(interpolator.getInterpolatedState(t));
+                new RealFieldUnivariateFunction<T>() {
+                    @Override
+                    public T value(T t) {
+                        return handler.g(interpolator.getInterpolatedState(t));
+                    }
+                };
 
         // event time, just at or before the actual root.
         T beforeRootT = null;

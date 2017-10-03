@@ -9,16 +9,16 @@ import org.matheclipse.core.interfaces.IExpr;
 
 public class Interpolation extends AbstractEvaluator {
 
-    public Interpolation() {
-    }
+	public Interpolation() {
+	}
 
-    @Override
-    public IExpr evaluate(final IAST ast, EvalEngine engine) {
-        Validate.checkSize(ast, 2);
-        int[] dims = ast.arg1().isMatrix();
-        if (dims != null) {
-            return F.InterpolatingFunction(ast.arg1());
-        }
-        return F.NIL;
-    }
+	@Override
+	public IExpr evaluate(final IAST ast, EvalEngine engine) {
+		Validate.checkSize(ast, 2);
+		int[] dims = ast.arg1().isMatrix();
+		if (dims != null) {
+			return F.InterpolatingFunction(ast.arg1());
+		}
+		return F.NIL;
+	}
 }

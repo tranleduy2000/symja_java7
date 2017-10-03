@@ -7,7 +7,6 @@ package edu.jas.util;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.rmi.MarshalledObject;
 
 
 /**
@@ -43,8 +42,6 @@ public abstract class DHTTransport<K, V> implements Serializable {
      */
     public static <K, V> DHTTransport<K, V> create(K key, V value) throws IOException {
         switch (stor) {
-            case marshal:
-                return new DHTTransportMarshal<K, V>(key, value);
             case plain:
                 return new DHTTransportPlain<K, V>(key, value);
             default:
@@ -122,99 +119,6 @@ class DHTTransportClear<K, V> extends DHTTransport<K, V> {
      */
     public V value() throws IOException, ClassNotFoundException {
         throw new UnsupportedOperationException("this should not happen");
-    }
-
-}
-
-
-/**
- * Transport container for a distributed version of a HashTable. Immutable
- * objects. Uses MarshalledObject to avoid deserialization on server side.
- */
-class DHTTransportMarshal<K, V> extends DHTTransport<K, V> {
-
-
-    protected final MarshalledObject/*<K>*/ key;
-
-
-    protected final MarshalledObject/*<V>*/ value;
-
-
-    /**
-     * Constructs a new DHTTransport Container.
-     *
-     * @param key
-     * @param value
-     */
-    @SuppressWarnings("unchecked")
-    public DHTTransportMarshal(K key, V value) throws IOException {
-        long t = System.currentTimeMillis();
-        this.key = new MarshalledObject/*<K>*/(key);
-        this.value = new MarshalledObject/*<V>*/(value);
-        t = System.currentTimeMillis() - t;
-        synchronized (DHTTransport.class) {
-            etime += t;
-        }
-        //System.out.println("         marshal time = " + t);
-    }
-
-
-    /**
-     * Get the key from this DHTTransport Container.
-     */
-    @SuppressWarnings("unchecked")
-    public K key() throws IOException, ClassNotFoundException {
-        long t = System.currentTimeMillis();
-        K k = (K) this.key.get();
-        t = System.currentTimeMillis() - t;
-        synchronized (DHTTransport.class) {
-            dtime += t;
-        }
-        return k;
-    }
-
-
-    /**
-     * Get the value from this DHTTransport Container.
-     */
-    @SuppressWarnings("unchecked")
-    public V value() throws IOException, ClassNotFoundException {
-        long t = System.currentTimeMillis();
-        V v = (V) this.value.get();
-        t = System.currentTimeMillis() - t;
-        synchronized (DHTTransport.class) {
-            dtime += t;
-        }
-        return v;
-    }
-
-
-    /**
-     * toString.
-     */
-    @Override
-    public String toString() {
-        return super.toString() + "(" + key + "," + value + ")";
-    }
-
-
-    private void writeObject(java.io.ObjectOutputStream out) throws IOException {
-        long t = System.currentTimeMillis();
-        out.defaultWriteObject();
-        t = System.currentTimeMillis() - t;
-        synchronized (DHTTransport.class) {
-            ertime += t;
-        }
-    }
-
-
-    private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
-        long t = System.currentTimeMillis();
-        in.defaultReadObject();
-        t = System.currentTimeMillis() - t; // not meaningful, includes waiting time
-        synchronized (DHTTransport.class) {
-            drtime += t;
-        }
     }
 
 }

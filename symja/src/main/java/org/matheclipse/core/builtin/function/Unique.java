@@ -11,33 +11,34 @@ import org.matheclipse.core.interfaces.ISymbol;
 
 /**
  * TODO implement &quot;Unique&quot; mode
+ * 
  */
 public class Unique extends AbstractCoreFunctionEvaluator {
 
-    public Unique() {
-    }
+	public Unique() {
+	}
 
-    @Override
-    public IExpr evaluate(final IAST ast, EvalEngine engine) {
-        Validate.checkRange(ast, 1, 2);
+	@Override
+	public IExpr evaluate(final IAST ast, EvalEngine engine) {
+		Validate.checkRange(ast, 1, 2);
 
-        final int moduleCounter = engine.incModuleCounter();
-        if (ast.isAST1()) {
-            if (ast.arg1().isSymbol()) {
-                final String varAppend = ast.arg1().toString() + "$" + moduleCounter;
-                return F.userSymbol(varAppend, engine);
-            } else if (ast.arg1() instanceof IStringX) {
-                // TODO start counter by 1....
-                final String varAppend = ast.arg1().toString() + moduleCounter;
-                return F.userSymbol(varAppend, engine);
-            }
-        }
-        final String varAppend = "$" + moduleCounter;
-        return F.userSymbol(varAppend, engine);
-    }
+		final int moduleCounter = engine.incModuleCounter();
+		if (ast.isAST1()) {
+			if (ast.arg1().isSymbol()) {
+				final String varAppend = ast.arg1().toString() + "$" + moduleCounter;
+				return F.userSymbol(varAppend, engine);
+			} else if (ast.arg1() instanceof IStringX) {
+				// TODO start counter by 1....
+				final String varAppend = ast.arg1().toString() + moduleCounter;
+				return F.userSymbol(varAppend, engine);
+			}
+		}
+		final String varAppend = "$" + moduleCounter;
+		return F.userSymbol(varAppend, engine);
+	}
 
-    @Override
-    public void setUp(ISymbol newSymbol) {
-        newSymbol.setAttributes(ISymbol.HOLDALL);
-    }
+	@Override
+	public void setUp(ISymbol newSymbol) {
+		newSymbol.setAttributes(ISymbol.HOLDALL);
+	}
 }

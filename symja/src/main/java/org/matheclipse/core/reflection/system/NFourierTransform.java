@@ -16,32 +16,32 @@ import org.matheclipse.core.interfaces.ISymbol;
 
 public class NFourierTransform extends AbstractFunctionEvaluator {
 
-    public NFourierTransform() {
-    }
+	public NFourierTransform() {
+	}
 
-    @Override
-    public IExpr evaluate(final IAST ast, EvalEngine engine) {
-        Validate.checkRange(ast, 4, 5);
+	@Override
+	public IExpr evaluate(final IAST ast, EvalEngine engine) {
+		Validate.checkRange(ast, 4, 5);
 
-        IExpr expr = ast.arg1();
-        ISymbol t = Validate.checkSymbolType(ast, 2);
-        // IExpr omega = ast.arg3();
-        if (ast.size() > 4) {
-            final Options options = new Options(ast.topHead(), ast, 4, engine);
-            IExpr optionFourierParameters = options.getOption("FourierParameters");
-            if (optionFourierParameters.isList()) {
-                // analyze the parameters, if they are correct
-            }
-        }
+		IExpr expr = ast.arg1();
+		ISymbol t = Validate.checkSymbolType(ast, 2);
+		// IExpr omega = ast.arg3();
+		if (ast.size() > 4) {
+			final Options options = new Options(ast.topHead(), ast, 4, engine);
+			IExpr optionFourierParameters = options.getOption("FourierParameters");
+			if (optionFourierParameters.isList()) {
+				// analyze the parameters, if they are correct
+			}
+		}
 
-        UnivariateFunction f = new UnaryNumerical(expr, t, engine);
-        FastFourierTransformer fft = new FastFourierTransformer(DftNormalization.STANDARD);
-        org.hipparchus.complex.Complex[] result = fft.transform(f, -1.0, 1.0, 8, TransformType.FORWARD);
-        return Object2Expr.convertComplex(true, result);
-    }
+		UnivariateFunction f = new UnaryNumerical(expr, t, engine);
+		FastFourierTransformer fft = new FastFourierTransformer(DftNormalization.STANDARD);
+		org.hipparchus.complex.Complex[] result = fft.transform(f, -1.0, 1.0, 8, TransformType.FORWARD);
+		return Object2Expr.convertComplex(true, result);
+	}
 
-    @Override
-    public void setUp(final ISymbol newSymbol) {
-        newSymbol.setAttributes(ISymbol.HOLDFIRST);
-    }
+	@Override
+	public void setUp(final ISymbol newSymbol) {
+		newSymbol.setAttributes(ISymbol.HOLDFIRST);
+	}
 }

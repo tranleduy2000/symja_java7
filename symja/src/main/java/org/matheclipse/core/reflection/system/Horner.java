@@ -13,40 +13,40 @@ import org.matheclipse.core.polynomials.HornerScheme;
 /**
  * Generate the horner scheme for univariate polynomials. See: <a
  * href="http://en.wikipedia.org/wiki/Horner_scheme">Wikipedia:Horner scheme</a>
- *
+ * 
  * @deprecated use HornerForm
  */
 @Deprecated
 public class Horner extends AbstractFunctionEvaluator {
 
-    @Deprecated
-    public Horner() {
-    }
+	@Deprecated
+	public Horner() {
+	}
 
-    @Override
-    @Deprecated
-    public IExpr evaluate(final IAST ast, EvalEngine engine) {
-        Validate.checkSize(ast, 2);
+	@Override
+	@Deprecated
+	public IExpr evaluate(final IAST ast, EvalEngine engine) {
+		Validate.checkSize(ast, 2);
 
-        if (ast.arg1().isAST()) {
+		if (ast.arg1().isAST()) {
 
-            IAST poly = (IAST) ast.arg1();
-            VariablesSet eVar = new VariablesSet(ast.arg1());
-            IAST variables = eVar.getVarList();
-            if (variables.size() >= 2) {
-                ISymbol sym = (ISymbol) variables.arg1();
-                if (poly.isASTSizeGE(F.Plus, 2)) {
-                    HornerScheme scheme = new HornerScheme();
-                    return scheme.generate(engine.isNumericMode(), poly, sym);
-                }
-            }
+			IAST poly = (IAST) ast.arg1();
+			VariablesSet eVar = new VariablesSet(ast.arg1());
+			IAST variables = eVar.getVarList();
+			if (variables.size() >= 2) {
+				ISymbol sym = (ISymbol) variables.arg1();
+				if (poly.isASTSizeGE(F.Plus, 2)) {
+					HornerScheme scheme = new HornerScheme();
+					return scheme.generate(engine.isNumericMode(), poly, sym);
+				}
+			}
 
-        }
-        return ast.arg1();
-    }
+		}
+		return ast.arg1();
+	}
 
-    @Override
-    public void setUp(final ISymbol newSymbol) {
-    }
+	@Override
+	public void setUp(final ISymbol newSymbol) {
+	}
 
 }

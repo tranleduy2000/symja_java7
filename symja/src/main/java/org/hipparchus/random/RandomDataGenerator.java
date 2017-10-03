@@ -86,12 +86,22 @@ public class RandomDataGenerator extends ForwardingRandomGenerator
      * The default sampler for continuous distributions using the inversion technique.
      */
     private static final RealDistributionSampler DEFAULT_REAL_SAMPLER =
-            (generator, dist) -> dist.inverseCumulativeProbability(generator.nextDouble());
+            new RealDistributionSampler() {
+                @Override
+                public double nextSample(RandomDataGenerator generator, RealDistribution dist) {
+                    return dist.inverseCumulativeProbability(generator.nextDouble());
+                }
+            };
     /**
      * The default sampler for discrete distributions using the inversion technique.
      */
     private static final IntegerDistributionSampler DEFAULT_INTEGER_SAMPLER =
-            (generator, dist) -> dist.inverseCumulativeProbability(generator.nextDouble());
+            new IntegerDistributionSampler() {
+                @Override
+                public int nextSample(RandomDataGenerator generator, IntegerDistribution dist) {
+                    return dist.inverseCumulativeProbability(generator.nextDouble());
+                }
+            };
 
     /**
      * Initialize tables.
@@ -124,69 +134,110 @@ public class RandomDataGenerator extends ForwardingRandomGenerator
         // Continuous samplers
 
         CONTINUOUS_SAMPLERS.put(BetaDistribution.class,
-                (generator, dist) -> {
-                    BetaDistribution beta = (BetaDistribution) dist;
-                    return generator.nextBeta(beta.getAlpha(), beta.getBeta());
+                new RealDistributionSampler() {
+                    @Override
+                    public double nextSample(RandomDataGenerator generator, RealDistribution dist) {
+                        BetaDistribution beta = (BetaDistribution) dist;
+                        return generator.nextBeta(beta.getAlpha(), beta.getBeta());
+                    }
                 });
 
         CONTINUOUS_SAMPLERS.put(ExponentialDistribution.class,
-                (generator, dist) -> generator.nextExponential(dist.getNumericalMean()));
+                new RealDistributionSampler() {
+                    @Override
+                    public double nextSample(RandomDataGenerator generator, RealDistribution dist) {
+                        return generator.nextExponential(dist.getNumericalMean());
+                    }
+                });
 
         CONTINUOUS_SAMPLERS.put(GammaDistribution.class,
-                (generator, dist) -> {
-                    GammaDistribution gamma = (GammaDistribution) dist;
-                    return generator.nextGamma(gamma.getShape(), gamma.getScale());
+                new RealDistributionSampler() {
+                    @Override
+                    public double nextSample(RandomDataGenerator generator, RealDistribution dist) {
+                        GammaDistribution gamma = (GammaDistribution) dist;
+                        return generator.nextGamma(gamma.getShape(), gamma.getScale());
+                    }
                 });
 
         CONTINUOUS_SAMPLERS.put(NormalDistribution.class,
-                (generator, dist) -> {
-                    NormalDistribution normal = (NormalDistribution) dist;
-                    return generator.nextNormal(normal.getMean(),
-                            normal.getStandardDeviation());
+                new RealDistributionSampler() {
+                    @Override
+                    public double nextSample(RandomDataGenerator generator, RealDistribution dist) {
+                        NormalDistribution normal = (NormalDistribution) dist;
+                        return generator.nextNormal(normal.getMean(),
+                                normal.getStandardDeviation());
+                    }
                 });
 
         CONTINUOUS_SAMPLERS.put(LogNormalDistribution.class,
-                (generator, dist) -> {
-                    LogNormalDistribution logNormal = (LogNormalDistribution) dist;
-                    return generator.nextLogNormal(logNormal.getShape(),
-                            logNormal.getScale());
+                new RealDistributionSampler() {
+                    @Override
+                    public double nextSample(RandomDataGenerator generator, RealDistribution dist) {
+                        LogNormalDistribution logNormal = (LogNormalDistribution) dist;
+                        return generator.nextLogNormal(logNormal.getShape(),
+                                logNormal.getScale());
+                    }
                 });
 
         CONTINUOUS_SAMPLERS.put(UniformRealDistribution.class,
-                (generator, dist) -> generator.nextUniform(dist.getSupportLowerBound(),
-                        dist.getSupportUpperBound()));
+                new RealDistributionSampler() {
+                    @Override
+                    public double nextSample(RandomDataGenerator generator, RealDistribution dist) {
+                        return generator.nextUniform(dist.getSupportLowerBound(),
+                                dist.getSupportUpperBound());
+                    }
+                });
 
         CONTINUOUS_SAMPLERS.put(EnumeratedRealDistribution.class,
-                (generator, dist) -> {
-                    final EnumeratedRealDistribution edist =
-                            (EnumeratedRealDistribution) dist;
-                    EnumeratedDistributionSampler<Double> sampler =
-                            generator.new EnumeratedDistributionSampler<Double>(edist.getPmf());
-                    return sampler.sample();
+                new RealDistributionSampler() {
+                    @Override
+                    public double nextSample(RandomDataGenerator generator, RealDistribution dist) {
+                        final EnumeratedRealDistribution edist =
+                                (EnumeratedRealDistribution) dist;
+                        EnumeratedDistributionSampler<Double> sampler =
+                                generator.new EnumeratedDistributionSampler<Double>(edist.getPmf());
+                        return sampler.sample();
+                    }
                 });
 
         // Discrete samplers
 
         DISCRETE_SAMPLERS.put(PoissonDistribution.class,
-                (generator, dist) -> generator.nextPoisson(dist.getNumericalMean()));
+                new IntegerDistributionSampler() {
+                    @Override
+                    public int nextSample(RandomDataGenerator generator, IntegerDistribution dist) {
+                        return generator.nextPoisson(dist.getNumericalMean());
+                    }
+                });
 
         DISCRETE_SAMPLERS.put(UniformIntegerDistribution.class,
-                (generator, dist) -> generator.nextInt(dist.getSupportLowerBound(),
-                        dist.getSupportUpperBound()));
+                new IntegerDistributionSampler() {
+                    @Override
+                    public int nextSample(RandomDataGenerator generator, IntegerDistribution dist) {
+                        return generator.nextInt(dist.getSupportLowerBound(),
+                                dist.getSupportUpperBound());
+                    }
+                });
         DISCRETE_SAMPLERS.put(ZipfDistribution.class,
-                (generator, dist) -> {
-                    ZipfDistribution zipfDist = (ZipfDistribution) dist;
-                    return generator.nextZipf(zipfDist.getNumberOfElements(),
-                            zipfDist.getExponent());
+                new IntegerDistributionSampler() {
+                    @Override
+                    public int nextSample(RandomDataGenerator generator, IntegerDistribution dist) {
+                        ZipfDistribution zipfDist = (ZipfDistribution) dist;
+                        return generator.nextZipf(zipfDist.getNumberOfElements(),
+                                zipfDist.getExponent());
+                    }
                 });
 
         DISCRETE_SAMPLERS.put(EnumeratedIntegerDistribution.class,
-                (generator, dist) -> {
-                    final EnumeratedIntegerDistribution edist =
-                            (EnumeratedIntegerDistribution) dist;
-                    EnumeratedDistributionSampler<Integer> sampler =
-                            generator.new EnumeratedDistributionSampler<Integer>(edist.getPmf());
-                    return sampler.sample();
+                new IntegerDistributionSampler() {
+                    @Override
+                    public int nextSample(RandomDataGenerator generator, IntegerDistribution dist) {
+                        final EnumeratedIntegerDistribution edist =
+                                (EnumeratedIntegerDistribution) dist;
+                        EnumeratedDistributionSampler<Integer> sampler =
+                                generator.new EnumeratedDistributionSampler<Integer>(edist.getPmf());
+                        return sampler.sample();
+                    }
                 });
     }
 

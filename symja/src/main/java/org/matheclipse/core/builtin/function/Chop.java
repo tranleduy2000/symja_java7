@@ -22,41 +22,40 @@ import org.matheclipse.core.interfaces.ISymbol;
  * </pre>
  */
 public class Chop extends AbstractCoreFunctionEvaluator {
-    public final static double DEFAULT_CHOP_DELTA = 1.0e-10;
+	public final static double DEFAULT_CHOP_DELTA = 1.0e-10;
+	public Chop() {
+	}
 
-    public Chop() {
-    }
+	@Override
+	public IExpr evaluate(final IAST ast, EvalEngine engine) {
+		Validate.checkRange(ast, 2, 3);
 
-    @Override
-    public IExpr evaluate(final IAST ast, EvalEngine engine) {
-        Validate.checkRange(ast, 2, 3);
+		IExpr arg1 = ast.arg1();
+		double delta = DEFAULT_CHOP_DELTA;
+		if (ast.isAST2() && ast.arg2() instanceof INum) {
+			delta = ((INum) ast.arg2()).getRealPart();
+		}
+		try {
+			arg1 = engine.evaluate(arg1);
+			if (arg1.isAST()) {
+				IAST list = (IAST) arg1;
+				// Chop[{a,b,c}] -> {Chop[a],Chop[b],Chop[c]}
+				return list.mapThread(F.Chop(F.Null),1);
+			}
+			if (arg1.isNumber()) {
+				return F.chopNumber((INumber)arg1, delta);
+			}
+		} catch (Exception e) {
+			if (Config.SHOW_STACKTRACE) {
+				e.printStackTrace();
+			}
+		}
 
-        IExpr arg1 = ast.arg1();
-        double delta = DEFAULT_CHOP_DELTA;
-        if (ast.isAST2() && ast.arg2() instanceof INum) {
-            delta = ((INum) ast.arg2()).getRealPart();
-        }
-        try {
-            arg1 = engine.evaluate(arg1);
-            if (arg1.isAST()) {
-                IAST list = (IAST) arg1;
-                // Chop[{a,b,c}] -> {Chop[a],Chop[b],Chop[c]}
-                return list.mapThread(F.Chop(F.Null), 1);
-            }
-            if (arg1.isNumber()) {
-                return F.chopNumber((INumber) arg1, delta);
-            }
-        } catch (Exception e) {
-            if (Config.SHOW_STACKTRACE) {
-                e.printStackTrace();
-            }
-        }
+		return F.NIL;
+	}
 
-        return F.NIL;
-    }
-
-    @Override
-    public void setUp(final ISymbol newSymbol) {
-        newSymbol.setAttributes(ISymbol.HOLDALL | ISymbol.LISTABLE);
-    }
+	@Override
+	public void setUp(final ISymbol newSymbol) {
+		newSymbol.setAttributes(ISymbol.HOLDALL | ISymbol.LISTABLE);
+	}
 }

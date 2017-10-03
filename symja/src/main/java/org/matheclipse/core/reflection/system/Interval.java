@@ -15,30 +15,30 @@ import org.matheclipse.core.interfaces.ISymbol;
  */
 public class Interval extends AbstractEvaluator {
 
-    public Interval() {
-    }
+	public Interval() {
+	}
 
-    @Override
-    public IExpr evaluate(final IAST ast, EvalEngine engine) {
-        Validate.checkRange(ast, 2);
+	@Override
+	public IExpr evaluate(final IAST ast, EvalEngine engine) {
+		Validate.checkRange(ast, 2);
 
-        if (ast.isInterval1()) {
-            IAST list = (IAST) ast.arg1();
-            try {
-                ISignedNumber min = (ISignedNumber) list.arg1();
-                ISignedNumber max = (ISignedNumber) list.arg2();
-                if (min.greaterThan(max).isTrue()) {
-                    throw new WrongArgumentType(ast, ast.get(1), 1, "Min > Mac in interval");
-                }
-            } catch (ClassCastException cca) {
-                // do nothing
-            }
-        }
-        return F.NIL;
-    }
+		if (ast.isInterval1()) {
+			IAST list = (IAST) ast.arg1();
+			try {
+				ISignedNumber min = (ISignedNumber) list.arg1();
+				ISignedNumber max = (ISignedNumber) list.arg2();
+				if (min.greaterThan(max).isTrue()) {
+					throw new WrongArgumentType(ast, ast.get(1), 1, "Min > Mac in interval");
+				}
+			} catch (ClassCastException cca) {
+				// do nothing
+			}
+		}
+		return F.NIL;
+	}
 
-    @Override
-    public void setUp(final ISymbol newSymbol) {
-    }
+	@Override
+	public void setUp(final ISymbol newSymbol) {
+	}
 
 }

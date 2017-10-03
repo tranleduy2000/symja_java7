@@ -5,41 +5,40 @@ package org.matheclipse.core.form.mathml;
  *
  */
 public abstract class AbstractConverter implements IConverter {
-    protected AbstractMathMLFormFactory fFactory;
-
-    public AbstractConverter() {
+  protected AbstractMathMLFormFactory fFactory;
+  
+  public AbstractConverter() {
 //    fFactory = null;
-    }
+  }
 
 //  public AbstractConverter() {
 //    fFactory = factory;
 //  }
+  /**
+   * @return
+   */
+  public AbstractMathMLFormFactory getFactory() {
+    return fFactory;
+  }
 
-    /**
-     * @return
-     */
-    public AbstractMathMLFormFactory getFactory() {
-        return fFactory;
-    }
+  /**
+   * @param factory
+   */
+  @Override
+public void setFactory(final AbstractMathMLFormFactory factory) {
+    fFactory = factory;
+  }
 
-    /**
-     * @param factory
-     */
-    @Override
-    public void setFactory(final AbstractMathMLFormFactory factory) {
-        fFactory = factory;
-    }
-
-    /**
-     * @return
-     */
+  /**
+   * @return
+   */
 //  public ExprFactory getExpressionFactory() {
 //    return fExpressionFactory;
 //  }
 
-    /**
-     * @param factory
-     */
+  /**
+   * @param factory
+   */
 //  public void setExpressionFactory(final ExprFactory factory) {
 //    fExpressionFactory = factory;
 //  }

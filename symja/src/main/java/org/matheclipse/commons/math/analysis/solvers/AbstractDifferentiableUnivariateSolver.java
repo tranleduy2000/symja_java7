@@ -28,11 +28,9 @@ import org.hipparchus.exception.MathIllegalArgumentException;
  * @since 3.0
  */
 public abstract class AbstractDifferentiableUnivariateSolver
-        extends BaseAbstractUnivariateSolver<DifferentiableUnivariateFunction>
-        implements DifferentiableUnivariateSolver {
-    /**
-     * Derivative of the function to solve.
-     */
+    extends BaseAbstractUnivariateSolver<DifferentiableUnivariateFunction>
+    implements DifferentiableUnivariateSolver {
+    /** Derivative of the function to solve. */
     private UnivariateFunction functionDerivative;
 
     /**
@@ -47,8 +45,8 @@ public abstract class AbstractDifferentiableUnivariateSolver
     /**
      * Construct a solver with given accuracies.
      *
-     * @param relativeAccuracy      Maximum relative error.
-     * @param absoluteAccuracy      Maximum absolute error.
+     * @param relativeAccuracy Maximum relative error.
+     * @param absoluteAccuracy Maximum absolute error.
      * @param functionValueAccuracy Maximum function value error.
      */
     protected AbstractDifferentiableUnivariateSolver(final double relativeAccuracy,
@@ -65,7 +63,7 @@ public abstract class AbstractDifferentiableUnivariateSolver
      * @throws MathIllegalArgumentException if the maximal number of evaluations is exceeded.
      */
     protected double computeDerivativeObjectiveValue(double point)
-            throws MathIllegalArgumentException {
+        throws MathIllegalArgumentException {
         incrementEvaluationCount();
         return functionDerivative.value(point);
     }

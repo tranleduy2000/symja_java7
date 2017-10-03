@@ -235,9 +235,9 @@ public class DistHashTableServer<K> extends Thread {
                 mythread.interrupt();
                 mythread.join(100);
             }
-            if (logger.isWarnEnabled()) {
-                logger.warn("server terminated " + mythread);
-            }
+//            if (logger.isWarnEnabled()) {
+//                logger.warn("server terminated " + mythread);
+//            }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
@@ -297,7 +297,6 @@ class DHTBroadcaster<K> extends Thread /*implements Runnable*/ {
      *
      * @param s  SocketChannel to use.
      * @param bc list of broadcasters.
-     * @param le DHTCounter.
      * @param sm SortedMap with key value pairs.
      */
     public DHTBroadcaster(SocketChannel s, List<DHTBroadcaster<K>> bc, SortedMap<K, DHTTransport> sm) {
@@ -454,9 +453,9 @@ class DHTBroadcaster<K> extends Thread /*implements Runnable*/ {
                 e.printStackTrace();
             }
         }
-        if (logger.isWarnEnabled()) {
-            logger.warn("ending " + this);
-        }
+//        if (logger.isWarnEnabled()) {
+//            logger.warn("ending " + this);
+//        }
         synchronized (bcaster) {
             bcaster.remove(this);
         }

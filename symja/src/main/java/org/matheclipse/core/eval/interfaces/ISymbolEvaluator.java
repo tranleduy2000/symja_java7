@@ -10,31 +10,31 @@ import org.matheclipse.core.interfaces.ISymbol;
  */
 public interface ISymbolEvaluator extends IEvaluator {
 
-    /**
-     * Symbolic evaluation of a symbol
-     *
-     * @param symbol the symbol which should be evaluated
-     * @return the evaluated object or <code>null</code>,
-     * if evaluation isn't possible
-     */
-    public IExpr evaluate(ISymbol symbol);
+  /**
+   * Symbolic evaluation of a symbol
+   * @param symbol the symbol which should be evaluated
+   *
+   * @return the evaluated object or <code>null</code>,
+   *         if evaluation isn't possible
+   */
+  public IExpr evaluate(ISymbol symbol);
 
-    /**
-     * Numerical evaluation of a symbol
-     *
-     * @param symbol the symbol which should be evaluated
-     * @return the evaluated object or <code>null</code>,
-     * if evaluation isn't possible
-     */
-    public IExpr numericEval(ISymbol symbol);
-
-    /**
-     * Numerical evaluation of a symbol
-     *
-     * @param symbol the symbol which should be evaluated
-     * @param engine TODO
-     * @return the evaluated object or <code>null</code>,
-     * if evaluation isn't possible
-     */
-    public IExpr apfloatEval(ISymbol symbol, EvalEngine engine);
+  /**
+   * Numerical evaluation of a symbol
+   * @param symbol the symbol which should be evaluated
+   *
+   * @return the evaluated object or <code>null</code>,
+   *         if evaluation isn't possible
+   */
+  public IExpr numericEval(ISymbol symbol);
+  
+  /**
+   * Numerical evaluation of a symbol
+   * @param symbol the symbol which should be evaluated
+ * @param engine TODO
+   *
+   * @return the evaluated object or <code>null</code>,
+   *         if evaluation isn't possible
+   */
+  public IExpr apfloatEval(ISymbol symbol, EvalEngine engine);
 }
