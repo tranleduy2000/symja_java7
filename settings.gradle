@@ -1,1 +1,1 @@
-include ':symja', ':hipparchus', ':csv'
+include ':symja'
