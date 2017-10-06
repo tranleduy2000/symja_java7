@@ -26,6 +26,8 @@ import org.hipparchus.exception.NullArgumentException;
 
 import java.util.Arrays;
 
+import static java.lang.Double.doubleToLongBits;
+
 /**
  * Miscellaneous utility functions.
  *
@@ -59,7 +61,8 @@ public final class MathUtils {
      * @return the hash code
      */
     public static int hash(double value) {
-        return Double.hashCode(value);
+        long bits = doubleToLongBits(value);
+        return (int) (bits ^ (bits >>> 32));
     }
 
     /**
@@ -71,7 +74,7 @@ public final class MathUtils {
      * @return {@code new Double(x).equals(new Double(y))}
      */
     public static boolean equals(double x, double y) {
-        return new Double(x).equals(new Double(y));
+        return Double.valueOf(x).equals(y);
     }
 
     /**

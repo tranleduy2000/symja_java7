@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/symja/symja.iml" filepath="$PROJECT_DIR$/symja/symja.iml" />
       <module fileurl="file://$PROJECT_DIR$/symja_android_library2.iml" filepath="$PROJECT_DIR$/symja_android_library2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/test/test.iml" filepath="$PROJECT_DIR$/test/test.iml" />
     </modules>
   </component>
 </project>
