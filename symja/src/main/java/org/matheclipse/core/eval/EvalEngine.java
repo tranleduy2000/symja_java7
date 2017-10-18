@@ -1,8 +1,5 @@
 package org.matheclipse.core.eval;
 
-import android.support.annotation.NonNull;
-
-import com.duy.lambda.Consumer;
 import com.duy.lambda.DoubleUnaryOperator;
 import com.duy.lambda.Predicate;
 
@@ -44,6 +41,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
+
+import javax.annotation.Nonnull;
 
 /**
  * The main evaluation algorithms for the .Symja computer algebra system
@@ -151,6 +151,8 @@ public class EvalEngine implements Serializable, IEvaluationEngine {
     /**
      * Flag for disabling the appending of expressions to the history list for the
      * <code>Out[]</code> function.
+     *
+     * @see org.matheclipse.core.reflection.Out
      */
     transient private boolean fOutListDisabled = true;
 
@@ -591,7 +593,7 @@ public class EvalEngine implements Serializable, IEvaluationEngine {
      * @param ast    the AST which should be evaluated
      * @return
      */
-    public IExpr evalAttributes(@NonNull ISymbol symbol, @NonNull IAST ast) {
+    public IExpr evalAttributes(@Nonnull ISymbol symbol, @Nonnull IAST ast) {
         IAST tempAST = ast;
         final int astSize = tempAST.size();
         if (astSize == 2) {
@@ -640,9 +642,11 @@ public class EvalEngine implements Serializable, IEvaluationEngine {
             }
 
             if ((ISymbol.NUMERICFUNCTION & attr) == ISymbol.NUMERICFUNCTION) {
-                for (int i = 1; i < tempAST.size(); i++) {
-                    if (tempAST.get(i).isIndeterminate()) {
-                        return F.Indeterminate;
+                if (!((ISymbol.HOLDALL & attr) == ISymbol.HOLDALL)) {
+                    for (int i = 1; i < tempAST.size(); i++) {
+                        if (tempAST.get(i).isIndeterminate()) {
+                            return F.Indeterminate;
+                        }
                     }
                 }
             }
@@ -705,16 +709,12 @@ public class EvalEngine implements Serializable, IEvaluationEngine {
             return evaluate(expr);
         } finally {
             // pop all local variables from local variable stack
-            Consumer<ISymbol> action = new Consumer<ISymbol>() {
+            variables.forEach(new Consumer<ISymbol>() {
                 @Override
                 public void accept(ISymbol x) {
                     EvalEngine.this.localStack(x).pop();
                 }
-            };
-//			variables.forEach(action);
-            for (ISymbol variable : variables) {
-                action.accept(variable);
-            }
+            });
         }
     }
 
@@ -839,7 +839,7 @@ public class EvalEngine implements Serializable, IEvaluationEngine {
      * possible
      * @see EvalEngine#evalWithoutNumericReset(IExpr)
      */
-    public IExpr evalLoop(@NonNull final IExpr expr) {
+    public IExpr evalLoop(@Nonnull final IExpr expr) {
         if ((fRecursionLimit > 0) && (fRecursionCounter > fRecursionLimit)) {
             if (Config.DEBUG) {
                 System.out.println(expr.toString());
@@ -932,7 +932,7 @@ public class EvalEngine implements Serializable, IEvaluationEngine {
      * @param expr the object which should be evaluated
      * @return the evaluated object
      */
-    public final IExpr evalPattern(@NonNull final IExpr expr) {
+    public final IExpr evalPattern(@Nonnull final IExpr expr) {
         boolean numericMode = fNumericMode;
         try {
             if (expr.isFreeOfPatterns()) {
@@ -959,7 +959,7 @@ public class EvalEngine implements Serializable, IEvaluationEngine {
      * @param expr the object which should be evaluated
      * @return an <code>IPatterMatcher</code> cretaed from the given expression.
      */
-    public final IPatternMatcher evalPatternMatcher(@NonNull final IExpr expr) {
+    public final IPatternMatcher evalPatternMatcher(@Nonnull final IExpr expr) {
         IExpr temp = evalPattern(expr);
         return new PatternMatcher(temp);
     }
@@ -1584,14 +1584,14 @@ public class EvalEngine implements Serializable, IEvaluationEngine {
     // }
     // return list;
     // }
+
     /**
      * Parse the given <code>expression String</code> into an <code>ASTNode</code>
      * without evaluation.
      *
-     * astString  an expression in math formula notation
+     * @param astString an expression in math formula notation
      * @return
-     * @throws org.matheclipse.parser.client.SyntaxError
-     *             if a parsing error occurs
+     * @throws org.matheclipse.parser.client.SyntaxError if a parsing error occurs
      */
     // final public ASTNode parseNode(String expression) {
     // if (fRelaxedSyntax) {
@@ -1602,7 +1602,6 @@ public class EvalEngine implements Serializable, IEvaluationEngine {
     // return parser.parse(expression);
     // }
     // }
-
     public boolean isPackageMode() {
         return fPackageMode;
     }

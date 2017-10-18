@@ -331,7 +331,7 @@ public interface IExpr extends Comparable<IExpr>, GcdRingElem<IExpr>, Serializab
      * @param that
      * @return <code>F.True, F.False or F.NIL</code
      */
-    public IExpr greaterEqualThan(IExpr that);
+    public IExpr greater(IExpr that);
 
     /**
      * Compare if <code>this > that</code:
@@ -1868,7 +1868,7 @@ public interface IExpr extends Comparable<IExpr>, GcdRingElem<IExpr>, Serializab
      * @param that
      * @return <code>F.True, F.False or F.NIL</code
      */
-    public IExpr lessEqualThan(IExpr that);
+    public IExpr less(IExpr that);
 
     /**
      * Compare if <code>this < that</code:

@@ -1,17 +1,10 @@
 package org.matheclipse.core.expression;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.math.BigInteger;
-import java.util.HashMap;
-import java.util.IdentityHashMap;
-import java.util.Locale;
-import java.util.Map;
-import com.duy.lambda.Function;
+import android.support.annotation.NonNull;
 
-import  android.support.annotation.NonNull;
+import com.duy.lambda.Function;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 
 import org.apfloat.Apcomplex;
 import org.apfloat.Apfloat;
@@ -61,15 +54,23 @@ import org.matheclipse.core.interfaces.ISignedNumber;
 import org.matheclipse.core.interfaces.IStringX;
 import org.matheclipse.core.interfaces.ISymbol;
 
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.math.BigInteger;
+import java.util.HashMap;
+import java.util.IdentityHashMap;
+import java.util.Locale;
+import java.util.Map;
+
 
 import edu.jas.kern.ComputerThreads;
 
 /**
- * 
+ *
  * Factory for creating Symja expression objects.
- * 
+ *
  */
 public class F {
 	public static boolean PACKAGE_MODE = true;
@@ -82,7 +83,7 @@ public class F {
 	 * again. This cache is especially useed for recursive integer functions to
 	 * remember the results of the recursive call.
 	 * </p>
-	 * 
+	 *
 	 * See: <a href="https://en.wikipedia.org/wiki/Memoization">Wikipedia -
 	 * Memoization</a>
 	 */
@@ -334,7 +335,7 @@ public class F {
 			Config.PARSER_USE_LOWERCASE_SYMBOLS ? "poissondistribution" : "PoissonDistribution");
 
 	public final static IBuiltInSymbol Abort = initFinalSymbol(Config.PARSER_USE_LOWERCASE_SYMBOLS ? "abort" : "Abort");
-	public final static IBuiltInSymbol Accumulate = initFinalSymbol( 
+	public final static IBuiltInSymbol Accumulate = initFinalSymbol(
 			Config.PARSER_USE_LOWERCASE_SYMBOLS ? "accumulate" : "Accumulate");
 	public final static IBuiltInSymbol And = initFinalSymbol(Config.PARSER_USE_LOWERCASE_SYMBOLS ? "and" : "And");
 	public final static IBuiltInSymbol AntihermitianMatrixQ = initFinalSymbol(
@@ -552,6 +553,8 @@ public class F {
 			Config.PARSER_USE_LOWERCASE_SYMBOLS ? "setattributes" : "SetAttributes");
 	public final static IBuiltInSymbol SetDelayed = initFinalSymbol(
 			Config.PARSER_USE_LOWERCASE_SYMBOLS ? "setdelayed" : "SetDelayed");
+	public final static IBuiltInSymbol StudentTDistribution = initFinalSymbol(
+			Config.PARSER_USE_LOWERCASE_SYMBOLS ? "studenttdistribution" : "StudentTDistribution");
 	public final static IBuiltInSymbol Sow = initFinalSymbol(Config.PARSER_USE_LOWERCASE_SYMBOLS ? "sow" : "Sow");
 	public final static IBuiltInSymbol Switch = initFinalSymbol(
 			Config.PARSER_USE_LOWERCASE_SYMBOLS ? "switch" : "Switch");
@@ -590,6 +593,9 @@ public class F {
 			Config.PARSER_USE_LOWERCASE_SYMBOLS ? "valueq" : "ValueQ");
 	public final static IBuiltInSymbol VectorQ = initFinalSymbol(
 			Config.PARSER_USE_LOWERCASE_SYMBOLS ? "vectorq" : "VectorQ");
+	public final static IBuiltInSymbol WeibullDistribution = initFinalSymbol(
+			Config.PARSER_USE_LOWERCASE_SYMBOLS ? "weibulldistribution" : "WeibullDistribution");
+
 	public final static IBuiltInSymbol Which = initFinalSymbol(Config.PARSER_USE_LOWERCASE_SYMBOLS ? "which" : "Which");
 	public final static IBuiltInSymbol While = initFinalSymbol(Config.PARSER_USE_LOWERCASE_SYMBOLS ? "while" : "While");
 	public final static IBuiltInSymbol With = initFinalSymbol(Config.PARSER_USE_LOWERCASE_SYMBOLS ? "with" : "With");
@@ -2090,7 +2096,7 @@ public class F {
 
 	/**
 	 * Create a new abstract syntax tree (AST).
-	 * 
+	 *
 	 * @param head
 	 *            the header expression of the function. If the ast represents a
 	 *            function like <code>f[x,y], Sin[x],...</code>, the
@@ -2104,7 +2110,7 @@ public class F {
 
 	/**
 	 * Create a new abstract syntax tree (AST).
-	 * 
+	 *
 	 * @param head
 	 *            the header symbol of the function. If the ast represents a
 	 *            function like <code>f[x,y], Sin[x],...</code>, the
@@ -2119,7 +2125,7 @@ public class F {
 	/**
 	 * Create a <code>Blank[]</code> pattern object for pattern-matching and term
 	 * rewriting
-	 * 
+	 *
 	 * @return IPattern
 	 */
 	public static IPattern $b() {
@@ -2129,7 +2135,7 @@ public class F {
 	/**
 	 * Create a <code>Blank[condition]</code> pattern object for pattern-matching
 	 * and term rewriting
-	 * 
+	 *
 	 * @param condition
 	 *            additional condition which should be checked in pattern-matching
 	 * @return IPattern
@@ -2141,7 +2147,7 @@ public class F {
 	/**
 	 * Create a <code>Blank[condition]</code> pattern object for pattern-matching
 	 * and term rewriting
-	 * 
+	 *
 	 * @param condition
 	 *            additional condition which should be checked in pattern-matching
 	 * @param def
@@ -2156,7 +2162,7 @@ public class F {
 	/**
 	 * Create a <code>Blank[condition]</code> pattern object for pattern-matching
 	 * and term rewriting
-	 * 
+	 *
 	 * @param condition
 	 *            additional condition which should be checked in pattern-matching
 	 * @param defaultValue
@@ -2171,7 +2177,7 @@ public class F {
 	/**
 	 * Create a <code>Pattern[]</code> pattern for pattern-matching and term
 	 * rewriting
-	 * 
+	 *
 	 * @param symbol
 	 * @return IPattern
 	 */
@@ -2181,7 +2187,7 @@ public class F {
 
 	/**
 	 * Create a pattern for pattern-matching and term rewriting
-	 * 
+	 *
 	 * @param symbol
 	 * @param def
 	 *            use a default value for this pattern if necessary
@@ -2193,7 +2199,7 @@ public class F {
 
 	/**
 	 * Create a pattern for pattern-matching and term rewriting
-	 * 
+	 *
 	 * @param symbol
 	 * @param check
 	 *            additional condition which should be checked in pattern-matching
@@ -2205,7 +2211,7 @@ public class F {
 
 	/**
 	 * Create a pattern for pattern-matching and term rewriting
-	 * 
+	 *
 	 * @param symbol
 	 * @param check
 	 *            additional condition which should be checked in pattern-matching
@@ -2220,7 +2226,7 @@ public class F {
 
 	/**
 	 * Create a pattern for pattern-matching and term rewriting
-	 * 
+	 *
 	 * @param symbol
 	 * @param check
 	 *            additional condition which should be checked in pattern-matching
@@ -2235,7 +2241,7 @@ public class F {
 
 	/**
 	 * Create a pattern for pattern-matching and term rewriting
-	 * 
+	 *
 	 * @param symbolName
 	 * @return IPattern
 	 */
@@ -2248,7 +2254,7 @@ public class F {
 
 	/**
 	 * Create a pattern for pattern-matching and term rewriting
-	 * 
+	 *
 	 * @param symbolName
 	 * @param def
 	 *            use a default value for this pattern if necessary
@@ -2260,7 +2266,7 @@ public class F {
 
 	/**
 	 * Create a pattern for pattern-matching and term rewriting
-	 * 
+	 *
 	 * @param symbolName
 	 * @param check
 	 *            additional condition which should be checked in pattern-matching
@@ -2275,7 +2281,7 @@ public class F {
 
 	/**
 	 * Create a pattern for pattern-matching and term rewriting
-	 * 
+	 *
 	 * @param symbolName
 	 * @param check
 	 *            additional condition which should be checked in pattern-matching
@@ -2289,7 +2295,7 @@ public class F {
 
 	/**
 	 * Create a pattern for pattern-matching and term rewriting
-	 * 
+	 *
 	 * @param symbol
 	 * @return IPattern
 	 */
@@ -2299,7 +2305,7 @@ public class F {
 
 	/**
 	 * Create a pattern for pattern-matching and term rewriting
-	 * 
+	 *
 	 * @param symbol
 	 * @param check
 	 *            additional condition which should be checked in pattern-matching
@@ -2314,7 +2320,7 @@ public class F {
 
 	/**
 	 * Create a pattern for pattern-matching and term rewriting
-	 * 
+	 *
 	 * @param symbol
 	 * @param check
 	 *            additional condition which should be checked in pattern-matching
@@ -2329,7 +2335,7 @@ public class F {
 
 	/**
 	 * Create a pattern for pattern-matching and term rewriting
-	 * 
+	 *
 	 * @param symbolName
 	 * @param check
 	 *            additional condition which should be checked in pattern-matching
@@ -2344,7 +2350,7 @@ public class F {
 
 	/**
 	 * Create a pattern for pattern-matching and term rewriting
-	 * 
+	 *
 	 * @param symbol
 	 * @return IPattern
 	 */
@@ -2354,7 +2360,7 @@ public class F {
 
 	/**
 	 * Create a pattern for pattern-matching and term rewriting
-	 * 
+	 *
 	 * @param symbol
 	 * @param check
 	 *            additional condition which should be checked in pattern-matching
@@ -2366,7 +2372,7 @@ public class F {
 
 	/**
 	 * Create a pattern for pattern-matching and term rewriting
-	 * 
+	 *
 	 * @param symbol
 	 * @param check
 	 *            additional condition which should be checked in pattern-matching
@@ -2385,7 +2391,7 @@ public class F {
 
 	/**
 	 * Create a pattern for pattern-matching and term rewriting
-	 * 
+	 *
 	 * @param symbolName
 	 *            the name of the pattrn symbol
 	 * @return IPattern
@@ -2403,7 +2409,7 @@ public class F {
 	 * <b>Note:</b> user defined variables on the context path are defined with
 	 * method <code>userSymbol()</code>
 	 * </p>
-	 * 
+	 *
 	 * @param symbolName
 	 *            the name of the symbol
 	 * @return
@@ -2421,7 +2427,7 @@ public class F {
 	 * <b>Note:</b> user defined variables on the context path are defined with
 	 * method <code>userSymbol()</code>
 	 * </p>
-	 * 
+	 *
 	 * @param symbolName
 	 *            the name of the symbol
 	 * @return
@@ -2439,7 +2445,7 @@ public class F {
 	 * <b>Note:</b> user defined variables on the context path are defined with
 	 * method <code>userSymbol()</code>
 	 * </p>
-	 * 
+	 *
 	 * @param symbolName
 	 *            the name of the symbol
 	 * @param setEval
@@ -2514,7 +2520,7 @@ public class F {
 
 	/**
 	 * Create a string expression
-	 * 
+	 *
 	 * @param str
 	 * @return
 	 */
@@ -2646,7 +2652,7 @@ public class F {
 	 * first to last-1 are copied in the new list if <code>include</code> is set to
 	 * <code> false </code> all arguments excluded from index first to last-1 are
 	 * copied in the new list
-	 * 
+	 *
 	 */
 	public static IAST ast(final IAST f, final IExpr head, final boolean include, final int first, final int last) {
 		AST ast = null;
@@ -2671,12 +2677,12 @@ public class F {
 
 	/**
 	 * Create a new abstract syntax tree (AST).
-	 * 
+	 *
 	 * @param head
 	 *            the header expression of the function. If the ast represents a
 	 *            function like <code>f[x,y], Sin[x],...</code>, the
 	 *            <code>head</code> will be an instance of type ISymbol.
-	 * 
+	 *
 	 */
 	public final static IAST ast(final IExpr head) {
 		return AST.newInstance(head);
@@ -2684,7 +2690,7 @@ public class F {
 
 	/**
 	 * Create a new abstract syntax tree (AST).
-	 * 
+	 *
 	 * @param head
 	 *            the header expression of the function. If the ast represents a
 	 *            function like <code>f[x,y], Sin[x],...</code>, the
@@ -2709,7 +2715,7 @@ public class F {
 	/**
 	 * Create a new <code>List()</code> with <code>copies</code> number of
 	 * arguments, which are set to <code>value</code>.
-	 * 
+	 *
 	 * @param value
 	 *            initialize all elements with <code>value</code>.
 	 * @param copies
@@ -2724,7 +2730,7 @@ public class F {
 	/**
 	 * Create a new abstract syntax tree (AST) with a <code>head</code> and
 	 * <code>copies</code> number of arguments, which are set to <code>value</code>.
-	 * 
+	 *
 	 * @param head
 	 *            the header expression of the function. If the ast represents a
 	 *            function like <code>f[x,y], Sin[x],...</code>, the
@@ -2748,7 +2754,7 @@ public class F {
 
 	/**
 	 * Create a new abstract syntax tree (AST).
-	 * 
+	 *
 	 * @param arr
 	 * @param head
 	 *            the header expression of the function. If the ast represents a
@@ -2770,7 +2776,7 @@ public class F {
 
 	/**
 	 * Create a function with 2 arguments without evaluation.
-	 * 
+	 *
 	 * @param head
 	 * @param a0
 	 * @param a1
@@ -2783,7 +2789,7 @@ public class F {
 	/**
 	 * Create a function with 2 arguments as a <code>AST2</code> immutable object
 	 * without evaluation.
-	 * 
+	 *
 	 * @param head
 	 * @param a0
 	 * @param a1
@@ -2805,7 +2811,7 @@ public class F {
 	/**
 	 * Gives symbols "True" or "False" (type ISymbol) depending on the boolean
 	 * value.
-	 * 
+	 *
 	 * @param value
 	 * @return
 	 */
@@ -2843,29 +2849,29 @@ public class F {
 
 	/**
 	 * Converts a given object into a MathEclipse IExpr expression
-	 * 
+	 *
 	 * <pre>
 	 * Java Object     -&gt; MathEclipse object
 	 * -------------------------------------
 	 * null object          Null symbol
 	 * IExpr                IExpr type
 	 * Boolean              True or False symbol
-	 * BigInteger           Integer value  
-	 * java.math.BigInteger Integer value  
+	 * BigInteger           Integer value
+	 * java.math.BigInteger Integer value
 	 * BigDecimal           Double with doubleValue() value
 	 * Double               Double with doubleValue() value
 	 * Float                Double with doubleValue() value
 	 * Number               Integer with longValue() value
-	 * java.util.List       0-th element of the list gives the head of the function 
+	 * java.util.List       0-th element of the list gives the head of the function
 	 *                      1..nth element of the list give the arguments of the function
-	 * Object[]             a list of converted objects  
+	 * Object[]             a list of converted objects
 	 * int[]                a list of Integer values
 	 * double[]             a list of Double values
 	 * double[][]           a matrix (i.e. nested lists) of Double values
 	 * boolean[]            a list of True or False symbols
-	 * 
+	 *
 	 * </pre>
-	 * 
+	 *
 	 * @param obj
 	 * @return
 	 */
@@ -2883,7 +2889,7 @@ public class F {
 
 	/**
 	 * Create a symbolic complex number
-	 * 
+	 *
 	 * @param re
 	 * @return
 	 */
@@ -2893,7 +2899,7 @@ public class F {
 
 	/**
 	 * Create a symbolic complex number
-	 * 
+	 *
 	 * @param re
 	 * @param im
 	 * @return
@@ -2904,7 +2910,7 @@ public class F {
 
 	/**
 	 * Create a symbolic complex number
-	 * 
+	 *
 	 * @param re
 	 * @param im
 	 * @return
@@ -2940,7 +2946,7 @@ public class F {
 	/**
 	 * Set real or imaginary parts of a numeric argument to zero, those absolute
 	 * value is less than a delta.
-	 * 
+	 *
 	 * @param arg
 	 *            a numeric number
 	 * @param delta
@@ -3066,7 +3072,7 @@ public class F {
 
 	/**
 	 * Create a symbolic complex number
-	 * 
+	 *
 	 * @param realPart
 	 *            the real double value part which should be converted to a complex
 	 *            number
@@ -3081,7 +3087,7 @@ public class F {
 
 	/**
 	 * Create a symbolic complex number
-	 * 
+	 *
 	 * @param realPart
 	 *            the real double value part which should be converted to a complex
 	 *            number
@@ -3098,7 +3104,7 @@ public class F {
 
 	/**
 	 * Create a symbolic complex number
-	 * 
+	 *
 	 * @param re
 	 * @return
 	 */
@@ -3108,7 +3114,7 @@ public class F {
 
 	/**
 	 * Create a symbolic complex number
-	 * 
+	 *
 	 * @param re
 	 * @param im
 	 * @return
@@ -3119,7 +3125,7 @@ public class F {
 
 	/**
 	 * Create a symbolic complex number
-	 * 
+	 *
 	 * @param re
 	 * @param im
 	 * @return
@@ -3131,7 +3137,7 @@ public class F {
 
 	/**
 	 * TODO: check if Complex is working in pattern matching?
-	 * 
+	 *
 	 * @param a0
 	 * @param a1
 	 * @return
@@ -3158,7 +3164,7 @@ public class F {
 
 	/**
 	 * Create a complex numeric number with imaginary part = 0.0
-	 * 
+	 *
 	 * @param r
 	 *            the real part of the number
 	 * @return
@@ -3169,7 +3175,7 @@ public class F {
 
 	/**
 	 * Create a complex numeric value
-	 * 
+	 *
 	 * @param r
 	 *            real part
 	 * @param i
@@ -3376,7 +3382,7 @@ public class F {
 	/**
 	 * The division <code>a0 / a1</code> will be represented by
 	 * <code>Times(a0, Power(a1, -1))</code>.
-	 * 
+	 *
 	 * @param a0
 	 *            numerator
 	 * @param a1
@@ -3454,7 +3460,7 @@ public class F {
 	/**
 	 * Evaluate an expression. If no evaluation was possible this method returns the
 	 * given argument.
-	 * 
+	 *
 	 * @param a
 	 *            the expression which should be evaluated
 	 * @return the evaluated expression
@@ -3466,7 +3472,7 @@ public class F {
 
 	/**
 	 * Create a function with 1 argument and evaluate it.
-	 * 
+	 *
 	 * @param head
 	 * @param a0
 	 * @return the evaluated object
@@ -3482,7 +3488,7 @@ public class F {
 	/**
 	 * Evaluate <code>Expand()</code> for the given expression. returns the given
 	 * argument.
-	 * 
+	 *
 	 * @param a
 	 *            the expression which should be evaluated
 	 * @return the evaluated expression
@@ -3512,7 +3518,7 @@ public class F {
 	 * Apply <code>ExpandAll()</code> to the given expression if it's an
 	 * <code>IAST</code>. If expanding wasn't possible this method returns the given
 	 * argument.
-	 * 
+	 *
 	 * @param a
 	 *            the expression which should be evaluated
 	 * @return the evaluated expression
@@ -3526,7 +3532,7 @@ public class F {
 	 * Apply <code>ExpandAll()</code> to the given expression if it's an
 	 * <code>IAST</code>. If expanding wasn't possible this method returns the given
 	 * argument.
-	 * 
+	 *
 	 * @param a
 	 *            the expression which should be evaluated
 	 * @return the evaluated expression
@@ -3538,7 +3544,7 @@ public class F {
 
 	/**
 	 * Evaluate the given expression in numeric mode
-	 * 
+	 *
 	 * @param a0
 	 * @return
 	 * @deprecated use EvalEngine.get().evalN() instead
@@ -3552,7 +3558,7 @@ public class F {
 	 * Evaluate an expression in &quot;quiet mode&quot;. If no evaluation was
 	 * possible this method returns the given argument. In &quot;quiet mode&quot;
 	 * all warnings would be suppressed.
-	 * 
+	 *
 	 * @param a
 	 *            the expression which should be evaluated
 	 * @return the evaluated expression
@@ -3568,7 +3574,7 @@ public class F {
 	 * Evaluate an expression in &quot;quiet mode&quot;. If evaluation is not
 	 * possible return <code>null</code>. In &quot;quiet mode&quot; all warnings
 	 * would be suppressed.
-	 * 
+	 *
 	 * @param expr
 	 *            the expression which should be evaluated
 	 * @return the evaluated object or <code>F.NIL</code> if no evaluation was
@@ -3584,7 +3590,7 @@ public class F {
 	/**
 	 * Evaluate the given expression and test if the result equals the symbol
 	 * <code>True</code>.
-	 * 
+	 *
 	 * @param expr
 	 * @return
 	 * @deprecated use EvalEngine#evalTrue()
@@ -3610,7 +3616,7 @@ public class F {
 	 * Apply <code>Expand()</code> to the given expression if it's an
 	 * <code>IAST</code>. If expanding wasn't possible this method returns the given
 	 * argument.
-	 * 
+	 *
 	 * @param a
 	 *            the expression which should be evaluated
 	 * @param expandNegativePowers
@@ -3645,7 +3651,7 @@ public class F {
 	 * Apply <code>ExpandAll()</code> to the given expression if it's an
 	 * <code>IAST</code>. If expanding wasn't possible this method returns the given
 	 * argument.
-	 * 
+	 *
 	 * @param a
 	 *            the expression which should be evaluated
 	 * @param expandNegativePowers
@@ -3747,7 +3753,7 @@ public class F {
 
 	/**
 	 * Create a "fractional" number
-	 * 
+	 *
 	 * @param value
 	 *            the rational value which should be converted to a fractional
 	 *            number
@@ -3759,7 +3765,7 @@ public class F {
 
 	/**
 	 * Create a "fractional" number
-	 * 
+	 *
 	 * @param numerator
 	 *            numerator of the fractional number
 	 * @param denominator
@@ -3772,7 +3778,7 @@ public class F {
 
 	/**
 	 * Create a "fractional" number
-	 * 
+	 *
 	 * @param value
 	 *            the double value which should be converted to a fractional number
 	 * @return IFraction
@@ -3787,7 +3793,7 @@ public class F {
 
 	/**
 	 * Create a "fractional" number
-	 * 
+	 *
 	 * @param numerator
 	 *            numerator of the fractional number
 	 * @param denominator
@@ -3800,7 +3806,7 @@ public class F {
 
 	/**
 	 * Create a "fractional" number
-	 * 
+	 *
 	 * @param numerator
 	 *            numerator of the fractional number
 	 * @param denominator
@@ -3870,16 +3876,10 @@ public class F {
 	}
 
 	public static IExpr Greater(final IExpr a0, final IExpr a1) {
-		if (a0.isSignedNumber() && a1.isSignedNumber()) {
-			return ((ISignedNumber) a0).isGreaterThan(((ISignedNumber) a1)) ? True : False;
-		}
 		return binaryAST2(Greater, a0, a1);
 	}
 
 	public static IExpr GreaterEqual(final IExpr a0, final IExpr a1) {
-		if (a0.isSignedNumber() && a1.isSignedNumber()) {
-			return ((ISignedNumber) a0).isLessThan(((ISignedNumber) a1)) ? False : True;
-		}
 		return binaryAST2(GreaterEqual, a0, a1);
 	}
 
@@ -3897,12 +3897,12 @@ public class F {
 
 	/**
 	 * Create a new abstract syntax tree (AST).
-	 * 
+	 *
 	 * @param head
 	 *            the header expression of the function. If the ast represents a
 	 *            function like <code>f[x,y], Sin[x],...</code>, the
 	 *            <code>head</code> will be an instance of type ISymbol.
-	 * 
+	 *
 	 */
 	public final static IAST headAST0(final IExpr head) {
 		return new AST0(head);
@@ -3974,7 +3974,7 @@ public class F {
 	 * Symbol in the <code>PREDEFINED_SYMBOLS_MAP</code>. The symbol is created
 	 * using the given upper case string to use it as associated class name in
 	 * package org.matheclipse.core.reflection.system.
-	 * 
+	 *
 	 * @param symbolName
 	 *            the predefined symbol name in upper-case form
 	 * @return
@@ -3991,7 +3991,7 @@ public class F {
 	 * Symbol in the <code>PREDEFINED_SYMBOLS_MAP</code>. The symbol is created
 	 * using the given upper case string to use it as associated class name in
 	 * package org.matheclipse.core.reflection.system.
-	 * 
+	 *
 	 * @param symbolName
 	 *            the predefined symbol name in upper-case form
 	 * @return
@@ -4004,7 +4004,7 @@ public class F {
 
 	/**
 	 * Insert a new Symbol in the <code>SYSTEM</code> context.
-	 * 
+	 *
 	 * @param symbolName
 	 *            the predefined symbol name in upper-case form
 	 * @param evaluator
@@ -4066,7 +4066,7 @@ public class F {
 
 	/**
 	 * Initialize the complete System
-	 * 
+	 *
 	 * @param fileName
 	 *            <code>null</code> or optional text filename, which includes the
 	 *            preloaded system rules
@@ -4124,7 +4124,7 @@ public class F {
 
 	/**
 	 * Create a large integer number.
-	 * 
+	 *
 	 * @param integerValue
 	 * @return
 	 */
@@ -4134,7 +4134,7 @@ public class F {
 
 	/**
 	 * Create a large integer number.
-	 * 
+	 *
 	 * @param integerValue
 	 * @return
 	 */
@@ -4144,7 +4144,7 @@ public class F {
 
 	/**
 	 * Create a large integer number.
-	 * 
+	 *
 	 * @param integerString
 	 *            the integer number represented as a String
 	 * @param radix
@@ -4178,7 +4178,7 @@ public class F {
 
 	/**
 	 * Create an "interval" expression: <code>Interval(list)</code>.
-	 * 
+	 *
 	 * @param list
 	 * @return
 	 */
@@ -4188,7 +4188,7 @@ public class F {
 
 	/**
 	 * Create an "interval" expression: <code>Interval(List(from, to))</code>.
-	 * 
+	 *
 	 * @param min
 	 *            minimum value of the interval
 	 * @param max
@@ -4238,9 +4238,9 @@ public class F {
 
 	/**
 	 * Assign the evaluated <code>rhs</code> to the <code>lhs</code>.<br/>
-	 * 
+	 *
 	 * <b>Note:</b> this method returns <code>null</code>.
-	 * 
+	 *
 	 * @param lhs
 	 *            left-hand-side of the assignment
 	 * @param rhs
@@ -4257,9 +4257,9 @@ public class F {
 
 	/**
 	 * Assign the unevaluated <code>rhs</code> to the <code>lhs</code>.<br/>
-	 * 
+	 *
 	 * <b>Note:</b> this method returns <code>null</code>.
-	 * 
+	 *
 	 * @param lhs
 	 *            left-hand-side of the assignment
 	 * @param rhs
@@ -4277,7 +4277,7 @@ public class F {
 	/**
 	 * After a successful <code>isCase()</code> the symbols associated with the
 	 * patterns contain the matched values on the local stack.
-	 * 
+	 *
 	 * @param a
 	 * @param b
 	 * @return
@@ -4333,18 +4333,18 @@ public class F {
 
 	/**
 	 * Check difference is less than a constant
-	 * 
+	 *
 	 * infinity == infinity returns true eg 1/0
-	 * 
+	 *
 	 * -infinity == infinity returns false eg -1/0
-	 * 
+	 *
 	 * -infinity == -infinity returns true
-	 * 
+	 *
 	 * undefined == undefined returns false eg 0/0
-	 * 
+	 *
 	 * @return whether x is equal to y
-	 * 
-	 * 
+	 *
+	 *
 	 */
 	final public static boolean isEqual(double x, double y) {
 		if (x == y) {
@@ -4355,7 +4355,7 @@ public class F {
 
 	/**
 	 * Test if the absolute value is less <code>Config.DOUBLE_EPSILON</code>.
-	 * 
+	 *
 	 * @param value
 	 * @return
 	 */
@@ -4365,7 +4365,7 @@ public class F {
 
 	/**
 	 * Test if the absolute value is less than the given epsilon.
-	 * 
+	 *
 	 * @param x
 	 * @param epsilon
 	 * @return
@@ -4429,26 +4429,14 @@ public class F {
 		return unaryAST1(Length, a);
 	}
 
+
+
 	public static IExpr Less(final IExpr a0, final IExpr a1) {
-		if (a0.isSignedNumber() && a1.isSignedNumber()) {
-			return ((ISignedNumber) a0).isLessThan(((ISignedNumber) a1)) ? True : False;
-		}
 		return binaryAST2(Less, a0, a1);
 	}
 
-	public static IAST Less(final IExpr... a) {
-		return ast(a, Less);
-	}
-
 	public static IExpr LessEqual(final IExpr a0, final IExpr a1) {
-		if (a0.isSignedNumber() && a1.isSignedNumber()) {
-			return ((ISignedNumber) a0).isGreaterThan(((ISignedNumber) a1)) ? False : True;
-		}
 		return binaryAST2(LessEqual, a0, a1);
-	}
-
-	public static IAST LessEqual(final IExpr... a) {
-		return ast(a, LessEqual);
 	}
 
 	public static IAST Limit(final IExpr a0, final IExpr a1) {
@@ -4489,7 +4477,7 @@ public class F {
 
 	/**
 	 * Create a List() object.
-	 * 
+	 *
 	 * @return
 	 */
 	public static IAST List() {
@@ -4498,7 +4486,7 @@ public class F {
 
 	/**
 	 * Create a new <code>List</code> with the given <code>capacity</code>.
-	 * 
+	 *
 	 * @param capacity
 	 *            the assumed number of arguments (+ 1 for the header expression is
 	 *            added internally).
@@ -4512,7 +4500,7 @@ public class F {
 	 * For positive n, add the first n elements of <code>numbers</code> to the
 	 * list.For negative n, add the first n elements of <code>numbers</code> to the
 	 * list.
-	 * 
+	 *
 	 * @param n
 	 * @param numbers
 	 * @return
@@ -4585,7 +4573,7 @@ public class F {
 
 	/**
 	 * <code>Log[10, a0]</code>.
-	 * 
+	 *
 	 * @param a0
 	 * @return <code>Log[10, a0]</code>.
 	 */
@@ -4751,7 +4739,7 @@ public class F {
 
 	/**
 	 * Evaluate the given expression in numeric mode
-	 * 
+	 *
 	 * @param a0
 	 * @return
 	 */
@@ -4765,7 +4753,7 @@ public class F {
 	 * pattern matching assumptions (in left-hand-sige expressions). so it is only
 	 * called called for <code>INumber</code> objects, otherwis a
 	 * <code>Times(CN1, x)</code> AST would be created.
-	 * 
+	 *
 	 * @param x
 	 *            the expression which should be negated.
 	 * @return
@@ -4789,7 +4777,7 @@ public class F {
 
 	/**
 	 * Create a new abstract syntax tree (AST).
-	 * 
+	 *
 	 * @param intialArgumentsCapacity
 	 *            the initial capacity of arguments of the AST.
 	 * @param head
@@ -4828,7 +4816,7 @@ public class F {
 
 	/**
 	 * Create a numeric value
-	 * 
+	 *
 	 * @param d
 	 * @return
 	 */
@@ -4856,7 +4844,7 @@ public class F {
 
 	/**
 	 * Create a numeric value from the input string.
-	 * 
+	 *
 	 * @param valueString
 	 *            the numeric value represented as a string.
 	 * @return
@@ -4959,6 +4947,14 @@ public class F {
 		return binaryAST2(PatternTest, a0, a1);
 	}
 
+	public static IAST Piecewise(final IExpr a0) {
+		return unaryAST1(Piecewise, a0);
+	}
+
+	public static IAST Piecewise(final IExpr a0, final IExpr a1) {
+		return binaryAST2(Piecewise, a0, a1);
+	}
+
 	public static IExpr plus(IExpr a, Integer i) {
 		return Plus(a, integer(i.longValue()));
 	}
@@ -4977,7 +4973,7 @@ public class F {
 
 	/**
 	 * Create a Plus() function.
-	 * 
+	 *
 	 * @return
 	 */
 	public static IAST Plus() {
@@ -4986,7 +4982,7 @@ public class F {
 
 	/**
 	 * Create a Plus() function with allocated space for size elements.
-	 * 
+	 *
 	 * @param size
 	 * @return
 	 */
@@ -5080,7 +5076,7 @@ public class F {
 
 	/**
 	 * Pop the current top value from the symbols local variable stack.
-	 * 
+	 *
 	 * @param temp
 	 */
 	// public static void popLocal(ISymbol temp) {
@@ -5129,7 +5125,7 @@ public class F {
 
 	/**
 	 * Create a "predefined" symbol for constants or function names.
-	 * 
+	 *
 	 * @param symbolName
 	 * @return
 	 */
@@ -5184,7 +5180,7 @@ public class F {
 
 	/**
 	 * Create a "fractional" number
-	 * 
+	 *
 	 * @param numerator
 	 *            numerator of the fractional number
 	 * @param fDenominator
@@ -5197,7 +5193,7 @@ public class F {
 
 	/**
 	 * Create a "fractional" number
-	 * 
+	 *
 	 * @param numerator
 	 *            numerator of the fractional number
 	 * @param denominator
@@ -5210,7 +5206,7 @@ public class F {
 
 	/**
 	 * Create a "fractional" number
-	 * 
+	 *
 	 * @param numerator
 	 *            numerator of the fractional number
 	 * @param denominator
@@ -5267,7 +5263,7 @@ public class F {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param a0
 	 * @param a1
 	 * @param a2
@@ -5288,7 +5284,7 @@ public class F {
 	/**
 	 * Get or create a user defined symbol which is retrieved from the evaluation
 	 * engines context path.
-	 * 
+	 *
 	 * @param symbolName
 	 *            the name of the symbol
 	 * @return the symbol object from the context path
@@ -5300,7 +5296,7 @@ public class F {
 	/**
 	 * Get or create a user defined symbol which is retrieved from the evaluation
 	 * engines context path.
-	 * 
+	 *
 	 * @param symbolName
 	 *            the name of the symbol
 	 * @param engine
@@ -5314,7 +5310,7 @@ public class F {
 	/**
 	 * Remove a user-defined symbol from the eval engines context path. Doesn't
 	 * remove predefined names from the System Context.
-	 * 
+	 *
 	 * @param symbolName
 	 *            the name of the symbol
 	 * @return the removed symbol or <code>null</code> if no symbol was found
@@ -5492,7 +5488,7 @@ public class F {
 
 	/**
 	 * Create a "square" expression: <code>Power(x, 2)</code>.
-	 * 
+	 *
 	 * @param x
 	 * @return
 	 */
@@ -5502,7 +5498,7 @@ public class F {
 
 	/**
 	 * Create a "square root" expression: <code>Power(x, 1/2)</code>.
-	 * 
+	 *
 	 * @param x
 	 * @return
 	 */
@@ -5540,7 +5536,7 @@ public class F {
 
 	/**
 	 * Create a string expression
-	 * 
+	 *
 	 * @param str
 	 * @return
 	 */
@@ -5550,7 +5546,7 @@ public class F {
 
 	/**
 	 * Create a string expression
-	 * 
+	 *
 	 * @param str
 	 * @return
 	 */
@@ -5573,7 +5569,7 @@ public class F {
 	/**
 	 * Substitute all (sub-) expressions <code>x</code> with <code>y</code>. If no
 	 * substitution matches, the method returns the given <code>expr</code>.
-	 * 
+	 *
 	 * @param expr
 	 *            the complete expresssion
 	 * @param x
@@ -5590,7 +5586,7 @@ public class F {
 	/**
 	 * Substitute all (sub-) expressions with the given unary function. If no
 	 * substitution matches, the method returns the given <code>expr</code>.
-	 * 
+	 *
 	 * @param expr
 	 * @param function
 	 *            if the unary functions <code>apply()</code> method returns
@@ -5605,7 +5601,7 @@ public class F {
 	/**
 	 * Substitute all (sub-) expressions with the given rule set. If no substitution
 	 * matches, the method returns the given <code>expr</code>.
-	 * 
+	 *
 	 * @param expr
 	 * @param astRules
 	 *            rules of the form <code>x-&gt;y</code> or
@@ -5621,7 +5617,7 @@ public class F {
 	/**
 	 * Substitute all (sub-) expressions with the given replacement expression. If
 	 * no (sub-) expression matches, the method returns the given <code>expr</code>.
-	 * 
+	 *
 	 * @param expr
 	 * @param subExpr
 	 * @param replacementExpr
@@ -5656,7 +5652,7 @@ public class F {
 	/**
 	 * Evaluate the sum from <code>iMin</code> to <code>iMax</code> and step
 	 * <code>1</code>.
-	 * 
+	 *
 	 * @param function
 	 * @param iMin
 	 * @param iMax
@@ -5669,7 +5665,7 @@ public class F {
 	/**
 	 * Evaluate the sum from <code>iMin</code> to <code>iMax</code> and step
 	 * <code>iStep</code>.
-	 * 
+	 *
 	 * @param function
 	 * @param iMin
 	 * @param iMax
@@ -5721,7 +5717,7 @@ public class F {
 	/**
 	 * Create a function with 3 arguments as a <code>AST3</code> immutable object
 	 * without evaluation.
-	 * 
+	 *
 	 * @param head
 	 * @param a0
 	 * @param a1
@@ -5750,7 +5746,7 @@ public class F {
 
 	/**
 	 * Create a Times() function.
-	 * 
+	 *
 	 * @return
 	 */
 	public static IAST Times() {
@@ -5759,7 +5755,7 @@ public class F {
 
 	/**
 	 * Create a Times() function with allocated space for size elements.
-	 * 
+	 *
 	 * @param size
 	 * @return
 	 */
@@ -5849,7 +5845,7 @@ public class F {
 
 	/**
 	 * Create a function with 1 argument without evaluation.
-	 * 
+	 *
 	 * @param head
 	 * @param a0
 	 * @return
@@ -5861,7 +5857,7 @@ public class F {
 	/**
 	 * Create a function with 1 argument as a <code>AST1</code> immutable object
 	 * without evaluation.
-	 * 
+	 *
 	 * @param head
 	 * @param a0
 	 * @return
@@ -5924,7 +5920,7 @@ public class F {
 
 	/**
 	 * Create a large integer number.
-	 * 
+	 *
 	 * @param integerValue
 	 * @return
 	 */
@@ -5934,7 +5930,7 @@ public class F {
 
 	/**
 	 * Create a large integer number.
-	 * 
+	 *
 	 * @param integerValue
 	 * @return
 	 */

@@ -457,21 +457,18 @@ public abstract class IExprImpl implements IExpr {
     }
 
     /**
-     * Compare if <code>this >= that</code:
-     * <ul>
-     * <li>return F.True if the comparison is <code>true</code></li>
-     * <li>return F.False if the comparison is <code>false</code></li>
-     * <li>return F.NIL if the comparison is undetermined (i.e. could not be
-     * evaluated)</li>
-     * </ul>
+     * Evaluate Greater, if both arguments are real numbers
      *
-     * @param that
-     * @return <code>F.True, F.False or F.NIL</code
+     * @param a1
+     * @return
      */
     @Override
-    public IExpr greaterEqualThan(IExpr that) {
-        COMPARE_TERNARY temp = BooleanFunctions.CONST_GREATER_EQUAL.prepareCompare(this, that);
-        return ITernaryComparator.convertToExpr(temp);
+    public IExpr greater(IExpr a1) {
+        if (isSignedNumber() && a1.isSignedNumber()) {
+            return ((ISignedNumber) this).isGreaterThan(((ISignedNumber) a1)) ? F.True : F.False;
+        }
+        EvalEngine engine = EvalEngine.get();
+        return engine.evaluate(F.Greater(this, a1));
     }
 
     /**
@@ -2520,21 +2517,18 @@ public abstract class IExprImpl implements IExpr {
     }
 
     /**
-     * Compare if <code>this <= that</code:
-     * <ul>
-     * <li>return F.True if the comparison is <code>true</code></li>
-     * <li>return F.False if the comparison is <code>false</code></li>
-     * <li>return F.NIL if the comparison is undetermined (i.e. could not be
-     * evaluated)</li>
-     * </ul>
+     * Evaluate Less, if both arguments are real numbers
      *
-     * @param that
-     * @return <code>F.True, F.False or F.NIL</code
+     * @param a1
+     * @return
      */
     @Override
-    public IExpr lessEqualThan(IExpr that) {
-        COMPARE_TERNARY temp = BooleanFunctions.CONST_LESS_EQUAL.prepareCompare(this, that);
-        return ITernaryComparator.convertToExpr(temp);
+    public IExpr less(IExpr a1) {
+        if (isSignedNumber() && a1.isSignedNumber()) {
+            return ((ISignedNumber) this).isLessThan(((ISignedNumber) a1)) ? F.True : F.False;
+        }
+        EvalEngine engine = EvalEngine.get();
+        return engine.evaluate(F.Less(this, a1));
     }
 
     /**

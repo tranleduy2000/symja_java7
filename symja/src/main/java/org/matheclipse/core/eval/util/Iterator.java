@@ -454,9 +454,9 @@ public class Iterator {
 		@Override
 		public boolean hasNext() {
 			if (step.isNegative()) {
-				return count.greaterEqualThan(upperLimit).isTrue();
+				return count.greater(upperLimit).isTrue();
 			}
-			return count.lessEqualThan(upperLimit).isTrue();
+			return count.less(upperLimit).isTrue();
 		}
 
 		@Override
@@ -591,9 +591,9 @@ public class Iterator {
 		@Override
 		public boolean hasNext() {
 			if (step.isNegative()) {
-				return count.greaterEqualThan(upperLimit).isTrue();
+				return count.greater(upperLimit).isTrue();
 			}
-			return count.lessEqualThan(upperLimit).isTrue();
+			return count.less(upperLimit).isTrue();
 		}
 
 		@Override

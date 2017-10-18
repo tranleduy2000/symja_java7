@@ -3674,6 +3674,10 @@ public class LowercaseTestCase extends AbstractTestCase {
         check("Mean(BinomialDistribution(n, p))", "n*p");
         check("Mean(NormalDistribution(n, p))", "n");
         check("Mean(HypergeometricDistribution(n, ns, nt))", "(n*ns)/nt");
+        check("Mean(StudentTDistribution(4))", "0");
+        check("Mean(StudentTDistribution(n))", "Piecewise({{0,n>1}},Indeterminate)");
+        check("Mean(WeibullDistribution(n, m))", "m*Gamma(1+1/n)");
+
     }
 
     public void testMedian() {
