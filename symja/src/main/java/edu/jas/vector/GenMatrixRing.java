@@ -14,7 +14,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.function.BiFunction;
+import com.duy.lambda.BiFunction;
 
 import edu.jas.kern.StringUtil;
 import edu.jas.structure.AlgebraFactory;

@@ -11,8 +11,8 @@ import org.matheclipse.core.interfaces.ISymbol;
 
 import java.io.Serializable;
 import java.util.Comparator;
-import java.util.function.BiPredicate;
-import java.util.function.Predicate;
+import com.duy.lambda.BiPredicate;
+import com.duy.lambda.Predicate;
 
 public class Predicates {
 	private static class InASTPredicate implements Predicate<IExpr>, Serializable {
@@ -217,7 +217,7 @@ public class Predicates {
 	 * 
 	 * @param ast
 	 *            the AST those arguments may contain the function input
-	 * @return a <code>java.util.function.Predicate</code> predicate of one
+	 * @return a <code>com.duy.lambda.Predicate</code> predicate of one
 	 *         argument.
 	 */
 	public static Predicate<IExpr> in(IAST ast) {
@@ -232,7 +232,7 @@ public class Predicates {
 	 * 
 	 * @param expr
 	 *            the expr which may match the function input
-	 * @return a <code>java.util.function.Predicate</code> predicate of one
+	 * @return a <code>com.duy.lambda.Predicate</code> predicate of one
 	 *         argument.
 	 */
 	public static Predicate<IExpr> in(IExpr expr) {
@@ -246,7 +246,7 @@ public class Predicates {
 	 * <code>0</code>.
 	 * 
 	 * @param heads
-	 * @return a <code>java.util.function.Predicate</code> predicate of one
+	 * @return a <code>com.duy.lambda.Predicate</code> predicate of one
 	 *         argument.
 	 */
 	public static Predicate<IExpr> isAST(final ISymbol[] heads) {
@@ -269,7 +269,7 @@ public class Predicates {
 	 * returned.
 	 * 
 	 * @param expr
-	 * @return a <code>java.util.function.BiPredicate</code> predicate of two
+	 * @return a <code>com.duy.lambda.BiPredicate</code> predicate of two
 	 *         arguments.
 	 */
 	public static BiPredicate<IExpr, IExpr> isBinaryFalse(IExpr expr) {
@@ -282,7 +282,7 @@ public class Predicates {
 	 * returned.
 	 * 
 	 * @param expr
-	 * @return a <code>java.util.function.BiPredicate</code> predicate of two
+	 * @return a <code>com.duy.lambda.BiPredicate</code> predicate of two
 	 *         arguments.
 	 */
 	public static BiPredicate<IExpr, IExpr> isBinaryTrue(IExpr expr) {
@@ -296,7 +296,7 @@ public class Predicates {
 	 * 
 	 * @param expr
 	 *            the expr which may match the function input
-	 * @return a <code>java.util.function.Predicate</code> predicate of one
+	 * @return a <code>com.duy.lambda.Predicate</code> predicate of one
 	 *         argument.
 	 */
 //	public static Predicate<IExpr> isFree(final IExpr expr) {
@@ -422,7 +422,7 @@ public class Predicates {
 	 * returned.
 	 * 
 	 * @param head
-	 * @return a <code>java.util.function.Predicate</code> predicate of one
+	 * @return a <code>com.duy.lambda.Predicate</code> predicate of one
 	 *         argument.
 	 */
 //	public static Predicate<IExpr> isTrue(IExpr head) {
@@ -431,7 +431,7 @@ public class Predicates {
 
 	/**
 	 *
-	 * @return a <code>java.util.function.Predicate</code> predicate of one
+	 * @return a <code>com.duy.lambda.Predicate</code> predicate of one
 	 *         argument.
 	 */
 	public static Predicate<IExpr> isUnaryVariableOrPattern() {

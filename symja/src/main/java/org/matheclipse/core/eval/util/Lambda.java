@@ -1,9 +1,9 @@
 package org.matheclipse.core.eval.util;
 
-import java.util.function.BiPredicate;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
+import com.duy.lambda.BiPredicate;
+import com.duy.lambda.Consumer;
+import com.duy.lambda.Function;
+import com.duy.lambda.Predicate;
 
 import org.matheclipse.core.expression.F;
 import org.matheclipse.core.interfaces.IAST;
@@ -125,11 +125,6 @@ public class Lambda {
 
 	/**
 	 * Consume each argument of <code>ast</code> which fulfills the <code>predicate</code>.
-	 * 
-	 * @param ast
-	 * @param result
-	 * @param function
-	 * @return
 	 */
 	public static void forEach(IAST ast, Predicate<IExpr> predicate, Consumer<IExpr> consumer) {
 		int size = ast.size();

@@ -31,13 +31,6 @@ import org.hipparchus.stat.descriptive.summary.Sum;
 import org.hipparchus.stat.descriptive.summary.SumOfLogs;
 import org.hipparchus.stat.descriptive.summary.SumOfSquares;
 import org.hipparchus.util.MathArrays;
-import org.hipparchus.util.MathUtils;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.function.DoubleConsumer;
-import java.util.function.DoublePredicate;
-import java.util.function.ToDoubleFunction;
 
 /**
  * StatUtils provides static methods for computing statistics based on data
@@ -808,8 +801,10 @@ public final class StatUtils {
      * @throws MathIllegalArgumentException if the indices are invalid or the array is null
      */
     public static double[] mode(double... sample) throws MathIllegalArgumentException {
-        MathUtils.checkNotNull(sample, LocalizedCoreFormats.INPUT_ARRAY);
-        return getMode(sample, 0, sample.length);
+//        MathUtils.checkNotNull(sample, LocalizedCoreFormats.INPUT_ARRAY);
+//        return getMode(sample, 0, sample.length);
+        // TODO: 10/3/2017 fix if needed
+        return null;
     }
 
     /**
@@ -835,17 +830,19 @@ public final class StatUtils {
      * @throws MathIllegalArgumentException if the indices are invalid or the array is null
      */
     public static double[] mode(double[] sample, final int begin, final int length) {
-        MathUtils.checkNotNull(sample, LocalizedCoreFormats.INPUT_ARRAY);
-
-        if (begin < 0) {
-            throw new MathIllegalArgumentException(LocalizedCoreFormats.START_POSITION, Integer.valueOf(begin));
-        }
-
-        if (length < 0) {
-            throw new MathIllegalArgumentException(LocalizedCoreFormats.LENGTH, Integer.valueOf(length));
-        }
-
-        return getMode(sample, begin, length);
+//        MathUtils.checkNotNull(sample, LocalizedCoreFormats.INPUT_ARRAY);
+//
+//        if (begin < 0) {
+//            throw new MathIllegalArgumentException(LocalizedCoreFormats.START_POSITION, Integer.valueOf(begin));
+//        }
+//
+//        if (length < 0) {
+//            throw new MathIllegalArgumentException(LocalizedCoreFormats.LENGTH, Integer.valueOf(length));
+//        }
+//
+//        return getMode(sample, begin, length);
+        // TODO: 10/3/2017 duy: fix if needed
+        return null;
     }
 
     /**
@@ -858,33 +855,35 @@ public final class StatUtils {
      * @return array of array of the most frequently occurring element(s) sorted in ascending order.
      */
     private static double[] getMode(double[] values, final int begin, final int length) {
-        // Add the values to the frequency table
-        Frequency<Double> freq = new Frequency<>();
-
-        Arrays.stream(values, begin, begin + length)
-                .filter(new DoublePredicate() {
-                    @Override
-                    public boolean test(double d) {
-                        return !Double.isNaN(d);
-                    }
-                })
-                .forEach(new DoubleConsumer() {
-                    @Override
-                    public void accept(double v) {
-                        freq.addValue(v);
-                    }
-                });
-
-        List<Double> list = freq.getMode();
-        // Convert the list to an array of primitive double
-        return list.stream()
-                .mapToDouble(new ToDoubleFunction<Double>() {
-                    @Override
-                    public double applyAsDouble(Double aDouble) {
-                        return aDouble.doubleValue();
-                    }
-                })
-                .toArray();
+//        // Add the values to the frequency table
+//        Frequency<Double> freq = new Frequency<>();
+//
+//        Arrays.stream(values, begin, begin + length)
+//                .filter(new DoublePredicate() {
+//                    @Override
+//                    public boolean test(double d) {
+//                        return !Double.isNaN(d);
+//                    }
+//                })
+//                .forEach(new DoubleConsumer() {
+//                    @Override
+//                    public void accept(double v) {
+//                        freq.addValue(v);
+//                    }
+//                });
+//
+//        List<Double> list = freq.getMode();
+//        // Convert the list to an array of primitive double
+//        return list.stream()
+//                .mapToDouble(new ToDoubleFunction<Double>() {
+//                    @Override
+//                    public double applyAsDouble(Double aDouble) {
+//                        return aDouble.doubleValue();
+//                    }
+//                })
+//                .toArray();
+        // FIXME: 10/3/2017  remove java8
+        return null;
     }
 
 }

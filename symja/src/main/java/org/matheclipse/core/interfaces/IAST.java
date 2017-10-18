@@ -1,5 +1,7 @@
 package org.matheclipse.core.interfaces;
 
+import com.duy.lambda.BiFunction;
+
 import org.matheclipse.core.eval.exception.WrongArgumentType;
 import org.matheclipse.core.expression.ASTRange;
 
@@ -7,11 +9,9 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.function.BiFunction;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
+import com.duy.lambda.Consumer;
+import com.duy.lambda.Function;
+import com.duy.lambda.Predicate;
 
 /**
  * <p>
@@ -672,7 +672,6 @@ public interface IAST extends IExpr, Cloneable, Iterable<IExpr> {
      * <b>Note:</b> the 0-th element (i.e. the head of the AST) will not be
      * selected.
      */
-    @Override
     public void forEach(Consumer<? super IExpr> action);
 
     /**
@@ -1120,15 +1119,15 @@ public interface IAST extends IExpr, Cloneable, Iterable<IExpr> {
     public int size();
 
     /**
-     * Returns a sequential {@link Stream} with the specified range of the specified
+     * Returns a sequential {@link Streamz} with the specified range of the specified
      * array as its source.
      *
      * @return a {@code Stream} for the internal array range
      */
-    public Stream<IExpr> stream();
+//    public Stream<IExpr> stream();
 
     /**
-     * Returns a sequential {@link Stream} with the specified range of the specified
+     * Returns a sequential {@link Streamz} with the specified range of the specified
      * array as its source.
      *
      * @param startInclusive the first index to cover, inclusive
@@ -1138,7 +1137,7 @@ public interface IAST extends IExpr, Cloneable, Iterable<IExpr> {
      *                                        less than {@code startInclusive}, or {@code endExclusive} is
      *                                        greater than the array size
      */
-    public Stream<IExpr> stream(int startInclusive, int endExclusive);
+//    public Stream<IExpr> stream(int startInclusive, int endExclusive);
 
     /**
      * Returns an array containing all elements contained in this {@code List}.

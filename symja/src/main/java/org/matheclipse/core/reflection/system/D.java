@@ -11,7 +11,7 @@ import org.matheclipse.core.interfaces.IInteger;
 import org.matheclipse.core.interfaces.ISymbol;
 import org.matheclipse.core.reflection.system.rules.DRules;
 
-import java.util.function.BiFunction;
+import com.duy.lambda.BiFunction;
 
 /**
  * <pre>

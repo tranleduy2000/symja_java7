@@ -35,7 +35,7 @@ import org.hipparchus.util.ResizableDoubleArray;
 
 import java.io.Serializable;
 import java.util.Arrays;
-import java.util.function.DoubleConsumer;
+import com.duy.lambda.DoubleConsumer;
 
 
 /**
