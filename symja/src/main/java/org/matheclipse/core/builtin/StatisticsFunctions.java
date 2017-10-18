@@ -20,6 +20,7 @@ import org.matheclipse.core.expression.ASTRealVector;
 import org.matheclipse.core.expression.F;
 import org.matheclipse.core.interfaces.IAST;
 import org.matheclipse.core.interfaces.IExpr;
+import org.matheclipse.core.interfaces.IFraction;
 import org.matheclipse.core.interfaces.ISignedNumber;
 import org.matheclipse.core.interfaces.ISymbol;
 
@@ -27,14 +28,30 @@ public class StatisticsFunctions {
 	static {
 		F.CDF.setEvaluator(new CDF());
 		F.PDF.setEvaluator(new PDF());
+		F.BernoulliDistribution.setEvaluator(new BernoulliDistribution());
+		F.BinomialDistribution.setEvaluator(new BinomialDistribution());
 		F.CentralMoment.setEvaluator(new CentralMoment());
 		F.Correlation.setEvaluator(new Correlation());
 		F.Covariance.setEvaluator(new Covariance());
+		F.HypergeometricDistribution.setEvaluator(new HypergeometricDistribution());
 		F.Kurtosis.setEvaluator(new Kurtosis());
 		F.Mean.setEvaluator(new Mean());
 		F.Median.setEvaluator(new Median());
+		F.NormalDistribution.setEvaluator(new NormalDistribution());
+		F.PoissonDistribution.setEvaluator(new PoissonDistribution());
+
 		F.Skewness.setEvaluator(new Skewness());
 		F.Variance.setEvaluator(new Variance());
+	}
+
+	interface IDistribution {
+
+		int[] parameters(IAST hypergeometricDistribution);
+
+		IExpr mean(IAST hypergeometricDistribution);
+
+		IExpr variance(IAST hypergeometricDistribution);
+
 	}
 
 	/**
@@ -105,6 +122,78 @@ public class StatisticsFunctions {
 
 	}
 
+	private final static class BernoulliDistribution extends AbstractEvaluator implements IDistribution {
+
+		@Override
+		public IExpr evaluate(final IAST ast, EvalEngine engine) {
+			Validate.checkSize(ast, 2);
+			return F.NIL;
+		}
+
+		@Override
+		public int[] parameters(IAST dist) {
+			return null;
+		}
+
+		@Override
+		public IExpr mean(IAST dist) {
+			if (dist.isAST1()) {
+				return dist.arg1();
+			}
+			return F.NIL;
+		}
+
+		@Override
+		public IExpr variance(IAST dist) {
+			if (dist.isAST1()) {
+				IExpr N = dist.arg1();
+				return F.Times(N, F.Subtract(F.C1, N));
+			}
+			return F.NIL;
+		}
+
+		@Override
+		public void setUp(final ISymbol newSymbol) {
+		}
+
+	}
+
+	private final static class BinomialDistribution extends AbstractEvaluator implements IDistribution {
+
+		@Override
+		public IExpr evaluate(final IAST ast, EvalEngine engine) {
+			Validate.checkSize(ast, 3);
+			return F.NIL;
+		}
+
+		@Override
+		public int[] parameters(IAST dist) {
+			return null;
+		}
+
+		@Override
+		public IExpr mean(IAST dist) {
+			if (dist.isAST2()) {
+				return F.Times(dist.arg1(), dist.arg2());
+			}
+			return F.NIL;
+		}
+
+		@Override
+		public IExpr variance(IAST dist) {
+			if (dist.isAST2()) {
+				// (1 - m) m n
+				return F.Times(dist.arg1(), dist.arg2(), F.Subtract(F.C1, dist.arg2()));
+			}
+			return F.NIL;
+		}
+
+		@Override
+		public void setUp(final ISymbol newSymbol) {
+		}
+
+	}
+
 	/**
 	 * <pre>
 	 * CentralMoment(list, r)
@@ -162,6 +251,78 @@ public class StatisticsFunctions {
 				return F.Divide(F.Covariance(a, b), F.Times(F.StandardDeviation(a), F.StandardDeviation(b)));
 			}
 			return F.NIL;
+		}
+
+	}
+
+	private final static class HypergeometricDistribution extends AbstractEvaluator implements IDistribution {
+
+		@Override
+		public IExpr evaluate(final IAST ast, EvalEngine engine) {
+			Validate.checkSize(ast, 4);
+			return F.NIL;
+		}
+
+		@Override
+		public int[] parameters(IAST hypergeometricDistribution) {
+			if (hypergeometricDistribution.size() == 4) {
+				int N = hypergeometricDistribution.arg1().toIntDefault(-1);
+				int n = hypergeometricDistribution.arg2().toIntDefault(-1);
+				int m_n = hypergeometricDistribution.arg3().toIntDefault(-1);
+				if (N >= 0 && n >= 0 && m_n >= 0) {
+					int param[] = new int[3];
+					param[0] = N;
+					param[1] = n;
+					param[2] = m_n;
+					return param;
+				}
+			}
+			return null;
+		}
+
+		@Override
+		public IExpr mean(IAST dist) {
+			if (dist.isAST3()) {
+				int param[] = parameters(dist);
+				if (param != null) {
+					// N * (n / m_n)
+					return F.ZZ(param[0]).multiply(F.QQ(param[1], param[2]));
+				}
+				IExpr N = dist.arg1();
+				IExpr n = dist.arg2();
+				IExpr m_n = dist.arg3();
+				return F.Divide(F.Times(N, n), m_n);
+			}
+			return F.NIL;
+		}
+
+		@Override
+		public IExpr variance(IAST dist) {
+			if (dist.isAST3()) {
+				int param[] = parameters(dist);
+				if (param != null) {
+					int N = param[0];
+					int n = param[1];
+					int m_n = param[2];
+					IFraction rd1 = F.QQ(m_n - n, m_n);
+					IFraction rd2 = F.QQ(m_n - N, m_n);
+					IFraction rd3 = F.QQ(N, m_n - 1);
+					IFraction rd4 = F.QQ(n, 1);
+					return rd1.multiply(rd2).multiply(rd3).multiply(rd4);
+
+				}
+				IExpr N = dist.arg1();
+				IExpr n = dist.arg2();
+				IExpr mn = dist.arg3();
+				// (n*(1 - n/m_n)*(m_n - N)*N)/((-1 + m_n)*m_n)
+				return F.Times(F.Power(F.Plus(F.CN1, mn), -1), F.Power(mn, -1), n,
+						F.Plus(F.C1, F.Times(F.CN1, F.Power(mn, -1), n)), F.Plus(mn, F.Negate(N)), N);
+			}
+			return F.NIL;
+		}
+
+		@Override
+		public void setUp(final ISymbol newSymbol) {
 		}
 
 	}
@@ -375,6 +536,41 @@ public class StatisticsFunctions {
 		}
 	}
 
+	private final static class NormalDistribution extends AbstractEvaluator implements IDistribution {
+
+		@Override
+		public IExpr evaluate(final IAST ast, EvalEngine engine) {
+			Validate.checkSize(ast, 3);
+			return F.NIL;
+		}
+
+		@Override
+		public int[] parameters(IAST dist) {
+			return null;
+		}
+
+		@Override
+		public IExpr mean(IAST dist) {
+			if (dist.isAST2()) {
+				return dist.arg1();
+			}
+			return F.NIL;
+		}
+
+		@Override
+		public IExpr variance(IAST dist) {
+			if (dist.isAST2()) {
+				return F.Sqr(dist.arg2());
+			}
+			return F.NIL;
+		}
+
+		@Override
+		public void setUp(final ISymbol newSymbol) {
+		}
+
+	}
+
 	/**
 	 * Compute the probability density function
 	 */
@@ -448,6 +644,41 @@ public class StatisticsFunctions {
 			} catch (ClassCastException cca) {
 			}
 			return F.NIL;
+		}
+
+	}
+
+	private final static class PoissonDistribution extends AbstractEvaluator implements IDistribution {
+
+		@Override
+		public IExpr evaluate(final IAST ast, EvalEngine engine) {
+			Validate.checkSize(ast, 2);
+			return F.NIL;
+		}
+
+		@Override
+		public int[] parameters(IAST dist) {
+			return null;
+		}
+
+		@Override
+		public IExpr mean(IAST dist) {
+			if (dist.isAST1()) {
+				return dist.arg1();
+			}
+			return F.NIL;
+		}
+
+		@Override
+		public IExpr variance(IAST dist) {
+			if (dist.isAST1()) {
+				return dist.arg1();
+			}
+			return F.NIL;
+		}
+
+		@Override
+		public void setUp(final ISymbol newSymbol) {
 		}
 
 	}
