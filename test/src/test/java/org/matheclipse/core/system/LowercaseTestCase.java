@@ -3324,6 +3324,23 @@ public class LowercaseTestCase extends AbstractTestCase {
     // }
 
     public void testLimit() {
+        // issue #184
+        check("N(Limit(tan(x),x->pi/2))", "-Infinity");
+
+        check("Limit(Tan(x), x->Pi/2)", "-Infinity");
+        check("Limit(Tan(x), x->Pi/2, Direction->1)", "Infinity");
+        check("Limit(Tan(x), x->Pi/2, Direction->-1)", "-Infinity");
+        check("Limit(Tan(x+3*Pi), x->Pi/2)", "-Infinity");
+        check("Limit(Tan(x+3*Pi), x->Pi/2, Direction->1)", "Infinity");
+        check("Limit(Tan(x+3*Pi), x->Pi/2, Direction->-1)", "-Infinity");
+        check("Limit(Cot(x), x->0)", "Infinity");
+        check("Limit(Cot(x), x->0, Direction->1)", "-Infinity");
+        check("Limit(Cot(x), x->0, Direction->-1)", "Infinity");
+        check("Limit(Cot(x+Pi), x->0)", "Infinity");
+        check("Limit(Cot(x+Pi), x->0, Direction->1)", "-Infinity");
+        check("Limit(Cot(x+Pi), x->0, Direction->-1)", "Infinity");
+
+
         check("Limit(Log(x^y), x->0)", "DirectedInfinity(-y)");
         check("Limit(Log(y*x, b), x->1)", "Limit(1/Log(x*y),x->1)*Log(b)");
         check("Limit(Log(y*x), x->0)", "-Infinity+Log(y)");
