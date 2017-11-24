@@ -1,5 +1,53 @@
 package org.matheclipse.core.builtin;
 
+import com.duy.lambda.DoubleFunction;
+import com.duy.lambda.DoubleUnaryOperator;
+import com.duy.lambda.Function;
+
+import org.apfloat.Apcomplex;
+import org.apfloat.ApcomplexMath;
+import org.apfloat.Apfloat;
+import org.apfloat.ApfloatMath;
+import org.hipparchus.fraction.BigFraction;
+import org.matheclipse.core.basic.Config;
+import org.matheclipse.core.eval.EvalEngine;
+import org.matheclipse.core.eval.PlusOp;
+import org.matheclipse.core.eval.exception.Validate;
+import org.matheclipse.core.eval.interfaces.AbstractArg1;
+import org.matheclipse.core.eval.interfaces.AbstractArg2;
+import org.matheclipse.core.eval.interfaces.AbstractArgMultiple;
+import org.matheclipse.core.eval.interfaces.AbstractCoreFunctionEvaluator;
+import org.matheclipse.core.eval.interfaces.AbstractEvaluator;
+import org.matheclipse.core.eval.interfaces.AbstractFunctionEvaluator;
+import org.matheclipse.core.eval.interfaces.AbstractTrigArg1;
+import org.matheclipse.core.eval.interfaces.IFunctionEvaluator;
+import org.matheclipse.core.eval.interfaces.INumeric;
+import org.matheclipse.core.eval.util.AbstractAssumptions;
+import org.matheclipse.core.expression.ApcomplexNum;
+import org.matheclipse.core.expression.ApfloatNum;
+import org.matheclipse.core.expression.ComplexNum;
+import org.matheclipse.core.expression.F;
+import org.matheclipse.core.expression.Num;
+import org.matheclipse.core.expression.NumberUtil;
+import org.matheclipse.core.interfaces.IAST;
+import org.matheclipse.core.interfaces.IComplex;
+import org.matheclipse.core.interfaces.IComplexNum;
+import org.matheclipse.core.interfaces.IExpr;
+import org.matheclipse.core.interfaces.IFraction;
+import org.matheclipse.core.interfaces.IInteger;
+import org.matheclipse.core.interfaces.INum;
+import org.matheclipse.core.interfaces.INumber;
+import org.matheclipse.core.interfaces.IRational;
+import org.matheclipse.core.interfaces.ISignedNumber;
+import org.matheclipse.core.interfaces.ISymbol;
+import org.matheclipse.core.patternmatching.HashedOrderlessMatcher;
+import org.matheclipse.core.reflection.system.Surd;
+import org.matheclipse.core.reflection.system.rules.AbsRules;
+import org.matheclipse.core.reflection.system.rules.ConjugateRules;
+import org.matheclipse.core.reflection.system.rules.PowerRules;
+
+import java.math.BigInteger;
+
 import static org.matheclipse.core.expression.F.And;
 import static org.matheclipse.core.expression.F.ArcCos;
 import static org.matheclipse.core.expression.F.ArcCot;
@@ -45,53 +93,6 @@ import static org.matheclipse.core.expression.F.x_;
 import static org.matheclipse.core.expression.F.y;
 import static org.matheclipse.core.expression.F.y_;
 
-import java.math.BigInteger;
-import com.duy.lambda.DoubleFunction;
-import com.duy.lambda.DoubleUnaryOperator;
-import com.duy.lambda.Function;
-
-import org.apfloat.Apcomplex;
-import org.apfloat.ApcomplexMath;
-import org.apfloat.Apfloat;
-import org.apfloat.ApfloatMath;
-import org.hipparchus.fraction.BigFraction;
-import org.matheclipse.core.basic.Config;
-import org.matheclipse.core.eval.EvalEngine;
-import org.matheclipse.core.eval.PlusOp;
-import org.matheclipse.core.eval.exception.Validate;
-import org.matheclipse.core.eval.exception.WrongArgumentType;
-import org.matheclipse.core.eval.interfaces.AbstractArg1;
-import org.matheclipse.core.eval.interfaces.AbstractArg2;
-import org.matheclipse.core.eval.interfaces.AbstractArgMultiple;
-import org.matheclipse.core.eval.interfaces.AbstractCoreFunctionEvaluator;
-import org.matheclipse.core.eval.interfaces.AbstractEvaluator;
-import org.matheclipse.core.eval.interfaces.AbstractFunctionEvaluator;
-import org.matheclipse.core.eval.interfaces.AbstractTrigArg1;
-import org.matheclipse.core.eval.interfaces.IFunctionEvaluator;
-import org.matheclipse.core.eval.interfaces.INumeric;
-import org.matheclipse.core.eval.util.AbstractAssumptions;
-import org.matheclipse.core.expression.ApcomplexNum;
-import org.matheclipse.core.expression.ApfloatNum;
-import org.matheclipse.core.expression.ComplexNum;
-import org.matheclipse.core.expression.F;
-import org.matheclipse.core.expression.Num;
-import org.matheclipse.core.expression.NumberUtil;
-import org.matheclipse.core.interfaces.IAST;
-import org.matheclipse.core.interfaces.IComplex;
-import org.matheclipse.core.interfaces.IComplexNum;
-import org.matheclipse.core.interfaces.IExpr;
-import org.matheclipse.core.interfaces.IFraction;
-import org.matheclipse.core.interfaces.IInteger;
-import org.matheclipse.core.interfaces.INum;
-import org.matheclipse.core.interfaces.INumber;
-import org.matheclipse.core.interfaces.IRational;
-import org.matheclipse.core.interfaces.ISignedNumber;
-import org.matheclipse.core.interfaces.ISymbol;
-import org.matheclipse.core.patternmatching.HashedOrderlessMatcher;
-import org.matheclipse.core.reflection.system.rules.AbsRules;
-import org.matheclipse.core.reflection.system.rules.ConjugateRules;
-import org.matheclipse.core.reflection.system.rules.PowerRules;
-
 public final class Arithmetic {
 	public final static Plus CONST_PLUS = new Plus();
 	public final static Times CONST_TIMES = new Times();
@@ -107,6 +108,7 @@ public final class Arithmetic {
 		F.Power.setDefaultValue(2, F.C1);
 		F.Power.setEvaluator(CONST_POWER);
 		F.Sqrt.setEvaluator(new Sqrt());
+		F.Surd.setEvaluator(new Surd());
 		F.Minus.setEvaluator(new Minus());
 
 		F.Abs.setEvaluator(new Abs());
@@ -134,8 +136,7 @@ public final class Arithmetic {
 	}
 
 	/**
-	 * Absolute value of a number. See
-	 * <a href="http://en.wikipedia.org/wiki/Absolute_value">Wikipedia:Absolute
+	 * Absolute value of a number. See <a href="http://en.wikipedia.org/wiki/Absolute_value">Wikipedia:Absolute
 	 * value</a>
 	 */
 	private final static class Abs extends AbstractTrigArg1 implements INumeric, AbsRules, DoubleUnaryOperator {
@@ -217,11 +218,7 @@ public final class Arithmetic {
 			if (arg1.isNumericFunction()) {
 				IExpr temp = F.evaln(arg1);
 				if (temp.isSignedNumber()) {
-					if (temp.isNegative()) {
-						return arg1.negate();
-					} else {
-						return arg1;
-					}
+					return arg1.copySign((ISignedNumber) temp);
 				}
 			}
 			if (arg1.isNegativeResult()) {
@@ -236,7 +233,7 @@ public final class Arithmetic {
 			}
 
 			if (arg1.isTimes()) {
-				IAST[] result = ((IAST) arg1).filter(new AbsTimesFunction());
+				IASTAppendable[] result = ((IAST) arg1).filter(new AbsTimesFunction());
 				if (result[0].size() > 1) {
 					if (result[1].size() > 1) {
 						result[0].append(F.Abs(result[1]));

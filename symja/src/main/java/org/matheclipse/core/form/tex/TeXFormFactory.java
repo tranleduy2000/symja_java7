@@ -1,9 +1,8 @@
 package org.matheclipse.core.form.tex;
 
-import java.math.BigInteger;
+import java.text.NumberFormat;
 import java.util.HashMap;
 
-import org.hipparchus.fraction.BigFraction;
 import org.matheclipse.core.basic.Config;
 import org.matheclipse.core.convert.AST2Expr;
 import org.matheclipse.core.expression.F;
@@ -24,8 +23,8 @@ import org.matheclipse.parser.client.operator.ASTNodeFactory;
  * </p>
  * 
  * <p>
- * In the method <code>getReflectionNamespace()</code> the package is set which
- * is used by Java reflection to determine special function implementations.
+ * In the method <code>getReflectionNamespace()</code> the package is set which is used by Java reflection to determine
+ * special function implementations.
  * </p>
  */
 public class TeXFormFactory extends AbstractTeXFormFactory {
@@ -69,21 +68,30 @@ public class TeXFormFactory extends AbstractTeXFormFactory {
 	 * Constructor
 	 */
 	public TeXFormFactory() {
-		this("");
+		this("", null);
 	}
 
 	public TeXFormFactory(final String tagPrefix) {
-		super();
+		this(tagPrefix, null);
+	}
+
+	public TeXFormFactory(final String tagPrefix, NumberFormat numberFormat) {
+		super(numberFormat);
 		init();
 	}
 
 	@Override
 	public void convertDouble(final StringBuilder buf, final INum d, final int precedence) {
-		if (d.isNegative() && (precedence > plusPrec)) {
+		if (d.isZero()) {
+			buf.append(convertDoubleToFormattedString(0.0));
+			return;
+		}
+		final boolean isNegative = d.isNegative();
+		if (isNegative && (precedence > plusPrec)) {
 			buf.append("\\left( ");
 		}
-		buf.append(d.toString());
-		if (d.isNegative() && (precedence > plusPrec)) {
+		buf.append(convertDoubleToFormattedString(d.getRealPart()));
+		if (isNegative && (precedence > plusPrec)) {
 			buf.append("\\right) ");
 		}
 	}
@@ -93,9 +101,11 @@ public class TeXFormFactory extends AbstractTeXFormFactory {
 		if (precedence > plusPrec) {
 			buf.append("\\left( ");
 		}
-		convert(buf, dc.getRealPart(), 0);
+		// convert(buf, dc.getRealPart(), 0);
+		buf.append(convertDoubleToFormattedString(dc.getRealPart()));
 		buf.append(" + ");
-		convert(buf, dc.getImaginaryPart(), 0);
+		// convert(buf, dc.getImaginaryPart(), 0);
+		buf.append(convertDoubleToFormattedString(dc.getImaginaryPart()));
 		buf.append("\\,"); // InvisibleTimes
 		buf.append("i ");
 		if (precedence > plusPrec) {
@@ -133,24 +143,24 @@ public class TeXFormFactory extends AbstractTeXFormFactory {
 		}
 	}
 
-	public void convertFraction(final StringBuilder buf, final BigFraction f, final int precedence) {
-		boolean negative = f.compareTo(BigFraction.ZERO) < 0;
-		if (negative && (precedence > plusPrec)) {
-			buf.append("\\left( ");
-		}
-		if (f.getDenominator().equals(BigInteger.ONE)) {
-			buf.append(f.getNumerator().toString());
-		} else {
-			buf.append("\\frac{");
-			buf.append(f.getNumerator().toString());
-			buf.append("}{");
-			buf.append(f.getDenominator().toString());
-			buf.append('}');
-		}
-		if (negative && (precedence > plusPrec)) {
-			buf.append("\\right) ");
-		}
-	}
+	// public void convertFraction(final StringBuilder buf, final BigFraction f, final int precedence) {
+	// boolean negative = f.compareTo(BigFraction.ZERO) < 0;
+	// if (negative && (precedence > plusPrec)) {
+	// buf.append("\\left( ");
+	// }
+	// if (f.getDenominator().equals(BigInteger.ONE)) {
+	// buf.append(f.getNumerator().toString());
+	// } else {
+	// buf.append("\\frac{");
+	// buf.append(f.getNumerator().toString());
+	// buf.append("}{");
+	// buf.append(f.getDenominator().toString());
+	// buf.append('}');
+	// }
+	// if (negative && (precedence > plusPrec)) {
+	// buf.append("\\right) ");
+	// }
+	// }
 
 	@Override
 	public void convertComplex(final StringBuilder buf, final IComplex c, final int precedence) {
@@ -297,10 +307,10 @@ public class TeXFormFactory extends AbstractTeXFormFactory {
 			convertSymbol(buf, (ISymbol) o);
 			return;
 		}
-		if (o instanceof BigFraction) {
-			convertFraction(buf, (BigFraction) o, precedence);
-			return;
-		}
+		// if (o instanceof BigFraction) {
+		// convertFraction(buf, (BigFraction) o, precedence);
+		// return;
+		// }
 		convertString(buf, o.toString());
 	}
 
