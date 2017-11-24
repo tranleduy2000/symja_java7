@@ -1,42 +1,5 @@
 package org.matheclipse.core.builtin;
 
-import static org.matheclipse.core.expression.F.ArcCos;
-import static org.matheclipse.core.expression.F.ArcCot;
-import static org.matheclipse.core.expression.F.ArcCoth;
-import static org.matheclipse.core.expression.F.ArcCsc;
-import static org.matheclipse.core.expression.F.ArcCsch;
-import static org.matheclipse.core.expression.F.ArcSin;
-import static org.matheclipse.core.expression.F.ArcSinh;
-import static org.matheclipse.core.expression.F.ArcTan;
-import static org.matheclipse.core.expression.F.ArcTanh;
-import static org.matheclipse.core.expression.F.C1D2;
-import static org.matheclipse.core.expression.F.C2;
-import static org.matheclipse.core.expression.F.CD1;
-import static org.matheclipse.core.expression.F.CI;
-import static org.matheclipse.core.expression.F.CN1;
-import static org.matheclipse.core.expression.F.CNI;
-import static org.matheclipse.core.expression.F.Cos;
-import static org.matheclipse.core.expression.F.Cosh;
-import static org.matheclipse.core.expression.F.Cot;
-import static org.matheclipse.core.expression.F.Coth;
-import static org.matheclipse.core.expression.F.Csc;
-import static org.matheclipse.core.expression.F.Csch;
-import static org.matheclipse.core.expression.F.Divide;
-import static org.matheclipse.core.expression.F.Negate;
-import static org.matheclipse.core.expression.F.Pi;
-import static org.matheclipse.core.expression.F.Plus;
-import static org.matheclipse.core.expression.F.Power;
-import static org.matheclipse.core.expression.F.Sec;
-import static org.matheclipse.core.expression.F.Sech;
-import static org.matheclipse.core.expression.F.Sin;
-import static org.matheclipse.core.expression.F.Sinc;
-import static org.matheclipse.core.expression.F.Sinh;
-import static org.matheclipse.core.expression.F.Subtract;
-import static org.matheclipse.core.expression.F.Tan;
-import static org.matheclipse.core.expression.F.Tanh;
-import static org.matheclipse.core.expression.F.Times;
-import static org.matheclipse.core.expression.F.num;
-
 import com.duy.lambda.DoubleUnaryOperator;
 
 import org.apfloat.Apcomplex;
@@ -96,6 +59,43 @@ import org.matheclipse.core.reflection.system.rules.SincRules;
 import org.matheclipse.core.reflection.system.rules.SinhRules;
 import org.matheclipse.core.reflection.system.rules.TanRules;
 import org.matheclipse.core.reflection.system.rules.TanhRules;
+
+import static org.matheclipse.core.expression.F.ArcCos;
+import static org.matheclipse.core.expression.F.ArcCot;
+import static org.matheclipse.core.expression.F.ArcCoth;
+import static org.matheclipse.core.expression.F.ArcCsc;
+import static org.matheclipse.core.expression.F.ArcCsch;
+import static org.matheclipse.core.expression.F.ArcSin;
+import static org.matheclipse.core.expression.F.ArcSinh;
+import static org.matheclipse.core.expression.F.ArcTan;
+import static org.matheclipse.core.expression.F.ArcTanh;
+import static org.matheclipse.core.expression.F.C1D2;
+import static org.matheclipse.core.expression.F.C2;
+import static org.matheclipse.core.expression.F.CD1;
+import static org.matheclipse.core.expression.F.CI;
+import static org.matheclipse.core.expression.F.CN1;
+import static org.matheclipse.core.expression.F.CNI;
+import static org.matheclipse.core.expression.F.Cos;
+import static org.matheclipse.core.expression.F.Cosh;
+import static org.matheclipse.core.expression.F.Cot;
+import static org.matheclipse.core.expression.F.Coth;
+import static org.matheclipse.core.expression.F.Csc;
+import static org.matheclipse.core.expression.F.Csch;
+import static org.matheclipse.core.expression.F.Divide;
+import static org.matheclipse.core.expression.F.Negate;
+import static org.matheclipse.core.expression.F.Pi;
+import static org.matheclipse.core.expression.F.Plus;
+import static org.matheclipse.core.expression.F.Power;
+import static org.matheclipse.core.expression.F.Sec;
+import static org.matheclipse.core.expression.F.Sech;
+import static org.matheclipse.core.expression.F.Sin;
+import static org.matheclipse.core.expression.F.Sinc;
+import static org.matheclipse.core.expression.F.Sinh;
+import static org.matheclipse.core.expression.F.Subtract;
+import static org.matheclipse.core.expression.F.Tan;
+import static org.matheclipse.core.expression.F.Tanh;
+import static org.matheclipse.core.expression.F.Times;
+import static org.matheclipse.core.expression.F.num;
 
 public class ExpTrigsFunctions {
 	static {
@@ -186,8 +186,7 @@ public class ExpTrigsFunctions {
 	/**
 	 * Arccosine
 	 * 
-	 * See <a href="http://en.wikipedia.org/wiki/Inverse_trigonometric functions" >
-	 * Inverse_trigonometric functions</a>
+	 * See <a href="http://en.wikipedia.org/wiki/Inverse_trigonometric functions" > Inverse_trigonometric functions</a>
 	 */
 	private final static class ArcCos extends AbstractTrigArg1 implements INumeric, ArcCosRules, DoubleUnaryOperator {
 
@@ -257,8 +256,7 @@ public class ExpTrigsFunctions {
 	/**
 	 * Inverse hyperbolic cosine
 	 * 
-	 * See <a href="http://en.wikipedia.org/wiki/Inverse_hyperbolic_function">
-	 * Inverse hyperbolic functions</a>
+	 * See <a href="http://en.wikipedia.org/wiki/Inverse_hyperbolic_function"> Inverse hyperbolic functions</a>
 	 */
 	private final static class ArcCosh extends AbstractTrigArg1 implements INumeric, ArcCoshRules, DoubleUnaryOperator {
 
@@ -323,8 +321,7 @@ public class ExpTrigsFunctions {
 	/**
 	 * Arccotangent
 	 * 
-	 * See <a href="http://en.wikipedia.org/wiki/Inverse_trigonometric functions" >
-	 * Inverse_trigonometric functions</a>
+	 * See <a href="http://en.wikipedia.org/wiki/Inverse_trigonometric functions" > Inverse_trigonometric functions</a>
 	 */
 	private final static class ArcCot extends AbstractTrigArg1 implements ArcCotRules, DoubleUnaryOperator {
 
@@ -405,13 +402,9 @@ public class ExpTrigsFunctions {
 	/**
 	 * Arccotangent hyperbolic
 	 * 
-	 * See <a href="http://en.wikipedia.org/wiki/Inverse_hyperbolic_function">
-	 * Inverse hyperbolic functions</a>
+	 * See <a href="http://en.wikipedia.org/wiki/Inverse_hyperbolic_function"> Inverse hyperbolic functions</a>
 	 */
 	private final static class ArcCoth extends AbstractTrigArg1 implements ArcCothRules, DoubleUnaryOperator {
-
-		public ArcCoth() {
-		}
 
 		@Override
 		public double applyAsDouble(double operand) {
@@ -499,16 +492,28 @@ public class ExpTrigsFunctions {
 	/**
 	 * Inverse hyperbolic tangent
 	 * 
-	 * See <a href="http://en.wikipedia.org/wiki/Inverse_hyperbolic_function">
-	 * Inverse hyperbolic functions</a>
+	 * See <a href="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions">Inverse trigonometric functions</a>
 	 */
 	private final static class ArcCsc extends AbstractTrigArg1 implements ArcCscRules {
 		@Override
-		public IAST getRuleAST() {
-			return RULES;
+		public IExpr e1ComplexArg(final Complex arg1) {
+			if (arg1.equals(Complex.ZERO)) {
+				return F.CComplexInfinity;
+			}
+			return F.complexNum(Complex.ONE.divide(arg1).asin());
 		}
 
-		public ArcCsc() {
+		@Override
+		public IExpr e1DblArg(final double arg1) {
+			if (F.isZero(arg1)) {
+				return F.CComplexInfinity;
+			}
+			return F.num(Math.asin(1 / arg1));
+		}
+
+		@Override
+		public IAST getRuleAST() {
+			return RULES;
 		}
 
 		@Override
@@ -2294,7 +2299,33 @@ public class ExpTrigsFunctions {
 		}
 	}
 
-	final static ExpTrigsFunctions CONST = new ExpTrigsFunctions();
+	/**
+	 * Integer logarithm of <code>arg</code> for base <code>b</code>. Gives Log <sub>b</sub>(arg) or
+	 * <code>Log(arg)/Log(b)</code>.
+	 *
+	 * @param b
+	 *            the base of the logarithm
+	 * @param arg
+	 * @return
+	 */
+	public static IExpr baseBLog(final IInteger b, final IInteger arg) {
+		try {
+			long l1 = b.toLong();
+			long l2 = arg.toLong();
+			double res = Math.log(l2) / Math.log(l1);
+			if (F.isNumIntValue(res)) {
+				int r = Double.valueOf(Math.round(res)).intValue();
+				if (arg.equals(b.pow(r))) {
+					return F.integer(r);
+				}
+			}
+		} catch (ArithmeticException ae) {
+			// toLong() method failed
+		}
+		return F.NIL;
+	}
+
+	private final static ExpTrigsFunctions CONST = new ExpTrigsFunctions();
 
 	public static ExpTrigsFunctions initialize() {
 		return CONST;
