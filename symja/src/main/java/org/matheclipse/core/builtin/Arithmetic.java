@@ -1,53 +1,5 @@
 package org.matheclipse.core.builtin;
 
-import com.duy.lambda.DoubleFunction;
-import com.duy.lambda.DoubleUnaryOperator;
-import com.duy.lambda.Function;
-
-import org.apfloat.Apcomplex;
-import org.apfloat.ApcomplexMath;
-import org.apfloat.Apfloat;
-import org.apfloat.ApfloatMath;
-import org.hipparchus.fraction.BigFraction;
-import org.matheclipse.core.basic.Config;
-import org.matheclipse.core.eval.EvalEngine;
-import org.matheclipse.core.eval.PlusOp;
-import org.matheclipse.core.eval.exception.Validate;
-import org.matheclipse.core.eval.interfaces.AbstractArg1;
-import org.matheclipse.core.eval.interfaces.AbstractArg2;
-import org.matheclipse.core.eval.interfaces.AbstractArgMultiple;
-import org.matheclipse.core.eval.interfaces.AbstractCoreFunctionEvaluator;
-import org.matheclipse.core.eval.interfaces.AbstractEvaluator;
-import org.matheclipse.core.eval.interfaces.AbstractFunctionEvaluator;
-import org.matheclipse.core.eval.interfaces.AbstractTrigArg1;
-import org.matheclipse.core.eval.interfaces.IFunctionEvaluator;
-import org.matheclipse.core.eval.interfaces.INumeric;
-import org.matheclipse.core.eval.util.AbstractAssumptions;
-import org.matheclipse.core.expression.ApcomplexNum;
-import org.matheclipse.core.expression.ApfloatNum;
-import org.matheclipse.core.expression.ComplexNum;
-import org.matheclipse.core.expression.F;
-import org.matheclipse.core.expression.Num;
-import org.matheclipse.core.expression.NumberUtil;
-import org.matheclipse.core.interfaces.IAST;
-import org.matheclipse.core.interfaces.IComplex;
-import org.matheclipse.core.interfaces.IComplexNum;
-import org.matheclipse.core.interfaces.IExpr;
-import org.matheclipse.core.interfaces.IFraction;
-import org.matheclipse.core.interfaces.IInteger;
-import org.matheclipse.core.interfaces.INum;
-import org.matheclipse.core.interfaces.INumber;
-import org.matheclipse.core.interfaces.IRational;
-import org.matheclipse.core.interfaces.ISignedNumber;
-import org.matheclipse.core.interfaces.ISymbol;
-import org.matheclipse.core.patternmatching.HashedOrderlessMatcher;
-import org.matheclipse.core.reflection.system.Surd;
-import org.matheclipse.core.reflection.system.rules.AbsRules;
-import org.matheclipse.core.reflection.system.rules.ConjugateRules;
-import org.matheclipse.core.reflection.system.rules.PowerRules;
-
-import java.math.BigInteger;
-
 import static org.matheclipse.core.expression.F.And;
 import static org.matheclipse.core.expression.F.ArcCos;
 import static org.matheclipse.core.expression.F.ArcCot;
@@ -93,6 +45,53 @@ import static org.matheclipse.core.expression.F.x_;
 import static org.matheclipse.core.expression.F.y;
 import static org.matheclipse.core.expression.F.y_;
 
+import java.math.BigInteger;
+import com.duy.lambda.DoubleFunction;
+import com.duy.lambda.DoubleUnaryOperator;
+import com.duy.lambda.Function;
+
+import org.apfloat.Apcomplex;
+import org.apfloat.ApcomplexMath;
+import org.apfloat.Apfloat;
+import org.apfloat.ApfloatMath;
+import org.hipparchus.fraction.BigFraction;
+import org.matheclipse.core.basic.Config;
+import org.matheclipse.core.eval.EvalEngine;
+import org.matheclipse.core.eval.PlusOp;
+import org.matheclipse.core.eval.exception.Validate;
+import org.matheclipse.core.eval.exception.WrongArgumentType;
+import org.matheclipse.core.eval.interfaces.AbstractArg1;
+import org.matheclipse.core.eval.interfaces.AbstractArg2;
+import org.matheclipse.core.eval.interfaces.AbstractArgMultiple;
+import org.matheclipse.core.eval.interfaces.AbstractCoreFunctionEvaluator;
+import org.matheclipse.core.eval.interfaces.AbstractEvaluator;
+import org.matheclipse.core.eval.interfaces.AbstractFunctionEvaluator;
+import org.matheclipse.core.eval.interfaces.AbstractTrigArg1;
+import org.matheclipse.core.eval.interfaces.IFunctionEvaluator;
+import org.matheclipse.core.eval.interfaces.INumeric;
+import org.matheclipse.core.eval.util.AbstractAssumptions;
+import org.matheclipse.core.expression.ApcomplexNum;
+import org.matheclipse.core.expression.ApfloatNum;
+import org.matheclipse.core.expression.ComplexNum;
+import org.matheclipse.core.expression.F;
+import org.matheclipse.core.expression.Num;
+import org.matheclipse.core.expression.NumberUtil;
+import org.matheclipse.core.interfaces.IAST;
+import org.matheclipse.core.interfaces.IComplex;
+import org.matheclipse.core.interfaces.IComplexNum;
+import org.matheclipse.core.interfaces.IExpr;
+import org.matheclipse.core.interfaces.IFraction;
+import org.matheclipse.core.interfaces.IInteger;
+import org.matheclipse.core.interfaces.INum;
+import org.matheclipse.core.interfaces.INumber;
+import org.matheclipse.core.interfaces.IRational;
+import org.matheclipse.core.interfaces.ISignedNumber;
+import org.matheclipse.core.interfaces.ISymbol;
+import org.matheclipse.core.patternmatching.HashedOrderlessMatcher;
+import org.matheclipse.core.reflection.system.rules.AbsRules;
+import org.matheclipse.core.reflection.system.rules.ConjugateRules;
+import org.matheclipse.core.reflection.system.rules.PowerRules;
+
 public final class Arithmetic {
 	public final static Plus CONST_PLUS = new Plus();
 	public final static Times CONST_TIMES = new Times();
@@ -108,7 +107,6 @@ public final class Arithmetic {
 		F.Power.setDefaultValue(2, F.C1);
 		F.Power.setEvaluator(CONST_POWER);
 		F.Sqrt.setEvaluator(new Sqrt());
-		F.Surd.setEvaluator(new Surd());
 		F.Minus.setEvaluator(new Minus());
 
 		F.Abs.setEvaluator(new Abs());
@@ -136,7 +134,8 @@ public final class Arithmetic {
 	}
 
 	/**
-	 * Absolute value of a number. See <a href="http://en.wikipedia.org/wiki/Absolute_value">Wikipedia:Absolute
+	 * Absolute value of a number. See
+	 * <a href="http://en.wikipedia.org/wiki/Absolute_value">Wikipedia:Absolute
 	 * value</a>
 	 */
 	private final static class Abs extends AbstractTrigArg1 implements INumeric, AbsRules, DoubleUnaryOperator {
@@ -218,7 +217,11 @@ public final class Arithmetic {
 			if (arg1.isNumericFunction()) {
 				IExpr temp = F.evaln(arg1);
 				if (temp.isSignedNumber()) {
-					return arg1.copySign((ISignedNumber) temp);
+					if (temp.isNegative()) {
+						return arg1.negate();
+					} else {
+						return arg1;
+					}
 				}
 			}
 			if (arg1.isNegativeResult()) {
@@ -233,7 +236,7 @@ public final class Arithmetic {
 			}
 
 			if (arg1.isTimes()) {
-				IASTAppendable[] result = ((IAST) arg1).filter(new AbsTimesFunction());
+				IAST[] result = ((IAST) arg1).filter(new AbsTimesFunction());
 				if (result[0].size() > 1) {
 					if (result[1].size() > 1) {
 						result[0].append(F.Abs(result[1]));
@@ -262,7 +265,7 @@ public final class Arithmetic {
 
 	/**
 	 * Operator +=
-	 * 
+	 *
 	 */
 	private static class AddTo extends AbstractFunctionEvaluator {
 
@@ -293,10 +296,10 @@ public final class Arithmetic {
 	}
 
 	/**
-	 * 
+	 *
 	 * See <a href="http://en.wikipedia.org/wiki/Argument_%28complex_analysis%29">
 	 * Wikipedia - Argument (complex_analysis)</a>
-	 * 
+	 *
 	 */
 	private static class Arg extends AbstractFunctionEvaluator implements INumeric, DoubleUnaryOperator {
 
@@ -435,7 +438,7 @@ public final class Arithmetic {
 
 	/**
 	 * Conjugate the given argument.
-	 * 
+	 *
 	 * See
 	 * <a href="http://en.wikipedia.org/wiki/Complex_conjugation">Wikipedia:Complex
 	 * conjugation</a>
@@ -445,7 +448,7 @@ public final class Arithmetic {
 		/**
 		 * Conjugate numbers and special objects like <code>Infinity</code> and
 		 * <code>Indeterminate</code>.
-		 * 
+		 *
 		 * @param arg1
 		 * @return <code>F.NIL</code> if the evaluation wasn't possible
 		 */
@@ -591,7 +594,7 @@ public final class Arithmetic {
 
 	/**
 	 * Operator /=
-	 * 
+	 *
 	 */
 	private static class DivideBy extends AddTo {
 
@@ -731,18 +734,18 @@ public final class Arithmetic {
 	 * <p>
 	 * Returns the Gamma function value.
 	 * </p>
-	 * 
+	 *
 	 * See <a href="http://en.wikipedia.org/wiki/Gamma_function">Gamma function</a>
 	 * and <a href=
 	 * "https://en.wikipedia.org/wiki/Particular_values_of_the_Gamma_function">
 	 * Particular values of the Gamma function</a>
-	 * 
+	 *
 	 */
 	private final static class Gamma extends AbstractTrigArg1 implements DoubleUnaryOperator {
 
 		/**
 		 * Implement: <code>Gamma(x_Integer) := (x-1)!</code>
-		 * 
+		 *
 		 * @param x
 		 * @return
 		 */
@@ -810,7 +813,7 @@ public final class Arithmetic {
 
 	/**
 	 * Harmonic number of a given integer value
-	 * 
+	 *
 	 * See: <a href="http://en.wikipedia.org/wiki/Harmonic_number">Harmonic
 	 * number</a>
 	 */
@@ -879,7 +882,7 @@ public final class Arithmetic {
 
 		/**
 		 * The Harmonic number at the index specified
-		 * 
+		 *
 		 * @param n
 		 *            the index, non-negative.
 		 * @return the H_1=1 for n=1, H_2=3/2 for n=2 etc. For values of n less than 1,
@@ -913,7 +916,7 @@ public final class Arithmetic {
 
 	/**
 	 * Get the imaginary part of an expression
-	 * 
+	 *
 	 * See: <a href="http://en.wikipedia.org/wiki/Imaginary_part">Imaginary part</a>
 	 */
 	private final static class Im extends AbstractEvaluator {
@@ -990,7 +993,7 @@ public final class Arithmetic {
 
 		/**
 		 * Evaluate <code>Im(x^(a+I*b))</code>
-		 * 
+		 *
 		 * @param x
 		 * @param a
 		 *            the real part of the exponent
@@ -1045,9 +1048,9 @@ public final class Arithmetic {
 	 * A piecewise-defined function (also called a piecewise function or a hybrid
 	 * function) is a function which is defined by multiple subfunctions, each
 	 * subfunction applying to a certain interval of the main function's domain.
-	 * 
+	 *
 	 * See: <a href="http://en.wikipedia.org/wiki/Piecewise">Wikipedia:Piecewise</a>
-	 * 
+	 *
 	 */
 	private final static class Piecewise extends AbstractFunctionEvaluator {
 
@@ -1231,10 +1234,10 @@ public final class Arithmetic {
 		}
 
 		/**
-		 * 
+		 *
 		 * See: <a href="http://www.cs.berkeley.edu/~fateman/papers/newsimp.pdf">
 		 * Experiments in Hash-coded Algebraic Simplification</a>
-		 * 
+		 *
 		 * @param ast
 		 *            the abstract syntax tree (AST) of the form <code>Plus(...)</code>
 		 *            which should be evaluated
@@ -1323,7 +1326,7 @@ public final class Arithmetic {
 
 	/**
 	 * Compute Pochhammer's symbol (this)_n.
-	 * 
+	 *
 	 * @param n
 	 *            The number of product terms in the evaluation.
 	 * @return Gamma(this+n)/Gamma(this) = this*(this+1)*...*(this+n-1).
@@ -1358,20 +1361,20 @@ public final class Arithmetic {
 					if (ni > 0) {
 						// Product(a + k, {k, 0, n - 1})
 						return F.product(new Function<IExpr, IExpr>() {
-                            @Override
-                            public IExpr apply(IExpr x) {
-                                return F.Plus(a, x);
-                            }
-                        }, 0, ni - 1);
+							@Override
+							public IExpr apply(IExpr x) {
+								return F.Plus(a, x);
+							}
+						}, 0, ni - 1);
 					}
 					if (ni < 0) {
 						// Product(1/(a - k), {k, 1, -n})
 						return Power(F.product(new Function<IExpr, IExpr>() {
-                            @Override
-                            public IExpr apply(IExpr x) {
-                                return F.Plus(a, x.negate());
-                            }
-                        }, 1, -ni), -1);
+							@Override
+							public IExpr apply(IExpr x) {
+								return F.Plus(a, x.negate());
+							}
+						}, 1, -ni), -1);
 					}
 				}
 			}
@@ -1383,7 +1386,7 @@ public final class Arithmetic {
 
 		/**
 		 * Compute Pochhammer's symbol (this)_n.
-		 * 
+		 *
 		 * @param n
 		 *            The number of product terms in the evaluation.
 		 * @return Gamma(this+n)/Gamma(this) = this*(this+1)*...*(this+n-1).
@@ -1410,7 +1413,7 @@ public final class Arithmetic {
 
 		/**
 		 * Compute pochhammer's symbol (this)_n.
-		 * 
+		 *
 		 * @param n
 		 *            The number of product terms in the evaluation.
 		 * @return Gamma(this+n)/GAMMA(this).
@@ -1436,7 +1439,7 @@ public final class Arithmetic {
 		 * "https://de.wikipedia.org/wiki/Intervallarithmetik#Elementare_Funktionen">
 		 * Intervallarithmetik - Elementare Funktionen</a>
 		 * </p>
-		 * 
+		 *
 		 * @param interval
 		 * @param exponent
 		 * @return
@@ -1470,7 +1473,7 @@ public final class Arithmetic {
 		/**
 		 * Split this integer into the nth-root (with prime factors less equal 1021) and
 		 * the &quot;rest factor&quot;
-		 * 
+		 *
 		 * @return <code>{nth-root, rest factor}</code> or <code>null</code> if the root
 		 *         is not available
 		 */
@@ -1655,7 +1658,7 @@ public final class Arithmetic {
 		}
 
 		/**
-		 * 
+		 *
 		 * @param arg1
 		 *            a number
 		 * @param arg2
@@ -1665,36 +1668,36 @@ public final class Arithmetic {
 		private IExpr e2NumberDirectedInfinity(final INumber arg1, final IAST arg2) {
 			int comp = arg1.compareAbsValueToOne();
 			switch (comp) {
-			case 1:
-				// Abs(arg1) > 1
-				if (arg2.isInfinity()) {
-					// arg1 ^ Inf
-					if (arg1.isSignedNumber() && arg1.isPositive()) {
-						return F.CInfinity;
+				case 1:
+					// Abs(arg1) > 1
+					if (arg2.isInfinity()) {
+						// arg1 ^ Inf
+						if (arg1.isSignedNumber() && arg1.isPositive()) {
+							return F.CInfinity;
+						}
+						// complex or negative numbers
+						return F.CComplexInfinity;
 					}
-					// complex or negative numbers
-					return F.CComplexInfinity;
-				}
-				if (arg2.isNegativeInfinity()) {
-					// arg1 ^ (-Inf)
-					return F.C0;
-				}
-				break;
-			case -1:
-				// Abs(arg1) < 1
-				if (arg2.isInfinity()) {
-					// arg1 ^ Inf
-					return F.C0;
-				}
-				if (arg2.isNegativeInfinity()) {
-					// arg1 ^ (-Inf)
-					if (arg1.isSignedNumber() && arg1.isPositive()) {
-						return F.CInfinity;
+					if (arg2.isNegativeInfinity()) {
+						// arg1 ^ (-Inf)
+						return F.C0;
 					}
-					// complex or negative numbers
-					return F.CComplexInfinity;
-				}
-				break;
+					break;
+				case -1:
+					// Abs(arg1) < 1
+					if (arg2.isInfinity()) {
+						// arg1 ^ Inf
+						return F.C0;
+					}
+					if (arg2.isNegativeInfinity()) {
+						// arg1 ^ (-Inf)
+						if (arg1.isSignedNumber() && arg1.isPositive()) {
+							return F.CInfinity;
+						}
+						// complex or negative numbers
+						return F.CComplexInfinity;
+					}
+					break;
 			}
 			return F.NIL;
 		}
@@ -1949,7 +1952,7 @@ public final class Arithmetic {
 		/**
 		 * Transform <code>Power(Times(a,b,c,Power(d,-1.0)....), -1.0)</code> to
 		 * <code>Times(a^(-1.0),b^(-1.0),c^(-1.0),d,....)</code>
-		 * 
+		 *
 		 * @param timesAST
 		 * @param arg2
 		 * @return <code>F.NIL</code> if the transformation isn't possible.
@@ -1977,7 +1980,7 @@ public final class Arithmetic {
 
 		/**
 		 * Determine <code>0 ^ exponent</code>.
-		 * 
+		 *
 		 * @param exponent
 		 *            the exponent of the 0-Power expression
 		 * @return
@@ -2028,7 +2031,7 @@ public final class Arithmetic {
 
 		/**
 		 * Simplify <code>E^(y+Log(x))</code> to <code>x*E^(y)</code>
-		 * 
+		 *
 		 * @param plus
 		 * @return
 		 */
@@ -2068,7 +2071,7 @@ public final class Arithmetic {
 
 		/**
 		 * <code> complexNumber ^ fractionNumber</code>
-		 * 
+		 *
 		 * @param complexNumber
 		 * @param fractionNumber
 		 * @return
@@ -2219,7 +2222,7 @@ public final class Arithmetic {
 
 	/**
 	 * Representation for a rational number
-	 * 
+	 *
 	 */
 	private final static class Rational extends AbstractCoreFunctionEvaluator {
 
@@ -2287,7 +2290,7 @@ public final class Arithmetic {
 
 	/**
 	 * Get the real part of an expression
-	 * 
+	 *
 	 * See: <a href="http://en.wikipedia.org/wiki/Real_part">Real part</a>
 	 */
 	private final static class Re extends AbstractEvaluator {
@@ -2363,7 +2366,7 @@ public final class Arithmetic {
 
 		/**
 		 * Evaluate <code>Re(x^(a+I*b))</code>
-		 * 
+		 *
 		 * @param x
 		 * @param a
 		 *            the real part of the exponent
@@ -2510,7 +2513,7 @@ public final class Arithmetic {
 		/**
 		 * Distribute a leading integer factor over the integer powers if available.
 		 * <code>12*2^x*3^y   ==>   2^(2+x)*3^(1+y)</code>.
-		 * 
+		 *
 		 * @param ast
 		 *            the already evaluated expression
 		 * @param originalExpr
@@ -2911,7 +2914,7 @@ public final class Arithmetic {
 
 		/**
 		 * Try simplifying <code>arg0 * ( power1Arg1 ^ power1Arg2 )</code>
-		 * 
+		 *
 		 * @param arg0
 		 * @param power1Arg1
 		 * @param power1Arg2
@@ -2986,7 +2989,7 @@ public final class Arithmetic {
 		/**
 		 * Try simpplifying
 		 * <code>(power0Arg1 ^ power0Arg2) * (power1Arg1 ^ power1Arg2)</code>
-		 * 
+		 *
 		 * @param power0Arg1
 		 * @param power0Arg2
 		 * @param power1Arg1
@@ -3022,7 +3025,7 @@ public final class Arithmetic {
 
 	/**
 	 * Operator *=
-	 * 
+	 *
 	 */
 	private static class TimesBy extends AddTo {
 

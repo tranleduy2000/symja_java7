@@ -1,6 +1,5 @@
 package org.matheclipse.core.form.mathml;
 
-import java.text.NumberFormat;
 import java.util.HashMap;
 
 import org.matheclipse.core.interfaces.IComplex;
@@ -21,25 +20,18 @@ abstract public class AbstractMathMLFormFactory {
 
 	public final static HashMap<String, String> ENTITY_TABLE = new HashMap<String, String>(199);
 
-	protected NumberFormat fNumberFormat = null;
-
 	private final String fTagPrefix;
 
 	/**
 	 * Constructor for the EMML object
 	 */
 	public AbstractMathMLFormFactory() {
-		this("", null);
+		this("");
 	}
 
-	public AbstractMathMLFormFactory(final String tagPrefix, NumberFormat numberFormat) {
+	public AbstractMathMLFormFactory(final String tagPrefix) {
 		// fExprFactory = exprFactory;
 		fTagPrefix = tagPrefix;
-		fNumberFormat = numberFormat;
-	}
-
-	protected String convertDoubleToFormattedString(double dValue) {
-		return fNumberFormat == null ? Double.toString(dValue) : fNumberFormat.format(dValue);
 	}
 
 	public void entity(final StringBuilder buf, final String tag) {
