@@ -89,7 +89,6 @@ public final class FunctionDefinitions {
 		SinIntegral.setEvaluator(new org.matheclipse.core.reflection.system.SinIntegral());
 		Solve.setEvaluator(new org.matheclipse.core.reflection.system.Solve());
 		Sum.setEvaluator(new org.matheclipse.core.reflection.system.Sum());
-		Surd.setEvaluator(new org.matheclipse.core.reflection.system.Surd());
 		Taylor.setEvaluator(new org.matheclipse.core.reflection.system.Taylor());
 		ToPolarCoordinates.setEvaluator(new org.matheclipse.core.reflection.system.ToPolarCoordinates());
 		TrigExpand.setEvaluator(new org.matheclipse.core.reflection.system.TrigExpand());
