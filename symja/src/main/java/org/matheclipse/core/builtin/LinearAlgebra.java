@@ -1,38 +1,5 @@
 package org.matheclipse.core.builtin;
 
-import static org.matheclipse.core.expression.F.ArcCos;
-import static org.matheclipse.core.expression.F.C0;
-import static org.matheclipse.core.expression.F.C1;
-import static org.matheclipse.core.expression.F.C1D2;
-import static org.matheclipse.core.expression.F.C4;
-import static org.matheclipse.core.expression.F.CN1;
-import static org.matheclipse.core.expression.F.CN1D2;
-import static org.matheclipse.core.expression.F.CN2;
-import static org.matheclipse.core.expression.F.Divide;
-import static org.matheclipse.core.expression.F.Dot;
-import static org.matheclipse.core.expression.F.Function;
-import static org.matheclipse.core.expression.F.List;
-import static org.matheclipse.core.expression.F.Map;
-import static org.matheclipse.core.expression.F.MapThread;
-import static org.matheclipse.core.expression.F.Most;
-import static org.matheclipse.core.expression.F.Negate;
-import static org.matheclipse.core.expression.F.Norm;
-import static org.matheclipse.core.expression.F.Plus;
-import static org.matheclipse.core.expression.F.Power;
-import static org.matheclipse.core.expression.F.Prepend;
-import static org.matheclipse.core.expression.F.ReplaceAll;
-import static org.matheclipse.core.expression.F.Rule;
-import static org.matheclipse.core.expression.F.Slot1;
-import static org.matheclipse.core.expression.F.Sqr;
-import static org.matheclipse.core.expression.F.Sqrt;
-import static org.matheclipse.core.expression.F.Subtract;
-import static org.matheclipse.core.expression.F.Times;
-import static org.matheclipse.core.expression.F.g;
-import static org.matheclipse.core.expression.F.r;
-import static org.matheclipse.core.expression.F.y;
-
-import java.util.ArrayList;
-import java.util.List;
 import com.duy.lambda.Function;
 
 import org.hipparchus.exception.MathIllegalArgumentException;
@@ -72,6 +39,40 @@ import org.matheclipse.core.interfaces.IAST;
 import org.matheclipse.core.interfaces.IExpr;
 import org.matheclipse.core.interfaces.INumber;
 import org.matheclipse.core.interfaces.ISymbol;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.matheclipse.core.expression.F.ArcCos;
+import static org.matheclipse.core.expression.F.C0;
+import static org.matheclipse.core.expression.F.C1;
+import static org.matheclipse.core.expression.F.C1D2;
+import static org.matheclipse.core.expression.F.C4;
+import static org.matheclipse.core.expression.F.CN1;
+import static org.matheclipse.core.expression.F.CN1D2;
+import static org.matheclipse.core.expression.F.CN2;
+import static org.matheclipse.core.expression.F.Divide;
+import static org.matheclipse.core.expression.F.Dot;
+import static org.matheclipse.core.expression.F.Function;
+import static org.matheclipse.core.expression.F.List;
+import static org.matheclipse.core.expression.F.Map;
+import static org.matheclipse.core.expression.F.MapThread;
+import static org.matheclipse.core.expression.F.Most;
+import static org.matheclipse.core.expression.F.Negate;
+import static org.matheclipse.core.expression.F.Norm;
+import static org.matheclipse.core.expression.F.Plus;
+import static org.matheclipse.core.expression.F.Power;
+import static org.matheclipse.core.expression.F.Prepend;
+import static org.matheclipse.core.expression.F.ReplaceAll;
+import static org.matheclipse.core.expression.F.Rule;
+import static org.matheclipse.core.expression.F.Slot1;
+import static org.matheclipse.core.expression.F.Sqr;
+import static org.matheclipse.core.expression.F.Sqrt;
+import static org.matheclipse.core.expression.F.Subtract;
+import static org.matheclipse.core.expression.F.Times;
+import static org.matheclipse.core.expression.F.g;
+import static org.matheclipse.core.expression.F.r;
+import static org.matheclipse.core.expression.F.y;
 
 public final class LinearAlgebra {
 
@@ -529,7 +530,14 @@ public final class LinearAlgebra {
 				IExpr arg2 = ast.arg2();
 				int dim1 = arg1.isVector();
 				int dim2 = arg2.isVector();
-				if (dim1 == 3 && dim2 == 3) {
+				if (dim1 == 2 && dim2 == 2) {
+					final IAST v1 = (IAST) arg1;
+					final IAST v2 = (IAST) arg2;
+					if ((v1.isAST2()) || (v2.isAST2())) {
+						// Cross({a,b}, {c,d})", "a*d-b*c
+						return F.Subtract(Times(v1.arg1(), v2.arg2()), Times(v1.arg2(), v2.arg1()));
+					}
+				} else if (dim1 == 3 && dim2 == 3) {
 					final IAST v1 = (IAST) arg1;
 					final IAST v2 = (IAST) arg2;
 					if ((v1.isAST3()) || (v2.isAST3())) {
@@ -543,6 +551,16 @@ public final class LinearAlgebra {
 				if (dim1 == 2) {
 					final IAST v1 = (IAST) arg1;
 					return List(Negate(v1.arg2()), v1.arg1());
+				}
+			} else if (ast.size() > 3) {
+				int dim1 = arg1.isVector();
+				if (dim1 == ast.size()) {
+					for (int i = 2; i < ast.size(); i++) {
+						if (ast.get(i).isVector() != dim1) {
+							return F.NIL;
+						}
+					}
+					// TODO implement for more than 2 vector arguments
 				}
 			}
 			return F.NIL;
