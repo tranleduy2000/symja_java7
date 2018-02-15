@@ -3,11 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/symja/symja.iml" filepath="$PROJECT_DIR$/symja/symja.iml" />
-      <module fileurl="file://C:\github\symja_java7\symja\symja.iml" filepath="C:\github\symja_java7\symja\symja.iml" />
       <module fileurl="file://C:\github\symja_java7\symja_android_library2.iml" filepath="C:\github\symja_java7\symja_android_library2.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/symja_java7.iml" filepath="$PROJECT_DIR$/.idea/symja_java7.iml" />
       <module fileurl="file://$PROJECT_DIR$/test/test.iml" filepath="$PROJECT_DIR$/test/test.iml" />
-      <module fileurl="file://C:\github\symja_java7\test\test.iml" filepath="C:\github\symja_java7\test\test.iml" />
     </modules>
   </component>
 </project>
